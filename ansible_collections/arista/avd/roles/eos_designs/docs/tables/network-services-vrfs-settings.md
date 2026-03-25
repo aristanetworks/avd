@@ -22,6 +22,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_override</samp>](## "<network_services_keys.name>.[].vrfs.[].rt_override") | String |  |  |  | By default, the VRF RT will be derived from the pattern defined in `overlay_rt_type`.<br>The rt_override allows us to override this value and statically define it.<br><br>rt_override supports two formats:<br>  - A single number will be used in the RT assigned number subfield (second part of the RT).<br>  - A full RT string with colon separator which will override the full RT.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "<network_services_keys.name>.[].vrfs.[].rt_import") | Boolean |  | `True` |  | Enable or disable route target import for the VRF for all address families.<br>This setting applies only to the automatically generated route targets<br>and does not affect any entries defined under `additional_route_targets`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_export</samp>](## "<network_services_keys.name>.[].vrfs.[].rt_export") | Boolean |  | `True` |  | Enable or disable route target export for the VRF for all address families.<br>This setting applies only to the automatically generated route targets<br>and does not affect any entries defined under `additional_route_targets`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import_remote</samp>](## "<network_services_keys.name>.[].vrfs.[].rt_import_remote") | Boolean |  | `True` |  | Only considered when `evpn_gateway.evpn_l3` is enabled and `mode` is `rd-rt-rewrite`.<br>When `rt_import` is `true` and `rt_import_remote` is `true` (default), generate `route-target import evpn domain all`.<br>When `rt_import` is `false` and `rt_import_remote` is `true`, generate `route-target import evpn domain remote`.<br>When `rt_import_remote` is `false` and `rt_import` is `true`, generate a local `route-target import evpn` (no domain).<br>When both are `false`, no import route-target is generated.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_export_remote</samp>](## "<network_services_keys.name>.[].vrfs.[].rt_export_remote") | Boolean |  | `True` |  | Only considered when `evpn_gateway.evpn_l3` is enabled and `mode` is `rd-rt-rewrite`.<br>When `rt_export` is `true` and `rt_export_remote` is `true` (default), generate `route-target export evpn domain all`.<br>When `rt_export` is `false` and `rt_export_remote` is `true`, generate `route-target export evpn domain remote`.<br>When `rt_export_remote` is `false` and `rt_export` is `true`, generate a local `route-target export evpn` (no domain).<br>When both are `false`, no export route-target is generated.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_vlan_bundle</samp>](## "<network_services_keys.name>.[].vrfs.[].evpn_vlan_bundle") | String |  |  |  | Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.<br>This setting overrides "evpn_vlan_bundle" set at the Tenant level.<br>The common option "evpn_vlan_aware_bundles" is disregarded for this option.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ipv4_pool</samp>](## "<network_services_keys.name>.[].vrfs.[].mlag_ibgp_peering_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.<br>If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ipv6_pool</samp>](## "<network_services_keys.name>.[].vrfs.[].mlag_ibgp_peering_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.<br>If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used. |
@@ -179,6 +181,20 @@
             # This setting applies only to the automatically generated route targets
             # and does not affect any entries defined under `additional_route_targets`.
             rt_export: <bool; default=True>
+
+            # Only considered when `evpn_gateway.evpn_l3` is enabled and `mode` is `rd-rt-rewrite`.
+            # When `rt_import` is `true` and `rt_import_remote` is `true` (default), generate `route-target import evpn domain all`.
+            # When `rt_import` is `false` and `rt_import_remote` is `true`, generate `route-target import evpn domain remote`.
+            # When `rt_import_remote` is `false` and `rt_import` is `true`, generate a local `route-target import evpn` (no domain).
+            # When both are `false`, no import route-target is generated.
+            rt_import_remote: <bool; default=True>
+
+            # Only considered when `evpn_gateway.evpn_l3` is enabled and `mode` is `rd-rt-rewrite`.
+            # When `rt_export` is `true` and `rt_export_remote` is `true` (default), generate `route-target export evpn domain all`.
+            # When `rt_export` is `false` and `rt_export_remote` is `true`, generate `route-target export evpn domain remote`.
+            # When `rt_export_remote` is `false` and `rt_export` is `true`, generate a local `route-target export evpn` (no domain).
+            # When both are `false`, no export route-target is generated.
+            rt_export_remote: <bool; default=True>
 
             # Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
             # This setting overrides "evpn_vlan_bundle" set at the Tenant level.
