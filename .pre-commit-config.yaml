@@ -148,13 +148,13 @@ repos:
         name: Check for Linting errors on Python files outside the Ansible collection.
         description: This hook runs pylint.
         types: [python]
-      - id: pylint # Use pylintrc file in Ansible collection
+      - id: pylint # Use pylintrc-ansible file for Ansible collection
         name: Check for Linting errors on Python files in the Ansible collection.
         description: This hook runs pylint.
         types: [python]
         files: ansible_collections/arista/avd/
         args:
-          - --rcfile=ansible_collections/arista/avd/pylintrc
+          - --rcfile=pylintrc-ansible
 
   - repo: https://github.com/adrienverge/yamllint.git
     rev: "v1.38.0"
@@ -204,7 +204,13 @@ repos:
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
-        entry: pdm export -p python-avd -o ansible_collections/arista/avd/requirements.txt --without-hashes -G ansible -G self --pyproject
+        entry: pdm export -p python-avd -o ansible_collections/arista/avd/requirements.txt --without-hashes -G ansible-collection -G self --pyproject
+        language: python
+        files: python-avd/pyproject.toml
+        pass_filenames: false
+      - id: pdm-export
+        name: Extract requirements from pyavd/pyproject.toml to docs/requirements.txt
+        entry: pdm export -p python-avd -o docs/requirements.txt --without-hashes -G ansible -G self --pyproject
         language: python
         files: python-avd/pyproject.toml
         pass_filenames: false
