@@ -15,6 +15,7 @@
   - [Tunnel Interfaces](#tunnel-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
 - [ACL](#acl)
+  - [Standard Access-lists](#standard-access-lists)
   - [Extended Access-lists](#extended-access-lists)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 
@@ -280,6 +281,26 @@ interface VLAN20
 ```
 
 ## ACL
+
+### Standard Access-lists
+
+#### Standard Access-lists Summary
+
+##### ACL-API
+
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
+| 10 | remark ACL to restrict access to switch API to CVP and Ansible | - | - | - | - | - | - |
+| 20 | permit host 10.10.10.10 | - | - | - | - | - | - |
+
+#### Standard Access-lists Device Configuration
+
+```eos
+!
+ip access-list standard ACL-API
+   10 remark ACL to restrict access to switch API to CVP and Ansible
+   20 permit host 10.10.10.10
+```
 
 ### Extended Access-lists
 
