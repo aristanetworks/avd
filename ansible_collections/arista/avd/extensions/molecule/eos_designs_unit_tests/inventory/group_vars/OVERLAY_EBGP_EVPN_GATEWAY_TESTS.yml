@@ -258,6 +258,3 @@ tenants:
             name: VRF_RT_EXPORT_ONLY_VLAN302
             enabled: true
             ip_address_virtual: 10.3.2.1/24
-      - name: default
-        vrf_vni: 1
-        # Test: rd-rt-rewrite mode applies to VRF default
