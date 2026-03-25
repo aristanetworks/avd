@@ -11,7 +11,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
+from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -717,7 +717,7 @@ class RouterBgpMixin(Protocol):
             return
 
         for tenant in self.shared_utils.filtered_tenants:
-            if (not tenant.point_to_point_services or tenant.pseudowire_rt_base is None) and tenant._get_defined_attr("vpws") is Undefined:
+            if not tenant.point_to_point_services or tenant.pseudowire_rt_base is None:
                 continue
 
             pseudowires = EosCliConfigGen.RouterBgp.VpwsItem.Pseudowires()
@@ -744,15 +744,16 @@ class RouterBgpMixin(Protocol):
                             id_local=endpoint.id,
                             id_remote=remote_endpoint.id,
                         )
-            rd = f"{self.shared_utils.overlay_rd_type_admin_subfield}:{tenant.pseudowire_rt_base}"
-            rt = f"{self._rt_admin_subfield or tenant.pseudowire_rt_base}:{tenant.pseudowire_rt_base}"
-            vpws = self.structured_config.router_bgp.vpws.append_new(
-                name=tenant.name,
-                rd=rd,
-                route_targets=EosCliConfigGen.RouterBgp.VpwsItem.RouteTargets(import_export=rt),
-                mpls_control_word=tenant.vpws.mpls_control_word or None,  # Using 'or None' to only render True in structuired config.
-                mtu=tenant.vpws.mtu,
-                label_flow=tenant.vpws.label_flow or None,  # Using 'or None' to only render True in structuired config.
-            )
+
             if pseudowires:
-                vpws.pseudowires = pseudowires
+                rd = f"{self.shared_utils.overlay_rd_type_admin_subfield}:{tenant.pseudowire_rt_base}"
+                rt = f"{self._rt_admin_subfield or tenant.pseudowire_rt_base}:{tenant.pseudowire_rt_base}"
+                self.structured_config.router_bgp.vpws.append_new(
+                    name=tenant.name,
+                    rd=rd,
+                    route_targets=EosCliConfigGen.RouterBgp.VpwsItem.RouteTargets(import_export=rt),
+                    pseudowires=pseudowires,
+                    mpls_control_word=tenant.vpws.mpls_control_word or None,  # Using 'or None' to only render True in structured config.
+                    mtu=tenant.vpws.mtu,
+                    label_flow=tenant.vpws.label_flow or None,  # Using 'or None' to only render True in structured config.
+                )

@@ -10090,6 +10090,12 @@ $defs:
                   default: all
         vpws:
           type: dict
+          description: 'VPWS pseudowire settings for the tenant.
+
+            To render mpls_control_word, mtu, and label_flow in the BGP VPWS configuration,
+
+            both point_to_point_services and pseudowire_rt_base must be set under
+            the tenant.'
           keys:
             mpls_control_word:
               type: bool

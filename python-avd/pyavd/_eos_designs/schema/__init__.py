@@ -68948,7 +68948,15 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdList with `L2vlansItem` items.
                 """
                 vpws: Vpws
-                """Subclass of AvdModel."""
+                """
+                VPWS pseudowire settings for the tenant.
+                To render mpls_control_word, mtu, and label_flow in the BGP
+                VPWS configuration,
+                both point_to_point_services and pseudowire_rt_base must be set under the
+                tenant.
+
+                Subclass of AvdModel.
+                """
                 point_to_point_services: PointToPointServices
                 """
                 Point to point services (pseudowires).
@@ -69137,7 +69145,14 @@ class EosDesigns(EosDesignsRootModel):
                                Define L2 network services organized by VLAN ID.
 
                                Subclass of AvdList with `L2vlansItem` items.
-                            vpws: Subclass of AvdModel.
+                            vpws:
+                               VPWS pseudowire settings for the tenant.
+                               To render mpls_control_word, mtu, and label_flow in the BGP
+                               VPWS configuration,
+                               both point_to_point_services and pseudowire_rt_base must be set under the
+                               tenant.
+
+                               Subclass of AvdModel.
                             point_to_point_services:
                                Point to point services (pseudowires).
                                Only supported for node types with "network_services.l1:

@@ -202,9 +202,12 @@ tenants:
               - SITE2-LER1
             password: "OajzUG59/YF0NkgvOQyRnQ=="
             remote_as: "65202"
-  # TENANT_C: covers the case where vpws and point_to_point_services are not defined to get full coverage.
+  # TENANT_C: covers the case where pseudowire_rt_base and point_to_point_services are not defined.
   - name: TENANT_C
-    pseudowire_rt_base: 3000
+    vpws:
+      mpls_control_word: true
+      mtu: 1500
+      label_flow: true
     vrfs:
       - name: TENANT_C_INTRA
         vrf_id: 19
