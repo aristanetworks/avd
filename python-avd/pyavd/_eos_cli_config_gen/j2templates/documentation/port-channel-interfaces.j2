@@ -282,8 +282,8 @@
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
+| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
 {%         for port_channel_interface in port_channel_interfaces_ipv6 | arista.avd.natural_sort(sort_key='name') %}
 {%             set description = port_channel_interface.description | arista.avd.default("-") %}
 {%             set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
@@ -307,6 +307,7 @@
 {%             else %}
 {%                 set ipv6_nd_managed_config_flag = '-' %}
 {%             endif %}
+{%             set ipv6_nd_other_config_flag = port_channel_interface.ipv6_nd.other_config_flag | arista.avd.default("-") %}
 {%             set nd_ra_rx_accept = [] %}
 {%             if port_channel_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
 {%                 do nd_ra_rx_accept.append("default-route") %}
@@ -319,9 +320,24 @@
 {%             else %}
 {%                 set nd_ra_rx_accept = "-" %}
 {%             endif %}
+{%             set nd_cache_settings = [] %}
+{%             if port_channel_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
+{%                 do nd_cache_settings.append("capacity: " ~ port_channel_interface.ipv6_nd.cache.dynamic_capacity) %}
+{%             endif %}
+{%             if port_channel_interface.ipv6_nd.cache.expire is arista.avd.defined %}
+{%                 do nd_cache_settings.append("expire: " ~ port_channel_interface.ipv6_nd.cache.expire) %}
+{%             endif %}
+{%             if port_channel_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
+{%                 do nd_cache_settings.append("refresh-always") %}
+{%             endif %}
+{%             if nd_cache_settings %}
+{%                 set nd_cache = nd_cache_settings | join(", ") %}
+{%             else %}
+{%                 set nd_cache = "-" %}
+{%             endif %}
 {%             set ipv6_acl_in = port_channel_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%             set ipv6_acl_out = port_channel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ port_channel_interface.name }} | {{ description }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ nd_ra_rx_accept }} | {{ ipv6_nd_managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+| {{ port_channel_interface.name }} | {{ description }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ nd_ra_rx_accept }} | {{ ipv6_nd_managed_config_flag }} | {{ ipv6_nd_other_config_flag }} | {{ nd_cache }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%         endfor %}
 {%     endif %}
 {# VRRP #}

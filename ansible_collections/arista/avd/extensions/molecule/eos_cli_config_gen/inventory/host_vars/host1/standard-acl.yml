@@ -2,45 +2,104 @@
 ### Standard Access-Lists ###
 standard_access_lists:
   - name: ACL-API
-    sequence_numbers:
+    entries:
       - sequence: 10
-        action: "remark ACL to restrict access to switch API to CVP and Ansible"
+        remark: "ACL to restrict access to switch API to CVP and Ansible"
       - sequence: 20
-        action: "permit host 10.10.10.10"
+        action: permit
+        source: 10.10.10.10
+        mirror_session: mirror1
+        vlan: 10
+        vlan_mask: "0x001"
       - sequence: 30
-        action: "permit host 10.10.10.11"
+        action: permit
+        source: 10.10.10.11
+        inner_vlan: 10
+        inner_vlan_mask: "0x001"
+        log: true
       - sequence: 40
-        action: "permit host 10.10.10.12"
+        action: permit
+        source: 10.10.10.12
+        mirror_session: mirror1
+        log: true
+        vlan: 10
+        vlan_mask: "0x001"
+        inner_vlan: 10
+        inner_vlan_mask: "0x001"
+      - sequence: 50
+        action: permit
+        source: any
+        vlan: 10
+        vlan_mask: "0x001"
+        inner_vlan: 10
+        inner_vlan_mask: "0x001"
   - name: ACL-SSH
     counters_per_entry: true
-    sequence_numbers:
+    entries:
       - sequence: 10
-        action: "remark ACL to restrict access RFC1918 addresses"
+        remark: "ACL to restrict access RFC1918 addresses"
       - sequence: 20
-        action: "permit 10.0.0.0/8"
+        action: permit
+        source: 10.0.0.0/8
+        vlan: 10
+        vlan_mask: "0x000"
+        inner_vlan: 20
+        inner_vlan_mask: "0x001"
+        log: true
+        mirror_session: mirror1
       - sequence: 30
-        action: "permit 172.16.0.0/12"
+        action: permit
+        source: 172.16.0.0/12
+        inner_vlan: 20
+        inner_vlan_mask: "0x001"
+        log: true
+        mirror_session: mirror1
       - sequence: 40
-        action: "permit 192.168.0.0/16"
+        action: permit
+        source: 192.168.0.0/16
   - name: ACL-SSH-VRF
     counters_per_entry: false
-    sequence_numbers:
+    entries:
       - sequence: 10
-        action: "remark ACL to restrict access RFC1918 addresses"
+        remark: "ACL to restrict access RFC1918 addresses"
       - sequence: 20
-        action: "permit 10.0.0.0/8"
+        action: permit
+        source: 10.0.0.0/8
+        vlan: 10
+        vlan_mask: "0x000"
+        inner_vlan: 20
+        inner_vlan_mask: "0x001"
       - sequence: 30
-        action: "permit 172.16.0.0/12"
+        action: permit
+        source: 172.16.0.0/12
+        vlan: 10
+        vlan_mask: "0x000"
       - sequence: 40
-        action: "permit 192.168.0.0/16"
+        action: permit
+        source: 192.168.0.0/16
+        inner_vlan: 20
+        inner_vlan_mask: "0x001"
   - name: 99  # numeric ACL name
     counters_per_entry: false
-    sequence_numbers:
-      - sequence: 10
-        action: "remark ACL to restrict access RFC1918 addresses"
-      - sequence: 20
-        action: "permit 10.0.0.0/8"
+    entries:
+      - remark: "ACL to restrict access RFC1918 addresses"
+      - action: permit
+        source: 10.0.0.0/8
+        vlan: 20
+        inner_vlan: 10
+        mirror_session: mirror1
       - sequence: 30
-        action: "permit 172.16.0.0/12"
+        action: permit
+        source: 172.16.0.0/12
+        log: true
       - sequence: 40
-        action: "permit 192.168.0.0/16"
+        action: permit
+        source: 192.168.0.0/16
+        mirror_session: mirror2
+        log: true
+      - sequence: 50
+        action: permit
+        source: any
+        # Below configuration is not rendered as there is not source.
+      - sequence: 60
+        action: permit

@@ -221,7 +221,6 @@ cv_submit_workspace: true
 cv_submit_workspace_force: false
 
 # Approve, start and wait for the Change Control to Complete. Otherwise the Change Control will be left in "pending approval" mode.
-# Only applicable if cv_submit_workspace is true.
 cv_run_change_control: false
 
 # Set the name of the created Workspace. By default this will be "AVD <date and time>"
@@ -251,6 +250,65 @@ cv_register_detailed_results: false
 
 # Time to wait for a Workspace to build. Depending on the scale this can be adjusted.
 cv_workspace_build_timeout: 300
+```
+
+##### Advanced role configuration
+
+The optional settings below provide direct control over Workspace and Change Control states.
+
+```yaml
+# Set the ID of the created Workspace. If a workspace with the same ID already exists, it must be in the 'pending' state.
+# cv_workspace_id: <str>
+
+# Set the requested state for the Workspace.
+# Accepted values: "pending", "built", "submitted", "abandoned" or "deleted".
+# cv_workspace_requested_state: <str>
+
+# Set the requested state of the created Change Control.
+# Accepted values: "pending approval", "approved", "running" or "completed".
+# cv_change_control_requested_state: <str>
+```
+
+**`cv_workspace_id`**
+
+By default, `cv_deploy` auto-generates new workspace ID on each run. Setting `cv_workspace_id` instructs the role to use a specific ID instead. If a workspace with that ID already exists in CloudVision and is in `pending` state, it will be reused (this may be useful for resuming an interrupted deployment). If the existing workspace is in any other state, the role will raise an error. If workspace with that ID does not yet exist - it will be created.
+
+```mermaid
+flowchart LR
+    A([cv_deploy]) --> B{cv_workspace_id\nis set?}
+    B -- No --> C[auto-generate\nWorkspace ID]
+    B -- Yes --> D{Workspace with\nrequested ID exists?}
+    D -- No --> E[Create Workspace\nwith requested ID]
+    D -- Yes --> G{Workspace is in\nPENDING state?}
+    G -- Yes --> F[Reuse existing\nWorkspace]
+    G -- No --> I([Raise exception])
+```
+
+**`cv_workspace_requested_state`**
+
+By default, the Workspace state is controlled by the `cv_submit_workspace` key. Setting `cv_workspace_requested_state` bypasses `cv_submit_workspace` entirely and applies the specified state directly. This is useful for workflows that need precise control over the target state of the Workspace.
+
+```mermaid
+flowchart LR
+    A([cv_deploy]) --> B{"cv_workspace_requested_state\nis set?"}
+    B -- Yes --> C["Workspace requested state =\ncv_workspace_requested_state"]
+    B -- No --> D{cv_submit_workspace?}
+    D -- "True (default)" --> E["Workspace requested state =\n submitted"]
+    D -- False --> F["Workspace requested state =\n built"]
+```
+
+**`cv_change_control_requested_state`**
+
+By default, the Change Control state is controlled by `cv_run_change_control`. Setting `cv_change_control_requested_state` bypasses `cv_run_change_control` entirely. Only applicable when the requested state of the Workspace is `submitted`.
+
+```mermaid
+flowchart LR
+    A(["Workspace requested state\n==\nsubmitted?"]) -- Yes --> B{cv_change_control_requested_state set?}
+    A -- No --> G["Change Control is not created"]
+    B -- Yes --> C["Change Control requested state\n=\ncv_change_control_requested_state"]
+    B -- No --> D{"cv_run_change_control?"}
+    D -- True --> E["Change Control requested state\n=\ncompleted"]
+    D -- "False (default)" --> F["Change Control requested state\n=\npending approval"]
 ```
 
 ##### Structured configuration validation

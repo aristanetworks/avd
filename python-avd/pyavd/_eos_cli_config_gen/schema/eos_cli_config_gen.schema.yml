@@ -436,6 +436,12 @@ keys:
     type: list
     primary_key: name
     display_name: IP Extended Access-Lists (legacy model)
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 7.0.0
+      new_key: ip_access_lists
+      allow_with_new_key: true
     items:
       type: dict
       keys:
@@ -23861,9 +23867,78 @@ keys:
           - int
         counters_per_entry:
           type: bool
+        entries:
+          type: list
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                description: 'Action as string.
+
+                  '
+                valid_values:
+                - permit
+                - deny
+              remark:
+                type: str
+                description: Specify a comment. If remark is specified other keys
+                  of the entry are ignored.
+              source:
+                type: str
+                description: 'Required for non-remark entries.
+
+                  The value can be:
+
+                  1. A single source address.
+
+                  2. Source address with mask. e.g. ''10.0.0.1/8''.
+
+                  3. ''any'' source address.'
+              vlan:
+                type: int
+                description: Match packets by VLAN value.
+                convert_types:
+                - str
+              vlan_mask:
+                type: str
+                description: 'VLAN mask. Range "0x000"-"0xFFF". Required when `vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              inner_vlan:
+                type: int
+                description: Match packets by inner VLAN value.
+                convert_types:
+                - str
+              inner_vlan_mask:
+                type: str
+                description: 'Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              log:
+                type: bool
+                description: Enable logging when a packet matches the ACL rule.
+              mirror_session:
+                type: str
+                description: Mirror session to mirror matches against this rule.
         sequence_numbers:
           type: list
-          required: true
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: entries
           primary_key: sequence
           items:
             type: dict
@@ -25151,32 +25226,6 @@ keys:
         ipv6_nd:
           type: dict
           $ref: eos_cli_config_gen#/$defs/ipv6_nd
-          keys:
-            other_config_flag:
-              type: bool
-              description: Set the "other stateful configuration" flag in IPv6 router
-                advertisements.
-            cache:
-              type: dict
-              description: IPv6 neighbor cache options.
-              keys:
-                dynamic_capacity:
-                  type: int
-                  description: Capacity of dynamic cache entries.
-                  convert_types:
-                  - str
-                  min: 0
-                  max: 4294967295
-                expire:
-                  type: int
-                  description: Cache entries expiry in seconds.
-                  convert_types:
-                  - str
-                  min: 1
-                  max: 65535
-                refresh_always:
-                  type: bool
-                  description: Force refresh on cache expiry.
         access_group_in:
           type: str
           description: IPv4 access-list name.
@@ -26412,6 +26461,27 @@ $defs:
     description: IPv6 Neighbor Discovery protocol.
     type: dict
     keys:
+      cache:
+        type: dict
+        description: Neighbor cache options.
+        keys:
+          dynamic_capacity:
+            type: int
+            description: Capacity of dynamic cache entries.
+            convert_types:
+            - str
+            min: 0
+            max: 4294967295
+          expire:
+            type: int
+            description: Cache entries expiry in seconds.
+            convert_types:
+            - str
+            min: 1
+            max: 65535
+          refresh_always:
+            type: bool
+            description: Force refresh on cache expiry.
       ra:
         description: Router Advertisement.
         type: dict
@@ -26454,6 +26524,9 @@ $defs:
               type: bool
               description: Indicate that the prefix cannot be used for stateless address
                 autoconfiguration (SLAAC).
+      other_config_flag:
+        type: bool
+        description: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
   source_interface_per_vrf:
     type: dict
     keys:

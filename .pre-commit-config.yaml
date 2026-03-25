@@ -51,6 +51,7 @@ repos:
           (ansible_collections/arista/avd/roles/.*/(handlers|tasks)/.*\.yml
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/.*\.yml
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/.*\.yml
+          |schemas/.*/.*\.yml
           )
 
         args:
@@ -110,7 +111,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.15.6
+    rev: v0.15.7
     hooks:
       # Run the linter.
       - id: ruff
@@ -147,13 +148,13 @@ repos:
         name: Check for Linting errors on Python files outside the Ansible collection.
         description: This hook runs pylint.
         types: [python]
-      - id: pylint # Use pylintrc file in Ansible collection
+      - id: pylint # Use pylintrc-ansible file for Ansible collection
         name: Check for Linting errors on Python files in the Ansible collection.
         description: This hook runs pylint.
         types: [python]
         files: ansible_collections/arista/avd/
         args:
-          - --rcfile=ansible_collections/arista/avd/pylintrc
+          - --rcfile=pylintrc-ansible
 
   - repo: https://github.com/adrienverge/yamllint.git
     rev: "v1.38.0"
@@ -203,7 +204,13 @@ repos:
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
-        entry: pdm export -p python-avd -o ansible_collections/arista/avd/requirements.txt --without-hashes -G ansible -G self --pyproject
+        entry: pdm export -p python-avd -o ansible_collections/arista/avd/requirements.txt --without-hashes -G ansible-collection -G self --pyproject
+        language: python
+        files: python-avd/pyproject.toml
+        pass_filenames: false
+      - id: pdm-export
+        name: Extract requirements from pyavd/pyproject.toml to docs/requirements.txt
+        entry: pdm export -p python-avd -o docs/requirements.txt --without-hashes -G ansible -G self --pyproject
         language: python
         files: python-avd/pyproject.toml
         pass_filenames: false
@@ -267,7 +274,7 @@ repos:
         name: Build AVD schemas and documentation.
         entry: sh -c 'exec python-avd/scripts/build_schemas.py'
         language: python
-        files: python-avd/pyavd/[a-z_]+/schema
+        files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
         pass_filenames: false
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.7.2']
 
@@ -277,13 +284,15 @@ repos:
         language: python
         args:
           - --root-path
-          - "ansible_collections/arista/avd"
+          - "."
           - --table-files
           - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md"
           - "ansible_collections/arista/avd/roles/eos_designs/docs/tables/*.md"
+          - "schemas/cv_deploy/docs/tables/*.md"
           - --global-docs
           - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md"
           - "ansible_collections/arista/avd/roles/eos_designs/docs/*.md"
+          - "ansible_collections/arista/avd/roles/cv_deploy/README.md"
           - --ignore-files
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-input-validation.md
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
@@ -292,6 +301,9 @@ repos:
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validation.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/removed-keys.md
+          - schemas/cv_deploy/docs/tables/metadata.md
+          # TODO: Remove once cv_deploy schema integration is complete.
+          - schemas/cv_deploy/docs/tables/cv_deploy.md
         pass_filenames: false
 
       - id: sort-hosts-yml
@@ -320,7 +332,7 @@ repos:
         additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=43.0.0', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.21.0
+    rev: v0.22.0
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.github/.markdownlint.yaml`.
