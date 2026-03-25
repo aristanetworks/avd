@@ -295,10 +295,24 @@ class RouterBgpMixin(Protocol):
         else:
             # rd evpn domain all replaces the regular rd (see router-bgp.j2 note: vrf.rd should not be configured when domain is all)
             bgp_vrf.rd_evpn_domain._update(domain="all", rd=vrf_rd)
-            if vrf.rt_import:
+            if vrf.rt_import and vrf.rt_import_remote:
                 bgp_vrf.route_targets.import_evpn_domains.append_new(domain="all", route_target=vrf_rt)
-            if vrf.rt_export:
+            elif vrf.rt_import_remote:
+                bgp_vrf.route_targets.import_evpn_domains.append_new(domain="remote", route_target=vrf_rt)
+            elif vrf.rt_import:
+                for af in sorted(vrf_address_families):
+                    bgp_vrf.route_targets.field_import.append_new(
+                        address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ImportItem.RouteTargets([vrf_rt])
+                    )
+            if vrf.rt_export and vrf.rt_export_remote:
                 bgp_vrf.route_targets.export_evpn_domains.append_new(domain="all", route_target=vrf_rt)
+            elif vrf.rt_export_remote:
+                bgp_vrf.route_targets.export_evpn_domains.append_new(domain="remote", route_target=vrf_rt)
+            elif vrf.rt_export:
+                for af in sorted(vrf_address_families):
+                    bgp_vrf.route_targets.export.append_new(
+                        address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ExportItem.RouteTargets([vrf_rt])
+                    )
 
         for rt in vrf.additional_route_targets:
             bgp_vrf.route_targets.field_import.obtain(rt.address_family).route_targets.extend(

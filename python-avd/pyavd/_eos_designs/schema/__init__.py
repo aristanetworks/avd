@@ -67443,6 +67443,8 @@ class EosDesigns(EosDesignsRootModel):
                         "rt_override": {"type": str},
                         "rt_import": {"type": bool, "default": True},
                         "rt_export": {"type": bool, "default": True},
+                        "rt_import_remote": {"type": bool, "default": True},
+                        "rt_export_remote": {"type": bool, "default": True},
                         "evpn_vlan_bundle": {"type": str},
                         "mlag_ibgp_peering_ipv4_pool": {"type": str},
                         "mlag_ibgp_peering_ipv6_pool": {"type": str},
@@ -67546,6 +67548,26 @@ class EosDesigns(EosDesignsRootModel):
                     only to the automatically generated route targets
                     and does not affect any entries defined under
                     `additional_route_targets`.
+
+                    Default value: `True`
+                    """
+                    rt_import_remote: bool
+                    """
+                    Only considered when `evpn_gateway.evpn_l3` is enabled and `mode` is `rd-rt-rewrite`.
+                    When `rt_import` is `true` and `rt_import_remote` is `true` (default), generate `route-target import evpn domain all`.
+                    When `rt_import` is `false` and `rt_import_remote` is `true`, generate `route-target import evpn domain remote`.
+                    When `rt_import_remote` is `false` and `rt_import` is `true`, generate a local `route-target import evpn` (no domain).
+                    When both are `false`, no import route-target is generated.
+
+                    Default value: `True`
+                    """
+                    rt_export_remote: bool
+                    """
+                    Only considered when `evpn_gateway.evpn_l3` is enabled and `mode` is `rd-rt-rewrite`.
+                    When `rt_export` is `true` and `rt_export_remote` is `true` (default), generate `route-target export evpn domain all`.
+                    When `rt_export` is `false` and `rt_export_remote` is `true`, generate `route-target export evpn domain remote`.
+                    When `rt_export_remote` is `false` and `rt_export` is `true`, generate a local `route-target export evpn` (no domain).
+                    When both are `false`, no export route-target is generated.
 
                     Default value: `True`
                     """
@@ -67783,6 +67805,8 @@ class EosDesigns(EosDesignsRootModel):
                             rt_override: str | None | UndefinedType = Undefined,
                             rt_import: bool | UndefinedType = Undefined,
                             rt_export: bool | UndefinedType = Undefined,
+                            rt_import_remote: bool | UndefinedType = Undefined,
+                            rt_export_remote: bool | UndefinedType = Undefined,
                             evpn_vlan_bundle: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv6_pool: str | None | UndefinedType = Undefined,
@@ -67874,6 +67898,18 @@ class EosDesigns(EosDesignsRootModel):
                                    only to the automatically generated route targets
                                    and does not affect any entries defined under
                                    `additional_route_targets`.
+                                rt_import_remote:
+                                   Only considered when `evpn_gateway.evpn_l3` is enabled and `mode` is `rd-rt-rewrite`.
+                                   When `rt_import` is `true` and `rt_import_remote` is `true` (default), generate `route-target import evpn domain all`.
+                                   When `rt_import` is `false` and `rt_import_remote` is `true`, generate `route-target import evpn domain remote`.
+                                   When `rt_import_remote` is `false` and `rt_import` is `true`, generate a local `route-target import evpn` (no domain).
+                                   When both are `false`, no import route-target is generated.
+                                rt_export_remote:
+                                   Only considered when `evpn_gateway.evpn_l3` is enabled and `mode` is `rd-rt-rewrite`.
+                                   When `rt_export` is `true` and `rt_export_remote` is `true` (default), generate `route-target export evpn domain all`.
+                                   When `rt_export` is `false` and `rt_export_remote` is `true`, generate `route-target export evpn domain remote`.
+                                   When `rt_export_remote` is `false` and `rt_export` is `true`, generate a local `route-target export evpn` (no domain).
+                                   When both are `false`, no export route-target is generated.
                                 evpn_vlan_bundle:
                                    Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
                                    This setting overrides "evpn_vlan_bundle" set at the Tenant level.

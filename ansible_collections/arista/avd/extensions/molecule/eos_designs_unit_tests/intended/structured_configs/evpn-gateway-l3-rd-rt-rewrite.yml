@@ -182,6 +182,26 @@ router_bgp:
       - 30301:30301
     redistribute_routes:
     - learned
+  - id: 303
+    metadata:
+      tenants:
+      - RD_RT_REWRITE_PARTIAL_TESTS
+    rd: 192.168.255.6:30303
+    route_targets:
+      both:
+      - 30303:30303
+    redistribute_routes:
+    - learned
+  - id: 304
+    metadata:
+      tenants:
+      - RD_RT_REWRITE_PARTIAL_TESTS
+    rd: 192.168.255.6:30304
+    route_targets:
+      both:
+      - 30304:30304
+    redistribute_routes:
+    - learned
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -237,6 +257,9 @@ router_bgp:
       domain: all
       rd: 192.168.255.6:31
     route_targets:
+      import_evpn_domains:
+      - route_target: '31:31'
+        domain: remote
       export_evpn_domains:
       - route_target: '31:31'
         domain: all
@@ -252,6 +275,35 @@ router_bgp:
       import_evpn_domains:
       - route_target: '30:30'
         domain: all
+      export_evpn_domains:
+      - route_target: '30:30'
+        domain: remote
+    router_id: 192.168.255.6
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_RT_LOCAL_IMPORT_ONLY
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:32
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '32:32'
+    router_id: 192.168.255.6
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_RT_LOCAL_EXPORT_ONLY
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:33
+    route_targets:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '33:33'
     router_id: 192.168.255.6
     redistribute:
       connected:
@@ -314,6 +366,22 @@ vlan_interfaces:
   metadata:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
+- name: Vlan303
+  description: VRF_RT_LOCAL_IMPORT_ONLY_VLAN303
+  shutdown: false
+  vrf: VRF_RT_LOCAL_IMPORT_ONLY
+  ip_address_virtual: 10.3.3.1/24
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: Vlan304
+  description: VRF_RT_LOCAL_EXPORT_ONLY_VLAN304
+  shutdown: false
+  vrf: VRF_RT_LOCAL_EXPORT_ONLY
+  ip_address_virtual: 10.3.4.1/24
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
 vlan_internal_order:
   allocation: ascending
   range:
@@ -365,6 +433,16 @@ vlans:
   metadata:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
+- id: 303
+  name: VRF_RT_LOCAL_IMPORT_ONLY_VLAN303
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- id: 304
+  name: VRF_RT_LOCAL_EXPORT_ONLY_VLAN304
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -384,6 +462,16 @@ vrfs:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
 - name: VRF_RT_IMPORT_ONLY
+  ip_routing: true
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: VRF_RT_LOCAL_IMPORT_ONLY
+  ip_routing: true
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: VRF_RT_LOCAL_EXPORT_ONLY
   ip_routing: true
   metadata:
     tenants:
@@ -413,6 +501,10 @@ vxlan_interface:
         vni: 30302
       - id: 301
         vni: 30301
+      - id: 303
+        vni: 30303
+      - id: 304
+        vni: 30304
       vrfs:
       - name: VRF10
         vni: 10
@@ -422,3 +514,7 @@ vxlan_interface:
         vni: 31
       - name: VRF_RT_IMPORT_ONLY
         vni: 30
+      - name: VRF_RT_LOCAL_IMPORT_ONLY
+        vni: 32
+      - name: VRF_RT_LOCAL_EXPORT_ONLY
+        vni: 33
