@@ -64746,6 +64746,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ospf": {"type": Ospf},
                             "pim": {"type": Pim},
                             "flow_tracking": {"type": FlowTracking},
+                            "sflow": {"type": bool},
                             "monitor_sessions": {"type": MonitorSessions},
                             "campus_link_type": {"type": CampusLinkType},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -64816,6 +64817,8 @@ class EosDesigns(EosDesignsRootModel):
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                         Subclass of AvdModel.
                         """
+                        sflow: bool | None
+                        """Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces` setting."""
                         monitor_sessions: MonitorSessions
                         """
                         Used to define interfaces as source or destination for monitoring sessions.
@@ -64866,6 +64869,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ospf: Ospf | UndefinedType = Undefined,
                                 pim: Pim | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
+                                sflow: bool | None | UndefinedType = Undefined,
                                 monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                                 campus_link_type: CampusLinkType | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -64924,6 +64928,7 @@ class EosDesigns(EosDesignsRootModel):
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                                        Subclass of AvdModel.
+                                    sflow: Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces` setting.
                                     monitor_sessions:
                                        Used to define interfaces as source or destination for monitoring sessions.
 
