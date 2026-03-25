@@ -166,168 +166,84 @@
             "destination": "10.255.0.1",
             "source": "10.103.103.1",
             "description": "dc1-spine1",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.0.1",
-            "source": "172.21.110.4",
-            "description": "dc1-spine1",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           },
           {
             "destination": "10.255.0.2",
             "source": "10.103.103.1",
             "description": "dc1-spine2",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.0.2",
-            "source": "172.21.110.4",
-            "description": "dc1-spine2",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           },
           {
             "destination": "10.255.0.3",
             "source": "10.103.103.1",
             "description": "dc1-leaf1a",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.0.3",
-            "source": "172.21.110.4",
-            "description": "dc1-leaf1a",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           },
           {
             "destination": "10.255.0.4",
             "source": "10.103.103.1",
             "description": "dc1-leaf1b",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.0.4",
-            "source": "172.21.110.4",
-            "description": "dc1-leaf1b",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           },
           {
             "destination": "10.255.0.5",
             "source": "10.103.103.1",
             "description": "dc1-leaf2a",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.0.5",
-            "source": "172.21.110.4",
-            "description": "dc1-leaf2a",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           },
           {
             "destination": "10.255.128.11",
             "source": "10.103.103.1",
             "description": "dc2-spine1",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.128.11",
-            "source": "172.21.110.4",
-            "description": "dc2-spine1",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           },
           {
             "destination": "10.255.128.12",
             "source": "10.103.103.1",
             "description": "dc2-spine2",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.128.12",
-            "source": "172.21.110.4",
-            "description": "dc2-spine2",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           },
           {
             "destination": "10.255.128.13",
             "source": "10.103.103.1",
             "description": "dc2-leaf1a",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.128.13",
-            "source": "172.21.110.4",
-            "description": "dc2-leaf1a",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           },
           {
             "destination": "10.255.128.14",
             "source": "10.103.103.1",
             "description": "dc2-leaf1b",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.128.14",
-            "source": "172.21.110.4",
-            "description": "dc2-leaf1b",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           },
           {
             "destination": "10.255.128.15",
             "source": "10.103.103.1",
             "description": "dc2-leaf2a",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.128.15",
-            "source": "172.21.110.4",
-            "description": "dc2-leaf2a",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           },
           {
             "destination": "10.255.128.16",
             "source": "10.103.103.1",
             "description": "dc2-leaf2b",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.128.16",
-            "source": "172.21.110.4",
-            "description": "dc2-leaf2b",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           },
           {
             "destination": "10.255.128.17",
             "source": "10.103.103.1",
             "description": "dc2-leaf3a.arista.com",
-            "vrf": "MGMT_BACKUP",
-            "repeat": 1
-          },
-          {
-            "destination": "10.255.128.17",
-            "source": "172.21.110.4",
-            "description": "dc2-leaf3a.arista.com",
-            "vrf": "MGMT",
+            "vrf": "default",
             "repeat": 1
           }
         ]
