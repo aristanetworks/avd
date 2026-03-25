@@ -150,6 +150,8 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 10 | TENANT_A_L2_SERVICE | - |
 | 20 | TENANT_A_L2_SERVICE | - |
+| 110 | TENANT_C_L2_SERVICE | - |
+| 210 | TENANT_C_L2_SERVICE | - |
 | 2020 | TENANT_B_INSIDE_FW | - |
 
 ### VLANs Device Configuration
@@ -161,6 +163,12 @@ vlan 10
 !
 vlan 20
    name TENANT_A_L2_SERVICE
+!
+vlan 110
+   name TENANT_C_L2_SERVICE
+!
+vlan 210
+   name TENANT_C_L2_SERVICE
 !
 vlan 2020
    name TENANT_B_INSIDE_FW
@@ -728,6 +736,8 @@ ASN Notation: asplain
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
 | 10 | 100.70.0.5:10010 | 65000:10010 | - | - | learned |
 | 20 | 100.70.0.5:123456 | 65000:123456 | - | - | learned |
+| 110 | 100.70.0.5:10110 | 65000:10110 | - | - | learned |
+| 210 | 100.70.0.5:123456 | 65000:123456 | - | - | learned |
 | 2020 | 100.70.0.5:22020 | 65000:22020 | - | - | learned |
 
 #### Router BGP VPWS Instances
@@ -777,6 +787,16 @@ router bgp 65000
       redistribute learned
    !
    vlan 20
+      rd 100.70.0.5:123456
+      route-target both 65000:123456
+      redistribute learned
+   !
+   vlan 110
+      rd 100.70.0.5:10110
+      route-target both 65000:10110
+      redistribute learned
+   !
+   vlan 210
       rd 100.70.0.5:123456
       route-target both 65000:123456
       redistribute learned

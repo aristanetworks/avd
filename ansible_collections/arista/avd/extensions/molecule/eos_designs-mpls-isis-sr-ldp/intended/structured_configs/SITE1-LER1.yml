@@ -434,6 +434,26 @@ router_bgp:
       - 65000:22020
     redistribute_routes:
     - learned
+  - id: 110
+    metadata:
+      tenants:
+      - TENANT_C
+    rd: 100.70.0.5:10110
+    route_targets:
+      both:
+      - 65000:10110
+    redistribute_routes:
+    - learned
+  - id: 210
+    metadata:
+      tenants:
+      - TENANT_C
+    rd: 100.70.0.5:123456
+    route_targets:
+      both:
+      - 65000:123456
+    redistribute_routes:
+    - learned
   vpws:
   - name: TENANT_A
     rd: 100.70.0.5:1000
@@ -581,6 +601,16 @@ vlans:
   metadata:
     tenants:
     - TENANT_B
+- id: 110
+  name: TENANT_C_L2_SERVICE
+  metadata:
+    tenants:
+    - TENANT_C
+- id: 210
+  name: TENANT_C_L2_SERVICE
+  metadata:
+    tenants:
+    - TENANT_C
 vrfs:
 - name: MGMT
   ip_routing: false

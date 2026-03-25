@@ -68422,26 +68422,13 @@ class EosDesigns(EosDesignsRootModel):
                     mpls_control_word: bool
                     """
                     Enable or disable MPLS control word for VPWS pseudowires.
-                    The default is false as this is more
-                    commonly used in Segment Routing designs, but it can be set to true for better interoperability with
-                    non-Segment Routing designs.
 
                     Default value: `False`
                     """
                     mtu: int | None
-                    """
-                    MTU for VPWS pseudowires. This is configured on the Port-Channel interfaces of the pseudowire
-                    endpoints.
-                    """
+                    """MTU for VPWS pseudowires."""
                     label_flow: bool | None
-                    """
-                    Enable or disable MPLS label flow for VPWS pseudowires.
-                    When enabled, the provider edge (PE) device
-                    pushes an additional MPLS label with the flow label bit set on each packet received over the
-                    pseudowire.
-                    This is typically used in Segment Routing deployments to enable flow-aware load
-                    balancing or apply specific handling to pseudowire traffic based on the presence of the flow label.
-                    """
+                    """Enable or disable MPLS label flow for VPWS pseudowires."""
 
                     if TYPE_CHECKING:
 
@@ -68459,21 +68446,9 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                mpls_control_word:
-                                   Enable or disable MPLS control word for VPWS pseudowires.
-                                   The default is false as this is more
-                                   commonly used in Segment Routing designs, but it can be set to true for better interoperability with
-                                   non-Segment Routing designs.
-                                mtu:
-                                   MTU for VPWS pseudowires. This is configured on the Port-Channel interfaces of the pseudowire
-                                   endpoints.
-                                label_flow:
-                                   Enable or disable MPLS label flow for VPWS pseudowires.
-                                   When enabled, the provider edge (PE) device
-                                   pushes an additional MPLS label with the flow label bit set on each packet received over the
-                                   pseudowire.
-                                   This is typically used in Segment Routing deployments to enable flow-aware load
-                                   balancing or apply specific handling to pseudowire traffic based on the presence of the flow label.
+                                mpls_control_word: Enable or disable MPLS control word for VPWS pseudowires.
+                                mtu: MTU for VPWS pseudowires.
+                                label_flow: Enable or disable MPLS label flow for VPWS pseudowires.
 
                             """
 
@@ -68955,10 +68930,10 @@ class EosDesigns(EosDesignsRootModel):
                 vpws: Vpws
                 """
                 VPWS pseudowire settings for the tenant.
-                To render mpls_control_word, mtu, and label_flow in the BGP
-                VPWS configuration,
-                both point_to_point_services and pseudowire_rt_base must be set under the
-                tenant.
+                To render `mpls_control_word`, `mtu`, and `label_flow` in
+                the BGP VPWS configuration,
+                both `point_to_point_services` and `pseudowire_rt_base` must be set
+                under the tenant.
 
                 Subclass of AvdModel.
                 """
@@ -69152,10 +69127,10 @@ class EosDesigns(EosDesignsRootModel):
                                Subclass of AvdList with `L2vlansItem` items.
                             vpws:
                                VPWS pseudowire settings for the tenant.
-                               To render mpls_control_word, mtu, and label_flow in the BGP
-                               VPWS configuration,
-                               both point_to_point_services and pseudowire_rt_base must be set under the
-                               tenant.
+                               To render `mpls_control_word`, `mtu`, and `label_flow` in
+                               the BGP VPWS configuration,
+                               both `point_to_point_services` and `pseudowire_rt_base` must be set
+                               under the tenant.
 
                                Subclass of AvdModel.
                             point_to_point_services:

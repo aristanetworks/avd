@@ -208,8 +208,16 @@ tenants:
       mpls_control_word: true
       mtu: 1500
       label_flow: true
-    vrfs:
-      - name: TENANT_C_INTRA
-        vrf_id: 19
-        address_families:
-          - evpn
+    mac_vrf_id_base: 10000
+    l2vlans:
+      - id: 110
+        name: TENANT_C_L2_SERVICE
+        tags:
+          - site1-2
+          - site5
+      - id: 210
+        name: TENANT_C_L2_SERVICE
+        rt_override: 123456
+        tags:
+          - site1-2
+          - site5
