@@ -71,13 +71,13 @@ plugins:
       glob:
         - README.md
         - contributing.md
+        - pylintrc-ansible
         - ansible_collections/arista/avd/bindep.txt
         - ansible_collections/arista/avd/CHANGELOG.rst
         - ansible_collections/arista/avd/CNAME
         - ansible_collections/arista/avd/collections.yml
         - ansible_collections/arista/avd/galaxy.yml
         - ansible_collections/arista/avd/LICENSE
-        - ansible_collections/arista/avd/pylintrc
         - ansible_collections/arista/avd/pytest.ini
         - ansible_collections/arista/avd/README.md
         - ansible_collections/arista/avd/requirements.txt
