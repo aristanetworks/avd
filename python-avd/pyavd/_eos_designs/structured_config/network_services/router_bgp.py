@@ -279,11 +279,7 @@ class RouterBgpMixin(Protocol):
         """In-place update EVPN/MPLS part of structured config for *one* VRF under router_bgp.vrfs."""
         vrf_rd = self.get_vrf_rd(vrf, tenant)
         vrf_rt = self.get_vrf_rt(vrf)
-        if not (
-            is_rd_rt_rewrite := (
-                self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"
-            )
-        ):
+        if not (self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"):
             bgp_vrf.rd = vrf_rd
 
             for af in sorted(vrf_address_families):
@@ -296,6 +292,13 @@ class RouterBgpMixin(Protocol):
                     bgp_vrf.route_targets.export.append_new(
                         address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ExportItem.RouteTargets([vrf_rt])
                     )
+        else:
+            # rd evpn domain all replaces the regular rd (see router-bgp.j2 note: vrf.rd should not be configured when domain is all)
+            bgp_vrf.rd_evpn_domain._update(domain="all", rd=vrf_rd)
+            if vrf.rt_import:
+                bgp_vrf.route_targets.import_evpn_domains.append_new(domain="all", route_target=vrf_rt)
+            if vrf.rt_export:
+                bgp_vrf.route_targets.export_evpn_domains.append_new(domain="all", route_target=vrf_rt)
 
         for rt in vrf.additional_route_targets:
             bgp_vrf.route_targets.field_import.obtain(rt.address_family).route_targets.extend(
@@ -308,18 +311,11 @@ class RouterBgpMixin(Protocol):
             # Create route-map
             self.set_once_route_map_evpn_export_vrf_default()
 
-        if is_rd_rt_rewrite:
-            # rd evpn domain all replaces the regular rd (see router-bgp.j2 note: vrf.rd should not be configured when domain is all)
-            bgp_vrf.rd_evpn_domain._update(domain="all", rd=vrf_rd)
-            if vrf.rt_import:
-                bgp_vrf.route_targets.import_evpn_domains.append_new(domain="all", route_target=vrf_rt)
-            if vrf.rt_export:
-                bgp_vrf.route_targets.export_evpn_domains.append_new(domain="all", route_target=vrf_rt)
-
-        # VRF default does not support evpn_multicast
+        # VRF default
         if vrf.name == "default":
             return
 
+        # Not VRF default
         bgp_vrf.evpn_multicast = getattr(vrf._internal_data, "evpn_l3_multicast_enabled", None)
         if evpn_multicast_transit_mode := getattr(vrf._internal_data, "evpn_l3_multicast_evpn_peg_transit", False):
             bgp_vrf.evpn_multicast_address_family.ipv4.transit = evpn_multicast_transit_mode
