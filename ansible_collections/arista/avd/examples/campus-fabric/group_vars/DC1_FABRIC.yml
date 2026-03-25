@@ -58,7 +58,7 @@ l2leaf:
       uplink_interfaces: [Ethernet51]
       mlag_interfaces: [Ethernet53, Ethernet54]
       filter:
-        tags: [ "110", "120", "130" ]
+        tags: ["110", "120", "130"]
       nodes:
         - name: LEAF1A
           id: 3
@@ -74,7 +74,7 @@ l2leaf:
       platform: 720XP
       mlag: false
       filter:
-        tags: [ "210", "220", "230" ]
+        tags: ["210", "220", "230"]
       nodes:
         - name: LEAF2A
           id: 5
@@ -88,7 +88,7 @@ l2leaf:
       uplink_switches: [SPINE1, SPINE2]
       uplink_interfaces: [Ethernet97/1, Ethernet97/2]
       filter:
-        tags: [ "310", "320", "330" ]
+        tags: ["310", "320", "330"]
       nodes:
         - name: LEAF3A
           id: 6
@@ -135,11 +135,11 @@ underlay_routing_protocol: ospf
 #### WAN/Core Edge Links ####
 core_interfaces:
   p2p_links:
-    - ip: [ 10.0.0.3/31, 10.0.0.2/31 ]
-      nodes: [ SPINE1, WAN ]
-      interfaces: [ Ethernet52/1, Ethernet1/1 ]
+    - ip: [10.0.0.3/31, 10.0.0.2/31]
+      nodes: [SPINE1, WAN]
+      interfaces: [Ethernet52/1, Ethernet1/1]
       include_in_underlay_protocol: true
-    - ip: [ 10.0.0.5/31, 10.0.0.4/31 ]
-      nodes: [ SPINE2, WAN ]
-      interfaces: [ Ethernet52/1, Ethernet1/1 ]
+    - ip: [10.0.0.5/31, 10.0.0.4/31]
+      nodes: [SPINE2, WAN]
+      interfaces: [Ethernet52/1, Ethernet1/1]
       include_in_underlay_protocol: true

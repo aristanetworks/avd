@@ -36,6 +36,9 @@ rules:
   commas:
     max-spaces-after: -1
     level: error
+  # NOTE: the following rule is also not applied in default config
+  # for ansible-lint and so expect list without spaces likes [blah]
+  # not [ blah ]
   brackets:
     max-spaces-inside: 1
     level: error
