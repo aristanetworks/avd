@@ -23,16 +23,20 @@ options:
   preview_features:
     description: |-
       Enable preview features of the plugin.
-      When enabled, structured configurations are loaded from validated JSON files in `tmp_dir` instead of `structured_config_dir`.
-      This requires the `arista.avd.validate_inputs` plugin to run first in the same playbook to generate the validated files.
       Preview features may change or be removed without notice.
-    type: bool
-    default: false
+    type: dict
+    suboptions:
+      read_from_validated_inputs:
+        description: |-
+          When enabled, structured configurations are loaded from validated JSON files in `tmp_dir` instead of `structured_config_dir`.
+          This requires the `arista.avd.validate_inputs` plugin to run first in the same playbook to generate the validated files.
+        type: bool
+        default: false
   tmp_dir:
     description: |-
       Path to the AVD temporary directory containing validated input files.
       Must be the same path as used for the `arista.avd.validate_inputs` plugin.
-      Required when `preview_features` is `true`.
+      Required when `preview_features.read_from_validated_inputs` is `true`.
     type: str
     required: false
   cv_servers:

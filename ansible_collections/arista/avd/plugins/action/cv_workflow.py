@@ -53,7 +53,12 @@ LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 ARGUMENT_SPEC = {
     "tmp_dir": {"type": "str", "required": False},
-    "preview_features": {"type": "bool", "default": False},
+    "preview_features": {
+        "type": "dict",
+        "options": {
+            "read_from_validated_inputs": {"type": "bool", "default": False},
+        },
+    },
     "configuration_dir": {"type": "str", "required": True},
     "structured_config_dir": {"type": "str", "required": False},
     "structured_config_suffix": {"type": "str", "default": "yml"},
@@ -106,10 +111,6 @@ ARGUMENT_SPEC = {
     "return_details": {"type": "bool", "required": False, "default": False},
 }
 
-REQUIRED_IF = [
-    ("preview_features", True, ("tmp_dir",)),
-]
-
 
 class ActionModule(ActionBase):
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
@@ -129,10 +130,7 @@ class ActionModule(ActionBase):
         setup_module_logging(result)
 
         # Get task arguments and validate them
-        _validation_result, validated_args = self.validate_argument_spec(
-            argument_spec=ARGUMENT_SPEC,
-            required_if=REQUIRED_IF,
-        )
+        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
         validated_args = strip_empties_from_dict(validated_args)
 
         # Converting to json and back to remove any AnsibeUnsafe types
@@ -153,6 +151,14 @@ class ActionModule(ActionBase):
         if "proxy_password" in logged_args:
             logged_args["proxy_password"] = "<removed>"  # NOSONAR # noqa: S105
         LOGGER.info("deploy: %s", logged_args)
+
+        # Validate preview_features requirements before starting deployment.
+        read_from_validated_inputs = get(validated_args, "preview_features.read_from_validated_inputs", False)
+        tmp_dir = validated_args.get("tmp_dir")
+        if read_from_validated_inputs and not tmp_dir:
+            msg = "tmp_dir is required when preview_features.read_from_validated_inputs is true"
+            raise AnsibleActionFail(msg)
+
         try:
             # Create CloudVision object
             cloudvision = CloudVision(
@@ -167,10 +173,9 @@ class ActionModule(ActionBase):
                 proxy_password=validated_args.get("proxy_password"),
             )
 
-            # If preview_features is enabled, we use the tmp_dir which contains validated inputs as JSON for structured_config_dir.
-            preview_features = validated_args.get("preview_features")
-            if preview_features:
-                _templated_path, validated_path = get_tmp_paths(tmp_dir=validated_args.get("tmp_dir"))
+            # If read_from_validated_inputs is enabled, we use the tmp_dir which contains validated inputs as JSON for structured_config_dir.
+            if read_from_validated_inputs:
+                _templated_path, validated_path = get_tmp_paths(tmp_dir)
                 structured_config_dir = str(validated_path)
                 structured_config_suffix = "json"
             else:
@@ -355,6 +360,7 @@ class ActionModule(ActionBase):
 
         structured_config = self.load_structured_config(hostname, structured_config_dir, structured_config_suffix)
 
+        # TODO: Use CVDeploy schema class.
         # metadata.* keys take precedence over global cv_deploy schema keys.
         if not default(get(structured_config, "metadata.is_deployed"), get(structured_config, "is_deployed", default=True)):
             del structured_config
@@ -429,8 +435,6 @@ class ActionModule(ActionBase):
             LOGGER.info("load_structured_config: No structured config file for %s", hostname)
             return {}
 
-        LOGGER.info("load_structured_config: Loading %s structured config from %s", hostname, file_path)
-
         if structured_config_suffix in ["yml", "yaml"]:
             with file_path.open(mode="r", encoding="UTF-8") as structured_config_stream:
                 metadata_lines = []
@@ -443,7 +447,7 @@ class ActionModule(ActionBase):
                     if in_metadata:
                         metadata_lines.append(line)
 
-                return load("".join(metadata_lines), Loader=YamlLoader)  # noqa: S506 TODO: Consider safeload
+                return load("".join(metadata_lines), Loader=YamlLoader) or {}  # noqa: S506 TODO: Consider safeload
 
         # JSON files may be encrypted by the validate_inputs plugin, so we use AVDFileHandler to decrypt if needed.
         vault_handler = AVDVaultHandler(self._loader)

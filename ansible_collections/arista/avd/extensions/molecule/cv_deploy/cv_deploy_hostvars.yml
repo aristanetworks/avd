@@ -1,5 +1,5 @@
 ---
-- name: "{{ test_id | upper }} Converge - Configuration deployment with CVP using hostvars"
+- name: "Converge - Configuration deployment with CVP using hostvars - {{ test_id | upper }}"
   hosts: SITE1_FABRIC
   connection: local
   gather_facts: false
@@ -20,7 +20,7 @@
     cv_common_pattern: "avd_cv-deploy_{{ test_id }}"
 
   tasks:
-    - name: "{{ test_id | upper }} Banner"
+    - name: "Banner - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       run_once: true
       ansible.builtin.debug:
@@ -29,27 +29,27 @@
           - "### STARTING MOLECULE TEST {{ test_id[:69] | upper }} ###"
           - "{{ ('#' * (31 + test_id | length))[:100] }}"
 
-    - name: "{{ test_id | upper }} {{ 'Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate' }} molecule execution ID"
+    - name: "{{ (test_id | upper) + ' - ' + ('Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate') + ' molecule execution ID' }}"
       tags: ["{{ test_id }}"]
       run_once: true
       ansible.builtin.set_fact:
         r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
 
-    - name: "{{ test_id | upper }} Code block to provision CVP with AVD configuration from hostvars"
+    - name: "Code block to provision CVP with AVD configuration from hostvars - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       run_once: true
       delegate_to: localhost
 
       block:
 
-        - name: "(BLOCK) {{ test_id | upper }} Banner"
+        - name: "(BLOCK) Banner - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             msg:
               - "### ENGAGE CV_DEPLOY ROLE (HOSTVARS MODE) TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
 
-        - name: "(BLOCK) {{ test_id | upper }} Provision CVP with AVD configuration from hostvars"
+        - name: "(BLOCK) Provision CVP with AVD configuration from hostvars - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost
@@ -66,7 +66,7 @@
             # Use hostvars instead of structured config files
             read_structured_config_from_file: false
 
-        - name: "(BLOCK) {{ test_id | upper }} Check CVP returns"
+        - name: "(BLOCK) Check CVP returns - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -92,7 +92,7 @@
             cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
             cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
 
-        - name: "(BLOCK) {{ test_id | upper }} Check tags from output"
+        - name: "(BLOCK) Check tags from output - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -101,14 +101,14 @@
               - item.0.value == item.1.value
           loop: "{{ cv_deploy_results.deployed_device_tags | zip(cv_deploy_results.device_tags) | list }}"
 
-        - name: "(BLOCK) {{ test_id | upper }} Extract all device tags from hostvars"
+        - name: "(BLOCK) Extract all device tags from hostvars - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
             expected_device_tags: "{{ intended_tags.metadata.cv_tags.device_tags | default(intended_tags.cv_device_tags) }}"
             output_device_tags: "{{ cv_deploy_results.deployed_device_tags }}"
 
-        - name: "(BLOCK) {{ test_id | upper }} Check output device tags == intended device tags"
+        - name: "(BLOCK) Check output device tags == intended device tags - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -117,13 +117,13 @@
               - item.0.value == item.1.value
           loop: "{{ expected_device_tags | zip(output_device_tags) | list }}"
 
-        - name: "(BLOCK) {{ test_id | upper }} Extract all interface tags from role output"
+        - name: "(BLOCK) Extract all interface tags from role output - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
             output_interface_tags: "{{ cv_deploy_results.deployed_interface_tags }}"
 
-        - name: "(BLOCK) {{ test_id | upper }} Extract all interface tags from hostvars"
+        - name: "(BLOCK) Extract all interface tags from hostvars - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
@@ -132,7 +132,7 @@
           loop_control:
             label: "{{ item.interface }}"
 
-        - name: "(BLOCK) {{ test_id | upper }} Check output interface tags == intended interface tags"
+        - name: "(BLOCK) Check output interface tags == intended interface tags - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -141,14 +141,14 @@
               - item.0.value == item.1.value
           loop: "{{ expected_interface_tags | zip(output_interface_tags) | list }}"
 
-        - name: "(BLOCK) {{ test_id | upper }} Convert unstructed data into yaml"
+        - name: "(BLOCK) Convert unstructed data into yaml - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
             devices_structure: '{{ cv_deploy_results.deployed_configs | from_yaml }}'
             output_devices: []
 
-        - name: "(BLOCK) {{ test_id | upper }} Extract devices from output"
+        - name: "(BLOCK) Extract devices from output - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
@@ -157,7 +157,7 @@
           loop_control:
             label: "{{ item.configlet_name }}"
 
-        - name: "(BLOCK) {{ test_id | upper }} Check output devices == intended devices"
+        - name: "(BLOCK) Check output devices == intended devices - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -166,20 +166,20 @@
 
       always:
 
-        - name: "(ALWAYS) {{ test_id | upper }} Display CVP detailed result"
+        - name: "(ALWAYS) Display CVP detailed result - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             var: cv_deploy_results
 
-        - name: "(ALWAYS) {{ test_id | upper }} Banner"
+        - name: "(ALWAYS) Banner - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             msg:
               - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
 
-        - name: "(ALWAYS) {{ test_id | upper }} Cleanup"
+        - name: "(ALWAYS) Cleanup - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost

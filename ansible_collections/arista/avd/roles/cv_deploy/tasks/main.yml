@@ -35,7 +35,8 @@
       run_once: true
       delegate_to: localhost
       arista.avd.cv_workflow:
-        preview_features: true
+        preview_features:
+          read_from_validated_inputs: true
         tmp_dir: "{{ cv_deploy_tmp_dir }}"
         cv_servers: [ "{{ cv_server }}" ]
         cv_token: "{{ cv_token }}"
