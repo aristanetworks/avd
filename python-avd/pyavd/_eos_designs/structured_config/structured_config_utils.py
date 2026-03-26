@@ -75,14 +75,18 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
             bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
             self.structured_config.router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group))
             if not self.shared_utils.underlay_ipv6_numbered:
-                self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(self.shared_utils.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549))
+                self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(
+                    self.shared_utils.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549)
+                )
             if self.shared_utils.underlay_ipv6:
                 self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
 
         if self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
             bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
             self.structured_config.router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group))
-            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(self.shared_utils.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.overlay_mlag_rfc5549))
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(
+                self.shared_utils.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.overlay_mlag_rfc5549)
+            )
 
     def get_mlag_peer_group(
         self, bgp_peer_group: EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer

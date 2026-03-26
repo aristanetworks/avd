@@ -10,7 +10,6 @@ from typing import TYPE_CHECKING, Protocol, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_ip_prefix
-from pyavd._utils.format_string import AvdStringFormatter
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
@@ -18,8 +17,6 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
     from pyavd._eos_designs.schema import EosDesigns
-    from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
-    from pyavd._eos_designs.structured_config.structured_config_utils import StructuredConfigUtils
 
     from . import SharedUtilsProtocol
 
