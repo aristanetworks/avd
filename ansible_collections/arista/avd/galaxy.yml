@@ -65,8 +65,8 @@ manifest:
     - recursive-exclude changelogs/fragments_backup **
     - recursive-include examples **
     # Excluding intended and documentation from examples in the collection
-    - recursive-exlude examples/**/intended **
-    - recursive-exlude examples/**/documentation **
+    - recursive-exclude examples/**/intended **
+    - recursive-exclude examples/**/documentation **
     - recursive-exclude extensions **
     - include requirements.yml
     - exclude galaxy.yml galaxy.yaml MANIFEST.json FILES.json <namespace>-<name>-*.tar.gz
