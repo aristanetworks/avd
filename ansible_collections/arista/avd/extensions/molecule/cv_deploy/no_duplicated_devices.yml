@@ -1,5 +1,5 @@
 ---
-- name: "{{ test_id | upper }} Converge - cv_deploy with no duplicated devices in inventory"
+- name: "Converge - cv_deploy with no duplicated devices in inventory - {{ test_id | upper }}"
   hosts: SITE1_FABRIC
   connection: local
   gather_facts: false
@@ -21,7 +21,7 @@
     cv_common_pattern: "avd_cv-deploy_{{ test_id }}"
 
   tasks:
-    - name: "{{ test_id | upper }} Banner"
+    - name: "Banner - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       run_once: true
       ansible.builtin.debug:
@@ -30,20 +30,20 @@
           - "### STARTING MOLECULE TEST {{ test_id[:69] | upper }} ###"
           - "{{ ('#' * (31 + test_id | length))[:100] }}"
 
-    - name: "{{ test_id | upper }} Create target structured_config directory if it doesn't exist"
+    - name: "Create target structured_config directory if it doesn't exist - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.file:
         path: "{{ structured_dir }}"
         state: directory
         mode: '0755'
 
-    - name: "{{ test_id | upper }} Remove interesting files inside structured_config directory (if they exist)"
+    - name: "Remove interesting files inside structured_config directory (if they exist) - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.file:
         path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
         state: absent
 
-    - name: "{{ test_id | upper }} Fetch device inventory stats from CV {{ cv_server }} for all targeted devices"
+    - name: "{{ (test_id | upper) + ' - Fetch device inventory stats for all targeted devices - ' + cv_server }}"
       tags: ["{{ test_id }}"]
       delegate_to: localhost
       ansible.legacy.uri:
@@ -77,33 +77,33 @@
         https_proxy: >-
           http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
-    - name: "{{ test_id | upper }} Process raw device_inventory_status_on_cv variables"
+    - name: "Process raw device_inventory_status_on_cv variables - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.set_fact:
         metadata:
           serial_number: "{{ device_inventory_status_on_cv.json.result.value.key.deviceId }}"
           system_mac_address: "{{ device_inventory_status_on_cv.json.result.value.systemMacAddress }}"
 
-    - name: "{{ test_id | upper }} Expose new variables set on DUTs"
+    - name: "Expose new variables set on DUTs - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.debug:
         msg:
           - "DEVICE {{ inventory_hostname }} | SERIAL_NUMBER: {{ metadata.serial_number }} | SYSTEM_MAC_ADDRESS: {{ metadata.system_mac_address }}"
 
-    - name: "{{ test_id | upper }} Copy content of the original test's structured_config files into new structured_config files"
+    - name: "Copy content of the original test's structured_config files into new structured_config files - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.copy:
         src: "{{ original_structured_dir }}/{{ inventory_hostname }}.yml"
         dest: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
         mode: "0644"
 
-    - name: "{{ test_id | upper }} Read current content of the structured files"
+    - name: "Read current content of the structured files - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.slurp:
         src: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
       register: structured_config_file_content
 
-    - name: "{{ test_id | upper }} Update content of the structured_config files if metadata is not present"
+    - name: "Update content of the structured_config files if metadata is not present - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.lineinfile:
         line: "metadata:\n  serial_number: {{ metadata.serial_number }}\n  system_mac_address: {{ metadata.system_mac_address }}"
@@ -114,7 +114,7 @@
       no_log: true
       when: "'metadata:' not in structured_config_file_content.content | b64decode"
 
-    - name: "{{ test_id | upper }} Update metadata in the structured_config files if metadata is already present"
+    - name: "Update metadata in the structured_config files if metadata is already present - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.lineinfile:
         line: "metadata:\n  serial_number: {{ metadata.serial_number }}\n  system_mac_address: {{ metadata.system_mac_address }}"
@@ -123,27 +123,27 @@
       no_log: true
       when: "'metadata:' in structured_config_file_content.content | b64decode"
 
-    - name: "{{ test_id | upper }} {{ 'Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate' }} molecule execution ID"
+    - name: "{{ (test_id | upper) + ' - ' + ('Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate') + ' molecule execution ID' }}"
       tags: ["{{ test_id }}"]
       run_once: true
       ansible.builtin.set_fact:
         r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
 
-    - name: "{{ test_id | upper }} Code block to provision CVP with AVD configuration"
+    - name: "Code block to provision CVP with AVD configuration - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       run_once: true
       delegate_to: localhost
 
       block:
 
-        - name: "(BLOCK) {{ test_id | upper }} Banner"
+        - name: "(BLOCK) Banner - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             msg:
               - "### ENGAGE CV_DEPLOY ROLE TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
 
-        - name: "(BLOCK) {{ test_id | upper }} Provision CVP with AVD configuration"
+        - name: "(BLOCK) Provision CVP with AVD configuration - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost
@@ -155,7 +155,7 @@
             cv_submit_workspace: false
             cv_register_detailed_results: true
 
-        - name: "(BLOCK) {{ test_id | upper }} Check and assert CVP returns"
+        - name: "(BLOCK) Check and assert CVP returns - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -166,13 +166,13 @@
 
       always:
 
-        - name: "(ALWAYS) {{ test_id | upper }} Display CVP detailed result"
+        - name: "(ALWAYS) Display CVP detailed result - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             var: cv_deploy_results
 
-        - name: "(ALWAYS) {{ test_id | upper }} Cleanup orphan workspace"
+        - name: "(ALWAYS) Cleanup orphan workspace - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.legacy.uri:
@@ -213,14 +213,14 @@
             https_proxy: >-
               http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
-        - name: "(ALWAYS) {{ test_id | upper }} Banner"
+        - name: "(ALWAYS) Banner - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             msg:
               - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
 
-        - name: "(ALWAYS) {{ test_id | upper }}  Cleanup"
+        - name: "(ALWAYS) Cleanup - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost

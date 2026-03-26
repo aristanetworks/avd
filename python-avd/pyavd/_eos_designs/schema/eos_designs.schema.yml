@@ -9251,6 +9251,10 @@ $defs:
                       $ref: eos_designs#/$defs/flow_tracking_link
                       description: Configures flow-tracking on the interface. Overrides
                         `fabric_flow_tracking.l3_interfaces` setting.
+                    sflow:
+                      type: bool
+                      description: Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces`
+                        setting.
                     monitor_sessions:
                       type: list
                       $ref: eos_designs#/$defs/monitor_sessions

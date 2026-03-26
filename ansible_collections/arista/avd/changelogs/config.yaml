@@ -1,5 +1,6 @@
 changelog_filename_template: ../CHANGELOG.rst
 changelog_filename_version_depth: 0
+changelog_nice_yaml: true
 changes_file: changelog.yaml
 changes_format: combined
 ignore_other_fragment_extensions: true
