@@ -1,0 +1,22 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.44.0.0/24
+    vtep_loopback_ipv4_pool: 10.45.0.0/24
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    mlag_peer_ipv4_pool: 10.255.250.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.249.0/24
+    mlag_dual_primary_detection: true
+
+  node_groups:
+    - group: mlag-dhcp-mgmt-ip
+      bgp_as: 65101
+      nodes:
+        - name: mlag-dhcp-mgmt-ip-1
+          id: 101
+          mgmt_ip: dhcp
+        - name: mlag-dhcp-mgmt-ip-2
+          id: 102
+          mgmt_ip: dhcp

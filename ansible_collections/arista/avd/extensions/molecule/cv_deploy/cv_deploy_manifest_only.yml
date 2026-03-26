@@ -1,5 +1,5 @@
 ---
-- name: "{{ test_id | upper }} Converge - Manifest-only deployment to CVP"
+- name: "Converge - Manifest-only deployment to CVP - {{ test_id | upper }}"
   hosts: SITE1_FABRIC
   connection: local
   gather_facts: false
@@ -19,7 +19,7 @@
     cv_common_pattern: "avd_cv-deploy_{{ test_id }}"
 
   tasks:
-    - name: "{{ test_id | upper }} Banner"
+    - name: "Banner - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       run_once: true
       ansible.builtin.debug:
@@ -28,27 +28,27 @@
           - "### STARTING MOLECULE TEST {{ test_id[:69] | upper }} ###"
           - "{{ ('#' * (31 + test_id | length))[:100] }}"
 
-    - name: "{{ test_id | upper }} {{ 'Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate' }} molecule execution ID"
+    - name: "{{ (test_id | upper) + ' - ' + ('Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate') + ' molecule execution ID' }}"
       tags: ["{{ test_id }}"]
       run_once: true
       ansible.builtin.set_fact:
         r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
 
-    - name: "{{ test_id | upper }} Code block for manifest-only deployment to CVP"
+    - name: "Code block for manifest-only deployment to CVP - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       run_once: true
       delegate_to: localhost
 
       block:
 
-        - name: "(BLOCK) {{ test_id | upper }} Banner"
+        - name: "(BLOCK) Banner - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             msg:
               - "### ENGAGE CV_DEPLOY ROLE FOR MANIFEST-ONLY DEPLOYMENT {{ test_id[:69] | upper }} ###"
 
-        - name: "(BLOCK) {{ test_id | upper }} Provision CVP with manifest only"
+        - name: "(BLOCK) Provision CVP with manifest only - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost
@@ -82,7 +82,7 @@
                       configlets:
                         - name: "TEST-MANIFEST-ACCESS-LISTS"
 
-        - name: "(BLOCK) {{ test_id | upper }} Check CVP returns"
+        - name: "(BLOCK) Check CVP returns - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -108,7 +108,7 @@
             cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
             cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
 
-        - name: "(BLOCK) {{ test_id | upper }} Verify manifest configlets were deployed"
+        - name: "(BLOCK) Verify manifest configlets were deployed - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -117,7 +117,7 @@
               - "'TEST-MANIFEST-ACCESS-LISTS' in cv_deploy_results.deployed_static_config_configlets | map(attribute='name') | list"
               - "'TEST-MANIFEST-ALIAS' in cv_deploy_results.deployed_static_config_configlets | map(attribute='name') | list"
 
-        - name: "(BLOCK) {{ test_id | upper }} Verify summary of the container changes"
+        - name: "(BLOCK) Verify summary of the container changes - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -129,7 +129,7 @@
               # Verify placeholder container was removed
               - "'AVD-MANIFEST-ROOT-CLEANUP-PLACEHOLDER' in cv_deploy_results.removed_static_config_containers | list"
 
-        - name: "(BLOCK) {{ test_id | upper }} Verify manifest containers were deployed"
+        - name: "(BLOCK) Verify manifest containers were deployed - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -165,7 +165,7 @@
                 tag_query: "dummy_name:dummy_val"
             received: "{{ cv_deploy_results.deployed_static_config_containers }}"
 
-        - name: "(BLOCK) {{ test_id | upper }} Verify regular AVD device configs were not deployed"
+        - name: "(BLOCK) Verify regular AVD device configs were not deployed - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -175,20 +175,20 @@
 
       always:
 
-        - name: "(ALWAYS) {{ test_id | upper }} Display CVP detailed result"
+        - name: "(ALWAYS) Display CVP detailed result - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             var: cv_deploy_results
 
-        - name: "(ALWAYS) {{ test_id | upper }} Banner"
+        - name: "(ALWAYS) Banner - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             msg:
               - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
 
-        - name: "(ALWAYS) {{ test_id | upper }} Check status of the Workspace"
+        - name: "(ALWAYS) Check status of the Workspace - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.legacy.uri:
@@ -214,7 +214,7 @@
             https_proxy: >-
               http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
-        - name: "(ALWAYS) {{ test_id | upper }} Cleanup orphan workspace (if needed)"
+        - name: "(ALWAYS) Cleanup orphan workspace (if needed) - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.legacy.uri:
@@ -260,7 +260,7 @@
               http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
         # Apply base config (rollback) even if we expect no changes to regular AVD static configlets
-        - name: "(ALWAYS) {{ test_id | upper }} Cleanup"
+        - name: "(ALWAYS) Cleanup - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost

@@ -11,6 +11,11 @@ keys:
     description: |-
       Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
     keys:
+      accept_dhcp_default_route_for_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: |-
+          Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
       remove_redundant_ipv4_unicast_for_peer_groups:
         type: bool
         description: |-
