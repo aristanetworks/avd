@@ -62,10 +62,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rib</samp>](## "router_bgp.bgp.labeled_unicast.rib") | Dictionary |  |  |  | Configure LU RIB behavior for ip and/or tunnel. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "router_bgp.bgp.labeled_unicast.rib.ip") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.bgp.labeled_unicast.rib.ip.enabled") | Boolean | Required |  |  | Install LU routes into IP RIB. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.bgp.labeled_unicast.rib.ip.route_map") | String |  |  |  | Route-map applied to IP RIB |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.bgp.labeled_unicast.rib.ip.route_map") | String |  |  |  | Route-map applied to IP RIB. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel</samp>](## "router_bgp.bgp.labeled_unicast.rib.tunnel") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.bgp.labeled_unicast.rib.tunnel.enabled") | Boolean | Required |  |  | Install LU routes into Tunnel RIB. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.bgp.labeled_unicast.rib.tunnel.route_map") | String |  |  |  | Route-map applied to tunnel RIB |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.bgp.labeled_unicast.rib.tunnel.route_map") | String |  |  |  | Route-map applied to tunnel RIB. |
     | [<samp>&nbsp;&nbsp;listen_ranges</samp>](## "router_bgp.listen_ranges") | List, items: Dictionary |  |  |  | Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.listen_ranges.[].prefix") | String |  |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_id_include_router_id</samp>](## "router_bgp.listen_ranges.[].peer_id_include_router_id") | Boolean |  |  |  | Include router ID as part of peer filter. |
@@ -1757,14 +1757,14 @@
               # Install LU routes into IP RIB.
               enabled: <bool; required>
 
-              # Route-map applied to IP RIB
+              # Route-map applied to IP RIB.
               route_map: <str>
             tunnel:
 
               # Install LU routes into Tunnel RIB.
               enabled: <bool; required>
 
-              # Route-map applied to tunnel RIB
+              # Route-map applied to tunnel RIB.
               route_map: <str>
 
       # Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities.

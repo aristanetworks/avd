@@ -40535,7 +40535,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         enabled: bool
                         """Install LU routes into IP RIB."""
                         route_map: str | None
-                        """Route-map applied to IP RIB"""
+                        """Route-map applied to IP RIB."""
 
                         if TYPE_CHECKING:
 
@@ -40548,7 +40548,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     enabled: Install LU routes into IP RIB.
-                                    route_map: Route-map applied to IP RIB
+                                    route_map: Route-map applied to IP RIB.
 
                                 """
 
@@ -40559,7 +40559,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         enabled: bool
                         """Install LU routes into Tunnel RIB."""
                         route_map: str | None
-                        """Route-map applied to tunnel RIB"""
+                        """Route-map applied to tunnel RIB."""
 
                         if TYPE_CHECKING:
 
@@ -40572,7 +40572,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     enabled: Install LU routes into Tunnel RIB.
-                                    route_map: Route-map applied to tunnel RIB
+                                    route_map: Route-map applied to tunnel RIB.
 
                                 """
 
