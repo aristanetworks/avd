@@ -45,6 +45,9 @@ class PortChannelInterfacesMixin(Protocol):
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
 
                 port_channel_interface = self._get_port_channel_interface_cfg(adapter, port_channel_interface_name, channel_group_id, connected_endpoint)
+
+                self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(port_channel_interface_name)
+
                 self.structured_config.port_channel_interfaces.append(port_channel_interface)
                 if adapter.port_channel.structured_config:
                     self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
@@ -56,6 +59,9 @@ class PortChannelInterfacesMixin(Protocol):
                         continue
 
                     port_channel_subinterface_name = f"Port-Channel{channel_group_id}.{subinterface.number}"
+
+                    self.structured_config_utils.parent_interfaces_tracker.register_port_channel_subinterface(port_channel_subinterface_name)
+
                     self.structured_config.port_channel_interfaces.append(
                         self._get_port_channel_subinterface_cfg(
                             subinterface,
@@ -103,6 +109,8 @@ class PortChannelInterfacesMixin(Protocol):
 
         # Now insert into the actual structured config and custom structured config
         for port_channel_interface, structured_config in network_ports_port_channel_interfaces.values():
+            self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(port_channel_interface.name)
+
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
             if structured_config:
                 self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
@@ -203,7 +211,7 @@ class PortChannelInterfacesMixin(Protocol):
 
             elif adapter.mode in ["trunk", "trunk phone"]:
                 port_channel_interface.switchport.trunk._update(
-                    allowed_vlan=adapter.vlans if adapter.mode == "trunk" else None,
+                    allowed_vlan=self._get_adapter_vlans(adapter),
                     groups=self._get_adapter_trunk_groups(
                         adapter, connected_endpoint, output_type=EosCliConfigGen.PortChannelInterfacesItem.Switchport.Trunk.Groups
                     ),

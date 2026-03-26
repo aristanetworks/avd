@@ -89,12 +89,6 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
   metadata:
     peer_type: l3_interface
-- name: Ethernet1
-  shutdown: false
-  metadata:
-    peer_type: l3_interface
-  switchport:
-    enabled: false
 - name: Ethernet42
   description: WAN_HA_cv-pathfinder-edge4a_Ethernet42
   shutdown: false
@@ -117,6 +111,12 @@ ethernet_interfaces:
     peer: cv-pathfinder-edge4a
     peer_interface: Ethernet43
     peer_type: wan_ha_peer
+- name: Ethernet1
+  shutdown: false
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 flow_tracking:
   hardware:
     trackers:

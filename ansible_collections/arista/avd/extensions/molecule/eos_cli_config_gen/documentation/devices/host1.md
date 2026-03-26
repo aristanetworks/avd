@@ -228,7 +228,6 @@ Serial Number: DEADBEEFC0FFEW
   - [PoE Device Configuration](#poe-device-configuration)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
-  - [Extended Access-lists](#extended-access-lists)
   - [IP Access-lists](#ip-access-lists)
   - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
@@ -385,17 +384,19 @@ agent KernelFib shutdown supervisor standby
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management0 | - | oob | default | 10.1.1.1 | - |
 | Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management3 | IPv6 ND new structure test | oob | MGMT | - | - |
 | Management42 | - | oob | default | dhcp | - |
 | Vlan123 | inband_management | inband | default | 10.73.0.123/24 | 10.73.0.1 |
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
-| Management0 | - | oob | default | - | - | - | - | - |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | default-route, route-preference | True | True |
-| Management42 | - | oob | default | auto-config | - | - | - | - |
-| Vlan123 | inband_management | inband | default | 2001:db8:abcd:1234::1/64, 2001:db8:abcd:1234::2/64 | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management0 | - | oob | default | - | - | - | - | - | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | True | default-route, route-preference | True | - | - |
+| Management3 | IPv6 ND new structure test | oob | MGMT | 2001:db8:100::1/64 | - | True | default-route, route-preference | True | True | capacity: 1500, expire: 350, refresh-always |
+| Management42 | - | oob | default | auto-config | - | - | - | - | - | - |
+| Vlan123 | inband_management | inband | default | 2001:db8:abcd:1234::1/64, 2001:db8:abcd:1234::2/64 | - | - | - | - | - | - |
 
 ##### Interface Redundancy
 
@@ -453,6 +454,22 @@ interface Management1
    ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
    redundancy fallback-delay infinity
    redundancy monitor neighbor ipv6 1:1:1:1:1:1:1:1 interval 101 milliseconds multiplier 3
+!
+interface Management3
+   description IPv6 ND new structure test
+   no shutdown
+   vrf MGMT
+   ipv6 nd cache expire 350
+   ipv6 nd cache dynamic capacity 1500
+   ipv6 nd cache refresh always
+   ipv6 enable
+   ipv6 address 2001:db8:100::1/64
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   ipv6 nd prefix 2001:db8:100::/64 300 150 no-autoconfig
 !
 interface Management42
    shutdown
@@ -4874,15 +4891,16 @@ interface Dps1
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - | - |
-| Ethernet4 | Molecule IPv6 | - | auto-config | default | 9100 | True | True | default-route, route-preference | True | IPv6_ACL_IN | IPv6_ACL_OUT |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - | - |
-| Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - |
-| Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *auto-config | *default | *- | *- | *- | *- | *- | *- | *- |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - | - | - | - |
+| Ethernet4 | Molecule IPv6 | - | auto-config | default | 9100 | True | True | default-route, route-preference | True | - | - | IPv6_ACL_IN | IPv6_ACL_OUT |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - | - | - | - |
+| Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - | - | - |
+| Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *auto-config | *default | *- | *- | *- | *- | *- | *- | *- | *- | *- |
+| Ethernet90 | IPv6 ND new structure test | - | 2001:db8:90::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2000, expire: 400, refresh-always | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -6114,6 +6132,21 @@ interface Ethernet88
 interface Ethernet89
    description Loop protection disable
    no loop-protection
+!
+interface Ethernet90
+   description IPv6 ND new structure test
+   no shutdown
+   ipv6 nd cache expire 400
+   ipv6 nd cache dynamic capacity 2000
+   ipv6 nd cache refresh always
+   ipv6 enable
+   ipv6 address 2001:db8:90::1/64
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   ipv6 nd prefix 2001:db8:90::/64 200 100 no-autoconfig
 ```
 
 ### Port-Channel Interfaces
@@ -6287,11 +6320,12 @@ interface Ethernet89
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
-| Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - | - |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - |
-| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | default-route, route-preference | True | - | - |
+| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - | - | - | - |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | default-route, route-preference | True | - | - | - | - |
+| Port-Channel301 | IPv6 ND new structure test | - | 2001:db8:300::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2500, expire: 450, refresh-always | - | - |
 
 ##### VRRP Details
 
@@ -6978,6 +7012,21 @@ interface Port-Channel137
    traffic-engineering metric 2
    traffic-engineering min-delay static 2 milliseconds
 !
+interface Port-Channel301
+   description IPv6 ND new structure test
+   no shutdown
+   ipv6 nd cache expire 450
+   ipv6 nd cache dynamic capacity 2500
+   ipv6 nd cache refresh always
+   ipv6 enable
+   ipv6 address 2001:db8:300::1/64
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   ipv6 nd prefix 2001:db8:300::/64 400 200 no-autoconfig
+!
 interface Port-Channel333
    description Multiple VRIDs and tracking
    no shutdown
@@ -7107,6 +7156,7 @@ interface Loopback100
 | Tunnel2 | test ipv6 only | default | default | - | True | NAT-PROFILE-NO-VRF-2 | gre | Ethernet42 | dead:beef::1 | False | Profile-2 |
 | Tunnel3 | test dual stack | default | default | 1500 | - | - | ipsec | Ethernet42 | 1.1.1.1 | - | Profile-3 |
 | Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | 10.10.10.10 | 1.1.1.1 | - | - |
+| Tunnel5 | IPv6 ND new structure test | default | default | 1500 | False | - | - | 20.20.20.20 | 2.2.2.2 | - | - |
 
 ##### IPv4
 
@@ -7118,12 +7168,13 @@ interface Loopback100
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
-| --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ | --------------- | -------------- | ---------------------- |
-| Tunnel1 | Tunnel-VRF | auto-config | - | ingress | - | - | default-route, route-preference | True | True |
-| Tunnel2 | default | cafe::1/64 | 666 | egress | test-in | test-out | - | - | - |
-| Tunnel3 | default | beef::64/64 | 666 | - | - | - | - | - | - |
-| Tunnel4 | default | beef::64/64 | - | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ------- | ----------------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Tunnel1 | Tunnel-VRF | auto-config | - | ingress | True | default-route, route-preference | True | - | - | - | - |
+| Tunnel2 | default | cafe::1/64 | 666 | egress | - | - | - | - | - | test-in | test-out |
+| Tunnel3 | default | beef::64/64 | 666 | - | - | - | - | - | - | - | - |
+| Tunnel4 | default | beef::64/64 | - | - | - | - | - | - | - | - | - |
+| Tunnel5 | default | 2001:db8:200::1/64 | - | - | True | default-route, route-preference | True | True | capacity: 1800, expire: 380, refresh-always | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
@@ -7191,6 +7242,24 @@ interface Tunnel4
    ip nat service-profile NAT-PROFILE-NO-VRF-1
    tunnel source 10.10.10.10
    tunnel destination 1.1.1.1
+!
+interface Tunnel5
+   description IPv6 ND new structure test
+   no shutdown
+   mtu 1500
+   ipv6 nd cache expire 380
+   ipv6 nd cache dynamic capacity 1800
+   ipv6 nd cache refresh always
+   ipv6 enable
+   ipv6 address 2001:db8:200::1/64
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   ipv6 nd prefix 2001:db8:200::/64 250 125 no-autoconfig
+   tunnel source 20.20.20.20
+   tunnel destination 2.2.2.2
 ```
 
 ### VLAN Interfaces
@@ -7315,26 +7384,26 @@ interface Tunnel4
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | ----------- | ------------ |
-| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - | - |
-| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - | - |
-| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - | - |
-| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - | - |
-| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - | - |
-| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - | - |
-| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - | - |
-| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - | - |
-| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - | - |
-| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - | - |
-| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - | - |
-| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - | - |
-| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | - | True | - | - |
-| Vlan340 | default | 2001:db8:340::1/64 | - | - | True | default-route, route-preference | True | True | - | - |
-| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | True | - | - | - | - | - |
-| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - | - |
-| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - | - |
-| Vlan1002 | Tenant_A | a2::1/64 | - | - | True | - | True | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - | - | - |
+| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - | - | - |
+| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - | - | - |
+| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - | - | - |
+| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - | - | - |
+| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - | - | - |
+| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - | - | - |
+| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - | - | - |
+| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - | - | - |
+| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - | - | - |
+| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - | - | - |
+| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | - | True | capacity: 900, expire: 250, refresh-always | - | - |
+| Vlan340 | default | 2001:db8:340::1/64 | - | - | True | default-route, route-preference | True | True | capacity: 1000, expire: 300, refresh-always | - | - |
+| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | True | - | - | - | - | - | - |
+| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - | - | - |
+| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - | - | - |
+| Vlan1002 | Tenant_A | a2::1/64 | - | - | True | - | True | - | - | - | - |
 
 ##### VRRP Details
 
@@ -11997,170 +12066,75 @@ poe
 
 ##### 99
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | permit 10.0.0.0/8 |
-| 30 | permit 172.16.0.0/12 |
-| 40 | permit 192.168.0.0/16 |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
+| - | - | - | ACL to restrict access RFC1918 addresses | - | - | - | - |
+| - | permit | 10.0.0.0/8 | - | 20 | 10 | - | mirror1 |
+| 30 | permit | 172.16.0.0/12 | - | - | - | True | - |
+| 40 | permit | 192.168.0.0/16 | - | - | - | True | mirror2 |
+| 50 | permit | any | - | - | - | - | - |
+| 60 | permit | - | - | - | - | - | - |
 
 ##### ACL-API
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access to switch API to CVP and Ansible |
-| 20 | permit host 10.10.10.10 |
-| 30 | permit host 10.10.10.11 |
-| 40 | permit host 10.10.10.12 |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
+| 10 | - | - | ACL to restrict access to switch API to CVP and Ansible | - | - | - | - |
+| 20 | permit | 10.10.10.10 | - | 10 0x001 | - | - | mirror1 |
+| 30 | permit | 10.10.10.11 | - | - | 10 0x001 | True | - |
+| 40 | permit | 10.10.10.12 | - | 10 0x001 | 10 0x001 | True | mirror1 |
+| 50 | permit | any | - | 10 0x001 | 10 0x001 | - | - |
 
 ##### ACL-SSH
 
 ACL has counting mode `counters per-entry` enabled!
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | permit 10.0.0.0/8 |
-| 30 | permit 172.16.0.0/12 |
-| 40 | permit 192.168.0.0/16 |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
+| 10 | - | - | ACL to restrict access RFC1918 addresses | - | - | - | - |
+| 20 | permit | 10.0.0.0/8 | - | 10 0x000 | 20 0x001 | True | mirror1 |
+| 30 | permit | 172.16.0.0/12 | - | - | 20 0x001 | True | mirror1 |
+| 40 | permit | 192.168.0.0/16 | - | - | - | - | - |
 
 ##### ACL-SSH-VRF
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | permit 10.0.0.0/8 |
-| 30 | permit 172.16.0.0/12 |
-| 40 | permit 192.168.0.0/16 |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
+| 10 | - | - | ACL to restrict access RFC1918 addresses | - | - | - | - |
+| 20 | permit | 10.0.0.0/8 | - | 10 0x000 | 20 0x001 | - | - |
+| 30 | permit | 172.16.0.0/12 | - | 10 0x000 | - | - | - |
+| 40 | permit | 192.168.0.0/16 | - | - | 20 0x001 | - | - |
 
 #### Standard Access-lists Device Configuration
 
 ```eos
 !
 ip access-list standard 99
-   10 remark ACL to restrict access RFC1918 addresses
-   20 permit 10.0.0.0/8
-   30 permit 172.16.0.0/12
-   40 permit 192.168.0.0/16
+   remark ACL to restrict access RFC1918 addresses
+   permit 10.0.0.0/8 mirror session mirror1
+   30 permit 172.16.0.0/12 log
+   40 permit 192.168.0.0/16 mirror session mirror2 log
+   50 permit any
 !
 ip access-list standard ACL-API
    10 remark ACL to restrict access to switch API to CVP and Ansible
-   20 permit host 10.10.10.10
-   30 permit host 10.10.10.11
-   40 permit host 10.10.10.12
+   20 permit vlan 10 0x001 host 10.10.10.10 mirror session mirror1
+   30 permit vlan inner 10 0x001 host 10.10.10.11 log
+   40 permit vlan 10 0x001 inner 10 0x001 host 10.10.10.12 mirror session mirror1 log
+   50 permit vlan 10 0x001 inner 10 0x001 any
 !
 ip access-list standard ACL-SSH
    counters per-entry
    10 remark ACL to restrict access RFC1918 addresses
-   20 permit 10.0.0.0/8
-   30 permit 172.16.0.0/12
+   20 permit vlan 10 0x000 inner 20 0x001 10.0.0.0/8 mirror session mirror1 log
+   30 permit vlan inner 20 0x001 172.16.0.0/12 mirror session mirror1 log
    40 permit 192.168.0.0/16
 !
 ip access-list standard ACL-SSH-VRF
    10 remark ACL to restrict access RFC1918 addresses
-   20 permit 10.0.0.0/8
-   30 permit 172.16.0.0/12
-   40 permit 192.168.0.0/16
-```
-
-### Extended Access-lists
-
-#### Extended Access-lists Summary
-
-##### 4
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | deny ip 10.0.0.0/8 any |
-| 30 | permit ip 192.0.2.0/24 any |
-
-##### ACL-01
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access to switch API to CVP and Ansible |
-| 20 | deny ip host 192.0.2.1 any |
-| 30 | permit ip 192.0.2.0/24 any |
-
-##### ACL-02
-
-ACL has counting mode `counters per-entry` enabled!
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | permit ip 10.0.0.0/8 any |
-| 30 | permit ip 192.0.2.0/24 any |
-| - | permit response traffic nat |
-
-##### ACL-03
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | deny ip 10.0.0.0/8 any |
-| 30 | permit ip 192.0.2.0/24 any |
-
-##### ACL-04
-
-ACL has counting mode `counters per-entry` enabled!
-
-| Sequence | Action |
-| -------- | ------ |
-| 20 | deny ip 12.0.0.0/8 any |
-| 30 | permit ip 194.0.2.0/24 any |
-| - | permit response traffic nat |
-
-##### acl_qos_tc0_v4
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit ip any 192.0.2.0/29 |
-
-##### acl_qos_tc5_v4
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit ip any any dscp ef |
-
-#### Extended Access-lists Device Configuration
-
-```eos
-!
-ip access-list 4
-   10 remark ACL to restrict access RFC1918 addresses
-   20 deny ip 10.0.0.0/8 any
-   30 permit ip 192.0.2.0/24 any
-!
-ip access-list ACL-01
-   10 remark ACL to restrict access to switch API to CVP and Ansible
-   20 deny ip host 192.0.2.1 any
-   30 permit ip 192.0.2.0/24 any
-!
-ip access-list ACL-02
-   counters per-entry
-   10 remark ACL to restrict access RFC1918 addresses
-   20 permit ip 10.0.0.0/8 any
-   30 permit ip 192.0.2.0/24 any
-   permit response traffic nat
-!
-ip access-list ACL-03
-   10 remark ACL to restrict access RFC1918 addresses
-   20 deny ip 10.0.0.0/8 any
-   30 permit ip 192.0.2.0/24 any
-!
-ip access-list ACL-04
-   counters per-entry
-   20 deny ip 12.0.0.0/8 any
-   30 permit ip 194.0.2.0/24 any
-   permit response traffic nat
-!
-ip access-list acl_qos_tc0_v4
-   10 permit ip any 192.0.2.0/29
-!
-ip access-list acl_qos_tc5_v4
-   10 permit ip any any dscp ef
+   20 permit vlan 10 0x000 inner 20 0x001 10.0.0.0/8
+   30 permit vlan 10 0x000 172.16.0.0/12
+   40 permit vlan inner 20 0x001 192.168.0.0/16
 ```
 
 ### IP Access-lists
@@ -12260,44 +12234,41 @@ ipv6 access-list standard ipv6_test1
 
 #### IPv6 Extended Access-lists Summary
 
-##### acl_qos_tc0_v6
+##### ACL_SEQUENCE_AND_COUNTERS
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit ipv6 any any dscp cs1 |
-
-##### acl_qos_tc5_v6
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit ipv6 any 2001:db8::/48 |
-
-##### TEST1
-
-| Sequence | Action |
-| -------- | ------ |
-| 5 | deny ipv6 fe80::/64 any |
-| 10 | permit ipv6 fe90::/64 any |
+ACL has counting mode `counters per-entry` enabled!
 
 ##### TEST2
 
 ACL has counting mode `counters per-entry` enabled!
 
-| Sequence | Action |
-| -------- | ------ |
-| 5 | permit ipv6 2001:db8::/64 any |
-| 10 | deny ipv6 2001:db8::/32 any |
-
-##### TEST3
-
-| Sequence | Action |
-| -------- | ------ |
-| 5 | deny ipv6 2001:db8:1000::/64 any |
-| 10 | permit ipv6 2001:db8::/32 any |
-
 #### IPv6 Extended Access-lists Device Configuration
 
 ```eos
+!
+ipv6 access-list ACL_NO_SEQUENCE
+   remark test acl without sequence numbers
+   deny udp any any log
+   permit icmpv6 any any 3 4
+   permit icmpv6 any any unreachable
+   permit ipv6 any any dscp 46 3
+   permit ipv6 any any tracked hop-limit gt 3 dscp ef
+   permit ipv6 any any nexthop-group NH_TEST hop-limit eq 254
+   permit vlan 235 0x1FF inner 124 0x001 ipv6 any any
+   permit vlan inner 123 0x000 ipv6 any any
+   permit vlan 234 0xFFF ipv6 any any
+   permit icmpv6 any any
+!
+ipv6 access-list ACL_SEQUENCE_AND_COUNTERS
+   counters per-entry
+   10 remark test acl with sequence numbers
+   20 permit ipv6 host fe81::1 any
+   30 permit tcp fe82::/64 any established
+   40 permit tcp any gt 1023 host fe83::1 eq 22
+   50 permit tcp any range 1000 1100 any range 10 20
+   4294967295 deny ipv6 any any
+!
+ipv6 access-list ACL_WITHOUT_ENTRIES
 !
 ipv6 access-list TEST1
    5 deny ipv6 fe80::/64 any

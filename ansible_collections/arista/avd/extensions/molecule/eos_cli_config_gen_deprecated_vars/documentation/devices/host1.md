@@ -14,6 +14,10 @@
   - [Loopback Interfaces](#loopback-interfaces)
   - [Tunnel Interfaces](#tunnel-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
+- [ACL](#acl)
+  - [Standard Access-lists](#standard-access-lists)
+  - [Extended Access-lists](#extended-access-lists)
+  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 
 ## Management
 
@@ -29,9 +33,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
-| Management1 | Test_ipv6_address | oob | default | 2002::CAFE/128 | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | Test_ipv6_address | oob | default | 2002::CAFE/128 | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -132,9 +136,9 @@ ip radius vrf MGMT source-interface Management1
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
-| Ethernet1 | Test_ipv6_address | - | 2002::CAFE/128 | default | - | - | - | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Ethernet1 | Test_ipv6_address | - | 2002::CAFE/128 | default | - | - | - | - | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -165,9 +169,9 @@ interface Ethernet1
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
-| Port-Channel1 | Test_ipv6_address | - | 2002::CAFE/128 | default | - | - | - | - | - | - | - |
+| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Port-Channel1 | Test_ipv6_address | - | 2002::CAFE/128 | default | - | - | - | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -221,9 +225,9 @@ interface Loopback2
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
-| --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ | --------------- | -------------- | ---------------------- |
-| Tunnel1 | default | 2002::CAFE/128 | - | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ------- | ----------------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Tunnel1 | default | 2002::CAFE/128 | - | - | - | - | - | - | - | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
@@ -253,9 +257,9 @@ interface Tunnel1
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | ----------- | ------------ |
-| VLAN10 | default | 2002::CAFE/128 | - | - | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| VLAN10 | default | 2002::CAFE/128 | - | - | - | - | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -274,4 +278,189 @@ interface VLAN20
    ipv6 nd managed-config-flag
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:20::/64 infinite infinite no-autoconfig
+```
+
+## ACL
+
+### Standard Access-lists
+
+#### Standard Access-lists Summary
+
+##### ACL-API
+
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
+| 10 | remark ACL to restrict access to switch API to CVP and Ansible | - | - | - | - | - | - |
+| 20 | permit host 10.10.10.10 | - | - | - | - | - | - |
+
+#### Standard Access-lists Device Configuration
+
+```eos
+!
+ip access-list standard ACL-API
+   10 remark ACL to restrict access to switch API to CVP and Ansible
+   20 permit host 10.10.10.10
+```
+
+### Extended Access-lists
+
+#### Extended Access-lists Summary
+
+##### 4
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | remark ACL to restrict access RFC1918 addresses |
+| 20 | deny ip 10.0.0.0/8 any |
+| 30 | permit ip 192.0.2.0/24 any |
+
+##### ACL-01
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | remark ACL to restrict access to switch API to CVP and Ansible |
+| 20 | deny ip host 192.0.2.1 any |
+| 30 | permit ip 192.0.2.0/24 any |
+
+##### ACL-02
+
+ACL has counting mode `counters per-entry` enabled!
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | remark ACL to restrict access RFC1918 addresses |
+| 20 | permit ip 10.0.0.0/8 any |
+| 30 | permit ip 192.0.2.0/24 any |
+| - | permit response traffic nat |
+
+##### ACL-03
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | remark ACL to restrict access RFC1918 addresses |
+| 20 | deny ip 10.0.0.0/8 any |
+| 30 | permit ip 192.0.2.0/24 any |
+
+##### ACL-04
+
+ACL has counting mode `counters per-entry` enabled!
+
+| Sequence | Action |
+| -------- | ------ |
+| 20 | deny ip 12.0.0.0/8 any |
+| 30 | permit ip 194.0.2.0/24 any |
+| - | permit response traffic nat |
+
+##### acl_qos_tc0_v4
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit ip any 192.0.2.0/29 |
+
+##### acl_qos_tc5_v4
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit ip any any dscp ef |
+
+#### Extended Access-lists Device Configuration
+
+```eos
+!
+ip access-list 4
+   10 remark ACL to restrict access RFC1918 addresses
+   20 deny ip 10.0.0.0/8 any
+   30 permit ip 192.0.2.0/24 any
+!
+ip access-list ACL-01
+   10 remark ACL to restrict access to switch API to CVP and Ansible
+   20 deny ip host 192.0.2.1 any
+   30 permit ip 192.0.2.0/24 any
+!
+ip access-list ACL-02
+   counters per-entry
+   10 remark ACL to restrict access RFC1918 addresses
+   20 permit ip 10.0.0.0/8 any
+   30 permit ip 192.0.2.0/24 any
+   permit response traffic nat
+!
+ip access-list ACL-03
+   10 remark ACL to restrict access RFC1918 addresses
+   20 deny ip 10.0.0.0/8 any
+   30 permit ip 192.0.2.0/24 any
+!
+ip access-list ACL-04
+   counters per-entry
+   20 deny ip 12.0.0.0/8 any
+   30 permit ip 194.0.2.0/24 any
+   permit response traffic nat
+!
+ip access-list acl_qos_tc0_v4
+   10 permit ip any 192.0.2.0/29
+!
+ip access-list acl_qos_tc5_v4
+   10 permit ip any any dscp ef
+```
+
+### IPv6 Extended Access-lists
+
+#### IPv6 Extended Access-lists Summary
+
+##### acl_qos_tc0_v6
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit ipv6 any any dscp cs1 |
+
+##### acl_qos_tc5_v6
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit ipv6 any 2001:db8::/48 |
+
+##### TEST1
+
+| Sequence | Action |
+| -------- | ------ |
+| 5 | deny ipv6 fe80::/64 any |
+| 10 | permit ipv6 fe90::/64 any |
+
+##### TEST2
+
+ACL has counting mode `counters per-entry` enabled!
+
+| Sequence | Action |
+| -------- | ------ |
+| 5 | permit ipv6 2001:db8::/64 any |
+| 10 | deny ipv6 2001:db8::/32 any |
+
+##### TEST3
+
+| Sequence | Action |
+| -------- | ------ |
+| 5 | deny ipv6 2001:db8:1000::/64 any |
+| 10 | permit ipv6 2001:db8::/32 any |
+
+#### IPv6 Extended Access-lists Device Configuration
+
+```eos
+!
+ipv6 access-list TEST1
+   5 deny ipv6 fe80::/64 any
+   10 permit ipv6 fe90::/64 any
+!
+ipv6 access-list TEST2
+   counters per-entry
+   5 permit ipv6 2001:db8::/64 any
+   10 deny ipv6 2001:db8::/32 any
+!
+ipv6 access-list TEST3
+   5 deny ipv6 2001:db8:1000::/64 any
+   10 permit ipv6 2001:db8::/32 any
+!
+ipv6 access-list acl_qos_tc0_v6
+   10 permit ipv6 any any dscp cs1
+!
+ipv6 access-list acl_qos_tc5_v6
+   10 permit ipv6 any 2001:db8::/48
 ```
