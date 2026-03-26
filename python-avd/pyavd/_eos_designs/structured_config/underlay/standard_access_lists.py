@@ -34,5 +34,5 @@ class StandardAccessListsMixin(Protocol):
                 continue
             standard_access_list = EosCliConfigGen.StandardAccessListsItem(name=rp_entry.access_list_name)
             for index, group in enumerate(rp_entry.groups):
-                standard_access_list.sequence_numbers.append_new(sequence=(index + 1) * 10, action=f"permit {group}")
+                standard_access_list.entries.append_new(sequence=(index + 1) * 10, action="permit", source=group)
             self.structured_config.standard_access_lists.append(standard_access_list)
