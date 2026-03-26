@@ -1,6 +1,6 @@
 ---
-- name: "Converge - cv_deploy with cv_submit_workspace_force = true - {{ test_id | upper }}"
-  hosts: SITE1_FABRIC:INACTIVE
+- name: "{{ test_id | upper }} Converge - cv_workspace_id"
+  hosts: SITE1_FABRIC
   connection: local
   gather_facts: false
   vars:
@@ -16,11 +16,11 @@
     structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
     intended_tag_device: avd-ci-leaf1
     intended_tags: "{{ lookup('file', structured_dir ~ '/' ~ intended_tag_device ~ '.yml')| from_yaml }}"
-    test_id: "inactive-device_force-ws-true"
+    test_id: "ws-custom-id"
     cv_common_pattern: "avd_cv-deploy_{{ test_id }}"
 
   tasks:
-    - name: "Banner - {{ test_id | upper }}"
+    - name: "{{ test_id | upper }} Banner"
       tags: ["{{ test_id }}"]
       run_once: true
       ansible.builtin.debug:
@@ -29,34 +29,27 @@
           - "### STARTING MOLECULE TEST {{ test_id[:69] | upper }} ###"
           - "{{ ('#' * (31 + test_id | length))[:100] }}"
 
-    - name: "{{ (test_id | upper) + ' - ' + ('Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate') + ' molecule execution ID' }}"
+    - name: "{{ test_id | upper }} {{ 'Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate' }} molecule execution ID"
       tags: ["{{ test_id }}"]
       run_once: true
       ansible.builtin.set_fact:
         r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
 
-    - name: "Dynamically add inactive device avd-ci-core1 to group INACTIVE - {{ test_id | upper }}"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.legacy.add_host:
-        name: avd-ci-core1
-        groups: INACTIVE
-
-    - name: "Code block to provision CVP with AVD configuration - {{ test_id | upper }}"
+    - name: "{{ test_id | upper }} Code block to provision CVP with AVD configuration"
       tags: ["{{ test_id }}"]
       run_once: true
       delegate_to: localhost
+
       block:
 
-        - name: "(BLOCK) Banner - {{ test_id | upper }}"
+        - name: "(BLOCK) {{ test_id | upper }} Banner"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             msg:
               - "### ENGAGE CV_DEPLOY ROLE TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
 
-        - name: "(BLOCK) Provision with cv_submit_workspace_force = true - {{ test_id | upper }}"
-          tags: ["{{ test_id }}"]
+        - name: "(BLOCK) {{ test_id | upper }} Provision with cv_workspace_id"
           run_once: true
           delegate_to: localhost
           ansible.builtin.import_role:
@@ -64,42 +57,39 @@
           vars:
             cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
             cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+            cv_workspace_id: "avd-ci-ws-{{ r }}"
             cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
             cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
             cv_register_detailed_results: true
-            cv_devices: [avd-ci-leaf1, avd-ci-core1]
-            cv_submit_workspace_force: true
+            cv_submit_workspace: false
 
-        - name: "(BLOCK) Check CVP returns - {{ test_id | upper }}"
+        - name: "(BLOCK) {{ test_id | upper }} Check CVP returns"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
             that:
-              # errors and warnings
-              - cv_deploy_results.errors == []
-              - "'Inactive devices present' in cv_deploy_results.warnings[0]"
-              # Change control
-              - cv_deploy_results.change_control.name == cv_change_control_name
-              - cv_deploy_results.change_control.description == cv_change_control_description
-              - cv_deploy_results.change_control.requested_state == "pending approval"
-              - cv_deploy_results.change_control.state == "pending approval"
+              # workspace
+              - cv_deploy_results.workspace.id == cv_workspace_id
+              - cv_deploy_results.workspace.name == cv_workspace_name
+              - cv_deploy_results.workspace.state == "built"
+              - cv_deploy_results.workspace.requested_state == "built"
           vars:
-            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
-            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+            cv_workspace_id: "avd-ci-ws-{{ r }}"
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
 
       always:
 
-        - name: "(ALWAYS) Display CVP detailed result - {{ test_id | upper }}"
+        - name: "(ALWAYS) {{ test_id | upper }} Display CVP detailed result"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             var: cv_deploy_results
 
-        - name: "(ALWAYS) Cleanup orphan CC - {{ test_id | upper }}"
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup orphan workspace"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.legacy.uri:
-            url: https://{{ cv_server }}/api/resources/changecontrol/v1/ChangeControlConfig?key.id={{ cv_deploy_results.change_control.id }}
+            url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
             use_proxy: "{{ true if proxy_host and proxy_port else false }}"
             validate_certs: "{{ cv_verify_certs }}"
             return_content: true
@@ -107,29 +97,46 @@
               Accept: "application/json"
               Content-Type: "application/json"
               Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
-            method: DELETE
+            method: POST
             body_format: json
+            body:
+              {
+                "values": [
+                  {
+                    "key": {
+                      "workspaceId": "{{ cv_deploy_results.workspace.id }}"
+                    },
+                    "request": "REQUEST_ABANDON",
+                    "requestParams": {
+                      "requestId": "{{ r }}"
+                    }
+                  }
+                ]
+              }
             force_basic_auth: true
             timeout: 10
-          register: cvp_abandon_cc_result
-          until: cvp_abandon_cc_result.status == 200
+          register: cvp_abandon_workspace_result
+          until: cvp_abandon_workspace_result.status == 200
           retries: 3
           delay: 3
           ignore_errors: true
-          when: cv_deploy_results.change_control.state | lower in ['pending approval', 'approved']
+          when: |
+            cv_deploy_results.workspace.id is not none and
+            cv_deploy_results.workspace.id | length > 0 and
+            cv_deploy_results.workspace.state | default('') != "abandoned"
           # Set HTTPS_PROXY environment variable scoped for this task only
           environment:
             https_proxy: >-
               http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
-        - name: "(ALWAYS) Banner - {{ test_id | upper }}"
+        - name: "(ALWAYS) {{ test_id | upper }} Banner"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             msg:
               - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
 
-        - name: "(ALWAYS) Cleanup - {{ test_id | upper }}"
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost
