@@ -68415,6 +68415,43 @@ class EosDesigns(EosDesignsRootModel):
 
                 L2vlans._item_type = L2vlansItem
 
+                class Vpws(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"mpls_control_word": {"type": bool, "default": False}, "mtu": {"type": int}, "label_flow": {"type": bool}}
+                    mpls_control_word: bool
+                    """
+                    Enable or disable MPLS control word for VPWS pseudowires.
+
+                    Default value: `False`
+                    """
+                    mtu: int | None
+                    """MTU for VPWS pseudowires."""
+                    label_flow: bool | None
+                    """Enable or disable MPLS label flow for VPWS pseudowires."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            mpls_control_word: bool | UndefinedType = Undefined,
+                            mtu: int | None | UndefinedType = Undefined,
+                            label_flow: bool | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Vpws.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mpls_control_word: Enable or disable MPLS control word for VPWS pseudowires.
+                                mtu: MTU for VPWS pseudowires.
+                                label_flow: Enable or disable MPLS label flow for VPWS pseudowires.
+
+                            """
+
                 class PointToPointServicesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -68701,6 +68738,7 @@ class EosDesigns(EosDesignsRootModel):
                     "evpn_l2_multi_domain": {"type": bool, "default": True},
                     "vrfs": {"type": Vrfs},
                     "l2vlans": {"type": L2vlans},
+                    "vpws": {"type": Vpws},
                     "point_to_point_services": {"type": PointToPointServices},
                 }
                 name: str
@@ -68889,6 +68927,16 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdList with `L2vlansItem` items.
                 """
+                vpws: Vpws
+                """
+                VPWS pseudowire settings for the tenant.
+                To render `mpls_control_word`, `mtu`, and `label_flow` in
+                the BGP VPWS configuration,
+                both `point_to_point_services` and `pseudowire_rt_base` must be set
+                under the tenant.
+
+                Subclass of AvdModel.
+                """
                 point_to_point_services: PointToPointServices
                 """
                 Point to point services (pseudowires).
@@ -68924,6 +68972,7 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_l2_multi_domain: bool | UndefinedType = Undefined,
                         vrfs: Vrfs | UndefinedType = Undefined,
                         l2vlans: L2vlans | UndefinedType = Undefined,
+                        vpws: Vpws | UndefinedType = Undefined,
                         point_to_point_services: PointToPointServices | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -69076,6 +69125,14 @@ class EosDesigns(EosDesignsRootModel):
                                Define L2 network services organized by VLAN ID.
 
                                Subclass of AvdList with `L2vlansItem` items.
+                            vpws:
+                               VPWS pseudowire settings for the tenant.
+                               To render `mpls_control_word`, `mtu`, and `label_flow` in
+                               the BGP VPWS configuration,
+                               both `point_to_point_services` and `pseudowire_rt_base` must be set
+                               under the tenant.
+
+                               Subclass of AvdModel.
                             point_to_point_services:
                                Point to point services (pseudowires).
                                Only supported for node types with "network_services.l1:
