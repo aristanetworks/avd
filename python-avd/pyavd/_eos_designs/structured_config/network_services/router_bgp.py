@@ -275,7 +275,7 @@ class RouterBgpMixin(Protocol):
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
         vrf_rt: str,
     ) -> None:
-        """In-place update route-targets for the EVPN address family in rd-rt-rewrite mode using the 4-key domain matrix."""
+        """In-place update route-targets for the EVPN address family in rd-rt-rewrite mode."""
         if vrf.rt_import and vrf.rt_import_remote:
             bgp_vrf.route_targets.import_evpn_domains.append_new(domain="all", route_target=vrf_rt)
         elif vrf.rt_import_remote:
@@ -304,36 +304,22 @@ class RouterBgpMixin(Protocol):
         """In-place update EVPN/MPLS part of structured config for *one* VRF under router_bgp.vrfs."""
         vrf_rd = self.get_vrf_rd(vrf, tenant)
         vrf_rt = self.get_vrf_rt(vrf)
-        if not (self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"):
-            bgp_vrf.rd = vrf_rd
 
-            for af in sorted(vrf_address_families):
-                if vrf.rt_import:
-                    bgp_vrf.route_targets.field_import.append_new(
-                        address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ImportItem.RouteTargets([vrf_rt])
-                    )
-
-                if vrf.rt_export:
-                    bgp_vrf.route_targets.export.append_new(
-                        address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ExportItem.RouteTargets([vrf_rt])
-                    )
-        else:
-            # rd evpn domain all replaces the regular rd (see router-bgp.j2 note: vrf.rd should not be configured when domain is all)
+        if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite":
             bgp_vrf.rd_evpn_domain._update(domain="all", rd=vrf_rd)
-
-            # Non-EVPN address families (e.g. vpn-ipv4): always use standard rt import/export regardless of rt_import_remote/rt_export_remote.
-            vrf_address_families_without_evpn = vrf_address_families - {"evpn"}
-            for af in sorted(vrf_address_families_without_evpn):
-                if vrf.rt_import:
-                    bgp_vrf.route_targets.field_import.append_new(
-                        address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ImportItem.RouteTargets([vrf_rt])
-                    )
-                if vrf.rt_export:
-                    bgp_vrf.route_targets.export.append_new(
-                        address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ExportItem.RouteTargets([vrf_rt])
-                    )
-
             self._update_router_bgp_vrf_evpn_rd_rt_rewrite_evpn_af_cfg(bgp_vrf, vrf, vrf_rt)
+            vrf_address_families = vrf_address_families - {"evpn"}
+        else:
+            bgp_vrf.rd = vrf_rd
+        for af in sorted(vrf_address_families):
+            if vrf.rt_import:
+                bgp_vrf.route_targets.field_import.append_new(
+                    address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ImportItem.RouteTargets([vrf_rt])
+                )
+            if vrf.rt_export:
+                bgp_vrf.route_targets.export.append_new(
+                    address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ExportItem.RouteTargets([vrf_rt])
+                )
 
         for rt in vrf.additional_route_targets:
             bgp_vrf.route_targets.field_import.obtain(rt.address_family).route_targets.extend(
