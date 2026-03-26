@@ -143,7 +143,7 @@ class MlagMixin(Protocol):
         if mlag_peer_mgmt_ip == "dhcp":
             msg = (
                 f"'mgmt_ip: dhcp' is not supported for MLAG peer '{self.mlag_peer}'."
-                f" MLAG dual-primary detection heartbeat requires a static management IP address for host '{self.hostname}'."
+                f" MLAG dual-primary detection heartbeat requires a static management IP address."
             )
             raise AristaAvdInvalidInputsError(msg)
 

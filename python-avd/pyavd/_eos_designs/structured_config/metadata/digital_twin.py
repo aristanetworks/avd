@@ -59,7 +59,7 @@ class DigitalTwinMixin(Protocol):
                         f"'mgmt_ip: dhcp' is not supported for Digital Twin. "
                         f"A static management IP address is required for host '{self.shared_utils.hostname}'."
                     )
-                    raise AristaAvdError(msg, self.shared_utils.hostname)
+                    raise AristaAvdError(msg)
                 version = default(
                     self.shared_utils.node_config.digital_twin.act_os_version,
                     self.inputs.digital_twin.fabric.act_os_version,

@@ -84,7 +84,7 @@ class SnmpServerMixin(Protocol):
                         "'snmp_settings.local_engineid_ip' is set to 'use_mgmt_interface' but 'mgmt_ip: dhcp' is not supported. "
                         f"A static management IP address is required for host '{self.shared_utils.hostname}'."
                     )
-                    raise AristaAvdInvalidInputsError(msg, self.shared_utils.hostname)
+                    raise AristaAvdInvalidInputsError(msg)
                 return default(self.shared_utils.node_config.mgmt_ip, self.shared_utils.node_config.ipv6_mgmt_ip)
             case "use_inband_mgmt_interface":
                 if self.shared_utils.inband_mgmt_interface is None:
@@ -127,7 +127,7 @@ class SnmpServerMixin(Protocol):
                         f"'mgmt_ip: dhcp' is not supported for 'snmp_settings.compute_local_engineid_source: hostname_and_ip'. "
                         f"A static management IP address is required for host '{self.shared_utils.hostname}'."
                     )
-                    raise AristaAvdInvalidInputsError(msg, self.shared_utils.hostname)
+                    raise AristaAvdInvalidInputsError(msg)
                 local_engine_id = self._get_sha1_digest(self.shared_utils.node_config.mgmt_ip)
             case "rfc3411_type3":
                 # prefix with Enterprise Id + 05 to adhere to RCF3411 and RFC5343

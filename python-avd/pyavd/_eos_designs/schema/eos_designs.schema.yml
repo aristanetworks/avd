@@ -3644,7 +3644,7 @@ keys:
       Replaces the default route.
 
       This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
-      true`, since the DHCP server will provide the default route.'
+      true'', since the DHCP server will provide the default route.'
     items:
       type: str
       description: IPv4_address/Mask.
@@ -10287,7 +10287,7 @@ $defs:
 
               When set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
               true'', the `mgmt_destination_networks` and `mgmt_gateway` settings
-              will be ignored since the DHCP server is expected to provide the gateway
+              are ignored since the DHCP server is expected to provide the gateway
               and the default route.'
             type: str
           mgmt_gateway:
