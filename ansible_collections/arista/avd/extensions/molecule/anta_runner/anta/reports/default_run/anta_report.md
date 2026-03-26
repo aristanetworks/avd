@@ -15,7 +15,7 @@
 
 | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
 | :- | :- | :- | :- | :- |
-| 571 | 0 | 0 | 0 | 0 |
+| 587 | 0 | 0 | 0 | 0 |
 
 ### 🔌 Summary Totals Device Under Test <a id="summary-totals-device-under-test"></a>
 
@@ -40,6 +40,7 @@
 | **dc2-leaf2c** | 21 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf3a.arista.com** | 29 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf3b.arista.com** | 29 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-leaf3c** | 16 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-spine1** | 23 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-spine2** | 23 | 0 | 0 | 0 | 0 | - | - |
 
@@ -49,18 +50,18 @@
 | :- | :- | :- | :- | :- | :- |
 | **AVT** | 2 | 0 | 0 | 0 | 0 |
 | **BGP** | 17 | 0 | 0 | 0 | 0 |
-| **Configuration** | 42 | 0 | 0 | 0 | 0 |
+| **Configuration** | 44 | 0 | 0 | 0 | 0 |
 | **Connectivity** | 38 | 0 | 0 | 0 | 0 |
 | **Hardware** | 35 | 0 | 0 | 0 | 0 |
-| **Interfaces** | 139 | 0 | 0 | 0 | 0 |
-| **Logging** | 21 | 0 | 0 | 0 | 0 |
+| **Interfaces** | 142 | 0 | 0 | 0 | 0 |
+| **Logging** | 22 | 0 | 0 | 0 | 0 |
 | **MLAG** | 33 | 0 | 0 | 0 | 0 |
 | **OSPF** | 16 | 0 | 0 | 0 | 0 |
 | **Path-Selection** | 2 | 0 | 0 | 0 | 0 |
-| **Routing** | 21 | 0 | 0 | 0 | 0 |
-| **Security** | 23 | 0 | 0 | 0 | 0 |
-| **STP** | 21 | 0 | 0 | 0 | 0 |
-| **System** | 147 | 0 | 0 | 0 | 0 |
+| **Routing** | 22 | 0 | 0 | 0 | 0 |
+| **Security** | 24 | 0 | 0 | 0 | 0 |
+| **STP** | 22 | 0 | 0 | 0 | 0 |
+| **System** | 154 | 0 | 0 | 0 | 0 |
 | **VXLAN** | 14 | 0 | 0 | 0 | 0 |
 
 ## 🧪 Test Results <a id="test-results"></a>
@@ -592,6 +593,22 @@
 | dc2-leaf3b.arista.com | System | VerifyNTP | Verifies if NTP is synchronised. | Unset | - |
 | dc2-leaf3b.arista.com | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc2-leaf3b.arista.com | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | Unset | - |
+| dc2-leaf3c | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
+| dc2-leaf3c | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
+| dc2-leaf3c | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | Unset | - |
+| dc2-leaf3c | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | Unset | - |
+| dc2-leaf3c | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
+| dc2-leaf3c | Logging | VerifyLoggingErrors | Verifies there are no syslog messages with a severity of ERRORS or higher. | Unset | - |
+| dc2-leaf3c | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
+| dc2-leaf3c | Security | VerifyAPIHttpsSSL | Verifies if the eAPI has a valid SSL profile. | Unset | - |
+| dc2-leaf3c | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
+| dc2-leaf3c | System | VerifyAgentLogs | Verifies there are no agent crash reports. | Unset | - |
+| dc2-leaf3c | System | VerifyCoredump | Verifies there are no core dump files. | Unset | - |
+| dc2-leaf3c | System | VerifyFileSystemUtilization | Verifies that no partition is utilizing more than 75% of its disk space. | Unset | - |
+| dc2-leaf3c | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
+| dc2-leaf3c | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
+| dc2-leaf3c | System | VerifyNTP | Verifies if NTP is synchronised. | Unset | - |
+| dc2-leaf3c | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc2-spine1 | BGP | VerifyBGPPeerSession | Verifies the session state of BGP peers. | Unset | - |
 | dc2-spine1 | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
 | dc2-spine1 | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
