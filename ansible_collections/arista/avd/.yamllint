@@ -61,3 +61,5 @@ rules:
     #       because the .yamllint is not included in the collection manifest
     #       this could lead to errors in CI that would be unobservable locally
     indent-sequences: consistent
+    ignore:
+      - /tests/output/**
