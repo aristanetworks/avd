@@ -10203,6 +10203,7 @@ router bgp 65101
       neighbor baz additional-paths receive
       neighbor baz prefix-list PL-BAR-v6-IN in
       neighbor baz prefix-list PL-BAR-v6-OUT out
+      neighbor baz default-originate route-map RM-FOO always
       neighbor baz additional-paths send ecmp limit 20
       no neighbor FOOBAR activate
       neighbor IPV6-UNDERLAY activate
