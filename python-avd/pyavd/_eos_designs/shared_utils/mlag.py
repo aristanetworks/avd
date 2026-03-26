@@ -229,7 +229,9 @@ class MlagMixin(Protocol):
             return self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer.name
         return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
 
-    def update_router_bgp_with_mlag_peer_group(self: SharedUtilsProtocol, router_bgp: EosCliConfigGen.RouterBgp, custom_structured_configs: StructCfgs, structured_config_utils: StructuredConfigUtils) -> None:
+    def update_router_bgp_with_mlag_peer_group(
+        self: SharedUtilsProtocol, router_bgp: EosCliConfigGen.RouterBgp, custom_structured_configs: StructCfgs, structured_config_utils: StructuredConfigUtils
+    ) -> None:
         """
         Update router_bgp structured_config covering the MLAG peer_group(s) and associated address_family activations.
 
