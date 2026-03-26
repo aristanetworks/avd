@@ -229,62 +229,6 @@ class MlagMixin(Protocol):
             return self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer.name
         return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
 
-    def update_router_bgp_with_mlag_peer_group(
-        self: SharedUtilsProtocol, router_bgp: EosCliConfigGen.RouterBgp, custom_structured_configs: StructCfgs, structured_config_utils: StructuredConfigUtils
-    ) -> None:
-        """
-        Update router_bgp structured_config covering the MLAG peer_group(s) and associated address_family activations.
-
-        Inserts custom structured configuration into the given custom_structured_configs instance.
-
-        This is called from MLAG in the case of BGP underlay routing protocol.
-        In the case of another underlay routing protocol, it may be called from network_services instead in case there are VRFs with iBGP peerings.
-        """
-        # Only create the underlay peer group if the underlay is BGP or if we reuse the same peer-group from network services.
-        if self.underlay_bgp or not self.use_separate_peer_group_for_mlag_vrfs:
-            bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
-            router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs, structured_config_utils))
-            if not self.underlay_ipv6_numbered:
-                router_bgp.address_family_ipv4.peer_groups.append(self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549))
-            if self.underlay_ipv6:
-                router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
-
-        if self.use_separate_peer_group_for_mlag_vrfs:
-            bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
-            router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs, structured_config_utils))
-            router_bgp.address_family_ipv4.peer_groups.append(self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.overlay_mlag_rfc5549))
-
-    def get_mlag_peer_group(
-        self: SharedUtilsProtocol,
-        bgp_peer_group: EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer,
-        custom_structured_configs: StructCfgs,
-        structured_config_utils: StructuredConfigUtils,
-    ) -> EosCliConfigGen.RouterBgp.PeerGroupsItem:
-        """Return structured_config for one MLAG peer_group."""
-        peer_group_name = bgp_peer_group.name
-        peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
-            name=peer_group_name,
-            remote_as=self.formatted_bgp_as,
-            next_hop_self=True,
-            description=AvdStringFormatter().format(self.inputs.mlag_bgp_peer_group_description, mlag_peer=self.mlag_peer),
-            password=self.get_bgp_password(bgp_peer_group),
-            bfd=bgp_peer_group.bfd or None,
-            maximum_routes=bgp_peer_group.maximum_routes,
-            send_community="all",
-        )
-        peer_group.metadata.type = "ipv4"
-
-        if bgp_peer_group.structured_config:
-            custom_structured_configs.nested.router_bgp.peer_groups.obtain(peer_group_name)._deepmerge(
-                bgp_peer_group.structured_config, list_merge=custom_structured_configs.list_merge_strategy
-            )
-
-        if self.node_config.mlag_ibgp_origin_incomplete:
-            peer_group.route_map_in = "RM-MLAG-PEER-IN"
-            structured_config_utils.set_once_route_map_mlag_peer_in()
-
-        return peer_group
-
     def get_mlag_peer_group_address_familiy_ipv4(
         self: SharedUtilsProtocol,
         bgp_peer_group: EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer,

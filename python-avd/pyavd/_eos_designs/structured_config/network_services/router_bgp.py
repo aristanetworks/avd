@@ -60,9 +60,7 @@ class RouterBgpMixin(Protocol):
         # Configure MLAG iBGP peer-group if needed. The function updates structured config directly.
         # Catches cases where underlay is not BGP but we still need MLAG iBGP peering.
         if not self.shared_utils.underlay_bgp and self.need_mlag_peer_group:
-            self.shared_utils.update_router_bgp_with_mlag_peer_group(
-                self.structured_config.router_bgp, self.custom_structured_configs, self.structured_config_utils
-            )
+            self.structured_config_utils.update_router_bgp_with_mlag_peer_group()
 
     def _router_bgp_peer_groups(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
