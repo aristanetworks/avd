@@ -324,3 +324,45 @@ class TestDeployStaticConfigStudio:
         assert len(deployment_result.skipped_static_config_containers) == 1  # CNT_LEAF1 was skipped
         assert deployment_result.removed_static_config_containers == ["CNT_LEAF2"]
         assert not deployment_result.removed_static_config_configlets
+
+    async def test_scoped_cleanup_does_not_delete_other_manifest_containers(
+        self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult
+    ) -> None:
+        """
+        Test that cleanup with a scope_key only removes entities belonging to the current manifest scope.
+
+        This validates the fix for parallel job interference (aristanetworks/avd-internal#413):
+        when two manifests share the same CVaaS instance (e.g. direct and proxy CI jobs), each
+        manifest's cleanup must not delete containers deployed by the other manifest.
+        """
+        direct_scope = "direct"
+        proxy_scope = "proxy"
+
+        # Simulate what's on CV after the proxy job's MANIFEST-ONLY cleanup step has committed
+        # its placeholder container alongside the direct job's placeholder.
+        direct_placeholder_id = generate_id("DIRECT-ROOT-PLACEHOLDER", scope_key=direct_scope)
+        proxy_placeholder_id = generate_id("PROXY-ROOT-PLACEHOLDER", scope_key=proxy_scope)
+
+        existing_containers = [
+            create_grpc_container(container_id=direct_placeholder_id, name="DIRECT-ROOT-PLACEHOLDER", description="", query="placeholder:placeholder"),
+            create_grpc_container(container_id=proxy_placeholder_id, name="PROXY-ROOT-PLACEHOLDER", description="", query="placeholder:placeholder"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [direct_placeholder_id, proxy_placeholder_id]
+
+        # The direct job's MANIFEST-WITH-REGULAR now deploys its real containers with scope_key="direct".
+        direct_root = AvdContainer(name="DIRECT-ROOT", tag_query="device:*", description="Direct root container")
+        direct_manifest = AvdManifest(containers=(direct_root,), scope_key=direct_scope)
+
+        await deploy_static_config_studio_manifest_to_cv(direct_manifest, deployment_result, mock_cv_client)
+
+        # Verify only the direct placeholder was deleted; the proxy placeholder must be untouched.
+        mock_cv_client.delete_configlet_container.assert_called_once_with(
+            workspace_id=deployment_result.workspace.id, assignment_id=direct_placeholder_id
+        )
+        assert deployment_result.removed_static_config_containers == ["DIRECT-ROOT-PLACEHOLDER"]
+
+        # Verify the direct root container was deployed.
+        assert len(deployment_result.deployed_static_config_containers) == 1
+        assert deployment_result.deployed_static_config_containers[0].name == "DIRECT-ROOT"

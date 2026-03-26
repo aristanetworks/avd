@@ -92,6 +92,7 @@ ARGUMENT_SPEC = {
         "options": {
             "containers": {"type": "list", "elements": "dict", "required": False},
             "configlets": {"type": "list", "elements": "dict", "required": False},
+            "scope_key": {"type": "str", "required": False},
         },
     },
     "return_details": {"type": "bool", "required": False, "default": False},

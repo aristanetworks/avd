@@ -78,12 +78,12 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No container creations or updates are needed.")
 
-    # Delete unused AVD-managed containers.
+    # Delete unused AVD-managed containers scoped to this manifest.
     desired_container_ids = {container.id for container in cv_manifest.containers}
     containers_to_delete = {
         container_id: cast("str", container.display_name)
         for container_id, container in existing_containers_by_id.items()
-        if container_id.startswith(AVD_ENTITY_PREFIX) and container_id not in desired_container_ids
+        if container_id.startswith(cv_manifest.manifest_scope_prefix) and container_id not in desired_container_ids
     }
 
     if containers_to_delete:
@@ -108,13 +108,13 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No configlet creations or updates are needed.")
 
-    # Delete unused AVD-managed configlets.
+    # Delete unused AVD-managed configlets scoped to this manifest.
     existing_configlets = await cv_client.get_configlets(workspace_id=workspace_id)
     desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
     configlets_to_delete = {
         configlet_id: cast("str", configlet.display_name)
         for configlet in existing_configlets
-        if (configlet_id := cast("str", configlet.key.configlet_id)).startswith(AVD_ENTITY_PREFIX) and configlet_id not in desired_configlet_ids
+        if (configlet_id := cast("str", configlet.key.configlet_id)).startswith(cv_manifest.manifest_scope_prefix) and configlet_id not in desired_configlet_ids
     }
 
     if configlets_to_delete:

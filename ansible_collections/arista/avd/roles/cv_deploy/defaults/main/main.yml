@@ -99,3 +99,12 @@ cv_workspace_build_timeout: 300
 #           configlets:
 #             - name: <str>
 #           sub_containers: <list of containers>
+
+#   Optional scope key used to isolate cleanup between multiple independent manifest deployments
+#   sharing the same CloudVision instance (e.g. parallel CI jobs targeting the same CVaaS tenant).
+#   When set, container and configlet IDs are generated within this scope and cleanup is restricted
+#   to entities belonging to this scope only. Different concurrent deployments must use different
+#   scope keys to avoid interfering with each other's containers.
+#   When omitted (default), the global AVD namespace is used and cleanup applies to all
+#   AVD-managed entities — the original backward-compatible behavior.
+#   scope_key: <str, optional>
