@@ -60,7 +60,7 @@ class RouterBgpMixin(Protocol):
         # Configure MLAG iBGP peer-group if needed. The function updates structured config directly.
         # Catches cases where underlay is not BGP but we still need MLAG iBGP peering.
         if not self.shared_utils.underlay_bgp and self.need_mlag_peer_group:
-            self.shared_utils.update_router_bgp_with_mlag_peer_group(self.structured_config.router_bgp, self.custom_structured_configs)
+            self.shared_utils.update_router_bgp_with_mlag_peer_group(self.structured_config.router_bgp, self.custom_structured_configs, self.structured_config_utils)
 
     def _router_bgp_peer_groups(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -372,9 +372,6 @@ class RouterBgpMixin(Protocol):
             if self.inputs.underlay_rfc5549 and not self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
                 af_neighbor = bgp_vrf.address_family_ipv4.neighbors.obtain(ip_address)
                 af_neighbor.next_hop.address_family_ipv6.enabled = False
-
-        if self.shared_utils.node_config.mlag_ibgp_origin_incomplete:
-            self.structured_config_utils.set_once_route_map_mlag_peer_in()
 
     def _router_bgp_sorted_vlans_and_svis_lists(self: AvdStructuredConfigNetworkServicesProtocol) -> dict:
         tenant_svis_l2vlans_dict = {}

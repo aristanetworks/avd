@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
+    from pyavd._eos_designs.structured_config.structured_config_utils import StructuredConfigUtils
 
     from . import SharedUtilsProtocol
 
@@ -228,7 +229,7 @@ class MlagMixin(Protocol):
             return self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer.name
         return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
 
-    def update_router_bgp_with_mlag_peer_group(self: SharedUtilsProtocol, router_bgp: EosCliConfigGen.RouterBgp, custom_structured_configs: StructCfgs) -> None:
+    def update_router_bgp_with_mlag_peer_group(self: SharedUtilsProtocol, router_bgp: EosCliConfigGen.RouterBgp, custom_structured_configs: StructCfgs, structured_config_utils: StructuredConfigUtils) -> None:
         """
         Update router_bgp structured_config covering the MLAG peer_group(s) and associated address_family activations.
 
@@ -240,7 +241,7 @@ class MlagMixin(Protocol):
         # Only create the underlay peer group if the underlay is BGP or if we reuse the same peer-group from network services.
         if self.underlay_bgp or not self.use_separate_peer_group_for_mlag_vrfs:
             bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
-            router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs))
+            router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs, structured_config_utils))
             if not self.underlay_ipv6_numbered:
                 router_bgp.address_family_ipv4.peer_groups.append(self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549))
             if self.underlay_ipv6:
@@ -248,13 +249,14 @@ class MlagMixin(Protocol):
 
         if self.use_separate_peer_group_for_mlag_vrfs:
             bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
-            router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs))
+            router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs, structured_config_utils))
             router_bgp.address_family_ipv4.peer_groups.append(self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.overlay_mlag_rfc5549))
 
     def get_mlag_peer_group(
         self: SharedUtilsProtocol,
         bgp_peer_group: EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer,
         custom_structured_configs: StructCfgs,
+        structured_config_utils: StructuredConfigUtils,
     ) -> EosCliConfigGen.RouterBgp.PeerGroupsItem:
         """Return structured_config for one MLAG peer_group."""
         peer_group_name = bgp_peer_group.name
@@ -277,6 +279,7 @@ class MlagMixin(Protocol):
 
         if self.node_config.mlag_ibgp_origin_incomplete:
             peer_group.route_map_in = "RM-MLAG-PEER-IN"
+            structured_config_utils.set_once_route_map_mlag_peer_in()
 
         return peer_group
 
