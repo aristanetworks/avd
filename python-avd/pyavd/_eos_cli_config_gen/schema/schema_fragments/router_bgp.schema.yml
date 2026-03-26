@@ -263,7 +263,7 @@ keys:
                         description: Install LU routes into Tunnel RIB.
                       route_map:
                         type: str
-                        description: Route-map applied to tunnel RIB
+                        description: Route-map applied to tunnel RIB.
       listen_ranges:
         type: list
         description: |
