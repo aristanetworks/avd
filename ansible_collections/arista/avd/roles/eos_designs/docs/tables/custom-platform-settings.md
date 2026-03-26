@@ -72,6 +72,58 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan</samp>](## "custom_platform_settings.[].feature_support.wan") | Boolean |  | `True` |  | Support for Arista WAN features.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "custom_platform_settings.[].feature_support.ptp") | Boolean |  | `True` |  | Support for Precision Time Protocol (PTP).<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_validation</samp>](## "custom_platform_settings.[].feature_support.hardware_validation") | Boolean |  | `True` |  | Enable hardware validation for the device.<br>When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errdisable</samp>](## "custom_platform_settings.[].feature_support.errdisable") | Boolean |  | `True` |  | Support for errdisable configuration.<br>Setting this key to `false` for the specific platform will ignore all errdisable settings for this platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errdisable_detect_causes</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes") | Dictionary |  |  |  | Per-cause support for errdisable detect.<br>Causes set to `false` will be filtered from `general_settings.errdisable_settings.detect.causes`.<br>The list of supported causes depends on the EOS version and the hardware platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.acl") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arp_inspection</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.arp_inspection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.dot1x") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_coa</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.dot1x_coa") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_phone_classification</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.dot1x_phone_classification") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_session_replace</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.dot1x_session_replace") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_correction_encoding</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.error_correction_encoding") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.hardware_speed_group") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_speed</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.interface_speed") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal_error</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.internal_error") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_change</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.link_change") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_breakout</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.port_breakout") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;storm_control</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.storm_control") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switchcard_unreachable</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.switchcard_unreachable") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.tapagg") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_adapter</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.transceiver_adapter") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_misconfigured</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.xcvr_misconfigured") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_overheat</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.xcvr_overheat") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_power_unsupported</samp>](## "custom_platform_settings.[].feature_support.errdisable_detect_causes.xcvr_power_unsupported") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errdisable_recovery_causes</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes") | Dictionary |  |  |  | Per-cause support for errdisable recovery.<br>Causes set to `false` will be filtered from `general_settings.errdisable_settings.recovery.causes`.<br>The list of supported causes depends on the EOS version and the hardware platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.acl") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arp_inspection</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.arp_inspection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bpduguard</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.bpduguard") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.dot1x") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_coa</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.dot1x_coa") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_phone_classification</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.dot1x_phone_classification") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dot1x_session_replace</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.dot1x_session_replace") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_correction_encoding</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.error_correction_encoding") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.hardware_speed_group") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hitless_reload_down</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.hitless_reload_down") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_speed</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.interface_speed") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internal_error</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.internal_error") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_rate_limit</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.lacp_rate_limit") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_flap</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.link_flap") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_internal_vlan</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.no_internal_vlan") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_breakout</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.port_breakout") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;portchannelguard</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.portchannelguard") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;portsec</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.portsec") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed_misconfigured</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.speed_misconfigured") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;storm_control</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.storm_control") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stuck_queue</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.stuck_queue") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switchcard_unreachable</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.switchcard_unreachable") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tap_port_init</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.tap_port_init") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.tapagg") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_adapter</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.transceiver_adapter") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_failure_detection</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.uplink_failure_detection") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_misconfigured</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.xcvr_misconfigured") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_overheat</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.xcvr_overheat") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_power_unsupported</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.xcvr_power_unsupported") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xcvr_unsupported</samp>](## "custom_platform_settings.[].feature_support.errdisable_recovery_causes.xcvr_unsupported") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -240,6 +292,69 @@
           # Enable hardware validation for the device.
           # When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
           hardware_validation: <bool; default=True>
+
+          # Support for errdisable configuration.
+          # Setting this key to `false` for the specific platform will ignore all errdisable settings for this platform.
+          errdisable: <bool; default=True>
+
+          # Per-cause support for errdisable detect.
+          # Causes set to `false` will be filtered from `general_settings.errdisable_settings.detect.causes`.
+          # The list of supported causes depends on the EOS version and the hardware platform.
+          errdisable_detect_causes:
+            acl: <bool; default=True>
+            arp_inspection: <bool; default=True>
+            dot1x: <bool; default=True>
+            dot1x_coa: <bool; default=True>
+            dot1x_phone_classification: <bool; default=True>
+            dot1x_session_replace: <bool; default=True>
+            error_correction_encoding: <bool; default=True>
+            hardware_speed_group: <bool; default=True>
+            interface_speed: <bool; default=True>
+            internal_error: <bool; default=True>
+            link_change: <bool; default=True>
+            port_breakout: <bool; default=True>
+            storm_control: <bool; default=True>
+            switchcard_unreachable: <bool; default=True>
+            tapagg: <bool; default=True>
+            transceiver_adapter: <bool; default=True>
+            xcvr_misconfigured: <bool; default=True>
+            xcvr_overheat: <bool; default=True>
+            xcvr_power_unsupported: <bool; default=True>
+
+          # Per-cause support for errdisable recovery.
+          # Causes set to `false` will be filtered from `general_settings.errdisable_settings.recovery.causes`.
+          # The list of supported causes depends on the EOS version and the hardware platform.
+          errdisable_recovery_causes:
+            acl: <bool; default=True>
+            arp_inspection: <bool; default=True>
+            bpduguard: <bool; default=True>
+            dot1x: <bool; default=True>
+            dot1x_coa: <bool; default=True>
+            dot1x_phone_classification: <bool; default=True>
+            dot1x_session_replace: <bool; default=True>
+            error_correction_encoding: <bool; default=True>
+            hardware_speed_group: <bool; default=True>
+            hitless_reload_down: <bool; default=True>
+            interface_speed: <bool; default=True>
+            internal_error: <bool; default=True>
+            lacp_rate_limit: <bool; default=True>
+            link_flap: <bool; default=True>
+            no_internal_vlan: <bool; default=True>
+            port_breakout: <bool; default=True>
+            portchannelguard: <bool; default=True>
+            portsec: <bool; default=True>
+            speed_misconfigured: <bool; default=True>
+            storm_control: <bool; default=True>
+            stuck_queue: <bool; default=True>
+            switchcard_unreachable: <bool; default=True>
+            tap_port_init: <bool; default=True>
+            tapagg: <bool; default=True>
+            transceiver_adapter: <bool; default=True>
+            uplink_failure_detection: <bool; default=True>
+            xcvr_misconfigured: <bool; default=True>
+            xcvr_overheat: <bool; default=True>
+            xcvr_power_unsupported: <bool; default=True>
+            xcvr_unsupported: <bool; default=True>
         management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.

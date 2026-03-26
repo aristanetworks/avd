@@ -855,6 +855,47 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.ip_icmp_redirect = self.inputs.general_settings.ip_icmp_redirect
 
     @structured_config_contributor
+    def errdisable(self: AvdStructuredConfigBaseProtocol) -> None:
+        """
+        Set errdisable configuration.
+
+        Contributing data sources:
+          - errdisable_settings data-model.
+          - platform_settings.feature_support.errdisable fact.
+          - platform_settings.feature_support.errdisable_detect_causes fact.
+          - platform_settings.feature_support.errdisable_recovery_causes fact.
+        """
+        if not (errdisable_settings := self.inputs.errdisable_settings):
+            return
+
+        feature_support = self.shared_utils.platform_settings.feature_support
+        errdisable = errdisable_settings._cast_as(EosCliConfigGen.Errdisable)
+
+        # Filter detect causes based on platform supportability.
+        if errdisable.detect.causes:
+            errdisable.detect.causes = errdisable.detect.causes._filtered(
+                lambda cause: get_v2(
+                    feature_support.errdisable_detect_causes,
+                    cause.replace("-", "_"),
+                    # Assume all uncovered/new causes are supported.
+                    default=True,
+                )
+            )
+        # Filter recovery causes based on platform supportability.
+        if errdisable.recovery.causes:
+            errdisable.recovery.causes = EosCliConfigGen.Errdisable.Recovery.Causes(
+                cause_item
+                for cause_item in errdisable.recovery.causes
+                if get_v2(
+                    feature_support.errdisable_recovery_causes,
+                    cause_item.name.replace("-", "_"),
+                    # Assume all uncovered/new causes are supported.
+                    default=True,
+                )
+            )
+        self.structured_config.errdisable = errdisable
+
+    @structured_config_contributor
     def prefix_lists(self) -> None:
         self.structured_config.prefix_lists.extend(self.shared_utils.l3_bgp_prefix_lists)
 

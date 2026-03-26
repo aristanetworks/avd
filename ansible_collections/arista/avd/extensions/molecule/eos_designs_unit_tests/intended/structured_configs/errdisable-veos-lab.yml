@@ -1,0 +1,174 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+errdisable:
+  detect:
+    causes:
+    - acl
+    - arp-inspection
+    - dot1x
+    - link-change
+    - storm-control
+  recovery:
+    causes:
+    - name: acl
+      interval: 60
+    - name: arp-inspection
+      interval: 90
+    - name: bpduguard
+      interval: 300
+    - name: dot1x
+      interval: 60
+    - name: link-flap
+      interval: 60
+    - name: storm-control
+      interval: 120
+    interval: 300
+ethernet_interfaces:
+- name: Ethernet2
+  description: P2P_errdisable-ceos-lab_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.2/31
+  metadata:
+    peer: errdisable-ceos-lab
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet3
+  description: P2P_errdisable-7280r_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.4/31
+  metadata:
+    peer: errdisable-7280r
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet4
+  description: P2P_errdisable-no-errdisable_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.6/31
+  metadata:
+    peer: errdisable-no-errdisable
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet5
+  description: P2P_errdisable-custom-platform_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.8/31
+  metadata:
+    peer: errdisable-custom-platform
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+hostname: errdisable-veos-lab
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.10.10.1/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.10.20.1/32
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.10.0/24 eq 32
+  - sequence: 20
+    action: permit 10.10.20.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65001'
+  router_id: 10.10.10.1
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 256000
+  neighbors:
+  - ip_address: 10.10.50.3
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: errdisable-ceos-lab
+    description: errdisable-ceos-lab_Ethernet1
+  - ip_address: 10.10.50.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: errdisable-7280r
+    description: errdisable-7280r_Ethernet1
+  - ip_address: 10.10.50.7
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: errdisable-no-errdisable
+    description: errdisable-no-errdisable_Ethernet1
+  - ip_address: 10.10.50.9
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: errdisable-custom-platform
+    description: errdisable-custom-platform_Ethernet1
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: errdisable-veos-lab_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
