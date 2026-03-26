@@ -253,7 +253,7 @@ keys:
                         description: Install LU routes into IP RIB.
                       route_map:
                         type: str
-                        description: Route-map applied to IP RIB
+                        description: Route-map applied to IP RIB.
                   tunnel:
                     type: dict
                     keys:
