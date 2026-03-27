@@ -487,23 +487,19 @@ $defs:
                   This setting applies only to the automatically generated route targets
                   and does not affect any entries defined under `additional_route_targets`.
                 default: true
-              rt_import_remote:
+              rt_import_evpn_remote:
                 type: bool
-                description: |
-                  Only considered when `evpn_gateway.evpn_l3` is enabled and `mode` is `rd-rt-rewrite`.
-                  When `rt_import` is `true` and `rt_import_remote` is `true` (default), generate `route-target import evpn domain all`.
-                  When `rt_import` is `false` and `rt_import_remote` is `true`, generate `route-target import evpn domain remote`.
-                  When `rt_import_remote` is `false` and `rt_import` is `true`, generate a local `route-target import evpn` (no domain).
-                  When both are `false`, no import route-target is generated.
+                description: |-
+                  Enable or disable route target import for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
                 default: true
-              rt_export_remote:
+              rt_export_evpn_remote:
                 type: bool
-                description: |
-                  Only considered when `evpn_gateway.evpn_l3` is enabled and `mode` is `rd-rt-rewrite`.
-                  When `rt_export` is `true` and `rt_export_remote` is `true` (default), generate `route-target export evpn domain all`.
-                  When `rt_export` is `false` and `rt_export_remote` is `true`, generate `route-target export evpn domain remote`.
-                  When `rt_export_remote` is `false` and `rt_export` is `true`, generate a local `route-target export evpn` (no domain).
-                  When both are `false`, no export route-target is generated.
+                description: |-
+                  Enable or disable route target export for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
                 default: true
               evpn_vlan_bundle:
                 type: str

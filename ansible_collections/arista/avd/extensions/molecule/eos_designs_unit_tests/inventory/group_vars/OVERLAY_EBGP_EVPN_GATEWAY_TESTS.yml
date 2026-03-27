@@ -242,7 +242,7 @@ tenants:
     vrfs:
       - name: VRF_RT_IMPORT_ONLY
         vrf_vni: 30
-        # Test: rt_export false with rt_export_remote true (default) generates import domain all + export domain remote
+        # Test: rt_export false with rt_export_evpn_remote true (default) generates import domain all + export domain remote
         rt_export: false
         svis:
           - id: 301
@@ -251,7 +251,7 @@ tenants:
             ip_address_virtual: 10.3.1.1/24
       - name: VRF_RT_EXPORT_ONLY
         vrf_vni: 31
-        # Test: rt_import false with rt_import_remote true (default) generates import domain remote + export domain all
+        # Test: rt_import false with rt_import_evpn_remote true (default) generates import domain remote + export domain all
         rt_import: false
         svis:
           - id: 302
@@ -260,10 +260,10 @@ tenants:
             ip_address_virtual: 10.3.2.1/24
       - name: VRF_RT_LOCAL_IMPORT_ONLY
         vrf_vni: 32
-        # Test: rt_import_remote false with rt_import true generates local import evpn (no domain) only
-        rt_import_remote: false
+        # Test: rt_import_evpn_remote false with rt_import true generates local import evpn (no domain) only
+        rt_import_evpn_remote: false
         rt_export: false
-        rt_export_remote: false
+        rt_export_evpn_remote: false
         svis:
           - id: 303
             name: VRF_RT_LOCAL_IMPORT_ONLY_VLAN303
@@ -271,10 +271,10 @@ tenants:
             ip_address_virtual: 10.3.3.1/24
       - name: VRF_RT_LOCAL_EXPORT_ONLY
         vrf_vni: 33
-        # Test: rt_export_remote false with rt_export true generates local export evpn (no domain) only
+        # Test: rt_export_evpn_remote false with rt_export true generates local export evpn (no domain) only
         rt_import: false
-        rt_import_remote: false
-        rt_export_remote: false
+        rt_import_evpn_remote: false
+        rt_export_evpn_remote: false
         svis:
           - id: 304
             name: VRF_RT_LOCAL_EXPORT_ONLY_VLAN304
