@@ -786,4 +786,7 @@ class RouterBgpMixin(Protocol):
                     rd=rd,
                     route_targets=EosCliConfigGen.RouterBgp.VpwsItem.RouteTargets(import_export=rt),
                     pseudowires=pseudowires,
+                    mpls_control_word=tenant.vpws.mpls_control_word or None,  # Using 'or None' to only render True in structured config.
+                    mtu=tenant.vpws.mtu,
+                    label_flow=tenant.vpws.label_flow or None,  # Using 'or None' to only render True in structured config.
                 )

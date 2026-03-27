@@ -918,9 +918,16 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {
+            "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
         }
+        accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
+        """
+        Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
+
+        Default value: `False`
+        """
         remove_redundant_ipv4_unicast_for_peer_groups: bool
         """
         Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
@@ -940,6 +947,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
             ) -> None:
@@ -950,6 +958,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    accept_dhcp_default_route_for_mgmt_ip_dhcp: Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
                     remove_redundant_ipv4_unicast_for_peer_groups:
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
                        default instead of always deactivating it.
@@ -10208,11 +10217,20 @@ class EosDesigns(EosDesignsRootModel):
         rack: str | None
         """Rack that the switch is located in (only used in snmp_settings location)."""
         mgmt_ip: str | None
-        """Node management interface IPv4 address."""
+        """
+        Node management interface IPv4 address/Mask or 'dhcp'.
+        When set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+        `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+        expected to provide the gateway and the default route.
+        """
         mgmt_gateway: str | None
         """
         This key sets the management gateway for the device. It takes precedence over the global
         `mgmt_gateway`.
+        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+        provide the gateway.
         """
         ipv6_mgmt_ip: str | None
         """Node management interface IPv6 address."""
@@ -11234,10 +11252,18 @@ class EosDesigns(EosDesignsRootModel):
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
                     rack: Rack that the switch is located in (only used in snmp_settings location).
-                    mgmt_ip: Node management interface IPv4 address.
+                    mgmt_ip:
+                       Node management interface IPv4 address/Mask or 'dhcp'.
+                       When set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                       `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                       expected to provide the gateway and the default route.
                     mgmt_gateway:
                        This key sets the management gateway for the device. It takes precedence over the global
                        `mgmt_gateway`.
+                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                       provide the gateway.
                     ipv6_mgmt_ip: Node management interface IPv6 address.
                     ipv6_mgmt_gateway:
                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
@@ -15350,11 +15376,20 @@ class EosDesigns(EosDesignsRootModel):
         rack: str | None
         """Rack that the switch is located in (only used in snmp_settings location)."""
         mgmt_ip: str | None
-        """Node management interface IPv4 address."""
+        """
+        Node management interface IPv4 address/Mask or 'dhcp'.
+        When set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+        `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+        expected to provide the gateway and the default route.
+        """
         mgmt_gateway: str | None
         """
         This key sets the management gateway for the device. It takes precedence over the global
         `mgmt_gateway`.
+        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+        provide the gateway.
         """
         ipv6_mgmt_ip: str | None
         """Node management interface IPv6 address."""
@@ -16385,10 +16420,18 @@ class EosDesigns(EosDesignsRootModel):
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
                     rack: Rack that the switch is located in (only used in snmp_settings location).
-                    mgmt_ip: Node management interface IPv4 address.
+                    mgmt_ip:
+                       Node management interface IPv4 address/Mask or 'dhcp'.
+                       When set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                       `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                       expected to provide the gateway and the default route.
                     mgmt_gateway:
                        This key sets the management gateway for the device. It takes precedence over the global
                        `mgmt_gateway`.
+                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                       provide the gateway.
                     ipv6_mgmt_ip: Node management interface IPv6 address.
                     ipv6_mgmt_gateway:
                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
@@ -39403,11 +39446,20 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                    expected to provide the gateway and the default route.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
                     `mgmt_gateway`.
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                    provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
                     """Node management interface IPv6 address."""
@@ -40412,10 +40464,18 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                                   provide the gateway.
                                 ipv6_mgmt_ip: Node management interface IPv6 address.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
@@ -44540,11 +44600,20 @@ class EosDesigns(EosDesignsRootModel):
                         rack: str | None
                         """Rack that the switch is located in (only used in snmp_settings location)."""
                         mgmt_ip: str | None
-                        """Node management interface IPv4 address."""
+                        """
+                        Node management interface IPv4 address/Mask or 'dhcp'.
+                        When set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                        `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                        expected to provide the gateway and the default route.
+                        """
                         mgmt_gateway: str | None
                         """
                         This key sets the management gateway for the device. It takes precedence over the global
                         `mgmt_gateway`.
+                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                        provide the gateway.
                         """
                         ipv6_mgmt_ip: str | None
                         """Node management interface IPv6 address."""
@@ -45558,10 +45627,18 @@ class EosDesigns(EosDesignsRootModel):
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
                                     rack: Rack that the switch is located in (only used in snmp_settings location).
-                                    mgmt_ip: Node management interface IPv4 address.
+                                    mgmt_ip:
+                                       Node management interface IPv4 address/Mask or 'dhcp'.
+                                       When set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                                       `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                                       expected to provide the gateway and the default route.
                                     mgmt_gateway:
                                        This key sets the management gateway for the device. It takes precedence over the global
                                        `mgmt_gateway`.
+                                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                                       provide the gateway.
                                     ipv6_mgmt_ip: Node management interface IPv6 address.
                                     ipv6_mgmt_gateway:
                                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
@@ -49597,11 +49674,20 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                    expected to provide the gateway and the default route.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
                     `mgmt_gateway`.
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                    provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
                     """Node management interface IPv6 address."""
@@ -50617,10 +50703,18 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                                   provide the gateway.
                                 ipv6_mgmt_ip: Node management interface IPv6 address.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
@@ -54728,11 +54822,20 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                    expected to provide the gateway and the default route.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
                     `mgmt_gateway`.
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                    provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
                     """Node management interface IPv6 address."""
@@ -55746,10 +55849,18 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                                   provide the gateway.
                                 ipv6_mgmt_ip: Node management interface IPv6 address.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
@@ -68633,6 +68744,43 @@ class EosDesigns(EosDesignsRootModel):
 
                 L2vlans._item_type = L2vlansItem
 
+                class Vpws(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"mpls_control_word": {"type": bool, "default": False}, "mtu": {"type": int}, "label_flow": {"type": bool}}
+                    mpls_control_word: bool
+                    """
+                    Enable or disable MPLS control word for VPWS pseudowires.
+
+                    Default value: `False`
+                    """
+                    mtu: int | None
+                    """MTU for VPWS pseudowires."""
+                    label_flow: bool | None
+                    """Enable or disable MPLS label flow for VPWS pseudowires."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            mpls_control_word: bool | UndefinedType = Undefined,
+                            mtu: int | None | UndefinedType = Undefined,
+                            label_flow: bool | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Vpws.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mpls_control_word: Enable or disable MPLS control word for VPWS pseudowires.
+                                mtu: MTU for VPWS pseudowires.
+                                label_flow: Enable or disable MPLS label flow for VPWS pseudowires.
+
+                            """
+
                 class PointToPointServicesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -68919,6 +69067,7 @@ class EosDesigns(EosDesignsRootModel):
                     "evpn_l2_multi_domain": {"type": bool, "default": True},
                     "vrfs": {"type": Vrfs},
                     "l2vlans": {"type": L2vlans},
+                    "vpws": {"type": Vpws},
                     "point_to_point_services": {"type": PointToPointServices},
                 }
                 name: str
@@ -69107,6 +69256,16 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdList with `L2vlansItem` items.
                 """
+                vpws: Vpws
+                """
+                VPWS pseudowire settings for the tenant.
+                To render `mpls_control_word`, `mtu`, and `label_flow` in
+                the BGP VPWS configuration,
+                both `point_to_point_services` and `pseudowire_rt_base` must be set
+                under the tenant.
+
+                Subclass of AvdModel.
+                """
                 point_to_point_services: PointToPointServices
                 """
                 Point to point services (pseudowires).
@@ -69142,6 +69301,7 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_l2_multi_domain: bool | UndefinedType = Undefined,
                         vrfs: Vrfs | UndefinedType = Undefined,
                         l2vlans: L2vlans | UndefinedType = Undefined,
+                        vpws: Vpws | UndefinedType = Undefined,
                         point_to_point_services: PointToPointServices | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -69294,6 +69454,14 @@ class EosDesigns(EosDesignsRootModel):
                                Define L2 network services organized by VLAN ID.
 
                                Subclass of AvdList with `L2vlansItem` items.
+                            vpws:
+                               VPWS pseudowire settings for the tenant.
+                               To render `mpls_control_word`, `mtu`, and `label_flow` in
+                               the BGP VPWS configuration,
+                               both `point_to_point_services` and `pseudowire_rt_base` must be set
+                               under the tenant.
+
+                               Subclass of AvdModel.
                             point_to_point_services:
                                Point to point services (pseudowires).
                                Only supported for node types with "network_services.l1:
@@ -72772,11 +72940,20 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                    expected to provide the gateway and the default route.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
                     `mgmt_gateway`.
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                    provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
                     """Node management interface IPv6 address."""
@@ -73781,10 +73958,18 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                                   provide the gateway.
                                 ipv6_mgmt_ip: Node management interface IPv6 address.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
@@ -77909,11 +78094,20 @@ class EosDesigns(EosDesignsRootModel):
                         rack: str | None
                         """Rack that the switch is located in (only used in snmp_settings location)."""
                         mgmt_ip: str | None
-                        """Node management interface IPv4 address."""
+                        """
+                        Node management interface IPv4 address/Mask or 'dhcp'.
+                        When set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                        `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                        expected to provide the gateway and the default route.
+                        """
                         mgmt_gateway: str | None
                         """
                         This key sets the management gateway for the device. It takes precedence over the global
                         `mgmt_gateway`.
+                        This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                        provide the gateway.
                         """
                         ipv6_mgmt_ip: str | None
                         """Node management interface IPv6 address."""
@@ -78927,10 +79121,18 @@ class EosDesigns(EosDesignsRootModel):
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
                                     rack: Rack that the switch is located in (only used in snmp_settings location).
-                                    mgmt_ip: Node management interface IPv4 address.
+                                    mgmt_ip:
+                                       Node management interface IPv4 address/Mask or 'dhcp'.
+                                       When set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                                       `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                                       expected to provide the gateway and the default route.
                                     mgmt_gateway:
                                        This key sets the management gateway for the device. It takes precedence over the global
                                        `mgmt_gateway`.
+                                       This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                                       provide the gateway.
                                     ipv6_mgmt_ip: Node management interface IPv6 address.
                                     ipv6_mgmt_gateway:
                                        This key sets the ipv6 management gateway for the device. It takes precedence over the global
@@ -82966,11 +83168,20 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                    expected to provide the gateway and the default route.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
                     `mgmt_gateway`.
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                    provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
                     """Node management interface IPv6 address."""
@@ -83986,10 +84197,18 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                                   provide the gateway.
                                 ipv6_mgmt_ip: Node management interface IPv6 address.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
@@ -88097,11 +88316,20 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                    expected to provide the gateway and the default route.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
                     `mgmt_gateway`.
+                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                    provide the gateway.
                     """
                     ipv6_mgmt_ip: str | None
                     """Node management interface IPv6 address."""
@@ -89115,10 +89343,18 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings are ignored since the DHCP server is
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
+                                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                                   provide the gateway.
                                 ipv6_mgmt_ip: Node management interface IPv6 address.
                                 ipv6_mgmt_gateway:
                                    This key sets the ipv6 management gateway for the device. It takes precedence over the global
@@ -91596,6 +91832,9 @@ class EosDesigns(EosDesignsRootModel):
     """
     List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
     Replaces the default route.
+    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+    provide the default route.
 
     Subclass of AvdList with `str` items.
     """
@@ -91604,6 +91843,9 @@ class EosDesigns(EosDesignsRootModel):
     OOB Management interface gateway in IPv4 format.
     Used as next-hop for default gateway or static
     routes defined under 'mgmt_destination_networks'.
+    This setting is ignored when 'mgmt_ip' is set to
+    'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP
+    server will provide the gateway.
     """
     mgmt_interface: str
     """
@@ -93556,12 +93798,18 @@ class EosDesigns(EosDesignsRootModel):
                 mgmt_destination_networks:
                    List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
                    Replaces the default route.
+                   This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
+                   'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will
+                   provide the default route.
 
                    Subclass of AvdList with `str` items.
                 mgmt_gateway:
                    OOB Management interface gateway in IPv4 format.
                    Used as next-hop for default gateway or static
                    routes defined under 'mgmt_destination_networks'.
+                   This setting is ignored when 'mgmt_ip' is set to
+                   'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP
+                   server will provide the gateway.
                 mgmt_interface: OOB Management interface.
                 mgmt_interface_description: Management interface description.
                 mgmt_interface_vrf: OOB Management VRF.
