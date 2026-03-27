@@ -341,25 +341,33 @@ keys:
           evpn_gateway_all_active_multihoming: true
           sflow_subinterfaces: false
           hardware_validation: false
-          errdisable_detect_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-          errdisable_recovery_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-            xcvr_unsupported: false
+          errdisable_causes:
+            error_correction_encoding:
+              detect: false
+              recovery: false
+            hardware_speed_group:
+              detect: false
+              recovery: false
+            port_breakout:
+              detect: false
+              recovery: false
+            switchcard_unreachable:
+              detect: false
+              recovery: false
+            transceiver_adapter:
+              detect: false
+              recovery: false
+            xcvr_misconfigured:
+              detect: false
+              recovery: false
+            xcvr_overheat:
+              detect: false
+              recovery: false
+            xcvr_power_unsupported:
+              detect: false
+              recovery: false
+            xcvr_unsupported:
+              recovery: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -381,25 +389,33 @@ keys:
           evpn_gateway_all_active_multihoming: true
           sflow_subinterfaces: false
           hardware_validation: false
-          errdisable_detect_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-          errdisable_recovery_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-            xcvr_unsupported: false
+          errdisable_causes:
+            error_correction_encoding:
+              detect: false
+              recovery: false
+            hardware_speed_group:
+              detect: false
+              recovery: false
+            port_breakout:
+              detect: false
+              recovery: false
+            switchcard_unreachable:
+              detect: false
+              recovery: false
+            transceiver_adapter:
+              detect: false
+              recovery: false
+            xcvr_misconfigured:
+              detect: false
+              recovery: false
+            xcvr_overheat:
+              detect: false
+              recovery: false
+            xcvr_power_unsupported:
+              detect: false
+              recovery: false
+            xcvr_unsupported:
+              recovery: false
         management_interface: Management1
         reload_delay:
           mlag: 300
@@ -415,25 +431,33 @@ keys:
           queue_monitor_length_notify: false
           sflow: false
           hardware_validation: false
-          errdisable_detect_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-          errdisable_recovery_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-            xcvr_unsupported: false
+          errdisable_causes:
+            error_correction_encoding:
+              detect: false
+              recovery: false
+            hardware_speed_group:
+              detect: false
+              recovery: false
+            port_breakout:
+              detect: false
+              recovery: false
+            switchcard_unreachable:
+              detect: false
+              recovery: false
+            transceiver_adapter:
+              detect: false
+              recovery: false
+            xcvr_misconfigured:
+              detect: false
+              recovery: false
+            xcvr_overheat:
+              detect: false
+              recovery: false
+            xcvr_power_unsupported:
+              detect: false
+              recovery: false
+            xcvr_unsupported:
+              recovery: false
         p2p_uplinks_mtu: 9194
         digital_twin:
           act_node_type: cloudeos
@@ -451,25 +475,33 @@ keys:
             supported: true
             max_rx_queues: 6
           sflow: false
-          errdisable_detect_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-          errdisable_recovery_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-            xcvr_unsupported: false
+          errdisable_causes:
+            error_correction_encoding:
+              detect: false
+              recovery: false
+            hardware_speed_group:
+              detect: false
+              recovery: false
+            port_breakout:
+              detect: false
+              recovery: false
+            switchcard_unreachable:
+              detect: false
+              recovery: false
+            transceiver_adapter:
+              detect: false
+              recovery: false
+            xcvr_misconfigured:
+              detect: false
+              recovery: false
+            xcvr_overheat:
+              detect: false
+              recovery: false
+            xcvr_power_unsupported:
+              detect: false
+              recovery: false
+            xcvr_unsupported:
+              recovery: false
         management_interface: Management1/1
         p2p_uplinks_mtu: 9194
         digital_twin:
@@ -488,25 +520,33 @@ keys:
             supported: true
             max_rx_queues: 16
           sflow: false
-          errdisable_detect_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-          errdisable_recovery_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-            xcvr_unsupported: false
+          errdisable_causes:
+            error_correction_encoding:
+              detect: false
+              recovery: false
+            hardware_speed_group:
+              detect: false
+              recovery: false
+            port_breakout:
+              detect: false
+              recovery: false
+            switchcard_unreachable:
+              detect: false
+              recovery: false
+            transceiver_adapter:
+              detect: false
+              recovery: false
+            xcvr_misconfigured:
+              detect: false
+              recovery: false
+            xcvr_overheat:
+              detect: false
+              recovery: false
+            xcvr_power_unsupported:
+              detect: false
+              recovery: false
+            xcvr_unsupported:
+              recovery: false
         management_interface: Management1/1
         p2p_uplinks_mtu: 9194
         digital_twin:
@@ -521,25 +561,33 @@ keys:
           poe: true
           per_interface_l2_mru: false
           sflow: false
-          errdisable_detect_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-          errdisable_recovery_causes:
-            error_correction_encoding: false
-            hardware_speed_group: false
-            port_breakout: false
-            switchcard_unreachable: false
-            transceiver_adapter: false
-            xcvr_misconfigured: false
-            xcvr_overheat: false
-            xcvr_power_unsupported: false
-            xcvr_unsupported: false
+          errdisable_causes:
+            error_correction_encoding:
+              detect: false
+              recovery: false
+            hardware_speed_group:
+              detect: false
+              recovery: false
+            port_breakout:
+              detect: false
+              recovery: false
+            switchcard_unreachable:
+              detect: false
+              recovery: false
+            transceiver_adapter:
+              detect: false
+              recovery: false
+            xcvr_misconfigured:
+              detect: false
+              recovery: false
+            xcvr_overheat:
+              detect: false
+              recovery: false
+            xcvr_power_unsupported:
+              detect: false
+              recovery: false
+            xcvr_unsupported:
+              recovery: false
         management_interface: Management1
         p2p_uplinks_mtu: 9194
         digital_twin:

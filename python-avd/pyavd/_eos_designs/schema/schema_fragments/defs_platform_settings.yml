@@ -298,167 +298,254 @@ $defs:
                 Support for errdisable configuration.
                 Setting this key to `false` for the specific platform will ignore all errdisable settings for this platform.
               default: true
-            errdisable_detect_causes:
+            errdisable_causes:
               type: dict
               description: |-
-                Per-cause support for errdisable detect.
-                Causes set to `false` will be filtered from `general_settings.errdisable_settings.detect.causes`.
+                Per-cause support for errdisable detect and recovery.
+                Causes with `detect: false` will be filtered from `general_settings.errdisable_settings.detect.causes`.
+                Causes with `recovery: false` will be filtered from `general_settings.errdisable_settings.recovery.causes`.
                 The list of supported causes depends on the EOS version and the hardware platform.
               keys:
                 acl:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 arp_inspection:
-                  type: bool
-                  default: true
-                dot1x:
-                  type: bool
-                  default: true
-                dot1x_coa:
-                  type: bool
-                  default: true
-                dot1x_phone_classification:
-                  type: bool
-                  default: true
-                dot1x_session_replace:
-                  type: bool
-                  default: true
-                error_correction_encoding:
-                  type: bool
-                  default: true
-                hardware_speed_group:
-                  type: bool
-                  default: true
-                interface_speed:
-                  type: bool
-                  default: true
-                internal_error:
-                  type: bool
-                  default: true
-                link_change:
-                  type: bool
-                  default: true
-                port_breakout:
-                  type: bool
-                  default: true
-                storm_control:
-                  type: bool
-                  default: true
-                switchcard_unreachable:
-                  type: bool
-                  default: true
-                tapagg:
-                  type: bool
-                  default: true
-                transceiver_adapter:
-                  type: bool
-                  default: true
-                xcvr_misconfigured:
-                  type: bool
-                  default: true
-                xcvr_overheat:
-                  type: bool
-                  default: true
-                xcvr_power_unsupported:
-                  type: bool
-                  default: true
-            errdisable_recovery_causes:
-              type: dict
-              description: |-
-                Per-cause support for errdisable recovery.
-                Causes set to `false` will be filtered from `general_settings.errdisable_settings.recovery.causes`.
-                The list of supported causes depends on the EOS version and the hardware platform.
-              keys:
-                acl:
-                  type: bool
-                  default: true
-                arp_inspection:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 bpduguard:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
                 dot1x:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 dot1x_coa:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 dot1x_phone_classification:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 dot1x_session_replace:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 error_correction_encoding:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 hardware_speed_group:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 hitless_reload_down:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
                 interface_speed:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 internal_error:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 lacp_rate_limit:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
+                link_change:
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
                 link_flap:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
                 no_internal_vlan:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
                 port_breakout:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 portchannelguard:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
                 portsec:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
                 speed_misconfigured:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
                 storm_control:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 stuck_queue:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
                 switchcard_unreachable:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 tap_port_init:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
                 tapagg:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 transceiver_adapter:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 uplink_failure_detection:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
                 xcvr_misconfigured:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 xcvr_overheat:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 xcvr_power_unsupported:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    detect:
+                      type: bool
+                      default: true
+                    recovery:
+                      type: bool
+                      default: true
                 xcvr_unsupported:
-                  type: bool
-                  default: true
+                  type: dict
+                  keys:
+                    recovery:
+                      type: bool
+                      default: true
         management_interface:
           type: str
           default: Management1

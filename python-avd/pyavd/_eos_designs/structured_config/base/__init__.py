@@ -862,8 +862,7 @@ class AvdStructuredConfigBaseProtocol(
         Contributing data sources:
           - errdisable_settings data-model.
           - platform_settings.feature_support.errdisable fact.
-          - platform_settings.feature_support.errdisable_detect_causes fact.
-          - platform_settings.feature_support.errdisable_recovery_causes fact.
+          - platform_settings.feature_support.errdisable_causes fact.
         """
         if not (errdisable_settings := self.inputs.errdisable_settings):
             return
@@ -875,8 +874,8 @@ class AvdStructuredConfigBaseProtocol(
         if errdisable.detect.causes:
             errdisable.detect.causes = errdisable.detect.causes._filtered(
                 lambda cause: get_v2(
-                    feature_support.errdisable_detect_causes,
-                    cause.replace("-", "_"),
+                    feature_support.errdisable_causes,
+                    f"{cause.replace('-', '_')}.detect",
                     # Assume all uncovered/new causes are supported.
                     default=True,
                 )
@@ -887,8 +886,8 @@ class AvdStructuredConfigBaseProtocol(
                 cause_item
                 for cause_item in errdisable.recovery.causes
                 if get_v2(
-                    feature_support.errdisable_recovery_causes,
-                    cause_item.name.replace("-", "_"),
+                    feature_support.errdisable_causes,
+                    f"{cause_item.name.replace('-', '_')}.recovery",
                     # Assume all uncovered/new causes are supported.
                     default=True,
                 )

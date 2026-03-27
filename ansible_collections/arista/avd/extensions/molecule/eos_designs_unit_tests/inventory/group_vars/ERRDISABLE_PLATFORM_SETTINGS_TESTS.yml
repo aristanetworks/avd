@@ -10,15 +10,18 @@ custom_platform_settings:
       - custom-errdisable-platform
     feature_support:
       # Custom platform with a subset of causes explicitly disabled.
-      errdisable_detect_causes:
-        acl: false
-        dot1x: false
-        storm_control: false
-      errdisable_recovery_causes:
-        acl: false
-        bpduguard: false
-        dot1x: false
-        storm_control: false
+      errdisable_causes:
+        acl:
+          detect: false
+          recovery: false
+        bpduguard:
+          recovery: false
+        dot1x:
+          detect: false
+          recovery: false
+        storm_control:
+          detect: false
+          recovery: false
 
 type: l3leaf
 
