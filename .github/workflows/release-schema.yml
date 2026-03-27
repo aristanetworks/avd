@@ -1,0 +1,32 @@
+---
+name: "Upload schemas.json.gz on release"
+
+"on":
+  release:
+    types: [published]
+
+jobs:
+  upload-schema:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install deepmerge jinja2 jsonschema-rs pydantic pyyaml referencing
+        working-directory: python-avd
+
+      - name: Generate schemas.json.gz
+        run: scripts/build_schemas.py
+        working-directory: python-avd
+
+      - name: Upload schemas.json.gz to release
+        run: gh release upload ${{ github.ref_name }} python-avd/pyavd/_schema/schemas.json.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
