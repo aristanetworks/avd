@@ -15,7 +15,7 @@
 
 | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
 | :- | :- | :- | :- | :- |
-| 603 | 0 | 0 | 0 | 0 |
+| 619 | 0 | 0 | 0 | 0 |
 
 ### 🔌 Summary Totals Device Under Test <a id="summary-totals-device-under-test"></a>
 
@@ -51,18 +51,18 @@
 | :- | :- | :- | :- | :- | :- |
 | **AVT** | 3 | 0 | 0 | 0 | 0 |
 | **BGP** | 18 | 0 | 0 | 0 | 0 |
-| **Configuration** | 44 | 0 | 0 | 0 | 0 |
+| **Configuration** | 46 | 0 | 0 | 0 | 0 |
 | **Connectivity** | 40 | 0 | 0 | 0 | 0 |
 | **Hardware** | 42 | 0 | 0 | 0 | 0 |
-| **Interfaces** | 144 | 0 | 0 | 0 | 0 |
-| **Logging** | 22 | 0 | 0 | 0 | 0 |
+| **Interfaces** | 147 | 0 | 0 | 0 | 0 |
+| **Logging** | 23 | 0 | 0 | 0 | 0 |
 | **MLAG** | 33 | 0 | 0 | 0 | 0 |
 | **OSPF** | 16 | 0 | 0 | 0 | 0 |
 | **Path-Selection** | 3 | 0 | 0 | 0 | 0 |
-| **Routing** | 22 | 0 | 0 | 0 | 0 |
-| **Security** | 25 | 0 | 0 | 0 | 0 |
-| **STP** | 22 | 0 | 0 | 0 | 0 |
-| **System** | 154 | 0 | 0 | 0 | 0 |
+| **Routing** | 23 | 0 | 0 | 0 | 0 |
+| **Security** | 26 | 0 | 0 | 0 | 0 |
+| **STP** | 23 | 0 | 0 | 0 | 0 |
+| **System** | 161 | 0 | 0 | 0 | 0 |
 | **VXLAN** | 15 | 0 | 0 | 0 | 0 |
 
 ## 🧪 Test Results <a id="test-results"></a>
