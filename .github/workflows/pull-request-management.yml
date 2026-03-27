@@ -284,6 +284,14 @@ jobs:
           - avd_scenario: "eos_designs_negative_unit_tests"
             ansible_version: "ansible-core<2.21.0"
             python_version: "3.14"
+          # Test ansible-core milestone release
+          - avd_scenario: "eos_designs_unit_tests"
+            ansible_version: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
+            python_version: "3.14"
+          - avd_scenario: "eos_designs_negative_unit_tests"
+            ansible_version: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
+            python_version: "3.14"
+
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact
