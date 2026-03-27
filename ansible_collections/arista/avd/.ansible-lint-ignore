@@ -1,4 +1,0 @@
-# This file contains ignores rule violations for ansible-lint
-tests/inventory/eos_cli_config_gen_custom_templates/structured_config/testhost.yml yaml[indentation] skip
-tests/inventory/eos_designs_structured_config/expected_output/eos_designs_structured_config_ansible_facts.yml yaml[indentation] skip
-tests/inventory/eos_designs_structured_config/expected_output/eos_designs_structured_config_test_with_dest.yml yaml[indentation] skip
