@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
-from uuid import UUID, NAMESPACE_DNS, uuid4, uuid5
+from uuid import NAMESPACE_DNS, UUID, uuid4, uuid5
 
 from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
 from pyavd._cv.client.exceptions import CVManifestError

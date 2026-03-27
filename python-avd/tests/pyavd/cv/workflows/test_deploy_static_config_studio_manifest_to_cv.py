@@ -325,9 +325,7 @@ class TestDeployStaticConfigStudio:
         assert deployment_result.removed_static_config_containers == ["CNT_LEAF2"]
         assert not deployment_result.removed_static_config_configlets
 
-    async def test_scoped_cleanup_does_not_delete_other_manifest_containers(
-        self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult
-    ) -> None:
+    async def test_scoped_cleanup_does_not_delete_other_manifest_containers(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """
         Test that cleanup with a scope_key only removes entities belonging to the current manifest scope.
 
@@ -358,9 +356,7 @@ class TestDeployStaticConfigStudio:
         await deploy_static_config_studio_manifest_to_cv(direct_manifest, deployment_result, mock_cv_client)
 
         # Verify only the direct placeholder was deleted; the proxy placeholder must be untouched.
-        mock_cv_client.delete_configlet_container.assert_called_once_with(
-            workspace_id=deployment_result.workspace.id, assignment_id=direct_placeholder_id
-        )
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=direct_placeholder_id)
         assert deployment_result.removed_static_config_containers == ["DIRECT-ROOT-PLACEHOLDER"]
 
         # Verify the direct root container was deployed.
