@@ -10,6 +10,7 @@ dc1-svc-leaf1a,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL pro
 dc1-svc-leaf1b,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc1-wan1,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc1-wan2,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-wan3,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc2-leaf1a,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc2-leaf1b,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc2-leaf1c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -22,6 +23,7 @@ dc2-spine1,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile
 dc2-spine2,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc1-wan1,VerifyAVTSpecificPath,unset,,Verifies the Adaptive Virtual Topology (AVT) path.,AVT
 dc1-wan2,VerifyAVTSpecificPath,unset,,Verifies the Adaptive Virtual Topology (AVT) path.,AVT
+dc1-wan3,VerifyAVTSpecificPath,unset,,Verifies the Adaptive Virtual Topology (AVT) path.,AVT
 dc1-leaf1a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf1b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf1c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
@@ -33,6 +35,7 @@ dc1-svc-leaf1a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.
 dc1-svc-leaf1b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-wan1,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-wan2,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
+dc1-wan3,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
@@ -52,6 +55,7 @@ dc1-svc-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP pee
 dc1-svc-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-wan1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-wan2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
+dc1-wan3,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
@@ -71,6 +75,7 @@ dc1-svc-leaf1a,VerifyCoredump,unset,,Verifies there are no core dump files.,Syst
 dc1-svc-leaf1b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-wan1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-wan2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
+dc1-wan3,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
@@ -86,16 +91,19 @@ dc1-leaf1b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply f
 dc1-leaf2a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-wan1,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-wan2,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
+dc1-wan3,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-leaf2a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-wan1,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-wan2,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
+dc1-wan3,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf2a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-wan1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-wan2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
+dc1-wan3,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
@@ -107,6 +115,7 @@ dc1-svc-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is 
 dc1-svc-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-wan1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-wan2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-wan3,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
@@ -144,6 +153,7 @@ dc1-svc-leaf1a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packe
 dc1-svc-leaf1b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-wan1,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-wan2,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
+dc1-wan3,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf1a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf1b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf1c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
@@ -165,6 +175,7 @@ dc1-svc-leaf1a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interface
 dc1-svc-leaf1b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc1-wan1,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc1-wan2,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
+dc1-wan3,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc2-leaf1a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc2-leaf1b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc2-leaf1c,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -186,6 +197,7 @@ dc1-svc-leaf1a,VerifyInterfaceErrors,unset,,Verifies that the interfaces error c
 dc1-svc-leaf1b,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc1-wan1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc1-wan2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
+dc1-wan3,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-leaf1a,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-leaf1b,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-leaf1c,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
@@ -207,6 +219,7 @@ dc1-svc-leaf1a,VerifyInterfaceUtilization,unset,,Verifies that the utilization o
 dc1-svc-leaf1b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-wan1,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-wan2,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
+dc1-wan3,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf1a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf1b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf1c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
@@ -228,6 +241,7 @@ dc1-svc-leaf1a,VerifyInterfacesStatus,unset,,Verifies the operational states of 
 dc1-svc-leaf1b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-wan1,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-wan2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
+dc1-wan3,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf1a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf1b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf1c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
@@ -243,6 +257,7 @@ dc1-leaf1b,VerifyInventory,unset,,Verifies the physical hardware inventory of th
 dc1-leaf2a,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-wan1,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-wan2,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
+dc1-wan3,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
 dc1-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf1c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -254,6 +269,7 @@ dc1-svc-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the 
 dc1-svc-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-wan1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-wan2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
+dc1-wan3,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -275,6 +291,7 @@ dc1-svc-leaf1a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages 
 dc1-svc-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-wan1,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-wan2,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
+dc1-wan3,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
@@ -296,6 +313,7 @@ dc1-svc-leaf1a,VerifyMaintenance,unset,,Verifies that the device is not currentl
 dc1-svc-leaf1b,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-wan1,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-wan2,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
+dc1-wan3,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf1a,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf1b,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf1c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
@@ -317,6 +335,7 @@ dc1-svc-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utiliz
 dc1-svc-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
+dc1-wan3,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
@@ -371,6 +390,7 @@ dc1-svc-leaf1a,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-svc-leaf1b,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-wan1,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-wan2,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
+dc1-wan3,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf1a,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf1b,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf1c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
@@ -422,6 +442,7 @@ dc1-svc-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability be
 dc1-svc-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-wan1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-wan2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
+dc1-wan3,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf2a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
@@ -441,6 +462,7 @@ dc1-svc-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the de
 dc1-svc-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-wan1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-wan2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-wan3,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -462,6 +484,7 @@ dc1-svc-leaf1a,VerifyRoutingProtocolModel,unset,,Verifies the configured routing
 dc1-svc-leaf1b,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-wan1,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-wan2,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
+dc1-wan3,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf1a,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf1b,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf1c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
@@ -483,6 +506,7 @@ dc1-svc-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference b
 dc1-svc-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-wan1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-wan2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-wan3,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf1c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
@@ -504,6 +528,7 @@ dc1-svc-leaf1a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU 
 dc1-svc-leaf1b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-wan1,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-wan2,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
+dc1-wan3,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-leaf1a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-leaf1b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-leaf1c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
@@ -516,8 +541,10 @@ dc2-spine1,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-spine2,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-wan1,VerifySpecificIPSecConn,unset,,Verifies the IPv4 security connections.,Security
 dc1-wan2,VerifySpecificIPSecConn,unset,,Verifies the IPv4 security connections.,Security
+dc1-wan3,VerifySpecificIPSecConn,unset,,Verifies the IPv4 security connections.,Security
 dc1-wan1,VerifySpecificPath,unset,,Verifies the DPS path and telemetry state of an IPv4 peer.,Path-Selection
 dc1-wan2,VerifySpecificPath,unset,,Verifies the DPS path and telemetry state of an IPv4 peer.,Path-Selection
+dc1-wan3,VerifySpecificPath,unset,,Verifies the DPS path and telemetry state of an IPv4 peer.,Path-Selection
 dc1-leaf1a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-leaf2a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-leaf1a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
@@ -525,16 +552,19 @@ dc1-leaf1b,VerifyTemperature,unset,,Verifies if the device temperature is within
 dc1-leaf2a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
 dc1-wan1,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
 dc1-wan2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-wan3,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
 dc1-leaf1a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf1b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf2a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-wan1,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-wan2,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
+dc1-wan3,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf1a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf1b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf2a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-wan1,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-wan2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
+dc1-wan3,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-leaf1a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-leaf1b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-leaf1c,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
@@ -543,6 +573,7 @@ dc1-svc-leaf1a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config
 dc1-svc-leaf1b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-wan1,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-wan2,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
+dc1-wan3,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf1a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf1b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
@@ -560,6 +591,7 @@ dc1-svc-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configurat
 dc1-svc-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-wan1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-wan2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
+dc1-wan3,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
