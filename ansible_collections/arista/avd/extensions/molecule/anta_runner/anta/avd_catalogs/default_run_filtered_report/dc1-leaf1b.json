@@ -71,6 +71,11 @@
             "port": "Ethernet8",
             "neighbor_device": "dc1-leaf1c",
             "neighbor_port": "Ethernet2"
+          },
+          {
+            "port": "Ethernet18",
+            "neighbor_device": "dc1-wan3",
+            "neighbor_port": "Ethernet2"
           }
         ],
         "require_fqdn": false
@@ -88,6 +93,13 @@
           ]
         },
         "hosts": [
+          {
+            "destination": "10.255.253.11",
+            "source": "10.255.253.10",
+            "description": "dc1-wan3_Ethernet2",
+            "vrf": "default",
+            "repeat": 1
+          },
           {
             "destination": "10.255.255.3",
             "source": "10.255.255.2",
@@ -163,6 +175,13 @@
             "destination": "10.255.0.5",
             "source": "10.255.0.4",
             "description": "dc1-leaf2a",
+            "vrf": "default",
+            "repeat": 1
+          },
+          {
+            "destination": "10.255.2.3",
+            "source": "10.255.0.4",
+            "description": "dc1-wan3",
             "vrf": "default",
             "repeat": 1
           },
@@ -247,6 +266,12 @@
           {
             "destination": "10.255.1.96",
             "description": "dc1-leaf1a_Vlan4093",
+            "vrf": "default",
+            "repeat": 1
+          },
+          {
+            "destination": "10.255.253.11",
+            "description": "dc1-wan3_Ethernet2",
             "vrf": "default",
             "repeat": 1
           },
@@ -481,6 +506,10 @@
             "status": "up"
           },
           {
+            "name": "Ethernet18",
+            "status": "up"
+          },
+          {
             "name": "Loopback0",
             "status": "up"
           },
@@ -640,6 +669,10 @@
             "vrf": "default"
           },
           {
+            "peer_address": "10.255.253.11",
+            "vrf": "default"
+          },
+          {
             "peer_address": "10.255.255.3",
             "vrf": "default"
           },
@@ -701,6 +734,10 @@
           },
           {
             "prefix": "10.255.1.5/32",
+            "vrf": "default"
+          },
+          {
+            "prefix": "10.255.2.3/32",
             "vrf": "default"
           },
           {
