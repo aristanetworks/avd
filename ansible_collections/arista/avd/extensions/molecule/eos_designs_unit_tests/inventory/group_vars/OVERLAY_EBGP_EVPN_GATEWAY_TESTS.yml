@@ -16,7 +16,7 @@ l3leaf:
     - name: evpn-gateway-all-active-mh-gw
       id: 1
       filter:
-        tenants: [ EVPN_GATEWAY_TESTS ]
+        tenants: [EVPN_GATEWAY_TESTS]
       mgmt_ip: 192.168.0.204/24
       evpn_route_servers: [evpn-gateway-l2-evpn-role-server]
       evpn_gateway:
@@ -41,7 +41,7 @@ l3leaf:
     - name: evpn-gateway-all-active-mh-gw-enabled-d-path-false
       id: 2
       filter:
-        tenants: [ EVPN_GATEWAY_TESTS ]
+        tenants: [EVPN_GATEWAY_TESTS]
       mgmt_ip: 192.168.0.205/24
       evpn_route_servers: [evpn-gateway-l2-evpn-role-server]
       evpn_gateway:
@@ -63,7 +63,7 @@ l3leaf:
     - name: evpn-gateway-l2-evpn-role-server
       id: 3
       filter:
-        tenants: [ EVPN_GATEWAY_TESTS ]
+        tenants: [EVPN_GATEWAY_TESTS]
       mgmt_ip: 192.168.0.206/24
       evpn_role: server
       evpn_gateway:
@@ -77,7 +77,7 @@ l3leaf:
     - name: evpn-gateway-l2-l3-disabled
       id: 4
       filter:
-        tenants: [ EVPN_GATEWAY_TESTS ]
+        tenants: [EVPN_GATEWAY_TESTS]
       mgmt_ip: 192.168.0.207/24
       evpn_role: server
 
@@ -86,7 +86,7 @@ l3leaf:
       mgmt_ip: 192.168.100.101/24
       evpn_route_servers: [evpn-gateway-l2-l3-disabled]
       filter:
-        tenants: [ L2_MULTI_DOMAIN_DISABLED, L2_MULTI_DOMAIN_ENABLED ]
+        tenants: [L2_MULTI_DOMAIN_DISABLED, L2_MULTI_DOMAIN_ENABLED]
       bgp_as: 65001
       evpn_gateway:
         remote_peers:

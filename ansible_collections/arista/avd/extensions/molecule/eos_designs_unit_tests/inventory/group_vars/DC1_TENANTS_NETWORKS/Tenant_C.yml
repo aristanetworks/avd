@@ -109,19 +109,19 @@ tenant_c:
               multiplier: 3
           - ip_address: BEBA::C0CA:C07A
             peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
-            nodes: [ dc1-bl2b ]
+            nodes: [dc1-bl2b]
             description: test_ipv6
           - ip_address: 2.2.2.2
             peer_group: Tenant_C_BGP_PEER_GROUP
-            nodes: [ dc1-bl2a ]
+            nodes: [dc1-bl2a]
             description: test_bgp_peer_group_without_nodes
           - ip_address: 2.2.2.3
             peer_group: Tenant_C_BGP_PEER_GROUP2
-            nodes: [ dc1-bl2a ]
+            nodes: [dc1-bl2a]
             description: test_bgp_peer_group_without_nodes_2nd_time
           - ip_address: 2.2.2.3
             peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
-            nodes: [ dc1-bl2b ]
+            nodes: [dc1-bl2b]
             description: test_duplicate_peer_ip_address
       # Test for VRF across multiple tenants with MLAG IBGP peering enabled
       # This VRF is also defined in Tenant_B to test that the same VRF name
