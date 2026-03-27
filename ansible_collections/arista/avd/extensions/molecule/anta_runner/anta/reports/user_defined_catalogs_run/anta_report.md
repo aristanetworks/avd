@@ -32,6 +32,7 @@
 | **dc1-svc-leaf1b** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc1-wan1** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc1-wan2** | 3 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-wan3** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1a** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1b** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1c** | 3 | 0 | 0 | 0 | 0 | - | - |
@@ -93,6 +94,9 @@
 | dc1-wan2 | Software | VerifyEOSExtensions | Verifies that all EOS extensions installed on the device are enabled for boot persistence. | Unset | - |
 | dc1-wan2 | Software | VerifyEOSVersion | Verifies the EOS version of the device. | Unset | - |
 | dc1-wan2 | Software | VerifyTerminAttrVersion | Verifies the TerminAttr version of the device. | Unset | - |
+| dc1-wan3 | Software | VerifyEOSExtensions | Verifies that all EOS extensions installed on the device are enabled for boot persistence. | Unset | - |
+| dc1-wan3 | Software | VerifyEOSVersion | Verifies the EOS version of the device. | Unset | - |
+| dc1-wan3 | Software | VerifyTerminAttrVersion | Verifies the TerminAttr version of the device. | Unset | - |
 | dc2-leaf1a | Software | VerifyEOSExtensions | Verifies that all EOS extensions installed on the device are enabled for boot persistence. | Unset | - |
 | dc2-leaf1a | Software | VerifyEOSVersion | Verifies the EOS version of the device. | Unset | - |
 | dc2-leaf1a | Software | VerifyTerminAttrVersion | Verifies the TerminAttr version of the device. | Unset | - |

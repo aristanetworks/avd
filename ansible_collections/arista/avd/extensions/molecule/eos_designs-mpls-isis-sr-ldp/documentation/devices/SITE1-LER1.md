@@ -150,6 +150,8 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 10 | TENANT_A_L2_SERVICE | - |
 | 20 | TENANT_A_L2_SERVICE | - |
+| 110 | TENANT_C_L2_SERVICE | - |
+| 210 | TENANT_C_L2_SERVICE | - |
 | 2020 | TENANT_B_INSIDE_FW | - |
 
 ### VLANs Device Configuration
@@ -161,6 +163,12 @@ vlan 10
 !
 vlan 20
    name TENANT_A_L2_SERVICE
+!
+vlan 110
+   name TENANT_C_L2_SERVICE
+!
+vlan 210
+   name TENANT_C_L2_SERVICE
 !
 vlan 2020
    name TENANT_B_INSIDE_FW
@@ -728,15 +736,17 @@ ASN Notation: asplain
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
 | 10 | 100.70.0.5:10010 | 65000:10010 | - | - | learned |
 | 20 | 100.70.0.5:123456 | 65000:123456 | - | - | learned |
+| 110 | 100.70.0.5:10110 | 65000:10110 | - | - | learned |
+| 210 | 100.70.0.5:123456 | 65000:123456 | - | - | learned |
 | 2020 | 100.70.0.5:22020 | 65000:22020 | - | - | learned |
 
 #### Router BGP VPWS Instances
 
 | Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
 | -------- | ------------------- | ----------------- | ----------------- | ---------- | --- | ---------- | -------- | --------- |
-| TENANT_A | 100.70.0.5:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_port_based | 16 | 27 |
-| TENANT_A | 100.70.0.5:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_with_subinterfaces_100 | 119 | 129 |
-| TENANT_A | 100.70.0.5:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_with_subinterfaces_101 | 120 | 130 |
+| TENANT_A | 100.70.0.5:1000 | 65000:1000 | True | True | 1500 | TEN_A_site1_site2_eline_port_based | 16 | 27 |
+| TENANT_A | 100.70.0.5:1000 | 65000:1000 | True | True | 1500 | TEN_A_site1_site2_eline_with_subinterfaces_100 | 119 | 129 |
+| TENANT_A | 100.70.0.5:1000 | 65000:1000 | True | True | 1500 | TEN_A_site1_site2_eline_with_subinterfaces_101 | 120 | 130 |
 | TENANT_B | 100.70.0.5:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1000 | 31000 | 51000 |
 | TENANT_B | 100.70.0.5:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1001 | 31001 | 51001 |
 | TENANT_B | 100.70.0.5:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1002 | 31002 | 51002 |
@@ -781,6 +791,16 @@ router bgp 65000
       route-target both 65000:123456
       redistribute learned
    !
+   vlan 110
+      rd 100.70.0.5:10110
+      route-target both 65000:10110
+      redistribute learned
+   !
+   vlan 210
+      rd 100.70.0.5:123456
+      route-target both 65000:123456
+      redistribute learned
+   !
    vlan 2020
       rd 100.70.0.5:22020
       route-target both 65000:22020
@@ -789,6 +809,9 @@ router bgp 65000
    vpws TENANT_A
       rd 100.70.0.5:1000
       route-target import export evpn 65000:1000
+      mpls control-word
+      label flow
+      mtu 1500
       !
       pseudowire TEN_A_site1_site2_eline_port_based
          evpn vpws id local 16 remote 27

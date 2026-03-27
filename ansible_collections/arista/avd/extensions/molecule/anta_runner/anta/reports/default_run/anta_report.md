@@ -15,7 +15,7 @@
 
 | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
 | :- | :- | :- | :- | :- |
-| 587 | 0 | 0 | 0 | 0 |
+| 603 | 0 | 0 | 0 | 0 |
 
 ### 🔌 Summary Totals Device Under Test <a id="summary-totals-device-under-test"></a>
 
@@ -32,6 +32,7 @@
 | **dc1-svc-leaf1b** | 27 | 0 | 0 | 0 | 0 | - | - |
 | **dc1-wan1** | 32 | 0 | 0 | 0 | 0 | - | - |
 | **dc1-wan2** | 34 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-wan3** | 32 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1a** | 29 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1b** | 29 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1c** | 21 | 0 | 0 | 0 | 0 | - | - |
@@ -48,21 +49,21 @@
 
 | Test Category | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
 | :- | :- | :- | :- | :- | :- |
-| **AVT** | 2 | 0 | 0 | 0 | 0 |
-| **BGP** | 17 | 0 | 0 | 0 | 0 |
+| **AVT** | 3 | 0 | 0 | 0 | 0 |
+| **BGP** | 18 | 0 | 0 | 0 | 0 |
 | **Configuration** | 44 | 0 | 0 | 0 | 0 |
-| **Connectivity** | 38 | 0 | 0 | 0 | 0 |
-| **Hardware** | 35 | 0 | 0 | 0 | 0 |
-| **Interfaces** | 142 | 0 | 0 | 0 | 0 |
+| **Connectivity** | 40 | 0 | 0 | 0 | 0 |
+| **Hardware** | 42 | 0 | 0 | 0 | 0 |
+| **Interfaces** | 144 | 0 | 0 | 0 | 0 |
 | **Logging** | 22 | 0 | 0 | 0 | 0 |
 | **MLAG** | 33 | 0 | 0 | 0 | 0 |
 | **OSPF** | 16 | 0 | 0 | 0 | 0 |
-| **Path-Selection** | 2 | 0 | 0 | 0 | 0 |
+| **Path-Selection** | 3 | 0 | 0 | 0 | 0 |
 | **Routing** | 22 | 0 | 0 | 0 | 0 |
-| **Security** | 24 | 0 | 0 | 0 | 0 |
+| **Security** | 25 | 0 | 0 | 0 | 0 |
 | **STP** | 22 | 0 | 0 | 0 | 0 |
 | **System** | 154 | 0 | 0 | 0 | 0 |
-| **VXLAN** | 14 | 0 | 0 | 0 | 0 |
+| **VXLAN** | 15 | 0 | 0 | 0 | 0 |
 
 ## 🧪 Test Results <a id="test-results"></a>
 
@@ -377,6 +378,38 @@
 | dc1-wan2 | System | VerifyNTP | Verifies if NTP is synchronised. | Unset | - |
 | dc1-wan2 | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc1-wan2 | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | Unset | - |
+| dc1-wan3 | AVT | VerifyAVTSpecificPath | Verifies the Adaptive Virtual Topology (AVT) path. | Unset | - |
+| dc1-wan3 | BGP | VerifyBGPPeerSession | Verifies the session state of BGP peers. | Unset | - |
+| dc1-wan3 | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
+| dc1-wan3 | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
+| dc1-wan3 | Connectivity | VerifyLLDPNeighbors | Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors. | Unset | - |
+| dc1-wan3 | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
+| dc1-wan3 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Unset | - |
+| dc1-wan3 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Unset | - |
+| dc1-wan3 | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | Unset | - |
+| dc1-wan3 | Hardware | VerifyInventory | Verifies the physical hardware inventory of the device. | Unset | - |
+| dc1-wan3 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | Unset | - |
+| dc1-wan3 | Hardware | VerifyTransceiversManufacturers | Verifies if all the transceivers come from approved manufacturers. | Unset | - |
+| dc1-wan3 | Hardware | VerifyTransceiversTemperature | Verifies if all the transceivers are operating at an acceptable temperature. | Unset | - |
+| dc1-wan3 | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | Unset | - |
+| dc1-wan3 | Interfaces | VerifyInterfaceErrDisabled | Verifies there are no interfaces in the errdisabled state. | Unset | - |
+| dc1-wan3 | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | Unset | - |
+| dc1-wan3 | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
+| dc1-wan3 | Interfaces | VerifyInterfacesStatus | Verifies the operational states of specified interfaces to ensure they match expected configurations. | Unset | - |
+| dc1-wan3 | Logging | VerifyLoggingErrors | Verifies there are no syslog messages with a severity of ERRORS or higher. | Unset | - |
+| dc1-wan3 | Path-Selection | VerifySpecificPath | Verifies the DPS path and telemetry state of an IPv4 peer. | Unset | - |
+| dc1-wan3 | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
+| dc1-wan3 | Security | VerifyAPIHttpsSSL | Verifies if the eAPI has a valid SSL profile. | Unset | - |
+| dc1-wan3 | Security | VerifySpecificIPSecConn | Verifies the IPv4 security connections. | Unset | - |
+| dc1-wan3 | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
+| dc1-wan3 | System | VerifyAgentLogs | Verifies there are no agent crash reports. | Unset | - |
+| dc1-wan3 | System | VerifyCoredump | Verifies there are no core dump files. | Unset | - |
+| dc1-wan3 | System | VerifyFileSystemUtilization | Verifies that no partition is utilizing more than 75% of its disk space. | Unset | - |
+| dc1-wan3 | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
+| dc1-wan3 | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
+| dc1-wan3 | System | VerifyNTP | Verifies if NTP is synchronised. | Unset | - |
+| dc1-wan3 | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
+| dc1-wan3 | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | Unset | - |
 | dc2-leaf1a | BGP | VerifyBGPPeerSession | Verifies the session state of BGP peers. | Unset | - |
 | dc2-leaf1a | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
 | dc2-leaf1a | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
