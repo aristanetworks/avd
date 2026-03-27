@@ -285,8 +285,8 @@ class RouterBgpMixin(Protocol):
                 bgp_vrf.route_targets.field_import.append_new(
                     address_family="evpn", route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ImportItem.RouteTargets([vrf_rt])
                 )
-            case (False, False):
-                pass  # No import route-target generated.
+            case _:
+                pass  # No import route-target generated (False, False).
 
         match (vrf.rt_export, vrf.rt_export_evpn_remote):
             case (True, True):
@@ -297,8 +297,8 @@ class RouterBgpMixin(Protocol):
                 bgp_vrf.route_targets.export.append_new(
                     address_family="evpn", route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ExportItem.RouteTargets([vrf_rt])
                 )
-            case (False, False):
-                pass  # No export route-target generated.
+            case _:
+                pass  # No export route-target generated for (False, False).
 
     def _update_router_bgp_vrf_evpn_or_mpls_cfg(
         self: AvdStructuredConfigNetworkServicesProtocol,

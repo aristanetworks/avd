@@ -397,7 +397,7 @@ class RouterBgpMixin(Protocol):
                     and self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enable_d_path
                 ):
                     self.structured_config.router_bgp.bgp.bestpath.d_path = True
-            if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode != "rd-rt-rewrite":
+            if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "next-hop-self":
                 self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes._update(
                     enable=True, inter_domain=self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain
                 )
