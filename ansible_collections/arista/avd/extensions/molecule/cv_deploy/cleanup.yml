@@ -1,5 +1,5 @@
 ---
-- name: "{{ test_id | upper }} Cleanup - Configuration deployment with CVP"
+- name: "Cleanup - Configuration deployment with CVP - {{ test_id | upper }}"
   hosts: SITE1_FABRIC
   connection: local
   gather_facts: false
@@ -18,7 +18,7 @@
     cv_common_pattern: "avd_cv-deploy_{{ test_id }}"
 
   tasks:
-    - name: "{{ test_id | upper }} Banner"
+    - name: "Banner - {{ test_id | upper }}"
       # Force task to run even if we used tags matching specific tests
       tags: ["always"]
       run_once: true
@@ -28,14 +28,14 @@
           - "### STARTING {{ test_id[:83] | upper }} ###"
           - "{{ ('#' * (17 + test_id | length))[:100] }}"
 
-    - name: "{{ test_id | upper }} {{ 'Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate' }} molecule execution ID"
+    - name: "{{ (test_id | upper) + ' - ' + ('Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate') + ' molecule execution ID' }}"
       # Force task to run even if we used tags matching specific tests
       tags: ["always"]
       run_once: true
       ansible.builtin.set_fact:
         r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
 
-    - name: "{{ test_id | upper }} Cleanup"
+    - name: "Cleanup - {{ test_id | upper }}"
       # Force task to run even if we used tags matching specific tests
       tags: ["always"]
       run_once: true
@@ -54,7 +54,7 @@
         cv_run_change_control: true
         cv_strict_tags: true
 
-    - name: "{{ test_id | upper }} Display CVP result"
+    - name: "Display CVP result - {{ test_id | upper }}"
       # Force task to run even if we used tags matching specific tests
       tags: ["always"]
       run_once: true
