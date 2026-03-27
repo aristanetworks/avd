@@ -71,6 +71,11 @@
             "port": "Ethernet8",
             "neighbor_device": "dc1-leaf1c",
             "neighbor_port": "Ethernet1"
+          },
+          {
+            "port": "Ethernet18",
+            "neighbor_device": "dc1-wan3",
+            "neighbor_port": "Ethernet1"
           }
         ],
         "require_fqdn": false
@@ -88,6 +93,13 @@
           ]
         },
         "hosts": [
+          {
+            "destination": "10.255.253.9",
+            "source": "10.255.253.8",
+            "description": "dc1-wan3_Ethernet1",
+            "vrf": "default",
+            "repeat": 1
+          },
           {
             "destination": "10.255.255.0",
             "source": "10.255.255.1",
@@ -323,6 +335,10 @@
             "status": "up"
           },
           {
+            "name": "Ethernet18",
+            "status": "up"
+          },
+          {
             "name": "Ethernet33",
             "status": "up"
           },
@@ -499,6 +515,10 @@
           },
           {
             "peer_address": "10.255.1.97",
+            "vrf": "default"
+          },
+          {
+            "peer_address": "10.255.253.9",
             "vrf": "default"
           },
           {
