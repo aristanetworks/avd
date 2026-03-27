@@ -60161,6 +60161,7 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool | None
                         always: bool | None
+                        """Always advertise a default route to this peer."""
                         route_map: str | None
                         """Route-map name."""
 
@@ -60181,7 +60182,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    always: always
+                                    always: Always advertise a default route to this peer.
                                     route_map: Route-map name.
 
                                 """
@@ -66558,6 +66559,7 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
                             enabled: bool | None
                             always: bool | None
+                            """Always advertise a default route to this peer."""
                             route_map: str | None
                             """Route-map name."""
 
@@ -66578,7 +66580,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        always: always
+                                        always: Always advertise a default route to this peer.
                                         route_map: Route-map name.
 
                                     """
