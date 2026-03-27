@@ -2,6 +2,9 @@ aaa_root:
   disabled: true
 config_end: true
 dns_domain: dc1.local
+dps_interfaces:
+- name: Dps1
+  description: Interface for testing errordisable test
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -218,6 +221,9 @@ metadata:
     min_line_cards: 0
     transceiver_manufacturers:
     - Third-party vendor
+  interfaces:
+    errdisable:
+      only_avd_interfaces: true
 mlag_configuration:
   domain_id: DC1_L3_LEAF1
   local_interface: Vlan4094
@@ -539,6 +545,9 @@ static_routes:
   prefix: 0.0.0.0/0
   next_hop: 172.16.1.1
 transceiver_qsfp_default_mode_4x10: true
+tunnel_interfaces:
+- name: Tunnel1
+  description: Interface for testing errordisable test
 virtual_source_nat_vrfs:
 - name: VRF10
   ip_address: 10.255.10.3
