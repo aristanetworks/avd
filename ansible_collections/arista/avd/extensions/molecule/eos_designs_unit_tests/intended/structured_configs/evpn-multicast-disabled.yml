@@ -768,9 +768,10 @@ router_multicast:
 service_routing_protocols_model: multi-agent
 standard_access_lists:
 - name: RPS_ACL_VRF_Tenant_E_2
-  sequence_numbers:
+  entries:
   - sequence: 10
-    action: permit 232.0.136.0/21
+    action: permit
+    source: 232.0.136.0/21
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
