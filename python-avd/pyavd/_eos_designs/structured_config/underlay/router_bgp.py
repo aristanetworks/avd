@@ -37,7 +37,7 @@ class RouterBgpMixin(Protocol):
         if not self._underlay_p2p_links:
             return
         # Adding the peer-group as we know we either have neighbors or neighbor_interfaces to configure
-        self.shared_utils.set_once_peer_group_ipv4_underlay_peers(self.structured_config, self.custom_structured_configs)
+        self.structured_config_utils.set_once_peer_group_ipv4_underlay_peers()
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:
