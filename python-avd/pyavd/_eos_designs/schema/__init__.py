@@ -60162,6 +60162,7 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool | None
                         always: bool | None
                         route_map: str | None
+                        """Route-map name."""
 
                         if TYPE_CHECKING:
 
@@ -60181,7 +60182,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     enabled: enabled
                                     always: always
-                                    route_map: route_map
+                                    route_map: Route-map name.
 
                                 """
 
@@ -66558,6 +66559,7 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool | None
                             always: bool | None
                             route_map: str | None
+                            """Route-map name."""
 
                             if TYPE_CHECKING:
 
@@ -66577,7 +66579,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         always: always
-                                        route_map: route_map
+                                        route_map: Route-map name.
 
                                     """
 

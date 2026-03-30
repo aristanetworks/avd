@@ -15743,6 +15743,7 @@ keys:
                   type: bool
                 route_map:
                   type: str
+                  description: Route-map name.
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -17076,6 +17077,7 @@ keys:
                     always:
                       type: bool
                     route_map:
+                      description: Route-map name.
                       type: str
                 prefix_list_in:
                   type: str

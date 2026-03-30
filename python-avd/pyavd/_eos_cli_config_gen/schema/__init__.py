@@ -41009,6 +41009,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 enabled: bool | None
                 always: bool | None
                 route_map: str | None
+                """Route-map name."""
 
                 if TYPE_CHECKING:
 
@@ -41028,7 +41029,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             enabled: enabled
                             always: always
-                            route_map: route_map
+                            route_map: Route-map name.
 
                         """
 
@@ -44802,6 +44803,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"always": {"type": bool}, "route_map": {"type": str}}
                     always: bool | None
                     route_map: str | None
+                    """Route-map name."""
 
                     if TYPE_CHECKING:
 
@@ -44814,7 +44816,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 always: always
-                                route_map: route_map
+                                route_map: Route-map name.
 
                             """
 
