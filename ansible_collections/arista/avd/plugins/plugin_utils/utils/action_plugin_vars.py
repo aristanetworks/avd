@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 from ansible.vars.hostvars import HostVarsVars
 
-from .constants import ANSIBLE_ABOVE_2_19
+from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBLE_ABOVE_2_19
 
 if TYPE_CHECKING:  # pragma: no cover
     from ansible.inventory.manager import InventoryManager

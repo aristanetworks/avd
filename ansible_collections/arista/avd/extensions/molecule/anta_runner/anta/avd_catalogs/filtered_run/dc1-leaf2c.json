@@ -39,10 +39,11 @@
         "neighbors": [
           {
             "port": "Ethernet1",
-            "neighbor_device": "dc1-leaf2a.dc1.local",
+            "neighbor_device": "dc1-leaf2a",
             "neighbor_port": "Ethernet8"
           }
-        ]
+        ],
+        "require_fqdn": false
       }
     }
   ],

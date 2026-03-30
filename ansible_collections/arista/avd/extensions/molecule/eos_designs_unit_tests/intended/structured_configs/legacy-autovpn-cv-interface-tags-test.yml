@@ -117,20 +117,6 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
     - extcommunity soo 192.168.31.3:0 additive
-- name: RM-EVPN-SOO-IN
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - extcommunity ECL-EVPN-SOO
-  - sequence: 20
-    type: permit
-- name: RM-EVPN-SOO-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    set:
-    - extcommunity soo 192.168.31.3:0 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -152,44 +138,15 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: WAN-OVERLAY-PEERS
-    metadata:
-      type: wan
-    remote_as: '65000'
-    update_source: Dps1
-    bfd: true
-    bfd_timers:
-      interval: 1000
-      min_rx: 1000
-      multiplier: 10
-    password: htm4AZe9mIQOO1uiMuGgYQ==
-    send_community: all
-    maximum_routes: 0
-    ttl_maximum_hops: 1
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
-      route_map_in: RM-EVPN-SOO-IN
-      route_map_out: RM-EVPN-SOO-OUT
-      encapsulation: path-selection
-  address_family_ipv4:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: false
   address_family_path_selection:
     bgp:
       additional_paths:
         receive: true
         send: any
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
   vrfs:
   - name: default
     rd: 192.168.31.3:1

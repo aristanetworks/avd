@@ -4,7 +4,10 @@
 from __future__ import annotations
 
 import asyncio
+import platform
 import ssl
+import sys
+from importlib.metadata import PackageNotFoundError, version
 from typing import TYPE_CHECKING, Protocol
 
 from grpclib.client import Channel
@@ -107,7 +110,7 @@ class CVClientProtocol(
 
                 # Create the gRPC protocol using the proxy socket
                 _, protocol = await loop.create_connection(
-                    lambda: channel._protocol_factory(),
+                    channel._protocol_factory,
                     sock=proxy_sock,
                     ssl=channel._ssl,
                     server_hostname=self._servers[0] if ssl_context else None,
@@ -190,7 +193,7 @@ class CVClientProtocol(
         try:
             response = get(  # noqa: S113 TODO: Add configurable timeout
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
-                headers={"Authorization": f"Bearer {self._token}"},
+                headers={"Authorization": f"Bearer {self._token}", "User-Agent": self._get_user_agent()},
                 verify=self._verify_certs,
                 proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
                 json={},
@@ -205,6 +208,37 @@ class CVClientProtocol(
         except (KeyError, JSONDecodeError) as e:
             msg = f"Unable to get version from CloudVision server. Got {response.text if response else 'No response'}"
             raise CVClientException(msg) from e
+
+    def _get_user_agent(self) -> str:
+        """
+        Build a user agent string with enriched version information.
+
+        Format: python/x.y.z pyavd/x.y.z aristaproto/x.y.z grpclib/x.y.z python-socks/x.y.z requests/x.y.z
+        """
+        user_agent_parts: list[str] = []
+
+        # Process Python version
+        if python_version := platform.python_version():
+            user_agent_parts.append(f"python/{python_version}")
+
+        # Process pyavd version
+        try:
+            pyavd_version = version("pyavd")
+        # Fallback to __version__ avoiding cyclic import
+        except PackageNotFoundError:
+            pyavd_version = getattr(sys.modules.get("pyavd"), "__version__", None)
+
+        if pyavd_version:
+            user_agent_parts.append(f"pyavd/{pyavd_version}")
+
+        # Process optional Python dependencies
+        for dependent_package in ["aristaproto", "grpclib", "python-socks", "requests"]:
+            try:
+                user_agent_parts.append(f"{dependent_package}/{version(dependent_package)}")
+            except PackageNotFoundError:  # noqa: PERF203
+                continue
+
+        return " ".join(user_agent_parts)
 
 
 class CVClient(CVClientProtocol):

@@ -452,3 +452,18 @@ keys:
         type: bool
         description: |
           Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.
+      interfaces:
+        type: dict
+        description: |-
+          Interface validation settings.
+        keys:
+          errdisable:
+            type: dict
+            description: |-
+              Settings for the VerifyInterfaceErrDisabled test.
+            keys:
+              only_avd_interfaces:
+                type: bool
+                description: |-
+                  Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+                default: false

@@ -10,6 +10,10 @@ tenant_a:
         vrf_id: 9 # Check that RD and RT will use this number for this VRF. VNI should still respect vrf_vni
         vtep_diagnostic:
           loopback: 100
+          # Defining loopback_ip_pools should not change the configuration since defined pod is not matching pod_name.
+          loopback_ip_pools:
+            - pod: TENANT_NETWORKS_POD
+              ipv4_pool: 10.101.102.0/24
           loopback_ip_range: 10.255.1.0/24
         redistribute_mlag_ibgp_peering_vrfs: false
         svis:
@@ -59,20 +63,20 @@ tenant_a:
           enabled: true
           router_id: 10.10.10.10
           nodes:
-            - DC1-LEAF1A
+            - dc1-leaf1a
         aggregate_addresses:
           - prefix: 10.1.1.0/8
             advertise_only: true
             nodes: [DC1-LEAF1.*$]
           - prefix: 10.2.1.0/8
-            nodes: [DC1-LEAF1A]
+            nodes: [dc1-leaf1a]
           - prefix: 10.12.1.0/8
             as_set: true
             summary_only: true
             attribute_map: RM-ATTRIBUTE
             match_map: RM-MATCH
             advertise_only: true
-            nodes: [DC1-LEAF2A]
+            nodes: [dc1-leaf2a]
       - name: Tenant_A_WEB_Zone
         vrf_vni: 11
         # Testing multiple pools and ranges to represent 172.31.11.0/24
@@ -121,8 +125,10 @@ tenant_a:
             tags: ['erp2']
             enabled: true
             nodes:
-              - node: DC1-LEAF1A
+              - node: dc1-leaf1a
                 ip_address: 10.1.32.1/24
+                ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+                ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
                 static_routes:
                   - prefix: 10.10.10.0/24
                     next_hop: 10.10.10.1
@@ -160,12 +166,12 @@ tenant_a:
             enabled: true
             route_map: RM_TEST
           nodes:
-            - DC1-BL1A
-            - DC1-BL1B
+            - dc1-bl1a
+            - dc1-bl1b
         l3_interfaces:
           - interfaces: [Ethernet7]
             ip_addresses: [10.10.10.10/24]
-            nodes: [DC1-BL1A]
+            nodes: [dc1-bl1a]
             mtu: 9000
             enabled: true
             description: "test"
@@ -193,7 +199,7 @@ tenant_a:
                     priority: 5
           - interfaces: [Ethernet7]
             ip_addresses: [10.10.20.20/24]
-            nodes: [DC1-BL1B]
+            nodes: [dc1-bl1b]
             mtu: 9000
             enabled: true
             description: "test"
@@ -205,7 +211,7 @@ tenant_a:
         static_routes:
           - prefix: 10.3.4.0/24
             next_hop: 1.2.3.4
-            nodes: [DC1-BL1A, DC1-BL1B]
+            nodes: [dc1-bl1a, dc1-bl1b]
         bgp_peers:
           - ip_address: 123.1.1.10
             remote_as: "1234"
@@ -218,7 +224,7 @@ tenant_a:
               always: false
             update_source: Loopback123
             ebgp_multihop: 3
-            nodes: [DC1-BL1A, DC1-BL1B]
+            nodes: [dc1-bl1a, dc1-bl1b]
             set_ipv4_next_hop: 123.1.1.1
             route_map_in: RM-123-1-1-10-IN
             shutdown: true
@@ -235,7 +241,7 @@ tenant_a:
               always: false
             update_source: Loopback123
             ebgp_multihop: 3
-            nodes: [DC1-BL1A, DC1-BL1B]
+            nodes: [dc1-bl1a, dc1-bl1b]
             route_map_in: RM-123-1-1-11-IN
             route_map_out: RM-123-1-1-11-OUT
             prefix_list_in: PL-TEST-IN-AF4
@@ -245,7 +251,7 @@ tenant_a:
           - ip_address: fd5a:fe45:8831:06c5::a
             remote_as: 12345
             send_community: all
-            nodes: [DC1-BL1A, DC1-BL1B]
+            nodes: [dc1-bl1a, dc1-bl1b]
             set_ipv6_next_hop: fd5a:fe45:8831:06c5::1
             prefix_list_in: PL-TEST-IN-AF6
             prefix_list_out: PL-TEST-OUT-AF6
@@ -285,11 +291,11 @@ tenant_a:
           - type: import
             address_family: vpn-ipv4
             route_target: '65000:123'
-            nodes: [ DC1-BL1A, DC1-BL1B, DC1-BL2A, DC1-BL2B ]
+            nodes: [ dc1-bl1a, dc1-bl1b, dc1-bl2a, dc1-bl2b ]
           - type: export
             address_family: vpn-ipv4
             route_target: '65000:123'
-            nodes: [ DC1-BL1A, DC1-BL1B, DC1-BL2A, DC1-BL2B ]
+            nodes: [ dc1-bl1a, dc1-bl1b, dc1-bl2a, dc1-bl2b ]
           - type: import
             address_family: evpn
             route_target: '65000:456'
@@ -303,7 +309,7 @@ tenant_a:
         l3_interfaces:
           - interfaces: [Ethernet8, Ethernet9, Ethernet8, Ethernet9]
             ip_addresses: [10.10.10.10/24, 10.10.20.20/24, 10.10.30.10/24, 10.10.40.20/24]
-            nodes: [DC1-BL1A, DC1-BL1A, DC1-BL1B, DC1-BL1B]
+            nodes: [dc1-bl1a, dc1-bl1a, dc1-bl1b, dc1-bl1b]
             mtu: 9000
             enabled: true
             description: "test"
@@ -316,20 +322,20 @@ tenant_a:
                   encapsulation_gre_metadata_tx: true
           - interfaces: [Ethernet10, Ethernet10]
             ip_addresses: [10.10.30.10/24, 10.10.40.20/24]
-            nodes: [DC1-BL1A, DC1-BL1B]
+            nodes: [dc1-bl1a, dc1-bl1b]
             mtu: 9000
             enabled: true
-            descriptions: ["test-DC1-BL1A", "test-DC1-BL1B"]
+            descriptions: ["test-dc1-bl1a", "test-dc1-bl1b"]
           - interfaces: [Ethernet11, Ethernet11]
             ip_addresses: [10.10.30.10/24, 10.10.40.20/24]
-            nodes: [DC1-BL1A, DC1-BL1B]
+            nodes: [dc1-bl1a, dc1-bl1b]
             mtu: 9000
             enabled: true
             description: "Single description"
-            descriptions: ["DC1-BL1A descriptions preferred over single description", "DC1-BL1B descriptions preferred over single description"]
+            descriptions: ["dc1-bl1a descriptions preferred over single description", "dc1-bl1b descriptions preferred over single description"]
           - interfaces: [Ethernet12, Ethernet13.10, Ethernet12, Ethernet13.10]
             ip_addresses: [10.10.40.10/24, 10.10.40.20/24, 10.10.50.10/24, 10.10.50.20/24]
-            nodes: [DC1-BL1A, DC1-BL1A, DC1-BL1B, DC1-BL1B]
+            nodes: [dc1-bl1a, dc1-bl1a, dc1-bl1b, dc1-bl1b]
             mtu: 9000
             enabled: true
             description: "test l3 interfaces acls"
@@ -357,9 +363,9 @@ tenant_a:
               - 10.0.0.5/30
               - 10.0.0.13/30
             nodes:
-              - DC1-LEAF2A
-              - DC1-LEAF2B
-              - DC1-LEAF2A
+              - dc1-leaf2a
+              - dc1-leaf2b
+              - dc1-leaf2a
             ospf:
               enabled: true
               point_to_point: true
@@ -375,7 +381,7 @@ tenant_a:
         loopbacks:
           - loopback: 123
             ip_address: 10.1.53.0/32
-            node: DC1-LEAF2A
+            node: dc1-leaf2a
             description: Test-Loopback
             enabled: true
             hardware_forwarding: true
@@ -384,7 +390,7 @@ tenant_a:
               area: 1
           - loopback: 123
             ip_address: 10.1.53.1/32
-            node: DC1-LEAF2B
+            node: dc1-leaf2b
             enabled: false
             ospf:
               enabled: true

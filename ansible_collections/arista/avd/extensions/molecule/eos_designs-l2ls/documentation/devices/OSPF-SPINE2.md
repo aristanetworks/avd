@@ -51,9 +51,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -70,9 +70,9 @@ interface Management1
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -287,8 +287,8 @@ interface Port-Channel3
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
@@ -319,6 +319,12 @@ interface Loopback0
 | Vlan100 | default | - | 10.0.100.1/24 | - | - | - |
 | Vlan4092 | default | 172.23.254.3/24 | - | 172.23.254.1 | - | - |
 | Vlan4094 | default | 192.168.254.1/31 | - | - | - | - |
+
+##### OSPF
+
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
+| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
+| Vlan4094 | True | 0.0.0.0 | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 

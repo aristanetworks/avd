@@ -286,6 +286,12 @@ $defs:
                 Support for Precision Time Protocol (PTP).
                 The feature will be ignored on platforms where this is false.
               default: true
+            hardware_validation:
+              type: bool
+              description: |-
+                Enable hardware validation for the device.
+                When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
+              default: true
         management_interface:
           type: str
           default: Management1
@@ -327,15 +333,12 @@ $defs:
                 - third-party
                 - tools-server
                 - veos
-        validate_hardware:
-          type: dict
-          $ref: eos_cli_config_gen#/keys/metadata/keys/validate_hardware
         structured_config:
           type: dict
           relaxed_validation: true
           documentation_options:
             hide_keys: true
-          description: Custom structured config for eos_cli_config_gen.
+          description: Custom structured config for the EOS Config schema.
           $ref: "eos_cli_config_gen#"
         raw_eos_cli:
           type: str

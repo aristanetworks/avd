@@ -56,13 +56,6 @@ prefix_lists:
   - sequence: 10
     action: permit 10.10.20.20/31
 route_maps:
-- name: RM-MLAG-PEER-IN
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    set:
-    - origin incomplete
 - name: RM-CONN-2-BGP-VRFS
   sequence_numbers:
   - sequence: 10
@@ -71,6 +64,13 @@ route_maps:
     - ip address prefix-list PL-MLAG-PEER-VRFS
   - sequence: 20
     type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    set:
+    - origin incomplete
 router_bgp:
   as: '65001'
   router_id: 192.0.255.12
@@ -89,7 +89,7 @@ router_bgp:
     description: bgp-from-network-services-11
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 10.10.20.20
@@ -122,7 +122,8 @@ vlan_interfaces:
   ip_address: 10.10.20.21/31
   mtu: 9214
   metadata:
-    tenant: TEST2
+    tenants:
+    - TEST2
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -135,13 +136,15 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 3101
   name: MLAG_L3_VRF_default
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TEST2
+    tenants:
+    - TEST2
 vrfs:
 - name: MGMT
   ip_routing: false

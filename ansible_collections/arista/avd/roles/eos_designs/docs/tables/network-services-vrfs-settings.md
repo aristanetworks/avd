@@ -22,6 +22,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_override</samp>](## "<network_services_keys.name>.[].vrfs.[].rt_override") | String |  |  |  | By default, the VRF RT will be derived from the pattern defined in `overlay_rt_type`.<br>The rt_override allows us to override this value and statically define it.<br><br>rt_override supports two formats:<br>  - A single number will be used in the RT assigned number subfield (second part of the RT).<br>  - A full RT string with colon separator which will override the full RT.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "<network_services_keys.name>.[].vrfs.[].rt_import") | Boolean |  | `True` |  | Enable or disable route target import for the VRF for all address families.<br>This setting applies only to the automatically generated route targets<br>and does not affect any entries defined under `additional_route_targets`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_export</samp>](## "<network_services_keys.name>.[].vrfs.[].rt_export") | Boolean |  | `True` |  | Enable or disable route target export for the VRF for all address families.<br>This setting applies only to the automatically generated route targets<br>and does not affect any entries defined under `additional_route_targets`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_vlan_bundle</samp>](## "<network_services_keys.name>.[].vrfs.[].evpn_vlan_bundle") | String |  |  |  | Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.<br>This setting overrides "evpn_vlan_bundle" set at the Tenant level.<br>The common option "evpn_vlan_aware_bundles" is disregarded for this option.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ipv4_pool</samp>](## "<network_services_keys.name>.[].vrfs.[].mlag_ibgp_peering_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.<br>If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ipv6_pool</samp>](## "<network_services_keys.name>.[].vrfs.[].mlag_ibgp_peering_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.<br>If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "<network_services_keys.name>.[].vrfs.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
@@ -34,9 +35,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_diagnostic</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic") | Dictionary |  |  |  | Enable VTEP Network diagnostics.<br>This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback") | Integer |  |  | Min: 2<br>Max: 2100 | Loopback interface number, required when vtep_diagnotics defined.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_description</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_description") | String |  |  |  | Provide a custom description or description template to be used on the VRF diagnostic loopback interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `interface`: The Loopback interface name.<br>  - `vrf`: The VRF name.<br>  - `tenant`: The tenant name.<br><br>The default description is set by `default_vrf_diag_loopback_description`.<br>By default the description is templated from the VRF name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ip_range</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_range") | String |  |  |  | IPv4_address/Mask.<br>Loopback IPv4 range, a unique ip is derived from this range and assigned to each l3 leaf based on it's unique id.<br>Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_range</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ipv6_range") | String |  |  |  | IPv6_address/Mask.<br>Loopback IPv6 range, a unique IPv6 address is derived from this range and assigned to each L3 leaf based on it's unique ID.<br>Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ip_pools</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_pools") | List, items: Dictionary |  |  |  | For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.<br>`loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range` takes precedence for IPV6.<br>Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ip_range</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_range") | String |  |  |  | IPv4_address/Mask.<br>Loopback IPv4 range, a unique ip is derived from this range and assigned to each l3 leaf based on its unique id.<br>If any `pod` under `loopback_ip_pools` matches the `pod_name` of the device, and is configured with an `ipv4_pool`, it takes precedence over `loopback_ipv4_range`.<br>Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_range</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ipv6_range") | String |  |  |  | IPv6_address/Mask.<br>Loopback IPv6 range, a unique IPv6 address is derived from this range and assigned to each L3 leaf based on its unique ID.<br>If any `pod` under `loopback_ip_pools` matches the `pod_name` of the device, and is configured with an `ipv6_pool`, it takes precedence over `loopback_ipv6_range`.<br>Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_ip_pools</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_pools") | List, items: Dictionary |  |  |  | For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.<br>POD level pools take precedence over `loopback_ip_range` and `loopback_ipv6_range`.<br>Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;pod</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_pools.[].pod") | String | Required, Unique |  |  | POD name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_pool</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_pools.[].ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_pool</samp>](## "<network_services_keys.name>.[].vrfs.[].vtep_diagnostic.loopback_ip_pools.[].ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address). |
@@ -70,11 +71,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_static_routes.[].interface") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_static</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_static") | Boolean |  |  |  | Enable or disable the redistribution of all static routes to BGP in the VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_connected</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_connected") | Boolean |  | `True` |  | Enable or disable the redistribution of all connected routes to BGP in the VRF. Note this is not applicable to VRF `default`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_arp_entries</samp>](## "<network_services_keys.name>.[].vrfs.[].static_arp_entries") | List, items: Dictionary |  |  |  | List of static ARP entries for the tenant VRF.<br>Entries are configured on all devices carrying the VRF unless filtered using the nodes key.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv4_address</samp>](## "<network_services_keys.name>.[].vrfs.[].static_arp_entries.[].ipv4_address") | String | Required |  |  | ARP entry IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "<network_services_keys.name>.[].vrfs.[].static_arp_entries.[].mac_address") | String | Required |  | Pattern: `[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}` | ARP entry MAC address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].static_arp_entries.[].nodes") | List, items: String |  |  |  | List of nodes where the ARP static entry should be configured.<br>If not set, the entry will be configured on all devices carrying the VRF.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].static_arp_entries.[].nodes.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.enabled") | Boolean |  |  |  | Force (no) configuration of BGP for the VRF.<br>If not set, BGP will be configured when needed according to the following rules:<br>- If the VRF is part of an overlay (`evpn` or `mpls`), BGP will be configured for it.<br>- If any BGP peers are configured under the VRF, BGP will be configured for it. This is useful for L2LS designs with VRFs.<br>- If uplink type is `p2p-vrfs` *and* the vrf is included in the uplink VRFs, BGP will be configured for it. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.router_id") | String |  | `main_router_id` |  | Router ID to use for BGP in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure a BGP Router ID for this VRF. EOS will use the main BGP Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vrfs.[name=<vrf>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_route_targets</samp>](## "<network_services_keys.name>.[].vrfs.[].additional_route_targets") | List, items: Dictionary |  |  |  | Configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;type</samp>](## "<network_services_keys.name>.[].vrfs.[].additional_route_targets.[].type") | String | Required |  | Valid Values:<br>- <code>import</code><br>- <code>export</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family</samp>](## "<network_services_keys.name>.[].vrfs.[].additional_route_targets.[].address_family") | String | Required |  |  |  |
@@ -93,7 +99,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attribute</samp>](## "<network_services_keys.name>.[].vrfs.[].aggregate_addresses.[].attribute") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "<network_services_keys.name>.[].vrfs.[].aggregate_addresses.[].attribute.rcf") | String |  |  |  | RCF name with parenthesis. Example "AGG-ADD-RCF()". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].structured_config") | Dictionary |  |  |  | Custom structured config for the EOS Config schema. |
     | [<samp>mlag_ibgp_peering_vrfs</samp>](## "mlag_ibgp_peering_vrfs") | Dictionary |  |  |  | On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology).<br>The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1.<br>Depending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.<br>The SVI ip address derived from mlag_l3_peer_ipv4_pool is reused across all iBGP peerings.<br> |
     | [<samp>&nbsp;&nbsp;base_vlan</samp>](## "mlag_ibgp_peering_vrfs.base_vlan") | Integer |  | `3000` | Min: 1<br>Max: 4093 |  |
 
@@ -174,6 +180,11 @@
             # and does not affect any entries defined under `additional_route_targets`.
             rt_export: <bool; default=True>
 
+            # Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
+            # This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+            # The common option "evpn_vlan_aware_bundles" is disregarded for this option.
+            evpn_vlan_bundle: <str>
+
             # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
             # The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.
             # If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
@@ -229,17 +240,19 @@
               loopback_description: <str>
 
               # IPv4_address/Mask.
-              # Loopback IPv4 range, a unique ip is derived from this range and assigned to each l3 leaf based on it's unique id.
+              # Loopback IPv4 range, a unique ip is derived from this range and assigned to each l3 leaf based on its unique id.
+              # If any `pod` under `loopback_ip_pools` matches the `pod_name` of the device, and is configured with an `ipv4_pool`, it takes precedence over `loopback_ipv4_range`.
               # Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
               loopback_ip_range: <str>
 
               # IPv6_address/Mask.
-              # Loopback IPv6 range, a unique IPv6 address is derived from this range and assigned to each L3 leaf based on it's unique ID.
+              # Loopback IPv6 range, a unique IPv6 address is derived from this range and assigned to each L3 leaf based on its unique ID.
+              # If any `pod` under `loopback_ip_pools` matches the `pod_name` of the device, and is configured with an `ipv6_pool`, it takes precedence over `loopback_ipv6_range`.
               # Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
               loopback_ipv6_range: <str>
 
               # For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
-              # `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range` takes precedence for IPV6.
+              # POD level pools take precedence over `loopback_ip_range` and `loopback_ipv6_range`.
               # Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
               loopback_ip_pools:
 
@@ -300,6 +313,21 @@
 
             # Enable or disable the redistribution of all connected routes to BGP in the VRF. Note this is not applicable to VRF `default`.
             redistribute_connected: <bool; default=True>
+
+            # List of static ARP entries for the tenant VRF.
+            # Entries are configured on all devices carrying the VRF unless filtered using the nodes key.
+            static_arp_entries:
+
+                # ARP entry IPv4 address.
+              - ipv4_address: <str; required>
+
+                # ARP entry MAC address.
+                mac_address: <str; required>
+
+                # List of nodes where the ARP static entry should be configured.
+                # If not set, the entry will be configured on all devices carrying the VRF.
+                nodes:
+                  - <str>
             bgp:
 
               # Force (no) configuration of BGP for the VRF.
@@ -319,7 +347,7 @@
               # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
               raw_eos_cli: <str>
 
-              # Custom structured config added under router_bgp.vrfs.[name=<vrf>] for eos_cli_config_gen.
+              # Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
               structured_config: <dict>
 
             # Configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.
@@ -359,7 +387,7 @@
             # EOS CLI rendered directly on the root level of the final EOS configuration.
             raw_eos_cli: <str>
 
-            # Custom structured config for eos_cli_config_gen.
+            # Custom structured config for the EOS Config schema.
             structured_config: <dict>
 
     # On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology).

@@ -177,9 +177,11 @@ ip_extcommunity_lists:
   entries:
   - type: permit
     extcommunities: soo 192.168.255.11:203
-ip_name_servers:
-- ip_address: 192.168.17.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.17.1
 ip_routing: true
 ip_security:
   ike_policies:
@@ -634,11 +636,13 @@ vrfs:
 - name: BLUE
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: RED
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vxlan_interface:
   vxlan1:
     description: site3-wan1_VTEP

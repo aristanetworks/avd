@@ -9,7 +9,6 @@ from .get_device_test_catalog import get_device_test_catalog
 from .get_fabric_documentation import get_fabric_documentation
 from .validate_inputs import validate_inputs
 from .validate_structured_config import validate_structured_config
-from .validation_result import ValidationResult
 
 """ Library for running Arista AVD in Python
 """
@@ -17,12 +16,11 @@ from .validation_result import ValidationResult
 PYAVD_PRERELEASE = ""  # Set this to aN or bN for alpha and beta releases of pyavd itself. Empty string when pyavd is released.
 
 __author__ = "Arista Networks"
-__copyright__ = "Copyright 2023-2024 Arista Networks"
+__copyright__ = "Copyright 2023-2026 Arista Networks"
 __license__ = "Apache 2.0"
-__version__ = "6.0.0.dev6"
+__version__ = "6.1.0"
 
 __all__ = [
-    "ValidationResult",
     "get_avd_facts",
     "get_device_config",
     "get_device_doc",

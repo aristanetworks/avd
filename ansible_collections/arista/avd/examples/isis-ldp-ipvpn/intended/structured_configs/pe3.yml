@@ -117,7 +117,7 @@ management_security:
     encryption_key_common: true
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOSLab
   fabric_name: FABRIC
   validate_hardware:
     enabled: false
@@ -259,8 +259,10 @@ vrfs:
 - name: C1_VRF1
   ip_routing: true
   metadata:
-    tenant: CUSTOMER1
+    tenants:
+    - CUSTOMER1
 - name: C2_VRF1
   ip_routing: true
   metadata:
-    tenant: CUSTOMER2
+    tenants:
+    - CUSTOMER2

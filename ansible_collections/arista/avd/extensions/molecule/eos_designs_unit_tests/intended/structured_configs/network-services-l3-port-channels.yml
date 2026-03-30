@@ -4,6 +4,36 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet77
+  description: underlay-peer_Ethernet77
+  shutdown: false
+  channel_group:
+    id: 77
+    mode: active
+  metadata:
+    peer: underlay-peer
+    peer_interface: Ethernet77
+    peer_type: l3_port_channel_member
+- name: Ethernet78
+  description: underlay-peer_Ethernet78
+  shutdown: false
+  channel_group:
+    id: 78
+    mode: active
+  metadata:
+    peer: underlay-peer
+    peer_interface: Ethernet78
+    peer_type: l3_port_channel_member
+- name: Ethernet79
+  description: underlay-peer_Ethernet79
+  shutdown: false
+  channel_group:
+    id: 78
+    mode: active
+  metadata:
+    peer: underlay-peer
+    peer_interface: Ethernet79
+    peer_type: l3_port_channel_member
 - name: Ethernet10
   description: inet-cloud_Ethernet10
   shutdown: false
@@ -88,20 +118,20 @@ flow_tracking:
   sampled:
     sample: 10000
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 300000
-      name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
         collectors:
         - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 3600000
-    - record_export:
+    - name: FT_Test
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 300000
-      name: FT_Test
       exporters:
       - name: CV-TELEMETRY
         collectors:
@@ -151,6 +181,20 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:
+- name: Port-Channel77
+  description: L3 Port-Channel without ip_address
+  shutdown: false
+  metadata:
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
+- name: Port-Channel78
+  shutdown: false
+  ip_address: 10.10.10.10/24
+  metadata:
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
 - name: Port-Channel11
   description: Po11
   shutdown: false
@@ -314,6 +358,17 @@ port_channel_interfaces:
     peer: inet-cloud-sub100
     peer_interface: Po22.100
     peer_type: l3_port_channel
+- name: Port-Channel78.100
+  description: inet-cloud-sub100_Po77.100
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 100
+  vrf: subIntVRF
+  ip_address: 10.10.78.2/29
+  metadata:
+    peer: inet-cloud-sub100
+    peer_interface: Po77.100
+    peer_type: l3_port_channel
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -343,34 +398,10 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: TESTING
     rd: 192.168.255.109:2
@@ -432,11 +463,13 @@ vrfs:
 - name: TESTING
   ip_routing: true
   metadata:
-    tenant: L3PO
+    tenants:
+    - L3PO
 - name: subIntVRF
   ip_routing: true
   metadata:
-    tenant: Subinterface
+    tenants:
+    - Subinterface
 vxlan_interface:
   vxlan1:
     description: network-services-l3-port-channels_VTEP

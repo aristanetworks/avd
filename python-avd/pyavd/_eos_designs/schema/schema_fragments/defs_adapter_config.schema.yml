@@ -95,7 +95,12 @@ $defs:
           Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.
       vlans:
         type: str
-        description: Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.
+        description: |
+          Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+          The value will be interpreted according to these rules:
+          - `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.
+          - Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+          If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
         convert_types:
           - int
       spanning_tree_portfast:
@@ -113,6 +118,9 @@ $defs:
         convert_types:
           - bool
         valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
+      spanning_tree_link_type:
+        type: str
+        valid_values: ["shared", "point-to-point"]
       flowcontrol:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/flowcontrol
@@ -370,6 +378,7 @@ $defs:
             description: |
               Port-Channel L2 Subinterfaces
               Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+              The parent Port-Channel interface is automatically created if not defined elsewhere.
               Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
               Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
             items:
@@ -412,7 +421,7 @@ $defs:
                 structured_config:
                   type: dict
                   relaxed_validation: true
-                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>] for eos_cli_config_gen.
+                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema.
                   documentation_options:
                     hide_keys: true
                   $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
@@ -422,7 +431,7 @@ $defs:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+            description: Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
@@ -431,7 +440,12 @@ $defs:
         description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
       validate_lldp:
         type: bool
-        description: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+        description: |-
+          Controls LLDP topology validation performed by the `anta_runner` role.
+          - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+          and the peer interface is not administratively shutdown.
+          - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+          - `false`: Disables validation for the interface.
       campus_link_type:
         type: list
         $ref: "eos_designs#/$defs/campus_link_type"
@@ -448,7 +462,7 @@ $defs:
       structured_config:
         type: dict
         relaxed_validation: true
-        description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+        description: Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config schema.
         documentation_options:
           hide_keys: true
         $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"

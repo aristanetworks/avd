@@ -537,6 +537,20 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | {{ aggregate_address.prefix }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ attribute_rcf }} | {{ match_map }} | {{ advertise_only }} |
 {%         endfor %}
 {%     endif %}
+{%     if router_bgp.route_distinguisher.assignment_auto is arista.avd.defined %}
+
+#### Route Distinguisher
+{%         if router_bgp.route_distinguisher.assignment_auto.address_families is arista.avd.defined %}
+{%             set address_family = router_bgp.route_distinguisher.assignment_auto.address_families | join(", ") %}
+{%         endif %}
+{%         if router_bgp.route_distinguisher.assignment_auto.range is arista.avd.defined %}
+{%             set rd_range = router_bgp.route_distinguisher.assignment_auto.range.start~"-"~router_bgp.route_distinguisher.assignment_auto.range.end %}
+{%         endif %}
+
+| Address Families | Range |
+| ---------------- | ----- |
+| {{ address_family | arista.avd.default("-") }} | {{ rd_range | arista.avd.default("-") }} |
+{%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
 
 #### Router BGP EVPN Address Family
@@ -730,6 +744,19 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%                 set peer_tag_out = neighbor.peer_tag_out_discard | arista.avd.default("-") %}
 | {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} | {{ peer_tag_in }} | {{ peer_tag_out }} |
 {%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if router_bgp.bgp.labeled_unicast.rib.ip is arista.avd.defined or router_bgp.bgp.labeled_unicast.rib.tunnel is arista.avd.defined %}
+
+##### BGP LU RIB
+
+| RIB | Enabled | Route-map |
+| --- | ------- | --------- |
+{%         if router_bgp.bgp.labeled_unicast.rib.ip is arista.avd.defined %}
+| IP | {{ router_bgp.bgp.labeled_unicast.rib.ip.enabled }} | {{ router_bgp.bgp.labeled_unicast.rib.ip.route_map | arista.avd.default("-") }} |
+{%         endif %}
+{%         if router_bgp.bgp.labeled_unicast.rib.tunnel is arista.avd.defined %}
+| Tunnel | {{ router_bgp.bgp.labeled_unicast.rib.tunnel.enabled }} | {{ router_bgp.bgp.labeled_unicast.rib.tunnel.route_map | arista.avd.default("-") }} |
 {%         endif %}
 {%     endif %}
 {%     if router_bgp.address_family_ipv4_sr_te is arista.avd.defined %}
@@ -1044,7 +1071,20 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | --- | ------------------- | ------------ | ---------------- |
 {%         endif %}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
-{%             set route_distinguisher = vrf.rd | arista.avd.default("-") %}
+{%             if vrf.rd is arista.avd.defined %}
+{%                 set route_distinguisher = vrf.rd %}
+{%                 if vrf.rd_evpn_domain is arista.avd.defined %}
+{%                     set route_distinguisher = route_distinguisher ~ " (Remote Domain: " ~ vrf.rd_evpn_domain.rd ~ ")" %}
+{%                 endif %}
+{%             elif vrf.rd_evpn_domain is arista.avd.defined %}
+{%                 if vrf.rd_evpn_domain.domain == "all" %}
+{%                     set route_distinguisher =  vrf.rd_evpn_domain.rd ~ " (Remote Domain: " ~ vrf.rd_evpn_domain.rd ~ ")" %}
+{%                 else %}
+{%                     set route_distinguisher =  "- (Remote Domain: " ~ vrf.rd_evpn_domain.rd ~ ")" %}
+{%                 endif %}
+{%             else %}
+{%                 set route_distinguisher = "-" %}
+{%             endif %}
 {%             if vrf.redistribute is arista.avd.defined %}
 {%                 set redistribute = vrf.redistribute.keys() %}
 {%             else %}

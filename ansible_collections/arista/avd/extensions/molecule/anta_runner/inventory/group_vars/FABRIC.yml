@@ -113,10 +113,24 @@ custom_platform_settings:
       non_mlag: 330
     digital_twin:
       act_node_type: veos
-    validate_hardware:
+
+validation_profiles:
+  - name: profile1
+    hardware:
       min_power_supplies: 2
       min_fans: 4
       min_supervisors: 0
       min_line_cards: 0
       transceiver_manufacturers:
         - Third-party vendor
+    interfaces:
+      errdisable:
+        only_avd_interfaces: true
+  - name: profile2
+    logging:
+      validate_no_errors_period: 1
+    interfaces:
+      errdisable:
+        only_avd_interfaces: false # Test case for default value of only_avd_interfaces for coverage.
+  - name: profile3
+    exclude_as_extra_fabric_validation_target: true

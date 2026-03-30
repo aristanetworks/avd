@@ -5,6 +5,7 @@ management_api_http:
   enable_unix: true
   https_ssl_profile: SSL_PROFILE
   default_services: true
+  session_timeout: 60
   enable_vrfs:
     - name: default
       access_group: ACL-API

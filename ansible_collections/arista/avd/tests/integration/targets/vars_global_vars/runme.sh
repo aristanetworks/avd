@@ -2,6 +2,7 @@
 
 set -eux
 
+export CVP_PASSWORD="env_password"
 # Testing with ansible.cfg
 export ANSIBLE_CONFIG=./ansible.cfg
 ansible-playbook -i hosts.yml playbook.yml

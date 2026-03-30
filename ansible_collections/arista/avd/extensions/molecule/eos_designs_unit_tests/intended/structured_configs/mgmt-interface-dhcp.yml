@@ -1,0 +1,29 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: mgmt-interface-dhcp
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: Management Interface - DHCP
+  shutdown: false
+  vrf: MGMT
+  ip_address: dhcp
+  type: oob
+  dhcp_client_accept_default_route: true
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

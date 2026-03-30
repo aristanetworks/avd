@@ -32,35 +32,43 @@ vlans:
 - id: 10
   name: DEFAULTPRIORITY
   metadata:
-    tenant: test
+    tenants:
+    - test
 - id: 11
   name: PRIORITY16384
   metadata:
-    tenant: test
+    tenants:
+    - test
 - id: 12
   name: PRIORITY32768
   metadata:
-    tenant: test
+    tenants:
+    - test
 - id: 13
   name: PRIORITY8192
   metadata:
-    tenant: test
+    tenants:
+    - test
 - id: 20
   name: DEFAULTPRIORITY
   metadata:
-    tenant: test
+    tenants:
+    - test
 - id: 21
   name: PRIORITY16384
   metadata:
-    tenant: test
+    tenants:
+    - test
 - id: 22
   name: PRIORITY32768
   metadata:
-    tenant: test
+    tenants:
+    - test
 - id: 23
   name: PRIORITY8192
   metadata:
-    tenant: test
+    tenants:
+    - test
 vrfs:
 - name: MGMT
   ip_routing: false

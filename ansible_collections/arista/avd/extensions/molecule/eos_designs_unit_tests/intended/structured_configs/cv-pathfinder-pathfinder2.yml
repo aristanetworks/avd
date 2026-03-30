@@ -663,12 +663,6 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     remote_as: '65000'
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-    route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: WAN-OVERLAY-PEERS
     metadata:
       type: wan
@@ -725,8 +719,6 @@ router_bgp:
       resolution_disabled: true
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: WAN-OVERLAY-PEERS
       activate: false
     - name: WAN-RR-OVERLAY-PEERS

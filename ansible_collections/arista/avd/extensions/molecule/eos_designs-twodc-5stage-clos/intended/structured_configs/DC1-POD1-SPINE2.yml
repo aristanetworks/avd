@@ -53,7 +53,7 @@ ethernet_interfaces:
 - name: Ethernet4
   description: P2P_DC1.POD1.LEAF2A_Ethernet2
   shutdown: false
-  ip_address: 172.17.110.10/31
+  ip_address: 172.17.110.26/31
   mac_security:
     profile: MACSEC_PROFILE
   ptp:
@@ -83,7 +83,7 @@ ethernet_interfaces:
 - name: Ethernet7
   description: P2P_DC1.POD1.LEAF2A_Ethernet12
   shutdown: false
-  ip_address: 172.17.110.14/31
+  ip_address: 172.17.110.30/31
   mac_security:
     profile: MACSEC_PROFILE
   ptp:
@@ -117,7 +117,6 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  no_password: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -157,7 +156,7 @@ router_bgp:
       type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   neighbors:
   - ip_address: 172.16.11.2
     peer_group: IPv4-UNDERLAY-PEERS
@@ -177,7 +176,7 @@ router_bgp:
     metadata:
       peer: DC1-POD1-LEAF1A
     description: DC1-POD1-LEAF1A_Ethernet2
-  - ip_address: 172.17.110.11
+  - ip_address: 172.17.110.27
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
     metadata:
@@ -189,7 +188,7 @@ router_bgp:
     metadata:
       peer: DC1-POD1-LEAF2B
     description: DC1-POD1-LEAF2B_Ethernet2
-  - ip_address: 172.17.110.15
+  - ip_address: 172.17.110.31
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
     metadata:

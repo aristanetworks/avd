@@ -2450,6 +2450,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    AvdStructuredConfigFileFormat: TypeAlias = Literal["yml", "yaml", "json"]
+
     class Banners(AvdModel):
         """Subclass of AvdModel."""
 
@@ -3890,6 +3892,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "sflow": {"type": bool},
             "sflowaddr": {"type": str},
             "cvconfig": {"type": bool},
+            "cv_loss_timeout": {"type": int},
         }
         cvaddrs: Cvaddrs
         """
@@ -3991,6 +3994,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         cvconfig: bool | None
         """Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false)."""
+        cv_loss_timeout: int | None
+        """
+        Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to
+        CloudVision after a configuration change.
+        The recommended timeout is five minutes.
+        """
 
         if TYPE_CHECKING:
 
@@ -4018,6 +4027,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 sflow: bool | None | UndefinedType = Undefined,
                 sflowaddr: str | None | UndefinedType = Undefined,
                 cvconfig: bool | None | UndefinedType = Undefined,
+                cv_loss_timeout: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4091,6 +4101,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        ECO sFlow Collector address to listen on to receive sFlow packets (TerminAttr default
                        "127.0.0.1:6343").
                     cvconfig: Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
+                    cv_loss_timeout:
+                       Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to
+                       CloudVision after a configuration change.
+                       The recommended timeout is five minutes.
 
                 """
 
@@ -4409,11 +4423,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ReservationsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"ipv4_address": {"type": str}, "mac_address": {"type": str}, "hostname": {"type": str}}
-                ipv4_address: str | None
-                """Valid IPv4 address from the given subnet."""
+                _fields: ClassVar[dict] = {"mac_address": {"type": str}, "ipv4_address": {"type": str}, "hostname": {"type": str}}
                 mac_address: str
                 """Ethernet address in format - HHHH.HHHH.HHHH"""
+                ipv4_address: str | None
+                """Valid IPv4 address from the given subnet."""
                 hostname: str | None
 
                 if TYPE_CHECKING:
@@ -4421,8 +4435,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        ipv4_address: str | None | UndefinedType = Undefined,
                         mac_address: str | UndefinedType = Undefined,
+                        ipv4_address: str | None | UndefinedType = Undefined,
                         hostname: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -4432,8 +4446,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            ipv4_address: Valid IPv4 address from the given subnet.
                             mac_address: Ethernet address in format - HHHH.HHHH.HHHH
+                            ipv4_address: Valid IPv4 address from the given subnet.
                             hostname: hostname
 
                         """
@@ -4627,11 +4641,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ReservationsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"ipv6_address": {"type": str}, "mac_address": {"type": str}, "hostname": {"type": str}}
-                ipv6_address: str | None
-                """Valid IPv6 address from the given subnet."""
+                _fields: ClassVar[dict] = {"mac_address": {"type": str}, "ipv6_address": {"type": str}, "hostname": {"type": str}}
                 mac_address: str
                 """Ethernet address in format - HHHH.HHHH.HHHH"""
+                ipv6_address: str | None
+                """Valid IPv6 address from the given subnet."""
                 hostname: str | None
 
                 if TYPE_CHECKING:
@@ -4639,8 +4653,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        ipv6_address: str | None | UndefinedType = Undefined,
                         mac_address: str | UndefinedType = Undefined,
+                        ipv6_address: str | None | UndefinedType = Undefined,
                         hostname: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -4650,8 +4664,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            ipv6_address: Valid IPv6 address from the given subnet.
                             mac_address: Ethernet address in format - HHHH.HHHH.HHHH
+                            ipv6_address: Valid IPv6 address from the given subnet.
                             hostname: hostname
 
                         """
@@ -4812,8 +4826,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Ipv6Subnets._item_type = Ipv6SubnetsItem
 
         _fields: ClassVar[dict] = {
-            "disabled": {"type": bool},
             "vrf": {"type": str},
+            "disabled": {"type": bool},
             "lease_time_ipv4": {"type": LeaseTimeIpv4},
             "lease_time_ipv6": {"type": LeaseTimeIpv6},
             "dns_domain_name_ipv4": {"type": str},
@@ -4826,9 +4840,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_subnets": {"type": Ipv6Subnets},
             "eos_cli": {"type": str},
         }
-        disabled: bool | None
         vrf: str
         """VRF in which to configure the DHCP server, use `default` to indicate default VRF."""
+        disabled: bool | None
         lease_time_ipv4: LeaseTimeIpv4
         """Subclass of AvdModel."""
         lease_time_ipv6: LeaseTimeIpv6
@@ -4863,8 +4877,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                disabled: bool | None | UndefinedType = Undefined,
                 vrf: str | UndefinedType = Undefined,
+                disabled: bool | None | UndefinedType = Undefined,
                 lease_time_ipv4: LeaseTimeIpv4 | UndefinedType = Undefined,
                 lease_time_ipv6: LeaseTimeIpv6 | UndefinedType = Undefined,
                 dns_domain_name_ipv4: str | None | UndefinedType = Undefined,
@@ -4884,8 +4898,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    disabled: disabled
                     vrf: VRF in which to configure the DHCP server, use `default` to indicate default VRF.
+                    disabled: disabled
                     lease_time_ipv4: Subclass of AvdModel.
                     lease_time_ipv6: Subclass of AvdModel.
                     dns_domain_name_ipv4: dns_domain_name_ipv4
@@ -5221,6 +5235,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "filter_id": {"type": FilterId},
             }
             service_type: bool | None
+            """Include the Service-Type attribute in RADIUS accounting messages."""
             framed_mtu: int | None
             lldp: Lldp
             """Subclass of AvdModel."""
@@ -5247,7 +5262,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        service_type: service_type
+                        service_type: Include the Service-Type attribute in RADIUS accounting messages.
                         framed_mtu: framed_mtu
                         lldp: Subclass of AvdModel.
                         dhcp: Subclass of AvdModel.
@@ -5763,8 +5778,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         system_auth_control: bool | None
         protocol_lldp_bypass: bool | None
+        """Allow LLDP packets to be processed even if the port is not authorized."""
         protocol_bpdu_bypass: bool | None
+        """Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection."""
         dynamic_authorization: bool | None
+        """
+        Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+        adjust an active client session.
+        """
         statistics_packets_dropped: bool | None
         """Enable the 802.1X port authentication dropped data packet statistics."""
         mac_based_authentication: MacBasedAuthentication
@@ -5824,9 +5845,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     system_auth_control: system_auth_control
-                    protocol_lldp_bypass: protocol_lldp_bypass
-                    protocol_bpdu_bypass: protocol_bpdu_bypass
-                    dynamic_authorization: dynamic_authorization
+                    protocol_lldp_bypass: Allow LLDP packets to be processed even if the port is not authorized.
+                    protocol_bpdu_bypass: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                    dynamic_authorization:
+                       Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+                       adjust an active client session.
                     statistics_packets_dropped: Enable the 802.1X port authentication dropped data packet statistics.
                     mac_based_authentication: Subclass of AvdModel.
                     radius_av_pair_username_format:
@@ -5918,6 +5941,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "shutdown": {"type": bool},
             "mtu": {"type": int},
             "ip_address": {"type": str},
+            "ipv6_address_auto_config": {"type": bool},
             "flow_tracker": {"type": FlowTracker},
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
             "eos_cli": {"type": str},
@@ -5930,6 +5954,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Maximum Transmission Unit in bytes."""
         ip_address: str | None
         """IPv4 address/mask."""
+        ipv6_address_auto_config: bool | None
+        """Use SLAAC to automatically configure the IPv6 address."""
         flow_tracker: FlowTracker
         """Subclass of AvdModel."""
         tcp_mss_ceiling: TcpMssCeiling
@@ -5947,6 +5973,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 shutdown: bool | None | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
@@ -5963,6 +5990,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     shutdown: shutdown
                     mtu: Maximum Transmission Unit in bytes.
                     ip_address: IPv4 address/mask.
+                    ipv6_address_auto_config: Use SLAAC to automatically configure the IPv6 address.
                     flow_tracker: Subclass of AvdModel.
                     tcp_mss_ceiling: Subclass of AvdModel.
                     eos_cli: Multiline String with EOS CLI rendered directly on the Dps interface in the final EOS configuration.
@@ -6160,6 +6188,52 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in
                        the documentation if true.
                     toc: Generate the table of content(TOC) on device documentation.
+
+                """
+
+    class EosConfigFuture(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"new_ip_radius_cli_order": {"type": bool, "default": False}, "new_ip_tacacs_cli_order": {"type": bool, "default": False}}
+        new_ip_radius_cli_order: bool
+        """
+        When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
+        When `false`
+        (default), renders the legacy CLI order using `ip_radius_source_interfaces`, sorted by source
+        interface name.
+
+        Default value: `False`
+        """
+        new_ip_tacacs_cli_order: bool
+        """
+        When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.
+        When `false`
+        (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
+        interface name.
+
+        Default value: `False`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, new_ip_radius_cli_order: bool | UndefinedType = Undefined, new_ip_tacacs_cli_order: bool | UndefinedType = Undefined) -> None:
+                """
+                EosConfigFuture.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    new_ip_radius_cli_order:
+                       When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
+                       When `false`
+                       (default), renders the legacy CLI order using `ip_radius_source_interfaces`, sorted by source
+                       interface name.
+                    new_ip_tacacs_cli_order:
+                       When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.
+                       When `false`
+                       (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
+                       interface name.
 
                 """
 
@@ -7339,6 +7413,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         class Ipv6NdPrefixesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -7386,6 +7465,207 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
 
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Cache(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"dynamic_capacity": {"type": int}, "expire": {"type": int}, "refresh_always": {"type": bool}}
+                dynamic_capacity: int | None
+                """Capacity of dynamic cache entries."""
+                expire: int | None
+                """Cache entries expiry in seconds."""
+                refresh_always: bool | None
+                """Force refresh on cache expiry."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Cache.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic_capacity: Capacity of dynamic cache entries.
+                            expire: Cache entries expiry in seconds.
+                            refresh_always: Force refresh on cache expiry.
+
+                        """
+
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    """Accept default route from received Router Advertisements."""
+                    route_preference: bool | None
+                    """Accept route preference from received Router Advertisements."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: Accept default route from received Router Advertisements.
+                                route_preference: Accept route preference from received Router Advertisements.
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                disabled: bool | None
+                """Disable Router Advertisement messages on the interface."""
+                rx_accept: RxAccept
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: Disable Router Advertisement messages on the interface.
+                            rx_accept: Subclass of AvdModel.
+
+                        """
+
+            class PrefixesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "ipv6_prefix": {"type": str},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                    "no_autoconfig_flag": {"type": bool},
+                }
+                ipv6_prefix: str
+                valid_lifetime: str | None
+                """Valid lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                preferred_lifetime: str | None
+                """Preferred lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                no_autoconfig_flag: bool | None
+                """Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv6_prefix: str | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PrefixesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv6_prefix: ipv6_prefix
+                            valid_lifetime: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            preferred_lifetime: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            no_autoconfig_flag: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+
+                        """
+
+            class Prefixes(AvdIndexedList[str, PrefixesItem]):
+                """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+            Prefixes._item_type = PrefixesItem
+
+            _fields: ClassVar[dict] = {
+                "cache": {"type": Cache},
+                "ra": {"type": Ra},
+                "managed_config_flag": {"type": bool},
+                "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
+            }
+            cache: Cache
+            """
+            Neighbor cache options.
+
+            Subclass of AvdModel.
+            """
+            ra: Ra
+            """
+            Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+            managed_config_flag: bool | None
+            """Set the "Managed Address Configuration" (M) flag in Router Advertisements."""
+            prefixes: Prefixes
+            """
+            IPv6 prefixes to include in Router Advertisements.
+
+            Subclass of AvdIndexedList with `PrefixesItem`
+            items. Primary key is `ipv6_prefix` (`str`).
+            """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    cache: Cache | UndefinedType = Undefined,
+                    ra: Ra | UndefinedType = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
+                    prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        cache:
+                           Neighbor cache options.
+
+                           Subclass of AvdModel.
+                        ra:
+                           Router Advertisement.
+
+                           Subclass of AvdModel.
+                        managed_config_flag: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+                        prefixes:
+                           IPv6 prefixes to include in Router Advertisements.
+
+                           Subclass of AvdIndexedList with `PrefixesItem`
+                           items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
+
+                    """
+
         class Ipv6DhcpRelayDestinationsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -7432,13 +7712,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class Ipv6DhcpRelayDestinations(AvdIndexedList[str, Ipv6DhcpRelayDestinationsItem]):
-            """
-            Subclass of AvdIndexedList with `Ipv6DhcpRelayDestinationsItem` items. Primary key is `address`
-            (`str`).
-            """
-
-            _primary_key: ClassVar[str] = "address"
+        class Ipv6DhcpRelayDestinations(AvdList[Ipv6DhcpRelayDestinationsItem]):
+            """Subclass of AvdList with `Ipv6DhcpRelayDestinationsItem` items."""
 
         Ipv6DhcpRelayDestinations._item_type = Ipv6DhcpRelayDestinationsItem
 
@@ -9651,6 +9926,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         SpanningTreeGuard: TypeAlias = Literal["loop", "root", "disabled"]
         SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+        SpanningTreeLinkType: TypeAlias = Literal["shared", "point-to-point"]
 
         class PriorityFlowControl(AvdModel):
             """Subclass of AvdModel."""
@@ -10320,7 +10596,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             role.
             """
             validate_lldp: bool | None
-            """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+            """
+            Controls LLDP topology validation performed by the `anta_runner` role.
+            - Unset (Default): The peer
+            is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+            (`is_deployed: true`)
+            and the peer interface is not administratively shutdown.
+            - `true`: Forces
+            validation. Use this for connected endpoints not managed by AVD.
+            - `false`: Disables validation for
+            the interface.
+            """
 
             if TYPE_CHECKING:
 
@@ -10350,7 +10636,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         validate_state:
                            Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                            role.
-                        validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                        validate_lldp:
+                           Controls LLDP topology validation performed by the `anta_runner` role.
+                           - Unset (Default): The peer
+                           is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+                           (`is_deployed: true`)
+                           and the peer interface is not administratively shutdown.
+                           - `true`: Forces
+                           validation. Use this for connected endpoints not managed by AVD.
+                           - `false`: Disables validation for
+                           the interface.
 
                     """
 
@@ -12563,6 +12858,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class MonitorLinkFlapProfiles(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        MonitorLinkFlapProfiles._item_type = str
+
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "comment": {"type": str},
@@ -12573,6 +12873,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "mtu": {"type": int},
             "l2_mtu": {"type": int},
             "l2_mru": {"type": int},
+            "loop_protection": {"type": bool},
             "arp_gratuitous_accept": {"type": bool},
             "l2_protocol": {"type": L2Protocol},
             "mac_timestamp": {"type": str},
@@ -12598,10 +12899,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_nat": {"type": IpNat},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "ipv6_address_link_local": {"type": str},
             "ipv6_nd_ra_disabled": {"type": bool},
             "ipv6_nd_managed_config_flag": {"type": bool},
             "ipv6_nd_prefixes": {"type": Ipv6NdPrefixes},
+            "ipv6_nd": {"type": Ipv6Nd},
             "ipv6_dhcp_relay_destinations": {"type": Ipv6DhcpRelayDestinations},
             "access_group_in": {"type": str},
             "access_group_out": {"type": str},
@@ -12645,6 +12949,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "spanning_tree_bpduguard_rate_limit": {"type": SpanningTreeBpduguardRateLimit},
             "spanning_tree_guard": {"type": str},
             "spanning_tree_portfast": {"type": str},
+            "spanning_tree_link_type": {"type": str},
             "vmtracer": {"type": bool},
             "priority_flow_control": {"type": PriorityFlowControl},
             "bfd": {"type": Bfd},
@@ -12665,6 +12970,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "vrrp_ids": {"type": VrrpIds},
             "switchport": {"type": Switchport},
             "traffic_engineering": {"type": TrafficEngineering},
+            "monitor_link_flap_profiles": {"type": MonitorLinkFlapProfiles},
             "eos_cli": {"type": str},
         }
         name: str
@@ -12681,6 +12987,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
         l2_mru: int | None
         """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
+        loop_protection: bool | None
+        """Enable/disable loop protection."""
         arp_gratuitous_accept: bool | None
         """Accept gratuitous ARP."""
         l2_protocol: L2Protocol
@@ -12736,17 +13044,29 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         ipv6_enable: bool | None
         ipv6_address: str | None
+        """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ipv6_address_link_local: str | None
         """Link local IPv6 address/mask."""
         ipv6_nd_ra_disabled: bool | None
         ipv6_nd_managed_config_flag: bool | None
         ipv6_nd_prefixes: Ipv6NdPrefixes
         """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+        ipv6_nd: Ipv6Nd
+        """
+        IPv6 Neighbor Discovery protocol.
+
+        Subclass of AvdModel.
+        """
         ipv6_dhcp_relay_destinations: Ipv6DhcpRelayDestinations
-        """
-        Subclass of AvdIndexedList with `Ipv6DhcpRelayDestinationsItem` items. Primary key is `address`
-        (`str`).
-        """
+        """Subclass of AvdList with `Ipv6DhcpRelayDestinationsItem` items."""
         access_group_in: str | None
         """Access list name."""
         access_group_out: str | None
@@ -12838,6 +13158,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         spanning_tree_guard: SpanningTreeGuard | None
         spanning_tree_portfast: SpanningTreePortfast | None
+        spanning_tree_link_type: SpanningTreeLinkType | None
         vmtracer: bool | None
         priority_flow_control: PriorityFlowControl
         """Subclass of AvdModel."""
@@ -12884,6 +13205,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         traffic_engineering: TrafficEngineering
         """Subclass of AvdModel."""
+        monitor_link_flap_profiles: MonitorLinkFlapProfiles
+        """Subclass of AvdList with `str` items."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
 
@@ -12901,6 +13224,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 mtu: int | None | UndefinedType = Undefined,
                 l2_mtu: int | None | UndefinedType = Undefined,
                 l2_mru: int | None | UndefinedType = Undefined,
+                loop_protection: bool | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 l2_protocol: L2Protocol | UndefinedType = Undefined,
                 mac_timestamp: MacTimestamp | None | UndefinedType = Undefined,
@@ -12926,10 +13250,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_nat: IpNat | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address_link_local: str | None | UndefinedType = Undefined,
                 ipv6_nd_ra_disabled: bool | None | UndefinedType = Undefined,
                 ipv6_nd_managed_config_flag: bool | None | UndefinedType = Undefined,
                 ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 ipv6_dhcp_relay_destinations: Ipv6DhcpRelayDestinations | UndefinedType = Undefined,
                 access_group_in: str | None | UndefinedType = Undefined,
                 access_group_out: str | None | UndefinedType = Undefined,
@@ -12973,6 +13300,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 spanning_tree_bpduguard_rate_limit: SpanningTreeBpduguardRateLimit | UndefinedType = Undefined,
                 spanning_tree_guard: SpanningTreeGuard | None | UndefinedType = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
                 vmtracer: bool | None | UndefinedType = Undefined,
                 priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
@@ -12993,6 +13321,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
                 traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
+                monitor_link_flap_profiles: MonitorLinkFlapProfiles | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -13011,6 +13340,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     mtu: mtu
                     l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
+                    loop_protection: Enable/disable loop protection.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     l2_protocol: Subclass of AvdModel.
                     mac_timestamp:
@@ -13042,14 +13372,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_helpers: Subclass of AvdIndexedList with `IpHelpersItem` items. Primary key is `ip_helper` (`str`).
                     ip_nat: Subclass of AvdModel.
                     ipv6_enable: ipv6_enable
-                    ipv6_address: ipv6_address
+                    ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ipv6_address_link_local: Link local IPv6 address/mask.
                     ipv6_nd_ra_disabled: ipv6_nd_ra_disabled
                     ipv6_nd_managed_config_flag: ipv6_nd_managed_config_flag
                     ipv6_nd_prefixes: Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
-                    ipv6_dhcp_relay_destinations:
-                       Subclass of AvdIndexedList with `Ipv6DhcpRelayDestinationsItem` items. Primary key is `address`
-                       (`str`).
+                    ipv6_nd:
+                       IPv6 Neighbor Discovery protocol.
+
+                       Subclass of AvdModel.
+                    ipv6_dhcp_relay_destinations: Subclass of AvdList with `Ipv6DhcpRelayDestinationsItem` items.
                     access_group_in: Access list name.
                     access_group_out: Access list name.
                     ipv6_access_group_in: IPv6 access list name.
@@ -13105,6 +13442,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     spanning_tree_bpduguard_rate_limit: Subclass of AvdModel.
                     spanning_tree_guard: spanning_tree_guard
                     spanning_tree_portfast: spanning_tree_portfast
+                    spanning_tree_link_type: spanning_tree_link_type
                     vmtracer: vmtracer
                     priority_flow_control: Subclass of AvdModel.
                     bfd: Subclass of AvdModel.
@@ -13132,6 +13470,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of
                        AvdModel.
                     traffic_engineering: Subclass of AvdModel.
+                    monitor_link_flap_profiles: Subclass of AvdList with `str` items.
                     eos_cli: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
 
                 """
@@ -13691,17 +14030,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Exporters._item_type = ExportersItem
 
                 _fields: ClassVar[dict] = {
+                    "name": {"type": str},
                     "table_size": {"type": int},
                     "record_export": {"type": RecordExport},
-                    "name": {"type": str},
                     "exporters": {"type": Exporters},
                 }
+                name: str
+                """Tracker Name."""
                 table_size: int | None
                 """Maximum number of entries in flow table."""
                 record_export: RecordExport
                 """Subclass of AvdModel."""
-                name: str
-                """Tracker Name."""
                 exporters: Exporters
                 """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
 
@@ -13710,9 +14049,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
+                        name: str | UndefinedType = Undefined,
                         table_size: int | None | UndefinedType = Undefined,
                         record_export: RecordExport | UndefinedType = Undefined,
-                        name: str | UndefinedType = Undefined,
                         exporters: Exporters | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -13722,9 +14061,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
+                            name: Tracker Name.
                             table_size: Maximum number of entries in flow table.
                             record_export: Subclass of AvdModel.
-                            name: Tracker Name.
                             exporters: Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`).
 
                         """
@@ -14798,6 +15137,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             Action: TypeAlias = Literal["permit", "deny"]
+            TtlMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             SourcePortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
 
             class SourcePorts(AvdList[str]):
@@ -14817,30 +15157,29 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             TcpFlags._item_type = str
 
-            TtlMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             _fields: ClassVar[dict] = {
                 "sequence": {"type": int},
                 "remark": {"type": str},
                 "action": {"type": str},
                 "protocol": {"type": str},
                 "source": {"type": str},
+                "destination": {"type": str},
+                "fragments": {"type": bool},
+                "ttl": {"type": int},
+                "ttl_match": {"type": str, "default": "eq"},
+                "vlan_inner": {"type": bool, "default": False},
                 "source_ports_match": {"type": str, "default": "eq"},
                 "source_ports": {"type": SourcePorts},
-                "destination": {"type": str},
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
-                "fragments": {"type": bool},
                 "log": {"type": bool},
-                "ttl": {"type": int},
-                "ttl_match": {"type": str, "default": "eq"},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
                 "nexthop_group": {"type": str},
                 "tracked": {"type": bool},
                 "dscp": {"type": str},
                 "vlan_number": {"type": int},
-                "vlan_inner": {"type": bool, "default": False},
                 "vlan_mask": {"type": str},
             }
             sequence: int | None
@@ -14866,30 +15205,32 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "<ip>" without a mask means host.
             Required except for remarks.
             """
-            source_ports_match: SourcePortsMatch
-            """Default value: `"eq"`"""
-            source_ports: SourcePorts
-            """Subclass of AvdList with `str` items."""
             destination: str | None
             """
             "any", "<ip>/<mask>" or "<ip>".
             "<ip>" without a mask means host.
             Required except for remarks.
             """
+            fragments: bool | None
+            """Match non-head fragment packets."""
+            ttl: int | None
+            """TTL value."""
+            ttl_match: TtlMatch
+            """Default value: `"eq"`"""
+            vlan_inner: bool
+            """Default value: `False`"""
+            source_ports_match: SourcePortsMatch
+            """Default value: `"eq"`"""
+            source_ports: SourcePorts
+            """Subclass of AvdList with `str` items."""
             destination_ports_match: DestinationPortsMatch
             """Default value: `"eq"`"""
             destination_ports: DestinationPorts
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
-            fragments: bool | None
-            """Match non-head fragment packets."""
             log: bool | None
             """Log matches against this rule."""
-            ttl: int | None
-            """TTL value."""
-            ttl_match: TtlMatch
-            """Default value: `"eq"`"""
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -14901,8 +15242,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             dscp: str | None
             """DSCP value or name."""
             vlan_number: int | None
-            vlan_inner: bool
-            """Default value: `False`"""
             vlan_mask: str | None
             """0x000-0xFFF VLAN mask."""
 
@@ -14916,23 +15255,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     action: Action | None | UndefinedType = Undefined,
                     protocol: str | None | UndefinedType = Undefined,
                     source: str | None | UndefinedType = Undefined,
+                    destination: str | None | UndefinedType = Undefined,
+                    fragments: bool | None | UndefinedType = Undefined,
+                    ttl: int | None | UndefinedType = Undefined,
+                    ttl_match: TtlMatch | UndefinedType = Undefined,
+                    vlan_inner: bool | UndefinedType = Undefined,
                     source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
                     source_ports: SourcePorts | UndefinedType = Undefined,
-                    destination: str | None | UndefinedType = Undefined,
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
-                    fragments: bool | None | UndefinedType = Undefined,
                     log: bool | None | UndefinedType = Undefined,
-                    ttl: int | None | UndefinedType = Undefined,
-                    ttl_match: TtlMatch | UndefinedType = Undefined,
                     icmp_type: str | None | UndefinedType = Undefined,
                     icmp_code: str | None | UndefinedType = Undefined,
                     nexthop_group: str | None | UndefinedType = Undefined,
                     tracked: bool | None | UndefinedType = Undefined,
                     dscp: str | None | UndefinedType = Undefined,
                     vlan_number: int | None | UndefinedType = Undefined,
-                    vlan_inner: bool | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -14956,26 +15295,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            "any", "<ip>/<mask>" or "<ip>".
                            "<ip>" without a mask means host.
                            Required except for remarks.
-                        source_ports_match: source_ports_match
-                        source_ports: Subclass of AvdList with `str` items.
                         destination:
                            "any", "<ip>/<mask>" or "<ip>".
                            "<ip>" without a mask means host.
                            Required except for remarks.
+                        fragments: Match non-head fragment packets.
+                        ttl: TTL value.
+                        ttl_match: ttl_match
+                        vlan_inner: vlan_inner
+                        source_ports_match: source_ports_match
+                        source_ports: Subclass of AvdList with `str` items.
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        fragments: Match non-head fragment packets.
                         log: Log matches against this rule.
-                        ttl: TTL value.
-                        ttl_match: ttl_match
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
                         tracked: Match packets in existing ICMP/UDP/TCP connections.
                         dscp: DSCP value or name.
                         vlan_number: vlan_number
-                        vlan_inner: vlan_inner
                         vlan_mask: 0x000-0xFFF VLAN mask.
 
                     """
@@ -15124,7 +15463,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """IP Community-list Name."""
         entries: Entries
-        """Subclass of AvdList with `EntriesItem` items."""
+        """
+        Communities and regexp MUST not be configured in the same entry.
+
+
+        Subclass of AvdList with
+        `EntriesItem` items.
+        """
 
         if TYPE_CHECKING:
 
@@ -15137,7 +15482,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     name: IP Community-list Name.
-                    entries: Subclass of AvdList with `EntriesItem` items.
+                    entries:
+                       Communities and regexp MUST not be configured in the same entry.
+
+
+                       Subclass of AvdList with
+                       `EntriesItem` items.
 
                 """
 
@@ -15971,6 +16321,200 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpLargeCommunityListsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Action: TypeAlias = Literal["permit", "deny"]
+
+            class LargeCommunities(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            LargeCommunities._item_type = str
+
+            _fields: ClassVar[dict] = {"action": {"type": str}, "large_communities": {"type": LargeCommunities}, "regexp": {"type": str}}
+            action: Action
+            large_communities: LargeCommunities
+            """
+            If defined, a standard large-community-list will be configured.
+            Large community values (ASN:Local-
+            part-1:Local-part-2):
+            - ASN:nn:nn
+
+
+            Subclass of AvdList with `str` items.
+            """
+            regexp: str | None
+            """
+            Regular Expression.
+            If defined, a regex large-community-list will be configured.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    action: Action | UndefinedType = Undefined,
+                    large_communities: LargeCommunities | UndefinedType = Undefined,
+                    regexp: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        action: action
+                        large_communities:
+                           If defined, a standard large-community-list will be configured.
+                           Large community values (ASN:Local-
+                           part-1:Local-part-2):
+                           - ASN:nn:nn
+
+
+                           Subclass of AvdList with `str` items.
+                        regexp:
+                           Regular Expression.
+                           If defined, a regex large-community-list will be configured.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
+        _fields: ClassVar[dict] = {"name": {"type": str}, "entries": {"type": Entries}}
+        name: str
+        """IP Large-community-list Name."""
+        entries: Entries
+        """
+        Large communities and regexp MUST not be configured in the same entry.
+
+
+        Subclass of AvdList with
+        `EntriesItem` items.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, name: str | UndefinedType = Undefined, entries: Entries | UndefinedType = Undefined) -> None:
+                """
+                IpLargeCommunityListsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: IP Large-community-list Name.
+                    entries:
+                       Large communities and regexp MUST not be configured in the same entry.
+
+
+                       Subclass of AvdList with
+                       `EntriesItem` items.
+
+                """
+
+    class IpLargeCommunityLists(AvdIndexedList[str, IpLargeCommunityListsItem]):
+        """Subclass of AvdIndexedList with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    IpLargeCommunityLists._item_type = IpLargeCommunityListsItem
+
+    class IpNameServer(AvdModel):
+        """Subclass of AvdModel."""
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ServersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ip_address": {"type": str}, "priority": {"type": int}}
+                ip_address: str
+                """IPv4 or IPv6 address for DNS server."""
+                priority: int | None
+                """Priority value (lower is first)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        ServersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ip_address: IPv4 or IPv6 address for DNS server.
+                            priority: Priority value (lower is first).
+
+                        """
+
+            class Servers(AvdIndexedList[str, ServersItem]):
+                """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ip_address"
+
+            Servers._item_type = ServersItem
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "servers": {"type": Servers}}
+            name: str
+            """
+            VRF Name.
+            Use "default" for the default VRF.
+            """
+            servers: Servers
+            """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, servers: Servers | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           VRF Name.
+                           Use "default" for the default VRF.
+                        servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`).
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}}
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                """
+                IpNameServer.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
     class IpNameServerGroupsItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -16130,45 +16674,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _primary_key: ClassVar[str] = "name"
 
     IpNameServerGroups._item_type = IpNameServerGroupsItem
-
-    class IpNameServersItem(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"ip_address": {"type": str}, "vrf": {"type": str}, "priority": {"type": int}}
-        ip_address: str
-        """IPv4 or IPv6 address for DNS server."""
-        vrf: str
-        """
-        VRF Name.
-        Use "default" for the default VRF.
-        """
-        priority: int | None
-        """Priority value (lower is first)."""
-
-        if TYPE_CHECKING:
-
-            def __init__(
-                self, *, ip_address: str | UndefinedType = Undefined, vrf: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined
-            ) -> None:
-                """
-                IpNameServersItem.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    ip_address: IPv4 or IPv6 address for DNS server.
-                    vrf:
-                       VRF Name.
-                       Use "default" for the default VRF.
-                    priority: Priority value (lower is first).
-
-                """
-
-    class IpNameServers(AvdList[IpNameServersItem]):
-        """Subclass of AvdList with `IpNameServersItem` items."""
-
-    IpNameServers._item_type = IpNameServersItem
 
     class IpNat(AvdModel):
         """Subclass of AvdModel."""
@@ -16955,18 +17460,80 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpRadius(AvdModel):
+        """Subclass of AvdModel."""
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            source_interface: str
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        source_interface: source_interface
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"source_interface": {"type": str}, "vrfs": {"type": Vrfs}}
+        source_interface: str | None
+        """Define `source_interface` for VRF default."""
+        vrfs: Vrfs
+        """
+        Define `source interfaces` for any VRF other than default.
+
+        Subclass of AvdIndexedList with
+        `VrfsItem` items. Primary key is `name` (`str`).
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                """
+                IpRadius.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    source_interface: Define `source_interface` for VRF default.
+                    vrfs:
+                       Define `source interfaces` for any VRF other than default.
+
+                       Subclass of AvdIndexedList with
+                       `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
     class IpRadiusSourceInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str | None
+        name: str
         """Interface Name."""
         vrf: str | None
         """VRF Name."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                 """
                 IpRadiusSourceInterfacesItem.
 
@@ -17475,17 +18042,79 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpTacacs(AvdModel):
+        """Subclass of AvdModel."""
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            source_interface: str
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        source_interface: source_interface
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"source_interface": {"type": str}, "vrfs": {"type": Vrfs}}
+        source_interface: str | None
+        """Define `source_interface` for VRF default."""
+        vrfs: Vrfs
+        """
+        Define `source interfaces` for any VRF other than default.
+
+        Subclass of AvdIndexedList with
+        `VrfsItem` items. Primary key is `name` (`str`).
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                """
+                IpTacacs.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    source_interface: Define `source_interface` for VRF default.
+                    vrfs:
+                       Define `source interfaces` for any VRF other than default.
+
+                       Subclass of AvdIndexedList with
+                       `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
     class IpTacacsSourceInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str | None
+        name: str
         """Interface name."""
         vrf: str | None
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                 """
                 IpTacacsSourceInterfacesItem.
 
@@ -17630,6 +18259,201 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class Ipv6AccessListsItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            HopLimitMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
+            Action: TypeAlias = Literal["permit", "deny"]
+            SourcePortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
+
+            class SourcePorts(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            SourcePorts._item_type = str
+
+            DestinationPortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
+
+            class DestinationPorts(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            DestinationPorts._item_type = str
+
+            class TcpFlags(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            TcpFlags._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "protocol": {"type": str},
+                "source": {"type": str},
+                "destination": {"type": str},
+                "hop_limit": {"type": int},
+                "hop_limit_match": {"type": str, "default": "eq"},
+                "dscp_mask": {"type": str},
+                "inner_vlan_number": {"type": int},
+                "inner_vlan_mask": {"type": str},
+                "sequence": {"type": int},
+                "remark": {"type": str},
+                "action": {"type": str},
+                "source_ports_match": {"type": str, "default": "eq"},
+                "source_ports": {"type": SourcePorts},
+                "destination_ports_match": {"type": str, "default": "eq"},
+                "destination_ports": {"type": DestinationPorts},
+                "tcp_flags": {"type": TcpFlags},
+                "log": {"type": bool},
+                "icmp_type": {"type": str},
+                "icmp_code": {"type": str},
+                "nexthop_group": {"type": str},
+                "tracked": {"type": bool},
+                "dscp": {"type": str},
+                "vlan_number": {"type": int},
+                "vlan_mask": {"type": str},
+            }
+            protocol: str | None
+            """
+            "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
+            Required except for remarks.
+            """
+            source: str | None
+            """
+            "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means host.
+            Required except for remarks.
+            """
+            destination: str | None
+            """
+            "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means host.
+            Required except for remarks.
+            """
+            hop_limit: int | None
+            """Match Hop Limit value."""
+            hop_limit_match: HopLimitMatch
+            """Default value: `"eq"`"""
+            dscp_mask: str | None
+            """DSCP mask ranges from 0x00 to 0x3F."""
+            inner_vlan_number: int | None
+            inner_vlan_mask: str | None
+            """0x000-0xFFF inner VLAN mask."""
+            sequence: int | None
+            """ACL entry sequence number."""
+            remark: str | None
+            """
+            Comment up to 100 characters.
+            If remark is defined, other keys in the ACL entry will be ignored.
+            """
+            action: Action | None
+            """
+            ACL action.
+            Required except for remarks.
+            """
+            source_ports_match: SourcePortsMatch
+            """Default value: `"eq"`"""
+            source_ports: SourcePorts
+            """Subclass of AvdList with `str` items."""
+            destination_ports_match: DestinationPortsMatch
+            """Default value: `"eq"`"""
+            destination_ports: DestinationPorts
+            """Subclass of AvdList with `str` items."""
+            tcp_flags: TcpFlags
+            """Subclass of AvdList with `str` items."""
+            log: bool | None
+            """Log matches against this rule."""
+            icmp_type: str | None
+            """Message type name/number for ICMP packets."""
+            icmp_code: str | None
+            """Message code for ICMP packets."""
+            nexthop_group: str | None
+            """nexthop-group name."""
+            tracked: bool | None
+            """Match packets in existing ICMP/UDP/TCP connections."""
+            dscp: str | None
+            """DSCP value or name."""
+            vlan_number: int | None
+            vlan_mask: str | None
+            """0x000-0xFFF VLAN mask."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    protocol: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    destination: str | None | UndefinedType = Undefined,
+                    hop_limit: int | None | UndefinedType = Undefined,
+                    hop_limit_match: HopLimitMatch | UndefinedType = Undefined,
+                    dscp_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
+                    sequence: int | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
+                    source_ports: SourcePorts | UndefinedType = Undefined,
+                    destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
+                    destination_ports: DestinationPorts | UndefinedType = Undefined,
+                    tcp_flags: TcpFlags | UndefinedType = Undefined,
+                    log: bool | None | UndefinedType = Undefined,
+                    icmp_type: str | None | UndefinedType = Undefined,
+                    icmp_code: str | None | UndefinedType = Undefined,
+                    nexthop_group: str | None | UndefinedType = Undefined,
+                    tracked: bool | None | UndefinedType = Undefined,
+                    dscp: str | None | UndefinedType = Undefined,
+                    vlan_number: int | None | UndefinedType = Undefined,
+                    vlan_mask: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        protocol:
+                           "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
+                           Required except for remarks.
+                        source:
+                           "any", "<ipv6>/<mask>" or "<ipv6>".
+                           "<ipv6>" without a mask means host.
+                           Required except for remarks.
+                        destination:
+                           "any", "<ipv6>/<mask>" or "<ipv6>".
+                           "<ipv6>" without a mask means host.
+                           Required except for remarks.
+                        hop_limit: Match Hop Limit value.
+                        hop_limit_match: hop_limit_match
+                        dscp_mask: DSCP mask ranges from 0x00 to 0x3F.
+                        inner_vlan_number: inner_vlan_number
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask.
+                        sequence: ACL entry sequence number.
+                        remark:
+                           Comment up to 100 characters.
+                           If remark is defined, other keys in the ACL entry will be ignored.
+                        action:
+                           ACL action.
+                           Required except for remarks.
+                        source_ports_match: source_ports_match
+                        source_ports: Subclass of AvdList with `str` items.
+                        destination_ports_match: destination_ports_match
+                        destination_ports: Subclass of AvdList with `str` items.
+                        tcp_flags: Subclass of AvdList with `str` items.
+                        log: Log matches against this rule.
+                        icmp_type: Message type name/number for ICMP packets.
+                        icmp_code: Message code for ICMP packets.
+                        nexthop_group: nexthop-group name.
+                        tracked: Match packets in existing ICMP/UDP/TCP connections.
+                        dscp: DSCP value or name.
+                        vlan_number: vlan_number
+                        vlan_mask: 0x000-0xFFF VLAN mask.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
         class SequenceNumbersItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -17666,10 +18490,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         SequenceNumbers._item_type = SequenceNumbersItem
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "counters_per_entry": {"type": bool}, "sequence_numbers": {"type": SequenceNumbers}}
+        _fields: ClassVar[dict] = {
+            "name": {"type": str},
+            "counters_per_entry": {"type": bool},
+            "entries": {"type": Entries},
+            "sequence_numbers": {"type": SequenceNumbers},
+        }
         name: str
         """IPv6 Access-list Name."""
         counters_per_entry: bool | None
+        entries: Entries
+        """
+        ACL Entries.
+
+        Subclass of AvdList with `EntriesItem` items.
+        """
         sequence_numbers: SequenceNumbers
         """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
 
@@ -17680,6 +18515,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 counters_per_entry: bool | None | UndefinedType = Undefined,
+                entries: Entries | UndefinedType = Undefined,
                 sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -17691,6 +18527,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     name: IPv6 Access-list Name.
                     counters_per_entry: counters_per_entry
+                    entries:
+                       ACL Entries.
+
+                       Subclass of AvdList with `EntriesItem` items.
                     sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
 
                 """
@@ -17708,14 +18548,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Option(AvdModel):
             """Subclass of AvdModel."""
 
-            RemoteIdFormat: TypeAlias = Literal["%m:%i", "%m:%p"]
+            RemoteIdFormat: TypeAlias = Literal["%m:%h:%p", "%m:%i", "%m:%p"]
             _fields: ClassVar[dict] = {"link_layer_address": {"type": bool}, "remote_id_format": {"type": str}}
             link_layer_address: bool | None
             """Add Option 79 (Link Layer Address Option)."""
             remote_id_format: RemoteIdFormat | None
             """
-            Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface
-            name (`%m:%p`).
+            Add RemoteID option 37 in format
+            - MAC address, hostname and interface name (`%m:%h:%p`)
+            - MAC
+            address and interface ID (`%m:%i`)
+            - MAC address and interface name (`%m:%p`)
             """
 
             if TYPE_CHECKING:
@@ -17732,8 +18575,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         link_layer_address: Add Option 79 (Link Layer Address Option).
                         remote_id_format:
-                           Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface
-                           name (`%m:%p`).
+                           Add RemoteID option 37 in format
+                           - MAC address, hostname and interface name (`%m:%h:%p`)
+                           - MAC
+                           address and interface ID (`%m:%i`)
+                           - MAC address and interface name (`%m:%p`)
 
                     """
 
@@ -19727,11 +20573,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Hosts._item_type = HostsItem
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}, "hosts": {"type": Hosts}}
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}, "local_interface": {"type": str}, "hosts": {"type": Hosts}}
             name: str
             """VRF name."""
             source_interface: str | None
             """Source interface name."""
+            local_interface: str | None
+            """
+            Source Interface Name.
+            `logging vrf <vrf> source-interface <interface>` is deprecated in latest EOS
+            versions(4.35.1).
+            This key sets the new command `logging vrf <vrf> local-interface <interface>`.
+            `source_interface` takes precedence over `local_interface`.
+            """
             hosts: Hosts
             """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""
 
@@ -19742,6 +20596,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     source_interface: str | None | UndefinedType = Undefined,
+                    local_interface: str | None | UndefinedType = Undefined,
                     hosts: Hosts | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -19753,6 +20608,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF name.
                         source_interface: Source interface name.
+                        local_interface:
+                           Source Interface Name.
+                           `logging vrf <vrf> source-interface <interface>` is deprecated in latest EOS
+                           versions(4.35.1).
+                           This key sets the new command `logging vrf <vrf> local-interface <interface>`.
+                           `source_interface` takes precedence over `local_interface`.
                         hosts: Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`).
 
                     """
@@ -19777,11 +20638,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"name": {"type": str}, "action": {"type": str}}
                     name: str
                     """Match list."""
-                    action: Action | None
+                    action: Action
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Action | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Action | UndefinedType = Undefined) -> None:
                             """
                             MatchListsItem.
 
@@ -19927,7 +20788,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ]
             _fields: ClassVar[dict] = {"facility": {"type": str}, "severity": {"type": str}}
             facility: str
-            severity: Severity | None
+            severity: Severity
             """
             Severity of facility. Below are the supported severities.
             emergencies    System is unusable
@@ -19947,7 +20808,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, facility: str | UndefinedType = Undefined, severity: Severity | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, facility: str | UndefinedType = Undefined, severity: Severity | UndefinedType = Undefined) -> None:
                     """
                     LevelItem.
 
@@ -19991,6 +20852,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "format": {"type": Format},
             "facility": {"type": str},
             "source_interface": {"type": str},
+            "local_interface": {"type": str},
             "vrfs": {"type": Vrfs},
             "policy": {"type": Policy},
             "event": {"type": Event},
@@ -20013,6 +20875,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         facility: Facility | None
         source_interface: str | None
         """Source Interface Name."""
+        local_interface: str | None
+        """
+        Source Interface Name.
+        `logging source-interface <interface>` is deprecated in latest EOS
+        versions(4.35.1).
+        This key sets the new command `logging local-interface <interface>`.
+        `source_interface` takes precedence over `local_interface`.
+        """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         policy: Policy
@@ -20041,6 +20911,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 format: Format | UndefinedType = Undefined,
                 facility: Facility | None | UndefinedType = Undefined,
                 source_interface: str | None | UndefinedType = Undefined,
+                local_interface: str | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 policy: Policy | UndefinedType = Undefined,
                 event: Event | UndefinedType = Undefined,
@@ -20062,6 +20933,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     format: Subclass of AvdModel.
                     facility: facility
                     source_interface: Source Interface Name.
+                    local_interface:
+                       Source Interface Name.
+                       `logging source-interface <interface>` is deprecated in latest EOS
+                       versions(4.35.1).
+                       This key sets the new command `logging local-interface <interface>`.
+                       `source_interface` takes precedence over `local_interface`.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     policy: Subclass of AvdModel.
                     event: Subclass of AvdModel.
@@ -20080,6 +20957,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `str` items."""
 
         IpAddressSecondaries._item_type = str
+
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
 
         class Mpls(AvdModel):
             """Subclass of AvdModel."""
@@ -20153,6 +21035,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_address_secondaries": {"type": IpAddressSecondaries},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "ip_proxy_arp": {"type": bool},
             "ospf_area": {"type": str},
             "mpls": {"type": Mpls},
@@ -20178,6 +21062,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ip_proxy_arp: bool | None
         ospf_area: str | None
         mpls: Mpls
@@ -20209,6 +21101,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ip_proxy_arp: bool | None | UndefinedType = Undefined,
                 ospf_area: str | None | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
@@ -20236,6 +21130,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_address_secondaries: Subclass of AvdList with `str` items.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ip_proxy_arp: ip_proxy_arp
                     ospf_area: ospf_area
                     mpls: Subclass of AvdModel.
@@ -21220,7 +22119,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 EOS 4.27.0F.
                 """
                 ip_access_group: str | None
-                """ACL name."""
+                """
+                -> ACL name. Only one transport in the same VRF can be configured with a service ACL; all transports
+                in the same VRF use the same service ACL.
+                """
                 port: int | None
                 """
                 GNMI port.
@@ -21262,7 +22164,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                operations,
                                an option to support overriding the timestamp field to the send-time is available from
                                EOS 4.27.0F.
-                            ip_access_group: ACL name.
+                            ip_access_group:
+                               -> ACL name. Only one transport in the same VRF can be configured with a service ACL; all transports
+                               in the same VRF use the same service ACL.
                             port:
                                GNMI port.
                                Make sure to update the control-plane ACL accordingly in order for the service to be
@@ -21550,6 +22454,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "enable_unix": {"type": bool},
             "https_ssl_profile": {"type": str},
             "default_services": {"type": bool},
+            "session_timeout": {"type": int},
             "enable_vrfs": {"type": EnableVrfs},
             "protocol_https_certificate": {"type": ProtocolHttpsCertificate},
         }
@@ -21560,6 +22465,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """SSL Profile Name."""
         default_services: bool | None
         """Enable default services: capi-doc and tapagg."""
+        session_timeout: int | None
+        """
+        User session timeout value in minutes.
+        EOS default is 1440 minutes.
+        """
         enable_vrfs: EnableVrfs
         """Subclass of AvdIndexedList with `EnableVrfsItem` items. Primary key is `name` (`str`)."""
         protocol_https_certificate: ProtocolHttpsCertificate
@@ -21575,6 +22485,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 enable_unix: bool | None | UndefinedType = Undefined,
                 https_ssl_profile: str | None | UndefinedType = Undefined,
                 default_services: bool | None | UndefinedType = Undefined,
+                session_timeout: int | None | UndefinedType = Undefined,
                 enable_vrfs: EnableVrfs | UndefinedType = Undefined,
                 protocol_https_certificate: ProtocolHttpsCertificate | UndefinedType = Undefined,
             ) -> None:
@@ -21590,6 +22501,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enable_unix: enable_unix
                     https_ssl_profile: SSL Profile Name.
                     default_services: Enable default services: capi-doc and tapagg.
+                    session_timeout:
+                       User session timeout value in minutes.
+                       EOS default is 1440 minutes.
                     enable_vrfs: Subclass of AvdIndexedList with `EnableVrfsItem` items. Primary key is `name` (`str`).
                     protocol_https_certificate: Subclass of AvdModel.
 
@@ -21973,6 +22887,213 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "forced 40gfull",
             "forced 50gfull",
         ]
+
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Cache(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"dynamic_capacity": {"type": int}, "expire": {"type": int}, "refresh_always": {"type": bool}}
+                dynamic_capacity: int | None
+                """Capacity of dynamic cache entries."""
+                expire: int | None
+                """Cache entries expiry in seconds."""
+                refresh_always: bool | None
+                """Force refresh on cache expiry."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Cache.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic_capacity: Capacity of dynamic cache entries.
+                            expire: Cache entries expiry in seconds.
+                            refresh_always: Force refresh on cache expiry.
+
+                        """
+
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    """Accept default route from received Router Advertisements."""
+                    route_preference: bool | None
+                    """Accept route preference from received Router Advertisements."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: Accept default route from received Router Advertisements.
+                                route_preference: Accept route preference from received Router Advertisements.
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                disabled: bool | None
+                """Disable Router Advertisement messages on the interface."""
+                rx_accept: RxAccept
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: Disable Router Advertisement messages on the interface.
+                            rx_accept: Subclass of AvdModel.
+
+                        """
+
+            class PrefixesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "ipv6_prefix": {"type": str},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                    "no_autoconfig_flag": {"type": bool},
+                }
+                ipv6_prefix: str
+                valid_lifetime: str | None
+                """Valid lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                preferred_lifetime: str | None
+                """Preferred lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                no_autoconfig_flag: bool | None
+                """Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv6_prefix: str | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PrefixesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv6_prefix: ipv6_prefix
+                            valid_lifetime: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            preferred_lifetime: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            no_autoconfig_flag: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+
+                        """
+
+            class Prefixes(AvdIndexedList[str, PrefixesItem]):
+                """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+            Prefixes._item_type = PrefixesItem
+
+            _fields: ClassVar[dict] = {
+                "cache": {"type": Cache},
+                "ra": {"type": Ra},
+                "managed_config_flag": {"type": bool},
+                "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
+            }
+            cache: Cache
+            """
+            Neighbor cache options.
+
+            Subclass of AvdModel.
+            """
+            ra: Ra
+            """
+            Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+            managed_config_flag: bool | None
+            """Set the "Managed Address Configuration" (M) flag in Router Advertisements."""
+            prefixes: Prefixes
+            """
+            IPv6 prefixes to include in Router Advertisements.
+
+            Subclass of AvdIndexedList with `PrefixesItem`
+            items. Primary key is `ipv6_prefix` (`str`).
+            """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    cache: Cache | UndefinedType = Undefined,
+                    ra: Ra | UndefinedType = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
+                    prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        cache:
+                           Neighbor cache options.
+
+                           Subclass of AvdModel.
+                        ra:
+                           Router Advertisement.
+
+                           Subclass of AvdModel.
+                        managed_config_flag: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+                        prefixes:
+                           IPv6 prefixes to include in Router Advertisements.
+
+                           Subclass of AvdIndexedList with `PrefixesItem`
+                           items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
+
+                    """
+
         Type: TypeAlias = Literal["oob", "inband"]
 
         class Lldp(AvdModel):
@@ -22239,10 +23360,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_address": {"type": str},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
+            "ipv6_nd": {"type": Ipv6Nd},
             "type": {"type": str, "default": "oob"},
             "gateway": {"type": str},
             "ipv6_gateway": {"type": str},
             "mac_address": {"type": str},
+            "dhcp_client_accept_default_route": {"type": bool},
             "lldp": {"type": Lldp},
             "redundancy": {"type": Redundancy},
             "eos_cli": {"type": str},
@@ -22260,7 +23385,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IPv4_address/Mask."""
         ipv6_enable: bool | None
         ipv6_address: str | None
-        """IPv6_address/Mask."""
+        """IPv6 address with prefix length."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
+        ipv6_nd: Ipv6Nd
+        """
+        IPv6 Neighbor Discovery protocol.
+
+        Subclass of AvdModel.
+        """
         type: Type
         """
         For documentation purposes only.
@@ -22273,6 +23412,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IPv6 address of default gateway in management VRF."""
         mac_address: str | None
         """MAC address."""
+        dhcp_client_accept_default_route: bool | None
+        """
+        Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+        `dhcp`.
+        """
         lldp: Lldp
         """Subclass of AvdModel."""
         redundancy: Redundancy
@@ -22294,10 +23438,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 type: Type | UndefinedType = Undefined,
                 gateway: str | None | UndefinedType = Undefined,
                 ipv6_gateway: str | None | UndefinedType = Undefined,
                 mac_address: str | None | UndefinedType = Undefined,
+                dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
                 redundancy: Redundancy | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
@@ -22317,11 +23465,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     vrf: VRF Name.
                     ip_address: IPv4_address/Mask.
                     ipv6_enable: ipv6_enable
-                    ipv6_address: IPv6_address/Mask.
+                    ipv6_address: IPv6 address with prefix length.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
+                    ipv6_nd:
+                       IPv6 Neighbor Discovery protocol.
+
+                       Subclass of AvdModel.
                     type: For documentation purposes only.
                     gateway: IPv4 address of default gateway in management VRF.
                     ipv6_gateway: IPv6 address of default gateway in management VRF.
                     mac_address: MAC address.
+                    dhcp_client_accept_default_route:
+                       Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+                       `dhcp`.
                     lldp: Subclass of AvdModel.
                     redundancy: Subclass of AvdModel.
                     eos_cli: Multiline EOS CLI rendered directly on the management interface in the final EOS configuration.
@@ -22779,7 +23939,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "certificate": {"type": Certificate},
                 "certificate_revocation_lists": {"type": CertificateRevocationLists},
             }
-            name: str | None
+            name: str
             fips_restrictions: bool | None
             """Use FIPS compliant algorithms."""
             tls_versions: str | None
@@ -22825,7 +23985,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    name: str | None | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
                     fips_restrictions: bool | None | UndefinedType = Undefined,
                     tls_versions: str | None | UndefinedType = Undefined,
                     cipher_list: str | None | UndefinedType = Undefined,
@@ -22873,8 +24033,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class SslProfiles(AvdList[SslProfilesItem]):
-            """Subclass of AvdList with `SslProfilesItem` items."""
+        class SslProfiles(AvdIndexedList[str, SslProfilesItem]):
+            """Subclass of AvdIndexedList with `SslProfilesItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
 
         SslProfiles._item_type = SslProfilesItem
 
@@ -23105,7 +24267,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         password: Password
         """Subclass of AvdModel."""
         ssl_profiles: SslProfiles
-        """Subclass of AvdList with `SslProfilesItem` items."""
+        """Subclass of AvdIndexedList with `SslProfilesItem` items. Primary key is `name` (`str`)."""
         shared_secret_profiles: SharedSecretProfiles
         """Subclass of AvdIndexedList with `SharedSecretProfilesItem` items. Primary key is `profile` (`str`)."""
 
@@ -23136,7 +24298,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdModel.
                     password: Subclass of AvdModel.
-                    ssl_profiles: Subclass of AvdList with `SslProfilesItem` items.
+                    ssl_profiles: Subclass of AvdIndexedList with `SslProfilesItem` items. Primary key is `name` (`str`).
                     shared_secret_profiles: Subclass of AvdIndexedList with `SharedSecretProfilesItem` items. Primary key is `profile` (`str`).
 
                 """
@@ -25086,6 +26248,59 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Interfaces(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Errdisable(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"only_avd_interfaces": {"type": bool, "default": False}}
+                only_avd_interfaces: bool
+                """
+                Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+
+                Default value: `False`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, only_avd_interfaces: bool | UndefinedType = Undefined) -> None:
+                        """
+                        Errdisable.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            only_avd_interfaces: Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+
+                        """
+
+            _fields: ClassVar[dict] = {"errdisable": {"type": Errdisable}}
+            errdisable: Errdisable
+            """
+            Settings for the VerifyInterfaceErrDisabled test.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, errdisable: Errdisable | UndefinedType = Undefined) -> None:
+                    """
+                    Interfaces.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        errdisable:
+                           Settings for the VerifyInterfaceErrDisabled test.
+
+                           Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "is_deployed": {"type": bool},
             "platform": {"type": str},
@@ -25101,6 +26316,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "digital_twin": {"type": DigitalTwin},
             "validate_no_errors_period": {"type": int},
             "exclude_as_extra_fabric_validation_target": {"type": bool},
+            "interfaces": {"type": Interfaces},
         }
         is_deployed: bool | None
         """Key only used for documentation or validation purposes."""
@@ -25156,6 +26372,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Exclude this node from being used as a destination target from other fabric devices in the extra
         fabric validation tests performed by the `anta_runner` role.
         """
+        interfaces: Interfaces
+        """
+        Interface validation settings.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -25176,6 +26398,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validate_no_errors_period: int | None | UndefinedType = Undefined,
                 exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
+                interfaces: Interfaces | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -25224,6 +26447,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
                        fabric validation tests performed by the `anta_runner` role.
+                    interfaces:
+                       Interface validation settings.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -25373,6 +26600,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "description": {"type": str},
+                "single_line_description": {"type": str},
                 "ip": {"type": str},
                 "icmp_echo_size": {"type": int},
                 "local_interfaces": {"type": str},
@@ -25382,6 +26610,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             name: str
             """Host Name."""
             description: str | None
+            """
+            Description in the form of
+            ```
+            description
+            <description>
+            ```
+            """
+            single_line_description: str | None
+            """
+            Description in the form of `description <description>`.
+            Supported in EOS versions 4.32.2F and above.
+            """
             ip: str | None
             icmp_echo_size: int | None
             """Size of ICMP probe in bytes."""
@@ -25405,6 +26645,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
                     ip: str | None | UndefinedType = Undefined,
                     icmp_echo_size: int | None | UndefinedType = Undefined,
                     local_interfaces: str | None | UndefinedType = Undefined,
@@ -25419,7 +26660,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: Host Name.
-                        description: description
+                        description:
+                           Description in the form of
+                           ```
+                           description
+                           <description>
+                           ```
+                        single_line_description:
+                           Description in the form of `description <description>`.
+                           Supported in EOS versions 4.32.2F and above.
                         ip: ip
                         icmp_echo_size: Size of ICMP probe in bytes.
                         local_interfaces: local_interfaces
@@ -25478,6 +26727,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "description": {"type": str},
+                    "single_line_description": {"type": str},
                     "ip": {"type": str},
                     "icmp_echo_size": {"type": int},
                     "local_interfaces": {"type": str},
@@ -25487,6 +26737,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: str
                 """Host name."""
                 description: str | None
+                """
+                Description in the form of
+                ```
+                description
+                <description>
+                ```
+                """
+                single_line_description: str | None
+                """
+                Description in the form of `description <description>`.
+                Supported in EOS versions 4.32.2F and above.
+                """
                 ip: str | None
                 icmp_echo_size: int | None
                 """Size of ICMP probe in bytes."""
@@ -25510,6 +26772,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         description: str | None | UndefinedType = Undefined,
+                        single_line_description: str | None | UndefinedType = Undefined,
                         ip: str | None | UndefinedType = Undefined,
                         icmp_echo_size: int | None | UndefinedType = Undefined,
                         local_interfaces: str | None | UndefinedType = Undefined,
@@ -25524,7 +26787,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             name: Host name.
-                            description: description
+                            description:
+                               Description in the form of
+                               ```
+                               description
+                               <description>
+                               ```
+                            single_line_description:
+                               Description in the form of `description <description>`.
+                               Supported in EOS versions 4.32.2F and above.
                             ip: ip
                             icmp_echo_size: Size of ICMP probe in bytes.
                             local_interfaces: local_interfaces
@@ -25548,6 +26819,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "description": {"type": str},
+                "single_line_description": {"type": str},
                 "interface_sets": {"type": InterfaceSets},
                 "local_interfaces": {"type": str},
                 "address_only": {"type": bool, "default": True},
@@ -25556,6 +26828,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             name: str
             """VRF Name."""
             description: str | None
+            """
+            Description in the form of
+            ```
+            description
+            <description>
+            ```
+            """
+            single_line_description: str | None
+            """
+            Description in the form of `description <description>`.
+            Supported in EOS versions 4.32.2F and above.
+            """
             interface_sets: InterfaceSets
             """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
             local_interfaces: str | None
@@ -25579,6 +26863,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
                     interface_sets: InterfaceSets | UndefinedType = Undefined,
                     local_interfaces: str | None | UndefinedType = Undefined,
                     address_only: bool | UndefinedType = Undefined,
@@ -25592,7 +26877,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: VRF Name.
-                        description: description
+                        description:
+                           Description in the form of
+                           ```
+                           description
+                           <description>
+                           ```
+                        single_line_description:
+                           Description in the form of `description <description>`.
+                           Supported in EOS versions 4.32.2F and above.
                         interface_sets: Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`).
                         local_interfaces: local_interfaces
                         address_only:
@@ -25756,6 +27049,307 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Configure transceiver monitoring logging.
 
                        Subclass of AvdModel.
+
+                """
+
+    class MonitorLinkFlapPolicy(AvdModel):
+        """Subclass of AvdModel."""
+
+        class DampingProfilesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class PenaltyDecay(AvdModel):
+                """Subclass of AvdModel."""
+
+                Units: TypeAlias = Literal["minutes", "seconds"]
+                _fields: ClassVar[dict] = {"half_life": {"type": int}, "units": {"type": str}}
+                half_life: int
+                units: Units
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, half_life: int | UndefinedType = Undefined, units: Units | UndefinedType = Undefined) -> None:
+                        """
+                        PenaltyDecay.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            half_life: half_life
+                            units: units
+
+                        """
+
+            class PenaltyThreshold(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"maximum": {"type": int}, "reuse": {"type": int}, "suppression": {"type": int}}
+                maximum: int | None
+                """Maximum value of penalty for a link."""
+                reuse: int | None
+                """Value of penalty below which suppressed link would be reused."""
+                suppression: int | None
+                """Value of penalty above which link would be suppressed."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        maximum: int | None | UndefinedType = Undefined,
+                        reuse: int | None | UndefinedType = Undefined,
+                        suppression: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PenaltyThreshold.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            maximum: Maximum value of penalty for a link.
+                            reuse: Value of penalty below which suppressed link would be reused.
+                            suppression: Value of penalty above which link would be suppressed.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "penalty_decay": {"type": PenaltyDecay},
+                "mac_fault_local_penalty": {"type": int},
+                "mac_fault_remote_penalty": {"type": int},
+                "penalty_threshold": {"type": PenaltyThreshold},
+            }
+            name: str
+            """
+            The profile name should be unique over all defined profiles (damping_profiles and
+            max_flap_profiles).
+            """
+            penalty_decay: PenaltyDecay
+            """
+            Decay rate for penalty.
+
+            Subclass of AvdModel.
+            """
+            mac_fault_local_penalty: int | None
+            """0 refers to - No penalty, 1-5000 refers to penalty value for fault."""
+            mac_fault_remote_penalty: int | None
+            """0 refers to - No penalty, 1-5000 refers to penalty value for fault."""
+            penalty_threshold: PenaltyThreshold
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    penalty_decay: PenaltyDecay | UndefinedType = Undefined,
+                    mac_fault_local_penalty: int | None | UndefinedType = Undefined,
+                    mac_fault_remote_penalty: int | None | UndefinedType = Undefined,
+                    penalty_threshold: PenaltyThreshold | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DampingProfilesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           The profile name should be unique over all defined profiles (damping_profiles and
+                           max_flap_profiles).
+                        penalty_decay:
+                           Decay rate for penalty.
+
+                           Subclass of AvdModel.
+                        mac_fault_local_penalty: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
+                        mac_fault_remote_penalty: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
+                        penalty_threshold: Subclass of AvdModel.
+
+                    """
+
+        class DampingProfiles(AvdIndexedList[str, DampingProfilesItem]):
+            """Subclass of AvdIndexedList with `DampingProfilesItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        DampingProfiles._item_type = DampingProfilesItem
+
+        class MaxFlapProfilesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "max_flaps": {"type": int},
+                "time": {"type": int},
+                "violations": {"type": int},
+                "intervals": {"type": int},
+            }
+            name: str
+            """
+            The profile name should be unique over all defined profiles (damping_profiles and
+            max_flap_profiles).
+            """
+            max_flaps: int
+            """Maximum number of flaps."""
+            time: int
+            """The time period that flaps are counted (in seconds)."""
+            violations: int | None
+            """Number of violations to be detected."""
+            intervals: int | None
+            """Intervals for monitoring violations. This key is required to configure violations."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    max_flaps: int | UndefinedType = Undefined,
+                    time: int | UndefinedType = Undefined,
+                    violations: int | None | UndefinedType = Undefined,
+                    intervals: int | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    MaxFlapProfilesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           The profile name should be unique over all defined profiles (damping_profiles and
+                           max_flap_profiles).
+                        max_flaps: Maximum number of flaps.
+                        time: The time period that flaps are counted (in seconds).
+                        violations: Number of violations to be detected.
+                        intervals: Intervals for monitoring violations. This key is required to configure violations.
+
+                    """
+
+        class MaxFlapProfiles(AvdIndexedList[str, MaxFlapProfilesItem]):
+            """Subclass of AvdIndexedList with `MaxFlapProfilesItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        MaxFlapProfiles._item_type = MaxFlapProfilesItem
+
+        class DefaultProfiles(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DefaultProfiles._item_type = str
+
+        _fields: ClassVar[dict] = {
+            "damping_profiles": {"type": DampingProfiles},
+            "max_flap_profiles": {"type": MaxFlapProfiles},
+            "default_profiles": {"type": DefaultProfiles},
+        }
+        damping_profiles: DampingProfiles
+        """
+        A list of damping profiles containing the set of parameters required by the damping logic, which is
+        based on the BGP Route Flap Damping algorithm described in RFC2439.
+
+        Subclass of AvdIndexedList with
+        `DampingProfilesItem` items. Primary key is `name` (`str`).
+        """
+        max_flap_profiles: MaxFlapProfiles
+        """Subclass of AvdIndexedList with `MaxFlapProfilesItem` items. Primary key is `name` (`str`)."""
+        default_profiles: DefaultProfiles
+        """
+        The default-profile set may contain zero, one, or multiple profiles. When the default-profile set
+        contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.
+        Subclass of AvdList with `str` items.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                damping_profiles: DampingProfiles | UndefinedType = Undefined,
+                max_flap_profiles: MaxFlapProfiles | UndefinedType = Undefined,
+                default_profiles: DefaultProfiles | UndefinedType = Undefined,
+            ) -> None:
+                """
+                MonitorLinkFlapPolicy.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    damping_profiles:
+                       A list of damping profiles containing the set of parameters required by the damping logic, which is
+                       based on the BGP Route Flap Damping algorithm described in RFC2439.
+
+                       Subclass of AvdIndexedList with
+                       `DampingProfilesItem` items. Primary key is `name` (`str`).
+                    max_flap_profiles: Subclass of AvdIndexedList with `MaxFlapProfilesItem` items. Primary key is `name` (`str`).
+                    default_profiles:
+                       The default-profile set may contain zero, one, or multiple profiles. When the default-profile set
+                       contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.
+                       Subclass of AvdList with `str` items.
+
+                """
+
+    class MonitorLoopProtection(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {
+            "enabled": {"type": bool},
+            "disabled_time": {"type": int},
+            "protect_vlan": {"type": str},
+            "rate_limit": {"type": int},
+            "transmit_interval": {"type": int},
+        }
+        enabled: bool | None
+        disabled_time: int | None
+        """
+        Port disable time. EOS default is 604800 seconds (7 days).
+        0 indicates that the disabled device
+        should not automatically come back up.
+        """
+        protect_vlan: str | None
+        """
+        VLAN range as string.
+        "< vlan_id >, < vlan_id >-< vlan_id >"
+        Example: 15,16,17,18
+        """
+        rate_limit: int | None
+        """Rate limits the loop detection frames. EOS default is 1000/second."""
+        transmit_interval: int | None
+        """Loop protection packet transmit interval. EOS default is 5 seconds."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                enabled: bool | None | UndefinedType = Undefined,
+                disabled_time: int | None | UndefinedType = Undefined,
+                protect_vlan: str | None | UndefinedType = Undefined,
+                rate_limit: int | None | UndefinedType = Undefined,
+                transmit_interval: int | None | UndefinedType = Undefined,
+            ) -> None:
+                """
+                MonitorLoopProtection.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    enabled: enabled
+                    disabled_time:
+                       Port disable time. EOS default is 604800 seconds (7 days).
+                       0 indicates that the disabled device
+                       should not automatically come back up.
+                    protect_vlan:
+                       VLAN range as string.
+                       "< vlan_id >, < vlan_id >-< vlan_id >"
+                       Example: 15,16,17,18
+                    rate_limit: Rate limits the loop detection frames. EOS default is 1000/second.
+                    transmit_interval: Loop protection packet transmit interval. EOS default is 5 seconds.
 
                 """
 
@@ -31432,6 +33026,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
         SpanningTreeGuard: TypeAlias = Literal["loop", "root", "disabled"]
         SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+        SpanningTreeLinkType: TypeAlias = Literal["shared", "point-to-point"]
 
         class Ptp(AvdModel):
             """Subclass of AvdModel."""
@@ -31957,6 +33552,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         class Ipv6NdPrefixesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -32003,6 +33603,207 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _primary_key: ClassVar[str] = "ipv6_prefix"
 
         Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
+
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Cache(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"dynamic_capacity": {"type": int}, "expire": {"type": int}, "refresh_always": {"type": bool}}
+                dynamic_capacity: int | None
+                """Capacity of dynamic cache entries."""
+                expire: int | None
+                """Cache entries expiry in seconds."""
+                refresh_always: bool | None
+                """Force refresh on cache expiry."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Cache.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic_capacity: Capacity of dynamic cache entries.
+                            expire: Cache entries expiry in seconds.
+                            refresh_always: Force refresh on cache expiry.
+
+                        """
+
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    """Accept default route from received Router Advertisements."""
+                    route_preference: bool | None
+                    """Accept route preference from received Router Advertisements."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: Accept default route from received Router Advertisements.
+                                route_preference: Accept route preference from received Router Advertisements.
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                disabled: bool | None
+                """Disable Router Advertisement messages on the interface."""
+                rx_accept: RxAccept
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: Disable Router Advertisement messages on the interface.
+                            rx_accept: Subclass of AvdModel.
+
+                        """
+
+            class PrefixesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "ipv6_prefix": {"type": str},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                    "no_autoconfig_flag": {"type": bool},
+                }
+                ipv6_prefix: str
+                valid_lifetime: str | None
+                """Valid lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                preferred_lifetime: str | None
+                """Preferred lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                no_autoconfig_flag: bool | None
+                """Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv6_prefix: str | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PrefixesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv6_prefix: ipv6_prefix
+                            valid_lifetime: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            preferred_lifetime: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            no_autoconfig_flag: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+
+                        """
+
+            class Prefixes(AvdIndexedList[str, PrefixesItem]):
+                """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+            Prefixes._item_type = PrefixesItem
+
+            _fields: ClassVar[dict] = {
+                "cache": {"type": Cache},
+                "ra": {"type": Ra},
+                "managed_config_flag": {"type": bool},
+                "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
+            }
+            cache: Cache
+            """
+            Neighbor cache options.
+
+            Subclass of AvdModel.
+            """
+            ra: Ra
+            """
+            Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+            managed_config_flag: bool | None
+            """Set the "Managed Address Configuration" (M) flag in Router Advertisements."""
+            prefixes: Prefixes
+            """
+            IPv6 prefixes to include in Router Advertisements.
+
+            Subclass of AvdIndexedList with `PrefixesItem`
+            items. Primary key is `ipv6_prefix` (`str`).
+            """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    cache: Cache | UndefinedType = Undefined,
+                    ra: Ra | UndefinedType = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
+                    prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        cache:
+                           Neighbor cache options.
+
+                           Subclass of AvdModel.
+                        ra:
+                           Router Advertisement.
+
+                           Subclass of AvdModel.
+                        managed_config_flag: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+                        prefixes:
+                           IPv6 prefixes to include in Router Advertisements.
+
+                           Subclass of AvdIndexedList with `PrefixesItem`
+                           items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
+
+                    """
 
         class Pim(AvdModel):
             """Subclass of AvdModel."""
@@ -32418,7 +34219,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             role.
             """
             validate_lldp: bool | None
-            """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+            """
+            Controls LLDP topology validation performed by the `anta_runner` role.
+            - Unset (Default): The peer
+            is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+            (`is_deployed: true`)
+            and the peer interface is not administratively shutdown.
+            - `true`: Forces
+            validation. Use this for connected endpoints not managed by AVD.
+            - `false`: Disables validation for
+            the interface.
+            """
 
             if TYPE_CHECKING:
 
@@ -32446,7 +34257,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         validate_state:
                            Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                            role.
-                        validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                        validate_lldp:
+                           Controls LLDP topology validation performed by the `anta_runner` role.
+                           - Unset (Default): The peer
+                           is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+                           (`is_deployed: true`)
+                           and the peer interface is not administratively shutdown.
+                           - `true`: Forces
+                           validation. Use this for connected endpoints not managed by AVD.
+                           - `false`: Disables validation for
+                           the interface.
 
                     """
 
@@ -33311,11 +35131,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                       - 1,3
                       - 1-10
                     """
-                    mac_address_maximum: int | None
+                    mac_address_maximum: int
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, range: str | UndefinedType = Undefined, mac_address_maximum: int | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, range: str | UndefinedType = Undefined, mac_address_maximum: int | UndefinedType = Undefined) -> None:
                             """
                             VlansItem.
 
@@ -34408,6 +36228,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "spanning_tree_bpduguard": {"type": str},
             "spanning_tree_guard": {"type": str},
             "spanning_tree_portfast": {"type": str},
+            "spanning_tree_link_type": {"type": str},
             "vmtracer": {"type": bool},
             "ptp": {"type": Ptp},
             "ip_address": {"type": str},
@@ -34419,10 +36240,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_nat": {"type": IpNat},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "ipv6_address_link_local": {"type": str},
             "ipv6_nd_ra_disabled": {"type": bool},
             "ipv6_nd_managed_config_flag": {"type": bool},
             "ipv6_nd_prefixes": {"type": Ipv6NdPrefixes},
+            "ipv6_nd": {"type": Ipv6Nd},
             "access_group_in": {"type": str},
             "access_group_out": {"type": str},
             "ipv6_access_group_in": {"type": str},
@@ -34532,6 +36356,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         spanning_tree_bpduguard: SpanningTreeBpduguard | None
         spanning_tree_guard: SpanningTreeGuard | None
         spanning_tree_portfast: SpanningTreePortfast | None
+        spanning_tree_link_type: SpanningTreeLinkType | None
         vmtracer: bool | None
         ptp: Ptp
         """Subclass of AvdModel."""
@@ -34551,12 +36376,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6 address/mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ipv6_address_link_local: str | None
         """Link local IPv6 address/mask."""
         ipv6_nd_ra_disabled: bool | None
         ipv6_nd_managed_config_flag: bool | None
         ipv6_nd_prefixes: Ipv6NdPrefixes
         """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+        ipv6_nd: Ipv6Nd
+        """
+        IPv6 Neighbor Discovery protocol.
+
+        Subclass of AvdModel.
+        """
         access_group_in: str | None
         """Access list name."""
         access_group_out: str | None
@@ -34661,6 +36500,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
                 spanning_tree_guard: SpanningTreeGuard | None | UndefinedType = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
                 vmtracer: bool | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
@@ -34672,10 +36512,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_nat: IpNat | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address_link_local: str | None | UndefinedType = Undefined,
                 ipv6_nd_ra_disabled: bool | None | UndefinedType = Undefined,
                 ipv6_nd_managed_config_flag: bool | None | UndefinedType = Undefined,
                 ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 access_group_in: str | None | UndefinedType = Undefined,
                 access_group_out: str | None | UndefinedType = Undefined,
                 ipv6_access_group_in: str | None | UndefinedType = Undefined,
@@ -34760,6 +36603,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     spanning_tree_bpduguard: spanning_tree_bpduguard
                     spanning_tree_guard: spanning_tree_guard
                     spanning_tree_portfast: spanning_tree_portfast
+                    spanning_tree_link_type: spanning_tree_link_type
                     vmtracer: vmtracer
                     ptp: Subclass of AvdModel.
                     ip_address: IPv4 address/mask or "dhcp".
@@ -34771,10 +36615,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_nat: Subclass of AvdModel.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6 address/mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ipv6_address_link_local: Link local IPv6 address/mask.
                     ipv6_nd_ra_disabled: ipv6_nd_ra_disabled
                     ipv6_nd_managed_config_flag: ipv6_nd_managed_config_flag
                     ipv6_nd_prefixes: Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
+                    ipv6_nd:
+                       IPv6 Neighbor Discovery protocol.
+
+                       Subclass of AvdModel.
                     access_group_in: Access list name.
                     access_group_out: Access list name.
                     ipv6_access_group_in: IPv6 access list name.
@@ -34885,7 +36738,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Watchdog(AvdModel):
             """Subclass of AvdModel."""
 
-            Action: TypeAlias = Literal["drop", "no-drop"]
+            Action: TypeAlias = Literal["drop", "errdisable", "notify-only"]
             _fields: ClassVar[dict] = {
                 "action": {"type": str},
                 "timeout": {"type": str},
@@ -37246,7 +39099,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class HostsItem(AvdModel):
+        class ServersItem(AvdModel):
             """Subclass of AvdModel."""
 
             class Tls(AvdModel):
@@ -37282,20 +39135,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {
-                "host": {"type": str},
-                "vrf": {"type": str},
-                "tls": {"type": Tls},
-                "timeout": {"type": int},
-                "retransmit": {"type": int},
-                "key": {"type": str},
-            }
+            _fields: ClassVar[dict] = {"host": {"type": str}, "tls": {"type": Tls}, "timeout": {"type": int}, "retransmit": {"type": int}, "key": {"type": str}}
             host: str
-            """Host IP address or name."""
-            vrf: str | None
+            """
+            -> Host IP address or name. Multiple server with the same hostname/IP address can be configured for
+            TLS and no TLS.
+            """
             tls: Tls
             """
-            When TLS is configured, `key` is ignored..
+            When TLS is configured, `key` is ignored.
 
             Subclass of AvdModel.
             """
@@ -37313,23 +39161,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     host: str | UndefinedType = Undefined,
-                    vrf: str | None | UndefinedType = Undefined,
                     tls: Tls | UndefinedType = Undefined,
                     timeout: int | None | UndefinedType = Undefined,
                     retransmit: int | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    HostsItem.
+                    ServersItem.
 
 
                     Subclass of AvdModel.
 
                     Args:
-                        host: Host IP address or name.
-                        vrf: vrf
+                        host:
+                           -> Host IP address or name. Multiple server with the same hostname/IP address can be configured for
+                           TLS and no TLS.
                         tls:
-                           When TLS is configured, `key` is ignored..
+                           When TLS is configured, `key` is ignored.
 
                            Subclass of AvdModel.
                         timeout: timeout
@@ -37340,18 +39188,155 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class Hosts(AvdIndexedList[str, HostsItem]):
-            """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `host` (`str`)."""
+        class Servers(AvdList[ServersItem]):
+            """Subclass of AvdList with `ServersItem` items."""
 
-            _primary_key: ClassVar[str] = "host"
+        Servers._item_type = ServersItem
 
-        Hosts._item_type = HostsItem
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ServersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Tls(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "ssl_profile": {"type": str}, "port": {"type": int}}
+                    enabled: bool | None
+                    """Enable TLS for radius-server."""
+                    ssl_profile: str | None
+                    """Name of TLS profile."""
+                    port: int | None
+                    """TCP Port used for TLS. EOS default is 2083."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            ssl_profile: str | None | UndefinedType = Undefined,
+                            port: int | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Tls.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Enable TLS for radius-server.
+                                ssl_profile: Name of TLS profile.
+                                port: TCP Port used for TLS. EOS default is 2083.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "host": {"type": str},
+                    "tls": {"type": Tls},
+                    "timeout": {"type": int},
+                    "retransmit": {"type": int},
+                    "key": {"type": str},
+                }
+                host: str
+                """
+                -> Host IP address or name. Multiple server with the same hostname/IP address can be configured for
+                TLS and no TLS.
+                """
+                tls: Tls
+                """
+                When TLS is configured, `key` is ignored.
+
+                Subclass of AvdModel.
+                """
+                timeout: int | None
+                retransmit: int | None
+                key: str | None
+                """
+                Encrypted key - only type 7 supported.
+                When TLS is configured, `key` is ignored.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        host: str | UndefinedType = Undefined,
+                        tls: Tls | UndefinedType = Undefined,
+                        timeout: int | None | UndefinedType = Undefined,
+                        retransmit: int | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ServersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            host:
+                               -> Host IP address or name. Multiple server with the same hostname/IP address can be configured for
+                               TLS and no TLS.
+                            tls:
+                               When TLS is configured, `key` is ignored.
+
+                               Subclass of AvdModel.
+                            timeout: timeout
+                            retransmit: retransmit
+                            key:
+                               Encrypted key - only type 7 supported.
+                               When TLS is configured, `key` is ignored.
+
+                        """
+
+            class Servers(AvdList[ServersItem]):
+                """Subclass of AvdList with `ServersItem` items."""
+
+            Servers._item_type = ServersItem
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "servers": {"type": Servers}}
+            name: str
+            """Non-defualt VRF name."""
+            servers: Servers
+            """
+            Hosts configuration for VRF default.
+
+            Subclass of AvdList with `ServersItem` items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, servers: Servers | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Non-defualt VRF name.
+                        servers:
+                           Hosts configuration for VRF default.
+
+                           Subclass of AvdList with `ServersItem` items.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
 
         _fields: ClassVar[dict] = {
             "attribute_32_include_in_access_req": {"type": Attribute32IncludeInAccessReq},
             "deadtime": {"type": int},
             "dynamic_authorization": {"type": DynamicAuthorization},
-            "hosts": {"type": Hosts},
+            "servers": {"type": Servers},
+            "vrfs": {"type": Vrfs},
             "tls_ssl_profile": {"type": str},
         }
         attribute_32_include_in_access_req: Attribute32IncludeInAccessReq
@@ -37360,8 +39345,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Time to skip a non-responsive server in minutes."""
         dynamic_authorization: DynamicAuthorization
         """Subclass of AvdModel."""
-        hosts: Hosts
-        """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `host` (`str`)."""
+        servers: Servers
+        """
+        Hosts configuration for VRF default.
+
+        Subclass of AvdList with `ServersItem` items.
+        """
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         tls_ssl_profile: str | None
         """Name of global TLS profile."""
 
@@ -37373,7 +39364,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 attribute_32_include_in_access_req: Attribute32IncludeInAccessReq | UndefinedType = Undefined,
                 deadtime: int | None | UndefinedType = Undefined,
                 dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
-                hosts: Hosts | UndefinedType = Undefined,
+                servers: Servers | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
                 tls_ssl_profile: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -37386,7 +39378,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     attribute_32_include_in_access_req: Subclass of AvdModel.
                     deadtime: Time to skip a non-responsive server in minutes.
                     dynamic_authorization: Subclass of AvdModel.
-                    hosts: Subclass of AvdIndexedList with `HostsItem` items. Primary key is `host` (`str`).
+                    servers:
+                       Hosts configuration for VRF default.
+
+                       Subclass of AvdList with `ServersItem` items.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     tls_ssl_profile: Name of global TLS profile.
 
                 """
@@ -37420,12 +39416,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Action: TypeAlias = Literal["permit", "deny"]
             _fields: ClassVar[dict] = {"sequence": {"type": int}, "action": {"type": str}, "mode": {"type": str}, "command": {"type": str}}
-            sequence: int | None
+            sequence: int
             """Sequence number."""
-            action: Action | None
+            action: Action
             mode: str | None
             """"config", "config-all", "exec" or mode key as string."""
-            command: str | None
+            command: str
             """Command as string."""
 
             if TYPE_CHECKING:
@@ -37433,10 +39429,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    sequence: int | None | UndefinedType = Undefined,
-                    action: Action | None | UndefinedType = Undefined,
+                    sequence: int | UndefinedType = Undefined,
+                    action: Action | UndefinedType = Undefined,
                     mode: str | None | UndefinedType = Undefined,
-                    command: str | None | UndefinedType = Undefined,
+                    command: str | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SequenceNumbersItem.
@@ -37452,8 +39448,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class SequenceNumbers(AvdList[SequenceNumbersItem]):
-            """Subclass of AvdList with `SequenceNumbersItem` items."""
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
+            """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
+
+            _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
 
@@ -37461,7 +39459,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """Role name."""
         sequence_numbers: SequenceNumbers
-        """Subclass of AvdList with `SequenceNumbersItem` items."""
+        """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
 
         if TYPE_CHECKING:
 
@@ -37474,7 +39472,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     name: Role name.
-                    sequence_numbers: Subclass of AvdList with `SequenceNumbersItem` items.
+                    sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
 
                 """
 
@@ -37941,14 +39939,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "id": {"type": int}}
-                name: str | None
+                name: str
                 """AVT profile name."""
                 id: int
-                """Unique ID for this AVT (per VRF)."""
+                """ID for this AVT (per VRF)."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | None | UndefinedType = Undefined, id: int | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, id: int | UndefinedType = Undefined) -> None:
                         """
                         ProfilesItem.
 
@@ -37957,14 +39955,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             name: AVT profile name.
-                            id: Unique ID for this AVT (per VRF).
+                            id: ID for this AVT (per VRF).
 
                         """
 
-            class Profiles(AvdIndexedList[int, ProfilesItem]):
-                """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `id` (`int`)."""
+            class Profiles(AvdIndexedList[str, ProfilesItem]):
+                """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`)."""
 
-                _primary_key: ClassVar[str] = "id"
+                _primary_key: ClassVar[str] = "name"
 
             Profiles._item_type = ProfilesItem
 
@@ -37977,8 +39975,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             AVT profiles in this VRF.
 
-            Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `id`
-            (`int`).
+            Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is
+            `name` (`str`).
             """
 
             if TYPE_CHECKING:
@@ -38002,8 +40000,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         profiles:
                            AVT profiles in this VRF.
 
-                           Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `id`
-                           (`int`).
+                           Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is
+                           `name` (`str`).
 
                     """
 
@@ -38524,6 +40522,110 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class RouteDistinguisher(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AssignmentAuto(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Range(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"start": {"type": int}, "end": {"type": int}}
+                    start: int
+                    """Start of range. EOS default is 4096."""
+                    end: int
+                    """
+                    End of range. Must be greater than or equal to `start`.
+                    EOS default is 65535.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, start: int | UndefinedType = Undefined, end: int | UndefinedType = Undefined) -> None:
+                            """
+                            Range.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                start: Start of range. EOS default is 4096.
+                                end:
+                                   End of range. Must be greater than or equal to `start`.
+                                   EOS default is 65535.
+
+                            """
+
+                class AddressFamilies(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                AddressFamilies._item_type = str
+
+                _fields: ClassVar[dict] = {"range": {"type": Range}, "address_families": {"type": AddressFamilies}}
+                range: Range
+                """
+                Range for the 2-byte assigned number field of RD.
+                The range is inclusive of start and end values.
+                Subclass of AvdModel.
+                """
+                address_families: AddressFamilies
+                """
+                Address families for which to enable automatic RD assignment.
+                Each address family has its own range
+                allocation.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, range: Range | UndefinedType = Undefined, address_families: AddressFamilies | UndefinedType = Undefined) -> None:
+                        """
+                        AssignmentAuto.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            range:
+                               Range for the 2-byte assigned number field of RD.
+                               The range is inclusive of start and end values.
+                               Subclass of AvdModel.
+                            address_families:
+                               Address families for which to enable automatic RD assignment.
+                               Each address family has its own range
+                               allocation.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
+            _fields: ClassVar[dict] = {"assignment_auto": {"type": AssignmentAuto}}
+            assignment_auto: AssignmentAuto
+            """
+            Automatic Route Distinguisher (auto RD) feature.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, assignment_auto: AssignmentAuto | UndefinedType = Undefined) -> None:
+                    """
+                    RouteDistinguisher.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        assignment_auto:
+                           Automatic Route Distinguisher (auto RD) feature.
+
+                           Subclass of AvdModel.
+
+                    """
+
         class Updates(AvdModel):
             """Subclass of AvdModel."""
 
@@ -38696,12 +40798,113 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class LabeledUnicast(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Rib(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Ip(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Install LU routes into IP RIB."""
+                        route_map: str | None
+                        """Route-map applied to IP RIB."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Ip.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Install LU routes into IP RIB.
+                                    route_map: Route-map applied to IP RIB.
+
+                                """
+
+                    class Tunnel(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Install LU routes into Tunnel RIB."""
+                        route_map: str | None
+                        """Route-map applied to tunnel RIB."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Tunnel.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Install LU routes into Tunnel RIB.
+                                    route_map: Route-map applied to tunnel RIB.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"ip": {"type": Ip}, "tunnel": {"type": Tunnel}}
+                    ip: Ip
+                    """Subclass of AvdModel."""
+                    tunnel: Tunnel
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, ip: Ip | UndefinedType = Undefined, tunnel: Tunnel | UndefinedType = Undefined) -> None:
+                            """
+                            Rib.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                ip: Subclass of AvdModel.
+                                tunnel: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"rib": {"type": Rib}}
+                rib: Rib
+                """
+                Configure LU RIB behavior for ip and/or tunnel.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, rib: Rib | UndefinedType = Undefined) -> None:
+                        """
+                        LabeledUnicast.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            rib:
+                               Configure LU RIB behavior for ip and/or tunnel.
+
+                               Subclass of AvdModel.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "default": {"type": Default},
                 "route_reflector_preserve_attributes": {"type": RouteReflectorPreserveAttributes},
                 "bestpath": {"type": Bestpath},
                 "additional_paths": {"type": AdditionalPaths},
                 "redistribute_internal": {"type": bool},
+                "labeled_unicast": {"type": LabeledUnicast},
             }
             default: Default
             """Subclass of AvdModel."""
@@ -38713,6 +40916,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             redistribute_internal: bool | None
             """Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true."""
+            labeled_unicast: LabeledUnicast
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -38724,6 +40929,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bestpath: Bestpath | UndefinedType = Undefined,
                     additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     redistribute_internal: bool | None | UndefinedType = Undefined,
+                    labeled_unicast: LabeledUnicast | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Bgp.
@@ -38737,6 +40943,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bestpath: Subclass of AvdModel.
                         additional_paths: Subclass of AvdModel.
                         redistribute_internal: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
+                        labeled_unicast: Subclass of AvdModel.
 
                     """
 
@@ -41004,15 +43211,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"tenant": {"type": str}, "description": {"type": str}}
-                tenant: str | None
-                """Key only used for documentation or validation purposes."""
+                class Tenants(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Tenants._item_type = str
+
+                _fields: ClassVar[dict] = {"tenants": {"type": Tenants}, "description": {"type": str}}
+                tenants: Tenants
+                """
+                List of tenants where this bundle is defined. Key only used for documentation or validation
+                purposes.
+
+                Subclass of AvdList with `str` items.
+                """
                 description: str | None
                 """Key only used for documentation or validation purposes."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, tenant: str | None | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, tenants: Tenants | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -41020,7 +43237,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            tenant: Key only used for documentation or validation purposes.
+                            tenants:
+                               List of tenants where this bundle is defined. Key only used for documentation or validation
+                               purposes.
+
+                               Subclass of AvdList with `str` items.
                             description: Key only used for documentation or validation purposes.
 
                         """
@@ -41294,13 +43515,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"tenant": {"type": str}}
-                tenant: str | None
-                """Key only used for documentation or validation purposes."""
+                class Tenants(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Tenants._item_type = str
+
+                _fields: ClassVar[dict] = {"tenants": {"type": Tenants}}
+                tenants: Tenants
+                """
+                List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                Subclass of AvdList with `str` items.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, tenants: Tenants | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -41308,7 +43537,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            tenant: Key only used for documentation or validation purposes.
+                            tenants:
+                               List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                               Subclass of AvdList with `str` items.
 
                         """
 
@@ -42593,15 +44824,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NetworksItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                 route_map: str | None
                 """Route-map name."""
+                rcf: str | None
+                """
+                RCF name with parenthesis. Example "NETWORK-RCF()".
+                `route_map` and `rcf` are mutually exclusive.
+                `route_map` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         NetworksItem.
 
@@ -42611,6 +44854,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                             route_map: Route-map name.
+                            rcf:
+                               RCF name with parenthesis. Example "NETWORK-RCF()".
+                               `route_map` and `rcf` are mutually exclusive.
+                               `route_map` takes precedence.
 
                         """
 
@@ -44908,15 +47155,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NetworksItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                 route_map: str | None
                 """Route-map name."""
+                rcf: str | None
+                """
+                RCF name with parenthesis. Example "NETWORK-RCF()".
+                `route_map` and `rcf` are mutually exclusive.
+                `route_map` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         NetworksItem.
 
@@ -44926,6 +47185,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                             route_map: Route-map name.
+                            rcf:
+                               RCF name with parenthesis. Example "NETWORK-RCF()".
+                               `route_map` and `rcf` are mutually exclusive.
+                               `route_map` takes precedence.
 
                         """
 
@@ -45991,15 +48254,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NetworksItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                 route_map: str | None
                 """Route-map name."""
+                rcf: str | None
+                """
+                RCF name with parenthesis. Example "NETWORK-RCF()".
+                `route_map` and `rcf` are mutually exclusive.
+                `route_map` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         NetworksItem.
 
@@ -46009,6 +48284,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                             route_map: Route-map name.
+                            rcf:
+                               RCF name with parenthesis. Example "NETWORK-RCF()".
+                               `route_map` and `rcf` are mutually exclusive.
+                               `route_map` takes precedence.
 
                         """
 
@@ -49473,6 +51752,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class RdEvpnDomain(AvdModel):
+                """Subclass of AvdModel."""
+
+                Domain: TypeAlias = Literal["remote", "all"]
+                _fields: ClassVar[dict] = {"domain": {"type": str}, "rd": {"type": str}}
+                domain: Domain
+                rd: str
+                """Route distinguisher."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, domain: Domain | UndefinedType = Undefined, rd: str | UndefinedType = Undefined) -> None:
+                        """
+                        RdEvpnDomain.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            domain: domain
+                            rd: Route distinguisher.
+
+                        """
+
             class EvpnMulticastAddressFamily(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -49758,17 +52061,109 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Export._item_type = ExportItem
 
-                _fields: ClassVar[dict] = {"field_import": {"type": Import}, "export": {"type": Export}}
+                class ImportEvpnDomainsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Domain: TypeAlias = Literal["remote", "all"]
+                    _fields: ClassVar[dict] = {"route_target": {"type": str}, "domain": {"type": str}}
+                    route_target: str
+                    domain: Domain
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, route_target: str | UndefinedType = Undefined, domain: Domain | UndefinedType = Undefined) -> None:
+                            """
+                            ImportEvpnDomainsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                route_target: route_target
+                                domain: domain
+
+                            """
+
+                class ImportEvpnDomains(AvdIndexedList[str, ImportEvpnDomainsItem]):
+                    """
+                    Subclass of AvdIndexedList with `ImportEvpnDomainsItem` items. Primary key is `route_target`
+                    (`str`).
+                    """
+
+                    _primary_key: ClassVar[str] = "route_target"
+
+                ImportEvpnDomains._item_type = ImportEvpnDomainsItem
+
+                class ExportEvpnDomainsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Domain: TypeAlias = Literal["remote", "all"]
+                    _fields: ClassVar[dict] = {"route_target": {"type": str}, "domain": {"type": str}}
+                    route_target: str
+                    domain: Domain
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, route_target: str | UndefinedType = Undefined, domain: Domain | UndefinedType = Undefined) -> None:
+                            """
+                            ExportEvpnDomainsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                route_target: route_target
+                                domain: domain
+
+                            """
+
+                class ExportEvpnDomains(AvdIndexedList[str, ExportEvpnDomainsItem]):
+                    """
+                    Subclass of AvdIndexedList with `ExportEvpnDomainsItem` items. Primary key is `route_target`
+                    (`str`).
+                    """
+
+                    _primary_key: ClassVar[str] = "route_target"
+
+                ExportEvpnDomains._item_type = ExportEvpnDomainsItem
+
+                _fields: ClassVar[dict] = {
+                    "field_import": {"type": Import},
+                    "export": {"type": Export},
+                    "import_evpn_domains": {"type": ImportEvpnDomains},
+                    "export_evpn_domains": {"type": ExportEvpnDomains},
+                }
                 _field_to_key_map: ClassVar[dict] = {"field_import": "import"}
                 _key_to_field_map: ClassVar[dict] = {"import": "field_import"}
                 field_import: Import
                 """Subclass of AvdIndexedList with `ImportItem` items. Primary key is `address_family` (`str`)."""
                 export: Export
                 """Subclass of AvdIndexedList with `ExportItem` items. Primary key is `address_family` (`str`)."""
+                import_evpn_domains: ImportEvpnDomains
+                """
+                List of EVPN domains from which to import routes.
+
+                Subclass of AvdIndexedList with
+                `ImportEvpnDomainsItem` items. Primary key is `route_target` (`str`).
+                """
+                export_evpn_domains: ExportEvpnDomains
+                """
+                List of EVPN domains to which local routes should be exported.
+
+                Subclass of AvdIndexedList with
+                `ExportEvpnDomainsItem` items. Primary key is `route_target` (`str`).
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, field_import: Import | UndefinedType = Undefined, export: Export | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        field_import: Import | UndefinedType = Undefined,
+                        export: Export | UndefinedType = Undefined,
+                        import_evpn_domains: ImportEvpnDomains | UndefinedType = Undefined,
+                        export_evpn_domains: ExportEvpnDomains | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         RouteTargets.
 
@@ -49778,6 +52173,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             field_import: Subclass of AvdIndexedList with `ImportItem` items. Primary key is `address_family` (`str`).
                             export: Subclass of AvdIndexedList with `ExportItem` items. Primary key is `address_family` (`str`).
+                            import_evpn_domains:
+                               List of EVPN domains from which to import routes.
+
+                               Subclass of AvdIndexedList with
+                               `ImportEvpnDomainsItem` items. Primary key is `route_target` (`str`).
+                            export_evpn_domains:
+                               List of EVPN domains to which local routes should be exported.
+
+                               Subclass of AvdIndexedList with
+                               `ExportEvpnDomainsItem` items. Primary key is `route_target` (`str`).
 
                         """
 
@@ -51692,14 +54097,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class NetworksItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                     prefix: str
                     """IPv4 prefix "A.B.C.D/E"."""
                     route_map: str | None
+                    rcf: str | None
+                    """
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive.
+                    `route_map` takes precedence.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            prefix: str | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             NetworksItem.
 
@@ -51709,6 +54126,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 prefix: IPv4 prefix "A.B.C.D/E".
                                 route_map: route_map
+                                rcf:
+                                   RCF name with parenthesis. Example "NETWORK-RCF()".
+                                   `route_map` and `rcf` are mutually exclusive.
+                                   `route_map` takes precedence.
 
                             """
 
@@ -52768,14 +55189,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class NetworksItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                     prefix: str
                     """IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                     route_map: str | None
+                    rcf: str | None
+                    """
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive.
+                    `route_map` takes precedence.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            prefix: str | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             NetworksItem.
 
@@ -52785,6 +55218,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 prefix: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                                 route_map: route_map
+                                rcf:
+                                   RCF name with parenthesis. Example "NETWORK-RCF()".
+                                   `route_map` and `rcf` are mutually exclusive.
+                                   `route_map` takes precedence.
 
                             """
 
@@ -54979,6 +57416,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "name": {"type": str},
                 "bgp": {"type": Bgp},
                 "rd": {"type": str},
+                "rd_evpn_domain": {"type": RdEvpnDomain},
                 "evpn_multicast": {"type": bool},
                 "evpn_multicast_address_family": {"type": EvpnMulticastAddressFamily},
                 "evpn_multicast_gateway_dr_election": {"type": EvpnMulticastGatewayDrElection},
@@ -55009,6 +57447,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             rd: str | None
             """Route distinguisher."""
+            rd_evpn_domain: RdEvpnDomain
+            """Subclass of AvdModel."""
             evpn_multicast: bool | None
             evpn_multicast_address_family: EvpnMulticastAddressFamily
             """
@@ -55085,6 +57525,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     rd: str | None | UndefinedType = Undefined,
+                    rd_evpn_domain: RdEvpnDomain | UndefinedType = Undefined,
                     evpn_multicast: bool | None | UndefinedType = Undefined,
                     evpn_multicast_address_family: EvpnMulticastAddressFamily | UndefinedType = Undefined,
                     evpn_multicast_gateway_dr_election: EvpnMulticastGatewayDrElection | UndefinedType = Undefined,
@@ -55119,6 +57560,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: VRF name.
                         bgp: Subclass of AvdModel.
                         rd: Route distinguisher.
+                        rd_evpn_domain: Subclass of AvdModel.
                         evpn_multicast: evpn_multicast
                         evpn_multicast_address_family:
                            Enable per-AF EVPN multicast settings.
@@ -55209,6 +57651,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "graceful_restart": {"type": GracefulRestart},
             "graceful_restart_helper": {"type": GracefulRestartHelper},
             "maximum_paths": {"type": MaximumPaths},
+            "route_distinguisher": {"type": RouteDistinguisher},
             "updates": {"type": Updates},
             "bgp_cluster_id": {"type": str},
             "bgp_defaults": {"type": BgpDefaults},
@@ -55267,6 +57710,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         graceful_restart_helper: GracefulRestartHelper
         """Subclass of AvdModel."""
         maximum_paths: MaximumPaths
+        """Subclass of AvdModel."""
+        route_distinguisher: RouteDistinguisher
         """Subclass of AvdModel."""
         updates: Updates
         """Subclass of AvdModel."""
@@ -55360,6 +57805,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 graceful_restart: GracefulRestart | UndefinedType = Undefined,
                 graceful_restart_helper: GracefulRestartHelper | UndefinedType = Undefined,
                 maximum_paths: MaximumPaths | UndefinedType = Undefined,
+                route_distinguisher: RouteDistinguisher | UndefinedType = Undefined,
                 updates: Updates | UndefinedType = Undefined,
                 bgp_cluster_id: str | None | UndefinedType = Undefined,
                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
@@ -55414,6 +57860,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     graceful_restart: Subclass of AvdModel.
                     graceful_restart_helper: Subclass of AvdModel.
                     maximum_paths: Subclass of AvdModel.
+                    route_distinguisher: Subclass of AvdModel.
                     updates: Subclass of AvdModel.
                     bgp_cluster_id: IP Address A.B.C.D.
                     bgp_defaults:
@@ -56308,13 +58755,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """
 
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "on_startup": {"type": OnStartup}}
-            enabled: bool | None
+            enabled: bool
             on_startup: OnStartup
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, on_startup: OnStartup | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, on_startup: OnStartup | UndefinedType = Undefined) -> None:
                     """
                     SetOverloadBit.
 
@@ -57203,12 +59650,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"prefix": {"type": str}, "index": {"type": int}}
-                prefix: str | None
+                prefix: str
                 index: int | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | None | UndefinedType = Undefined, index: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, prefix: str | UndefinedType = Undefined, index: int | None | UndefinedType = Undefined) -> None:
                         """
                         PrefixSegmentsItem.
 
@@ -57221,8 +59668,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class PrefixSegments(AvdList[PrefixSegmentsItem]):
-                """Subclass of AvdList with `PrefixSegmentsItem` items."""
+            class PrefixSegments(AvdIndexedList[str, PrefixSegmentsItem]):
+                """Subclass of AvdIndexedList with `PrefixSegmentsItem` items. Primary key is `prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "prefix"
 
             PrefixSegments._item_type = PrefixSegmentsItem
 
@@ -57230,7 +59679,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             enabled: bool | None
             router_id: str | None
             prefix_segments: PrefixSegments
-            """Subclass of AvdList with `PrefixSegmentsItem` items."""
+            """Subclass of AvdIndexedList with `PrefixSegmentsItem` items. Primary key is `prefix` (`str`)."""
 
             if TYPE_CHECKING:
 
@@ -57250,7 +59699,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         enabled: enabled
                         router_id: router_id
-                        prefix_segments: Subclass of AvdList with `PrefixSegmentsItem` items.
+                        prefix_segments: Subclass of AvdIndexedList with `PrefixSegmentsItem` items. Primary key is `prefix` (`str`).
 
                     """
 
@@ -58246,13 +60695,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Ipv6(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"activity_polling_interval": {"type": int}}
+            SoftwareForwarding: TypeAlias = Literal["kernel", "sfe"]
+            _fields: ClassVar[dict] = {"activity_polling_interval": {"type": int}, "routing": {"type": bool}, "software_forwarding": {"type": str}}
             activity_polling_interval: int | None
             """MFIB entry activity polling interval."""
+            routing: bool | None
+            software_forwarding: SoftwareForwarding | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, activity_polling_interval: int | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    activity_polling_interval: int | None | UndefinedType = Undefined,
+                    routing: bool | None | UndefinedType = Undefined,
+                    software_forwarding: SoftwareForwarding | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     Ipv6.
 
@@ -58261,6 +60719,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         activity_polling_interval: MFIB entry activity polling interval.
+                        routing: routing
+                        software_forwarding: software_forwarding
 
                     """
 
@@ -60008,14 +62468,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class OtherAnycastRpAddressesItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"address": {"type": str}, "register_count": {"type": int}}
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "register_count": {"type": str}}
                     address: str
                     """Other Anycast RP Address."""
-                    register_count: int | None
+                    register_count: str | None
+                    """
+                    Number of registers to forward before pausing in range of 0 to 4294967295.
+                    Use 'infinity' to forward
+                    all registers.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, address: str | UndefinedType = Undefined, register_count: int | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, register_count: str | None | UndefinedType = Undefined) -> None:
                             """
                             OtherAnycastRpAddressesItem.
 
@@ -60024,7 +62489,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 address: Other Anycast RP Address.
-                                register_count: register_count
+                                register_count:
+                                   Number of registers to forward before pausing in range of 0 to 4294967295.
+                                   Use 'infinity' to forward
+                                   all registers.
 
                             """
 
@@ -60192,11 +62660,91 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 RpAddresses._item_type = RpAddressesItem
 
+                class AnycastRpsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class OtherAnycastRpAddressesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"address": {"type": str}, "register_count": {"type": str}}
+                        address: str
+                        """Other Anycast RP Address."""
+                        register_count: str | None
+                        """
+                        Number of registers to forward before pausing in range of 0 to 4294967295.
+                        Use 'infinity' to forward
+                        all registers.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, address: str | UndefinedType = Undefined, register_count: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                OtherAnycastRpAddressesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    address: Other Anycast RP Address.
+                                    register_count:
+                                       Number of registers to forward before pausing in range of 0 to 4294967295.
+                                       Use 'infinity' to forward
+                                       all registers.
+
+                                """
+
+                    class OtherAnycastRpAddresses(AvdIndexedList[str, OtherAnycastRpAddressesItem]):
+                        """
+                        Subclass of AvdIndexedList with `OtherAnycastRpAddressesItem` items. Primary key is `address`
+                        (`str`).
+                        """
+
+                        _primary_key: ClassVar[str] = "address"
+
+                    OtherAnycastRpAddresses._item_type = OtherAnycastRpAddressesItem
+
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "other_anycast_rp_addresses": {"type": OtherAnycastRpAddresses}}
+                    address: str
+                    """Anycast RP Address."""
+                    other_anycast_rp_addresses: OtherAnycastRpAddresses
+                    """
+                    Subclass of AvdIndexedList with `OtherAnycastRpAddressesItem` items. Primary key is `address`
+                    (`str`).
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, address: str | UndefinedType = Undefined, other_anycast_rp_addresses: OtherAnycastRpAddresses | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            AnycastRpsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                address: Anycast RP Address.
+                                other_anycast_rp_addresses:
+                                   Subclass of AvdIndexedList with `OtherAnycastRpAddressesItem` items. Primary key is `address`
+                                   (`str`).
+
+                            """
+
+                class AnycastRps(AvdIndexedList[str, AnycastRpsItem]):
+                    """Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                AnycastRps._item_type = AnycastRpsItem
+
                 _fields: ClassVar[dict] = {
                     "bfd": {"type": bool},
                     "make_before_break": {"type": bool},
                     "register_local_interface": {"type": str},
                     "rp_addresses": {"type": RpAddresses},
+                    "anycast_rps": {"type": AnycastRps},
                     "ssm_range": {"type": str},
                 }
                 bfd: bool | None
@@ -60207,6 +62755,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Local interface to use for PIM register messages."""
                 rp_addresses: RpAddresses
                 """Subclass of AvdList with `RpAddressesItem` items."""
+                anycast_rps: AnycastRps
+                """Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`)."""
                 ssm_range: str | None
                 """
                 Standard access list name or use the specific keyword 'standard' as a shortcut to apply
@@ -60223,6 +62773,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         make_before_break: bool | None | UndefinedType = Undefined,
                         register_local_interface: str | None | UndefinedType = Undefined,
                         rp_addresses: RpAddresses | UndefinedType = Undefined,
+                        anycast_rps: AnycastRps | UndefinedType = Undefined,
                         ssm_range: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -60236,6 +62787,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             make_before_break: Enable/Disable Make-Before-Break.
                             register_local_interface: Local interface to use for PIM register messages.
                             rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
+                            anycast_rps: Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`).
                             ssm_range:
                                Standard access list name or use the specific keyword 'standard' as a shortcut to apply
                                a predefined
@@ -60303,9 +62855,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Networks._item_type = str
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str}, "metric_default": {"type": int}, "networks": {"type": Networks}}
-            enabled: bool | None
+            _fields: ClassVar[dict] = {"vrf": {"type": str}, "enabled": {"type": bool}, "metric_default": {"type": int}, "networks": {"type": Networks}}
             vrf: str
+            enabled: bool | None
             metric_default: int | None
             """Set default metric for the routes."""
             networks: Networks
@@ -60316,8 +62868,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    enabled: bool | None | UndefinedType = Undefined,
                     vrf: str | UndefinedType = Undefined,
+                    enabled: bool | None | UndefinedType = Undefined,
                     metric_default: int | None | UndefinedType = Undefined,
                     networks: Networks | UndefinedType = Undefined,
                 ) -> None:
@@ -60328,8 +62880,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        enabled: enabled
                         vrf: vrf
+                        enabled: enabled
                         metric_default: Set default metric for the routes.
                         networks: Subclass of AvdList with `str` items.
 
@@ -61479,7 +64031,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enable_default": {"type": bool}, "unmodified": {"type": bool}}
-                enable_default: bool | None
+                enable_default: bool
                 """Enable egress sFlow by default."""
                 unmodified: bool | None
                 """
@@ -61489,7 +64041,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enable_default: bool | None | UndefinedType = Undefined, unmodified: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enable_default: bool | UndefinedType = Undefined, unmodified: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Egress.
 
@@ -62682,6 +65234,119 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class StandardAccessListsItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Action: TypeAlias = Literal["permit", "deny"]
+            _fields: ClassVar[dict] = {
+                "sequence": {"type": int},
+                "action": {"type": str},
+                "remark": {"type": str},
+                "source": {"type": str},
+                "vlan": {"type": int},
+                "vlan_mask": {"type": str},
+                "inner_vlan": {"type": int},
+                "inner_vlan_mask": {"type": str},
+                "log": {"type": bool},
+                "mirror_session": {"type": str},
+            }
+            sequence: int | None
+            """Sequence ID."""
+            action: Action | None
+            """Action as string."""
+            remark: str | None
+            """Specify a comment. If remark is specified other keys of the entry are ignored."""
+            source: str | None
+            """
+            Required for non-remark entries.
+            The value can be:
+            1. A single source address.
+            2. Source address
+            with mask. e.g. '10.0.0.1/8'.
+            3. 'any' source address.
+            """
+            vlan: int | None
+            """Match packets by VLAN value."""
+            vlan_mask: str | None
+            """
+            VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.
+            To ensure that a value like 0x001
+            is treated strictly as a string
+            and not converted to a decimal (like 1), use single or double
+            quotes.
+            """
+            inner_vlan: int | None
+            """Match packets by inner VLAN value."""
+            inner_vlan_mask: str | None
+            """
+            Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
+            To ensure that a value
+            like 0x001 is treated strictly as a string
+            and not converted to a decimal (like 1), use single or
+            double quotes.
+            """
+            log: bool | None
+            """Enable logging when a packet matches the ACL rule."""
+            mirror_session: str | None
+            """Mirror session to mirror matches against this rule."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    sequence: int | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    vlan: int | None | UndefinedType = Undefined,
+                    vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
+                    log: bool | None | UndefinedType = Undefined,
+                    mirror_session: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sequence: Sequence ID.
+                        action: Action as string.
+                        remark: Specify a comment. If remark is specified other keys of the entry are ignored.
+                        source:
+                           Required for non-remark entries.
+                           The value can be:
+                           1. A single source address.
+                           2. Source address
+                           with mask. e.g. '10.0.0.1/8'.
+                           3. 'any' source address.
+                        vlan: Match packets by VLAN value.
+                        vlan_mask:
+                           VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.
+                           To ensure that a value like 0x001
+                           is treated strictly as a string
+                           and not converted to a decimal (like 1), use single or double
+                           quotes.
+                        inner_vlan: Match packets by inner VLAN value.
+                        inner_vlan_mask:
+                           Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
+                           To ensure that a value
+                           like 0x001 is treated strictly as a string
+                           and not converted to a decimal (like 1), use single or
+                           double quotes.
+                        log: Enable logging when a packet matches the ACL rule.
+                        mirror_session: Mirror session to mirror matches against this rule.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
         class SequenceNumbersItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -62718,10 +65383,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         SequenceNumbers._item_type = SequenceNumbersItem
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "counters_per_entry": {"type": bool}, "sequence_numbers": {"type": SequenceNumbers}}
+        _fields: ClassVar[dict] = {
+            "name": {"type": str},
+            "counters_per_entry": {"type": bool},
+            "entries": {"type": Entries},
+            "sequence_numbers": {"type": SequenceNumbers},
+        }
         name: str
         """Access-list Name."""
         counters_per_entry: bool | None
+        entries: Entries
+        """Subclass of AvdList with `EntriesItem` items."""
         sequence_numbers: SequenceNumbers
         """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
 
@@ -62732,6 +65404,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 counters_per_entry: bool | None | UndefinedType = Undefined,
+                entries: Entries | UndefinedType = Undefined,
                 sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -62743,6 +65416,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     name: Access-list Name.
                     counters_per_entry: counters_per_entry
+                    entries: Subclass of AvdList with `EntriesItem` items.
                     sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
 
                 """
@@ -64767,6 +67441,212 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class TunnelInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Cache(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"dynamic_capacity": {"type": int}, "expire": {"type": int}, "refresh_always": {"type": bool}}
+                dynamic_capacity: int | None
+                """Capacity of dynamic cache entries."""
+                expire: int | None
+                """Cache entries expiry in seconds."""
+                refresh_always: bool | None
+                """Force refresh on cache expiry."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Cache.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic_capacity: Capacity of dynamic cache entries.
+                            expire: Cache entries expiry in seconds.
+                            refresh_always: Force refresh on cache expiry.
+
+                        """
+
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    """Accept default route from received Router Advertisements."""
+                    route_preference: bool | None
+                    """Accept route preference from received Router Advertisements."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: Accept default route from received Router Advertisements.
+                                route_preference: Accept route preference from received Router Advertisements.
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                disabled: bool | None
+                """Disable Router Advertisement messages on the interface."""
+                rx_accept: RxAccept
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: Disable Router Advertisement messages on the interface.
+                            rx_accept: Subclass of AvdModel.
+
+                        """
+
+            class PrefixesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "ipv6_prefix": {"type": str},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                    "no_autoconfig_flag": {"type": bool},
+                }
+                ipv6_prefix: str
+                valid_lifetime: str | None
+                """Valid lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                preferred_lifetime: str | None
+                """Preferred lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                no_autoconfig_flag: bool | None
+                """Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv6_prefix: str | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PrefixesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv6_prefix: ipv6_prefix
+                            valid_lifetime: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            preferred_lifetime: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            no_autoconfig_flag: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+
+                        """
+
+            class Prefixes(AvdIndexedList[str, PrefixesItem]):
+                """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+            Prefixes._item_type = PrefixesItem
+
+            _fields: ClassVar[dict] = {
+                "cache": {"type": Cache},
+                "ra": {"type": Ra},
+                "managed_config_flag": {"type": bool},
+                "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
+            }
+            cache: Cache
+            """
+            Neighbor cache options.
+
+            Subclass of AvdModel.
+            """
+            ra: Ra
+            """
+            Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+            managed_config_flag: bool | None
+            """Set the "Managed Address Configuration" (M) flag in Router Advertisements."""
+            prefixes: Prefixes
+            """
+            IPv6 prefixes to include in Router Advertisements.
+
+            Subclass of AvdIndexedList with `PrefixesItem`
+            items. Primary key is `ipv6_prefix` (`str`).
+            """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    cache: Cache | UndefinedType = Undefined,
+                    ra: Ra | UndefinedType = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
+                    prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        cache:
+                           Neighbor cache options.
+
+                           Subclass of AvdModel.
+                        ra:
+                           Router Advertisement.
+
+                           Subclass of AvdModel.
+                        managed_config_flag: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+                        prefixes:
+                           IPv6 prefixes to include in Router Advertisements.
+
+                           Subclass of AvdIndexedList with `PrefixesItem`
+                           items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
+
+                    """
+
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
@@ -64812,6 +67692,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_address": {"type": str},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
+            "ipv6_nd": {"type": Ipv6Nd},
             "access_group_in": {"type": str},
             "access_group_out": {"type": str},
             "ipv6_access_group_in": {"type": str},
@@ -64840,6 +67723,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
+        ipv6_nd: Ipv6Nd
+        """
+        IPv6 Neighbor Discovery protocol.
+
+        Subclass of AvdModel.
+        """
         access_group_in: str | None
         """IPv4 ACL Name for ingress."""
         access_group_out: str | None
@@ -64900,6 +67797,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 access_group_in: str | None | UndefinedType = Undefined,
                 access_group_out: str | None | UndefinedType = Undefined,
                 ipv6_access_group_in: str | None | UndefinedType = Undefined,
@@ -64930,6 +67830,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_address: IPv4_address/Mask.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
+                    ipv6_nd:
+                       IPv6 Neighbor Discovery protocol.
+
+                       Subclass of AvdModel.
                     access_group_in: IPv4 ACL Name for ingress.
                     access_group_out: IPv4 ACL Name for egress.
                     ipv6_access_group_in: IPv6 ACL Name for ingress.
@@ -65642,6 +68551,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         class Ipv6AddressVirtuals(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
@@ -65788,6 +68702,207 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _primary_key: ClassVar[str] = "address"
 
         Ipv6DhcpRelayDestinations._item_type = Ipv6DhcpRelayDestinationsItem
+
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Cache(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"dynamic_capacity": {"type": int}, "expire": {"type": int}, "refresh_always": {"type": bool}}
+                dynamic_capacity: int | None
+                """Capacity of dynamic cache entries."""
+                expire: int | None
+                """Cache entries expiry in seconds."""
+                refresh_always: bool | None
+                """Force refresh on cache expiry."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Cache.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic_capacity: Capacity of dynamic cache entries.
+                            expire: Cache entries expiry in seconds.
+                            refresh_always: Force refresh on cache expiry.
+
+                        """
+
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    """Accept default route from received Router Advertisements."""
+                    route_preference: bool | None
+                    """Accept route preference from received Router Advertisements."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: Accept default route from received Router Advertisements.
+                                route_preference: Accept route preference from received Router Advertisements.
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                disabled: bool | None
+                """Disable Router Advertisement messages on the interface."""
+                rx_accept: RxAccept
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: Disable Router Advertisement messages on the interface.
+                            rx_accept: Subclass of AvdModel.
+
+                        """
+
+            class PrefixesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "ipv6_prefix": {"type": str},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                    "no_autoconfig_flag": {"type": bool},
+                }
+                ipv6_prefix: str
+                valid_lifetime: str | None
+                """Valid lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                preferred_lifetime: str | None
+                """Preferred lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                no_autoconfig_flag: bool | None
+                """Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv6_prefix: str | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PrefixesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv6_prefix: ipv6_prefix
+                            valid_lifetime: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            preferred_lifetime: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            no_autoconfig_flag: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+
+                        """
+
+            class Prefixes(AvdIndexedList[str, PrefixesItem]):
+                """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+            Prefixes._item_type = PrefixesItem
+
+            _fields: ClassVar[dict] = {
+                "cache": {"type": Cache},
+                "ra": {"type": Ra},
+                "managed_config_flag": {"type": bool},
+                "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
+            }
+            cache: Cache
+            """
+            Neighbor cache options.
+
+            Subclass of AvdModel.
+            """
+            ra: Ra
+            """
+            Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+            managed_config_flag: bool | None
+            """Set the "Managed Address Configuration" (M) flag in Router Advertisements."""
+            prefixes: Prefixes
+            """
+            IPv6 prefixes to include in Router Advertisements.
+
+            Subclass of AvdIndexedList with `PrefixesItem`
+            items. Primary key is `ipv6_prefix` (`str`).
+            """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    cache: Cache | UndefinedType = Undefined,
+                    ra: Ra | UndefinedType = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
+                    prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        cache:
+                           Neighbor cache options.
+
+                           Subclass of AvdModel.
+                        ra:
+                           Router Advertisement.
+
+                           Subclass of AvdModel.
+                        managed_config_flag: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+                        prefixes:
+                           IPv6 prefixes to include in Router Advertisements.
+
+                           Subclass of AvdIndexedList with `PrefixesItem`
+                           items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
+
+                    """
 
         class Multicast(AvdModel):
             """Subclass of AvdModel."""
@@ -65998,6 +69113,53 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
+
+                    """
+
+        class Ipv6Ospf(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Process(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
+                id: int
+                """OSPF Process ID."""
+                area: str
+                """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Process.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            id: OSPF Process ID.
+                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                        """
+
+            _fields: ClassVar[dict] = {"process": {"type": Process}, "network_point_to_point": {"type": bool}}
+            process: Process
+            """Subclass of AvdModel."""
+            network_point_to_point: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, process: Process | UndefinedType = Undefined, network_point_to_point: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    Ipv6Ospf.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        process: Subclass of AvdModel.
+                        network_point_to_point: network_point_to_point
 
                     """
 
@@ -67216,14 +70378,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
+            class Tenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tenants._item_type = str
+
             class Tags(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
             Tags._item_type = str
 
-            _fields: ClassVar[dict] = {"tenant": {"type": str}, "tags": {"type": Tags}, "type": {"type": str}}
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
+            _fields: ClassVar[dict] = {"tenants": {"type": Tenants}, "tags": {"type": Tags}, "type": {"type": str}}
+            tenants: Tenants
+            """
+            List of tenants where this VLAN interface is defined. Key only used for documentation or validation
+            purposes.
+
+            Subclass of AvdList with `str` items.
+            """
             tags: Tags
             """
             Key only used for documentation or validation purposes.
@@ -67236,11 +70408,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self,
-                    *,
-                    tenant: str | None | UndefinedType = Undefined,
-                    tags: Tags | UndefinedType = Undefined,
-                    type: str | None | UndefinedType = Undefined,
+                    self, *, tenants: Tenants | UndefinedType = Undefined, tags: Tags | UndefinedType = Undefined, type: str | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     Metadata.
@@ -67249,7 +70417,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        tenant: Key only used for documentation or validation purposes.
+                        tenants:
+                           List of tenants where this VLAN interface is defined. Key only used for documentation or validation
+                           purposes.
+
+                           Subclass of AvdList with `str` items.
                         tags:
                            Key only used for documentation or validation purposes.
 
@@ -67287,6 +70459,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "dhcp_server_ipv6": {"type": bool},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
             "ipv6_address_link_local": {"type": str},
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -67297,15 +70471,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_nd_prefixes": {"type": Ipv6NdPrefixes},
             "ipv6_dhcp_relay_destinations": {"type": Ipv6DhcpRelayDestinations},
             "ipv6_dhcp_relay_all_subnets": {"type": bool},
+            "ipv6_nd": {"type": Ipv6Nd},
             "access_group_in": {"type": str},
             "access_group_out": {"type": str},
             "ipv6_access_group_in": {"type": str},
             "ipv6_access_group_out": {"type": str},
             "multicast": {"type": Multicast},
             "ospf_network_point_to_point": {"type": bool},
-            "ipv6_ospf_network_point_to_point": {"type": bool},
             "ospf_area": {"type": str},
-            "ipv6_ospf_area": {"type": str},
+            "ipv6_ospf": {"type": Ipv6Ospf},
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
@@ -67380,6 +70554,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ipv6_address_virtuals: Ipv6AddressVirtuals
         """
         The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
@@ -67415,6 +70597,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         ipv6_dhcp_relay_all_subnets: bool | None
         """Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field."""
+        ipv6_nd: Ipv6Nd
+        """
+        IPv6 Neighbor Discovery protocol.
+
+        Subclass of AvdModel.
+        """
         access_group_in: str | None
         """IPv4 access-list name."""
         access_group_out: str | None
@@ -67426,9 +70614,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         multicast: Multicast
         """Subclass of AvdModel."""
         ospf_network_point_to_point: bool | None
-        ipv6_ospf_network_point_to_point: bool | None
         ospf_area: str | None
-        ipv6_ospf_area: str | None
+        ipv6_ospf: Ipv6Ospf
+        """
+        IPv6 OSPF configuration for the interface.
+
+        Subclass of AvdModel.
+        """
         ospf_cost: int | None
         ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
@@ -67518,6 +70710,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dhcp_server_ipv6: bool | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
                 ipv6_address_link_local: str | None | UndefinedType = Undefined,
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -67528,15 +70722,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
                 ipv6_dhcp_relay_destinations: Ipv6DhcpRelayDestinations | UndefinedType = Undefined,
                 ipv6_dhcp_relay_all_subnets: bool | None | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 access_group_in: str | None | UndefinedType = Undefined,
                 access_group_out: str | None | UndefinedType = Undefined,
                 ipv6_access_group_in: str | None | UndefinedType = Undefined,
                 ipv6_access_group_out: str | None | UndefinedType = Undefined,
                 multicast: Multicast | UndefinedType = Undefined,
                 ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
-                ipv6_ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
                 ospf_area: str | None | UndefinedType = Undefined,
-                ipv6_ospf_area: str | None | UndefinedType = Undefined,
+                ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
                 ospf_cost: int | None | UndefinedType = Undefined,
                 ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
@@ -67601,6 +70795,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     dhcp_server_ipv6: Enable IPv6 DHCP server.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ipv6_address_virtuals:
                        The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
 
@@ -67624,15 +70823,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdIndexedList with `Ipv6DhcpRelayDestinationsItem` items. Primary key is `address`
                        (`str`).
                     ipv6_dhcp_relay_all_subnets: Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field.
+                    ipv6_nd:
+                       IPv6 Neighbor Discovery protocol.
+
+                       Subclass of AvdModel.
                     access_group_in: IPv4 access-list name.
                     access_group_out: IPv4 access-list name.
                     ipv6_access_group_in: IPv6 access-list name.
                     ipv6_access_group_out: IPv6 access-list name.
                     multicast: Subclass of AvdModel.
                     ospf_network_point_to_point: ospf_network_point_to_point
-                    ipv6_ospf_network_point_to_point: ipv6_ospf_network_point_to_point
                     ospf_area: ospf_area
-                    ipv6_ospf_area: ipv6_ospf_area
+                    ipv6_ospf:
+                       IPv6 OSPF configuration for the interface.
+
+                       Subclass of AvdModel.
                     ospf_cost: ospf_cost
                     ospf_authentication: ospf_authentication
                     ospf_authentication_key: Encrypted password.
@@ -67842,13 +71047,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"tenant": {"type": str}}
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
+            class Tenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tenants._item_type = str
+
+            _fields: ClassVar[dict] = {"tenants": {"type": Tenants}}
+            tenants: Tenants
+            """
+            List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+            Subclass of AvdList with `str` items.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, tenants: Tenants | UndefinedType = Undefined) -> None:
                     """
                     Metadata.
 
@@ -67856,7 +71069,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        tenant: Key only used for documentation or validation purposes.
+                        tenants:
+                           List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                           Subclass of AvdList with `str` items.
 
                     """
 
@@ -68001,13 +71216,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"tenant": {"type": str}}
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
+            class Tenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tenants._item_type = str
+
+            _fields: ClassVar[dict] = {"tenants": {"type": Tenants}}
+            tenants: Tenants
+            """
+            Key only used for documentation or validation purposes.
+
+            Subclass of AvdList with `str` items.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, tenants: Tenants | UndefinedType = Undefined) -> None:
                     """
                     Metadata.
 
@@ -68015,7 +71239,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        tenant: Key only used for documentation or validation purposes.
+                        tenants:
+                           Key only used for documentation or validation purposes.
+
+                           Subclass of AvdList with `str` items.
 
                     """
 
@@ -68661,6 +71888,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "application_traffic_recognition": {"type": ApplicationTrafficRecognition},
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
+        "avd_structured_config_file_format": {"type": str, "default": "yml"},
+        "avd_vault_id": {"type": str},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
@@ -68684,6 +71913,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "eos_cli": {"type": str},
         "eos_cli_config_gen_configuration": {"type": EosCliConfigGenConfiguration},
         "eos_cli_config_gen_documentation": {"type": EosCliConfigGenDocumentation},
+        "eos_cli_config_gen_keep_tmp_files": {"type": bool, "default": False},
+        "eos_cli_config_gen_tmp_dir": {"type": str},
+        "eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
+        "eos_config_future": {"type": EosConfigFuture},
         "errdisable": {"type": Errdisable},
         "ethernet_interfaces": {"type": EthernetInterfaces},
         "event_handlers": {"type": EventHandlers},
@@ -68708,15 +71941,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_http_client": {"type": IpHttpClient},
         "ip_icmp_redirect": {"type": bool},
         "ip_igmp_snooping": {"type": IpIgmpSnooping},
+        "ip_large_community_lists": {"type": IpLargeCommunityLists},
+        "ip_name_server": {"type": IpNameServer},
         "ip_name_server_groups": {"type": IpNameServerGroups},
-        "ip_name_servers": {"type": IpNameServers},
         "ip_nat": {"type": IpNat},
         "ip_ospf_router_id_output_format_hostnames": {"type": bool},
+        "ip_radius": {"type": IpRadius},
         "ip_radius_source_interfaces": {"type": IpRadiusSourceInterfaces},
         "ip_routing": {"type": bool},
         "ip_routing_ipv6_interfaces": {"type": bool},
         "ip_security": {"type": IpSecurity},
         "ip_ssh_client": {"type": IpSshClient},
+        "ip_tacacs": {"type": IpTacacs},
         "ip_tacacs_source_interfaces": {"type": IpTacacsSourceInterfaces},
         "ip_telnet_client": {"type": IpTelnetClient},
         "ip_tftp_client": {"type": IpTftpClient},
@@ -68764,6 +72000,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "mlag_configuration": {"type": MlagConfiguration},
         "monitor_connectivity": {"type": MonitorConnectivity},
         "monitor_layer1": {"type": MonitorLayer1},
+        "monitor_link_flap_policy": {"type": MonitorLinkFlapPolicy},
+        "monitor_loop_protection": {"type": MonitorLoopProtection},
         "monitor_server_radius": {"type": MonitorServerRadius},
         "monitor_session_default_encapsulation_gre": {"type": MonitorSessionDefaultEncapsulationGre},
         "monitor_sessions": {"type": MonitorSessions},
@@ -68789,6 +72027,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "queue_monitor_streaming": {"type": QueueMonitorStreaming},
         "radius_proxy": {"type": RadiusProxy},
         "radius_server": {"type": RadiusServer},
+        "read_structured_config_from_file": {"type": bool, "default": True},
         "redundancy": {"type": Redundancy},
         "roles": {"type": Roles},
         "route_maps": {"type": RouteMaps},
@@ -68879,6 +72118,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     as_path: AsPath
     """Subclass of AvdModel."""
+    avd_structured_config_file_format: AvdStructuredConfigFileFormat
+    """
+    The file format to use when loading structured configuration files.
+
+    Default value: `"yml"`
+    """
+    avd_vault_id: str | None
+    """
+    Vault ID used for encrypting temporary files generated by the role.
+    When Ansible Vault is not
+    configured, this parameter has no effect and files are written as plain JSON.
+    When Ansible Vault is
+    configured, AVD encrypts files containing templated and validated data
+    to prevent sensitive
+    information from being exposed in the temporary directories.
+      * When `avd_vault_id` is not
+    specified, AVD uses the *first* Vault ID in the list for encryption.
+      * When `avd_vault_id` is
+    specified, AVD uses the specified Vault ID for encryption.
+    """
     banners: Banners
     """Subclass of AvdModel."""
     bgp_groups: BgpGroups
@@ -68975,7 +72234,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Domain Name."""
     domain_list: DomainList
     """
-    Search list of DNS domains.
+    Domain names to complete unqualified host names.
 
     Subclass of AvdList with `str` items.
     """
@@ -68993,6 +72252,40 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     eos_cli_config_gen_documentation: EosCliConfigGenDocumentation
     """Subclass of AvdModel."""
+    eos_cli_config_gen_keep_tmp_files: bool
+    """
+    Avoid deleting temporary files.
+    This allows for inspecting templated inputs and validated inputs
+    used internally by AVD plugins.
+    When an Ansible Vault secret is set, temporary files holding input
+    variables are encrypted. Decryption is required to inspect them.
+
+    Default value: `False`
+    """
+    eos_cli_config_gen_tmp_dir: str | None
+    """
+    Path for temporary files created by the 'eos_cli_config_gen' role.
+    Contains templated inputs and
+    validated inputs used internally by AVD plugins.
+    Defaults to 'intended/tmp_eos_cli_config_gen'.
+    The
+    temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.
+    """
+    eos_cli_config_gen_validate_inputs_batch_size: int
+    """
+    The number of hosts to process in each batch when validating inputs.
+    Depending on your inventory
+    size and the available resources, you may want to adjust this number.
+
+    Default value: `10`
+    """
+    eos_config_future: EosConfigFuture
+    """
+    Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major
+    version.
+
+    Subclass of AvdModel.
+    """
     errdisable: Errdisable
     """Subclass of AvdModel."""
     ethernet_interfaces: EthernetInterfaces
@@ -69029,13 +72322,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_access_lists_max_entries: int | None
     """Limit ACL entries defined under the `ip_access_lists`."""
     ip_community_lists: IpCommunityLists
-    """
-    Communities and regexp entries MUST not be configured in the same community-list.
-
-
-    Subclass of
-    AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`).
-    """
+    """Subclass of AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`)."""
     ip_dhcp_relay: IpDhcpRelay
     """Subclass of AvdModel."""
     ip_dhcp_snooping: IpDhcpSnooping
@@ -69058,14 +72345,32 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_icmp_redirect: bool | None
     ip_igmp_snooping: IpIgmpSnooping
     """Subclass of AvdModel."""
+    ip_large_community_lists: IpLargeCommunityLists
+    """
+    A BGP large-community access list filters prefixes based on their BGP large community values.
+    Multiple large-community lists with the same name may be specified.
+
+
+    Subclass of AvdIndexedList
+    with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`).
+    """
+    ip_name_server: IpNameServer
+    """Subclass of AvdModel."""
     ip_name_server_groups: IpNameServerGroups
     """Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`)."""
-    ip_name_servers: IpNameServers
-    """Subclass of AvdList with `IpNameServersItem` items."""
     ip_nat: IpNat
     """Subclass of AvdModel."""
     ip_ospf_router_id_output_format_hostnames: bool | None
     """Display DNS-resolved router names for OSPF router IDs."""
+    ip_radius: IpRadius
+    """
+    IP RADIUS source interface configuration.
+    This requires to set the
+    'eos_config_future.new_ip_radius_cli_order: true' to render the new CLI order.
+
+    Subclass of
+    AvdModel.
+    """
     ip_radius_source_interfaces: IpRadiusSourceInterfaces
     """Subclass of AvdList with `IpRadiusSourceInterfacesItem` items."""
     ip_routing: bool | None
@@ -69074,6 +72379,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     ip_ssh_client: IpSshClient
     """Subclass of AvdModel."""
+    ip_tacacs: IpTacacs
+    """
+    IP TACACS source interface configuration.
+    This requires to set the
+    'eos_config_future.new_ip_tacacs_cli_order: true' to render the new CLI order.
+
+    Subclass of
+    AvdModel.
+    """
     ip_tacacs_source_interfaces: IpTacacsSourceInterfaces
     """Subclass of AvdList with `IpTacacsSourceInterfacesItem` items."""
     ip_telnet_client: IpTelnetClient
@@ -69185,6 +72499,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Subclass of AvdModel.
     """
+    monitor_link_flap_policy: MonitorLinkFlapPolicy
+    """Subclass of AvdModel."""
+    monitor_loop_protection: MonitorLoopProtection
+    """Subclass of AvdModel."""
     monitor_server_radius: MonitorServerRadius
     """
     Settings to monitor radius servers.
@@ -69251,6 +72569,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     radius_server: RadiusServer
     """Subclass of AvdModel."""
+    read_structured_config_from_file: bool
+    """
+    Read structured configuration from files in `structured_dir` (default directory also used by the
+    `eos_designs` role).
+    If set to false, `eos_cli_config_gen` will read structured configuration from
+    hostvars.
+
+    Default value: `True`
+    """
     redundancy: Redundancy
     """Subclass of AvdModel."""
     roles: Roles
@@ -69403,6 +72730,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_traffic_recognition: ApplicationTrafficRecognition | UndefinedType = Undefined,
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
+            avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
+            avd_vault_id: str | None | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -69426,6 +72755,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             eos_cli: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_configuration: EosCliConfigGenConfiguration | UndefinedType = Undefined,
             eos_cli_config_gen_documentation: EosCliConfigGenDocumentation | UndefinedType = Undefined,
+            eos_cli_config_gen_keep_tmp_files: bool | UndefinedType = Undefined,
+            eos_cli_config_gen_tmp_dir: str | None | UndefinedType = Undefined,
+            eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
+            eos_config_future: EosConfigFuture | UndefinedType = Undefined,
             errdisable: Errdisable | UndefinedType = Undefined,
             ethernet_interfaces: EthernetInterfaces | UndefinedType = Undefined,
             event_handlers: EventHandlers | UndefinedType = Undefined,
@@ -69450,15 +72783,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_http_client: IpHttpClient | UndefinedType = Undefined,
             ip_icmp_redirect: bool | None | UndefinedType = Undefined,
             ip_igmp_snooping: IpIgmpSnooping | UndefinedType = Undefined,
+            ip_large_community_lists: IpLargeCommunityLists | UndefinedType = Undefined,
+            ip_name_server: IpNameServer | UndefinedType = Undefined,
             ip_name_server_groups: IpNameServerGroups | UndefinedType = Undefined,
-            ip_name_servers: IpNameServers | UndefinedType = Undefined,
             ip_nat: IpNat | UndefinedType = Undefined,
             ip_ospf_router_id_output_format_hostnames: bool | None | UndefinedType = Undefined,
+            ip_radius: IpRadius | UndefinedType = Undefined,
             ip_radius_source_interfaces: IpRadiusSourceInterfaces | UndefinedType = Undefined,
             ip_routing: bool | None | UndefinedType = Undefined,
             ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
             ip_security: IpSecurity | UndefinedType = Undefined,
             ip_ssh_client: IpSshClient | UndefinedType = Undefined,
+            ip_tacacs: IpTacacs | UndefinedType = Undefined,
             ip_tacacs_source_interfaces: IpTacacsSourceInterfaces | UndefinedType = Undefined,
             ip_telnet_client: IpTelnetClient | UndefinedType = Undefined,
             ip_tftp_client: IpTftpClient | UndefinedType = Undefined,
@@ -69506,6 +72842,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             mlag_configuration: MlagConfiguration | UndefinedType = Undefined,
             monitor_connectivity: MonitorConnectivity | UndefinedType = Undefined,
             monitor_layer1: MonitorLayer1 | UndefinedType = Undefined,
+            monitor_link_flap_policy: MonitorLinkFlapPolicy | UndefinedType = Undefined,
+            monitor_loop_protection: MonitorLoopProtection | UndefinedType = Undefined,
             monitor_server_radius: MonitorServerRadius | UndefinedType = Undefined,
             monitor_session_default_encapsulation_gre: MonitorSessionDefaultEncapsulationGre | UndefinedType = Undefined,
             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -69531,6 +72869,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             queue_monitor_streaming: QueueMonitorStreaming | UndefinedType = Undefined,
             radius_proxy: RadiusProxy | UndefinedType = Undefined,
             radius_server: RadiusServer | UndefinedType = Undefined,
+            read_structured_config_from_file: bool | UndefinedType = Undefined,
             redundancy: Redundancy | UndefinedType = Undefined,
             roles: Roles | UndefinedType = Undefined,
             route_maps: RouteMaps | UndefinedType = Undefined,
@@ -69613,6 +72952,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
+                avd_structured_config_file_format: The file format to use when loading structured configuration files.
+                avd_vault_id:
+                   Vault ID used for encrypting temporary files generated by the role.
+                   When Ansible Vault is not
+                   configured, this parameter has no effect and files are written as plain JSON.
+                   When Ansible Vault is
+                   configured, AVD encrypts files containing templated and validated data
+                   to prevent sensitive
+                   information from being exposed in the temporary directories.
+                     * When `avd_vault_id` is not
+                   specified, AVD uses the *first* Vault ID in the list for encryption.
+                     * When `avd_vault_id` is
+                   specified, AVD uses the specified Vault ID for encryption.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:
@@ -69682,7 +73034,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dhcp_servers: Subclass of AvdIndexedList with `DhcpServersItem` items. Primary key is `vrf` (`str`).
                 dns_domain: Domain Name.
                 domain_list:
-                   Search list of DNS domains.
+                   Domain names to complete unqualified host names.
 
                    Subclass of AvdList with `str` items.
                 dot1x: Subclass of AvdModel.
@@ -69692,6 +73044,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 eos_cli: Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration.
                 eos_cli_config_gen_configuration: Subclass of AvdModel.
                 eos_cli_config_gen_documentation: Subclass of AvdModel.
+                eos_cli_config_gen_keep_tmp_files:
+                   Avoid deleting temporary files.
+                   This allows for inspecting templated inputs and validated inputs
+                   used internally by AVD plugins.
+                   When an Ansible Vault secret is set, temporary files holding input
+                   variables are encrypted. Decryption is required to inspect them.
+                eos_cli_config_gen_tmp_dir:
+                   Path for temporary files created by the 'eos_cli_config_gen' role.
+                   Contains templated inputs and
+                   validated inputs used internally by AVD plugins.
+                   Defaults to 'intended/tmp_eos_cli_config_gen'.
+                   The
+                   temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.
+                eos_cli_config_gen_validate_inputs_batch_size:
+                   The number of hosts to process in each batch when validating inputs.
+                   Depending on your inventory
+                   size and the available resources, you may want to adjust this number.
+                eos_config_future:
+                   Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major
+                   version.
+
+                   Subclass of AvdModel.
                 errdisable: Subclass of AvdModel.
                 ethernet_interfaces: Subclass of AvdIndexedList with `EthernetInterfacesItem` items. Primary key is `name` (`str`).
                 event_handlers:
@@ -69714,12 +73088,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 interface_profiles: Subclass of AvdIndexedList with `InterfaceProfilesItem` items. Primary key is `name` (`str`).
                 ip_access_lists: Subclass of AvdIndexedList with `IpAccessListsItem` items. Primary key is `name` (`str`).
                 ip_access_lists_max_entries: Limit ACL entries defined under the `ip_access_lists`.
-                ip_community_lists:
-                   Communities and regexp entries MUST not be configured in the same community-list.
-
-
-                   Subclass of
-                   AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`).
+                ip_community_lists: Subclass of AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`).
                 ip_dhcp_relay: Subclass of AvdModel.
                 ip_dhcp_snooping: Subclass of AvdModel.
                 ip_domain_lookup: Subclass of AvdModel.
@@ -69732,15 +73101,36 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_http_client: Subclass of AvdModel.
                 ip_icmp_redirect: ip_icmp_redirect
                 ip_igmp_snooping: Subclass of AvdModel.
+                ip_large_community_lists:
+                   A BGP large-community access list filters prefixes based on their BGP large community values.
+                   Multiple large-community lists with the same name may be specified.
+
+
+                   Subclass of AvdIndexedList
+                   with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`).
+                ip_name_server: Subclass of AvdModel.
                 ip_name_server_groups: Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`).
-                ip_name_servers: Subclass of AvdList with `IpNameServersItem` items.
                 ip_nat: Subclass of AvdModel.
                 ip_ospf_router_id_output_format_hostnames: Display DNS-resolved router names for OSPF router IDs.
+                ip_radius:
+                   IP RADIUS source interface configuration.
+                   This requires to set the
+                   'eos_config_future.new_ip_radius_cli_order: true' to render the new CLI order.
+
+                   Subclass of
+                   AvdModel.
                 ip_radius_source_interfaces: Subclass of AvdList with `IpRadiusSourceInterfacesItem` items.
                 ip_routing: ip_routing
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
                 ip_security: Subclass of AvdModel.
                 ip_ssh_client: Subclass of AvdModel.
+                ip_tacacs:
+                   IP TACACS source interface configuration.
+                   This requires to set the
+                   'eos_config_future.new_ip_tacacs_cli_order: true' to render the new CLI order.
+
+                   Subclass of
+                   AvdModel.
                 ip_tacacs_source_interfaces: Subclass of AvdList with `IpTacacsSourceInterfacesItem` items.
                 ip_telnet_client: Subclass of AvdModel.
                 ip_tftp_client: Subclass of AvdModel.
@@ -69803,6 +73193,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Enable SYSLOG messages on transceiver SMBus communication failures.
 
                    Subclass of AvdModel.
+                monitor_link_flap_policy: Subclass of AvdModel.
+                monitor_loop_protection: Subclass of AvdModel.
                 monitor_server_radius:
                    Settings to monitor radius servers.
 
@@ -69841,6 +73233,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 radius_server: Subclass of AvdModel.
+                read_structured_config_from_file:
+                   Read structured configuration from files in `structured_dir` (default directory also used by the
+                   `eos_designs` role).
+                   If set to false, `eos_cli_config_gen` will read structured configuration from
+                   hostvars.
                 redundancy: Subclass of AvdModel.
                 roles: Subclass of AvdIndexedList with `RolesItem` items. Primary key is `name` (`str`).
                 route_maps: Subclass of AvdIndexedList with `RouteMapsItem` items. Primary key is `name` (`str`).

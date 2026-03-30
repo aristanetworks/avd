@@ -7,14 +7,22 @@ l2leaf:
     - name: aaa-settings-1
       mgmt_ip: 192.168.0.2/24
 
+# TODO 7.0: Remove the eos_config_future settings
+custom_structured_configuration_eos_config_future:
+  new_ip_tacacs_cli_order: true
+  new_ip_radius_cli_order: true
+
 aaa_settings:
   # adding test for enable_password.password
   enable_password:
     password: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
+    # Test to verify that password takes precedence over cleartext_password
+    cleartext_password: admin
   tacacs:
     servers:
       - host: 10.10.10.11
         vrf: default
+        timeout: 30
         key: 071B245F5A
         # key take precedence over cleartext_key
         cleartext_key: arista
@@ -23,6 +31,7 @@ aaa_settings:
 
       - host: 10.10.10.1
         vrf: use_mgmt_interface_vrf
+        timeout: 60
         key: 071B245F5A
         groups:
           - TACACS1
@@ -148,6 +157,14 @@ aaa_settings:
         vrf: default
         key: 071B245F5A
 
+      # Test TLS server in VRF default and default group radius
+      - host: 11.10.10.12
+        vrf: default
+        tls:
+          enabled: true
+          ssl_profile: HOST_SSL_PROFILE
+          port: 2080
+
     vrfs:
       - name: default
         source_interface: Vlan123
@@ -183,16 +200,6 @@ aaa_settings:
             group: TACACS1
           - method: group
             group: RADIUS1
-          - method: logging
-    dot1x:
-      default:
-        type: start-stop
-        methods:
-          - method: group
-            group: radius
-            multicast: true
-          - method: group
-            group: radius
           - method: logging
     commands:
       console:
@@ -264,8 +271,6 @@ aaa_settings:
       console: local
     enable:
       default: group TACACS1 local
-    dot1x:
-      default: group RADIUS1
     policies:
       on_failure_log: true
       on_success_log: true
@@ -283,10 +288,6 @@ aaa_settings:
       default: group TACACS1 local
     config_commands: true
     serial_console: true
-    dynamic:
-      dot1x_additional_groups:
-        - radius
-        - RADIUS1
     commands:
       all_default: group TACACS1
       privilege:

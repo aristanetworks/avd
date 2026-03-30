@@ -8,6 +8,6 @@ type: dict
 keys:
   timezone:
     documentation_options:
-      table: management-settings
+      table: time-configuration
     type: str
     description: Clock timezone like "CET" or "US/Pacific".

@@ -98,7 +98,7 @@ class UtilsMixin(Protocol):
                 continue
 
             for static_route in static_routes:
-                vrf_default_ipv4_static_routes.add(static_route.prefix or static_route.destination_address_prefix)
+                vrf_default_ipv4_static_routes.add(static_route.prefix)
 
             vrf_default_redistribute_static = default(tenant.vrfs["default"].redistribute_static, vrf_default_redistribute_static)
 
@@ -396,6 +396,21 @@ class UtilsMixin(Protocol):
 
         return f"{admin_subfield}:{bundle_number}"
 
+    def get_protocol_vrf_router_id(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+        router_id: str,
+    ) -> str | None:
+        """
+        Determine the router ID for a protocol for a given VRF based on its configuration.
+
+        In particular, if use_router_general_for_router_id is True and the value of router_id is "main_router_id", return None.
+        """
+        if router_id == "main_router_id" and self.inputs.use_router_general_for_router_id:
+            return None
+        return self.get_vrf_router_id(vrf, tenant, router_id)
+
     def get_vrf_router_id(
         self: AvdStructuredConfigNetworkServicesProtocol,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
@@ -405,10 +420,12 @@ class UtilsMixin(Protocol):
         """
         Determine the router ID for a given VRF based on its configuration.
 
+        It does not account for the configuration of use_router_general_for_router_id.
+
         Args:
             vrf: The VRF object containing OSPF/BGP and vtep_diagnostic details.
             tenant: The Tenant to which the VRF belongs.
-            router_id: The router ID type specified for the VRF (e.g., "vtep_diagnostic", "main_router_id", "none", or an IPv4 address).
+            router_id: The router ID type specified for the VRF (e.g., "diagnostic_loopback", "main_router_id", "none", or an IPv4 address).
 
         Returns:
             The resolved router ID as a string, or None if the router ID is not applicable.
@@ -416,26 +433,24 @@ class UtilsMixin(Protocol):
         Raises:
             AristaAvdInvalidInputsError: If required configuration for "vtep_diagnostic" router ID is missing.
         """
-        # Handle "vtep_diagnostic" router ID case
-        if router_id == "diagnostic_loopback":
-            # Validate required configuration
-            if (interface_data := self._get_vtep_diagnostic_loopback_for_vrf(vrf, tenant)) is None or not interface_data.ip_address:
-                msg = (
-                    f"Invalid configuration on VRF '{vrf.name}' in Tenant '{tenant.name}'. "
-                    "'vtep_diagnostic.loopback' along with either 'vtep_diagnostic.loopback_ip_pools' or 'vtep_diagnostic.loopback_ip_range' must be defined "
-                    "when 'router_id' is set to 'diagnostic_loopback' on the VRF."
-                )
-                raise AristaAvdInvalidInputsError(msg)
-            # Resolve router ID from loopback interface
-            return get_ip_from_ip_prefix(interface_data.ip_address)
-        if router_id == "main_router_id":
-            return self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None
-        # Handle "none" router ID
-        if router_id == "none":
-            return None
-
-        # Default to the specified router ID
-        return router_id
+        match router_id:
+            case "diagnostic_loopback":
+                # Validate required configuration
+                if (interface_data := self._get_vtep_diagnostic_loopback_for_vrf(vrf, tenant)) is None or not interface_data.ip_address:
+                    msg = (
+                        f"Invalid configuration on VRF '{vrf.name}' in Tenant '{tenant.name}'. "
+                        "'vtep_diagnostic.loopback' along with either 'vtep_diagnostic.loopback_ip_pools' or "
+                        "'vtep_diagnostic.loopback_ip_range' must be defined when 'router_id' is set to 'diagnostic_loopback' on the VRF."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+                # Resolve router ID from loopback interface
+                return get_ip_from_ip_prefix(interface_data.ip_address)
+            case "main_router_id":
+                return self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None
+            case "none":
+                return None
+            case _:
+                return router_id
 
     def set_acls(
         self: AvdStructuredConfigNetworkServicesProtocol,

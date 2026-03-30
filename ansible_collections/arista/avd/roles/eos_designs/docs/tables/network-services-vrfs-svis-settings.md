@@ -20,7 +20,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].profile") | String |  |  |  | SVI profile name to apply.<br>SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].tags") | List, items: String |  | `['all']` |  | Tags leveraged for networks services filtering.<br>Tags are matched against "filter.tags" defined under node type settings.<br>Tags are also matched against the "node_group" name under node type settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].tags.[]") | String |  |  |  | Tag value. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_vlan_bundle</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].evpn_vlan_bundle") | String |  |  |  | Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.<br>This setting overrides "evpn_vlan_bundle" set at tenant level.<br>The common option "evpn_vlan_aware_bundles" is disregarded for this option.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_vlan_bundle</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].evpn_vlan_bundle") | String |  |  |  | Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.<br>This setting overrides "evpn_vlan_bundle" set at the VRF or tenant level.<br>The common option "evpn_vlan_aware_bundles" is disregarded for this option.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].node") | String | Required, Unique |  |  | Node inventory hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].tags") | List, items: String |  | `['all']` |  | Tags leveraged for networks services filtering.<br>Tags are matched against "filter.tags" defined under node type settings.<br>Tags are also matched against the "node_group" name under node type settings.<br> |
@@ -83,8 +83,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].bgp.structured_config") | Dictionary |  |  |  | Structured configuration and EOS CLI commands rendered on router_bgp.vlans.[id=<vlan>].<br>This configuration will not be applied to vlan aware bundles.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the VLAN interface in the final EOS configuration.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].structured_config") | Dictionary |  |  |  | Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend SVI to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.<br>Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].structured_config") | Dictionary |  |  |  | Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend SVI to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.<br>Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].enabled") | Boolean |  |  |  | Enable or disable interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].description") | String |  |  |  | SVI description. By default set to VLAN name.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
@@ -142,8 +142,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].bgp.structured_config") | Dictionary |  |  |  | Structured configuration and EOS CLI commands rendered on router_bgp.vlans.[id=<vlan>].<br>This configuration will not be applied to vlan aware bundles.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the VLAN interface in the final EOS configuration.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].structured_config") | Dictionary |  |  |  | Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend SVI to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.<br>Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].structured_config") | Dictionary |  |  |  | Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend SVI to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.<br>Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant. |
 
 === "YAML"
 
@@ -198,7 +198,7 @@
                   - <str>
 
                 # Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                # This setting overrides "evpn_vlan_bundle" set at tenant level.
+                # This setting overrides "evpn_vlan_bundle" set at the VRF or tenant level.
                 # The common option "evpn_vlan_aware_bundles" is disregarded for this option.
                 evpn_vlan_bundle: <str>
 
@@ -387,12 +387,12 @@
                     # EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                     raw_eos_cli: <str>
 
-                    # Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    # Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     structured_config: <dict>
 
                     # Explicitly extend SVI to remote EVPN domains.
                     # Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
-                    # Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                    # Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant.
                     evpn_l2_multi_domain: <bool>
 
                 # Enable or disable interface.
@@ -562,11 +562,11 @@
                 # EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                 raw_eos_cli: <str>
 
-                # Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                # Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
                 structured_config: <dict>
 
                 # Explicitly extend SVI to remote EVPN domains.
                 # Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
-                # Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                # Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant.
                 evpn_l2_multi_domain: <bool>
     ```

@@ -183,11 +183,12 @@ ip_igmp_snooping:
     enabled: true
   - id: 161
     enabled: false
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 local_users:
@@ -338,7 +339,7 @@ router_bgp:
       type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -436,7 +437,8 @@ router_bgp:
     vlan: 120-124
   - name: Tenant_A_FTP
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.10:10162
     route_targets:
       both:
@@ -446,7 +448,8 @@ router_bgp:
     vlan: '162'
   - name: Tenant_A_NFS
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.10:10161
     route_targets:
       both:
@@ -456,7 +459,8 @@ router_bgp:
     vlan: '161'
   - name: Tenant_A_VMOTION
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.10:10160
     route_targets:
       both:
@@ -612,7 +616,8 @@ vlan_interfaces:
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.30.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - app
     - erp1
@@ -622,7 +627,8 @@ vlan_interfaces:
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.31.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - app
 - name: Vlan140
@@ -631,7 +637,8 @@ vlan_interfaces:
   vrf: Tenant_A_DB_Zone
   ip_address_virtual: 10.1.40.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - db
     - erp1
@@ -641,7 +648,8 @@ vlan_interfaces:
   vrf: Tenant_A_DB_Zone
   ip_address_virtual: 10.1.41.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - db
 - name: Vlan110
@@ -652,7 +660,8 @@ vlan_interfaces:
   ip_helpers:
   - ip_helper: 1.2.3.4
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
 - name: Vlan111
@@ -665,7 +674,8 @@ vlan_interfaces:
     source_interface: lo100
     vrf: MGMT
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
 - name: Vlan120
@@ -678,7 +688,8 @@ vlan_interfaces:
     source_interface: lo100
     vrf: TEST
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - web
     - erp1
@@ -689,7 +700,8 @@ vlan_interfaces:
   ip_address_virtual: 10.1.10.254/24
   mtu: 1560
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - web
 - name: Vlan122
@@ -700,7 +712,8 @@ vlan_interfaces:
   ip_helpers:
   - ip_helper: 1.1.1.1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - web
 - name: Vlan123
@@ -712,7 +725,8 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo100
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - web
 - name: Vlan124
@@ -724,7 +738,8 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     vrf: TEST
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - web
 - name: Vlan210
@@ -733,7 +748,8 @@ vlan_interfaces:
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.10.1/24
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
     tags:
     - opzone
 - name: Vlan211
@@ -742,7 +758,8 @@ vlan_interfaces:
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.11.1/24
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
     tags:
     - opzone
 - name: Vlan310
@@ -751,7 +768,8 @@ vlan_interfaces:
   vrf: Tenant_C_OP_Zone
   ip_address_virtual: 10.3.10.1/24
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
     tags:
     - opzone
 - name: Vlan311
@@ -760,7 +778,8 @@ vlan_interfaces:
   vrf: Tenant_C_OP_Zone
   ip_address_virtual: 10.3.11.1/24
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
     tags:
     - opzone
 vlan_internal_order:
@@ -772,102 +791,126 @@ vlans:
 - id: 130
   name: Tenant_A_APP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 140
   name: Tenant_A_DB_BZone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 141
   name: Tenant_A_DB_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 110
   name: Tenant_A_OP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 122
   name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 123
   name: Tenant_a_WEB_DHCP_source_int_no_vrf
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 124
   name: Tenant_a_WEB_DHCP_vrf_no_source_int
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 160
   name: Tenant_A_VMOTION
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 161
   name: Tenant_A_NFS
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 162
   name: Tenant_A_FTP
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 210
   name: Tenant_B_OP_Zone_1
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 211
   name: Tenant_B_OP_Zone_2
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 310
   name: Tenant_C_OP_Zone_1
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 311
   name: Tenant_C_OP_Zone_2
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_APP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: Tenant_A_DB_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: Tenant_A_OP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: Tenant_A_WEB_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: Tenant_B_OP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - name: Tenant_C_OP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF2A_VTEP

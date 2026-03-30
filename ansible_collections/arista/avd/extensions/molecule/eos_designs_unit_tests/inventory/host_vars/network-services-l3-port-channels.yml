@@ -50,6 +50,26 @@ l3leaf:
     - name: network-services-l3-port-channels
       id: 101
       bgp_as: 101
+      l3_port_channels:
+        # Making sure we can define a Port-Channel without ip_address
+        - name: Port-Channel77
+          description: L3 Port-Channel without ip_address
+          member_interfaces:
+            - name: Ethernet77
+              peer_interface: Ethernet77
+              peer: underlay-peer
+        # Test case: Parent Port-Channel created in underlay with member_interfaces
+        # Subinterfaces will be created in network services
+        # This should work without errors
+        - name: Port-Channel78
+          ip_address: 10.10.10.10/24
+          member_interfaces:
+            - name: Ethernet78
+              peer_interface: Ethernet78
+              peer: underlay-peer
+            - name: Ethernet79
+              peer_interface: Ethernet79
+              peer: underlay-peer
 
 tenants:
   - name: L3PO
@@ -227,4 +247,13 @@ tenants:
             peer_port_channel: Po22.100
             enabled: true
             ip_address: 10.10.10.2/29
+            node: network-services-l3-port-channels
+          # Test case: Subinterface in network services with parent Port-Channel created in underlay
+          # The parent Port-Channel78 is defined in l3leaf.nodes[].l3_port_channels with member_interfaces
+          # This should work without errors
+          - name: Port-Channel78.100
+            peer: inet-cloud-sub100
+            peer_port_channel: Po77.100
+            enabled: true
+            ip_address: 10.10.78.2/29
             node: network-services-l3-port-channels

@@ -11,6 +11,7 @@ maintenance:
       shutdown:
         max_delay: 300
   bgp_profiles:
+    - name: bgp2
     - name: BP1
       initiator:
         route_map_inout: RM-MAINTENANCE
@@ -32,9 +33,11 @@ maintenance:
       profile: UP1
       groups:
         bgp_groups:
+          - bgp_group
           - BGP_GROUP_1
           - BGP_GROUP_2
         interface_groups:
+          - inrerface_group
           - INTERFACE_GROUP_1
     # Adding a unit with no profile for issue/2488
     - name: System

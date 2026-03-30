@@ -1,0 +1,27 @@
+{#
+ Copyright (c) 2025-2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - monitor loop protection #}
+{% if monitor_loop_protection is arista.avd.defined %}
+!
+monitor loop-protection
+{%     if monitor_loop_protection.enabled is arista.avd.defined(true) %}
+   no shutdown
+{%     elif monitor_loop_protection.enabled is arista.avd.defined(false) %}
+   shutdown
+{%     endif %}
+{%     if monitor_loop_protection.protect_vlan is arista.avd.defined %}
+   protect vlan {{ monitor_loop_protection.protect_vlan }}
+{%     endif %}
+{%     if monitor_loop_protection.rate_limit is arista.avd.defined %}
+   rate-limit {{ monitor_loop_protection.rate_limit }}
+{%     endif %}
+{%     if monitor_loop_protection.transmit_interval is arista.avd.defined %}
+   transmit-interval {{ monitor_loop_protection.transmit_interval }}
+{%     endif %}
+{%     if monitor_loop_protection.disabled_time is arista.avd.defined %}
+   disabled-time {{ monitor_loop_protection.disabled_time }}
+{%     endif %}
+{% endif %}

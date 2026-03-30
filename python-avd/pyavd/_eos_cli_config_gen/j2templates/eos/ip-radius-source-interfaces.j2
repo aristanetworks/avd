@@ -4,14 +4,41 @@
  that can be found in the LICENSE file.
 #}
 {# eos - ip radius source interfaces #}
-{% for ip_radius_source_interface in ip_radius_source_interfaces | arista.avd.natural_sort(sort_key='name') %}
+{% if ip_radius is arista.avd.defined %}
+{%     if eos_config_future.new_ip_radius_cli_order is arista.avd.defined(true) %}
 !
-{%     set ip_radius_cli = "ip radius" %}
-{%     if ip_radius_source_interface.vrf is arista.avd.defined %}
-{%         set ip_radius_cli = ip_radius_cli ~ " vrf " ~ ip_radius_source_interface.vrf %}
-{%     endif %}
-{%     if ip_radius_source_interface.name is arista.avd.defined %}
-{%         set ip_radius_cli = ip_radius_cli ~ " source-interface " ~ ip_radius_source_interface.name %}
-{%     endif %}
+{%         if ip_radius.source_interface is arista.avd.defined %}
+ip radius source-interface {{ ip_radius.source_interface }}
+{%         endif %}
+{%         for vrf in ip_radius.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
+ip radius vrf {{ vrf.name }} source-interface {{ vrf.source_interface }}
+{%         endfor %}
+{%     else %}
+{%         set new_ip_radius_list = [] %}
+{%         if ip_radius.source_interface is arista.avd.defined %}
+{%             do new_ip_radius_list.append({'name': ip_radius.source_interface, 'vrf': 'default'}) %}
+{%         endif %}
+{%         for vrf in ip_radius.vrfs | arista.avd.default([]) %}
+{%             do new_ip_radius_list.append({'name': vrf.source_interface, 'vrf': vrf.name}) %}
+{%         endfor %}
+{%         for entry in new_ip_radius_list | arista.avd.natural_sort(sort_key='name') %}
+!
+{%             set ip_radius_cli = "ip radius" %}
+{%             if entry.vrf is arista.avd.defined %}
+{%                 set ip_radius_cli = ip_radius_cli ~ " vrf " ~ entry.vrf %}
+{%             endif %}
+{%             set ip_radius_cli = ip_radius_cli ~ " source-interface " ~ entry.name %}
 {{ ip_radius_cli }}
-{% endfor %}
+{%         endfor %}
+{%     endif %}
+{% elif ip_radius_source_interfaces is arista.avd.defined %}
+{%     for ip_radius in ip_radius_source_interfaces | arista.avd.natural_sort(sort_key='name') %}
+!
+{%         set ip_radius_cli = "ip radius" %}
+{%         if ip_radius.vrf is arista.avd.defined %}
+{%             set ip_radius_cli = ip_radius_cli ~ " vrf " ~ ip_radius.vrf %}
+{%         endif %}
+{%         set ip_radius_cli = ip_radius_cli ~ " source-interface " ~ ip_radius.name %}
+{{ ip_radius_cli }}
+{%     endfor %}
+{% endif %}

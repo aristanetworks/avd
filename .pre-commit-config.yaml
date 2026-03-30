@@ -30,7 +30,7 @@ repos:
         exclude: ansible_collections/arista/avd/extensions/molecule
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.5
+    rev: v1.5.6
     hooks:
       - id: insert-license
         name: Check and insert license on Python files.
@@ -51,6 +51,7 @@ repos:
           (ansible_collections/arista/avd/roles/.*/(handlers|tasks)/.*\.yml
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/.*\.yml
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/.*\.yml
+          |schemas/.*/.*\.yml
           )
 
         args:
@@ -78,7 +79,13 @@ repos:
       - id: insert-license
         name: Check and insert license on Markdown files.
         files: .*\.md$
-        exclude: (ansible_collections/arista/avd/extensions/molecule|.github|ansible_collections/arista/avd/examples/.+/documentation/).*
+        exclude: >-
+          (?x)
+          (ansible_collections/arista/avd/extensions/molecule
+          |.github
+          |ansible_collections/arista/avd/examples/.+/documentation/
+          |python-avd/tests/pyavd/examples/simple/docs/
+          )
         args:
           - --license-filepath
           - development/license-short.txt
@@ -104,7 +111,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.14.10
+    rev: v0.15.7
     hooks:
       # Run the linter.
       - id: ruff
@@ -114,7 +121,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.407
+    rev: v1.1.408
     hooks:
       - id: pyright
         name: PyRight static type checker
@@ -123,11 +130,11 @@ repos:
         # use --group dev or some othergroup to avoid maintaining this here
         # as well.
         additional_dependencies:
-          - 'ansible-core>=2.16.0,<2.20.0'
-          - 'anta==1.7.0'
+          - 'ansible-core>=2.16.0,<2.21.0'
+          - 'anta==1.8.0'
           - 'deepmerge>=1.1.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.1'
+          - 'pyavd-utils==0.0.3'
           - 'pydantic>=2.3.0'
           - 'pytest>=8.2.0'
           - 'pyyaml>=6.0.0'
@@ -135,22 +142,22 @@ repos:
           - 'ruff==0.11.11'
 
   - repo: https://github.com/pycqa/pylint
-    rev: "v4.0.4"
+    rev: "v4.0.5"
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
         description: This hook runs pylint.
         types: [python]
-      - id: pylint # Use pylintrc file in Ansible collection
+      - id: pylint # Use pylintrc-ansible file for Ansible collection
         name: Check for Linting errors on Python files in the Ansible collection.
         description: This hook runs pylint.
         types: [python]
         files: ansible_collections/arista/avd/
         args:
-          - --rcfile=ansible_collections/arista/avd/pylintrc
+          - --rcfile=pylintrc-ansible
 
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: "v1.37.1"
+    rev: "v1.38.0"
     hooks:
       - id: yamllint
         name: Check for Linting errors on YAML files with settings defined in `.github/yamllintrc`.
@@ -167,7 +174,7 @@ repos:
         name: Check for Linting errors on Jinja2 files
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: v2.4.2
     hooks:
       - id: codespell
         name: Check for common misspellings in text files.
@@ -191,6 +198,22 @@ repos:
             python-avd/pyavd/_cv/extra_cv_protos/.*| # Exclude extra CV proto files
             docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
           )$
+
+  - repo: https://github.com/pdm-project/pdm
+    rev: "2.26.6"
+    hooks:
+      - id: pdm-export
+        name: Extract requirements from pyavd/pyproject.toml to requirements.txt
+        entry: pdm export -p python-avd -o ansible_collections/arista/avd/requirements.txt --without-hashes -G ansible-collection -G self --pyproject
+        language: python
+        files: python-avd/pyproject.toml
+        pass_filenames: false
+      - id: pdm-export
+        name: Extract requirements from pyavd/pyproject.toml to docs/requirements.txt
+        entry: pdm export -p python-avd -o docs/requirements.txt --without-hashes -G ansible -G self --pyproject
+        language: python
+        files: python-avd/pyproject.toml
+        pass_filenames: false
 
   - repo: local
     hooks:
@@ -251,7 +274,7 @@ repos:
         name: Build AVD schemas and documentation.
         entry: sh -c 'exec python-avd/scripts/build_schemas.py'
         language: python
-        files: python-avd/pyavd/[a-z_]+/schema
+        files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
         pass_filenames: false
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.7.2']
 
@@ -261,13 +284,15 @@ repos:
         language: python
         args:
           - --root-path
-          - "ansible_collections/arista/avd"
+          - "."
           - --table-files
           - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md"
           - "ansible_collections/arista/avd/roles/eos_designs/docs/tables/*.md"
+          - "schemas/cv_deploy/docs/tables/*.md"
           - --global-docs
           - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md"
           - "ansible_collections/arista/avd/roles/eos_designs/docs/*.md"
+          - "ansible_collections/arista/avd/roles/cv_deploy/README.md"
           - --ignore-files
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-input-validation.md
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
@@ -275,7 +300,28 @@ repos:
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validation.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
+          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/removed-keys.md
+          - schemas/cv_deploy/docs/tables/metadata.md
+          # TODO: Remove once cv_deploy schema integration is complete.
+          - schemas/cv_deploy/docs/tables/cv_deploy.md
         pass_filenames: false
+
+      - id: sort-hosts-yml
+        name: Auto-sort host names in Ansible inventory hosts.yml files.
+        entry: development/sort_hosts_yml.py
+        language: python
+        # Matches hosts.yml in: eos_cli_config_gen*, eos_designs*
+        files: >-
+          (?x)
+          ^ansible_collections/arista/avd/extensions/molecule/
+          (eos_cli_config_gen.*|
+          eos_designs_unit_tests|
+          eos_designs_negative_unit_tests|
+          eos_designs_deprecated_vars|
+          ansible_only
+          )
+          /inventory/hosts.yml$
+        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=43.0.0', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -286,7 +332,7 @@ repos:
         additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=43.0.0', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.20.0
+    rev: v0.22.0
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.github/.markdownlint.yaml`.

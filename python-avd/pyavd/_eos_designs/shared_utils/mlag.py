@@ -140,6 +140,13 @@ class MlagMixin(Protocol):
         if (mlag_peer_mgmt_ip := self.mlag_peer_facts.mgmt_ip) is None:
             return None
 
+        if mlag_peer_mgmt_ip == "dhcp":
+            msg = (
+                f"'mgmt_ip: dhcp' is not supported for MLAG peer '{self.mlag_peer}'."
+                f" MLAG dual-primary detection heartbeat requires a static management IP address."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
         return get_ip_from_ip_prefix(mlag_peer_mgmt_ip)
 
     @cached_property
@@ -265,7 +272,7 @@ class MlagMixin(Protocol):
             description=AvdStringFormatter().format(self.inputs.mlag_bgp_peer_group_description, mlag_peer=self.mlag_peer),
             password=self.get_bgp_password(bgp_peer_group),
             bfd=bgp_peer_group.bfd or None,
-            maximum_routes=12000,
+            maximum_routes=bgp_peer_group.maximum_routes,
             send_community="all",
         )
         peer_group.metadata.type = "ipv4"

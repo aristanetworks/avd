@@ -40,39 +40,43 @@ aaa_server_groups:
 config_end: true
 enable_password:
   disabled: true
+eos_config_future:
+  new_ip_radius_cli_order: true
+  new_ip_tacacs_cli_order: true
 hostname: aaa-settings-2
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius_source_interfaces:
-- name: Vlan4092
-  vrf: INBAND_MGMT
-ip_tacacs_source_interfaces:
-- name: Vlan123
-  vrf: default
-- name: Vlan126
-  vrf: INBAND_MGMT
-- name: Vlan125
-  vrf: MGMT1
+ip_radius:
+  vrfs:
+  - name: INBAND_MGMT
+    source_interface: Vlan4092
+ip_tacacs:
+  source_interface: Vlan123
+  vrfs:
+  - name: INBAND_MGMT
+    source_interface: Vlan126
+  - name: MGMT1
+    source_interface: Vlan125
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 radius_server:
-  hosts:
+  servers:
   - host: 11.10.10.11
-    vrf: default
     key: 071B245F5A
-  - host: 11.10.10.1
-    vrf: INBAND_MGMT
-    key: 071B245F5A
-  - host: 11.10.10.2
-    vrf: INBAND_MGMT
-    key: 071B245F5A
-  - host: 11.10.10.3
-    vrf: INBAND_MGMT
-    key: 071B245F5A
-  - host: 11.10.10.4
-    vrf: other_vrf
-    key: 071B245F5A
+  vrfs:
+  - name: INBAND_MGMT
+    servers:
+    - host: 11.10.10.1
+      key: 071B245F5A
+    - host: 11.10.10.2
+      key: 071B245F5A
+    - host: 11.10.10.3
+      key: 071B245F5A
+  - name: other_vrf
+    servers:
+    - host: 11.10.10.4
+      key: 071B245F5A
 service_routing_protocols_model: multi-agent
 tacacs_servers:
   hosts:
@@ -111,7 +115,8 @@ vlans:
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

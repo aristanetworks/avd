@@ -104,11 +104,12 @@ ethernet_interfaces:
 hostname: inband-mgmt-parent
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 1.1.1.1
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 1.1.1.1
+    - ip_address: 8.8.8.8
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 loopback_interfaces:
@@ -222,7 +223,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -297,7 +298,8 @@ vlan_interfaces:
   vrf: INBANDMGMT
   ip_address: 192.168.103.1/24
   metadata:
-    tenant: INBAND_MGMT_TESTS
+    tenants:
+    - INBAND_MGMT_TESTS
 - name: Vlan101
   description: Inband Management
   shutdown: false
@@ -327,22 +329,26 @@ vlans:
 - id: 103
   name: Inband management vlan
   metadata:
-    tenant: INBAND_MGMT_TESTS
+    tenants:
+    - INBAND_MGMT_TESTS
 - id: 101
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 102
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: INBANDMGMT
   ip_routing: true
   metadata:
-    tenant: INBAND_MGMT_TESTS
+    tenants:
+    - INBAND_MGMT_TESTS
 vxlan_interface:
   vxlan1:
     description: inband-mgmt-parent_VTEP
