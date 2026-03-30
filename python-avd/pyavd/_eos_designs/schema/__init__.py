@@ -20144,6 +20144,201 @@ class EosDesigns(EosDesignsRootModel):
     class Ipv6AclsItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            HopLimitMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
+            Action: TypeAlias = Literal["permit", "deny"]
+            SourcePortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
+
+            class SourcePorts(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            SourcePorts._item_type = str
+
+            DestinationPortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
+
+            class DestinationPorts(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            DestinationPorts._item_type = str
+
+            class TcpFlags(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            TcpFlags._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "protocol": {"type": str},
+                "source": {"type": str},
+                "destination": {"type": str},
+                "hop_limit": {"type": int},
+                "hop_limit_match": {"type": str, "default": "eq"},
+                "dscp_mask": {"type": str},
+                "inner_vlan_number": {"type": int},
+                "inner_vlan_mask": {"type": str},
+                "sequence": {"type": int},
+                "remark": {"type": str},
+                "action": {"type": str},
+                "source_ports_match": {"type": str, "default": "eq"},
+                "source_ports": {"type": SourcePorts},
+                "destination_ports_match": {"type": str, "default": "eq"},
+                "destination_ports": {"type": DestinationPorts},
+                "tcp_flags": {"type": TcpFlags},
+                "log": {"type": bool},
+                "icmp_type": {"type": str},
+                "icmp_code": {"type": str},
+                "nexthop_group": {"type": str},
+                "tracked": {"type": bool},
+                "dscp": {"type": str},
+                "vlan_number": {"type": int},
+                "vlan_mask": {"type": str},
+            }
+            protocol: str | None
+            """
+            "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
+            Required except for remarks.
+            """
+            source: str | None
+            """
+            "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means host.
+            Required except for remarks.
+            """
+            destination: str | None
+            """
+            "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means host.
+            Required except for remarks.
+            """
+            hop_limit: int | None
+            """Match Hop Limit value."""
+            hop_limit_match: HopLimitMatch
+            """Default value: `"eq"`"""
+            dscp_mask: str | None
+            """DSCP mask ranges from 0x00 to 0x3F."""
+            inner_vlan_number: int | None
+            inner_vlan_mask: str | None
+            """0x000-0xFFF inner VLAN mask."""
+            sequence: int | None
+            """ACL entry sequence number."""
+            remark: str | None
+            """
+            Comment up to 100 characters.
+            If remark is defined, other keys in the ACL entry will be ignored.
+            """
+            action: Action | None
+            """
+            ACL action.
+            Required except for remarks.
+            """
+            source_ports_match: SourcePortsMatch
+            """Default value: `"eq"`"""
+            source_ports: SourcePorts
+            """Subclass of AvdList with `str` items."""
+            destination_ports_match: DestinationPortsMatch
+            """Default value: `"eq"`"""
+            destination_ports: DestinationPorts
+            """Subclass of AvdList with `str` items."""
+            tcp_flags: TcpFlags
+            """Subclass of AvdList with `str` items."""
+            log: bool | None
+            """Log matches against this rule."""
+            icmp_type: str | None
+            """Message type name/number for ICMP packets."""
+            icmp_code: str | None
+            """Message code for ICMP packets."""
+            nexthop_group: str | None
+            """nexthop-group name."""
+            tracked: bool | None
+            """Match packets in existing ICMP/UDP/TCP connections."""
+            dscp: str | None
+            """DSCP value or name."""
+            vlan_number: int | None
+            vlan_mask: str | None
+            """0x000-0xFFF VLAN mask."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    protocol: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    destination: str | None | UndefinedType = Undefined,
+                    hop_limit: int | None | UndefinedType = Undefined,
+                    hop_limit_match: HopLimitMatch | UndefinedType = Undefined,
+                    dscp_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
+                    sequence: int | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
+                    source_ports: SourcePorts | UndefinedType = Undefined,
+                    destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
+                    destination_ports: DestinationPorts | UndefinedType = Undefined,
+                    tcp_flags: TcpFlags | UndefinedType = Undefined,
+                    log: bool | None | UndefinedType = Undefined,
+                    icmp_type: str | None | UndefinedType = Undefined,
+                    icmp_code: str | None | UndefinedType = Undefined,
+                    nexthop_group: str | None | UndefinedType = Undefined,
+                    tracked: bool | None | UndefinedType = Undefined,
+                    dscp: str | None | UndefinedType = Undefined,
+                    vlan_number: int | None | UndefinedType = Undefined,
+                    vlan_mask: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        protocol:
+                           "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
+                           Required except for remarks.
+                        source:
+                           "any", "<ipv6>/<mask>" or "<ipv6>".
+                           "<ipv6>" without a mask means host.
+                           Required except for remarks.
+                        destination:
+                           "any", "<ipv6>/<mask>" or "<ipv6>".
+                           "<ipv6>" without a mask means host.
+                           Required except for remarks.
+                        hop_limit: Match Hop Limit value.
+                        hop_limit_match: hop_limit_match
+                        dscp_mask: DSCP mask ranges from 0x00 to 0x3F.
+                        inner_vlan_number: inner_vlan_number
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask.
+                        sequence: ACL entry sequence number.
+                        remark:
+                           Comment up to 100 characters.
+                           If remark is defined, other keys in the ACL entry will be ignored.
+                        action:
+                           ACL action.
+                           Required except for remarks.
+                        source_ports_match: source_ports_match
+                        source_ports: Subclass of AvdList with `str` items.
+                        destination_ports_match: destination_ports_match
+                        destination_ports: Subclass of AvdList with `str` items.
+                        tcp_flags: Subclass of AvdList with `str` items.
+                        log: Log matches against this rule.
+                        icmp_type: Message type name/number for ICMP packets.
+                        icmp_code: Message code for ICMP packets.
+                        nexthop_group: nexthop-group name.
+                        tracked: Match packets in existing ICMP/UDP/TCP connections.
+                        dscp: DSCP value or name.
+                        vlan_number: vlan_number
+                        vlan_mask: 0x000-0xFFF VLAN mask.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
         class SequenceNumbersItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -20180,10 +20375,21 @@ class EosDesigns(EosDesignsRootModel):
 
         SequenceNumbers._item_type = SequenceNumbersItem
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "counters_per_entry": {"type": bool}, "sequence_numbers": {"type": SequenceNumbers}}
+        _fields: ClassVar[dict] = {
+            "name": {"type": str},
+            "counters_per_entry": {"type": bool},
+            "entries": {"type": Entries},
+            "sequence_numbers": {"type": SequenceNumbers},
+        }
         name: str
         """Access-list name."""
         counters_per_entry: bool | None
+        entries: Entries
+        """
+        ACL Entries.
+
+        Subclass of AvdList with `EntriesItem` items.
+        """
         sequence_numbers: SequenceNumbers
         """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
 
@@ -20194,6 +20400,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 counters_per_entry: bool | None | UndefinedType = Undefined,
+                entries: Entries | UndefinedType = Undefined,
                 sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -20205,6 +20412,10 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     name: Access-list name.
                     counters_per_entry: counters_per_entry
+                    entries:
+                       ACL Entries.
+
+                       Subclass of AvdList with `EntriesItem` items.
                     sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
 
                 """
