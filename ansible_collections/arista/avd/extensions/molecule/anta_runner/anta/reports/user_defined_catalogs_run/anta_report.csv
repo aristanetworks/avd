@@ -37,6 +37,9 @@ dc1-wan1,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the d
 dc1-wan2,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-wan2,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-wan2,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-wan3,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
+dc1-wan3,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
+dc1-wan3,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
 dc2-leaf1a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf1a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf1a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
@@ -71,6 +74,9 @@ dc2-leaf3a.arista.com,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr ver
 dc2-leaf3b.arista.com,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf3b.arista.com,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf3b.arista.com,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc2-leaf3c,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
+dc2-leaf3c,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
+dc2-leaf3c,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
 dc2-leaf4a.arista.com,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf4a.arista.com,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf4a.arista.com,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software

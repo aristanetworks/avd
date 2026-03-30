@@ -456,6 +456,42 @@
         "custom_field": null
     },
     {
+        "name": "dc1-wan3",
+        "test": "VerifyEOSExtensions",
+        "categories": [
+            "software"
+        ],
+        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
+        "result": "unset",
+        "messages": [],
+        "atomic_results": [],
+        "custom_field": null
+    },
+    {
+        "name": "dc1-wan3",
+        "test": "VerifyEOSVersion",
+        "categories": [
+            "software"
+        ],
+        "description": "Verifies the EOS version of the device.",
+        "result": "unset",
+        "messages": [],
+        "atomic_results": [],
+        "custom_field": null
+    },
+    {
+        "name": "dc1-wan3",
+        "test": "VerifyTerminAttrVersion",
+        "categories": [
+            "software"
+        ],
+        "description": "Verifies the TerminAttr version of the device.",
+        "result": "unset",
+        "messages": [],
+        "atomic_results": [],
+        "custom_field": null
+    },
+    {
         "name": "dc2-leaf1a",
         "test": "VerifyEOSExtensions",
         "categories": [
@@ -853,6 +889,42 @@
     },
     {
         "name": "dc2-leaf3b.arista.com",
+        "test": "VerifyTerminAttrVersion",
+        "categories": [
+            "software"
+        ],
+        "description": "Verifies the TerminAttr version of the device.",
+        "result": "unset",
+        "messages": [],
+        "atomic_results": [],
+        "custom_field": null
+    },
+    {
+        "name": "dc2-leaf3c",
+        "test": "VerifyEOSExtensions",
+        "categories": [
+            "software"
+        ],
+        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
+        "result": "unset",
+        "messages": [],
+        "atomic_results": [],
+        "custom_field": null
+    },
+    {
+        "name": "dc2-leaf3c",
+        "test": "VerifyEOSVersion",
+        "categories": [
+            "software"
+        ],
+        "description": "Verifies the EOS version of the device.",
+        "result": "unset",
+        "messages": [],
+        "atomic_results": [],
+        "custom_field": null
+    },
+    {
+        "name": "dc2-leaf3c",
         "test": "VerifyTerminAttrVersion",
         "categories": [
             "software"

@@ -145,6 +145,13 @@
             "repeat": 1
           },
           {
+            "destination": "10.255.2.3",
+            "source": "10.33.0.6",
+            "description": "dc1-wan3",
+            "vrf": "default",
+            "repeat": 1
+          },
+          {
             "destination": "10.255.128.11",
             "source": "10.33.0.6",
             "description": "dc2-spine1",
@@ -505,6 +512,10 @@
           },
           {
             "prefix": "10.255.1.5/32",
+            "vrf": "default"
+          },
+          {
+            "prefix": "10.255.2.3/32",
             "vrf": "default"
           },
           {

@@ -1752,6 +1752,28 @@ $defs:
                 items:
                   type: str
                   default: all
+        vpws:
+          type: dict
+          description: |-
+            VPWS pseudowire settings for the tenant.
+            To render `mpls_control_word`, `mtu`, and `label_flow` in the BGP VPWS configuration,
+            both `point_to_point_services` and `pseudowire_rt_base` must be set under the tenant.
+          keys:
+            # TODO: AVD 7.0.0 Change default value true
+            mpls_control_word:
+              type: bool
+              default: false
+              description: |-
+                Enable or disable MPLS control word for VPWS pseudowires.
+            mtu:
+              type: int
+              convert_types:
+                - str
+              description: MTU for VPWS pseudowires.
+            label_flow:
+              type: bool
+              description: |-
+                Enable or disable MPLS label flow for VPWS pseudowires.
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings

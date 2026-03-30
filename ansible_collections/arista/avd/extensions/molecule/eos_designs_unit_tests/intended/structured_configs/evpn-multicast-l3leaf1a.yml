@@ -1007,19 +1007,23 @@ spanning_tree:
   no_spanning_tree_vlan: 4093-4094
 standard_access_lists:
 - name: RP_ACL_VRF_OVERRIDE
-  sequence_numbers:
+  entries:
   - sequence: 10
-    action: permit 232.1.0.0/21
+    action: permit
+    source: 232.1.0.0/21
 - name: RPS_ACL_VRF_Tenant_E_1
-  sequence_numbers:
+  entries:
   - sequence: 10
-    action: permit 232.0.120.0/21
+    action: permit
+    source: 232.0.120.0/21
   - sequence: 20
-    action: permit 232.0.128.0/21
+    action: permit
+    source: 232.0.128.0/21
 - name: RPS_ACL_VRF_Tenant_E_2
-  sequence_numbers:
+  entries:
   - sequence: 10
-    action: permit 232.0.136.0/21
+    action: permit
+    source: 232.0.136.0/21
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
