@@ -15741,10 +15741,8 @@ keys:
                   type: bool
                 always:
                   type: bool
-                  description: Always advertise a default route to this peer.
                 route_map:
                   type: str
-                  description: Route-map name.
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -16022,10 +16020,8 @@ keys:
                   type: bool
                 always:
                   type: bool
-                  description: Always advertise a default route to this peer.
                 route_map:
                   type: str
-                  description: Route-map name.
             send_community:
               type: str
               description: '''all'' or a combination of ''standard'', ''extended'',
@@ -17079,9 +17075,7 @@ keys:
                   keys:
                     always:
                       type: bool
-                      description: Always advertise a default route to this peer.
                     route_map:
-                      description: Route-map name.
                       type: str
                 prefix_list_in:
                   type: str
@@ -17151,10 +17145,8 @@ keys:
                   keys:
                     always:
                       type: bool
-                      description: Always advertise a default route to this peer.
                     route_map:
                       type: str
-                      description: Route-map name.
                 additional_paths:
                   type: dict
                   $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
@@ -19598,10 +19590,8 @@ keys:
                         type: bool
                       always:
                         type: bool
-                        description: Always advertise a default route to this peer.
                       route_map:
                         type: str
-                        description: Route-map name.
                   update_source:
                     type: str
                   route_map_in:

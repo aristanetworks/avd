@@ -41008,9 +41008,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
                 enabled: bool | None
                 always: bool | None
-                """Always advertise a default route to this peer."""
                 route_map: str | None
-                """Route-map name."""
 
                 if TYPE_CHECKING:
 
@@ -41029,8 +41027,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             enabled: enabled
-                            always: Always advertise a default route to this peer.
-                            route_map: Route-map name.
+                            always: always
+                            route_map: route_map
 
                         """
 
@@ -41604,9 +41602,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
                 enabled: bool | None
                 always: bool | None
-                """Always advertise a default route to this peer."""
                 route_map: str | None
-                """Route-map name."""
 
                 if TYPE_CHECKING:
 
@@ -41625,8 +41621,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             enabled: enabled
-                            always: Always advertise a default route to this peer.
-                            route_map: Route-map name.
+                            always: always
+                            route_map: route_map
 
                         """
 
@@ -44805,9 +44801,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"always": {"type": bool}, "route_map": {"type": str}}
                     always: bool | None
-                    """Always advertise a default route to this peer."""
                     route_map: str | None
-                    """Route-map name."""
 
                     if TYPE_CHECKING:
 
@@ -44819,8 +44813,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                always: Always advertise a default route to this peer.
-                                route_map: Route-map name.
+                                always: always
+                                route_map: route_map
 
                             """
 
@@ -45035,9 +45029,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"always": {"type": bool}, "route_map": {"type": str}}
                     always: bool | None
-                    """Always advertise a default route to this peer."""
                     route_map: str | None
-                    """Route-map name."""
 
                     if TYPE_CHECKING:
 
@@ -45049,8 +45041,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                always: Always advertise a default route to this peer.
-                                route_map: Route-map name.
+                                always: always
+                                route_map: route_map
 
                             """
 
@@ -52422,9 +52414,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
                     enabled: bool | None
                     always: bool | None
-                    """Always advertise a default route to this peer."""
                     route_map: str | None
-                    """Route-map name."""
 
                     if TYPE_CHECKING:
 
@@ -52443,8 +52433,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 enabled: enabled
-                                always: Always advertise a default route to this peer.
-                                route_map: Route-map name.
+                                always: always
+                                route_map: route_map
 
                             """
 
