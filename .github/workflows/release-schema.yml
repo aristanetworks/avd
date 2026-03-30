@@ -24,8 +24,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install deepmerge jinja2 jsonschema-rs pydantic pyyaml referencing
-        working-directory: python-avd
+        run: pip install --group dev --upgrade
 
       - name: Generate schemas.json.gz
         run: scripts/build_schemas.py
