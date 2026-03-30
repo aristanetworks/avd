@@ -326,6 +326,11 @@ keys:
     description: Opt-in to future AVD behaviors which will become default behaviors
       in a future AVD major version.
     keys:
+      accept_dhcp_default_route_for_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: Configure management interface to accept DHCP default route when
+          the management IP is set to 'dhcp'.
       remove_redundant_ipv4_unicast_for_peer_groups:
         type: bool
         description: Deactivate the IPv4 unicast Address Family for BGP Peer Groups
@@ -3639,7 +3644,10 @@ keys:
     description: 'List of IPv4 prefixes to configure as static routes towards the
       OOB Management interface gateway.
 
-      Replaces the default route.'
+      Replaces the default route.
+
+      This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+      true'', since the DHCP server will provide the default route.'
     items:
       type: str
       description: IPv4_address/Mask.
@@ -3650,6 +3658,9 @@ keys:
     description: 'OOB Management interface gateway in IPv4 format.
 
       Used as next-hop for default gateway or static routes defined under ''mgmt_destination_networks''.
+
+      This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+      true'', since the DHCP server will provide the gateway.
 
       '
   mgmt_interface:
@@ -6498,6 +6509,9 @@ keys:
             other fabric devices in the extra fabric validation tests performed by
             the `anta_runner` role.
           default: false
+        interfaces:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/metadata/keys/interfaces
   vtep_loopback_description:
     documentation_options:
       table: overlay-settings
@@ -10280,6 +10294,28 @@ $defs:
                 items:
                   type: str
                   default: all
+        vpws:
+          type: dict
+          description: 'VPWS pseudowire settings for the tenant.
+
+            To render `mpls_control_word`, `mtu`, and `label_flow` in the BGP VPWS
+            configuration,
+
+            both `point_to_point_services` and `pseudowire_rt_base` must be set under
+            the tenant.'
+          keys:
+            mpls_control_word:
+              type: bool
+              default: false
+              description: Enable or disable MPLS control word for VPWS pseudowires.
+            mtu:
+              type: int
+              convert_types:
+              - str
+              description: MTU for VPWS pseudowires.
+            label_flow:
+              type: bool
+              description: Enable or disable MPLS label flow for VPWS pseudowires.
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings
@@ -10464,15 +10500,22 @@ $defs:
           mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
-            description: Node management interface IPv4 address.
+            description: 'Node management interface IPv4 address/Mask or ''dhcp''.
+
+              When set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+              true'', the `mgmt_destination_networks` and `mgmt_gateway` settings
+              are ignored since the DHCP server is expected to provide the gateway
+              and the default route.'
             type: str
-            format: cidr
           mgmt_gateway:
             documentation_options:
               table: node-type-common-configuration
             type: str
-            description: This key sets the management gateway for the device. It takes
-              precedence over the global `mgmt_gateway`.
+            description: 'This key sets the management gateway for the device. It
+              takes precedence over the global `mgmt_gateway`.
+
+              This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+              true'', since the DHCP server will provide the gateway.'
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration

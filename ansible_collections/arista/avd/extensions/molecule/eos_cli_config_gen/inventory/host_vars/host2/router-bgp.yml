@@ -15,6 +15,13 @@ router_bgp:
     additional_paths:
       receive: false
       send: disabled
+    labeled_unicast:
+      rib:
+        ip:
+          enabled: true
+          route_map: RM-test2
+        tunnel:
+          enabled: true
   neighbor_default:
     send_community: large
   graceful_restart:

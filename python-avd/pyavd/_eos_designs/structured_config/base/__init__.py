@@ -112,6 +112,11 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def static_routes(self) -> None:
         """static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf."""
+        # Skip static routes if mgmt_ip is set to "dhcp" and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true,
+        # since DHCP will provide the default route
+        if self.shared_utils.node_config.mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+            return
+
         if self.shared_utils.mgmt_gateway is None:
             return
 
@@ -521,15 +526,25 @@ class AvdStructuredConfigBaseProtocol(
     def management_interfaces(self) -> None:
         """management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts, mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables."""
         if self.shared_utils.node_config.mgmt_ip or self.shared_utils.node_config.ipv6_mgmt_ip:
+            # Check if mgmt_ip is set to "dhcp"
+            is_dhcp = self.shared_utils.node_config.mgmt_ip == "dhcp"
+
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,
                 description=self.inputs.mgmt_interface_description,
                 shutdown=False,
                 vrf=self.inputs.mgmt_interface_vrf,
                 ip_address=self.shared_utils.node_config.mgmt_ip,
-                gateway=self.shared_utils.mgmt_gateway,
                 type="oob",
             )
+
+            # For DHCP, automatically accept default route instead of using gateway
+            if is_dhcp and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+                interface_settings.dhcp_client_accept_default_route = True
+            else:
+                # For static IP, set gateway (metadata field, actual routing done via static_routes)
+                interface_settings.gateway = self.shared_utils.mgmt_gateway
+
             """
             inserting ipv6 variables if ipv6_mgmt_ip is set
             """
