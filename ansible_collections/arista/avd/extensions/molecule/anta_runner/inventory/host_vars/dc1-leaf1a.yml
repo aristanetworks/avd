@@ -51,3 +51,11 @@ accepted_pwr_supply_states:
 accepted_fan_states:
   - "ok"
   - "Not Present"
+
+custom_structured_configuration_dps_interfaces:
+  - name: Dps1
+    description: Interface for testing errordisable test
+
+custom_structured_configuration_tunnel_interfaces:
+  - name: Tunnel1
+    description: Interface for testing errordisable test

@@ -7,7 +7,7 @@ from itertools import chain
 from typing import TYPE_CHECKING
 
 from anta.input_models.interfaces import InterfaceState
-from anta.tests.interfaces import VerifyIllegalLACP, VerifyInterfacesStatus, VerifyPortChannels, VerifyStormControlDrops
+from anta.tests.interfaces import VerifyIllegalLACP, VerifyInterfaceErrDisabled, VerifyInterfacesStatus, VerifyPortChannels, VerifyStormControlDrops
 
 from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
@@ -180,3 +180,33 @@ class VerifyIllegalLACPInputFactory(AntaTestInputFactory[VerifyIllegalLACP.Input
     @skip_if_missing_config(StructuredConfigKey.PORT_CHANNEL_INTERFACES)
     def create(self) -> Iterator[VerifyIllegalLACP.Input]:
         yield VerifyIllegalLACP.Input()
+
+
+class VerifyInterfaceErrDisabledInputFactory(AntaTestInputFactory[VerifyInterfaceErrDisabled.Input]):
+    """
+    Input factory class for the `VerifyInterfaceErrDisabled` test.
+
+    When `metadata.interfaces.errdisable.only_avd_interfaces` is True, only the AVD-managed
+    Ethernet, Port-Channel, Loopback, VLAN, Management, DPS, and Tunnel interfaces are checked.
+    Otherwise, all interfaces are checked.
+    """
+
+    def create(self) -> Iterator[VerifyInterfaceErrDisabled.Input]:
+        """Generate the inputs for the `VerifyInterfaceErrDisabled` test."""
+        if self.structured_config.metadata.interfaces.errdisable.only_avd_interfaces:
+            all_interfaces = chain(
+                self.structured_config.ethernet_interfaces,
+                self.structured_config.port_channel_interfaces,
+                self.structured_config.loopback_interfaces,
+                self.structured_config.vlan_interfaces,
+                self.structured_config.management_interfaces,
+                self.structured_config.dps_interfaces,
+                self.structured_config.tunnel_interfaces,
+            )
+            interface_names = [intf.name for intf in all_interfaces]
+            if not interface_names:
+                self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+                return
+            yield VerifyInterfaceErrDisabled.Input(interfaces=natural_sort(interface_names))
+        else:
+            yield VerifyInterfaceErrDisabled.Input()

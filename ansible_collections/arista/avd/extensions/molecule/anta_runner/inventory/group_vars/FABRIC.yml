@@ -123,8 +123,14 @@ validation_profiles:
       min_line_cards: 0
       transceiver_manufacturers:
         - Third-party vendor
+    interfaces:
+      errdisable:
+        only_avd_interfaces: true
   - name: profile2
     logging:
       validate_no_errors_period: 1
+    interfaces:
+      errdisable:
+        only_avd_interfaces: false # Test case for default value of only_avd_interfaces for coverage.
   - name: profile3
     exclude_as_extra_fabric_validation_target: true
