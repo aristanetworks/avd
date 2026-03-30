@@ -18,19 +18,19 @@ jobs:
 
       - name: Download coverage from pytest
         continue-on-error: true
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pytest-coverage
 
       - name: Download coverage from ansible-test units
         continue-on-error: true
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: ansible-test-units-coverage
 
       - name: Download coverage from ansible-test integration
         continue-on-error: true
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: ansible-test-integration-coverage
 
