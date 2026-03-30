@@ -6,19 +6,11 @@ enable_password:
 errdisable:
   detect:
     causes:
+    - link-change
     - acl
     - arp-inspection
     - dot1x
-    - link-change
     - storm-control
-    - error-correction-encoding
-    - hardware-speed-group
-    - port-breakout
-    - switchcard-unreachable
-    - transceiver-adapter
-    - xcvr-misconfigured
-    - xcvr-overheat
-    - xcvr-power-unsupported
   recovery:
     causes:
     - name: acl
@@ -33,24 +25,6 @@ errdisable:
       interval: 60
     - name: storm-control
       interval: 120
-    - name: error-correction-encoding
-      interval: 300
-    - name: hardware-speed-group
-      interval: 300
-    - name: port-breakout
-      interval: 300
-    - name: switchcard-unreachable
-      interval: 300
-    - name: transceiver-adapter
-      interval: 300
-    - name: xcvr-misconfigured
-      interval: 300
-    - name: xcvr-overheat
-      interval: 300
-    - name: xcvr-power-unsupported
-      interval: 300
-    - name: xcvr-unsupported
-      interval: 300
 ethernet_interfaces:
 - name: Ethernet2
   description: P2P_errdisable-ceos-lab_Ethernet1
@@ -70,17 +44,6 @@ ethernet_interfaces:
   ip_address: 10.10.50.4/31
   metadata:
     peer: errdisable-7280r
-    peer_interface: Ethernet1
-    peer_type: l3leaf
-  switchport:
-    enabled: false
-- name: Ethernet4
-  description: P2P_errdisable-no-errdisable_Ethernet1
-  shutdown: false
-  mtu: 9214
-  ip_address: 10.10.50.6/31
-  metadata:
-    peer: errdisable-no-errdisable
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
@@ -161,12 +124,6 @@ router_bgp:
     metadata:
       peer: errdisable-7280r
     description: errdisable-7280r_Ethernet1
-  - ip_address: 10.10.50.7
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65001'
-    metadata:
-      peer: errdisable-no-errdisable
-    description: errdisable-no-errdisable_Ethernet1
   - ip_address: 10.10.50.9
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'

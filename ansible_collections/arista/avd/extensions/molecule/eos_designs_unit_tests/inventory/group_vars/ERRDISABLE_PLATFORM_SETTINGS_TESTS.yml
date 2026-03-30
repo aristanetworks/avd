@@ -56,18 +56,6 @@ l3leaf:
             - Ethernet3
           uplink_switches:
             - errdisable-veos-lab
-    - group: errdisable-no-errdisable-group
-      nodes:
-        - name: errdisable-no-errdisable
-          id: 4
-          # Platform with errdisable: false — all errdisable settings suppressed.
-          platform: no-errdisable-platform
-          uplink_interfaces:
-            - Ethernet1
-          uplink_switch_interfaces:
-            - Ethernet4
-          uplink_switches:
-            - errdisable-veos-lab
     - group: errdisable-custom-platform-group
       nodes:
         - name: errdisable-custom-platform

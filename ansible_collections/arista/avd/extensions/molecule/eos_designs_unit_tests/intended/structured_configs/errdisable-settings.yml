@@ -6,10 +6,10 @@ enable_password:
 errdisable:
   detect:
     causes:
+    - link-change
     - acl
     - arp-inspection
     - dot1x
-    - link-change
     - storm-control
   recovery:
     causes:

@@ -6,9 +6,8 @@ enable_password:
 errdisable:
   detect:
     causes:
-    - arp-inspection
     - link-change
-    - storm-control
+    - arp-inspection
     - error-correction-encoding
     - hardware-speed-group
     - port-breakout
@@ -21,14 +20,12 @@ errdisable:
     causes:
     - name: arp-inspection
       interval: 90
-    - name: link-flap
-      interval: 60
-    - name: storm-control
-      interval: 120
     - name: error-correction-encoding
       interval: 300
     - name: hardware-speed-group
       interval: 300
+    - name: link-flap
+      interval: 60
     - name: port-breakout
       interval: 300
     - name: switchcard-unreachable
