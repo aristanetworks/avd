@@ -35,10 +35,15 @@ ip access-list {{ acl.name }}
 {#                 * add vlan #}
 {%                 if (acle.vlan_number is arista.avd.defined) and (acle.vlan_mask is arista.avd.defined) %}
 {%                     set acl_entry.string = acl_entry.string ~ ' vlan' %}
-{%                     if acle.vlan_inner is arista.avd.defined(true) %}
-{%                         set acl_entry.string = acl_entry.string ~ ' inner' %}
+{%                     if (acle.inner_vlan_number is arista.avd.defined) and (acle.inner_vlan_mask is arista.avd.defined) %}
+{%                         set acl_entry.string = acl_entry.string ~ ' ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask ~ ' inner ' ~ acle.inner_vlan_number ~ ' ' ~ acle.inner_vlan_mask %}
+{%                     elif acle.vlan_inner is arista.avd.defined(true) %}
+{%                         set acl_entry.string = acl_entry.string ~ ' inner ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask %}
+{%                     else %}
+{%                         set acl_entry.string = acl_entry.string ~ ' ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask %}
 {%                     endif %}
-{%                     set acl_entry.string = acl_entry.string ~ ' ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask %}
+{%                 elif (acle.inner_vlan_number is arista.avd.defined) and (acle.inner_vlan_mask is arista.avd.defined) %}
+{%                     set acl_entry.string = acl_entry.string ~ ' vlan inner ' ~ acle.inner_vlan_number ~ ' ' ~ acle.inner_vlan_mask %}
 {%                 endif %}
 {#                 * add protocol #}
 {%                 set acl_entry.string = acl_entry.string ~ ' ' ~ acle.protocol %}

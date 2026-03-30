@@ -12093,6 +12093,7 @@ ip access-list ACL_NO_SEQUENCE
    permit ip any any tracked dscp ef
    permit ip any any nexthop-group NH_TEST
    permit vlan inner 123 0x000 ip any any
+   permit vlan 235 0x1FF inner 124 0x001 tcp any any
    permit vlan 234 0xFFF ip any any
    permit icmp any any
 !
@@ -12191,7 +12192,7 @@ ipv6 access-list ACL_NO_SEQUENCE
    permit ipv6 any any dscp 46 3
    permit ipv6 any any tracked hop-limit gt 3 dscp ef
    permit ipv6 any any nexthop-group NH_TEST hop-limit eq 254
-   permit vlan 235 0x1FF inner 124 0x001 ipv6 any any
+   permit vlan 235 0x1FF inner 124 0x001 tcp any any
    permit vlan inner 123 0x000 ipv6 any any
    permit vlan 234 0xFFF ipv6 any any
    permit icmpv6 any any

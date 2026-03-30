@@ -19756,6 +19756,8 @@ class EosDesigns(EosDesignsRootModel):
                 "dscp": {"type": str},
                 "vlan_number": {"type": int},
                 "vlan_mask": {"type": str},
+                "inner_vlan_number": {"type": int},
+                "inner_vlan_mask": {"type": str},
             }
             source: str | None
             """
@@ -19825,6 +19827,9 @@ class EosDesigns(EosDesignsRootModel):
             vlan_number: int | None
             vlan_mask: str | None
             """0x000-0xFFF VLAN mask."""
+            inner_vlan_number: int | None
+            inner_vlan_mask: str | None
+            """0x000-0xFFF inner VLAN mask."""
 
             if TYPE_CHECKING:
 
@@ -19854,6 +19859,8 @@ class EosDesigns(EosDesignsRootModel):
                     dscp: str | None | UndefinedType = Undefined,
                     vlan_number: int | None | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -19903,6 +19910,8 @@ class EosDesigns(EosDesignsRootModel):
                         dscp: DSCP value or name.
                         vlan_number: vlan_number
                         vlan_mask: 0x000-0xFFF VLAN mask.
+                        inner_vlan_number: inner_vlan_number
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask.
 
                     """
 

@@ -5926,6 +5926,10 @@ keys:
               vlan_inner:
                 type: bool
                 default: false
+                deprecation:
+                  warning: true
+                  removed: false
+                  remove_in_version: 7.0.0
         permit_response_traffic:
           type: str
           valid_values:
@@ -7090,13 +7094,6 @@ keys:
                 convert_types:
                 - int
                 description: DSCP mask ranges from 0x00 to 0x3F.
-              inner_vlan_number:
-                type: int
-                convert_types:
-                - str
-              inner_vlan_mask:
-                type: str
-                description: 0x000-0xFFF inner VLAN mask.
         sequence_numbers:
           deprecation:
             warning: true
@@ -26140,6 +26137,13 @@ $defs:
       vlan_mask:
         type: str
         description: 0x000-0xFFF VLAN mask.
+      inner_vlan_number:
+        type: int
+        convert_types:
+        - str
+      inner_vlan_mask:
+        type: str
+        description: 0x000-0xFFF inner VLAN mask.
   methods:
     type: list
     min_length: 1

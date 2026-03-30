@@ -71,6 +71,10 @@ keys:
               vlan_inner:
                 type: bool
                 default: false
+                deprecation:
+                  warning: true
+                  removed: false
+                  remove_in_version: 7.0.0
         permit_response_traffic:
           type: str
           valid_values:
