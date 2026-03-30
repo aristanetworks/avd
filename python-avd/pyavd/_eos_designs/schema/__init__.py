@@ -93090,8 +93090,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     Errdisable settings for the device.
     Causes are filtered based on platform feature support defined in
-    `platform_settings.feature_support.errdisable_detect_causes` and
-    `platform_settings.feature_support.errdisable_recovery_causes`.
+    `platform_settings.feature_support.errdisable_causes.<cause>.detect` and
+    `platform_settings.feature_support.errdisable_causes.<cause>.recovery`.
 
     Subclass of AvdModel.
     """
@@ -95177,8 +95177,8 @@ class EosDesigns(EosDesignsRootModel):
                 errdisable_settings:
                    Errdisable settings for the device.
                    Causes are filtered based on platform feature support defined in
-                   `platform_settings.feature_support.errdisable_detect_causes` and
-                   `platform_settings.feature_support.errdisable_recovery_causes`.
+                   `platform_settings.feature_support.errdisable_causes.<cause>.detect` and
+                   `platform_settings.feature_support.errdisable_causes.<cause>.recovery`.
 
                    Subclass of AvdModel.
                 event_handlers:

@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | `True` |  | When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.<br> |
     | [<samp>default_interface_mtu</samp>](## "default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Can be overridden per platform under platform settings.<br> |
-    | [<samp>errdisable_settings</samp>](## "errdisable_settings") | Dictionary |  |  |  | Errdisable settings for the device.<br>Causes are filtered based on platform feature support defined in<br>`platform_settings.feature_support.errdisable_detect_causes` and<br>`platform_settings.feature_support.errdisable_recovery_causes`. |
+    | [<samp>errdisable_settings</samp>](## "errdisable_settings") | Dictionary |  |  |  | Errdisable settings for the device.<br>Causes are filtered based on platform feature support defined in<br>`platform_settings.feature_support.errdisable_causes.<cause>.detect` and<br>`platform_settings.feature_support.errdisable_causes.<cause>.recovery`. |
     | [<samp>&nbsp;&nbsp;detect</samp>](## "errdisable_settings.detect") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;causes</samp>](## "errdisable_settings.detect.causes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "errdisable_settings.detect.causes.[]") | String |  |  | Valid Values:<br>- <code>acl</code><br>- <code>arp-inspection</code><br>- <code>dot1x</code><br>- <code>dot1x-coa</code><br>- <code>dot1x-phone-classification</code><br>- <code>dot1x-session-replace</code><br>- <code>error-correction-encoding</code><br>- <code>hardware-speed-group</code><br>- <code>interface-speed</code><br>- <code>internal-error</code><br>- <code>link-change</code><br>- <code>port-breakout</code><br>- <code>storm-control</code><br>- <code>switchcard-unreachable</code><br>- <code>tapagg</code><br>- <code>transceiver-adapter</code><br>- <code>xcvr-misconfigured</code><br>- <code>xcvr-overheat</code><br>- <code>xcvr-power-unsupported</code> | Specifies the events that should trigger this action.<br>The list of supported causes depends on both the EOS version and the hardware platform. |
@@ -73,8 +73,8 @@
 
     # Errdisable settings for the device.
     # Causes are filtered based on platform feature support defined in
-    # `platform_settings.feature_support.errdisable_detect_causes` and
-    # `platform_settings.feature_support.errdisable_recovery_causes`.
+    # `platform_settings.feature_support.errdisable_causes.<cause>.detect` and
+    # `platform_settings.feature_support.errdisable_causes.<cause>.recovery`.
     errdisable_settings:
       detect:
         causes:

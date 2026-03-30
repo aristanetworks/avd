@@ -879,7 +879,7 @@ class AvdStructuredConfigBaseProtocol(
           - platform_settings.feature_support.errdisable fact.
           - platform_settings.feature_support.errdisable_causes fact.
         """
-        if not (errdisable_settings := self.inputs.errdisable_settings):
+        if not (errdisable_settings := self.inputs.errdisable_settings) or not self.shared_utils.platform_settings.feature_support.errdisable:
             return
 
         feature_support = self.shared_utils.platform_settings.feature_support

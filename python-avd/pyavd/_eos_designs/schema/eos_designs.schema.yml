@@ -2386,9 +2386,9 @@ keys:
 
       Causes are filtered based on platform feature support defined in
 
-      `platform_settings.feature_support.errdisable_detect_causes` and
+      `platform_settings.feature_support.errdisable_causes.<cause>.detect` and
 
-      `platform_settings.feature_support.errdisable_recovery_causes`.'
+      `platform_settings.feature_support.errdisable_causes.<cause>.recovery`.'
     keys:
       detect:
         type: dict

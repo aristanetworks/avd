@@ -1,21 +1,14 @@
 ---
-# Testing errdisable_settings without platform filtering
+# Testing errdisable_settings with only recovery
 
 type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    - name: errdisable-settings
+    - name: errdisable-settings-2
       id: 42
 
 errdisable_settings:
-  detect:
-    causes:
-      - acl
-      - arp-inspection
-      - dot1x
-      - link-change
-      - storm-control
   recovery:
     causes:
       - name: acl

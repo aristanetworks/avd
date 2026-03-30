@@ -4,13 +4,6 @@ config_end: true
 enable_password:
   disabled: true
 errdisable:
-  detect:
-    causes:
-    - acl
-    - arp-inspection
-    - dot1x
-    - link-change
-    - storm-control
   recovery:
     causes:
     - name: acl
@@ -26,7 +19,7 @@ errdisable:
     - name: storm-control
       interval: 120
     interval: 300
-hostname: errdisable-settings
+hostname: errdisable-settings-2
 ip_igmp_snooping:
   globally_enabled: true
 metadata:
