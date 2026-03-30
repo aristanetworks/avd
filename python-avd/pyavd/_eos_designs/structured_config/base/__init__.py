@@ -879,35 +879,23 @@ class AvdStructuredConfigBaseProtocol(
           - platform_settings.feature_support.errdisable fact.
           - platform_settings.feature_support.errdisable_causes fact.
         """
-        if not (errdisable_settings := self.inputs.errdisable_settings) or not self.shared_utils.platform_settings.feature_support.errdisable:
+        if not (errdisable_settings := self.inputs.errdisable_settings.causes) and not self.shared_utils.platform_settings.feature_support.errdisable_causes:
             return
 
         feature_support = self.shared_utils.platform_settings.feature_support
-        errdisable = errdisable_settings._cast_as(EosCliConfigGen.Errdisable)
 
-        # Filter detect causes based on platform supportability.
-        if errdisable.detect.causes:
-            errdisable.detect.causes = errdisable.detect.causes._filtered(
-                lambda cause: get_v2(
-                    feature_support.errdisable_causes,
-                    f"{cause.replace('-', '_')}.detect",
-                    # Assume all uncovered/new causes are supported.
-                    default=True,
-                )
-            )
-        # Filter recovery causes based on platform supportability.
-        if errdisable.recovery.causes:
-            errdisable.recovery.causes = EosCliConfigGen.Errdisable.Recovery.Causes(
-                cause_item
-                for cause_item in errdisable.recovery.causes
-                if get_v2(
-                    feature_support.errdisable_causes,
-                    f"{cause_item.name.replace('-', '_')}.recovery",
-                    # Assume all uncovered/new causes are supported.
-                    default=True,
-                )
-            )
-        self.structured_config.errdisable = errdisable
+        for name, cause in errdisable_settings.items():
+            if cause is None:
+                continue
+            cause_name = name.replace("_", "-")
+
+            # Add to detect.causes if detection is enabled and platform does not explicitly disable it.
+            if getattr(cause, "detection", None) is True and get_v2(feature_support.errdisable_causes, f"{cause_name}.detection") is not False:
+                self.structured_config.errdisable.detect.causes.append(cause_name)
+
+            # Add to recovery.causes if recovery is enabled and platform does not explicitly disable it.
+            if getattr(cause, "recovery", None) is True and get_v2(feature_support.errdisable_causes, f"{cause_name}.recovery") is not False:
+                self.structured_config.errdisable.recovery.causes.append_new(name=cause_name, interval=getattr(cause, "recovery_interval", None))
 
     @structured_config_contributor
     def prefix_lists(self) -> None:

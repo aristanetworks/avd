@@ -292,24 +292,18 @@ $defs:
                 Enable hardware validation for the device.
                 When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
               default: true
-            errdisable:
-              type: bool
-              description: |-
-                Support for errdisable configuration.
-                Setting this key to `false` for the specific platform will ignore all errdisable settings for this platform.
-              default: true
             errdisable_causes:
               type: dict
               description: |-
-                Per-cause support for errdisable detect and recovery.
-                Causes with `detect: false` will be filtered from `general_settings.errdisable_settings.detect.causes`.
-                Causes with `recovery: false` will be filtered from `general_settings.errdisable_settings.recovery.causes`.
+                Per-cause support for errdisable detection and recovery.
+                Causes with `detection: false` will suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
+                Causes with `recovery: false` will suppress recovery for that cause even if enabled in `errdisable_settings.causes.<cause>.recovery`.
                 The list of supported causes depends on the EOS version and the hardware platform.
               keys:
                 acl:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -318,7 +312,7 @@ $defs:
                 arp_inspection:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -333,7 +327,7 @@ $defs:
                 dot1x:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -342,7 +336,7 @@ $defs:
                 dot1x_coa:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -351,7 +345,7 @@ $defs:
                 dot1x_phone_classification:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -360,7 +354,7 @@ $defs:
                 dot1x_session_replace:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -369,7 +363,7 @@ $defs:
                 error_correction_encoding:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -378,7 +372,7 @@ $defs:
                 hardware_speed_group:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -393,7 +387,7 @@ $defs:
                 interface_speed:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -402,7 +396,7 @@ $defs:
                 internal_error:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -417,7 +411,7 @@ $defs:
                 link_change:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                 link_flap:
@@ -435,7 +429,7 @@ $defs:
                 port_breakout:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -462,7 +456,7 @@ $defs:
                 storm_control:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -477,7 +471,7 @@ $defs:
                 switchcard_unreachable:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -492,7 +486,7 @@ $defs:
                 tapagg:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -501,7 +495,7 @@ $defs:
                 transceiver_adapter:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -516,7 +510,7 @@ $defs:
                 xcvr_misconfigured:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -525,7 +519,7 @@ $defs:
                 xcvr_overheat:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -534,7 +528,7 @@ $defs:
                 xcvr_power_unsupported:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:

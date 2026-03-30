@@ -51,7 +51,6 @@ errdisable:
       interval: 300
     - name: xcvr-unsupported
       interval: 300
-    interval: 300
 ethernet_interfaces:
 - name: Ethernet1
   description: P2P_errdisable-veos-lab_Ethernet3

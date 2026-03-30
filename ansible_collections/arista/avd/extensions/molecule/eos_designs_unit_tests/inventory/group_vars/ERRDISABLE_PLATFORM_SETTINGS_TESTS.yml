@@ -1,26 +1,20 @@
 ---
-
 custom_platform_settings:
-  - platforms:
-      - no-errdisable-platform
-    feature_support:
-      # Top-level errdisable disabled: all errdisable settings are ignored for this platform.
-      errdisable: false
   - platforms:
       - custom-errdisable-platform
     feature_support:
       # Custom platform with a subset of causes explicitly disabled.
       errdisable_causes:
         acl:
-          detect: false
+          detection: false
           recovery: false
         bpduguard:
           recovery: false
         dot1x:
-          detect: false
+          detection: false
           recovery: false
         storm_control:
-          detect: false
+          detection: false
           recovery: false
 
 type: l3leaf
@@ -91,53 +85,64 @@ l3leaf:
 # Hardware-specific causes (e.g., xcvr-*, port-breakout, hardware-speed-group)
 # are expected to be filtered out on virtual platforms.
 errdisable_settings:
-  detect:
-    causes:
-      - acl
-      - arp-inspection
-      - dot1x
-      - link-change
-      - storm-control
-      # Expected to be filtered out on virtual platforms (vEOS-lab, cEOSLab)
-      - error-correction-encoding
-      - hardware-speed-group
-      - port-breakout
-      - switchcard-unreachable
-      - transceiver-adapter
-      - xcvr-misconfigured
-      - xcvr-overheat
-      - xcvr-power-unsupported
-  recovery:
-    causes:
-      - name: acl
-        interval: 60
-      - name: arp-inspection
-        interval: 90
-      - name: bpduguard
-        interval: 300
-      - name: dot1x
-        interval: 60
-      - name: link-flap
-        interval: 60
-      - name: storm-control
-        interval: 120
-      # Expected to be filtered out on virtual platforms (vEOS-lab, cEOSLab)
-      - name: error-correction-encoding
-        interval: 300
-      - name: hardware-speed-group
-        interval: 300
-      - name: port-breakout
-        interval: 300
-      - name: switchcard-unreachable
-        interval: 300
-      - name: transceiver-adapter
-        interval: 300
-      - name: xcvr-misconfigured
-        interval: 300
-      - name: xcvr-overheat
-        interval: 300
-      - name: xcvr-power-unsupported
-        interval: 300
-      - name: xcvr-unsupported
-        interval: 300
-    interval: 300
+  causes:
+    acl:
+      detection: true
+      recovery: true
+      recovery_interval: 60
+    arp_inspection:
+      detection: true
+      recovery: true
+      recovery_interval: 90
+    bpduguard:
+      recovery: true
+      recovery_interval: 300
+    dot1x:
+      detection: true
+      recovery: true
+      recovery_interval: 60
+    link_change:
+      detection: true
+    link_flap:
+      recovery: true
+      recovery_interval: 60
+    storm_control:
+      detection: true
+      recovery: true
+      recovery_interval: 120
+    # Expected to be filtered out on virtual platforms (vEOS-lab, cEOSLab)
+    error_correction_encoding:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    hardware_speed_group:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    port_breakout:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    switchcard_unreachable:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    transceiver_adapter:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    xcvr_misconfigured:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    xcvr_overheat:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    xcvr_power_unsupported:
+      detection: true
+      recovery: true
+      recovery_interval: 300
+    xcvr_unsupported:
+      recovery: true
+      recovery_interval: 300

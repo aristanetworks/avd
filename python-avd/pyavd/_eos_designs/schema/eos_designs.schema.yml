@@ -2386,16 +2386,216 @@ keys:
 
       Causes are filtered based on platform feature support defined in
 
-      `platform_settings.feature_support.errdisable_causes.<cause>.detect` and
+      `platform_settings.feature_support.errdisable_causes.<cause>.detection` and
 
       `platform_settings.feature_support.errdisable_causes.<cause>.recovery`.'
     keys:
-      detect:
+      causes:
         type: dict
-        $ref: eos_cli_config_gen#/keys/errdisable/keys/detect
-      recovery:
-        type: dict
-        $ref: eos_cli_config_gen#/keys/errdisable/keys/recovery
+        keys:
+          acl:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          arp_inspection:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          bpduguard:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          dot1x:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          dot1x_coa:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          dot1x_phone_classification:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          dot1x_session_replace:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          error_correction_encoding:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          hardware_speed_group:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          hitless_reload_down:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          interface_speed:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          internal_error:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          lacp_rate_limit:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          link_change:
+            type: dict
+            keys:
+              detection:
+                type: bool
+          link_flap:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          no_internal_vlan:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          port_breakout:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          portchannelguard:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          portsec:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          speed_misconfigured:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          storm_control:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          stuck_queue:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          switchcard_unreachable:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          tap_port_init:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          tapagg:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          transceiver_adapter:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          uplink_failure_detection:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
+          xcvr_misconfigured:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          xcvr_overheat:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          xcvr_power_unsupported:
+            type: dict
+            $ref: eos_designs#/$defs/detect_and_recovery
+          xcvr_unsupported:
+            type: dict
+            keys:
+              recovery:
+                type: bool
+              recovery_interval:
+                type: int
+                description: Interval for recovery cause in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                - str
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
     type: list
@@ -4910,28 +5110,28 @@ keys:
         hardware_validation: false
         errdisable_causes:
           error_correction_encoding:
-            detect: false
+            detection: false
             recovery: false
           hardware_speed_group:
-            detect: false
+            detection: false
             recovery: false
           port_breakout:
-            detect: false
+            detection: false
             recovery: false
           switchcard_unreachable:
-            detect: false
+            detection: false
             recovery: false
           transceiver_adapter:
-            detect: false
+            detection: false
             recovery: false
           xcvr_misconfigured:
-            detect: false
+            detection: false
             recovery: false
           xcvr_overheat:
-            detect: false
+            detection: false
             recovery: false
           xcvr_power_unsupported:
-            detect: false
+            detection: false
             recovery: false
           xcvr_unsupported:
             recovery: false
@@ -4958,28 +5158,28 @@ keys:
         hardware_validation: false
         errdisable_causes:
           error_correction_encoding:
-            detect: false
+            detection: false
             recovery: false
           hardware_speed_group:
-            detect: false
+            detection: false
             recovery: false
           port_breakout:
-            detect: false
+            detection: false
             recovery: false
           switchcard_unreachable:
-            detect: false
+            detection: false
             recovery: false
           transceiver_adapter:
-            detect: false
+            detection: false
             recovery: false
           xcvr_misconfigured:
-            detect: false
+            detection: false
             recovery: false
           xcvr_overheat:
-            detect: false
+            detection: false
             recovery: false
           xcvr_power_unsupported:
-            detect: false
+            detection: false
             recovery: false
           xcvr_unsupported:
             recovery: false
@@ -5000,28 +5200,28 @@ keys:
         hardware_validation: false
         errdisable_causes:
           error_correction_encoding:
-            detect: false
+            detection: false
             recovery: false
           hardware_speed_group:
-            detect: false
+            detection: false
             recovery: false
           port_breakout:
-            detect: false
+            detection: false
             recovery: false
           switchcard_unreachable:
-            detect: false
+            detection: false
             recovery: false
           transceiver_adapter:
-            detect: false
+            detection: false
             recovery: false
           xcvr_misconfigured:
-            detect: false
+            detection: false
             recovery: false
           xcvr_overheat:
-            detect: false
+            detection: false
             recovery: false
           xcvr_power_unsupported:
-            detect: false
+            detection: false
             recovery: false
           xcvr_unsupported:
             recovery: false
@@ -5044,28 +5244,28 @@ keys:
         sflow: false
         errdisable_causes:
           error_correction_encoding:
-            detect: false
+            detection: false
             recovery: false
           hardware_speed_group:
-            detect: false
+            detection: false
             recovery: false
           port_breakout:
-            detect: false
+            detection: false
             recovery: false
           switchcard_unreachable:
-            detect: false
+            detection: false
             recovery: false
           transceiver_adapter:
-            detect: false
+            detection: false
             recovery: false
           xcvr_misconfigured:
-            detect: false
+            detection: false
             recovery: false
           xcvr_overheat:
-            detect: false
+            detection: false
             recovery: false
           xcvr_power_unsupported:
-            detect: false
+            detection: false
             recovery: false
           xcvr_unsupported:
             recovery: false
@@ -5089,28 +5289,28 @@ keys:
         sflow: false
         errdisable_causes:
           error_correction_encoding:
-            detect: false
+            detection: false
             recovery: false
           hardware_speed_group:
-            detect: false
+            detection: false
             recovery: false
           port_breakout:
-            detect: false
+            detection: false
             recovery: false
           switchcard_unreachable:
-            detect: false
+            detection: false
             recovery: false
           transceiver_adapter:
-            detect: false
+            detection: false
             recovery: false
           xcvr_misconfigured:
-            detect: false
+            detection: false
             recovery: false
           xcvr_overheat:
-            detect: false
+            detection: false
             recovery: false
           xcvr_power_unsupported:
-            detect: false
+            detection: false
             recovery: false
           xcvr_unsupported:
             recovery: false
@@ -5130,28 +5330,28 @@ keys:
         sflow: false
         errdisable_causes:
           error_correction_encoding:
-            detect: false
+            detection: false
             recovery: false
           hardware_speed_group:
-            detect: false
+            detection: false
             recovery: false
           port_breakout:
-            detect: false
+            detection: false
             recovery: false
           switchcard_unreachable:
-            detect: false
+            detection: false
             recovery: false
           transceiver_adapter:
-            detect: false
+            detection: false
             recovery: false
           xcvr_misconfigured:
-            detect: false
+            detection: false
             recovery: false
           xcvr_overheat:
-            detect: false
+            detection: false
             recovery: false
           xcvr_power_unsupported:
-            detect: false
+            detection: false
             recovery: false
           xcvr_unsupported:
             recovery: false
@@ -14002,20 +14202,15 @@ $defs:
                 keys defined for the validation profile applied to the device are
                 ignored.'
               default: true
-            errdisable:
-              type: bool
-              description: 'Support for errdisable configuration.
-
-                Setting this key to `false` for the specific platform will ignore
-                all errdisable settings for this platform.'
-              default: true
             errdisable_causes:
               type: dict
-              description: 'Per-cause support for errdisable detect and recovery.
+              description: 'Per-cause support for errdisable detection and recovery.
 
-                Causes with `detect: false` will be filtered from `general_settings.errdisable_settings.detect.causes`.
+                Causes with `detection: false` will suppress detection for that cause
+                even if enabled in `errdisable_settings.causes.<cause>.detection`.
 
-                Causes with `recovery: false` will be filtered from `general_settings.errdisable_settings.recovery.causes`.
+                Causes with `recovery: false` will suppress recovery for that cause
+                even if enabled in `errdisable_settings.causes.<cause>.recovery`.
 
                 The list of supported causes depends on the EOS version and the hardware
                 platform.'
@@ -14023,7 +14218,7 @@ $defs:
                 acl:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14032,7 +14227,7 @@ $defs:
                 arp_inspection:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14047,7 +14242,7 @@ $defs:
                 dot1x:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14056,7 +14251,7 @@ $defs:
                 dot1x_coa:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14065,7 +14260,7 @@ $defs:
                 dot1x_phone_classification:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14074,7 +14269,7 @@ $defs:
                 dot1x_session_replace:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14083,7 +14278,7 @@ $defs:
                 error_correction_encoding:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14092,7 +14287,7 @@ $defs:
                 hardware_speed_group:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14107,7 +14302,7 @@ $defs:
                 interface_speed:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14116,7 +14311,7 @@ $defs:
                 internal_error:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14131,7 +14326,7 @@ $defs:
                 link_change:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                 link_flap:
@@ -14149,7 +14344,7 @@ $defs:
                 port_breakout:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14176,7 +14371,7 @@ $defs:
                 storm_control:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14191,7 +14386,7 @@ $defs:
                 switchcard_unreachable:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14206,7 +14401,7 @@ $defs:
                 tapagg:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14215,7 +14410,7 @@ $defs:
                 transceiver_adapter:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14230,7 +14425,7 @@ $defs:
                 xcvr_misconfigured:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14239,7 +14434,7 @@ $defs:
                 xcvr_overheat:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14248,7 +14443,7 @@ $defs:
                 xcvr_power_unsupported:
                   type: dict
                   keys:
-                    detect:
+                    detection:
                       type: bool
                       default: true
                     recovery:
@@ -14967,3 +15162,17 @@ $defs:
               Internet-exit policy name associated with this virtual_topology.
 
               The policy must be defined under `cv_pathfinder_internet_exit_policies`.'
+  detect_and_recovery:
+    type: dict
+    keys:
+      detection:
+        type: bool
+      recovery:
+        type: bool
+      recovery_interval:
+        type: int
+        description: Interval for recovery cause in seconds.
+        min: 30
+        max: 86400
+        convert_types:
+        - str

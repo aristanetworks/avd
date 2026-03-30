@@ -11,6 +11,14 @@ errdisable:
     - dot1x
     - link-change
     - storm-control
+    - error-correction-encoding
+    - hardware-speed-group
+    - port-breakout
+    - switchcard-unreachable
+    - transceiver-adapter
+    - xcvr-misconfigured
+    - xcvr-overheat
+    - xcvr-power-unsupported
   recovery:
     causes:
     - name: acl
@@ -25,7 +33,24 @@ errdisable:
       interval: 60
     - name: storm-control
       interval: 120
-    interval: 300
+    - name: error-correction-encoding
+      interval: 300
+    - name: hardware-speed-group
+      interval: 300
+    - name: port-breakout
+      interval: 300
+    - name: switchcard-unreachable
+      interval: 300
+    - name: transceiver-adapter
+      interval: 300
+    - name: xcvr-misconfigured
+      interval: 300
+    - name: xcvr-overheat
+      interval: 300
+    - name: xcvr-power-unsupported
+      interval: 300
+    - name: xcvr-unsupported
+      interval: 300
 ethernet_interfaces:
 - name: Ethernet1
   description: P2P_errdisable-veos-lab_Ethernet2

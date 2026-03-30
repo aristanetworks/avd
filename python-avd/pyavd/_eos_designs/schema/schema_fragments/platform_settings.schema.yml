@@ -343,28 +343,28 @@ keys:
           hardware_validation: false
           errdisable_causes:
             error_correction_encoding:
-              detect: false
+              detection: false
               recovery: false
             hardware_speed_group:
-              detect: false
+              detection: false
               recovery: false
             port_breakout:
-              detect: false
+              detection: false
               recovery: false
             switchcard_unreachable:
-              detect: false
+              detection: false
               recovery: false
             transceiver_adapter:
-              detect: false
+              detection: false
               recovery: false
             xcvr_misconfigured:
-              detect: false
+              detection: false
               recovery: false
             xcvr_overheat:
-              detect: false
+              detection: false
               recovery: false
             xcvr_power_unsupported:
-              detect: false
+              detection: false
               recovery: false
             xcvr_unsupported:
               recovery: false
@@ -391,28 +391,28 @@ keys:
           hardware_validation: false
           errdisable_causes:
             error_correction_encoding:
-              detect: false
+              detection: false
               recovery: false
             hardware_speed_group:
-              detect: false
+              detection: false
               recovery: false
             port_breakout:
-              detect: false
+              detection: false
               recovery: false
             switchcard_unreachable:
-              detect: false
+              detection: false
               recovery: false
             transceiver_adapter:
-              detect: false
+              detection: false
               recovery: false
             xcvr_misconfigured:
-              detect: false
+              detection: false
               recovery: false
             xcvr_overheat:
-              detect: false
+              detection: false
               recovery: false
             xcvr_power_unsupported:
-              detect: false
+              detection: false
               recovery: false
             xcvr_unsupported:
               recovery: false
@@ -433,28 +433,28 @@ keys:
           hardware_validation: false
           errdisable_causes:
             error_correction_encoding:
-              detect: false
+              detection: false
               recovery: false
             hardware_speed_group:
-              detect: false
+              detection: false
               recovery: false
             port_breakout:
-              detect: false
+              detection: false
               recovery: false
             switchcard_unreachable:
-              detect: false
+              detection: false
               recovery: false
             transceiver_adapter:
-              detect: false
+              detection: false
               recovery: false
             xcvr_misconfigured:
-              detect: false
+              detection: false
               recovery: false
             xcvr_overheat:
-              detect: false
+              detection: false
               recovery: false
             xcvr_power_unsupported:
-              detect: false
+              detection: false
               recovery: false
             xcvr_unsupported:
               recovery: false
@@ -477,28 +477,28 @@ keys:
           sflow: false
           errdisable_causes:
             error_correction_encoding:
-              detect: false
+              detection: false
               recovery: false
             hardware_speed_group:
-              detect: false
+              detection: false
               recovery: false
             port_breakout:
-              detect: false
+              detection: false
               recovery: false
             switchcard_unreachable:
-              detect: false
+              detection: false
               recovery: false
             transceiver_adapter:
-              detect: false
+              detection: false
               recovery: false
             xcvr_misconfigured:
-              detect: false
+              detection: false
               recovery: false
             xcvr_overheat:
-              detect: false
+              detection: false
               recovery: false
             xcvr_power_unsupported:
-              detect: false
+              detection: false
               recovery: false
             xcvr_unsupported:
               recovery: false
@@ -522,28 +522,28 @@ keys:
           sflow: false
           errdisable_causes:
             error_correction_encoding:
-              detect: false
+              detection: false
               recovery: false
             hardware_speed_group:
-              detect: false
+              detection: false
               recovery: false
             port_breakout:
-              detect: false
+              detection: false
               recovery: false
             switchcard_unreachable:
-              detect: false
+              detection: false
               recovery: false
             transceiver_adapter:
-              detect: false
+              detection: false
               recovery: false
             xcvr_misconfigured:
-              detect: false
+              detection: false
               recovery: false
             xcvr_overheat:
-              detect: false
+              detection: false
               recovery: false
             xcvr_power_unsupported:
-              detect: false
+              detection: false
               recovery: false
             xcvr_unsupported:
               recovery: false
@@ -563,28 +563,28 @@ keys:
           sflow: false
           errdisable_causes:
             error_correction_encoding:
-              detect: false
+              detection: false
               recovery: false
             hardware_speed_group:
-              detect: false
+              detection: false
               recovery: false
             port_breakout:
-              detect: false
+              detection: false
               recovery: false
             switchcard_unreachable:
-              detect: false
+              detection: false
               recovery: false
             transceiver_adapter:
-              detect: false
+              detection: false
               recovery: false
             xcvr_misconfigured:
-              detect: false
+              detection: false
               recovery: false
             xcvr_overheat:
-              detect: false
+              detection: false
               recovery: false
             xcvr_power_unsupported:
-              detect: false
+              detection: false
               recovery: false
             xcvr_unsupported:
               recovery: false
