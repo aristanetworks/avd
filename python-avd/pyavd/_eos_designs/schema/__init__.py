@@ -26932,6 +26932,7 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
+                "evpn_gateway_rd_rt_rewrite": {"type": bool, "default": False},
                 "hardware_counters": {"type": bool, "default": True},
                 "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
@@ -27041,6 +27042,14 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            evpn_gateway_rd_rt_rewrite: bool
+            """
+            Support for EVPN gateway RD/RT rewrite mode.
+            An error will be raised if the feature is enabled and
+            this is false.
+
+            Default value: `False`
+            """
             hardware_counters: bool
             """
             Support for enabling counters using programmable hardware counter resources.
@@ -27132,6 +27141,7 @@ class EosDesigns(EosDesignsRootModel):
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
+                    evpn_gateway_rd_rt_rewrite: bool | UndefinedType = Undefined,
                     hardware_counters: bool | UndefinedType = Undefined,
                     hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
@@ -27202,6 +27212,10 @@ class EosDesigns(EosDesignsRootModel):
                            Support for all-active EVPN gateway redundancy.
                            An error will be raised if the feature is enabled
                            and this is false.
+                        evpn_gateway_rd_rt_rewrite:
+                           Support for EVPN gateway RD/RT rewrite mode.
+                           An error will be raised if the feature is enabled and
+                           this is false.
                         hardware_counters:
                            Support for enabling counters using programmable hardware counter resources.
                            Setting this key to
@@ -27689,6 +27703,7 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
+                "evpn_gateway_rd_rt_rewrite": {"type": bool, "default": False},
                 "hardware_counters": {"type": bool, "default": True},
                 "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
@@ -27798,6 +27813,14 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            evpn_gateway_rd_rt_rewrite: bool
+            """
+            Support for EVPN gateway RD/RT rewrite mode.
+            An error will be raised if the feature is enabled and
+            this is false.
+
+            Default value: `False`
+            """
             hardware_counters: bool
             """
             Support for enabling counters using programmable hardware counter resources.
@@ -27889,6 +27912,7 @@ class EosDesigns(EosDesignsRootModel):
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
+                    evpn_gateway_rd_rt_rewrite: bool | UndefinedType = Undefined,
                     hardware_counters: bool | UndefinedType = Undefined,
                     hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
@@ -27959,6 +27983,10 @@ class EosDesigns(EosDesignsRootModel):
                            Support for all-active EVPN gateway redundancy.
                            An error will be raised if the feature is enabled
                            and this is false.
+                        evpn_gateway_rd_rt_rewrite:
+                           Support for EVPN gateway RD/RT rewrite mode.
+                           An error will be raised if the feature is enabled and
+                           this is false.
                         hardware_counters:
                            Support for enabling counters using programmable hardware counter resources.
                            Setting this key to
@@ -90503,7 +90531,12 @@ class EosDesigns(EosDesignsRootModel):
                         "platforms": ["7280R3"],
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"evpn_gateway_all_active_multihoming": True, "per_interface_l2_mtu": False, "private_vlan": False},
+                        "feature_support": {
+                            "evpn_gateway_all_active_multihoming": True,
+                            "evpn_gateway_rd_rt_rewrite": True,
+                            "per_interface_l2_mtu": False,
+                            "private_vlan": False,
+                        },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
@@ -90556,7 +90589,12 @@ class EosDesigns(EosDesignsRootModel):
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False},
+                        "feature_support": {
+                            "per_interface_l2_mtu": False,
+                            "evpn_gateway_all_active_multihoming": True,
+                            "evpn_gateway_rd_rt_rewrite": True,
+                            "private_vlan": False,
+                        },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
@@ -90564,7 +90602,12 @@ class EosDesigns(EosDesignsRootModel):
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False},
+                        "feature_support": {
+                            "per_interface_l2_mtu": False,
+                            "evpn_gateway_all_active_multihoming": True,
+                            "evpn_gateway_rd_rt_rewrite": True,
+                            "private_vlan": False,
+                        },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
@@ -90608,6 +90651,7 @@ class EosDesigns(EosDesignsRootModel):
                             "per_interface_l2_mtu": False,
                             "per_interface_l2_mru": False,
                             "evpn_gateway_all_active_multihoming": True,
+                            "evpn_gateway_rd_rt_rewrite": True,
                             "sflow_subinterfaces": False,
                             "hardware_validation": False,
                         },
@@ -90625,6 +90669,7 @@ class EosDesigns(EosDesignsRootModel):
                             "per_interface_l2_mtu": False,
                             "per_interface_l2_mru": False,
                             "evpn_gateway_all_active_multihoming": True,
+                            "evpn_gateway_rd_rt_rewrite": True,
                             "sflow_subinterfaces": False,
                             "hardware_validation": False,
                         },
@@ -92301,7 +92346,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "sflow_subinterfaces": False, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "sflow_subinterfaces": False, "hardware_validation": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
