@@ -15,7 +15,7 @@
 
 | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
 | :- | :- | :- | :- | :- |
-| 78 | 0 | 0 | 0 | 0 |
+| 84 | 0 | 0 | 0 | 0 |
 
 ### 🔌 Summary Totals Device Under Test <a id="summary-totals-device-under-test"></a>
 
@@ -32,6 +32,7 @@
 | **dc1-svc-leaf1b** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc1-wan1** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc1-wan2** | 3 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-wan3** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1a** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1b** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1c** | 3 | 0 | 0 | 0 | 0 | - | - |
@@ -40,6 +41,7 @@
 | **dc2-leaf2c** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf3a.arista.com** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf3b.arista.com** | 3 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-leaf3c** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-spine1** | 3 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-spine2** | 3 | 0 | 0 | 0 | 0 | - | - |
 
@@ -47,7 +49,7 @@
 
 | Test Category | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
 | :- | :- | :- | :- | :- | :- |
-| **Software** | 63 | 0 | 0 | 0 | 0 |
+| **Software** | 69 | 0 | 0 | 0 | 0 |
 | **VXLAN** | 15 | 0 | 0 | 0 | 0 |
 
 ## 🧪 Test Results <a id="test-results"></a>
@@ -92,6 +94,9 @@
 | dc1-wan2 | Software | VerifyEOSExtensions | Verifies that all EOS extensions installed on the device are enabled for boot persistence. | Unset | - |
 | dc1-wan2 | Software | VerifyEOSVersion | Verifies the EOS version of the device. | Unset | - |
 | dc1-wan2 | Software | VerifyTerminAttrVersion | Verifies the TerminAttr version of the device. | Unset | - |
+| dc1-wan3 | Software | VerifyEOSExtensions | Verifies that all EOS extensions installed on the device are enabled for boot persistence. | Unset | - |
+| dc1-wan3 | Software | VerifyEOSVersion | Verifies the EOS version of the device. | Unset | - |
+| dc1-wan3 | Software | VerifyTerminAttrVersion | Verifies the TerminAttr version of the device. | Unset | - |
 | dc2-leaf1a | Software | VerifyEOSExtensions | Verifies that all EOS extensions installed on the device are enabled for boot persistence. | Unset | - |
 | dc2-leaf1a | Software | VerifyEOSVersion | Verifies the EOS version of the device. | Unset | - |
 | dc2-leaf1a | Software | VerifyTerminAttrVersion | Verifies the TerminAttr version of the device. | Unset | - |
@@ -126,6 +131,9 @@
 | dc2-leaf3b.arista.com | Software | VerifyEOSExtensions | Verifies that all EOS extensions installed on the device are enabled for boot persistence. | Unset | - |
 | dc2-leaf3b.arista.com | Software | VerifyEOSVersion | Verifies the EOS version of the device. | Unset | - |
 | dc2-leaf3b.arista.com | Software | VerifyTerminAttrVersion | Verifies the TerminAttr version of the device. | Unset | - |
+| dc2-leaf3c | Software | VerifyEOSExtensions | Verifies that all EOS extensions installed on the device are enabled for boot persistence. | Unset | - |
+| dc2-leaf3c | Software | VerifyEOSVersion | Verifies the EOS version of the device. | Unset | - |
+| dc2-leaf3c | Software | VerifyTerminAttrVersion | Verifies the TerminAttr version of the device. | Unset | - |
 | dc2-spine1 | Software | VerifyEOSExtensions | Verifies that all EOS extensions installed on the device are enabled for boot persistence. | Unset | - |
 | dc2-spine1 | Software | VerifyEOSVersion | Verifies the EOS version of the device. | Unset | - |
 | dc2-spine1 | Software | VerifyTerminAttrVersion | Verifies the TerminAttr version of the device. | Unset | - |

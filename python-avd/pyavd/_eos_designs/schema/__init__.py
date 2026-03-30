@@ -35931,6 +35931,7 @@ class EosDesigns(EosDesignsRootModel):
             "hardware": {"type": Hardware},
             "logging": {"type": Logging},
             "exclude_as_extra_fabric_validation_target": {"type": bool, "default": False},
+            "interfaces": {"type": EosCliConfigGen.Metadata.Interfaces},
         }
         name: str
         parent_profile: str | None
@@ -35958,6 +35959,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        interfaces: EosCliConfigGen.Metadata.Interfaces
+        """Interface validation settings."""
 
         if TYPE_CHECKING:
 
@@ -35969,6 +35972,7 @@ class EosDesigns(EosDesignsRootModel):
                 hardware: Hardware | UndefinedType = Undefined,
                 logging: Logging | UndefinedType = Undefined,
                 exclude_as_extra_fabric_validation_target: bool | UndefinedType = Undefined,
+                interfaces: EosCliConfigGen.Metadata.Interfaces | UndefinedType = Undefined,
             ) -> None:
                 """
                 ValidationProfilesItem.
@@ -35994,6 +35998,7 @@ class EosDesigns(EosDesignsRootModel):
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
                        fabric validation tests performed by the `anta_runner` role.
+                    interfaces: Interface validation settings.
 
                 """
 
