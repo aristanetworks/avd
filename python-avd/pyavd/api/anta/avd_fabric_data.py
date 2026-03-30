@@ -35,6 +35,7 @@ class AVDDeviceData:
     mlag_vtep_ip: IPv4Address | None
     is_vtep: bool
     is_wan_router: bool
+    is_evpn_wan_gateway: bool
     exclude_as_extra_fabric_validation_target: bool
 
     @classmethod
@@ -70,6 +71,9 @@ class AVDDeviceData:
         # Get the VTEP roles
         is_vtep, is_wan_router = cls._get_vtep_roles(structured_config)
 
+        # Detect if this is an EVPN WAN gateway (WAN router also running EVPN on the DC side)
+        is_evpn_wan_gateway = is_wan_router and bool(get(structured_config, "router_adaptive_virtual_topology.gateway_vxlan"))
+
         # Create and return the device AVDDeviceData
         return cls(
             hostname=structured_config["hostname"],
@@ -81,6 +85,7 @@ class AVDDeviceData:
             mlag_vtep_ip=mlag_vtep_ip,
             is_vtep=is_vtep,
             is_wan_router=is_wan_router,
+            is_evpn_wan_gateway=is_evpn_wan_gateway,
             exclude_as_extra_fabric_validation_target=get(structured_config, "metadata.exclude_as_extra_fabric_validation_target", default=False),
         )
 
@@ -217,8 +222,9 @@ class AVDFabricData:
                     dps_mapping[device] = device_data.vtep_ip
                 else:
                     LOGGER.debug("<%s> Skipped DPS IP from DPS mapping - IP address not configured or IPv6-only", device)
-                # WAN routers are not added to the other IP mappings
-                continue
+                # EVPN WAN gateways also participate in EVPN on the DC side, so they are added to the other IP mappings too
+                if not device_data.is_evpn_wan_gateway:
+                    continue
 
             # Collect Loopback0 IP
             if device_data.loopback0_ip:
