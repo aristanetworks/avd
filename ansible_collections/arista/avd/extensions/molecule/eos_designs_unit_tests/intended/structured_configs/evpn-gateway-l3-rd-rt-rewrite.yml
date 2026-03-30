@@ -162,16 +162,6 @@ router_bgp:
       - 13402:13402
     redistribute_routes:
     - learned
-  - id: 302
-    metadata:
-      tenants:
-      - RD_RT_REWRITE_PARTIAL_TESTS
-    rd: 192.168.255.6:30302
-    route_targets:
-      both:
-      - 30302:30302
-    redistribute_routes:
-    - learned
   - id: 301
     metadata:
       tenants:
@@ -182,14 +172,14 @@ router_bgp:
       - 30301:30301
     redistribute_routes:
     - learned
-  - id: 304
+  - id: 302
     metadata:
       tenants:
       - RD_RT_REWRITE_PARTIAL_TESTS
-    rd: 192.168.255.6:30304
+    rd: 192.168.255.6:30302
     route_targets:
       both:
-      - 30304:30304
+      - 30302:30302
     redistribute_routes:
     - learned
   - id: 303
@@ -200,6 +190,16 @@ router_bgp:
     route_targets:
       both:
       - 30303:30303
+    redistribute_routes:
+    - learned
+  - id: 304
+    metadata:
+      tenants:
+      - RD_RT_REWRITE_PARTIAL_TESTS
+    rd: 192.168.255.6:30304
+    route_targets:
+      both:
+      - 30304:30304
     redistribute_routes:
     - learned
   address_family_evpn:
@@ -252,22 +252,7 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
-  - name: VRF_RT_EXPORT_ONLY
-    rd_evpn_domain:
-      domain: all
-      rd: 192.168.255.6:31
-    route_targets:
-      import_evpn_domains:
-      - route_target: '31:31'
-        domain: remote
-      export_evpn_domains:
-      - route_target: '31:31'
-        domain: all
-    router_id: 192.168.255.6
-    redistribute:
-      connected:
-        enabled: true
-  - name: VRF_RT_IMPORT_ONLY
+  - name: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE
     rd_evpn_domain:
       domain: all
       rd: 192.168.255.6:30
@@ -282,20 +267,22 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
-  - name: VRF_RT_LOCAL_EXPORT_ONLY
+  - name: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL
     rd_evpn_domain:
       domain: all
-      rd: 192.168.255.6:33
+      rd: 192.168.255.6:31
     route_targets:
-      export:
-      - address_family: evpn
-        route_targets:
-        - '33:33'
+      import_evpn_domains:
+      - route_target: '31:31'
+        domain: remote
+      export_evpn_domains:
+      - route_target: '31:31'
+        domain: all
     router_id: 192.168.255.6
     redistribute:
       connected:
         enabled: true
-  - name: VRF_RT_LOCAL_IMPORT_ONLY
+  - name: VRF_RT_IMPORT_LOCAL_NO_EXPORT
     rd_evpn_domain:
       domain: all
       rd: 192.168.255.6:32
@@ -304,6 +291,19 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '32:32'
+    router_id: 192.168.255.6
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_RT_NO_IMPORT_LOCAL_EXPORT
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:33
+    route_targets:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '33:33'
     router_id: 192.168.255.6
     redistribute:
       connected:
@@ -350,35 +350,35 @@ vlan_interfaces:
   metadata:
     tenants:
     - EVPN_GATEWAY_TESTS
-- name: Vlan302
-  description: VRF_RT_EXPORT_ONLY_VLAN302
-  shutdown: false
-  vrf: VRF_RT_EXPORT_ONLY
-  ip_address_virtual: 10.3.2.1/24
-  metadata:
-    tenants:
-    - RD_RT_REWRITE_PARTIAL_TESTS
 - name: Vlan301
-  description: VRF_RT_IMPORT_ONLY_VLAN301
+  description: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE_VLAN301
   shutdown: false
-  vrf: VRF_RT_IMPORT_ONLY
+  vrf: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE
   ip_address_virtual: 10.3.1.1/24
   metadata:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
-- name: Vlan304
-  description: VRF_RT_LOCAL_EXPORT_ONLY_VLAN304
+- name: Vlan302
+  description: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL_VLAN302
   shutdown: false
-  vrf: VRF_RT_LOCAL_EXPORT_ONLY
-  ip_address_virtual: 10.3.4.1/24
+  vrf: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL
+  ip_address_virtual: 10.3.2.1/24
   metadata:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
 - name: Vlan303
-  description: VRF_RT_LOCAL_IMPORT_ONLY_VLAN303
+  description: VRF_RT_IMPORT_LOCAL_NO_EXPORT_VLAN303
   shutdown: false
-  vrf: VRF_RT_LOCAL_IMPORT_ONLY
+  vrf: VRF_RT_IMPORT_LOCAL_NO_EXPORT
   ip_address_virtual: 10.3.3.1/24
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: Vlan304
+  description: VRF_RT_NO_IMPORT_LOCAL_EXPORT_VLAN304
+  shutdown: false
+  vrf: VRF_RT_NO_IMPORT_LOCAL_EXPORT
+  ip_address_virtual: 10.3.4.1/24
   metadata:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
@@ -423,23 +423,23 @@ vlans:
   metadata:
     tenants:
     - EVPN_GATEWAY_TESTS
-- id: 302
-  name: VRF_RT_EXPORT_ONLY_VLAN302
-  metadata:
-    tenants:
-    - RD_RT_REWRITE_PARTIAL_TESTS
 - id: 301
-  name: VRF_RT_IMPORT_ONLY_VLAN301
+  name: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE_VLAN301
   metadata:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
-- id: 304
-  name: VRF_RT_LOCAL_EXPORT_ONLY_VLAN304
+- id: 302
+  name: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL_VLAN302
   metadata:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
 - id: 303
-  name: VRF_RT_LOCAL_IMPORT_ONLY_VLAN303
+  name: VRF_RT_IMPORT_LOCAL_NO_EXPORT_VLAN303
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- id: 304
+  name: VRF_RT_NO_IMPORT_LOCAL_EXPORT_VLAN304
   metadata:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
@@ -456,22 +456,22 @@ vrfs:
   metadata:
     tenants:
     - EVPN_GATEWAY_TESTS
-- name: VRF_RT_EXPORT_ONLY
+- name: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE
   ip_routing: true
   metadata:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
-- name: VRF_RT_IMPORT_ONLY
+- name: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL
   ip_routing: true
   metadata:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
-- name: VRF_RT_LOCAL_EXPORT_ONLY
+- name: VRF_RT_IMPORT_LOCAL_NO_EXPORT
   ip_routing: true
   metadata:
     tenants:
     - RD_RT_REWRITE_PARTIAL_TESTS
-- name: VRF_RT_LOCAL_IMPORT_ONLY
+- name: VRF_RT_NO_IMPORT_LOCAL_EXPORT
   ip_routing: true
   metadata:
     tenants:
@@ -497,24 +497,24 @@ vxlan_interface:
         vni: 13401
       - id: 3402
         vni: 13402
-      - id: 302
-        vni: 30302
       - id: 301
         vni: 30301
-      - id: 304
-        vni: 30304
+      - id: 302
+        vni: 30302
       - id: 303
         vni: 30303
+      - id: 304
+        vni: 30304
       vrfs:
       - name: VRF10
         vni: 10
       - name: VRF11
         vni: 11
-      - name: VRF_RT_EXPORT_ONLY
-        vni: 31
-      - name: VRF_RT_IMPORT_ONLY
+      - name: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE
         vni: 30
-      - name: VRF_RT_LOCAL_EXPORT_ONLY
-        vni: 33
-      - name: VRF_RT_LOCAL_IMPORT_ONLY
+      - name: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL
+        vni: 31
+      - name: VRF_RT_IMPORT_LOCAL_NO_EXPORT
         vni: 32
+      - name: VRF_RT_NO_IMPORT_LOCAL_EXPORT
+        vni: 33
