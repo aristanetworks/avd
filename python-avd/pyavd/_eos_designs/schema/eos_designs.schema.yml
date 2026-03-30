@@ -6321,6 +6321,9 @@ keys:
             other fabric devices in the extra fabric validation tests performed by
             the `anta_runner` role.
           default: false
+        interfaces:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/metadata/keys/interfaces
   vtep_loopback_description:
     documentation_options:
       table: overlay-settings

@@ -10052,6 +10052,19 @@ keys:
           `anta_runner` role.
 
           '
+      interfaces:
+        type: dict
+        description: Interface validation settings.
+        keys:
+          errdisable:
+            type: dict
+            description: Settings for the VerifyInterfaceErrDisabled test.
+            keys:
+              only_avd_interfaces:
+                type: bool
+                description: Only validate interfaces defined in the AVD structured
+                  configuration for errdisabled state.
+                default: false
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration

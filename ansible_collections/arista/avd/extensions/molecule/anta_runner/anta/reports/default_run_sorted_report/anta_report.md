@@ -15,7 +15,7 @@
 
 | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
 | :- | :- | :- | :- | :- |
-| 603 | 0 | 0 | 0 | 0 |
+| 619 | 0 | 0 | 0 | 0 |
 
 ### 🔌 Summary Totals Device Under Test <a id="summary-totals-device-under-test"></a>
 
@@ -41,6 +41,7 @@
 | **dc2-leaf2c** | 21 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf3a.arista.com** | 29 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf3b.arista.com** | 29 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-leaf3c** | 16 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-spine1** | 23 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-spine2** | 23 | 0 | 0 | 0 | 0 | - | - |
 
@@ -50,18 +51,18 @@
 | :- | :- | :- | :- | :- | :- |
 | **AVT** | 3 | 0 | 0 | 0 | 0 |
 | **BGP** | 18 | 0 | 0 | 0 | 0 |
-| **Configuration** | 44 | 0 | 0 | 0 | 0 |
+| **Configuration** | 46 | 0 | 0 | 0 | 0 |
 | **Connectivity** | 40 | 0 | 0 | 0 | 0 |
 | **Hardware** | 42 | 0 | 0 | 0 | 0 |
-| **Interfaces** | 144 | 0 | 0 | 0 | 0 |
-| **Logging** | 22 | 0 | 0 | 0 | 0 |
+| **Interfaces** | 147 | 0 | 0 | 0 | 0 |
+| **Logging** | 23 | 0 | 0 | 0 | 0 |
 | **MLAG** | 33 | 0 | 0 | 0 | 0 |
 | **OSPF** | 16 | 0 | 0 | 0 | 0 |
 | **Path-Selection** | 3 | 0 | 0 | 0 | 0 |
-| **Routing** | 22 | 0 | 0 | 0 | 0 |
-| **Security** | 25 | 0 | 0 | 0 | 0 |
-| **STP** | 22 | 0 | 0 | 0 | 0 |
-| **System** | 154 | 0 | 0 | 0 | 0 |
+| **Routing** | 23 | 0 | 0 | 0 | 0 |
+| **Security** | 26 | 0 | 0 | 0 | 0 |
+| **STP** | 23 | 0 | 0 | 0 | 0 |
+| **System** | 161 | 0 | 0 | 0 | 0 |
 | **VXLAN** | 15 | 0 | 0 | 0 | 0 |
 
 ## 🧪 Test Results <a id="test-results"></a>
@@ -88,6 +89,7 @@
 | dc2-leaf2c | Security | VerifyAPIHttpsSSL | Verifies if the eAPI has a valid SSL profile. | Unset | - |
 | dc2-leaf3a.arista.com | Security | VerifyAPIHttpsSSL | Verifies if the eAPI has a valid SSL profile. | Unset | - |
 | dc2-leaf3b.arista.com | Security | VerifyAPIHttpsSSL | Verifies if the eAPI has a valid SSL profile. | Unset | - |
+| dc2-leaf3c | Security | VerifyAPIHttpsSSL | Verifies if the eAPI has a valid SSL profile. | Unset | - |
 | dc2-spine1 | Security | VerifyAPIHttpsSSL | Verifies if the eAPI has a valid SSL profile. | Unset | - |
 | dc2-spine2 | Security | VerifyAPIHttpsSSL | Verifies if the eAPI has a valid SSL profile. | Unset | - |
 | dc1-wan1 | AVT | VerifyAVTSpecificPath | Verifies the Adaptive Virtual Topology (AVT) path. | Unset | - |
@@ -113,6 +115,7 @@
 | dc2-leaf2c | System | VerifyAgentLogs | Verifies there are no agent crash reports. | Unset | - |
 | dc2-leaf3a.arista.com | System | VerifyAgentLogs | Verifies there are no agent crash reports. | Unset | - |
 | dc2-leaf3b.arista.com | System | VerifyAgentLogs | Verifies there are no agent crash reports. | Unset | - |
+| dc2-leaf3c | System | VerifyAgentLogs | Verifies there are no agent crash reports. | Unset | - |
 | dc2-spine1 | System | VerifyAgentLogs | Verifies there are no agent crash reports. | Unset | - |
 | dc2-spine2 | System | VerifyAgentLogs | Verifies there are no agent crash reports. | Unset | - |
 | dc1-leaf1a | BGP | VerifyBGPPeerSession | Verifies the session state of BGP peers. | Unset | - |
@@ -153,6 +156,7 @@
 | dc2-leaf2c | System | VerifyCoredump | Verifies there are no core dump files. | Unset | - |
 | dc2-leaf3a.arista.com | System | VerifyCoredump | Verifies there are no core dump files. | Unset | - |
 | dc2-leaf3b.arista.com | System | VerifyCoredump | Verifies there are no core dump files. | Unset | - |
+| dc2-leaf3c | System | VerifyCoredump | Verifies there are no core dump files. | Unset | - |
 | dc2-spine1 | System | VerifyCoredump | Verifies there are no core dump files. | Unset | - |
 | dc2-spine2 | System | VerifyCoredump | Verifies there are no core dump files. | Unset | - |
 | dc1-leaf1a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Unset | - |
@@ -193,6 +197,7 @@
 | dc2-leaf2c | System | VerifyFileSystemUtilization | Verifies that no partition is utilizing more than 75% of its disk space. | Unset | - |
 | dc2-leaf3a.arista.com | System | VerifyFileSystemUtilization | Verifies that no partition is utilizing more than 75% of its disk space. | Unset | - |
 | dc2-leaf3b.arista.com | System | VerifyFileSystemUtilization | Verifies that no partition is utilizing more than 75% of its disk space. | Unset | - |
+| dc2-leaf3c | System | VerifyFileSystemUtilization | Verifies that no partition is utilizing more than 75% of its disk space. | Unset | - |
 | dc2-spine1 | System | VerifyFileSystemUtilization | Verifies that no partition is utilizing more than 75% of its disk space. | Unset | - |
 | dc2-spine2 | System | VerifyFileSystemUtilization | Verifies that no partition is utilizing more than 75% of its disk space. | Unset | - |
 | dc1-leaf1a | Interfaces | VerifyIllegalLACP | Verifies there are no illegal LACP packets in port channels. | Unset | - |
@@ -231,6 +236,7 @@
 | dc2-leaf2c | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | Unset | - |
 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | Unset | - |
 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | Unset | - |
+| dc2-leaf3c | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | Unset | - |
 | dc2-spine1 | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | Unset | - |
 | dc2-spine2 | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | Unset | - |
 | dc1-leaf1a | Interfaces | VerifyInterfaceErrDisabled | Verifies there are no interfaces in the errdisabled state. | Unset | - |
@@ -275,6 +281,7 @@
 | dc2-leaf2c | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | Unset | - |
 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | Unset | - |
 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | Unset | - |
+| dc2-leaf3c | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | Unset | - |
 | dc2-spine1 | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | Unset | - |
 | dc2-spine2 | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | Unset | - |
 | dc1-leaf1a | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
@@ -297,6 +304,7 @@
 | dc2-leaf2c | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
+| dc2-leaf3c | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
 | dc2-spine1 | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
 | dc2-spine2 | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the operational states of specified interfaces to ensure they match expected configurations. | Unset | - |
@@ -369,6 +377,7 @@
 | dc2-leaf2c | Logging | VerifyLoggingErrors | Verifies there are no syslog messages with a severity of ERRORS or higher. | Unset | - |
 | dc2-leaf3a.arista.com | Logging | VerifyLoggingErrors | Verifies there are no syslog messages with a severity of ERRORS or higher. | Unset | - |
 | dc2-leaf3b.arista.com | Logging | VerifyLoggingErrors | Verifies there are no syslog messages with a severity of ERRORS or higher. | Unset | - |
+| dc2-leaf3c | Logging | VerifyLoggingErrors | Verifies there are no syslog messages with a severity of ERRORS or higher. | Unset | - |
 | dc2-spine1 | Logging | VerifyLoggingErrors | Verifies there are no syslog messages with a severity of ERRORS or higher. | Unset | - |
 | dc2-spine2 | Logging | VerifyLoggingErrors | Verifies there are no syslog messages with a severity of ERRORS or higher. | Unset | - |
 | dc1-leaf1a | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
@@ -391,6 +400,7 @@
 | dc2-leaf2c | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
 | dc2-leaf3a.arista.com | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
 | dc2-leaf3b.arista.com | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
+| dc2-leaf3c | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
 | dc2-spine1 | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
 | dc2-spine2 | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
 | dc1-leaf1a | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
@@ -413,6 +423,7 @@
 | dc2-leaf2c | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
 | dc2-leaf3a.arista.com | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
 | dc2-leaf3b.arista.com | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
+| dc2-leaf3c | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
 | dc2-spine1 | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
 | dc2-spine2 | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
 | dc1-leaf1a | MLAG | VerifyMlagConfigSanity | Verifies there are no MLAG config-sanity inconsistencies. | Unset | - |
@@ -468,6 +479,7 @@
 | dc2-leaf2c | System | VerifyNTP | Verifies if NTP is synchronised. | Unset | - |
 | dc2-leaf3a.arista.com | System | VerifyNTP | Verifies if NTP is synchronised. | Unset | - |
 | dc2-leaf3b.arista.com | System | VerifyNTP | Verifies if NTP is synchronised. | Unset | - |
+| dc2-leaf3c | System | VerifyNTP | Verifies if NTP is synchronised. | Unset | - |
 | dc2-spine1 | System | VerifyNTP | Verifies if NTP is synchronised. | Unset | - |
 | dc2-spine2 | System | VerifyNTP | Verifies if NTP is synchronised. | Unset | - |
 | dc2-leaf1a | OSPF | VerifyOSPFMaxLSA | Verifies all OSPF instances did not cross the maximum LSA threshold. | Unset | - |
@@ -540,6 +552,7 @@
 | dc2-leaf2c | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc2-leaf3a.arista.com | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc2-leaf3b.arista.com | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
+| dc2-leaf3c | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc2-spine1 | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc2-spine2 | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc1-leaf1a | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
@@ -562,6 +575,7 @@
 | dc2-leaf2c | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
 | dc2-leaf3a.arista.com | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
 | dc2-leaf3b.arista.com | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
+| dc2-leaf3c | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
 | dc2-spine1 | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
 | dc2-spine2 | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
 | dc1-leaf1a | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
@@ -584,6 +598,7 @@
 | dc2-leaf2c | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
 | dc2-leaf3a.arista.com | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
 | dc2-leaf3b.arista.com | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
+| dc2-leaf3c | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
 | dc2-spine1 | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
 | dc2-spine2 | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
 | dc1-leaf1a | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
@@ -606,6 +621,7 @@
 | dc2-leaf2c | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
 | dc2-leaf3a.arista.com | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
 | dc2-leaf3b.arista.com | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
+| dc2-leaf3c | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
 | dc2-spine1 | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
 | dc2-spine2 | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
 | dc1-wan1 | Security | VerifySpecificIPSecConn | Verifies the IPv4 security connections. | Unset | - |
@@ -669,5 +685,6 @@
 | dc2-leaf2c | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
 | dc2-leaf3a.arista.com | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
 | dc2-leaf3b.arista.com | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
+| dc2-leaf3c | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
 | dc2-spine1 | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
 | dc2-spine2 | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |

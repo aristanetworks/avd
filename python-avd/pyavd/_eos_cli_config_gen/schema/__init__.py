@@ -26248,6 +26248,59 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Interfaces(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Errdisable(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"only_avd_interfaces": {"type": bool, "default": False}}
+                only_avd_interfaces: bool
+                """
+                Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+
+                Default value: `False`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, only_avd_interfaces: bool | UndefinedType = Undefined) -> None:
+                        """
+                        Errdisable.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            only_avd_interfaces: Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+
+                        """
+
+            _fields: ClassVar[dict] = {"errdisable": {"type": Errdisable}}
+            errdisable: Errdisable
+            """
+            Settings for the VerifyInterfaceErrDisabled test.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, errdisable: Errdisable | UndefinedType = Undefined) -> None:
+                    """
+                    Interfaces.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        errdisable:
+                           Settings for the VerifyInterfaceErrDisabled test.
+
+                           Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "is_deployed": {"type": bool},
             "platform": {"type": str},
@@ -26263,6 +26316,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "digital_twin": {"type": DigitalTwin},
             "validate_no_errors_period": {"type": int},
             "exclude_as_extra_fabric_validation_target": {"type": bool},
+            "interfaces": {"type": Interfaces},
         }
         is_deployed: bool | None
         """Key only used for documentation or validation purposes."""
@@ -26318,6 +26372,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Exclude this node from being used as a destination target from other fabric devices in the extra
         fabric validation tests performed by the `anta_runner` role.
         """
+        interfaces: Interfaces
+        """
+        Interface validation settings.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -26338,6 +26398,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validate_no_errors_period: int | None | UndefinedType = Undefined,
                 exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
+                interfaces: Interfaces | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -26386,6 +26447,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
                        fabric validation tests performed by the `anta_runner` role.
+                    interfaces:
+                       Interface validation settings.
+
+                       Subclass of AvdModel.
 
                 """
 
