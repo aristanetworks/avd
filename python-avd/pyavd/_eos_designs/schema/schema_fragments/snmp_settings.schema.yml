@@ -132,18 +132,18 @@ keys:
               description: Username.
             v1_group:
               type: str
-              description: SNMP version 1 group name.
+              description: SNMP v1 group name.
             v2c_group:
               type: str
-              description: SNMP version 2c group name.
+              description: SNMP v2c group name.
             v3:
               type: dict
-              description: SNMPv3 configuration.
+              description: SNMP v3 configuration.
               keys:
                 group:
                   type: str
                   required: true
-                  description: SNMP version 3 group name.
+                  description: SNMP v3 group name.
                 auth:
                   type: str
                   valid_values: ["md5", "sha", "sha256", "sha384", "sha512"]

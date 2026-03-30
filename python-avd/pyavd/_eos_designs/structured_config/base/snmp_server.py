@@ -156,14 +156,14 @@ class SnmpServerMixin(Protocol):
             ),
         )
 
-    def _configure_snmp_v3_auth(
+    def _update_snmp_user_v3_auth(
         self: AvdStructuredConfigBaseProtocol,
         v3_config: EosCliConfigGen.SnmpServer.LocalUsersItem.V3,
         user_v3: EosDesigns.SnmpSettings.LocalUsersItem.V3,
         compute_localized_key: bool,
         engine_id: str,
     ) -> None:
-        """Configure SNMPv3 authentication settings."""
+        """Update the given SNMP user's v3 config with auth/priv/localized settings."""
         if user_v3.auth is None or user_v3.auth_passphrase is None:
             return
 
@@ -200,15 +200,13 @@ class SnmpServerMixin(Protocol):
         compute_v3_user_localized_key = bool(local_engine_id and self.inputs.snmp_settings.compute_v3_user_localized_key)
 
         for user in users:
-            user_data = EosCliConfigGen.SnmpServer.LocalUsersItem(name=user.name)
+            user_data = EosCliConfigGen.SnmpServer.LocalUsersItem(
+                name=user.name,
+                v1_group = user.v1_group,
+                v2_group = user.v2_group,
+            )
 
-            if user.v1_group is not None:
-                user_data.v1_group = user.v1_group
-            if user.v2c_group is not None:
-                user_data.v2c_group = user.v2c_group
-
-            user_v3 = user.v3
-            if user_v3 is not None and user_v3.group is not None:
+            if user_v3 := user.v3:
                 v3_config = EosCliConfigGen.SnmpServer.LocalUsersItem.V3(group=user_v3.group)
 
                 if compute_v3_user_localized_key and local_engine_id:
