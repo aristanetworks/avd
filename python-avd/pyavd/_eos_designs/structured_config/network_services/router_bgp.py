@@ -321,7 +321,7 @@ class RouterBgpMixin(Protocol):
             self._update_router_bgp_vrf_evpn_rd_rt_rewrite_evpn_af_cfg(bgp_vrf, vrf, vrf_rt)
             # Remove evpn from the set so the shared loop below only handles the remaining address families (e.g. vpn-ipv4).
             # The evpn address family is already handled above by the rd-rt-rewrite helper.
-            vrf_address_families = vrf_address_families - {"evpn"}
+            vrf_address_families.discard("evpn")
         else:
             bgp_vrf.rd = vrf_rd
         # Handling address-families, including EVPN, if not an L3 EVPN gateway
