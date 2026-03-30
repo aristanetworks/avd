@@ -11,11 +11,11 @@ from __future__ import annotations
 
 import ipaddress
 from typing import TYPE_CHECKING
+
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
 from pyavd._utils import as_path_list_match_from_bgp_asns
-from pyavd._utils.run_once import run_once_method
-from pyavd._utils.run_once import RunOnceMethodStateHelper
+from pyavd._utils.run_once import RunOnceMethodStateHelper, run_once_method
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -31,11 +31,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
     """
 
     def __init__(
-        self,
-        structured_config: EosCliConfigGen,
-        inputs: EosDesigns,
-        shared_utils: SharedUtilsProtocol,
-        custom_structured_configs: StructCfgs
+        self, structured_config: EosCliConfigGen, inputs: EosDesigns, shared_utils: SharedUtilsProtocol, custom_structured_configs: StructCfgs
     ) -> None:
         """Initialize the StructuredConfigUtils with a ParentInterfacesTracker instance and structured config instance."""
         super().__init__()
@@ -93,7 +89,9 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
             self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
 
         if self.shared_utils.underlay_ipv6:
-            self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True)
+            self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
+                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
+            )
 
     @run_once_method
     def set_once_route_map_bgp_underlay_peers_in(self: StructuredConfigUtils) -> None:
@@ -163,5 +161,6 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         ip_extcommunity_list = EosCliConfigGen.IpExtcommunityListsItem(name="ECL-EVPN-SOO")
         ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
         self.structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
+
 
 __all__ = ["StructuredConfigUtils"]
