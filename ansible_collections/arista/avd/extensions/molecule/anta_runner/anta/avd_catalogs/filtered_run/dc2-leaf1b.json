@@ -79,15 +79,15 @@
         },
         "hosts": [
           {
-            "destination": "10.255.255.44",
-            "source": "10.255.255.45",
+            "destination": "10.255.255.108",
+            "source": "10.255.255.109",
             "description": "dc2-spine1_Ethernet2",
             "vrf": "default",
             "repeat": 1
           },
           {
-            "destination": "10.255.255.46",
-            "source": "10.255.255.47",
+            "destination": "10.255.255.110",
+            "source": "10.255.255.111",
             "description": "dc2-spine2_Ethernet2",
             "vrf": "default",
             "repeat": 1
