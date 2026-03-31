@@ -308,6 +308,38 @@ dc1-wan2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization 
 dc1-wan2,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-wan2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-wan2,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
+dc1-wan3,VerifyAVTSpecificPath,unset,,Verifies the Adaptive Virtual Topology (AVT) path.,AVT
+dc1-wan3,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
+dc1-wan3,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-wan3,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
+dc1-wan3,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
+dc1-wan3,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
+dc1-wan3,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
+dc1-wan3,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
+dc1-wan3,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
+dc1-wan3,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
+dc1-wan3,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-wan3,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
+dc1-wan3,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
+dc1-wan3,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
+dc1-wan3,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
+dc1-wan3,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
+dc1-wan3,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
+dc1-wan3,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
+dc1-wan3,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
+dc1-wan3,VerifySpecificPath,unset,,Verifies the DPS path and telemetry state of an IPv4 peer.,Path-Selection
+dc1-wan3,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
+dc1-wan3,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-wan3,VerifySpecificIPSecConn,unset,,Verifies the IPv4 security connections.,Security
+dc1-wan3,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
+dc1-wan3,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
+dc1-wan3,VerifyCoredump,unset,,Verifies there are no core dump files.,System
+dc1-wan3,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-wan3,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
+dc1-wan3,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
+dc1-wan3,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
+dc1-wan3,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-wan3,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -524,6 +556,22 @@ dc2-leaf3b.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory
 dc2-leaf3b.arista.com,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf3b.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf3b.arista.com,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
+dc2-leaf3c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-leaf3c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
+dc2-leaf3c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
+dc2-leaf3c,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
+dc2-leaf3c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
+dc2-leaf3c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
+dc2-leaf3c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
+dc2-leaf3c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-leaf3c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
+dc2-leaf3c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
+dc2-leaf3c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
+dc2-leaf3c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf3c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
+dc2-leaf3c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
+dc2-leaf3c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
+dc2-leaf3c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-spine1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration

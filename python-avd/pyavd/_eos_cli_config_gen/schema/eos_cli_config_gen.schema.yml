@@ -5877,25 +5877,14 @@ keys:
           description: ACL Entries.
           items:
             type: dict
+            $ref: eos_cli_config_gen#/$defs/access_list_entry
             keys:
               sequence:
                 type: int
-                convert_types:
-                - str
-                description: ACL entry sequence number.
               remark:
                 type: str
-                description: 'Comment up to 100 characters.
-
-                  If remark is defined, other keys in the ACL entry will be ignored.'
               action:
                 type: str
-                valid_values:
-                - permit
-                - deny
-                description: 'ACL action.
-
-                  Required except for remarks.'
               protocol:
                 type: str
                 description: '"ip", "tcp", "udp", "icmp" or other protocol name or
@@ -5909,23 +5898,6 @@ keys:
                   "<ip>" without a mask means host.
 
                   Required except for remarks.'
-              source_ports_match:
-                type: str
-                valid_values:
-                - eq
-                - gt
-                - lt
-                - neq
-                - range
-                default: eq
-              source_ports:
-                type: list
-                min_length: 1
-                items:
-                  type: str
-                  convert_types:
-                  - int
-                  description: TCP/UDP source port name or number.
               destination:
                 type: str
                 description: '"any", "<ip>/<mask>" or "<ip>".
@@ -5933,34 +5905,9 @@ keys:
                   "<ip>" without a mask means host.
 
                   Required except for remarks.'
-              destination_ports_match:
-                type: str
-                valid_values:
-                - eq
-                - gt
-                - lt
-                - neq
-                - range
-                default: eq
-              destination_ports:
-                type: list
-                min_length: 1
-                items:
-                  type: str
-                  convert_types:
-                  - int
-                  description: TCP/UDP destination port name or number.
-              tcp_flags:
-                type: list
-                items:
-                  type: str
-                  description: TCP Flag Name.
               fragments:
                 type: bool
                 description: Match non-head fragment packets.
-              log:
-                type: bool
-                description: Log matches against this rule.
               ttl:
                 type: int
                 description: TTL value.
@@ -5976,37 +5923,9 @@ keys:
                 - lt
                 - neq
                 default: eq
-              icmp_type:
-                type: str
-                convert_types:
-                - int
-                description: Message type name/number for ICMP packets.
-              icmp_code:
-                type: str
-                convert_types:
-                - int
-                description: Message code for ICMP packets.
-              nexthop_group:
-                type: str
-                description: nexthop-group name.
-              tracked:
-                type: bool
-                description: Match packets in existing ICMP/UDP/TCP connections.
-              dscp:
-                type: str
-                convert_types:
-                - int
-                description: DSCP value or name.
-              vlan_number:
-                type: int
-                convert_types:
-                - str
               vlan_inner:
                 type: bool
                 default: false
-              vlan_mask:
-                type: str
-                description: 0x000-0xFFF VLAN mask.
         permit_response_traffic:
           type: str
           valid_values:
@@ -7125,9 +7044,65 @@ keys:
           - int
         counters_per_entry:
           type: bool
-        sequence_numbers:
+        entries:
           type: list
-          required: true
+          description: ACL Entries.
+          items:
+            type: dict
+            $ref: eos_cli_config_gen#/$defs/access_list_entry
+            keys:
+              protocol:
+                type: str
+                description: '"ipv6", "tcp", "udp", "icmpv6" or other protocol name
+                  or number.
+
+                  Required except for remarks.'
+              source:
+                type: str
+                description: '"any", "<ipv6>/<mask>" or "<ipv6>".
+
+                  "<ipv6>" without a mask means host.
+
+                  Required except for remarks.'
+              destination:
+                type: str
+                description: '"any", "<ipv6>/<mask>" or "<ipv6>".
+
+                  "<ipv6>" without a mask means host.
+
+                  Required except for remarks.'
+              hop_limit:
+                type: int
+                convert_types:
+                - str
+                min: 0
+                description: Match Hop Limit value.
+              hop_limit_match:
+                type: str
+                valid_values:
+                - eq
+                - gt
+                - lt
+                - neq
+                default: eq
+              dscp_mask:
+                type: str
+                convert_types:
+                - int
+                description: DSCP mask ranges from 0x00 to 0x3F.
+              inner_vlan_number:
+                type: int
+                convert_types:
+                - str
+              inner_vlan_mask:
+                type: str
+                description: 0x000-0xFFF inner VLAN mask.
+        sequence_numbers:
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+          type: list
           primary_key: sequence
           items:
             type: dict
@@ -10077,6 +10052,19 @@ keys:
           `anta_runner` role.
 
           '
+      interfaces:
+        type: dict
+        description: Interface validation settings.
+        keys:
+          errdisable:
+            type: dict
+            description: Settings for the VerifyInterfaceErrDisabled test.
+            keys:
+              only_avd_interfaces:
+                type: bool
+                description: Only validate interfaces defined in the AVD structured
+                  configuration for errdisabled state.
+                default: false
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -15587,6 +15575,33 @@ keys:
             type: bool
             description: Allow redistribution of iBGP routes into an Interior Gateway
               Protocol (IGP). EOS default is true.
+          labeled_unicast:
+            type: dict
+            keys:
+              rib:
+                type: dict
+                description: Configure LU RIB behavior for ip and/or tunnel.
+                keys:
+                  ip:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into IP RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to IP RIB.
+                  tunnel:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into Tunnel RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to tunnel RIB.
       listen_ranges:
         type: list
         description: 'Improved "listen_ranges" data model to support multiple listen
@@ -23840,9 +23855,78 @@ keys:
           - int
         counters_per_entry:
           type: bool
+        entries:
+          type: list
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                description: 'Action as string.
+
+                  '
+                valid_values:
+                - permit
+                - deny
+              remark:
+                type: str
+                description: Specify a comment. If remark is specified other keys
+                  of the entry are ignored.
+              source:
+                type: str
+                description: 'Required for non-remark entries.
+
+                  The value can be:
+
+                  1. A single source address.
+
+                  2. Source address with mask. e.g. ''10.0.0.1/8''.
+
+                  3. ''any'' source address.'
+              vlan:
+                type: int
+                description: Match packets by VLAN value.
+                convert_types:
+                - str
+              vlan_mask:
+                type: str
+                description: 'VLAN mask. Range "0x000"-"0xFFF". Required when `vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              inner_vlan:
+                type: int
+                description: Match packets by inner VLAN value.
+                convert_types:
+                - str
+              inner_vlan_mask:
+                type: str
+                description: 'Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              log:
+                type: bool
+                description: Enable logging when a packet matches the ACL rule.
+              mirror_session:
+                type: str
+                description: Mirror session to mirror matches against this rule.
         sequence_numbers:
           type: list
-          required: true
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: entries
           primary_key: sequence
           items:
             type: dict
@@ -26000,6 +26084,97 @@ keys:
           new_key: vxlan1
         type: dict
 $defs:
+  access_list_entry:
+    type: dict
+    keys:
+      sequence:
+        type: int
+        convert_types:
+        - str
+        description: ACL entry sequence number.
+      remark:
+        type: str
+        description: 'Comment up to 100 characters.
+
+          If remark is defined, other keys in the ACL entry will be ignored.'
+      action:
+        type: str
+        valid_values:
+        - permit
+        - deny
+        description: 'ACL action.
+
+          Required except for remarks.'
+      source_ports_match:
+        type: str
+        valid_values:
+        - eq
+        - gt
+        - lt
+        - neq
+        - range
+        default: eq
+      source_ports:
+        type: list
+        min_length: 1
+        items:
+          type: str
+          convert_types:
+          - int
+          description: TCP/UDP source port name or number.
+      destination_ports_match:
+        type: str
+        valid_values:
+        - eq
+        - gt
+        - lt
+        - neq
+        - range
+        default: eq
+      destination_ports:
+        type: list
+        min_length: 1
+        items:
+          type: str
+          convert_types:
+          - int
+          description: TCP/UDP destination port name or number.
+      tcp_flags:
+        type: list
+        items:
+          type: str
+          description: TCP Flag Name.
+      log:
+        type: bool
+        description: Log matches against this rule.
+      icmp_type:
+        type: str
+        convert_types:
+        - int
+        description: Message type name/number for ICMP packets.
+      icmp_code:
+        type: str
+        convert_types:
+        - int
+        description: Message code for ICMP packets.
+      nexthop_group:
+        type: str
+        description: nexthop-group name.
+      tracked:
+        type: bool
+        description: Match packets in existing ICMP/UDP/TCP connections.
+      dscp:
+        type: str
+        convert_types:
+        - int
+        description: DSCP value or name.
+      vlan_number:
+        type: int
+        convert_types:
+        - str
+      vlan_mask:
+        type: str
+        description: 0x000-0xFFF VLAN mask.
   methods:
     type: list
     min_length: 1

@@ -91,7 +91,14 @@
           "tags": [
             "dc2-leaf2c"
           ]
-        }
+        },
+        "interfaces": [
+          "Ethernet1",
+          "Ethernet2",
+          "Ethernet5",
+          "Management1",
+          "Port-Channel1"
+        ]
       }
     },
     {

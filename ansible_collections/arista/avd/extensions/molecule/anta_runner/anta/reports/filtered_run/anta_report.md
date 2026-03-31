@@ -15,7 +15,7 @@
 
 | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
 | :- | :- | :- | :- | :- |
-| 456 | 0 | 0 | 0 | 0 |
+| 502 | 0 | 0 | 0 | 0 |
 
 ### 🔌 Summary Totals Device Under Test <a id="summary-totals-device-under-test"></a>
 
@@ -32,6 +32,7 @@
 | **dc1-svc-leaf1b** | 1 | 0 | 0 | 0 | 0 | - | - |
 | **dc1-wan1** | 31 | 0 | 0 | 0 | 0 | - | - |
 | **dc1-wan2** | 33 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-wan3** | 31 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1a** | 28 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1b** | 28 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1c** | 20 | 0 | 0 | 0 | 0 | - | - |
@@ -40,26 +41,27 @@
 | **dc2-leaf2c** | 20 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf3a.arista.com** | 28 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf3b.arista.com** | 28 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-leaf3c** | 15 | 0 | 0 | 0 | 0 | - | - |
 
 ### 🗂️ Summary Totals Per Category <a id="summary-totals-per-category"></a>
 
 | Test Category | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
 | :- | :- | :- | :- | :- | :- |
-| **AVT** | 2 | 0 | 0 | 0 | 0 |
-| **BGP** | 13 | 0 | 0 | 0 | 0 |
-| **Configuration** | 34 | 0 | 0 | 0 | 0 |
-| **Connectivity** | 32 | 0 | 0 | 0 | 0 |
-| **Hardware** | 35 | 0 | 0 | 0 | 0 |
-| **Interfaces** | 115 | 0 | 0 | 0 | 0 |
-| **Logging** | 17 | 0 | 0 | 0 | 0 |
+| **AVT** | 3 | 0 | 0 | 0 | 0 |
+| **BGP** | 14 | 0 | 0 | 0 | 0 |
+| **Configuration** | 38 | 0 | 0 | 0 | 0 |
+| **Connectivity** | 34 | 0 | 0 | 0 | 0 |
+| **Hardware** | 42 | 0 | 0 | 0 | 0 |
+| **Interfaces** | 123 | 0 | 0 | 0 | 0 |
+| **Logging** | 19 | 0 | 0 | 0 | 0 |
 | **MLAG** | 27 | 0 | 0 | 0 | 0 |
 | **OSPF** | 12 | 0 | 0 | 0 | 0 |
-| **Path-Selection** | 2 | 0 | 0 | 0 | 0 |
-| **Routing** | 17 | 0 | 0 | 0 | 0 |
-| **Security** | 19 | 0 | 0 | 0 | 0 |
-| **STP** | 17 | 0 | 0 | 0 | 0 |
-| **System** | 102 | 0 | 0 | 0 | 0 |
-| **VXLAN** | 12 | 0 | 0 | 0 | 0 |
+| **Path-Selection** | 3 | 0 | 0 | 0 | 0 |
+| **Routing** | 19 | 0 | 0 | 0 | 0 |
+| **Security** | 22 | 0 | 0 | 0 | 0 |
+| **STP** | 19 | 0 | 0 | 0 | 0 |
+| **System** | 114 | 0 | 0 | 0 | 0 |
+| **VXLAN** | 13 | 0 | 0 | 0 | 0 |
 
 ## 🧪 Test Results <a id="test-results"></a>
 
@@ -313,6 +315,37 @@
 | dc1-wan2 | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
 | dc1-wan2 | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc1-wan2 | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | Unset | - |
+| dc1-wan3 | AVT | VerifyAVTSpecificPath | Verifies the Adaptive Virtual Topology (AVT) path. | Unset | - |
+| dc1-wan3 | BGP | VerifyBGPPeerSession | Verifies the session state of BGP peers. | Unset | - |
+| dc1-wan3 | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
+| dc1-wan3 | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
+| dc1-wan3 | Connectivity | VerifyLLDPNeighbors | Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors. | Unset | - |
+| dc1-wan3 | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
+| dc1-wan3 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Unset | - |
+| dc1-wan3 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Unset | - |
+| dc1-wan3 | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | Unset | - |
+| dc1-wan3 | Hardware | VerifyInventory | Verifies the physical hardware inventory of the device. | Unset | - |
+| dc1-wan3 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | Unset | - |
+| dc1-wan3 | Hardware | VerifyTransceiversManufacturers | Verifies if all the transceivers come from approved manufacturers. | Unset | - |
+| dc1-wan3 | Hardware | VerifyTransceiversTemperature | Verifies if all the transceivers are operating at an acceptable temperature. | Unset | - |
+| dc1-wan3 | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | Unset | - |
+| dc1-wan3 | Interfaces | VerifyInterfaceErrDisabled | Verifies there are no interfaces in the errdisabled state. | Unset | - |
+| dc1-wan3 | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | Unset | - |
+| dc1-wan3 | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
+| dc1-wan3 | Interfaces | VerifyInterfacesStatus | Verifies the operational states of specified interfaces to ensure they match expected configurations. | Unset | - |
+| dc1-wan3 | Logging | VerifyLoggingErrors | Verifies there are no syslog messages with a severity of ERRORS or higher. | Unset | - |
+| dc1-wan3 | Path-Selection | VerifySpecificPath | Verifies the DPS path and telemetry state of an IPv4 peer. | Unset | - |
+| dc1-wan3 | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
+| dc1-wan3 | Security | VerifyAPIHttpsSSL | Verifies if the eAPI has a valid SSL profile. | Unset | - |
+| dc1-wan3 | Security | VerifySpecificIPSecConn | Verifies the IPv4 security connections. | Unset | - |
+| dc1-wan3 | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
+| dc1-wan3 | System | VerifyAgentLogs | Verifies there are no agent crash reports. | Unset | - |
+| dc1-wan3 | System | VerifyCoredump | Verifies there are no core dump files. | Unset | - |
+| dc1-wan3 | System | VerifyFileSystemUtilization | Verifies that no partition is utilizing more than 75% of its disk space. | Unset | - |
+| dc1-wan3 | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
+| dc1-wan3 | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
+| dc1-wan3 | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
+| dc1-wan3 | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | Unset | - |
 | dc2-leaf1a | BGP | VerifyBGPPeerSession | Verifies the session state of BGP peers. | Unset | - |
 | dc2-leaf1a | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
 | dc2-leaf1a | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
@@ -521,3 +554,18 @@
 | dc2-leaf3b.arista.com | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
 | dc2-leaf3b.arista.com | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc2-leaf3b.arista.com | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | Unset | - |
+| dc2-leaf3c | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
+| dc2-leaf3c | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
+| dc2-leaf3c | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | Unset | - |
+| dc2-leaf3c | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | Unset | - |
+| dc2-leaf3c | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
+| dc2-leaf3c | Logging | VerifyLoggingErrors | Verifies there are no syslog messages with a severity of ERRORS or higher. | Unset | - |
+| dc2-leaf3c | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
+| dc2-leaf3c | Security | VerifyAPIHttpsSSL | Verifies if the eAPI has a valid SSL profile. | Unset | - |
+| dc2-leaf3c | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
+| dc2-leaf3c | System | VerifyAgentLogs | Verifies there are no agent crash reports. | Unset | - |
+| dc2-leaf3c | System | VerifyCoredump | Verifies there are no core dump files. | Unset | - |
+| dc2-leaf3c | System | VerifyFileSystemUtilization | Verifies that no partition is utilizing more than 75% of its disk space. | Unset | - |
+| dc2-leaf3c | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
+| dc2-leaf3c | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
+| dc2-leaf3c | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
