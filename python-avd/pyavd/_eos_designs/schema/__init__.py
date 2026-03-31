@@ -90053,6 +90053,7 @@ class EosDesigns(EosDesignsRootModel):
         "overlay_routing_protocol": {"type": str},
         "overlay_routing_protocol_address_family": {"type": str, "default": "ipv4"},
         "overlay_rt_type": {"type": OverlayRtType},
+        "overlay_vxlan_multi_vtep_mlag": {"type": bool, "default": False},
         "p2p_uplinks_mtu": {"type": int, "default": 9214},
         "p2p_uplinks_qos_profile": {"type": str},
         "custom_platform_settings": {"type": CustomPlatformSettings},
@@ -91958,6 +91959,12 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    overlay_vxlan_multi_vtep_mlag: bool
+    """
+    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+
+    Default value: `False`
+    """
     p2p_uplinks_mtu: int
     """
     Point to Point Links MTU.
@@ -92659,6 +92666,7 @@ class EosDesigns(EosDesignsRootModel):
             overlay_routing_protocol: OverlayRoutingProtocol | None | UndefinedType = Undefined,
             overlay_routing_protocol_address_family: OverlayRoutingProtocolAddressFamily | UndefinedType = Undefined,
             overlay_rt_type: OverlayRtType | UndefinedType = Undefined,
+            overlay_vxlan_multi_vtep_mlag: bool | UndefinedType = Undefined,
             p2p_uplinks_mtu: int | UndefinedType = Undefined,
             p2p_uplinks_qos_profile: str | None | UndefinedType = Undefined,
             custom_platform_settings: CustomPlatformSettings | UndefinedType = Undefined,
@@ -93810,6 +93818,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                overlay_vxlan_multi_vtep_mlag: Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
                 p2p_uplinks_mtu:
                    Point to Point Links MTU.
                    Precedence: <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu ->

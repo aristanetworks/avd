@@ -53,7 +53,7 @@ class VxlanInterfaceMixin(Protocol):
 
     @cached_property
     def _multi_vtep(self: AvdStructuredConfigNetworkServicesProtocol) -> bool:
-        return self.shared_utils.mlag is True and self.shared_utils.evpn_multicast is True
+        return self.shared_utils.mlag is True and (self.shared_utils.evpn_multicast is True or self.inputs.overlay_vxlan_multi_vtep_mlag is True)
 
     @structured_config_contributor
     def vxlan_interface(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
