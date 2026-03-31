@@ -66466,7 +66466,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str
                     """
                     Traffic-policy name.
-                    Currently this is always configured with "fallback traffic policy none".
+                    Currently this is always configured with "fallback traffic-policy none".
                     """
                     enforcement_management: bool | None
                     """Enforce CPU traffic-policy on management ports."""
@@ -66483,7 +66483,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 name:
                                    Traffic-policy name.
-                                   Currently this is always configured with "fallback traffic policy none".
+                                   Currently this is always configured with "fallback traffic-policy none".
                                 enforcement_management: Enforce CPU traffic-policy on management ports.
 
                             """

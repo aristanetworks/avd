@@ -12,7 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "traffic_policies.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu</samp>](## "traffic_policies.vrfs.[].cpu") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "traffic_policies.vrfs.[].cpu.traffic_policy") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "traffic_policies.vrfs.[].cpu.traffic_policy.name") | String | Required |  |  | Traffic-policy name.<br>Currently this is always configured with "fallback traffic policy none". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "traffic_policies.vrfs.[].cpu.traffic_policy.name") | String | Required |  |  | Traffic-policy name.<br>Currently this is always configured with "fallback traffic-policy none". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enforcement_management</samp>](## "traffic_policies.vrfs.[].cpu.traffic_policy.enforcement_management") | Boolean |  |  |  | Enforce CPU traffic-policy on management ports. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy_input_physical</samp>](## "traffic_policies.vrfs.[].traffic_policy_input_physical") | String |  |  |  | Apply traffic-policy to traffic arriving on physical interfaces within VRF. |
     | [<samp>&nbsp;&nbsp;options</samp>](## "traffic_policies.options") | Dictionary |  |  |  |  |
@@ -117,7 +117,7 @@
             traffic_policy:
 
               # Traffic-policy name.
-              # Currently this is always configured with "fallback traffic policy none".
+              # Currently this is always configured with "fallback traffic-policy none".
               name: <str; required>
 
               # Enforce CPU traffic-policy on management ports.
