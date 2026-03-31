@@ -79,3 +79,26 @@ wan_router:
               peer_ip: 100.64.5.1
               static_routes:
                 - prefix: 100.64.0.0/16
+    # EVPN WAN gateway: WAN router also participating in EVPN on the DC side.
+    # Must be in its own node_group (single-node constraint for evpn_wan_gateway).
+    - group: DC1-EVPN-WAN-GW
+      bgp_as: 65101
+      wan_ha:
+        enabled: false
+      # Separate pool to avoid conflicts with the WAN route server vtep_ips
+      # (10.255.255.10, 10.255.255.20) that fall within the shared 10.255.255.0/26 pool.
+      uplink_ipv4_pool: 10.255.253.0/26
+      nodes:
+        - name: dc1-wan3
+          id: 3
+          mgmt_ip: 172.16.1.17/24
+          evpn_role: client
+          uplink_switch_interfaces: [Ethernet18, Ethernet18]
+          l3_interfaces:
+            - name: Ethernet13
+              ip_address: 172.18.5.12/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: DC1-MPLS-5
+              peer_ip: 172.18.5.11
+              static_routes:
+                - prefix: 172.18.0.0/16

@@ -143,6 +143,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;internet_access</samp>](## "metadata.digital_twin.internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default. |
     | [<samp>&nbsp;&nbsp;validate_no_errors_period</samp>](## "metadata.validate_no_errors_period") | Integer |  |  |  | Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "metadata.exclude_as_extra_fabric_validation_target") | Boolean |  |  |  | Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.<br> |
+    | [<samp>&nbsp;&nbsp;interfaces</samp>](## "metadata.interfaces") | Dictionary |  |  |  | Interface validation settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;errdisable</samp>](## "metadata.interfaces.errdisable") | Dictionary |  |  |  | Settings for the VerifyInterfaceErrDisabled test. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_avd_interfaces</samp>](## "metadata.interfaces.errdisable.only_avd_interfaces") | Boolean |  | `False` |  | Only validate interfaces defined in the AVD structured configuration for errdisabled state. |
 
 === "YAML"
 
@@ -338,6 +341,15 @@
 
       # Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.
       exclude_as_extra_fabric_validation_target: <bool>
+
+      # Interface validation settings.
+      interfaces:
+
+        # Settings for the VerifyInterfaceErrDisabled test.
+        errdisable:
+
+          # Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+          only_avd_interfaces: <bool; default=False>
     ```
 
     1. Default Value

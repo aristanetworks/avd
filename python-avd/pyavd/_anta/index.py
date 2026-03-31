@@ -21,7 +21,7 @@ AVD_TEST_INDEX: list[AVDTestSpec] = [
     AVDTestSpec(test_class=VerifyFileSystemUtilization),
     AVDTestSpec(test_class=VerifyIllegalLACP, input_factory=VerifyIllegalLACPInputFactory),
     AVDTestSpec(test_class=VerifyInterfaceDiscards),
-    AVDTestSpec(test_class=VerifyInterfaceErrDisabled),
+    AVDTestSpec(test_class=VerifyInterfaceErrDisabled, input_factory=VerifyInterfaceErrDisabledInputFactory),
     AVDTestSpec(test_class=VerifyInterfaceErrors),
     AVDTestSpec(test_class=VerifyInterfaceUtilization),
     AVDTestSpec(test_class=VerifyInterfacesStatus, input_factory=VerifyInterfacesStatusInputFactory),

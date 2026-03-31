@@ -10052,6 +10052,19 @@ keys:
           `anta_runner` role.
 
           '
+      interfaces:
+        type: dict
+        description: Interface validation settings.
+        keys:
+          errdisable:
+            type: dict
+            description: Settings for the VerifyInterfaceErrDisabled test.
+            keys:
+              only_avd_interfaces:
+                type: bool
+                description: Only validate interfaces defined in the AVD structured
+                  configuration for errdisabled state.
+                default: false
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -15562,6 +15575,33 @@ keys:
             type: bool
             description: Allow redistribution of iBGP routes into an Interior Gateway
               Protocol (IGP). EOS default is true.
+          labeled_unicast:
+            type: dict
+            keys:
+              rib:
+                type: dict
+                description: Configure LU RIB behavior for ip and/or tunnel.
+                keys:
+                  ip:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into IP RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to IP RIB.
+                  tunnel:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into Tunnel RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to tunnel RIB.
       listen_ranges:
         type: list
         description: 'Improved "listen_ranges" data model to support multiple listen

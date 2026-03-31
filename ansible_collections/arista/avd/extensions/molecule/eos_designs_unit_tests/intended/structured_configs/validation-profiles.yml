@@ -37,6 +37,9 @@ metadata:
     - Third-party vendor profile1
   validate_no_errors_period: 2
   exclude_as_extra_fabric_validation_target: true
+  interfaces:
+    errdisable:
+      only_avd_interfaces: true
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
