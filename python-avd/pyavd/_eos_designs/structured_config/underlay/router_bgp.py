@@ -28,7 +28,7 @@ class RouterBgpMixin(Protocol):
                 # Use route-map for redistribution
                 self.structured_config.router_bgp.redistribute.connected.route_map = "RM-CONN-2-BGP"
                 # Create route-map
-                self.set_once_route_map_connected_to_bgp()
+                self.structured_config_utils.set_once_route_map_connected_to_bgp()
 
         if not self.shared_utils.underlay_bgp:
             return

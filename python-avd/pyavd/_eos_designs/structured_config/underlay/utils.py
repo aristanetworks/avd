@@ -25,16 +25,6 @@ class UtilsMixin(Protocol):
     """
 
     @cached_property
-    def _avd_peers(self: AvdStructuredConfigUnderlayProtocol) -> list[str]:
-        """
-        Returns a list of peers.
-
-        This cannot be loaded in shared_utils since it will not be calculated until EosDesignsFacts has been rendered
-        and shared_utils are shared between EosDesignsFacts and AvdStructuredConfig classes like this one.
-        """
-        return natural_sort(self.facts.downlink_switches)
-
-    @cached_property
     def _underlay_links(self: AvdStructuredConfigUnderlayProtocol) -> EosDesignsFacts.Uplinks:
         """Returns the list of underlay links for this device."""
         underlay_links = self.facts.uplinks._deepcopy()
@@ -50,7 +40,7 @@ class UtilsMixin(Protocol):
             self.inputs.fabric_flow_tracking.downlinks._cast_as(EosDesigns.FabricFlowTracking.Uplinks)
         )
 
-        for peer in self._avd_peers:
+        for peer in self.shared_utils.switch_facts.downlink_switches:
             peer_facts = self.shared_utils.get_peer_facts(peer)
             for uplink in peer_facts.uplinks:
                 if uplink.peer != self.shared_utils.hostname:

@@ -50,7 +50,7 @@ class DhcpServersMixin(Protocol):
 
         Used for l3 inband ztp/ztr.
         """
-        for peer in self._avd_peers:
+        for peer in self.shared_utils.switch_facts.downlink_switches:
             peer_facts = self.shared_utils.get_peer_facts(peer)
             for uplink in peer_facts.uplinks:
                 if (
