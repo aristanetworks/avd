@@ -5,7 +5,6 @@
   vars:
     underlay_routing_protocol: ABC
   arista.avd.validate_inputs:
-    device_list: "{{ ansible_play_hosts_all }}"
     schema_name: avd_design
     fail_on_validation_errors: true
     tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
@@ -24,7 +23,6 @@
   vars:
     underlay_routing_protocol: ABC
   arista.avd.validate_inputs:
-    device_list: "{{ ansible_play_hosts_all }}"
     schema_name: avd_design
     tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
     fail_on_validation_errors: false

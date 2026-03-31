@@ -30,7 +30,6 @@
     - name: Validate eos_designs inputs
       arista.avd.validate_inputs:
         tmp_dir: "{{ eos_designs_tmp_dir }}"
-        device_list: "{{ ansible_play_hosts_all }}"
         batch_size: "{{ eos_designs_validate_inputs_batch_size | arista.avd.default(10) }}"
         schema_name: avd_design
         fail_on_validation_errors: true

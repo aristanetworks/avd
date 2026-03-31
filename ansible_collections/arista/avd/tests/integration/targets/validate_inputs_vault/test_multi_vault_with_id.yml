@@ -14,7 +14,6 @@
   tasks:
     - name: Validate inputs with avd_vault_id='prod'
       arista.avd.validate_inputs:
-        device_list: "{{ ansible_play_hosts_all }}"
         schema_name: eos_config
         read_from_input_dir: false
         vault_id: prod

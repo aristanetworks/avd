@@ -1,7 +1,6 @@
 ---
 - name: Validate inputs reading from yml file
   arista.avd.validate_inputs:
-    device_list: "{{ ansible_play_hosts_all }}"
     schema_name: eos_config
     input_dir: "{{ input_dir }}"
     input_suffix: yml

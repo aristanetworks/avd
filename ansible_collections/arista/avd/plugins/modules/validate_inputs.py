@@ -26,17 +26,18 @@ options:
     type: str
   device_list:
     description:
-      - List of hostnames to process.
+      - Optional list of hostnames to process. If not provided, fallback to all hosts in the current play.
       - For `eos_config` and `cv_deploy` schemas, only these hosts will be validated.
       - For `avd_design`, these hosts must be a subset of the `fabric_name` group and the entire group will be processed.
-    required: true
+    required: false
     type: list
     elements: str
   schema_name:
     description:
       - The AVD schema to validate against.
       - If set to `avd_design`, the plugin will validate the inputs for the entire fabric (requiring `fabric_name` to be set).
-      - If set to `eos_config` or `cv_deploy`, the plugin will validate the inputs for the devices in the provided `device_list`.
+      - If set to `eos_config` or `cv_deploy`, the plugin will validate the inputs for the devices in the `device_list` if provided,
+        otherwise all hosts in the current play.
     type: str
     default: "avd_design"
     choices: ["avd_design", "eos_config", "cv_deploy"]
@@ -61,12 +62,6 @@ options:
       - Requires `input_dir` to be set when `true`.
     type: bool
     default: false
-  fail_on_missing_input_files:
-    description:
-      - If `true`, the task will fail if any input files are missing for devices in `device_list`.
-      - If `false`, devices with missing input files will be skipped with an informational log message.
-    type: bool
-    default: true
   fail_on_validation_errors:
     description:
       - If `true`, the task will fail if any validation errors are detected.
@@ -108,14 +103,12 @@ EXAMPLES = r"""
 - name: Validate eos_designs inputs for the fabric
   arista.avd.validate_inputs:
     tmp_dir: "intended/tmp_eos_designs"
-    device_list: "{{ ansible_play_hosts_all }}"
     schema_name: avd_design
     fail_on_validation_errors: true
 
 - name: Validate eos_designs inputs with custom validation configuration
   arista.avd.validate_inputs:
     tmp_dir: "intended/tmp_eos_designs"
-    device_list: "{{ ansible_play_hosts_all }}"
     schema_name: avd_design
     fail_on_validation_errors: true
     validation_configuration:
@@ -124,15 +117,14 @@ EXAMPLES = r"""
 - name: Validate eos_cli_config_gen inputs from structured config files
   arista.avd.validate_inputs:
     tmp_dir: "intended/tmp_eos_cli_config_gen"
-    device_list: "{{ ansible_play_hosts_all }}"
     schema_name: eos_config
     input_dir: "{{ inventory_dir }}/intended/structured_configs"
     input_suffix: "yml"
+    fail_on_validation_errors: false
 
 - name: Validate inputs with specific vault identity (when multiple vault identities are configured)
   arista.avd.validate_inputs:
     tmp_dir: "intended/tmp_eos_designs"
-    device_list: "{{ ansible_play_hosts_all }}"
     schema_name: avd_design
     vault_id: prod
     fail_on_validation_errors: true
@@ -144,17 +136,14 @@ EXAMPLES = r"""
 - name: Validate cv_deploy inputs from structured config files
   arista.avd.validate_inputs:
     tmp_dir: "intended/tmp_cv_deploy"
-    device_list: "{{ ansible_play_hosts_all }}"
     schema_name: cv_deploy
     input_dir: "{{ inventory_dir }}/intended/structured_configs"
     input_suffix: "yml"
-    fail_on_missing_input_files: false
     fail_on_validation_errors: true
 
 - name: Validate cv_deploy inputs from Ansible hostvars
   arista.avd.validate_inputs:
     tmp_dir: "intended/tmp_cv_deploy"
-    device_list: "{{ ansible_play_hosts_all }}"
     schema_name: cv_deploy
     fail_on_validation_errors: true
 """

@@ -83,20 +83,10 @@ class ValidateWorkerSuccess:
     """Path to the output JSON file, or None if validation failed."""
 
 
-@dataclass(frozen=True, slots=True)
-class ValidateWorkerSkipped:
-    """Result returned when a worker skips the validation phase for a host."""
-
-    hostname: str
-    """Hostname that was processed."""
-    reason: str
-    """Reason why the validation was skipped."""
-
-
 TemplateWorkerResult = TemplateWorkerSuccess | WorkerFailure
 """Result type from Phase 1 (templating hostvars and writing to file)."""
 
-ValidateWorkerResult = ValidateWorkerSuccess | ValidateWorkerSkipped | WorkerFailure
+ValidateWorkerResult = ValidateWorkerSuccess | WorkerFailure
 """Result type from Phase 2 (validating data and writing to file)."""
 
 
@@ -112,13 +102,12 @@ TARGET_LOGGERS = ("ansible_collections.arista.avd", "validation", "pyvalidation"
 
 ARGUMENT_SPEC = {
     "tmp_dir": {"type": "str", "required": True},
-    "device_list": {"type": "list", "elements": "str", "required": True},
+    "device_list": {"type": "list", "elements": "str"},
     "batch_size": {"type": "int", "default": 10},
     "schema_name": {"type": "str", "default": "avd_design", "choices": ["avd_design", "eos_config", "cv_deploy"]},
     "input_dir": {"type": "str"},
     "input_suffix": {"type": "str", "default": "yml", "choices": ["yml", "yaml", "json"]},
     "read_from_input_dir": {"type": "bool", "default": False},
-    "fail_on_missing_input_files": {"type": "bool", "default": True},
     "fail_on_validation_errors": {"type": "bool", "default": False},
     "validation_configuration": {"type": "dict", "options": {"warn_eos_config_keys": {"type": "bool"}}},
     "vault_id": {"type": "str"},
@@ -134,13 +123,12 @@ class ResolvedPluginArgs:
     """Plugin arguments."""
 
     tmp_dir: str
-    device_list: list[str]
+    device_list: list[str] | None
     batch_size: int
     schema_name: SCHEMA_NAME
     input_dir: str | None
     input_suffix: Literal["yml", "yaml", "json"]
     read_from_input_dir: bool
-    fail_on_missing_input_files: bool
     fail_on_validation_errors: bool
     validation_configuration: Configuration | None
     vault_id: str | None
@@ -243,7 +231,6 @@ class ActionModule(AvdActionPlugin):
                 input_suffix=validation_input_suffix,
                 output_path=validated_path,
                 schema_name=plugin_args.schema_name,
-                fail_on_missing_input_files=plugin_args.fail_on_missing_input_files,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
                 configuration=plugin_args.validation_configuration,
                 file_handler=file_handler,
@@ -291,20 +278,19 @@ class ActionModule(AvdActionPlugin):
 
         return configuration
 
-    def _get_hosts_to_process(self, task_vars: dict[str, Any], schema_name: SCHEMA_NAME, device_list: list[str]) -> list[str]:
+    def _get_hosts_to_process(self, task_vars: dict[str, Any], schema_name: SCHEMA_NAME, device_list: list[str] | None) -> list[str]:
         """
         Get the list of hostnames to process based on the schema.
 
-        For eos_config and cv_deploy, returns hosts from the provided device_list.
-        For avd_design, returns all hosts in the fabric group (needed to generate facts).
+        For eos_config and cv_deploy, returns hosts from device_list if provided,
+        otherwise fallback to `ansible_play_hosts_all`.
 
-        AVD roles using this plugin use `ansible_play_hosts_all` as the device_list,
-        but the cv_deploy role can override this.
+        For avd_design, returns all hosts in the fabric group (needed to generate facts).
 
         Args:
             task_vars: Ansible task variables.
             schema_name: The schema being validated.
-            device_list: List of hostnames to process.
+            device_list: List of hostnames to process or None to fallback to `ansible_play_hosts_all`.
 
         Returns:
             List of hostnames to process.
@@ -312,10 +298,12 @@ class ActionModule(AvdActionPlugin):
         Raises:
             ValueError: If fabric_name is invalid or missing for avd_design.
         """
+        ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", []) if device_list is None else device_list
+
         # For eos_config and cv_deploy, the validation is per-host.
-        # We only need to process the hosts provided in the device_list.
+        # We only need to process the hosts currently targeted by the play.
         if schema_name in {"eos_config", "cv_deploy"}:
-            return device_list
+            return ansible_play_hosts_all
 
         # For avd_design, we require fabric-wide facts.
         # We need to process the entire fabric group, not just the play hosts.
@@ -324,12 +312,12 @@ class ActionModule(AvdActionPlugin):
         fabric_hosts = groups.get(fabric_name, [])
 
         # Check if fabric_name is set and that all play hosts are part of the Ansible group set in "fabric_name".
-        if fabric_name is None or not set(device_list).issubset(fabric_hosts):
+        if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
             msg = (
                 "Invalid/missing 'fabric_name' variable. "
                 "All hosts in the play must have the same 'fabric_name' value "
                 "which must point to an Ansible Group containing the hosts."
-                f"play_hosts: {device_list}"
+                f"play_hosts: {ansible_play_hosts_all}"
             )
             raise ValueError(msg)
 
@@ -392,7 +380,6 @@ class ActionModule(AvdActionPlugin):
         input_suffix: str,
         output_path: Path,
         schema_name: SCHEMA_NAME,
-        fail_on_missing_input_files: bool,
         fail_on_validation_errors: bool,
         configuration: Configuration | None,
         file_handler: AVDFileHandler,
@@ -412,7 +399,6 @@ class ActionModule(AvdActionPlugin):
             input_suffix: File suffix for input files (json, yml, yaml).
             output_path: Directory where validated JSON files will be written.
             schema_name: Schema to validate against.
-            fail_on_missing_input_files: Whether to fail the task if the input file is missing.
             fail_on_validation_errors: Whether to fail the task on validation errors.
             configuration: Configuration for validation or None.
             file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
@@ -433,17 +419,12 @@ class ActionModule(AvdActionPlugin):
             schema_name=schema_name,
             configuration=configuration,
             file_handler=file_handler,
-            fail_on_missing_input_files=fail_on_missing_input_files,
         )
 
         with ThreadPoolExecutor(max_workers=workers) as pool:
             results = pool.map(worker_func, hostnames)
 
             for result in results:
-                if isinstance(result, ValidateWorkerSkipped):
-                    self.logger.info("Validation skipped for host %s: %s", result.hostname, result.reason)
-                    continue
-
                 if isinstance(result, WorkerFailure):
                     self.crashed_hosts.add(result.hostname)
                     self.logger.error("%s: %s", result.hostname, result.error)
@@ -520,7 +501,6 @@ def _validate_host_worker(
     schema_name: SCHEMA_NAME,
     configuration: Configuration | None,
     file_handler: AVDFileHandler,
-    fail_on_missing_input_files: bool,
 ) -> ValidateWorkerResult:
     """
     Phase 2 multithreading worker: Validate input data for a host.
@@ -536,19 +516,16 @@ def _validate_host_worker(
         schema_name: Schema to validate against.
         configuration: Configuration for validation or None.
         file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
-        fail_on_missing_input_files: Whether to return a ValidateWorkerSkipped or WorkerFailure if the input file is missing.
 
     Returns:
-        ValidateWorkerSuccess on success (with validation result), ValidateWorkerSkipped on skipped, WorkerFailure on error.
+        ValidateWorkerSuccess on success (with validation result), WorkerFailure on error.
     """
     try:
         input_file_path = input_path / f"{hostname}.{input_suffix}"
 
-        # If the input file is missing, return a failure or skipped depending on fail_on_missing_input_files.
+        # If the input file is missing (unexpected), fail early.
         if not input_file_path.exists():
-            if fail_on_missing_input_files:
-                return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
-            return ValidateWorkerSkipped(hostname=hostname, reason=f"No input file: {input_file_path}")
+            return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
 
         # Load file content (decrypted if Vault encrypted).
         file_content = file_handler.read_file(input_file_path)
