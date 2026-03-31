@@ -6057,7 +6057,11 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "port": {"type": int, "default": 9910}}
                 name: str
-                """Server FQDN or IP address."""
+                """
+                Server IP address or FQDN.
+                Note: It is currently recommended to use IP address because of
+                limitations with Image transfers from CloudVision.
+                """
                 port: int
                 """Default value: `9910`"""
 
@@ -6071,7 +6075,10 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: Server FQDN or IP address.
+                            name:
+                               Server IP address or FQDN.
+                               Note: It is currently recommended to use IP address because of
+                               limitations with Image transfers from CloudVision.
                             port: port
 
                         """
