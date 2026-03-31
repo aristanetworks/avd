@@ -33,7 +33,7 @@ keys:
                       required: true
                       description: |-
                         Traffic-policy name.
-                        Currently this is always configured with "fallback traffic policy none".
+                        Currently this is always configured with "fallback traffic-policy none".
                     enforcement_management:
                       type: bool
                       description: Enforce CPU traffic-policy on management ports.
