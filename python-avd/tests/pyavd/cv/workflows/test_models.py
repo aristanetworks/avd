@@ -448,3 +448,226 @@ class TestAvdManifestFromDict:
         """Tests that ValueError is raised for invalid AvdManifest data."""
         with pytest.raises(ValueError, match=match_str):
             AvdManifest.from_dict(invalid_data)
+
+
+class TestAvdManifestMerge:
+    def test_merge_no_arguments(self) -> None:
+        """Merging with no arguments returns an empty manifest."""
+        result = AvdManifest.merge()
+        assert result.configlets == ()
+        assert result.containers == ()
+
+    def test_merge_single_manifest(self) -> None:
+        """Merging a single manifest returns the same instance."""
+        configlet = AvdConfiglet(name="cfg1", file="file1.cfg")
+        manifest = AvdManifest(configlets=(configlet,), containers=())
+        result = AvdManifest.merge(manifest)
+        assert result is manifest
+
+    def test_merge_disjoint_configlets(self) -> None:
+        """Merging manifests with non-overlapping configlets produces their union."""
+        manifest_a = AvdManifest(configlets=(AvdConfiglet(name="cfg_a", file="a.cfg"),), containers=())
+        manifest_b = AvdManifest(configlets=(AvdConfiglet(name="cfg_b", file="b.cfg"),), containers=())
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+
+        names = {cfg.name for cfg in result.configlets}
+        assert names == {"cfg_a", "cfg_b"}
+
+    def test_merge_duplicate_configlets_same_file(self) -> None:
+        """Merging manifests with identical configlets (same name and file) deduplicates them."""
+        configlet = AvdConfiglet(name="shared", file="shared.cfg")
+        manifest_a = AvdManifest(configlets=(configlet,), containers=())
+        manifest_b = AvdManifest(configlets=(configlet,), containers=())
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+
+        assert len(result.configlets) == 1
+        assert result.configlets[0].name == "shared"
+
+    def test_merge_conflicting_configlets_raises(self) -> None:
+        """Merging manifests where a configlet name maps to different files raises ValueError."""
+        manifest_a = AvdManifest(configlets=(AvdConfiglet(name="conflict", file="file_a.cfg"),), containers=())
+        manifest_b = AvdManifest(configlets=(AvdConfiglet(name="conflict", file="file_b.cfg"),), containers=())
+
+        with pytest.raises(ValueError, match="Cannot merge manifests: configlet 'conflict' has conflicting file paths"):
+            AvdManifest.merge(manifest_a, manifest_b)
+
+    def test_merge_disjoint_containers(self) -> None:
+        """Merging manifests with non-overlapping containers produces their union."""
+        container_a = AvdContainer(name="RACK_1", tag_query="rack:1")
+        container_b = AvdContainer(name="RACK_2", tag_query="rack:2")
+        manifest_a = AvdManifest(configlets=(), containers=(container_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(container_b,))
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+
+        names = {cont.name for cont in result.containers}
+        assert names == {"RACK_1", "RACK_2"}
+
+    def test_merge_same_name_containers(self) -> None:
+        """Merging manifests with same name, compatible containers merges them."""
+        container_a = AvdContainer(name="RACK_1", tag_query="rack:1", configlets=("cfg_a",))
+        container_b = AvdContainer(name="RACK_1", tag_query="rack:1", configlets=("cfg_b",))
+        manifest_a = AvdManifest(configlets=(), containers=(container_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(container_b,))
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+
+        assert len(result.containers) == 1
+        assert result.containers[0].name == "RACK_1"
+        assert result.containers[0].configlets == ("cfg_a", "cfg_b")
+
+    def test_merge_containers_conflicting_tag_query_raises(self) -> None:
+        """Merging containers with the same name but different tag_query raises ValueError."""
+        container_a = AvdContainer(name="RACK_1", tag_query="rack:1")
+        container_b = AvdContainer(name="RACK_1", tag_query="rack:2")
+        manifest_a = AvdManifest(configlets=(), containers=(container_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(container_b,))
+
+        with pytest.raises(ValueError, match="Cannot merge containers 'RACK_1': conflicting tag_query"):
+            AvdManifest.merge(manifest_a, manifest_b)
+
+    def test_merge_containers_conflicting_match_policy_raises(self) -> None:
+        """Merging containers with the same name but different match_policy raises ValueError."""
+        container_a = AvdContainer(name="RACK_1", tag_query="rack:1", match_policy="match_all")
+        container_b = AvdContainer(name="RACK_1", tag_query="rack:1", match_policy="match_first")
+        manifest_a = AvdManifest(configlets=(), containers=(container_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(container_b,))
+
+        with pytest.raises(ValueError, match="Cannot merge containers 'RACK_1': conflicting match_policy"):
+            AvdManifest.merge(manifest_a, manifest_b)
+
+    def test_merge_nested_sub_containers(self) -> None:
+        """Merging manifests recursively merges sub_containers with the same name."""
+        child_a = AvdContainer(name="CHILD", tag_query="child:1", configlets=("cfg_a",))
+        child_b = AvdContainer(name="CHILD", tag_query="child:1", configlets=("cfg_b",))
+        root_a = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_a,))
+        root_b = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_b,))
+        manifest_a = AvdManifest(configlets=(), containers=(root_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(root_b,))
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+
+        assert len(result.containers) == 1
+        root = result.containers[0]
+        assert len(root.sub_containers) == 1
+        assert root.sub_containers[0].configlets == ("cfg_a", "cfg_b")
+
+    def test_merge_sub_containers_disjoint(self) -> None:
+        """Merging containers with different sub_containers produces their union."""
+        child_a = AvdContainer(name="CHILD_A", tag_query="a:1")
+        child_b = AvdContainer(name="CHILD_B", tag_query="b:1")
+        root_a = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_a,))
+        root_b = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_b,))
+        manifest_a = AvdManifest(configlets=(), containers=(root_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(root_b,))
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+
+        root = result.containers[0]
+        child_names = {child.name for child in root.sub_containers}
+        assert child_names == {"CHILD_A", "CHILD_B"}
+
+    def test_merge_configlet_refs_deduplicated_preserving_order(self) -> None:
+        """Duplicate configlet references within containers are deduplicated, preserving insertion order."""
+        container_a = AvdContainer(name="ROOT", tag_query="all", configlets=("cfg_1", "cfg_2"))
+        container_b = AvdContainer(name="ROOT", tag_query="all", configlets=("cfg_2", "cfg_3"))
+        manifest_a = AvdManifest(configlets=(), containers=(container_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(container_b,))
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+
+        assert result.containers[0].configlets == ("cfg_1", "cfg_2", "cfg_3")
+
+    def test_merge_description_first_non_none_wins(self) -> None:
+        """When merging containers, the first non-None description is used."""
+        container_a = AvdContainer(name="ROOT", tag_query="all", description=None)
+        container_b = AvdContainer(name="ROOT", tag_query="all", description="From B")
+        manifest_a = AvdManifest(configlets=(), containers=(container_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(container_b,))
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+        assert result.containers[0].description == "From B"
+
+    def test_merge_description_existing_takes_precedence(self) -> None:
+        """When merging containers, the existing description takes precedence over the other."""
+        container_a = AvdContainer(name="ROOT", tag_query="all", description="From A")
+        container_b = AvdContainer(name="ROOT", tag_query="all", description="From B")
+        manifest_a = AvdManifest(configlets=(), containers=(container_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(container_b,))
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+        assert result.containers[0].description == "From A"
+
+    def test_merge_three_manifests(self) -> None:
+        """Merging three manifests correctly combines all configlets and containers."""
+        manifest_a = AvdManifest(
+            configlets=(AvdConfiglet(name="cfg_a", file="a.cfg"),),
+            containers=(AvdContainer(name="ROOT", tag_query="all", configlets=("cfg_a",)),),
+        )
+        manifest_b = AvdManifest(
+            configlets=(AvdConfiglet(name="cfg_b", file="b.cfg"),),
+            containers=(AvdContainer(name="ROOT", tag_query="all", configlets=("cfg_b",)),),
+        )
+        manifest_c = AvdManifest(
+            configlets=(AvdConfiglet(name="cfg_c", file="c.cfg"),),
+            containers=(AvdContainer(name="STANDALONE", tag_query="standalone:1"),),
+        )
+
+        result = AvdManifest.merge(manifest_a, manifest_b, manifest_c)
+
+        configlet_names = {cfg.name for cfg in result.configlets}
+        assert configlet_names == {"cfg_a", "cfg_b", "cfg_c"}
+
+        container_names = {cont.name for cont in result.containers}
+        assert container_names == {"ROOT", "STANDALONE"}
+
+        root = next(cont for cont in result.containers if cont.name == "ROOT")
+        assert root.configlets == ("cfg_a", "cfg_b")
+
+    def test_merge_configlets_only(self) -> None:
+        """Merging manifests that only have configlets (no containers) works correctly."""
+        manifest_a = AvdManifest(configlets=(AvdConfiglet(name="cfg_a", file="a.cfg"),), containers=())
+        manifest_b = AvdManifest(configlets=(AvdConfiglet(name="cfg_b", file="b.cfg"),), containers=())
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+
+        assert len(result.configlets) == 2
+        assert result.containers == ()
+
+    def test_merge_containers_only(self) -> None:
+        """Merging manifests that only have containers (no configlets) works correctly."""
+        manifest_a = AvdManifest(configlets=(), containers=(AvdContainer(name="RACK_1", tag_query="rack:1"),))
+        manifest_b = AvdManifest(configlets=(), containers=(AvdContainer(name="RACK_2", tag_query="rack:2"),))
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+
+        assert result.configlets == ()
+        assert len(result.containers) == 2
+
+    def test_merge_empty_manifests(self) -> None:
+        """Merging two empty manifests returns an empty manifest."""
+        result = AvdManifest.merge(AvdManifest(), AvdManifest())
+        assert result.configlets == ()
+        assert result.containers == ()
+
+    def test_merge_deeply_nested_containers(self) -> None:
+        """Merging works correctly with deeply nested container hierarchies."""
+        grandchild_a = AvdContainer(name="GRANDCHILD", tag_query="gc:1", configlets=("gc_cfg_a",))
+        child_a = AvdContainer(name="CHILD", tag_query="child:1", sub_containers=(grandchild_a,))
+        root_a = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_a,))
+
+        grandchild_b = AvdContainer(name="GRANDCHILD", tag_query="gc:1", configlets=("gc_cfg_b",))
+        child_b = AvdContainer(name="CHILD", tag_query="child:1", sub_containers=(grandchild_b,))
+        root_b = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_b,))
+
+        manifest_a = AvdManifest(configlets=(), containers=(root_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(root_b,))
+
+        result = AvdManifest.merge(manifest_a, manifest_b)
+
+        root = result.containers[0]
+        child = root.sub_containers[0]
+        grandchild = child.sub_containers[0]
+        assert grandchild.configlets == ("gc_cfg_a", "gc_cfg_b")

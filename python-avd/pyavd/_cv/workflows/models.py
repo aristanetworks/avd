@@ -329,6 +329,79 @@ class AvdManifest:
             msg = f"Failed to build the static configuration manifest. Please check your input data. Original error: {e}"
             raise ValueError(msg) from e
 
+    @classmethod
+    def merge(cls, *manifests: AvdManifest) -> AvdManifest:
+        """
+        Merge multiple AvdManifest instances into a single manifest.
+
+        Configlets are deduplicated by name.
+
+        Containers at the same level with the same name are merged recursively.
+        """
+        if not manifests:
+            return cls()
+
+        if len(manifests) == 1:
+            return manifests[0]
+
+        merged_configlets: dict[str, AvdConfiglet] = {}
+        for manifest in manifests:
+            for configlet in manifest.configlets:
+                if configlet.name in merged_configlets:
+                    existing = merged_configlets[configlet.name]
+                    if existing.file != configlet.file:
+                        msg = f"Cannot merge manifests: configlet '{configlet.name}' has conflicting file paths: '{existing.file}' vs '{configlet.file}'"
+                        raise ValueError(msg)
+                else:
+                    merged_configlets[configlet.name] = configlet
+
+        return cls(
+            configlets=tuple(merged_configlets.values()),
+            containers=cls._merge_containers(*(manifest.containers for manifest in manifests)),
+        )
+
+    @classmethod
+    def _merge_containers(cls, *container_tuples: tuple[AvdContainer, ...]) -> tuple[AvdContainer, ...]:
+        """Merge multiple container tuples by name. Containers with the same name are merged recursively."""
+        merged: dict[str, AvdContainer] = {}
+        for containers in container_tuples:
+            for container in containers:
+                if container.name in merged:
+                    merged[container.name] = cls._merge_two_containers(merged[container.name], container)
+                else:
+                    merged[container.name] = container
+        return tuple(merged.values())
+
+    @classmethod
+    def _merge_two_containers(cls, existing: AvdContainer, other: AvdContainer) -> AvdContainer:
+        """Merge two containers with the same name, raising on conflicting properties."""
+        if existing.tag_query != other.tag_query:
+            msg = f"Cannot merge containers '{existing.name}': conflicting tag_query '{existing.tag_query}' vs '{other.tag_query}'"
+            raise ValueError(msg)
+        if existing.match_policy != other.match_policy:
+            msg = f"Cannot merge containers '{existing.name}': conflicting match_policy '{existing.match_policy}' vs '{other.match_policy}'"
+            raise ValueError(msg)
+
+        # Merge sub_containers recursively by name.
+        merged_sub_containers = cls._merge_containers(existing.sub_containers, other.sub_containers)
+
+        # Merge configlet references (union, preserving order).
+        seen_configlets = set(existing.configlets)
+        merged_configlets = list(existing.configlets)
+        for configlet_name in other.configlets:
+            if configlet_name not in seen_configlets:
+                seen_configlets.add(configlet_name)
+                merged_configlets.append(configlet_name)
+
+        return AvdContainer(
+            name=existing.name,
+            tag_query=existing.tag_query,
+            description=existing.description or other.description,
+            match_policy=existing.match_policy,
+            configlets=tuple(merged_configlets),
+            sub_containers=merged_sub_containers,
+        )
+
 
 @dataclass(frozen=True)
 class CVManifest:
