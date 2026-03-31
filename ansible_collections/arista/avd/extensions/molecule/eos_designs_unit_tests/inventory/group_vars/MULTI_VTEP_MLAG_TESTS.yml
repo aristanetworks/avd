@@ -13,8 +13,6 @@ l3leaf:
     loopback_ipv4_offset: 32
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     platform: vEOS-LAB
-    uplink_switches: ["mlag-isis-spine"]
-    uplink_interfaces: ["Ethernet1"]
   node_groups:
     - group: MULTI_VTEP_MLAG_L3LEAF1
       bgp_as: 65161
@@ -22,10 +20,8 @@ l3leaf:
         - name: multi-vtep-mlag-l3leaf1a
           id: 6
           mgmt_ip: 192.168.201.118/24
-          uplink_switch_interfaces: [Ethernet32]
           mlag_interfaces: [Ethernet5, Ethernet6]
         - name: multi-vtep-mlag-l3leaf1b
           id: 7
           mgmt_ip: 192.168.201.119/24
-          uplink_switch_interfaces: [Ethernet33]
           mlag_interfaces: [Ethernet5, Ethernet6]

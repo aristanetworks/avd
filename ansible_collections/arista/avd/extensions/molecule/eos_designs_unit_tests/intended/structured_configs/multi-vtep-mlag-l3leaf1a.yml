@@ -24,17 +24,6 @@ ethernet_interfaces:
     peer: multi-vtep-mlag-l3leaf1b
     peer_interface: Ethernet6
     peer_type: mlag_peer
-- name: Ethernet1
-  description: P2P_mlag-isis-spine_Ethernet32
-  shutdown: false
-  mtu: 9214
-  ip_address: 10.10.101.11/31
-  metadata:
-    peer: mlag-isis-spine
-    peer_interface: Ethernet32
-    peer_type: spine
-  switchport:
-    enabled: false
 hostname: multi-vtep-mlag-l3leaf1a
 ip_igmp_snooping:
   globally_enabled: true
@@ -122,53 +111,20 @@ router_bgp:
     send_community: all
     maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 256000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   neighbors:
   - ip_address: 10.10.255.11
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
       peer: multi-vtep-mlag-l3leaf1b
     description: multi-vtep-mlag-l3leaf1b_Vlan4094
-  - ip_address: 10.10.101.10
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65000'
-    metadata:
-      peer: mlag-isis-spine
-    description: mlag-isis-spine_Ethernet32
-  - ip_address: 10.10.10.1
-    peer_group: EVPN-OVERLAY-PEERS
-    remote_as: '65000'
-    metadata:
-      peer: mlag-isis-spine
-    description: mlag-isis-spine_Loopback0
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 service_routing_protocols_model: multi-agent
 spanning_tree:
   no_spanning_tree_vlan: '4094'
