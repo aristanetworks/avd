@@ -83,10 +83,20 @@ class ValidateWorkerSuccess:
     """Path to the output JSON file, or None if validation failed."""
 
 
+@dataclass(frozen=True, slots=True)
+class ValidateWorkerSkipped:
+    """Result returned when a worker skips the validation phase for a host."""
+
+    hostname: str
+    """Hostname that was processed."""
+    reason: str
+    """Reason why the validation was skipped."""
+
+
 TemplateWorkerResult = TemplateWorkerSuccess | WorkerFailure
 """Result type from Phase 1 (templating hostvars and writing to file)."""
 
-ValidateWorkerResult = ValidateWorkerSuccess | WorkerFailure
+ValidateWorkerResult = ValidateWorkerSuccess | ValidateWorkerSkipped | WorkerFailure
 """Result type from Phase 2 (validating data and writing to file)."""
 
 
@@ -108,6 +118,7 @@ ARGUMENT_SPEC = {
     "input_dir": {"type": "str"},
     "input_suffix": {"type": "str", "default": "yml", "choices": ["yml", "yaml", "json"]},
     "read_from_input_dir": {"type": "bool", "default": False},
+    "fail_on_missing_input_files": {"type": "bool", "default": True},
     "fail_on_validation_errors": {"type": "bool", "default": False},
     "validation_configuration": {"type": "dict", "options": {"warn_eos_config_keys": {"type": "bool"}}},
     "vault_id": {"type": "str"},
@@ -129,6 +140,7 @@ class ResolvedPluginArgs:
     input_dir: str | None
     input_suffix: Literal["yml", "yaml", "json"]
     read_from_input_dir: bool
+    fail_on_missing_input_files: bool
     fail_on_validation_errors: bool
     validation_configuration: Configuration | None
     vault_id: str | None
@@ -231,6 +243,7 @@ class ActionModule(AvdActionPlugin):
                 input_suffix=validation_input_suffix,
                 output_path=validated_path,
                 schema_name=plugin_args.schema_name,
+                fail_on_missing_input_files=plugin_args.fail_on_missing_input_files,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
                 configuration=plugin_args.validation_configuration,
                 file_handler=file_handler,
@@ -380,6 +393,7 @@ class ActionModule(AvdActionPlugin):
         input_suffix: str,
         output_path: Path,
         schema_name: SCHEMA_NAME,
+        fail_on_missing_input_files: bool,
         fail_on_validation_errors: bool,
         configuration: Configuration | None,
         file_handler: AVDFileHandler,
@@ -399,6 +413,7 @@ class ActionModule(AvdActionPlugin):
             input_suffix: File suffix for input files (json, yml, yaml).
             output_path: Directory where validated JSON files will be written.
             schema_name: Schema to validate against.
+            fail_on_missing_input_files: Whether to fail the task if the input file is missing.
             fail_on_validation_errors: Whether to fail the task on validation errors.
             configuration: Configuration for validation or None.
             file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
@@ -419,12 +434,17 @@ class ActionModule(AvdActionPlugin):
             schema_name=schema_name,
             configuration=configuration,
             file_handler=file_handler,
+            fail_on_missing_input_files=fail_on_missing_input_files,
         )
 
         with ThreadPoolExecutor(max_workers=workers) as pool:
             results = pool.map(worker_func, hostnames)
 
             for result in results:
+                if isinstance(result, ValidateWorkerSkipped):
+                    self.logger.info("Validation skipped for host %s: %s", result.hostname, result.reason)
+                    continue
+
                 if isinstance(result, WorkerFailure):
                     self.crashed_hosts.add(result.hostname)
                     self.logger.error("%s: %s", result.hostname, result.error)
@@ -501,6 +521,7 @@ def _validate_host_worker(
     schema_name: SCHEMA_NAME,
     configuration: Configuration | None,
     file_handler: AVDFileHandler,
+    fail_on_missing_input_files: bool,
 ) -> ValidateWorkerResult:
     """
     Phase 2 multithreading worker: Validate input data for a host.
@@ -516,16 +537,19 @@ def _validate_host_worker(
         schema_name: Schema to validate against.
         configuration: Configuration for validation or None.
         file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
+        fail_on_missing_input_files: Whether to return a ValidateWorkerSkipped or WorkerFailure if the input file is missing.
 
     Returns:
-        ValidateWorkerSuccess on success (with validation result), WorkerFailure on error.
+        ValidateWorkerSuccess on success (with validation result), ValidateWorkerSkipped on skipped, WorkerFailure on error.
     """
     try:
         input_file_path = input_path / f"{hostname}.{input_suffix}"
 
-        # If the input file is missing (unexpected), fail early.
+        # If the input file is missing, return a failure or skipped depending on fail_on_missing_input_files.
         if not input_file_path.exists():
-            return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
+            if fail_on_missing_input_files:
+                return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
+            return ValidateWorkerSkipped(hostname=hostname, reason=f"No input file: {input_file_path}")
 
         # Load file content (decrypted if Vault encrypted).
         file_content = file_handler.read_file(input_file_path)

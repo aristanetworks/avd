@@ -24,6 +24,8 @@
         input_dir: "{{ structured_dir }}"
         input_suffix: "{{ avd_structured_config_file_format }}"
         read_from_input_dir: "{{ read_structured_config_from_file | arista.avd.default(true) }}"
+        # Only allow missing files if we are actually in read_structured_config_from_file mode.
+        fail_on_missing_input_files: "{{ false if (read_structured_config_from_file | arista.avd.default(true)) else true }}"
         fail_on_validation_errors: true
         vault_id: "{{ avd_vault_id }}"
       delegate_to: localhost

@@ -62,6 +62,12 @@ options:
       - Requires `input_dir` to be set when `true`.
     type: bool
     default: false
+  fail_on_missing_input_files:
+    description:
+      - If `true`, the task will fail if any device input files are missing.
+      - If `false`, devices with missing input files will be skipped with an informational log message.
+    type: bool
+    default: true
   fail_on_validation_errors:
     description:
       - If `true`, the task will fail if any validation errors are detected.
@@ -139,11 +145,14 @@ EXAMPLES = r"""
     schema_name: cv_deploy
     input_dir: "{{ inventory_dir }}/intended/structured_configs"
     input_suffix: "yml"
+    read_from_input_dir: true
+    fail_on_missing_input_files: false
     fail_on_validation_errors: true
 
 - name: Validate cv_deploy inputs from Ansible hostvars
   arista.avd.validate_inputs:
     tmp_dir: "intended/tmp_cv_deploy"
     schema_name: cv_deploy
+    read_from_input_dir: false
     fail_on_validation_errors: true
 """
