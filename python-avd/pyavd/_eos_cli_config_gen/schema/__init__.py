@@ -66512,7 +66512,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             cpu: Cpu
             """Subclass of AvdModel."""
             traffic_policy_input_physical: str | None
-            """Apply traffic-policy to traffic arriving on physical interfaces within VRF."""
+            """Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF."""
 
             if TYPE_CHECKING:
 
@@ -66532,7 +66532,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF name.
                         cpu: Subclass of AvdModel.
-                        traffic_policy_input_physical: Apply traffic-policy to traffic arriving on physical interfaces within VRF.
+                        traffic_policy_input_physical: Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF.
 
                     """
 

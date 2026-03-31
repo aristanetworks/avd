@@ -24416,8 +24416,8 @@ keys:
               type: str
               convert_types:
               - int
-              description: Apply traffic-policy to traffic arriving on physical interfaces
-                within VRF.
+              description: Name of the Traffic Policy applied to traffic arriving
+                on physical interfaces within VRF.
       options:
         type: dict
         keys:
