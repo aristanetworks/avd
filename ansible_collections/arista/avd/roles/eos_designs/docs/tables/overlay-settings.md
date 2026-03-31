@@ -8,6 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>bgp_mesh_pes</samp>](## "bgp_mesh_pes") | Boolean |  | `False` |  | Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.<br>Only supported in combination with MPLS overlay.<br> |
+    | [<samp>multi_vtep_mlag</samp>](## "multi_vtep_mlag") | Boolean |  | `False` |  | Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.<br> |
     | [<samp>overlay_bgp_peer_description</samp>](## "overlay_bgp_peer_description") | String |  | `{peer}{peer_interface?<_}` |  | Description or description template to be used on the overlay BGP peers.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the BGP peer.<br>  - `peer_interface`: The interface on the BGP peer if available.<br><br>The default description is built from the name and interface of the BGP peer. |
     | [<samp>overlay_cvx_servers</samp>](## "overlay_cvx_servers") | List, items: String |  |  |  | List of CVX vxlan overlay controllers.<br>Required if overlay_routing_protocol == CVX.<br>CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "overlay_cvx_servers.[]") | String |  |  |  | 'inventory_hostname' of CVX server.<br> |
@@ -27,7 +28,6 @@
     | [<samp>&nbsp;&nbsp;admin_subfield</samp>](## "overlay_rt_type.admin_subfield") | String |  | `vrf_id` |  | The method for deriving RT Administrator subfield (first part of RT):<br>- 'vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id` for VLANs, `(vrf_id or vrf_vni)` for VRFs and `id` for bundles defined under 'evpn_vlan_bundles'.<br>- 'vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id` for VLANs, `(vrf_vni or vrf_id)` for VRFs and `id` for bundles defined under 'evpn_vlan_bundles'.<br>- 'id' means `vlan_id` for VLANs, `(vrf_id or vrf_vni)` for VRFs and `id` for bundles defined under 'evpn_vlan_bundles'.<br>- 'bgp_as' means the AS number of the device.<br>- Integer between <0-65535>.<br>- Integer between <0-4294967295>.<br><br>The 'vrf_id' and 'vrf_vni' methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).<br>The 'vrf_id', 'vrf_vni' and 'id' methods can be overridden per bundle defined under `evpn_vlan_bundles` using 'rt_override'.<br> |
     | [<samp>&nbsp;&nbsp;vrf_admin_subfield</samp>](## "overlay_rt_type.vrf_admin_subfield") | String |  |  |  | The method for deriving RT Administrator subfield (first part of RT) for VRF services:<br>- 'id' means `(vrf_id or vrf_vni)`.<br>- 'vrf_id' means `(vrf_id or vrf_vni)`.<br>- 'vrf_vni' means `(vrf_vni or vrf_id)`.<br>- 'bgp_as' means the AS number of the device.<br>- Integer between <0-65535>.<br>- Integer between <0-4294967295>.<br><br>'vrf_admin_subfield' takes precedence for VRF RDs if set. Otherwise the 'admin_subfield' value will be used.<br> |
     | [<samp>&nbsp;&nbsp;vlan_assigned_number_subfield</samp>](## "overlay_rt_type.vlan_assigned_number_subfield") | String |  | `mac_vrf_id` | Valid Values:<br>- <code>mac_vrf_id</code><br>- <code>mac_vrf_vni</code><br>- <code>vlan_id</code> | The method for deriving RT Assigned Number subfield for VLAN services (second part of RT):<br>- 'mac_vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id`.<br>- 'mac_vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id`.<br>- 'vlan_id' will only use the 'vlan_id' and ignores all base values.<br><br>These methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).<br> |
-    | [<samp>overlay_vxlan_multi_vtep_mlag</samp>](## "overlay_vxlan_multi_vtep_mlag") | Boolean |  | `False` |  | Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.<br> |
     | [<samp>router_id_loopback_description</samp>](## "router_id_loopback_description") | String |  | `ROUTER_ID` |  | Customize the description on Router ID interface Loopback0. |
     | [<samp>vtep_loopback_description</samp>](## "vtep_loopback_description") | String |  | `VXLAN_TUNNEL_SOURCE` |  | Customize the description on the VTEP interface, typically Loopback1. |
     | [<samp>vtep_vvtep_ip</samp>](## "vtep_vvtep_ip") | String |  |  |  | IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.<br>This is only needed for centralized routing designs.<br> |
@@ -38,6 +38,9 @@
     # Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
     # Only supported in combination with MPLS overlay.
     bgp_mesh_pes: <bool; default=False>
+
+    # Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+    multi_vtep_mlag: <bool; default=False>
 
     # Description or description template to be used on the overlay BGP peers.
     # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
@@ -187,9 +190,6 @@
       #
       # These methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).
       vlan_assigned_number_subfield: <str; "mac_vrf_id" | "mac_vrf_vni" | "vlan_id"; default="mac_vrf_id">
-
-    # Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-    overlay_vxlan_multi_vtep_mlag: <bool; default=False>
 
     # Customize the description on Router ID interface Loopback0.
     router_id_loopback_description: <str; default="ROUTER_ID">

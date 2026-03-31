@@ -5,37 +5,37 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet5
-  description: MLAG_overlay-vxlan-multi-vtep-mlag-l3leaf1a_Ethernet5
+  description: MLAG_multi-vtep-mlag-l3leaf1b_Ethernet5
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: overlay-vxlan-multi-vtep-mlag-l3leaf1a
+    peer: multi-vtep-mlag-l3leaf1b
     peer_interface: Ethernet5
     peer_type: mlag_peer
 - name: Ethernet6
-  description: MLAG_overlay-vxlan-multi-vtep-mlag-l3leaf1a_Ethernet6
+  description: MLAG_multi-vtep-mlag-l3leaf1b_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: overlay-vxlan-multi-vtep-mlag-l3leaf1a
+    peer: multi-vtep-mlag-l3leaf1b
     peer_interface: Ethernet6
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_mlag-isis-spine_Ethernet33
+  description: P2P_mlag-isis-spine_Ethernet32
   shutdown: false
   mtu: 9214
-  ip_address: 10.10.101.13/31
+  ip_address: 10.10.101.11/31
   metadata:
     peer: mlag-isis-spine
-    peer_interface: Ethernet33
+    peer_interface: Ethernet32
     peer_type: spine
   switchport:
     enabled: false
-hostname: overlay-vxlan-multi-vtep-mlag-l3leaf1b
+hostname: multi-vtep-mlag-l3leaf1a
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -43,7 +43,7 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.39/32
+  ip_address: 192.168.255.38/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
@@ -53,22 +53,22 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.201.119/24
+  ip_address: 192.168.201.118/24
   type: oob
 metadata:
   is_deployed: true
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
-  domain_id: OVERLAY_VXLAN_MULTI_VTEP_MLAG_L3LEAF1
+  domain_id: MULTI_VTEP_MLAG_L3LEAF1
   local_interface: Vlan4094
-  peer_address: 10.10.255.10
+  peer_address: 10.10.255.11
   peer_link: Port-Channel5
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_overlay-vxlan-multi-vtep-mlag-l3leaf1a_Port-Channel5
+  description: MLAG_multi-vtep-mlag-l3leaf1b_Port-Channel5
   shutdown: false
   switchport:
     enabled: true
@@ -104,7 +104,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65161'
-  router_id: 192.168.255.39
+  router_id: 192.168.255.38
   maximum_paths:
     paths: 4
   updates:
@@ -117,7 +117,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65161'
-    description: overlay-vxlan-multi-vtep-mlag-l3leaf1a
+    description: multi-vtep-mlag-l3leaf1b
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -136,17 +136,17 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   neighbors:
-  - ip_address: 10.10.255.10
+  - ip_address: 10.10.255.11
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: overlay-vxlan-multi-vtep-mlag-l3leaf1a
-    description: overlay-vxlan-multi-vtep-mlag-l3leaf1a_Vlan4094
-  - ip_address: 10.10.101.12
+      peer: multi-vtep-mlag-l3leaf1b
+    description: multi-vtep-mlag-l3leaf1b_Vlan4094
+  - ip_address: 10.10.101.10
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     metadata:
       peer: mlag-isis-spine
-    description: mlag-isis-spine_Ethernet33
+    description: mlag-isis-spine_Ethernet32
   - ip_address: 10.10.10.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65000'
@@ -177,7 +177,7 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG
   shutdown: false
-  ip_address: 10.10.255.11/31
+  ip_address: 10.10.255.10/31
   mtu: 9214
   no_autostate: true
 vlan_internal_order:
@@ -198,7 +198,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: overlay-vxlan-multi-vtep-mlag-l3leaf1b_VTEP
+    description: multi-vtep-mlag-l3leaf1a_VTEP
     vxlan:
       source_interface: Loopback0
       mlag_source_interface: Loopback1

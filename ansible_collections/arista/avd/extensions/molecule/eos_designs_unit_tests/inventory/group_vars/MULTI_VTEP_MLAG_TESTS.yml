@@ -1,5 +1,5 @@
 ---
-overlay_vxlan_multi_vtep_mlag: true
+multi_vtep_mlag: true
 
 type: l3leaf
 
@@ -16,15 +16,15 @@ l3leaf:
     uplink_switches: ["mlag-isis-spine"]
     uplink_interfaces: ["Ethernet1"]
   node_groups:
-    - group: OVERLAY_VXLAN_MULTI_VTEP_MLAG_L3LEAF1
+    - group: MULTI_VTEP_MLAG_L3LEAF1
       bgp_as: 65161
       nodes:
-        - name: overlay-vxlan-multi-vtep-mlag-l3leaf1a
+        - name: multi-vtep-mlag-l3leaf1a
           id: 6
           mgmt_ip: 192.168.201.118/24
           uplink_switch_interfaces: [Ethernet32]
           mlag_interfaces: [Ethernet5, Ethernet6]
-        - name: overlay-vxlan-multi-vtep-mlag-l3leaf1b
+        - name: multi-vtep-mlag-l3leaf1b
           id: 7
           mgmt_ip: 192.168.201.119/24
           uplink_switch_interfaces: [Ethernet33]
