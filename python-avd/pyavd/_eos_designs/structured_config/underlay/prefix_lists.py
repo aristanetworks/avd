@@ -3,13 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
-
-from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._utils.run_once import run_once_method
-
-if TYPE_CHECKING:
-    from . import AvdStructuredConfigUnderlayProtocol
+from typing import Protocol
 
 
 class PrefixListsMixin(Protocol):

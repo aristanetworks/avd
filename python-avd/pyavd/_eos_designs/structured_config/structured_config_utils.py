@@ -9,9 +9,9 @@ This module provides utility classes for structured config generation.
 
 from __future__ import annotations
 
+import ipaddress
 from typing import TYPE_CHECKING
 
-import ipaddress
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
 from pyavd._utils import get_ipv4_networks_from_pool, get_ipv6_networks_from_pool
@@ -216,5 +216,6 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
             sequence_numbers.append_new(sequence=(index) * 10, action=f"permit {subnet['ipv6']}")
 
         self.structured_config.ipv6_prefix_lists.append_new(name="IPv6-PL-L2LEAF-INBAND-MGMT", sequence_numbers=sequence_numbers)
+
 
 __all__ = ["StructuredConfigUtils"]

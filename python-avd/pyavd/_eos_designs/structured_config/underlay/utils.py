@@ -11,7 +11,7 @@ from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import Undefined, default, get_ip_from_ip_prefix
-from pyavd.j2filters import natural_sort, range_expand
+from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
