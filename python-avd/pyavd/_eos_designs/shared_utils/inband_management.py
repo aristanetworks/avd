@@ -182,3 +182,19 @@ class InbandManagementMixin(Protocol):
                 svis[vlan]["ipv6"] = ipv6_subnet
 
         return svis
+
+    @cached_property
+    def inband_mgmt_ipv6_parent(self) -> bool:
+        if self.inband_management_parent_vlans:
+            for subnet in self.inband_management_parent_vlans.values():
+                if subnet["ipv6"]:
+                    return True
+        return False
+
+    @cached_property
+    def inband_mgmt_ipv4_parent(self) -> bool:
+        if self.inband_management_parent_vlans:
+            for subnet in self.inband_management_parent_vlans.values():
+                if subnet["ipv4"]:
+                    return True
+        return False

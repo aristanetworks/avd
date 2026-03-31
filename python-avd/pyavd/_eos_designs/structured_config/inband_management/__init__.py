@@ -63,22 +63,6 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         for vlan, subnet in self.shared_utils.inband_management_parent_vlans.items():
             self.structured_config.vlan_interfaces.append(self.get_parent_svi_cfg(vlan, subnet["ipv4"], subnet["ipv6"]))
 
-    @cached_property
-    def _inband_mgmt_ipv6_parent(self) -> bool:
-        if self.shared_utils.inband_management_parent_vlans:
-            for subnet in self.shared_utils.inband_management_parent_vlans.values():
-                if subnet["ipv6"]:
-                    return True
-        return False
-
-    @cached_property
-    def _inband_mgmt_ipv4_parent(self) -> bool:
-        if self.shared_utils.inband_management_parent_vlans:
-            for subnet in self.shared_utils.inband_management_parent_vlans.values():
-                if subnet["ipv4"]:
-                    return True
-        return False
-
     @structured_config_contributor
     def static_routes(self) -> None:
         if not self.shared_utils.configure_inband_mgmt or self.shared_utils.inband_mgmt_gateway is None:
@@ -126,68 +110,6 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             return
 
         self.structured_config.router_bgp.redistribute.attached_host.enabled = True
-
-    @structured_config_contributor
-    def prefix_lists(self) -> None:
-        if (
-            not self.shared_utils.inband_management_parent_vlans
-            or not self.shared_utils.underlay_bgp
-            or not self.inputs.underlay_filter_redistribute_connected
-            or not self._inband_mgmt_ipv4_parent
-        ):
-            return
-
-        if self.shared_utils.inband_mgmt_vrf is not None or self.shared_utils.overlay_routing_protocol == "none":
-            return
-
-        sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
-        for index, subnet in enumerate(self.shared_utils.inband_management_parent_vlans.values(), start=1):
-            sequence_numbers.append_new(sequence=(index) * 10, action=f"permit {subnet['ipv4']}")
-
-        self.structured_config.prefix_lists.append_new(name="PL-L2LEAF-INBAND-MGMT", sequence_numbers=sequence_numbers)
-
-    @structured_config_contributor
-    def ipv6_prefix_lists(self) -> None:
-        if (
-            not self.shared_utils.inband_management_parent_vlans
-            or not self.shared_utils.underlay_bgp
-            or not self.inputs.underlay_filter_redistribute_connected
-            or not self._inband_mgmt_ipv6_parent
-        ):
-            return
-
-        if self.shared_utils.inband_mgmt_vrf is not None:
-            return
-
-        sequence_numbers = EosCliConfigGen.Ipv6PrefixListsItem.SequenceNumbers()
-        for index, subnet in enumerate(self.shared_utils.inband_management_parent_vlans.values(), start=1):
-            sequence_numbers.append_new(sequence=(index) * 10, action=f"permit {subnet['ipv6']}")
-
-        self.structured_config.ipv6_prefix_lists.append_new(name="IPv6-PL-L2LEAF-INBAND-MGMT", sequence_numbers=sequence_numbers)
-
-    @structured_config_contributor
-    def route_maps(self) -> None:
-        if not self.shared_utils.inband_management_parent_vlans or not self.shared_utils.underlay_bgp or not self.inputs.underlay_filter_redistribute_connected:
-            return
-
-        if self.shared_utils.inband_mgmt_vrf is not None or self.shared_utils.overlay_routing_protocol == "none":
-            return
-
-        sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
-        if self._inband_mgmt_ipv4_parent:
-            sequence_numbers.append_new(
-                sequence=20, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-L2LEAF-INBAND-MGMT"])
-            )
-
-        if self._inband_mgmt_ipv6_parent:
-            sequence_numbers.append_new(
-                sequence=60,
-                type="permit",
-                match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]),
-            )
-
-        route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
-        route_map.sequence_numbers.extend(sequence_numbers)
 
     def get_parent_svi_cfg(self, vlan: int, subnet: str | None, ipv6_subnet: str | None) -> EosCliConfigGen.VlanInterfacesItem:
         svi = EosCliConfigGen.VlanInterfacesItem(

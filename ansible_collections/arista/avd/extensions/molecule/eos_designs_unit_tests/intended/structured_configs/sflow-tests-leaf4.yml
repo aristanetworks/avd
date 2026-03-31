@@ -254,14 +254,14 @@ prefix_lists:
     action: permit 10.254.1.0/27 eq 32
   - sequence: 20
     action: permit 10.254.11.0/27 eq 32
-- name: PL-MLAG-PEER-VRFS
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.254.1.104/31
 - name: PL-L2LEAF-INBAND-MGMT
   sequence_numbers:
   - sequence: 10
     action: permit 10.254.254.0/24
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.254.1.104/31
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
