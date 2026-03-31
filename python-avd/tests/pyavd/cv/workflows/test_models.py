@@ -454,8 +454,8 @@ class TestAvdManifestMerge:
     def test_merge_no_arguments(self) -> None:
         """Merging with no arguments returns an empty manifest."""
         result = AvdManifest.merge()
-        assert result.configlets == ()
-        assert result.containers == ()
+        assert not result.configlets
+        assert not result.containers
 
     def test_merge_single_manifest(self) -> None:
         """Merging a single manifest returns the same instance."""
@@ -634,7 +634,7 @@ class TestAvdManifestMerge:
         result = AvdManifest.merge(manifest_a, manifest_b)
 
         assert len(result.configlets) == 2
-        assert result.containers == ()
+        assert not result.containers
 
     def test_merge_containers_only(self) -> None:
         """Merging manifests that only have containers (no configlets) works correctly."""
@@ -643,14 +643,14 @@ class TestAvdManifestMerge:
 
         result = AvdManifest.merge(manifest_a, manifest_b)
 
-        assert result.configlets == ()
+        assert not result.configlets
         assert len(result.containers) == 2
 
     def test_merge_empty_manifests(self) -> None:
         """Merging two empty manifests returns an empty manifest."""
         result = AvdManifest.merge(AvdManifest(), AvdManifest())
-        assert result.configlets == ()
-        assert result.containers == ()
+        assert not result.configlets
+        assert not result.containers
 
     def test_merge_deeply_nested_containers(self) -> None:
         """Merging works correctly with deeply nested container hierarchies."""

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
+from itertools import chain
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 from uuid import NAMESPACE_DNS, uuid4, uuid5
@@ -364,12 +365,11 @@ class AvdManifest:
     def _merge_containers(cls, *container_tuples: tuple[AvdContainer, ...]) -> tuple[AvdContainer, ...]:
         """Merge multiple container tuples by name. Containers with the same name are merged recursively."""
         merged: dict[str, AvdContainer] = {}
-        for containers in container_tuples:
-            for container in containers:
-                if container.name in merged:
-                    merged[container.name] = cls._merge_two_containers(merged[container.name], container)
-                else:
-                    merged[container.name] = container
+        for container in chain.from_iterable(container_tuples):
+            if container.name in merged:
+                merged[container.name] = cls._merge_two_containers(merged[container.name], container)
+            else:
+                merged[container.name] = container
         return tuple(merged.values())
 
     @classmethod
@@ -386,19 +386,14 @@ class AvdManifest:
         merged_sub_containers = cls._merge_containers(existing.sub_containers, other.sub_containers)
 
         # Merge configlet references (union, preserving order).
-        seen_configlets = set(existing.configlets)
-        merged_configlets = list(existing.configlets)
-        for configlet_name in other.configlets:
-            if configlet_name not in seen_configlets:
-                seen_configlets.add(configlet_name)
-                merged_configlets.append(configlet_name)
+        merged_configlets = tuple(dict.fromkeys(existing.configlets + other.configlets))
 
         return AvdContainer(
             name=existing.name,
             tag_query=existing.tag_query,
             description=existing.description or other.description,
             match_policy=existing.match_policy,
-            configlets=tuple(merged_configlets),
+            configlets=merged_configlets,
             sub_containers=merged_sub_containers,
         )
 
