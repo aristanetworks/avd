@@ -758,6 +758,11 @@
             sflow_subinterfaces: false
             hardware_validation: false
             errdisable_causes:
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
               error_correction_encoding:
                 detection: false
                 recovery: false
@@ -767,8 +772,12 @@
               port_breakout:
                 detection: false
                 recovery: false
+              speed_misconfigured:
+                recovery: false
               switchcard_unreachable:
                 detection: false
+                recovery: false
+              tap_port_init:
                 recovery: false
               transceiver_adapter:
                 detection: false
@@ -806,6 +815,11 @@
             sflow_subinterfaces: false
             hardware_validation: false
             errdisable_causes:
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
               error_correction_encoding:
                 detection: false
                 recovery: false
@@ -815,8 +829,12 @@
               port_breakout:
                 detection: false
                 recovery: false
+              speed_misconfigured:
+                recovery: false
               switchcard_unreachable:
                 detection: false
+                recovery: false
+              tap_port_init:
                 recovery: false
               transceiver_adapter:
                 detection: false
@@ -848,6 +866,9 @@
             sflow: false
             hardware_validation: false
             errdisable_causes:
+              acl:
+                detection: false
+                recovery: false
               error_correction_encoding:
                 detection: false
                 recovery: false
@@ -857,8 +878,12 @@
               port_breakout:
                 detection: false
                 recovery: false
+              speed_misconfigured:
+                recovery: false
               switchcard_unreachable:
                 detection: false
+                recovery: false
+              tap_port_init:
                 recovery: false
               transceiver_adapter:
                 detection: false
