@@ -67,10 +67,10 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
 
         if self.shared_utils.is_cv_pathfinder_router:
             peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
-            self.set_once_route_map_bgp_underlay_peers_in()
+            self.set_route_map_bgp_underlay_peers_in()
             if self.shared_utils.wan_ha:
                 peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
-                self.set_once_route_map_bgp_underlay_peers_out()
+                self.set_route_map_bgp_underlay_peers_out()
                 if self.shared_utils.use_uplinks_for_wan_ha:
                     # For HA need to add allowas_in 1
                     peer_group.allowas_in._update(enabled=True, times=1)
@@ -93,8 +93,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
                 name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
             )
 
-    @run_once_method
-    def set_once_route_map_bgp_underlay_peers_in(self: StructuredConfigUtils) -> None:
+    def set_route_map_bgp_underlay_peers_in(self: StructuredConfigUtils) -> None:
         """Set route-map RM-BGP-UNDERLAY-PEERS-IN."""
         # RM-BGP-UNDERLAY-PEERS-IN
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
@@ -112,7 +111,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
                 description="Allow WAN HA peer interface prefixes",
             )
             # Create the prefix-list.
-            self.set_once_prefix_list_wan_ha_peer_prefixes()
+            self.set_prefix_list_wan_ha_peer_prefixes()
 
             sequence_numbers.append_new(
                 sequence=20,
@@ -121,12 +120,11 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
                 description="Deny other routes from the HA peer",
             )
             # Create AS Path ACL
-            self.set_once_as_path_acl_aspath_wan()
+            self.set_as_path_acl_aspath_wan()
 
         self.structured_config.route_maps.append_new(name="RM-BGP-UNDERLAY-PEERS-IN", sequence_numbers=sequence_numbers)
 
-    @run_once_method
-    def set_once_route_map_bgp_underlay_peers_out(self: StructuredConfigUtils) -> None:
+    def set_route_map_bgp_underlay_peers_out(self: StructuredConfigUtils) -> None:
         """Set route-map RM-BGP-UNDERLAY-PEERS-OUT."""
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
         sequence_numbers.append_new(
@@ -140,23 +138,20 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
 
         self.structured_config.route_maps.append_new(name="RM-BGP-UNDERLAY-PEERS-OUT", sequence_numbers=sequence_numbers)
 
-    @run_once_method
-    def set_once_prefix_list_wan_ha_peer_prefixes(self: StructuredConfigUtils) -> None:
+    def set_prefix_list_wan_ha_peer_prefixes(self: StructuredConfigUtils) -> None:
         """Set prefix-list PL-WAN-HA-PEER-PREFIXES."""
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
         for index, ip_address in enumerate(self.shared_utils.wan_ha_peer_ip_addresses, start=1):
             sequence_numbers.append_new(sequence=10 * index, action=f"permit {ipaddress.ip_network(ip_address, strict=False)}")
         self.structured_config.prefix_lists.append_new(name="PL-WAN-HA-PEER-PREFIXES", sequence_numbers=sequence_numbers)
 
-    @run_once_method
-    def set_once_as_path_acl_aspath_wan(self: StructuredConfigUtils) -> None:
+    def set_as_path_acl_aspath_wan(self: StructuredConfigUtils) -> None:
         """Set as-path access-list ASPATH-WAN."""
         entries = EosCliConfigGen.AsPath.AccessListsItem.Entries()
         entries.append_new(type="permit", match=as_path_list_match_from_bgp_asns((self.shared_utils.bgp_as,)))  # pyright: ignore[reportArgumentType]
         self.structured_config.as_path.access_lists.append_new(name="ASPATH-WAN", entries=entries)
 
-    @run_once_method
-    def set_once_ip_extcommunity_list_evpn_soo(self: StructuredConfigUtils) -> None:
+    def set_ip_extcommunity_list_evpn_soo(self: StructuredConfigUtils) -> None:
         """Set ip extcommunity-list ECL-EVPN-SOO."""
         ip_extcommunity_list = EosCliConfigGen.IpExtcommunityListsItem(name="ECL-EVPN-SOO")
         ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
