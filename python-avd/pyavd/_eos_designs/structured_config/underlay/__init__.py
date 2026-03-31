@@ -13,7 +13,6 @@ from .kernel_settings import KernelSettingsMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
 from .mpls import MplsMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
-from .prefix_lists import PrefixListsMixin
 from .route_maps import RouteMapsMixin
 from .router_bgp import RouterBgpMixin
 from .router_isis import RouterIsisMixin
@@ -33,7 +32,6 @@ class AvdStructuredConfigUnderlayProtocol(
     LoopbackInterfacesMixin,
     RouterBgpMixin,
     RouterOspfMixin,
-    PrefixListsMixin,
     RouteMapsMixin,
     RouterIsisMixin,
     RouterMsdpMixin,
