@@ -7,7 +7,7 @@ name: "Upload schemas.json.gz on release"
   workflow_dispatch:
     inputs:
       tag:
-        # Release tag to upload schemas.json.gz to (e.g. v6.1.0)
+        description: Release tag to upload schemas.json.gz to (e.g. v6.1.0)
         required: true
 
 jobs:
@@ -17,6 +17,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag || github.ref }}
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v6
@@ -32,5 +34,3 @@ jobs:
 
       - name: Upload schemas.json.gz to release
         run: gh release upload ${{ inputs.tag || github.ref_name }} python-avd/pyavd/_schema/schemas.json.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
