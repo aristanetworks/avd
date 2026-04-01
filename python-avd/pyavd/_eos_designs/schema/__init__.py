@@ -23282,15 +23282,22 @@ class EosDesigns(EosDesignsRootModel):
 
         Entries._item_type = EntriesItem
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "entries": {"type": Entries}}
+        _fields: ClassVar[dict] = {"name": {"type": str}, "counters_per_entry": {"type": bool}, "entries": {"type": Entries}}
         name: str
         """Access-list name."""
+        counters_per_entry: bool | None
         entries: Entries
         """Subclass of AvdList with `EntriesItem` items."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | UndefinedType = Undefined, entries: Entries | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
+                entries: Entries | UndefinedType = Undefined,
+            ) -> None:
                 """
                 MacAclsItem.
 
@@ -23299,6 +23306,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     name: Access-list name.
+                    counters_per_entry: counters_per_entry
                     entries: Subclass of AvdList with `EntriesItem` items.
 
                 """

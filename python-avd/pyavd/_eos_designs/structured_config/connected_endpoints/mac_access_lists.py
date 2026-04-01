@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdMissingVariableError, AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigConnectedEndpointsProtocol
@@ -24,11 +24,16 @@ class MacAccessListsMixin(Protocol):
             msg = f"mac_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
+        if acl_name in self.structured_config.mac_access_lists:
+            return
+
         acl = EosCliConfigGen.MacAccessListsItem(name=acl_name)
-        for index, acl_entry in enumerate(self.inputs.mac_acls[acl_name].entries):
+        mac_acl = self.inputs.mac_acls[acl_name]
+        acl.counters_per_entry = mac_acl.counters_per_entry
+        for index, acl_entry in enumerate(mac_acl.entries):
             action = ""
             if acl_entry.remark:
-                action += acl_entry.remark
+                action += f"remark {acl_entry.remark}"
             elif acl_entry.action and acl_entry.source:
                 if acl_entry.source != "any" and not acl_entry.source_wildcard:
                     msg = f"mac_acls[name={acl_name}].entries[{index}].source_wildcard"
@@ -41,6 +46,16 @@ class MacAccessListsMixin(Protocol):
                 if acl_entry.destination != "any" and not acl_entry.destination_wildcard:
                     msg = f"mac_acls[name={acl_name}].entries[{index}].destination_wildcard"
                     raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
+
+                if acl_entry.source == "any" and acl_entry.source_wildcard:
+                    msg = f"Can not set 'mac_acls[name={acl_name}].entries[{index}].source_wildcard' when source is 'any'"\
+                          f" for host {self.shared_utils.hostname}."
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+                
+                if acl_entry.destination == "any" and acl_entry.destination_wildcard:
+                    msg = f"Can not set 'mac_acls[name={acl_name}].entries[{index}].destination_wildcard' when destination is 'any'"\
+                          f" for host {self.shared_utils.hostname}."
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                 action += acl_entry.action
                 action = action + " " + acl_entry.source

@@ -633,6 +633,7 @@ link_tracking_groups:
   recovery_delay: 300
 mac_access_lists:
 - name: acl1
+  counters_per_entry: true
   entries:
   - sequence: 10
     action: deny any 01:80:c2:00:00:00 00:00:00:00:00:00

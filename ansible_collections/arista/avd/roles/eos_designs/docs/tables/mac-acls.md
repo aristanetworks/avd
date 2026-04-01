@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>mac_acls</samp>](## "mac_acls") | List, items: Dictionary |  |  |  | MAC access-lists.<br>These can be referenced under `network_ports/connected_endpoints`.<br>A MAC ACL is only configured when it is referenced. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "mac_acls.[].name") | String | Required, Unique |  |  | Access-list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "mac_acls.[].counters_per_entry") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "mac_acls.[].entries") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "mac_acls.[].entries.[].sequence") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "mac_acls.[].entries.[].action") | String |  |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> |  |
@@ -28,6 +29,7 @@
 
         # Access-list name.
       - name: <str; required; unique>
+        counters_per_entry: <bool>
         entries:
           - sequence: <int>
             action: <str; "permit" | "deny">

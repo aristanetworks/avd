@@ -2,6 +2,7 @@ loopback_ipv4_pool: 192.168.0.0/24
 
 mac_acls:
   - name: acl1
+    counters_per_entry: true
     entries:
       - sequence: 10
         action: deny
@@ -29,7 +30,7 @@ mac_acls:
   - name: acl_remark
     entries:
       - sequence: 10
-        remark: remark acl with remark
+        remark: acl with remark
         # source and destination are ignored when remark is set.
         action: permit
         source: any

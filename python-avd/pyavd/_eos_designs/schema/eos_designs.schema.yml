@@ -3595,6 +3595,8 @@ keys:
           description: Access-list name.
           convert_types:
           - int
+        counters_per_entry:
+          type: bool
         entries:
           type: list
           unique_keys:
