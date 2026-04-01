@@ -14,6 +14,13 @@ enable_password:
 hostname: management-settings-login-banner
 ip_igmp_snooping:
   globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
