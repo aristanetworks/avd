@@ -35,6 +35,32 @@
       ansible.builtin.set_fact:
         r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
 
+    - name: "DEBUG BEFORE RESET - {{ test_id | upper }} - metadata keys for {{ intended_tag_device }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      ansible.builtin.debug:
+        msg:
+          - ">>> BEFORE RESET <<<"
+          - "metadata.keys(): {{ hostvars[intended_tag_device].metadata.keys() | list }}"
+          - "has cv_tags: {{ 'cv_tags' in hostvars[intended_tag_device].metadata }}"
+
+    # Previous plays (duplicated checks) use set_fact to set metadata with only serial_number/system_mac_address fetched from CV.
+    # This overrides the host_vars metadata which contains cv_tags.device_tags required for this play.
+    - name: "Reset metadata fact from host_vars file - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      when: inventory_hostname == intended_tag_device
+      ansible.builtin.set_fact:
+        metadata: "{{ (lookup('file', playbook_dir ~ '/inventory/host_vars/' ~ inventory_hostname ~ '.yml') | from_yaml).metadata }}"
+
+    - name: "DEBUG AFTER RESET - {{ test_id | upper }} - metadata keys for {{ intended_tag_device }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      ansible.builtin.debug:
+        msg:
+          - ">>> AFTER RESET <<<"
+          - "metadata.keys(): {{ hostvars[intended_tag_device].metadata.keys() | list }}"
+          - "has cv_tags: {{ 'cv_tags' in hostvars[intended_tag_device].metadata }}"
+
     - name: "Code block to provision CVP with AVD configuration from hostvars - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       run_once: true
