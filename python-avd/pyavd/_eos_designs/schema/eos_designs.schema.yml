@@ -13271,6 +13271,16 @@ $defs:
           description: 'Add this interface to the underlay routing protocols.
 
             This is currently not supported when IPv6 addresses are used.'
+        use_underlay_authentication:
+          type: bool
+          default: false
+          description: 'Enable underlay authentication for this link.
+
+            When set to `true` and OSPF is used as the underlay routing protocol with
+            ''underlay_ospf_authentication.enabled'',
+
+            OSPF message digest keys defined in ''underlay_ospf_authentication.message_digest_keys''
+            will be configured on the interface.'
         isis_hello_padding:
           type: bool
           default: true

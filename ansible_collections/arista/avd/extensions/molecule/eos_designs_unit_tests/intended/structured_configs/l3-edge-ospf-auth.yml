@@ -1,0 +1,86 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: ethernet1
+  description: P2P_peer1_ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.1.0/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha512
+    key: eiB1ByxaLcy1UPdkugTsIOW9ZB1+QG1r
+  - id: 2
+    hash_algorithm: sha512
+    key: tiJ3eqT1+82aJYMaft7drlLb9eDFkbMr
+  metadata:
+    peer: peer1
+    peer_interface: ethernet1
+    peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet2
+  description: P2P_peer2_ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.1.2/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: peer2
+    peer_interface: ethernet2
+    peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet3
+  description: P2P_peer3_ethernet3
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.1.4/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: peer3
+    peer_interface: ethernet3
+    peer_type: other
+  switchport:
+    enabled: false
+hostname: l3-edge-ospf-auth
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 1.2.4.1/32
+  ospf_area: 0.0.0.0
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+router_ospf:
+  process_ids:
+  - id: 100
+    passive_interface_default: true
+    router_id: 1.2.4.1
+    bfd_enable: false
+    no_passive_interfaces:
+    - ethernet1
+    - ethernet2
+    - ethernet3
+    max_lsa: 12000
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

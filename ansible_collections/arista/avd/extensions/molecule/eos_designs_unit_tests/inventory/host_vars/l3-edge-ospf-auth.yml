@@ -1,0 +1,38 @@
+underlay_routing_protocol: ospf
+underlay_ospf_graceful_restart: false
+underlay_ospf_authentication:
+  enabled: true
+  message_digest_keys:
+    - id: 1
+      cleartext_key: arista123arista
+    - id: 2
+      cleartext_key: please_vault_me
+
+type: spine
+spine:
+  nodes:
+    - name: l3-edge-ospf-auth
+      id: 1
+      evpn_role: "none"
+      loopback_ipv4_pool: 1.2.4.0/24
+      bgp_as: 65000
+
+l3_edge:
+  p2p_links:
+    # Link with use_underlay_authentication: true - should configure OSPF message digest keys on the interface.
+    - nodes: [l3-edge-ospf-auth, peer1]
+      interfaces: [ethernet1, ethernet1]
+      ip: [192.168.1.0/31, 192.168.1.1/31]
+      use_underlay_authentication: true
+
+    # Link with use_underlay_authentication: false - should NOT configure OSPF message digest keys even though
+    # global underlay_ospf_authentication is enabled.
+    - nodes: [l3-edge-ospf-auth, peer2]
+      interfaces: [ethernet2, ethernet2]
+      ip: [192.168.1.2/31, 192.168.1.3/31]
+      use_underlay_authentication: false
+
+    # Link with default use_underlay_authentication (defaults to false) - should NOT configure OSPF message digest keys.
+    - nodes: [l3-edge-ospf-auth, peer3]
+      interfaces: [ethernet3, ethernet3]
+      ip: [192.168.1.4/31, 192.168.1.5/31]

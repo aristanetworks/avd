@@ -13,7 +13,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_pool
-from pyavd._utils.password_utils.password import isis_encrypt
+from pyavd._utils.password_utils.password import isis_encrypt, ospf_message_digest_encrypt
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
@@ -296,6 +296,18 @@ class UtilsMixin(Protocol):
 
             if self.shared_utils.underlay_ospf:
                 interface._update(ospf_network_point_to_point=True, ospf_area=self.inputs.underlay_ospf_area)
+                if p2p_link.use_underlay_authentication is True and self.inputs.underlay_ospf_authentication.enabled:
+                    for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
+                        interface.ospf_message_digest_keys.append_new(
+                            id=ospf_key.id,
+                            hash_algorithm=ospf_key.hash_algorithm,
+                            key=ospf_message_digest_encrypt(
+                                password=ospf_key.cleartext_key,
+                                key=interface.name,
+                                hash_algorithm=ospf_key.hash_algorithm,
+                                key_id=str(ospf_key.id),
+                            ),
+                        )
 
             if self.shared_utils.underlay_isis:
                 interface._update(
