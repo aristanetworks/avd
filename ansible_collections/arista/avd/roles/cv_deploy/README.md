@@ -395,7 +395,7 @@ ansible_collections/arista/avd/roles/cv_deploy/defaults/main/directories.yml
 
 The `arista.avd.cv_deploy` role supports connecting to CloudVision through an **HTTP CONNECT** proxy server.
 
-Below settings allow modifying the default proxy-related behavior. The values below are the default values.
+Use the settings below to modify proxy behavior. The fields currently display the default values
 
 ```yaml
 # Set FQDN/IP of the HTTP CONNECT proxy server.
