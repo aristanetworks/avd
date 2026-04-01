@@ -3837,14 +3837,6 @@ keys:
       ID on the MLAG peer.\n\nBy default the description is templated from the name
       and port-channel interface of the MLAG peer."
     default: MLAG_{mlag_peer}_{peer_interface}
-  multi_vtep_mlag:
-    documentation_options:
-      table: overlay-settings
-    description: 'Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-
-      '
-    type: bool
-    default: false
   name_servers:
     documentation_options:
       table: removed-keys
@@ -10960,6 +10952,16 @@ $defs:
             description: Set VXLAN source interface.
             type: str
             pattern: Loopback[\d/]+
+          multi_vtep_mlag:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: 'Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+
+              This feature cannot be enabled when evpn gw or ipv6 underlay is enabled.
+
+              '
+            type: bool
+            default: false
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration

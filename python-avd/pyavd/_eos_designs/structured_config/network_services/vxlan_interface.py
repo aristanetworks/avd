@@ -53,7 +53,18 @@ class VxlanInterfaceMixin(Protocol):
 
     @cached_property
     def _multi_vtep(self: AvdStructuredConfigNetworkServicesProtocol) -> bool:
-        return self.shared_utils.mlag is True and (self.shared_utils.evpn_multicast is True or self.inputs.multi_vtep_mlag is True)
+        if self.shared_utils.node_config.multi_vtep_mlag is True:
+            evpn_gw = self.shared_utils.node_config.evpn_gateway
+            if evpn_gw.evpn_l2.enabled or evpn_gw.evpn_l3.enabled:
+                msg = (
+                    "'multi_vtep_mlag' is not supported when the node is configured as an EVPN "
+                    "multi-domain gateway ('evpn_gateway.evpn_l2' or 'evpn_gateway.evpn_l3')."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+            if self.shared_utils.underlay_ipv6:
+                msg = "'multi_vtep_mlag' is not supported with IPv6 underlay ('underlay_ipv6: true')."
+                raise AristaAvdInvalidInputsError(msg)
+        return self.shared_utils.mlag is True and (self.shared_utils.evpn_multicast is True or self.shared_utils.node_config.multi_vtep_mlag is True)
 
     @structured_config_contributor
     def vxlan_interface(self: AvdStructuredConfigNetworkServicesProtocol) -> None:

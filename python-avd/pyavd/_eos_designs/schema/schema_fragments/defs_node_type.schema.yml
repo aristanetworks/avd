@@ -581,6 +581,14 @@ $defs:
             description: Set VXLAN source interface.
             type: str
             pattern: "Loopback[\\d/]+"
+          multi_vtep_mlag:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: |
+              Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+              This feature cannot be enabled when evpn gw or ipv6 underlay is enabled.
+            type: bool
+            default: false
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration

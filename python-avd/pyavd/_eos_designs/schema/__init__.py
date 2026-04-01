@@ -10080,6 +10080,7 @@ class EosDesigns(EosDesignsRootModel):
             "loopback_ipv6_offset": {"type": int, "default": 0},
             "vtep": {"type": bool},
             "vtep_loopback": {"type": str},
+            "multi_vtep_mlag": {"type": bool, "default": False},
             "bgp_as": {"type": str},
             "bgp_defaults": {"type": BgpDefaults},
             "evpn_role": {"type": str},
@@ -10531,6 +10532,14 @@ class EosDesigns(EosDesignsRootModel):
         """
         vtep_loopback: str | None
         """Set VXLAN source interface."""
+        multi_vtep_mlag: bool
+        """
+        Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+        This feature cannot be enabled when
+        evpn gw or ipv6 underlay is enabled.
+
+        Default value: `False`
+        """
         bgp_as: str | None
         """
         BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -11124,6 +11133,7 @@ class EosDesigns(EosDesignsRootModel):
                 loopback_ipv6_offset: int | UndefinedType = Undefined,
                 vtep: bool | None | UndefinedType = Undefined,
                 vtep_loopback: str | None | UndefinedType = Undefined,
+                multi_vtep_mlag: bool | UndefinedType = Undefined,
                 bgp_as: str | None | UndefinedType = Undefined,
                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                 evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -11464,6 +11474,10 @@ class EosDesigns(EosDesignsRootModel):
                        Overrides VTEP
                        setting inherited from node_type_keys.
                     vtep_loopback: Set VXLAN source interface.
+                    multi_vtep_mlag:
+                       Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                       This feature cannot be enabled when
+                       evpn gw or ipv6 underlay is enabled.
                     bgp_as:
                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                        For asdot notation in
@@ -15202,6 +15216,7 @@ class EosDesigns(EosDesignsRootModel):
             "loopback_ipv6_offset": {"type": int, "default": 0},
             "vtep": {"type": bool},
             "vtep_loopback": {"type": str},
+            "multi_vtep_mlag": {"type": bool, "default": False},
             "bgp_as": {"type": str},
             "bgp_defaults": {"type": BgpDefaults},
             "evpn_role": {"type": str},
@@ -15663,6 +15678,14 @@ class EosDesigns(EosDesignsRootModel):
         """
         vtep_loopback: str | None
         """Set VXLAN source interface."""
+        multi_vtep_mlag: bool
+        """
+        Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+        This feature cannot be enabled when
+        evpn gw or ipv6 underlay is enabled.
+
+        Default value: `False`
+        """
         bgp_as: str | None
         """
         BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -16257,6 +16280,7 @@ class EosDesigns(EosDesignsRootModel):
                 loopback_ipv6_offset: int | UndefinedType = Undefined,
                 vtep: bool | None | UndefinedType = Undefined,
                 vtep_loopback: str | None | UndefinedType = Undefined,
+                multi_vtep_mlag: bool | UndefinedType = Undefined,
                 bgp_as: str | None | UndefinedType = Undefined,
                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                 evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -16605,6 +16629,10 @@ class EosDesigns(EosDesignsRootModel):
                        Overrides VTEP
                        setting inherited from node_type_keys.
                     vtep_loopback: Set VXLAN source interface.
+                    multi_vtep_mlag:
+                       Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                       This feature cannot be enabled when
+                       evpn gw or ipv6 underlay is enabled.
                     bgp_as:
                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                        For asdot notation in
@@ -39281,6 +39309,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
+                        "multi_vtep_mlag": {"type": bool, "default": False},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -39711,6 +39740,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
+                    multi_vtep_mlag: bool
+                    """
+                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                    This feature cannot be enabled when
+                    evpn gw or ipv6 underlay is enabled.
+
+                    Default value: `False`
+                    """
                     bgp_as: str | None
                     """
                     BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -40300,6 +40337,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
+                            multi_vtep_mlag: bool | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -40627,6 +40665,10 @@ class EosDesigns(EosDesignsRootModel):
                                    Overrides VTEP
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
+                                multi_vtep_mlag:
+                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                                   This feature cannot be enabled when
+                                   evpn gw or ipv6 underlay is enabled.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -44398,6 +44440,7 @@ class EosDesigns(EosDesignsRootModel):
                             "loopback_ipv6_offset": {"type": int, "default": 0},
                             "vtep": {"type": bool},
                             "vtep_loopback": {"type": str},
+                            "multi_vtep_mlag": {"type": bool, "default": False},
                             "bgp_as": {"type": str},
                             "bgp_defaults": {"type": BgpDefaults},
                             "evpn_role": {"type": str},
@@ -44838,6 +44881,14 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         vtep_loopback: str | None
                         """Set VXLAN source interface."""
+                        multi_vtep_mlag: bool
+                        """
+                        Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                        This feature cannot be enabled when
+                        evpn gw or ipv6 underlay is enabled.
+
+                        Default value: `False`
+                        """
                         bgp_as: str | None
                         """
                         BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -45429,6 +45480,7 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv6_offset: int | UndefinedType = Undefined,
                                 vtep: bool | None | UndefinedType = Undefined,
                                 vtep_loopback: str | None | UndefinedType = Undefined,
+                                multi_vtep_mlag: bool | UndefinedType = Undefined,
                                 bgp_as: str | None | UndefinedType = Undefined,
                                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                                 evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -45763,6 +45815,10 @@ class EosDesigns(EosDesignsRootModel):
                                        Overrides VTEP
                                        setting inherited from node_type_keys.
                                     vtep_loopback: Set VXLAN source interface.
+                                    multi_vtep_mlag:
+                                       Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                                       This feature cannot be enabled when
+                                       evpn gw or ipv6 underlay is enabled.
                                     bgp_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                        For asdot notation in
@@ -49442,6 +49498,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
+                        "multi_vtep_mlag": {"type": bool, "default": False},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -49885,6 +49942,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
+                    multi_vtep_mlag: bool
+                    """
+                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                    This feature cannot be enabled when
+                    evpn gw or ipv6 underlay is enabled.
+
+                    Default value: `False`
+                    """
                     bgp_as: str | None
                     """
                     BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -50476,6 +50541,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
+                            multi_vtep_mlag: bool | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -50812,6 +50878,10 @@ class EosDesigns(EosDesignsRootModel):
                                    Overrides VTEP
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
+                                multi_vtep_mlag:
+                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                                   This feature cannot be enabled when
+                                   evpn gw or ipv6 underlay is enabled.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -54566,6 +54636,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
+                        "multi_vtep_mlag": {"type": bool, "default": False},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -55006,6 +55077,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
+                    multi_vtep_mlag: bool
+                    """
+                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                    This feature cannot be enabled when
+                    evpn gw or ipv6 underlay is enabled.
+
+                    Default value: `False`
+                    """
                     bgp_as: str | None
                     """
                     BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -55597,6 +55676,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
+                            multi_vtep_mlag: bool | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -55931,6 +56011,10 @@ class EosDesigns(EosDesignsRootModel):
                                    Overrides VTEP
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
+                                multi_vtep_mlag:
+                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                                   This feature cannot be enabled when
+                                   evpn gw or ipv6 underlay is enabled.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -72611,6 +72695,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
+                        "multi_vtep_mlag": {"type": bool, "default": False},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -73041,6 +73126,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
+                    multi_vtep_mlag: bool
+                    """
+                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                    This feature cannot be enabled when
+                    evpn gw or ipv6 underlay is enabled.
+
+                    Default value: `False`
+                    """
                     bgp_as: str | None
                     """
                     BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -73630,6 +73723,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
+                            multi_vtep_mlag: bool | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -73957,6 +74051,10 @@ class EosDesigns(EosDesignsRootModel):
                                    Overrides VTEP
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
+                                multi_vtep_mlag:
+                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                                   This feature cannot be enabled when
+                                   evpn gw or ipv6 underlay is enabled.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -77728,6 +77826,7 @@ class EosDesigns(EosDesignsRootModel):
                             "loopback_ipv6_offset": {"type": int, "default": 0},
                             "vtep": {"type": bool},
                             "vtep_loopback": {"type": str},
+                            "multi_vtep_mlag": {"type": bool, "default": False},
                             "bgp_as": {"type": str},
                             "bgp_defaults": {"type": BgpDefaults},
                             "evpn_role": {"type": str},
@@ -78168,6 +78267,14 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         vtep_loopback: str | None
                         """Set VXLAN source interface."""
+                        multi_vtep_mlag: bool
+                        """
+                        Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                        This feature cannot be enabled when
+                        evpn gw or ipv6 underlay is enabled.
+
+                        Default value: `False`
+                        """
                         bgp_as: str | None
                         """
                         BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -78759,6 +78866,7 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv6_offset: int | UndefinedType = Undefined,
                                 vtep: bool | None | UndefinedType = Undefined,
                                 vtep_loopback: str | None | UndefinedType = Undefined,
+                                multi_vtep_mlag: bool | UndefinedType = Undefined,
                                 bgp_as: str | None | UndefinedType = Undefined,
                                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                                 evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -79093,6 +79201,10 @@ class EosDesigns(EosDesignsRootModel):
                                        Overrides VTEP
                                        setting inherited from node_type_keys.
                                     vtep_loopback: Set VXLAN source interface.
+                                    multi_vtep_mlag:
+                                       Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                                       This feature cannot be enabled when
+                                       evpn gw or ipv6 underlay is enabled.
                                     bgp_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                        For asdot notation in
@@ -82772,6 +82884,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
+                        "multi_vtep_mlag": {"type": bool, "default": False},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -83215,6 +83328,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
+                    multi_vtep_mlag: bool
+                    """
+                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                    This feature cannot be enabled when
+                    evpn gw or ipv6 underlay is enabled.
+
+                    Default value: `False`
+                    """
                     bgp_as: str | None
                     """
                     BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -83806,6 +83927,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
+                            multi_vtep_mlag: bool | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -84142,6 +84264,10 @@ class EosDesigns(EosDesignsRootModel):
                                    Overrides VTEP
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
+                                multi_vtep_mlag:
+                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                                   This feature cannot be enabled when
+                                   evpn gw or ipv6 underlay is enabled.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -87896,6 +88022,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
+                        "multi_vtep_mlag": {"type": bool, "default": False},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -88336,6 +88463,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
+                    multi_vtep_mlag: bool
+                    """
+                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                    This feature cannot be enabled when
+                    evpn gw or ipv6 underlay is enabled.
+
+                    Default value: `False`
+                    """
                     bgp_as: str | None
                     """
                     BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
@@ -88927,6 +89062,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
+                            multi_vtep_mlag: bool | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -89261,6 +89397,10 @@ class EosDesigns(EosDesignsRootModel):
                                    Overrides VTEP
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
+                                multi_vtep_mlag:
+                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
+                                   This feature cannot be enabled when
+                                   evpn gw or ipv6 underlay is enabled.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -89923,7 +90063,6 @@ class EosDesigns(EosDesignsRootModel):
         "mlag_peer_svi_description": {"type": str, "default": "MLAG"},
         "mlag_peer_vlan_name": {"type": str, "default": "MLAG"},
         "mlag_port_channel_description": {"type": str, "default": "MLAG_{mlag_peer}_{peer_interface}"},
-        "multi_vtep_mlag": {"type": bool, "default": False},
         "network_ports": {"type": NetworkPorts},
         "network_services_keys": {"type": NetworkServicesKeys, "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=cls)},
         "custom_node_type_keys": {"type": CustomNodeTypeKeys},
@@ -91754,12 +91893,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"MLAG_{mlag_peer}_{peer_interface}"`
     """
-    multi_vtep_mlag: bool
-    """
-    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-
-    Default value: `False`
-    """
     network_ports: NetworkPorts
     """Subclass of AvdList with `NetworkPortsItem` items."""
     network_services_keys: NetworkServicesKeys
@@ -92651,7 +92784,6 @@ class EosDesigns(EosDesignsRootModel):
             mlag_peer_svi_description: str | UndefinedType = Undefined,
             mlag_peer_vlan_name: str | UndefinedType = Undefined,
             mlag_port_channel_description: str | UndefinedType = Undefined,
-            multi_vtep_mlag: bool | UndefinedType = Undefined,
             network_ports: NetworkPorts | UndefinedType = Undefined,
             network_services_keys: NetworkServicesKeys | UndefinedType = Undefined,
             custom_node_type_keys: CustomNodeTypeKeys | UndefinedType = Undefined,
@@ -93658,7 +93790,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    By
                    default the description is templated from the name and port-channel interface of the MLAG peer.
-                multi_vtep_mlag: Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
                 network_ports: Subclass of AvdList with `NetworkPortsItem` items.
                 network_services_keys:
                    Network Services can be grouped by using separate keys.

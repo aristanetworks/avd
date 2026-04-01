@@ -8,7 +8,6 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>bgp_mesh_pes</samp>](## "bgp_mesh_pes") | Boolean |  | `False` |  | Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.<br>Only supported in combination with MPLS overlay.<br> |
-    | [<samp>multi_vtep_mlag</samp>](## "multi_vtep_mlag") | Boolean |  | `False` |  | Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.<br> |
     | [<samp>overlay_bgp_peer_description</samp>](## "overlay_bgp_peer_description") | String |  | `{peer}{peer_interface?<_}` |  | Description or description template to be used on the overlay BGP peers.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the BGP peer.<br>  - `peer_interface`: The interface on the BGP peer if available.<br><br>The default description is built from the name and interface of the BGP peer. |
     | [<samp>overlay_cvx_servers</samp>](## "overlay_cvx_servers") | List, items: String |  |  |  | List of CVX vxlan overlay controllers.<br>Required if overlay_routing_protocol == CVX.<br>CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "overlay_cvx_servers.[]") | String |  |  |  | 'inventory_hostname' of CVX server.<br> |
@@ -38,9 +37,6 @@
     # Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
     # Only supported in combination with MPLS overlay.
     bgp_mesh_pes: <bool; default=False>
-
-    # Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-    multi_vtep_mlag: <bool; default=False>
 
     # Description or description template to be used on the overlay BGP peers.
     # This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.

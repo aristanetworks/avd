@@ -1,5 +1,4 @@
 ---
-multi_vtep_mlag: true
 
 type: l3leaf
 
@@ -8,6 +7,7 @@ l3leaf:
     mlag_peer_vlan: 4094
     mlag_peer_l3_vlan: 4094
     mlag_peer_ipv4_pool: 10.10.255.0/24
+    multi_vtep_mlag: true
     uplink_ipv4_pool: 10.10.101.0/24
     loopback_ipv4_pool: 192.168.255.0/24
     loopback_ipv4_offset: 32

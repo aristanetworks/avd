@@ -1,0 +1,20 @@
+---
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.92.0/24
+    vtep_loopback_ipv4_pool: 192.168.192.0/24
+    multi_vtep_mlag: true
+    evpn_gateway:
+      evpn_l3:
+        enabled: true
+  node_groups:
+    - group: multi-vtep-mlag-evpn-l3-gw
+      nodes:
+        - name: multi-vtep-mlag-evpn-l3-gw
+          bgp_as: 65092
+          id: 1
+
+type: l3leaf
+
+expected_error_message: >-
+  'multi_vtep_mlag' is not supported when the node is configured as an EVPN multi-domain gateway ('evpn_gateway.evpn_l2' or 'evpn_gateway.evpn_l3').
