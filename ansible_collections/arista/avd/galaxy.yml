@@ -66,14 +66,14 @@ manifest:
     - recursive-include examples **
     - recursive-exclude extensions **
     - include requirements.yml
-    - include pylintrc
-    - include pytest.ini
     - exclude galaxy.yml galaxy.yaml MANIFEST.json FILES.json <namespace>-<name>-*.tar.gz
     - recursive-exclude tests/output **
     - global-exclude /.* /__pycache__ *.pyc *.pyo *.bak *~ *.swp
     # Adding dotfiles
     - include examples/cv-pathfinder/.vault
+    - include tests/integration/targets/vars_global_vars/zz_global_vars/.03.yml
+    # TODO: see how we can reduce the two following dotfiles to avoid including them in the future
+    #       There may not be a way forward.
     - include .ansible-lint
     - include .yamllint
-    - include tests/integration/targets/vars_global_vars/zz_global_vars/.03.yml
   omit_default_directives: true

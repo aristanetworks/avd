@@ -242,17 +242,20 @@ spanning_tree:
   no_spanning_tree_vlan: '4094'
 standard_access_lists:
 - name: RP_ACL_2
-  sequence_numbers:
+  entries:
   - sequence: 10
-    action: permit 239.255.2.0/24
+    action: permit
+    source: 239.255.2.0/24
 - name: RP_ACL_4
-  sequence_numbers:
+  entries:
   - sequence: 10
-    action: permit 239.255.4.0/24
+    action: permit
+    source: 239.255.4.0/24
 - name: RP_ACL_5
-  sequence_numbers:
+  entries:
   - sequence: 10
-    action: permit 239.255.5.0/24
+    action: permit
+    source: 239.255.5.0/24
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
