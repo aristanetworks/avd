@@ -4,7 +4,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# Proxy server support in cv_deploy
+# Proxy Server Support in cv_deploy
 
 The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [HTTP CONNECT](https://en.wikipedia.org/wiki/HTTP_tunnel#HTTP_CONNECT_method) proxy server, with or without basic authentication.
 
