@@ -18223,8 +18223,6 @@ keys:
                 default_originate:
                   type: dict
                   keys:
-                    enabled:
-                      type: bool
                     always:
                       type: bool
                       description: Always advertise a default route to this peer.

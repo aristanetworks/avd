@@ -48460,8 +48460,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DefaultOriginate(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
-                    enabled: bool | None
+                    _fields: ClassVar[dict] = {"always": {"type": bool}, "route_map": {"type": str}}
                     always: bool | None
                     """Always advertise a default route to this peer."""
                     route_map: str | None
@@ -48469,13 +48468,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(
-                            self,
-                            *,
-                            enabled: bool | None | UndefinedType = Undefined,
-                            always: bool | None | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                        ) -> None:
+                        def __init__(self, *, always: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                             """
                             DefaultOriginate.
 
@@ -48483,7 +48476,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled: enabled
                                 always: Always advertise a default route to this peer.
                                 route_map: Route-map name.
 
