@@ -326,6 +326,11 @@ keys:
     description: Opt-in to future AVD behaviors which will become default behaviors
       in a future AVD major version.
     keys:
+      accept_dhcp_default_route_for_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: Configure management interface to accept DHCP default route when
+          the management IP is set to 'dhcp'.
       remove_redundant_ipv4_unicast_for_peer_groups:
         type: bool
         description: Deactivate the IPv4 unicast Address Family for BGP Peer Groups
@@ -1510,7 +1515,10 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Server FQDN or IP address.
+                    description: 'Server IP address or FQDN.
+
+                      Note: It is currently recommended to use IP address because
+                      of limitations with Image transfers from CloudVision.'
                   port:
                     type: int
                     convert_types:
@@ -3636,7 +3644,10 @@ keys:
     description: 'List of IPv4 prefixes to configure as static routes towards the
       OOB Management interface gateway.
 
-      Replaces the default route.'
+      Replaces the default route.
+
+      This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+      true'', since the DHCP server will provide the default route.'
     items:
       type: str
       description: IPv4_address/Mask.
@@ -3647,6 +3658,9 @@ keys:
     description: 'OOB Management interface gateway in IPv4 format.
 
       Used as next-hop for default gateway or static routes defined under ''mgmt_destination_networks''.
+
+      This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+      true'', since the DHCP server will provide the gateway.
 
       '
   mgmt_interface:
@@ -4740,6 +4754,7 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         evpn_gateway_all_active_multihoming: true
+        evpn_gateway_rd_rt_rewrite: true
         per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
@@ -4805,6 +4820,7 @@ keys:
       feature_support:
         per_interface_l2_mtu: false
         evpn_gateway_all_active_multihoming: true
+        evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
       digital_twin:
         platform: vEOS-lab
@@ -4818,6 +4834,7 @@ keys:
       feature_support:
         per_interface_l2_mtu: false
         evpn_gateway_all_active_multihoming: true
+        evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
       digital_twin:
         platform: vEOS-lab
@@ -4877,6 +4894,7 @@ keys:
         per_interface_l2_mtu: false
         per_interface_l2_mru: false
         evpn_gateway_all_active_multihoming: true
+        evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
       reload_delay:
@@ -4898,6 +4916,7 @@ keys:
         per_interface_l2_mtu: false
         per_interface_l2_mru: false
         evpn_gateway_all_active_multihoming: true
+        evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
       management_interface: Management1
@@ -6310,6 +6329,9 @@ keys:
             other fabric devices in the extra fabric validation tests performed by
             the `anta_runner` role.
           default: false
+        interfaces:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/metadata/keys/interfaces
   vtep_loopback_description:
     documentation_options:
       table: overlay-settings
@@ -8540,6 +8562,28 @@ $defs:
 
                   '
                 default: true
+              rt_import_evpn_remote:
+                type: bool
+                description: 'Enable or disable route target import for the VRF for
+                  EVPN remote.
+
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode`
+                  is `rd-rt-rewrite`.
+
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.'
+                default: true
+              rt_export_evpn_remote:
+                type: bool
+                description: 'Enable or disable route target export for the VRF for
+                  EVPN remote.
+
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode`
+                  is `rd-rt-rewrite`.
+
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.'
+                default: true
               evpn_vlan_bundle:
                 type: str
                 description: 'Name of a bundle defined under ''evpn_vlan_bundles''
@@ -9240,6 +9284,10 @@ $defs:
                       $ref: eos_designs#/$defs/flow_tracking_link
                       description: Configures flow-tracking on the interface. Overrides
                         `fabric_flow_tracking.l3_interfaces` setting.
+                    sflow:
+                      type: bool
+                      description: Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces`
+                        setting.
                     monitor_sessions:
                       type: list
                       $ref: eos_designs#/$defs/monitor_sessions
@@ -10088,6 +10136,28 @@ $defs:
                 items:
                   type: str
                   default: all
+        vpws:
+          type: dict
+          description: 'VPWS pseudowire settings for the tenant.
+
+            To render `mpls_control_word`, `mtu`, and `label_flow` in the BGP VPWS
+            configuration,
+
+            both `point_to_point_services` and `pseudowire_rt_base` must be set under
+            the tenant.'
+          keys:
+            mpls_control_word:
+              type: bool
+              default: false
+              description: Enable or disable MPLS control word for VPWS pseudowires.
+            mtu:
+              type: int
+              convert_types:
+              - str
+              description: MTU for VPWS pseudowires.
+            label_flow:
+              type: bool
+              description: Enable or disable MPLS label flow for VPWS pseudowires.
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings
@@ -10272,15 +10342,22 @@ $defs:
           mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
-            description: Node management interface IPv4 address.
+            description: 'Node management interface IPv4 address/Mask or ''dhcp''.
+
+              When set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+              true'', the `mgmt_destination_networks` and `mgmt_gateway` settings
+              are ignored since the DHCP server is expected to provide the gateway
+              and the default route.'
             type: str
-            format: cidr
           mgmt_gateway:
             documentation_options:
               table: node-type-common-configuration
             type: str
-            description: This key sets the management gateway for the device. It takes
-              precedence over the global `mgmt_gateway`.
+            description: 'This key sets the management gateway for the device. It
+              takes precedence over the global `mgmt_gateway`.
+
+              This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+              true'', since the DHCP server will provide the gateway.'
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
@@ -11101,6 +11178,22 @@ $defs:
                   inter_domain:
                     type: bool
                     default: true
+                  mode:
+                    type: str
+                    valid_values:
+                    - next-hop-self
+                    - rd-rt-rewrite
+                    default: next-hop-self
+                    description: 'Defines the rewriting mode for EVPN L3 inter-domain
+                      routing.
+
+                      - next-hop-self: (default) Forward EVPN IP-Prefix routes by
+                      only replacing the next-hop to the gateway itself.
+
+                      - rd-rt-rewrite: Re-export local EVPN IP-Prefix routes with
+                      the RD and export RTs of the remote domain and vice versa.
+
+                      '
               d_path:
                 type: dict
                 keys:
@@ -13620,6 +13713,12 @@ $defs:
               type: bool
               default: false
               description: 'Support for all-active EVPN gateway redundancy.
+
+                An error will be raised if the feature is enabled and this is false.'
+            evpn_gateway_rd_rt_rewrite:
+              type: bool
+              default: false
+              description: 'Support for EVPN gateway RD/RT rewrite mode.
 
                 An error will be raised if the feature is enabled and this is false.'
             hardware_counters:

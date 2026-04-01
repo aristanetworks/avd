@@ -67,14 +67,43 @@
                             "message": "Build req-914310f3-08dd-4239-bd42-6d78b0000000 failed"
                         },
                         "req-18654b6a-9f75-4a57-878d-d40d73701238": {
-                        "status": "FAIL",
-                        "message": "some devices are inactive",
-                        "code": "INACTIVE_DEVICES_EXIST"
+                            "status": "FAIL",
+                            "message": "some devices are inactive",
+                            "code": "INACTIVE_DEVICES_EXIST"
                         },
                         "req-725669d2-2ec5-4572-8c6a-453b1fea27c0": {
-                        "status": "FAIL",
-                        "message": "Unknown exception faced",
-                        "code": "UNSPECIFIED"
+                            "status": "FAIL",
+                            "message": "Unknown exception faced",
+                            "code": "UNSPECIFIED"
+                        }
+                    }
+                },
+                "ccIds": {},
+                "needsBuild": false,
+                "needsRebase": false,
+                "displayName": "MOCKED_WS_NAME",
+                "description": "MOCKED_WS_DESCRIPTION"
+            },
+            "time": "2025-05-06T16:28:02.453411785",
+            "type": "UPDATED"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+                },
+                "createdAt": "2025-05-06T16:28:02.014825088",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2025-05-06T16:28:02.169589878",
+                "lastModifiedBy": "agorbunov",
+                "state": "PENDING",
+                "lastBuildId": "req-914310f3-08dd-4239-bd42-6d78b0000100",
+                "responses": {
+                    "values": {
+                        "req-914310f3-08dd-4239-bd42-6d78b0000100": {
+                            "status": "FAIL",
+                            "message": "device build error",
+                            "code": "UNSPECIFIED"
                         }
                     }
                 },

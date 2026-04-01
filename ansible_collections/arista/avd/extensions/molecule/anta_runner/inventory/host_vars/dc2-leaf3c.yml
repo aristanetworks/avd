@@ -1,0 +1,13 @@
+---
+# Host to test errdisable test with no interfaces in structured config
+custom_structured_configuration_metadata:
+  interfaces:
+    errdisable:
+      only_avd_interfaces: true
+
+management_eapi:
+  enabled: true
+  enable_https: true
+  vrfs:
+    - name: Test1
+      enabled: true

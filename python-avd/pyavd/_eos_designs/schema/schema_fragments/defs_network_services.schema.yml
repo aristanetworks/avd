@@ -487,6 +487,20 @@ $defs:
                   This setting applies only to the automatically generated route targets
                   and does not affect any entries defined under `additional_route_targets`.
                 default: true
+              rt_import_evpn_remote:
+                type: bool
+                description: |-
+                  Enable or disable route target import for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_export_evpn_remote:
+                type: bool
+                description: |-
+                  Enable or disable route target export for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
+                default: true
               evpn_vlan_bundle:
                 type: str
                 description: |
@@ -1030,6 +1044,10 @@ $defs:
                       $ref: "eos_designs#/$defs/flow_tracking_link"
                       description: |-
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                    sflow:
+                      type: bool
+                      description: |-
+                        Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces` setting.
                     monitor_sessions:
                       type: list
                       $ref: "eos_designs#/$defs/monitor_sessions"
@@ -1748,6 +1766,28 @@ $defs:
                 items:
                   type: str
                   default: all
+        vpws:
+          type: dict
+          description: |-
+            VPWS pseudowire settings for the tenant.
+            To render `mpls_control_word`, `mtu`, and `label_flow` in the BGP VPWS configuration,
+            both `point_to_point_services` and `pseudowire_rt_base` must be set under the tenant.
+          keys:
+            # TODO: AVD 7.0.0 Change default value true
+            mpls_control_word:
+              type: bool
+              default: false
+              description: |-
+                Enable or disable MPLS control word for VPWS pseudowires.
+            mtu:
+              type: int
+              convert_types:
+                - str
+              description: MTU for VPWS pseudowires.
+            label_flow:
+              type: bool
+              description: |-
+                Enable or disable MPLS label flow for VPWS pseudowires.
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings

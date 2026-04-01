@@ -3,6 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import platform
+import sys
+from importlib.metadata import PackageNotFoundError, version
 from typing import TYPE_CHECKING, Protocol
 
 from requests import JSONDecodeError, get, post
@@ -127,7 +130,7 @@ class CVClientProtocol(
         try:
             response = get(  # noqa: S113 TODO: Add configurable timeout
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
-                headers={"Authorization": f"Bearer {self._token}"},
+                headers={"Authorization": f"Bearer {self._token}", "User-Agent": self._get_user_agent()},
                 verify=self._verify_certs,
                 proxies=self._requests_proxies,
                 json={},
@@ -142,6 +145,37 @@ class CVClientProtocol(
         except (KeyError, JSONDecodeError) as e:
             msg = f"Unable to get version from CloudVision server. Got {response.text if response else 'No response'}"
             raise CVClientException(msg) from e
+
+    def _get_user_agent(self) -> str:
+        """
+        Build a user agent string with enriched version information.
+
+        Format: python/x.y.z pyavd/x.y.z aristaproto/x.y.z grpclib/x.y.z python-socks/x.y.z requests/x.y.z
+        """
+        user_agent_parts: list[str] = []
+
+        # Process Python version
+        if python_version := platform.python_version():
+            user_agent_parts.append(f"python/{python_version}")
+
+        # Process pyavd version
+        try:
+            pyavd_version = version("pyavd")
+        # Fallback to __version__ avoiding cyclic import
+        except PackageNotFoundError:
+            pyavd_version = getattr(sys.modules.get("pyavd"), "__version__", None)
+
+        if pyavd_version:
+            user_agent_parts.append(f"pyavd/{pyavd_version}")
+
+        # Process optional Python dependencies
+        for dependent_package in ["aristaproto", "grpclib", "python-socks", "requests"]:
+            try:
+                user_agent_parts.append(f"{dependent_package}/{version(dependent_package)}")
+            except PackageNotFoundError:  # noqa: PERF203
+                continue
+
+        return " ".join(user_agent_parts)
 
     @property
     def _use_proxy(self) -> bool:

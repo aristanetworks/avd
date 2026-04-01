@@ -9381,6 +9381,12 @@ ASN Notation: asdot
 | 198.51.100.1 | True | - | - | RCF_TEST() | RCF_TEST_OUT() | - | - |
 | 198.51.100.2 | False | RM_IN_TEST | RM_OUT_TEST | - | - | PEER_TAG_IN_IPV4_LABELED | PEER_TAG_DISCARD_OUT_IPV4_LABELED |
 
+##### BGP LU RIB
+
+| RIB | Enabled | Route-map |
+| --- | ------- | --------- |
+| IP | True | RM-rib1 |
+
 #### Router BGP IPv4 SR-TE Address Family
 
 ##### IPv4 SR-TE Neighbors
@@ -9555,6 +9561,7 @@ ASN Notation: asdot
 !
 router bgp 65101
    bgp asn notation asdot
+   bgp labeled-unicast rib ip route-map RM-rib1
    router-id 192.168.255.3
    update wait-for-convergence
    update wait-install
@@ -11996,70 +12003,75 @@ poe
 
 ##### 99
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | permit 10.0.0.0/8 |
-| 30 | permit 172.16.0.0/12 |
-| 40 | permit 192.168.0.0/16 |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
+| - | - | - | ACL to restrict access RFC1918 addresses | - | - | - | - |
+| - | permit | 10.0.0.0/8 | - | 20 | 10 | - | mirror1 |
+| 30 | permit | 172.16.0.0/12 | - | - | - | True | - |
+| 40 | permit | 192.168.0.0/16 | - | - | - | True | mirror2 |
+| 50 | permit | any | - | - | - | - | - |
+| 60 | permit | - | - | - | - | - | - |
 
 ##### ACL-API
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access to switch API to CVP and Ansible |
-| 20 | permit host 10.10.10.10 |
-| 30 | permit host 10.10.10.11 |
-| 40 | permit host 10.10.10.12 |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
+| 10 | - | - | ACL to restrict access to switch API to CVP and Ansible | - | - | - | - |
+| 20 | permit | 10.10.10.10 | - | 10 0x001 | - | - | mirror1 |
+| 30 | permit | 10.10.10.11 | - | - | 10 0x001 | True | - |
+| 40 | permit | 10.10.10.12 | - | 10 0x001 | 10 0x001 | True | mirror1 |
+| 50 | permit | any | - | 10 0x001 | 10 0x001 | - | - |
 
 ##### ACL-SSH
 
 ACL has counting mode `counters per-entry` enabled!
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | permit 10.0.0.0/8 |
-| 30 | permit 172.16.0.0/12 |
-| 40 | permit 192.168.0.0/16 |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
+| 10 | - | - | ACL to restrict access RFC1918 addresses | - | - | - | - |
+| 20 | permit | 10.0.0.0/8 | - | 10 0x000 | 20 0x001 | True | mirror1 |
+| 30 | permit | 172.16.0.0/12 | - | - | 20 0x001 | True | mirror1 |
+| 40 | permit | 192.168.0.0/16 | - | - | - | - | - |
 
 ##### ACL-SSH-VRF
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | permit 10.0.0.0/8 |
-| 30 | permit 172.16.0.0/12 |
-| 40 | permit 192.168.0.0/16 |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
+| 10 | - | - | ACL to restrict access RFC1918 addresses | - | - | - | - |
+| 20 | permit | 10.0.0.0/8 | - | 10 0x000 | 20 0x001 | - | - |
+| 30 | permit | 172.16.0.0/12 | - | 10 0x000 | - | - | - |
+| 40 | permit | 192.168.0.0/16 | - | - | 20 0x001 | - | - |
 
 #### Standard Access-lists Device Configuration
 
 ```eos
 !
 ip access-list standard 99
-   10 remark ACL to restrict access RFC1918 addresses
-   20 permit 10.0.0.0/8
-   30 permit 172.16.0.0/12
-   40 permit 192.168.0.0/16
+   remark ACL to restrict access RFC1918 addresses
+   permit 10.0.0.0/8 mirror session mirror1
+   30 permit 172.16.0.0/12 log
+   40 permit 192.168.0.0/16 mirror session mirror2 log
+   50 permit any
 !
 ip access-list standard ACL-API
    10 remark ACL to restrict access to switch API to CVP and Ansible
-   20 permit host 10.10.10.10
-   30 permit host 10.10.10.11
-   40 permit host 10.10.10.12
+   20 permit vlan 10 0x001 host 10.10.10.10 mirror session mirror1
+   30 permit vlan inner 10 0x001 host 10.10.10.11 log
+   40 permit vlan 10 0x001 inner 10 0x001 host 10.10.10.12 mirror session mirror1 log
+   50 permit vlan 10 0x001 inner 10 0x001 any
 !
 ip access-list standard ACL-SSH
    counters per-entry
    10 remark ACL to restrict access RFC1918 addresses
-   20 permit 10.0.0.0/8
-   30 permit 172.16.0.0/12
+   20 permit vlan 10 0x000 inner 20 0x001 10.0.0.0/8 mirror session mirror1 log
+   30 permit vlan inner 20 0x001 172.16.0.0/12 mirror session mirror1 log
    40 permit 192.168.0.0/16
 !
 ip access-list standard ACL-SSH-VRF
    10 remark ACL to restrict access RFC1918 addresses
-   20 permit 10.0.0.0/8
-   30 permit 172.16.0.0/12
-   40 permit 192.168.0.0/16
+   20 permit vlan 10 0x000 inner 20 0x001 10.0.0.0/8
+   30 permit vlan 10 0x000 172.16.0.0/12
+   40 permit vlan inner 20 0x001 192.168.0.0/16
 ```
 
 ### IP Access-lists
@@ -12159,44 +12171,41 @@ ipv6 access-list standard ipv6_test1
 
 #### IPv6 Extended Access-lists Summary
 
-##### acl_qos_tc0_v6
+##### ACL_SEQUENCE_AND_COUNTERS
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit ipv6 any any dscp cs1 |
-
-##### acl_qos_tc5_v6
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit ipv6 any 2001:db8::/48 |
-
-##### TEST1
-
-| Sequence | Action |
-| -------- | ------ |
-| 5 | deny ipv6 fe80::/64 any |
-| 10 | permit ipv6 fe90::/64 any |
+ACL has counting mode `counters per-entry` enabled!
 
 ##### TEST2
 
 ACL has counting mode `counters per-entry` enabled!
 
-| Sequence | Action |
-| -------- | ------ |
-| 5 | permit ipv6 2001:db8::/64 any |
-| 10 | deny ipv6 2001:db8::/32 any |
-
-##### TEST3
-
-| Sequence | Action |
-| -------- | ------ |
-| 5 | deny ipv6 2001:db8:1000::/64 any |
-| 10 | permit ipv6 2001:db8::/32 any |
-
 #### IPv6 Extended Access-lists Device Configuration
 
 ```eos
+!
+ipv6 access-list ACL_NO_SEQUENCE
+   remark test acl without sequence numbers
+   deny udp any any log
+   permit icmpv6 any any 3 4
+   permit icmpv6 any any unreachable
+   permit ipv6 any any dscp 46 3
+   permit ipv6 any any tracked hop-limit gt 3 dscp ef
+   permit ipv6 any any nexthop-group NH_TEST hop-limit eq 254
+   permit vlan 235 0x1FF inner 124 0x001 ipv6 any any
+   permit vlan inner 123 0x000 ipv6 any any
+   permit vlan 234 0xFFF ipv6 any any
+   permit icmpv6 any any
+!
+ipv6 access-list ACL_SEQUENCE_AND_COUNTERS
+   counters per-entry
+   10 remark test acl with sequence numbers
+   20 permit ipv6 host fe81::1 any
+   30 permit tcp fe82::/64 any established
+   40 permit tcp any gt 1023 host fe83::1 eq 22
+   50 permit tcp any range 1000 1100 any range 10 20
+   4294967295 deny ipv6 any any
+!
+ipv6 access-list ACL_WITHOUT_ENTRIES
 !
 ipv6 access-list TEST1
    5 deny ipv6 fe80::/64 any
