@@ -154,6 +154,23 @@ options:
         description: Force submit the workspace even if some devices are not actively streaming to CloudVision.
         type: bool
         default: false
+      build_warnings:
+        description: Configuration for Workspace build warnings handling.
+        type: dict
+        suboptions:
+          enabled:
+            description: Fetch and expose Workspace build warnings.
+            type: bool
+            default: true
+          suppress_patterns:
+            description: Arbitrary list of regex patterns used with fullmatch to suppress EOS CLI warnings.
+            type: list
+            elements: str
+            default: []
+          suppress_portfast:
+            description: Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports.
+            type: bool
+            default: false
   change_control:
     description: CloudVision Change Control to create for the deployment.
     type: dict
@@ -255,6 +272,10 @@ EXAMPLES = r"""
         #   id: <uuid or similar>
           requested_state: submitted
           force: true
+          build_warnings:
+            # enabled: true
+            suppress_patterns: [".*/32 IPv4 address is not configured on the interface.*"]
+            # suppress_portfast: false
         change_control:
         #   name:
         #   description:
