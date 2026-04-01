@@ -40,6 +40,10 @@
       id: "{{ cv_workspace_id | arista.avd.default }}"
       requested_state: "{{ cv_workspace_requested_state | arista.avd.default('submitted' if cv_submit_workspace else 'built') }}"
       force: "{{ cv_submit_workspace_force }}"
+      build_warnings:
+        enabled: "{{ cv_workspace_build_warnings_enabled }}"
+        suppress_patterns: "{{ cv_workspace_build_warnings_suppress_patterns }}"
+        suppress_portfast: "{{ cv_workspace_build_warnings_suppress_portfast }}"
     change_control:
       name: "{{ cv_change_control_name | arista.avd.default }}"
       description: "{{ cv_change_control_description | arista.avd.default }}"
