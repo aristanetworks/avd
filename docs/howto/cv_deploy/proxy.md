@@ -57,7 +57,7 @@ proxy_password: "avd_proxy_password"
 
 If proxy-related settings are not passed to `cv_deploy` explicitly, `cv_deploy` will try to discover a usable proxy server (scheme is `http`, host is a non-empty string, port is in the range 1-65535) using environment variables in the following order:
 
-1. (Step 1) Check if proxy bypass is requested for CloudVision
+1. Check if proxy bypass is requested for CloudVision
 
     ```mermaid
     flowchart LR
@@ -72,7 +72,7 @@ If proxy-related settings are not passed to `cv_deploy` explicitly, `cv_deploy` 
         G -- No --> F
     ```
 
-2. (Step 2) Discover proxy server
+2. Discover proxy server
 
     ```mermaid
     flowchart LR
