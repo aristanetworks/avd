@@ -32,6 +32,7 @@ try:
         CVPathfinderMetadata,
         CVTimeOuts,
         CVWorkspace,
+        CVWorkspaceBuildWarningsConfig,
         DeployToCvResult,
     )
     from pyavd._utils import get, strip_empties_from_dict
@@ -70,6 +71,14 @@ ARGUMENT_SPEC = {
             "id": {"type": "str", "required": False},
             "requested_state": {"type": "str", "default": "built", "choices": ["pending", "built", "submitted", "abandoned", "deleted"]},
             "force": {"type": "bool", "default": False},
+            "build_warnings": {
+                "type": "dict",
+                "options": {
+                    "enabled": {"type": "bool", "required": False, "default": True},
+                    "suppress_patterns": {"type": "list", "elements": "str", "required": False, "default": []},
+                    "suppress_portfast": {"type": "bool", "required": False, "default": False},
+                },
+            },
         },
     },
     "change_control": {
@@ -190,6 +199,11 @@ class ActionModule(ActionBase):
             )
 
             if work_to_do:
+                # Pre-process workspace args to convert build_warnings to CVWorkspaceBuildWarningsConfig object.
+                workspace_args = get(validated_args, "workspace", default={})
+                if "build_warnings" in workspace_args:
+                    workspace_args["build_warnings"] = CVWorkspaceBuildWarningsConfig(**workspace_args["build_warnings"])
+
                 # Perform deployment of all objects, getting a DeployToCVResult object back.
                 result_object = await deploy_to_cv(
                     change_control=CVChangeControl(**get(validated_args, "change_control", default={})),
@@ -203,7 +217,7 @@ class ActionModule(ActionBase):
                     strict_system_mac_address=get(validated_args, "strict_system_mac_address"),
                     strict_tags=get(validated_args, "strict_tags"),
                     timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
-                    workspace=CVWorkspace(**get(validated_args, "workspace", default={})),
+                    workspace=CVWorkspace(**workspace_args),
                 )
                 # Errors and warnings are converted to JSON compatible strings.
                 result_object.errors = [str(error) for error in result_object.errors]

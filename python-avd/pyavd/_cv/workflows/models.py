@@ -133,6 +133,49 @@ class CVPathfinderMetadata:
 
 
 @dataclass
+class CVWorkspaceBuildConfigValidationError:
+    error_msg: str | None = None
+    """EOS-returned error message."""
+    line_num: int | None = None
+    """Line number of the violating configuration line within the configlet."""
+    configlet_name: str | None = None
+    """Name of the configlet which raised validation error."""
+
+
+@dataclass
+class CVWorkspaceBuildConfigValidationWarning:
+    warning_msg: str | None = None
+    """EOS-returned warning message."""
+    line_num: int | None = None
+    """Line number of the violating configuration line within the configlet."""
+    configlet_name: str | None = None
+    """Name of the configlet which returned validation warning."""
+
+
+@dataclass
+class CVWorkspaceBuildConfigValidationResult:
+    errors: list[CVWorkspaceBuildConfigValidationError] = field(default_factory=list)
+    warnings: list[CVWorkspaceBuildConfigValidationWarning] = field(default_factory=list)
+
+
+@dataclass
+class CVWorkspaceDeviceBuildResult:
+    device: CVDevice
+    config_validation: CVWorkspaceBuildConfigValidationResult
+    """Configuration validation results."""
+
+
+@dataclass
+class CVWorkspaceBuildWarningsConfig:
+    enabled: bool = True
+    """Fetch and expose Workspace build warnings."""
+    suppress_patterns: list[str] = field(default_factory=list)
+    """Arbitrary list of the EOS CLI warning string patterns to suppress."""
+    suppress_portfast: bool = False
+    """Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports."""
+
+
+@dataclass
 class CVWorkspace:
     name: str = field(default_factory=lambda: f"AVD {datetime.now()}")
     description: str | None = None
@@ -155,6 +198,12 @@ class CVWorkspace:
     """The final state of the Workspace. Do not set this manually."""
     change_control_id: str | None = None
     """Do not set this manually."""
+    build_id: str | None = None
+    """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt. Do not set this manually."""
+    build_warnings: CVWorkspaceBuildWarningsConfig = field(default_factory=CVWorkspaceBuildWarningsConfig)
+    """Configuration settings to control fetching and exposing Workspace build warnings."""
+    device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
+    """Details of per-device Workspace build results. Do not set this manually."""
 
 
 @dataclass
