@@ -51,7 +51,7 @@ proxy_password: "avd_proxy_password"
     proxy_password: "p:r/o$x@ypassword"
     ```
 
-    will be equal to setting the following via the environment variable: `http://p%3Ar%2Fo%24x%40yuser:p%3Ar%2Fo%24x%40ypassword@proxy.local.domain:3128`
+    Will be equal to setting the following via the environment variable: `http://p%3Ar%2Fo%24x%40yuser:p%3Ar%2Fo%24x%40ypassword@proxy.local.domain:3128`
 
 ## Configure proxy settings using environment variables
 
