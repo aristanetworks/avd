@@ -29,7 +29,7 @@ proxy_host: proxy.local.domain
 proxy_port: 3128
 ```
 
-Example of the configuration to use authenticated HTTP proxy using CONNECT method:
+Example configuration to use an authenticated HTTP proxy using the CONNECT method:
 
 ```yaml
 proxy_host: proxy.local.domain
