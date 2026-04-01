@@ -42,6 +42,12 @@ cv_submit_workspace: true
 # If set, configurations will not be validated for non-streaming devices.
 cv_submit_workspace_force: false
 
+# Fetch and expose Workspace build warnings.
+# Suppress specific warnings based on pre-defined options or custom regex fullmatch pattern(s).
+cv_workspace_build_warnings_enabled: true
+cv_workspace_build_warnings_suppress_patterns: []
+cv_workspace_build_warnings_suppress_portfast: false
+
 # Approve and Start Change Control. Otherwise the Change Control will be left in "pending approval" mode.
 cv_run_change_control: false
 
