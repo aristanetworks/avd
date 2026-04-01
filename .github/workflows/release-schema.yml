@@ -2,9 +2,8 @@
 name: "Upload schemas.json.gz on release"
 
 "on":
-  pull_request:
-  # release:
-  #   types: [published]
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       tag:
