@@ -22,7 +22,7 @@ To enable proxy server explicitly, set `proxy_host`. Setting `proxy_port` (port 
 
 If valid `proxy_host` (must be non-empty string) and `proxy_port` (1-65535) are set, `cv_deploy` will ignore (for both REST and gRPC calls) any proxy-related environment variables (`https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY`/`no_proxy`/`NO_PROXY`) and will force all REST and gRPC egress connections through this proxy.
 
-Example of the configuration to use unauthenticated HTTP proxy using CONNECT method:
+Example configuration to use an unauthenticated HTTP proxy using the CONNECT method:
 
 ```yaml
 proxy_host: proxy.local.domain
