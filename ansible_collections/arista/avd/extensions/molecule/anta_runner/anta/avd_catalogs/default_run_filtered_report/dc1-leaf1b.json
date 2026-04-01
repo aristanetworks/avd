@@ -71,6 +71,11 @@
             "port": "Ethernet8",
             "neighbor_device": "dc1-leaf1c",
             "neighbor_port": "Ethernet2"
+          },
+          {
+            "port": "Ethernet18",
+            "neighbor_device": "dc1-wan3",
+            "neighbor_port": "Ethernet2"
           }
         ],
         "require_fqdn": false
@@ -88,6 +93,13 @@
           ]
         },
         "hosts": [
+          {
+            "destination": "10.255.253.11",
+            "source": "10.255.253.10",
+            "description": "dc1-wan3_Ethernet2",
+            "vrf": "default",
+            "repeat": 1
+          },
           {
             "destination": "10.255.255.3",
             "source": "10.255.255.2",
@@ -163,6 +175,13 @@
             "destination": "10.255.0.5",
             "source": "10.255.0.4",
             "description": "dc1-leaf2a",
+            "vrf": "default",
+            "repeat": 1
+          },
+          {
+            "destination": "10.255.2.3",
+            "source": "10.255.0.4",
+            "description": "dc1-wan3",
             "vrf": "default",
             "repeat": 1
           },
@@ -247,6 +266,12 @@
           {
             "destination": "10.255.1.96",
             "description": "dc1-leaf1a_Vlan4093",
+            "vrf": "default",
+            "repeat": 1
+          },
+          {
+            "destination": "10.255.253.11",
+            "description": "dc1-wan3_Ethernet2",
             "vrf": "default",
             "repeat": 1
           },
@@ -414,7 +439,44 @@
           "tags": [
             "dc1-leaf1b"
           ]
-        }
+        },
+        "interfaces": [
+          "Ethernet1",
+          "Ethernet2",
+          "Ethernet3",
+          "Ethernet4",
+          "Ethernet5",
+          "Ethernet6",
+          "Ethernet7",
+          "Ethernet8",
+          "Ethernet18",
+          "Ethernet41",
+          "Ethernet42",
+          "Ethernet43",
+          "Ethernet44",
+          "Ethernet45",
+          "Ethernet46",
+          "Ethernet47",
+          "Ethernet48",
+          "Ethernet49",
+          "Loopback0",
+          "Loopback1",
+          "Loopback10",
+          "Loopback11",
+          "Management1",
+          "Port-Channel3",
+          "Port-Channel5",
+          "Port-Channel8",
+          "Vlan11",
+          "Vlan12",
+          "Vlan21",
+          "Vlan22",
+          "Vlan3009",
+          "Vlan3010",
+          "Vlan4085",
+          "Vlan4093",
+          "Vlan4094"
+        ]
       }
     },
     {
@@ -478,6 +540,10 @@
           },
           {
             "name": "Ethernet8",
+            "status": "up"
+          },
+          {
+            "name": "Ethernet18",
             "status": "up"
           },
           {
@@ -640,6 +706,10 @@
             "vrf": "default"
           },
           {
+            "peer_address": "10.255.253.11",
+            "vrf": "default"
+          },
+          {
             "peer_address": "10.255.255.3",
             "vrf": "default"
           },
@@ -701,6 +771,10 @@
           },
           {
             "prefix": "10.255.1.5/32",
+            "vrf": "default"
+          },
+          {
+            "prefix": "10.255.2.3/32",
             "vrf": "default"
           },
           {

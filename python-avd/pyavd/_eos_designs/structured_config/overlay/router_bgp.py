@@ -347,67 +347,67 @@ class RouterBgpMixin(Protocol):
             )
 
     def _set_address_family_evpn(self: AvdStructuredConfigOverlayProtocol) -> None:
-        if self.shared_utils.overlay_routing_protocol == "ebgp":
-            if (
-                self.shared_utils.node_config.evpn_gateway.evpn_l2.enabled or self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled
-            ) and self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enabled:
-                if self.shared_utils.node_config.mlag:
-                    msg = "The All Active Multihoming resiliency model does not support MLAG, ensure the mlag key is set to false for the node."
-                    raise AristaAvdError(msg)
-                if not self.shared_utils.platform_settings.feature_support.evpn_gateway_all_active_multihoming:
-                    msg = "The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings.feature_support."
-                    raise AristaAvdError(msg)
-                if self.shared_utils.overlay_ipvpn_gateway:
-                    msg = "The all-active EVPN Gateway redundancy feature is not supported alongside the IPVPN Gateway feature."
-                    raise AristaAvdError(msg)
-                if not self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain and self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
-                    msg = "The all-active EVPN Gateway redundancy feature requires evpn_gateway.evpn_l3.inter_domain to be enabled."
-                    raise AristaAvdError(msg)
+        # TODO: Add conditions for overlay evpn and vtep.
 
-                # Check if both old and new configuration models are defined
-                d_path_defined = self.shared_utils.node_config.evpn_gateway._get_defined_attr("d_path") is not Undefined
-                all_active_multihoming_domain_ids_defined = (
-                    self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("evpn_domain_id_local") is not Undefined
-                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("evpn_domain_id_remote") is not Undefined
-                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("enable_d_path") is not Undefined
-                )
-                if d_path_defined and all_active_multihoming_domain_ids_defined:
-                    raise AvdDeprecationWarning(
-                        key=["evpn_gateway", "all_active_multihoming"],
-                        new_key="d_path",
-                        conflict=True,
-                    )
+        # All active Multi-homing EVPN Gateway
+        if (
+            self.shared_utils.node_config.evpn_gateway.evpn_l2.enabled or self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled
+        ) and self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enabled:
+            if self.shared_utils.node_config.mlag:
+                msg = "The All Active Multihoming resiliency model does not support MLAG, ensure the mlag key is set to false for the node."
+                raise AristaAvdError(msg)
+            if not self.shared_utils.platform_settings.feature_support.evpn_gateway_all_active_multihoming:
+                msg = "The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings.feature_support."
+                raise AristaAvdError(msg)
+            if self.shared_utils.overlay_ipvpn_gateway:
+                msg = "The all-active EVPN Gateway redundancy feature is not supported alongside the IPVPN Gateway feature."
+                raise AristaAvdError(msg)
+            if not self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain and self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
+                msg = "The all-active EVPN Gateway redundancy feature requires evpn_gateway.evpn_l3.inter_domain to be enabled."
+                raise AristaAvdError(msg)
 
-                # Use OR to select from whichever model is defined
-                self.structured_config.router_bgp.address_family_evpn._update(
-                    domain_identifier=self.shared_utils.node_config.evpn_gateway.d_path.local_domain_id
-                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local,
-                    domain_identifier_remote=self.shared_utils.node_config.evpn_gateway.d_path.remote_domain_id
-                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_remote,
-                )
-                self.structured_config.router_bgp.address_family_evpn.evpn_ethernet_segment.append_new(
-                    domain="all",
-                    identifier=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier,
-                    route_target_import=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import,
+            # Check if both old and new configuration models are defined
+            d_path_defined = self.shared_utils.node_config.evpn_gateway._get_defined_attr("d_path") is not Undefined
+            all_active_multihoming_domain_ids_defined = (
+                self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("evpn_domain_id_local") is not Undefined
+                or self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("evpn_domain_id_remote") is not Undefined
+                or self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("enable_d_path") is not Undefined
+            )
+            if d_path_defined and all_active_multihoming_domain_ids_defined:
+                raise AvdDeprecationWarning(
+                    key=["evpn_gateway", "all_active_multihoming"],
+                    new_key="d_path",
+                    conflict=True,
                 )
 
-                # Use AND for boolean with default true - if either is false, result is false
-                if (
-                    self.shared_utils.node_config.evpn_gateway.d_path.enabled
-                    and self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enable_d_path
-                ):
-                    self.structured_config.router_bgp.bgp.bestpath.d_path = True
-            if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
-                self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes._update(
-                    enable=True, inter_domain=self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain
-                )
+            # Use OR to select from whichever model is defined
+            self.structured_config.router_bgp.address_family_evpn._update(
+                domain_identifier=self.shared_utils.node_config.evpn_gateway.d_path.local_domain_id
+                or self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local,
+                domain_identifier_remote=self.shared_utils.node_config.evpn_gateway.d_path.remote_domain_id
+                or self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_remote,
+            )
+            self.structured_config.router_bgp.address_family_evpn.evpn_ethernet_segment.append_new(
+                domain="all",
+                identifier=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier,
+                route_target_import=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import,
+            )
 
-        if self.shared_utils.overlay_routing_protocol == "ibgp":  # noqa: SIM102
-            # TODO: - assess this condition - both can't be true at the same time.
-            if self.shared_utils.overlay_evpn_mpls and not self.shared_utils.overlay_evpn_vxlan:
-                self.structured_config.router_bgp.address_family_evpn.neighbor_default.encapsulation = "mpls"
-                if self.shared_utils.overlay_ler:
-                    self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface = "Loopback0"
+            # Use AND for boolean with default true - if either is false, result is false
+            if self.shared_utils.node_config.evpn_gateway.d_path.enabled and self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enable_d_path:
+                self.structured_config.router_bgp.bgp.bestpath.d_path = True
+
+        # L3 EVPN Gateway
+        if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
+            self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes._update(
+                enable=True, inter_domain=self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain
+            )
+
+        # EVPN MPLS
+        if self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.overlay_evpn_mpls:
+            self.structured_config.router_bgp.address_family_evpn.neighbor_default.encapsulation = "mpls"
+            if self.shared_utils.overlay_ler:
+                self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface = "Loopback0"
 
         # host flap detection & route pruning
         if self.shared_utils.overlay_vtep:
@@ -532,7 +532,7 @@ class RouterBgpMixin(Protocol):
                 # Create peer-group
                 self.set_once_peer_group_evpn_overlay_peers()
 
-            self._set_evpn_gateway_remote_peers()
+        self._set_evpn_gateway_remote_peers()
 
         if self.shared_utils.overlay_routing_protocol == "ibgp":
             if self.shared_utils.overlay_mpls:

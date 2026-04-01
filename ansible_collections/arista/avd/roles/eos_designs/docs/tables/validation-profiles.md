@@ -21,6 +21,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "validation_profiles.[].logging") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_no_errors_period</samp>](## "validation_profiles.[].logging.validate_no_errors_period") | Integer |  |  |  | Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "validation_profiles.[].exclude_as_extra_fabric_validation_target") | Boolean |  | `False` |  | Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "validation_profiles.[].interfaces") | Dictionary |  |  |  | Interface validation settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errdisable</samp>](## "validation_profiles.[].interfaces.errdisable") | Dictionary |  |  |  | Settings for the VerifyInterfaceErrDisabled test. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_avd_interfaces</samp>](## "validation_profiles.[].interfaces.errdisable.only_avd_interfaces") | Boolean |  | `False` |  | Only validate interfaces defined in the AVD structured configuration for errdisabled state. |
 
 === "YAML"
 
@@ -64,6 +67,15 @@
 
         # Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.
         exclude_as_extra_fabric_validation_target: <bool; default=False>
+
+        # Interface validation settings.
+        interfaces:
+
+          # Settings for the VerifyInterfaceErrDisabled test.
+          errdisable:
+
+            # Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+            only_avd_interfaces: <bool; default=False>
     ```
 
     1. Default Value
