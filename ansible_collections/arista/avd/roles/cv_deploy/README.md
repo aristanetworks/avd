@@ -411,7 +411,7 @@ proxy_port: 8080
 # proxy_password: <str>
 ```
 
-`cv_deploy` role can also discover proxy server settings using environment variables. Please refer to the [Proxy server support in cv_deploy](../../../../../docs/howto/cv_deploy/proxy.md) how-to guide for additional details.
+`cv_deploy` role can also discover proxy server settings using environment variables. Please refer to the [Proxy Server Support in cv_deploy](../../../../../docs/howto/cv_deploy/proxy.md) how-to guide for additional details.
 
 ## Steps to create service accounts on CloudVision
 
