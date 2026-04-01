@@ -108,7 +108,7 @@ $defs:
         description: MAC access-list to apply in the ingress direction. The ACL should be present in `mac_acls`.
       mac_acl_out:
         type: str
-        description: MAC access-list to apply in outward direction. The ACL should be present in `mac_acls`.
+        description: MAC access-list to apply in the egress direction. The ACL should be present in `mac_acls`.
       spanning_tree_portfast:
         type: str
         valid_values:
