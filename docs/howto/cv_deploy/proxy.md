@@ -98,7 +98,7 @@ If proxy-related settings are not passed to `cv_deploy` explicitly, `cv_deploy` 
 Examples below show values that can be used for `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` environment variables to influence proxy server settings in `cv_deploy`:
 
 ```code
-# Asumming 10.10.10.10 and proxy-server.local being examples of the proxy servers
+# Assuming 10.10.10.10 and proxy-server.local being examples of the proxy servers
 http://10.10.10.10:8081
 http://proxy-server.local:8081
 http://user1:pass1@10.10.10.10:8081
@@ -112,7 +112,7 @@ http://user1:pass1@proxy-server.local:8081
 Examples below show invalid values of `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` environment variables which will be ignored by `cv_deploy`:
 
 ```code
-# Asumming 10.10.10.10 and proxy-server.local being examples of the proxy servers
+# Assuming 10.10.10.10 and proxy-server.local being examples of the proxy servers
 # `https` scheme is not supported. Only `http`.
 https://10.10.10.10:8081
 # Unspecified proxy server port
@@ -167,24 +167,24 @@ Table below explains how each of the items in the environment variable above wou
 
 !!! Note
     This documentation section uses `www.cv-prod-us-central1-c.arista.io` CVaaS cluster in all examples.
-    When running commands from this section to troubleshoot your issues - please use `www.arista.io` or FQDN of the actual CVaaS cluster holding your Tenant.
+    When running commands from this section to troubleshoot your issues, please use `www.arista.io` or the FQDN of the actual CVaaS cluster holding your Tenant.
 
-    All examples as well use the following Proxy-related settings:
+    All examples also use the following proxy-related settings:
 
-    - **Proxy Server IP**: `10.10.10.100`
-    - **Proxy Server port**: `9876`
-    - **Proxy Server username**: `fake_proxy_username`
-    - **Proxy Server password**: `fake_proxy_password`
+    - **proxy server IP**: `10.10.10.100`
+    - **proxy server port**: `9876`
+    - **proxy server username**: `fake_proxy_username`
+    - **proxy server password**: `fake_proxy_password`
 
-When HTTP CONNECT Proxy Server is set up correctly and proper Proxy-related inputs are passed to AVD - `cv_deploy` run should succeed without raising any network or proxy-related exceptions.
+When the HTTP CONNECT proxy server is set up correctly, and proper proxy-related inputs are passed to AVD, the `cv_deploy` run should succeed without raising any network or proxy-related exceptions.
 
-The following `curl` test commands should return `{"version":"CVaaS"}` in case Proxy Server is set up correctly and all proxy-related variables passed to `curl` are correct as well:
+The following `curl` test commands should return `{"version":"CVaaS"}` in case the proxy server is set up correctly and all proxy-related variables passed to `curl` are correct as well:
 
 ```code
-# When Proxy Server requires credentials
+# When the proxy server requires credentials
 curl -k -x http://<proxy_server_ip_or_fqdn>:<proxy_server_port> --proxy-user <proxy_server_username>:<proxy_server_password> https://<cluster_fqdn_of_your_cvaas_tenant>/cvpservice/cvpInfo/getCvpInfo.do
 
-# When Proxy Server does not require credentials
+# When the proxy server does not require credentials
 curl -k -x http://<proxy_server_ip_or_fqdn>:<proxy_server_port> https://<cluster_fqdn_of_your_cvaas_tenant>/cvpservice/cvpInfo/getCvpInfo.do
 ```
 
@@ -197,11 +197,11 @@ curl -k -x http://10.10.10.100:9876 --proxy-user fake_proxy_username:fake_proxy_
 {"version":"CVaaS"}
 ```
 
-Sections below contain examples of the errors that may be seen when trying to run AVD inside environment that restricts access to CVaaS through HTTP CONNECT Proxy Server only.
+Sections below contain examples of errors that may be seen when trying to run AVD in an environment that restricts access to CVaaS via an HTTP CONNECT proxy server only.
 
 ### Attempt to connect directly (TCP SYNs dropped with returned TCP RST)
 
-**Issue**: AVD's `cv_deploy` is configured to connect to CVaaS directly (bypassing Proxy Server) although such connections are blocked (by transit network equipment which returns TCP RST).
+**Issue**: AVD's `cv_deploy` is configured to connect to CVaaS directly (bypassing the proxy server) although such connections are blocked (by transit network equipment which returns a TCP RST).
 
 **Symptoms**: Attempt to run `cv_deploy` immediately returns the following exception:
 
@@ -211,7 +211,7 @@ pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudV
 
 **Solution**:
 
-- Run `curl` equivalent to confirm symptoms:
+- Run the `curl` equivalent to confirm symptoms:
 
 ```code
 curl -v -k https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
@@ -227,11 +227,11 @@ curl -v -k https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvp
 curl: (7) Failed to connect to www.cv-prod-us-central1-c.arista.io port 443 after 6 ms: Could not connect to server
 ```
 
-- Force `cv_deploy` through the Proxy Server by passing correct Proxy-related settings using explicit `cv_deploy` inputs or supported environment variables.
+- Force `cv_deploy` through the proxy server by passing correct proxy-related settings using explicit `cv_deploy` inputs or supported environment variables.
 
 ### Attempt to connect directly (TCP SYNs silently dropped)
 
-**Issue**: AVD's `cv_deploy` is configured to connect to CVaaS directly (bypassing Proxy Server) although such connections are silently dropped (by transit network equipment).
+**Issue**: AVD's `cv_deploy` is configured to connect to CVaaS directly (bypassing proxy server), although such connections are silently dropped (by transit network equipment).
 
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception after a variable delay (actual time depends on the TCP stack of your environment and its TCP SYN retransmit logic):
 
@@ -241,7 +241,7 @@ pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudV
 
 **Solution**:
 
-- Run `curl` equivalent to confirm symptoms:
+- Run the `curl` equivalent to confirm symptoms:
 
 ```code
 curl -v -k https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
@@ -257,11 +257,11 @@ curl -v -k https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvp
 curl: (28) Failed to connect to www.cv-prod-us-central1-c.arista.io port 443 after 271527 ms: Could not connect to server
 ```
 
-- Force `cv_deploy` through the Proxy Server by passing correct Proxy-related settings using explicit `cv_deploy` inputs or supported environment variables.
+- Force `cv_deploy` through the proxy server by passing correct proxy-related settings using explicit `cv_deploy` inputs or supported environment variables.
 
-### Proxy Server does not exist
+### Proxy server does not exist
 
-**Issue**: Proxy Server passed to `cv_deploy` does not exist on the network (does not respond to ARP requests)
+**Issue**: Proxy server passed to `cv_deploy` does not exist on the network (does not respond to ARP requests).
 
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
@@ -271,7 +271,7 @@ pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudV
 
 **Solution**:
 
-- Run `curl` equivalent to confirm symptoms:
+- Run the `curl` equivalent to confirm symptoms:
 
 ```code
 curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
@@ -282,11 +282,11 @@ curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.
 curl: (7) Failed to connect to 10.10.10.100 port 9876 after 7108 ms: Could not connect to server
 ```
 
-- Force `cv_deploy` through the correct/existing Proxy Server by passing correct Proxy-related settings using explicit `cv_deploy` inputs or supported environment variables.
+- Force `cv_deploy` through the correct/existing proxy server by passing correct proxy-related settings using explicit `cv_deploy` inputs or supported environment variables.
 
-### Incorrect Proxy Server port
+### Incorrect proxy server port
 
-**Issue**: Proxy Server port passed to `cv_deploy` is incorrect (is not `listened` by the Proxy service or Proxy service is not running)
+**Issue**: Proxy server port passed to `cv_deploy` is incorrect (is not `listened` to by the proxy service or the proxy service is not running).
 
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
@@ -296,7 +296,7 @@ pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudV
 
 **Solution**:
 
-- Run `curl` equivalent to confirm symptoms:
+- Run the `curl` equivalent to confirm symptoms:
 
 ```code
 curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
@@ -307,11 +307,11 @@ curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.
 curl: (7) Failed to connect to 10.10.10.100 port 9876 after 35 ms: Could not connect to server
 ```
 
-- Pass correct Proxy Server port to `cv_deploy` or make sure Proxy service is running.
+- Pass the correct proxy server port to `cv_deploy` or make sure the proxy service is running.
 
-### No Proxy Server credentials provided
+### No proxy server credentials provided
 
-**Issue**: Proxy Server requires verification of credentials but credentials are not provided to `cv_deploy`
+**Issue**: Proxy server requires verification of credentials but credentials are not provided to `cv_deploy`.
 
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
@@ -321,7 +321,7 @@ pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudV
 
 **Solution**:
 
-- Run `curl` equivalent to confirm symptoms:
+- Run the `curl` equivalent to confirm symptoms:
 
 ```code
 curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
@@ -355,11 +355,11 @@ curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.
 curl: (56) CONNECT tunnel failed, response 407
 ```
 
-- Pass correct Proxy Server credentials to `cv_deploy`
+- Pass correct proxy server credentials to `cv_deploy`
 
-### Incorrect Proxy Server credentials provided
+### Incorrect proxy server credentials provided
 
-**Issue**: Proxy Server requires verification of credentials but credentials provided to `cv_deploy` are incorrect
+**Issue**: Proxy server requires verification of credentials but credentials provided to `cv_deploy` are incorrect.
 
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
@@ -369,7 +369,7 @@ pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudV
 
 **Solution**:
 
-- Run `curl` equivalent to confirm symptoms:
+- Run the `curl` equivalent to confirm symptoms:
 
 ```code
 curl -v -k -x http://10.10.10.100:9876 --proxy-user fake_proxy_username:fake_proxy_password  https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
@@ -405,11 +405,11 @@ curl -v -k -x http://10.10.10.100:9876 --proxy-user fake_proxy_username:fake_pro
 curl: (56) CONNECT tunnel failed, response 407
 ```
 
-- Pass correct Proxy Server credentials to `cv_deploy`
+- Pass the correct proxy server credentials to `cv_deploy`
 
-### Proxy Server rules block access to CVaaS
+### Proxy server rules block access to CVaaS
 
-**Issue**: `cv_deploy` successfully authenticates to Proxy Server but rules/configuration of the Proxy Server deny access to CVaaS.
+**Issue**: `cv_deploy` successfully authenticates to proxy server but rules/configuration of the proxy server deny access to CVaaS.
 
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
@@ -419,7 +419,7 @@ pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudV
 
 **Solution**:
 
-- Run `curl` equivalent to confirm symptoms:
+- Run the `curl` equivalent to confirm symptoms:
 
 ```code
 curl -v -k -x http://10.10.10.100:9876 --proxy-user fake_proxy_username:fake_proxy_password https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
@@ -453,4 +453,4 @@ curl -v -k -x http://10.10.10.100:9876 --proxy-user fake_proxy_username:fake_pro
 curl: (56) CONNECT tunnel failed, response 403
 ```
 
-- Make sure that configuration of the Proxy Server allows `cv_deploy` to connect to CVaaS over HTTPS (TCP/443)
+- Make sure that the configuration of the proxy server allows `cv_deploy` to connect to CVaaS over HTTPS (TCP/443)
