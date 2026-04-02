@@ -398,7 +398,7 @@ class RouterBgpMixin(Protocol):
                 self.structured_config.router_bgp.bgp.bestpath.d_path = True
 
         # L3 EVPN Gateway
-        if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
+        if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "next-hop-self":
             self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes._update(
                 enable=True, inter_domain=self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain
             )

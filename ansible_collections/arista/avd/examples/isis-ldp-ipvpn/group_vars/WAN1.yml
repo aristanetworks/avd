@@ -104,8 +104,6 @@ core_interfaces:
   p2p_links_profiles:
     - name: core_profile
       # speed: 100gfull
-      # On vEOS-lab, MTU values larger than 1500 can cause issues, in an actual production network this is normally a larger value
-      mtu: 1500
       isis_metric: 50
       ip_pool: core_pool
       isis_circuit_type: level-2

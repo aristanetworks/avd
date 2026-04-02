@@ -96,6 +96,21 @@ l3leaf:
         evpn_l2:
           enabled: true
 
+    - name: evpn-gateway-l3-rd-rt-rewrite
+      id: 6
+      mgmt_ip: 192.168.0.209/24
+      evpn_route_servers: [evpn-gateway-l2-evpn-role-server]
+      filter:
+        tenants: [ EVPN_GATEWAY_TESTS, RD_RT_REWRITE_PARTIAL_TESTS ]
+      evpn_gateway:
+        remote_peers:
+          - hostname: DCI_TEST
+            ip_address: 192.168.100.10
+            bgp_as: 65002
+        evpn_l3:
+          enabled: true
+          mode: rd-rt-rewrite
+
 tenants:
   - name: EVPN_GATEWAY_TESTS
     mac_vrf_vni_base: 10000
@@ -221,3 +236,47 @@ tenants:
         name: L2_MULTI_DOMAIN_DISABLED
         # Test to disable specific VLAN for l2 multi-domain when enabled on Tenant
         evpn_l2_multi_domain: false
+
+  - name: RD_RT_REWRITE_PARTIAL_TESTS
+    mac_vrf_vni_base: 30000
+    vrfs:
+      - name: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE
+        vrf_vni: 30
+        # Test: rt_export false with rt_export_evpn_remote true (default) generates import domain all + export domain remote
+        rt_export: false
+        svis:
+          - id: 301
+            name: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE_VLAN301
+            enabled: true
+            ip_address_virtual: 10.3.1.1/24
+      - name: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL
+        vrf_vni: 31
+        # Test: rt_import false with rt_import_evpn_remote true (default) generates import domain remote + export domain all
+        rt_import: false
+        svis:
+          - id: 302
+            name: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL_VLAN302
+            enabled: true
+            ip_address_virtual: 10.3.2.1/24
+      - name: VRF_RT_IMPORT_LOCAL_NO_EXPORT
+        vrf_vni: 32
+        # Test: rt_import_evpn_remote false with rt_import true generates local import evpn (no domain), no export
+        rt_import_evpn_remote: false
+        rt_export: false
+        rt_export_evpn_remote: false
+        svis:
+          - id: 303
+            name: VRF_RT_IMPORT_LOCAL_NO_EXPORT_VLAN303
+            enabled: true
+            ip_address_virtual: 10.3.3.1/24
+      - name: VRF_RT_NO_IMPORT_LOCAL_EXPORT
+        vrf_vni: 33
+        # Test: rt_export_evpn_remote false with rt_export true generates no import, local export evpn (no domain)
+        rt_import: false
+        rt_import_evpn_remote: false
+        rt_export_evpn_remote: false
+        svis:
+          - id: 304
+            name: VRF_RT_NO_IMPORT_LOCAL_EXPORT_VLAN304
+            enabled: true
+            ip_address_virtual: 10.3.4.1/24
