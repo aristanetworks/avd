@@ -42,7 +42,7 @@ class RouteMapsMixin(Protocol):
             sequence=10, type="deny", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["extcommunity ECL-EVPN-SOO"])
         )
         # Create the extcommunity-list
-        self.structured_config_utils.set_ip_extcommunity_list_evpn_soo()
+        self.structured_config_utils.set_once_ip_extcommunity_list_evpn_soo()
 
         route_maps_item.sequence_numbers.append_new(sequence=20, type="permit")
         self.structured_config.route_maps.append(route_maps_item)
