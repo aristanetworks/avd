@@ -81,15 +81,14 @@
     - name: "Process raw device_inventory_status_on_cv variables - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.set_fact:
-        metadata:
-          serial_number: "{{ device_inventory_status_on_cv.json.result.value.key.deviceId }}"
-          system_mac_address: "{{ device_inventory_status_on_cv.json.result.value.systemMacAddress }}"
+        device_serial_number: "{{ device_inventory_status_on_cv.json.result.value.key.deviceId }}"
+        device_system_mac_address: "{{ device_inventory_status_on_cv.json.result.value.systemMacAddress }}"
 
     - name: "Expose new variables set on DUTs - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.debug:
         msg:
-          - "DEVICE {{ inventory_hostname }} | SERIAL_NUMBER: {{ metadata.serial_number }} | SYSTEM_MAC_ADDRESS: {{ metadata.system_mac_address }}"
+          - "DEVICE {{ inventory_hostname }} | SERIAL_NUMBER: {{ device_serial_number }} | SYSTEM_MAC_ADDRESS: {{ device_system_mac_address }}"
 
     - name: "Copy content of the original test's structured_config files into new structured_config files - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
@@ -107,7 +106,7 @@
     - name: "Update content of the structured_config files if metadata is not present - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.lineinfile:
-        line: "metadata:\n  serial_number: {{ metadata.serial_number }}\n  system_mac_address: {{ metadata.system_mac_address }}"
+        line: "metadata:\n  serial_number: {{ device_serial_number }}\n  system_mac_address: {{ device_system_mac_address }}"
         path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
         create: true
         mode: "0644"
@@ -118,7 +117,7 @@
     - name: "Update metadata in the structured_config files if metadata is already present - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.lineinfile:
-        line: "metadata:\n  serial_number: {{ metadata.serial_number }}\n  system_mac_address: {{ metadata.system_mac_address }}"
+        line: "metadata:\n  serial_number: {{ device_serial_number }}\n  system_mac_address: {{ device_system_mac_address }}"
         path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
         regexp: '^metadata:'
       no_log: true
