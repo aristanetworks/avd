@@ -227,7 +227,7 @@ curl -v -k https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvp
 curl: (7) Failed to connect to www.cv-prod-us-central1-c.arista.io port 443 after 6 ms: Could not connect to server
 ```
 
-- Force AVD/`cv_deploy` through the Proxy Server by passing correct Proxy-related settings using explicit AVD/`cv_deploy` inputs or supported environment variables.
+- Force `cv_deploy` through the Proxy Server by passing correct Proxy-related settings using explicit `cv_deploy` inputs or supported environment variables.
 
 ### Attempt to connect directly (TCP SYNs silently dropped)
 
@@ -257,11 +257,11 @@ curl -v -k https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvp
 curl: (28) Failed to connect to www.cv-prod-us-central1-c.arista.io port 443 after 271527 ms: Could not connect to server
 ```
 
-- Force AVD/`cv_deploy` through the Proxy Server by passing correct Proxy-related settings using explicit AVD/`cv_deploy` inputs or supported environment variables.
+- Force `cv_deploy` through the Proxy Server by passing correct Proxy-related settings using explicit `cv_deploy` inputs or supported environment variables.
 
 ### Proxy Server does not exist
 
-**Issue**: Proxy Server passed to AVD/`cv_deploy` does not exist on the network (does not respond to ARP requests)
+**Issue**: Proxy Server passed to `cv_deploy` does not exist on the network (does not respond to ARP requests)
 
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
@@ -282,11 +282,11 @@ curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.
 curl: (7) Failed to connect to 10.10.10.100 port 9876 after 7108 ms: Could not connect to server
 ```
 
-- Force AVD/`cv_deploy` through the correct/existing Proxy Server by passing correct Proxy-related settings using explicit AVD/`cv_deploy` inputs or supported environment variables.
+- Force `cv_deploy` through the correct/existing Proxy Server by passing correct Proxy-related settings using explicit `cv_deploy` inputs or supported environment variables.
 
 ### Incorrect Proxy Server port
 
-**Issue**: Proxy Server port passed to AVD/`cv_deploy` is incorrect (is not `listened` by the Proxy service or Proxy service is not running)
+**Issue**: Proxy Server port passed to `cv_deploy` is incorrect (is not `listened` by the Proxy service or Proxy service is not running)
 
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
@@ -307,11 +307,11 @@ curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.
 curl: (7) Failed to connect to 10.10.10.100 port 9876 after 35 ms: Could not connect to server
 ```
 
-- Pass correct Proxy Server port to AVD/`cv_deploy` or make sure Proxy service is running.
+- Pass correct Proxy Server port to `cv_deploy` or make sure Proxy service is running.
 
 ### No Proxy Server credentials provided
 
-**Issue**: Proxy Server requires verification of credentials but credentials are not provided to AVD/`cv_deploy`
+**Issue**: Proxy Server requires verification of credentials but credentials are not provided to `cv_deploy`
 
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
@@ -355,11 +355,11 @@ curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.
 curl: (56) CONNECT tunnel failed, response 407
 ```
 
-- Pass correct Proxy Server credentials to AVD/`cv_deploy`
+- Pass correct Proxy Server credentials to `cv_deploy`
 
 ### Incorrect Proxy Server credentials provided
 
-**Issue**: Proxy Server requires verification of credentials but credentials provided to AVD/`cv_deploy` are incorrect
+**Issue**: Proxy Server requires verification of credentials but credentials provided to `cv_deploy` are incorrect
 
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
@@ -405,11 +405,11 @@ curl -v -k -x http://10.10.10.100:9876 --proxy-user fake_proxy_username:fake_pro
 curl: (56) CONNECT tunnel failed, response 407
 ```
 
-- Pass correct Proxy Server credentials to AVD/`cv_deploy`
+- Pass correct Proxy Server credentials to `cv_deploy`
 
 ### Proxy Server rules block access to CVaaS
 
-**Issue**: AVD/`cv_deploy` successfully authenticates to Proxy Server but rules/configuration of the Proxy Server deny access to CVaaS.
+**Issue**: `cv_deploy` successfully authenticates to Proxy Server but rules/configuration of the Proxy Server deny access to CVaaS.
 
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
@@ -453,4 +453,4 @@ curl -v -k -x http://10.10.10.100:9876 --proxy-user fake_proxy_username:fake_pro
 curl: (56) CONNECT tunnel failed, response 403
 ```
 
-- Make sure that configuration of the Proxy Server allows AVD/`cv_deploy` to connect to CVaaS over HTTPS (TCP/443)
+- Make sure that configuration of the Proxy Server allows `cv_deploy` to connect to CVaaS over HTTPS (TCP/443)
