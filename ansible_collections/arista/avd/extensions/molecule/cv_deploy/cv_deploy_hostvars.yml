@@ -128,7 +128,7 @@
           run_once: true
           ansible.builtin.set_fact:
             expected_interface_tags: "{{ expected_interface_tags | default([]) + [item.tags | list | first | combine({'interface': item.interface})] }}"
-          loop: "{{ intended_tags.metadata.cv_tags.interface_tags }}"
+          loop: "{{ intended_tags.cv_interface_tags }}"
           loop_control:
             label: "{{ item.interface }}"
 
