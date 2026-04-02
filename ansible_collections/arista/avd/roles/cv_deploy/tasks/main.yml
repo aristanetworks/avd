@@ -36,9 +36,6 @@
       run_once: true
       delegate_to: localhost
       arista.avd.cv_workflow:
-        preview_features:
-          read_from_validated_inputs: true
-        tmp_dir: "{{ cv_deploy_tmp_dir }}"
         cv_servers: [ "{{ cv_server }}" ]
         cv_token: "{{ cv_token }}"
         cv_username: "{{ cv_username | arista.avd.default }}"
@@ -72,6 +69,9 @@
           workspace_build_timeout: "{{ cv_workspace_build_timeout }}"
         static_config_manifest: "{{ cv_static_config_manifest | arista.avd.default({}) }}"
         return_details: "{{ cv_register_detailed_results }}"
+        preview_features:
+          read_from_validated_inputs: true
+        tmp_dir: "{{ cv_deploy_tmp_dir }}"
       register: cv_deploy_results
 
   always:
