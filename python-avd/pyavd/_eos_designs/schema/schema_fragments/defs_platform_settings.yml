@@ -147,6 +147,12 @@ $defs:
               description: |-
                 Support for all-active EVPN gateway redundancy.
                 An error will be raised if the feature is enabled and this is false.
+            evpn_gateway_rd_rt_rewrite:
+              type: bool
+              default: false
+              description: |-
+                Support for EVPN gateway RD/RT rewrite mode.
+                An error will be raised if the feature is enabled and this is false.
             hardware_counters:
               type: bool
               description: |-
