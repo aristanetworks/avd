@@ -105,7 +105,7 @@
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
-            expected_device_tags: "{{ intended_tags.metadata.cv_tags.device_tags | default(intended_tags.cv_device_tags) }}"
+            expected_device_tags: "{{ intended_tags.metadata.cv_tags.device_tags }}"
             output_device_tags: "{{ cv_deploy_results.deployed_device_tags }}"
 
         - name: "(BLOCK) Check output device tags == intended device tags - {{ test_id | upper }}"
@@ -128,7 +128,7 @@
           run_once: true
           ansible.builtin.set_fact:
             expected_interface_tags: "{{ expected_interface_tags | default([]) + [item.tags | list | first | combine({'interface': item.interface})] }}"
-          loop: "{{ intended_tags.metadata.cv_tags.interface_tags | default(intended_tags.cv_interface_tags) }}"
+          loop: "{{ intended_tags.metadata.cv_tags.interface_tags }}"
           loop_control:
             label: "{{ item.interface }}"
 
