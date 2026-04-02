@@ -64,6 +64,9 @@ manifest:
     - recursive-include plugins **.py **.yml **.yaml
     - recursive-exclude changelogs/fragments_backup **
     - recursive-include examples **
+    # Excluding intended and documentation from examples in the collection
+    - recursive-exclude examples/**/intended **
+    - recursive-exclude examples/**/documentation **
     - recursive-exclude extensions **
     - include requirements.yml
     - exclude galaxy.yml galaxy.yaml MANIFEST.json FILES.json <namespace>-<name>-*.tar.gz
@@ -75,5 +78,5 @@ manifest:
     # TODO: see how we can reduce the two following dotfiles to avoid including them in the future
     #       There may not be a way forward.
     - include .ansible-lint
-    - include .yamllint
+    - include .ansible-lint-ignore
   omit_default_directives: true
