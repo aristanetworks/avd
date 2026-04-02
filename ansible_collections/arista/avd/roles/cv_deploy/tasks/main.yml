@@ -36,7 +36,7 @@
       run_once: true
       delegate_to: localhost
       arista.avd.cv_workflow:
-        cv_servers: [ "{{ cv_server }}" ]
+        cv_servers: ["{{ cv_server }}"]
         cv_token: "{{ cv_token }}"
         cv_username: "{{ cv_username | arista.avd.default }}"
         cv_password: "{{ cv_password | arista.avd.default }}"
