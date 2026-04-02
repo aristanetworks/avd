@@ -213,7 +213,7 @@ options:
 notes:
   - |-
     When interacting with CVaaS the regional URL where the tenant is deployed should be used, e.g:
-    `cv_servers: [ www.cv-prod-euwest-2.arista.io ]`
+    `cv_servers: [www.cv-prod-euwest-2.arista.io]`
     To see the full list of regional URLs, please visit the
     [cv_deploy](../../../ansible_collections/arista/avd/roles/cv_deploy/README.md#overview)
     role documentation.
@@ -234,7 +234,7 @@ EXAMPLES = r"""
       run_once: true
       delegate_to: localhost
       arista.avd.cv_workflow:
-        cv_servers: [ "www.arista.io" ]
+        cv_servers: ["www.arista.io"]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
         # proxy_host: "proxy.local.domain"
