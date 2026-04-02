@@ -32,9 +32,6 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>preview_features</samp> | dict | optional | None | - | Enable preview features of the plugin.<br>Preview features may change or be removed without notice. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;read_from_validated_inputs</samp> | bool | optional | False | - | When enabled, structured configurations are loaded from validated JSON files in `tmp_dir` instead of `structured_config_dir`.<br>This requires the `arista.avd.validate_inputs` plugin to run first in the same playbook to generate the validated files. |
-| <samp>tmp_dir</samp> | str | False | None | - | Path to the AVD temporary directory containing validated input files.<br>Must be the same path as used for the `arista.avd.validate_inputs` plugin.<br>Required when `preview_features.read_from_validated_inputs` is `true`. |
 | <samp>cv_servers</samp> | list | True | None | - | List of hostnames or IP addresses for CloudVision instance to deploy to. |
 | <samp>cv_token</samp> | str | False | None | - | Service account token. It is strongly recommended to use Vault for this. |
 | <samp>cv_username</samp> | str | False | None | - | Username to use if `cv_token` is missing. Not supported for CVaaS. |
@@ -73,6 +70,9 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;workspace_build_timeout</samp> | float | optional | 300.0 | - | Time to wait for Workspace build before failing. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;change_control_creation_timeout</samp> | float | optional | 300.0 | - | Time to wait for Change Control creation before failing. |
 | <samp>return_details</samp> | bool | optional | False | - | If `true` all details will be returned to Ansible and can be registered.<br>For large inventories this can affect performance, so it is disabled by default. |
+| <samp>preview_features</samp> | dict | optional | None | - | Enable preview features of the plugin.<br>Preview features may change or be removed without notice. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;read_from_validated_inputs</samp> | bool | optional | False | - | When enabled, structured configurations are loaded from validated JSON files in `tmp_dir` instead of `structured_config_dir`.<br>This requires the `arista.avd.validate_inputs` plugin to run first in the same playbook to generate the validated files. |
+| <samp>tmp_dir</samp> | str | False | None | - | Path to the AVD temporary directory containing validated input files.<br>Must be the same path as used for the `arista.avd.validate_inputs` plugin.<br>Required when `preview_features.read_from_validated_inputs` is `true`. |
 
 ## Notes
 
