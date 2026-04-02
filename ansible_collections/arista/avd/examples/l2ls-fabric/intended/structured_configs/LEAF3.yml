@@ -157,7 +157,7 @@ vlan_interfaces:
   description: MLAG
   shutdown: false
   ip_address: 192.168.0.4/31
-  mtu: 1500
+  mtu: 9214
   no_autostate: true
 vlan_internal_order:
   allocation: ascending

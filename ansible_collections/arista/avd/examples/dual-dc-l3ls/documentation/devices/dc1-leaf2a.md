@@ -265,9 +265,9 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 10.255.255.9/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 10.255.255.11/31 | default | 1500 | False | - | - |
-| Ethernet6 | P2P_dc2-leaf2a_Ethernet6 | - | 172.16.100.0/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 10.255.255.9/31 | default | 9214 | False | - | - |
+| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 10.255.255.11/31 | default | 9214 | False | - | - |
+| Ethernet6 | P2P_dc2-leaf2a_Ethernet6 | - | 172.16.100.0/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -276,14 +276,14 @@ vlan 4094
 interface Ethernet1
    description P2P_dc1-spine1_Ethernet3
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 10.255.255.9/31
 !
 interface Ethernet2
    description P2P_dc1-spine2_Ethernet3
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 10.255.255.11/31
 !
@@ -305,7 +305,7 @@ interface Ethernet5
 interface Ethernet6
    description P2P_dc2-leaf2a_Ethernet6
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 172.16.100.0/31
 !
@@ -416,10 +416,10 @@ interface Loopback11
 | Vlan12 | VRF10_VLAN12 | VRF10 | - | False |
 | Vlan21 | VRF11_VLAN21 | VRF11 | - | False |
 | Vlan22 | VRF11_VLAN22 | VRF11 | - | False |
-| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 1500 | False |
-| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 1500 | False |
-| Vlan4093 | MLAG_L3 | default | 1500 | False |
-| Vlan4094 | MLAG | default | 1500 | False |
+| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 9214 | False |
+| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 9214 | False |
+| Vlan4093 | MLAG_L3 | default | 9214 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
@@ -465,27 +465,27 @@ interface Vlan22
 interface Vlan3009
    description MLAG_L3_VRF_VRF10
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF10
    ip address 10.255.1.100/31
 !
 interface Vlan3010
    description MLAG_L3_VRF_VRF11
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF11
    ip address 10.255.1.100/31
 !
 interface Vlan4093
    description MLAG_L3
    no shutdown
-   mtu 1500
+   mtu 9214
    ip address 10.255.1.100/31
 !
 interface Vlan4094
    description MLAG
    no shutdown
-   mtu 1500
+   mtu 9214
    no autostate
    ip address 10.255.1.68/31
 ```

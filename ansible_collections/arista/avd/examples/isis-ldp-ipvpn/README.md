@@ -304,14 +304,11 @@ local_users: # (2)!
 bgp_peer_groups: # (3)!
   mpls_overlay_peers:
     password: Q4fqtbqcZ7oQuKfuWtNGRQ==
-
-p2p_uplinks_mtu: 1500 # (4)!
 ```
 
 1. The name of the fabric for internal AVD use. This name *must* match the name of an Ansible Group (and therefore a corresponding group_vars file) covering all network devices.
 2. Local users/passwords and their privilege levels. In this case, the `admin` user is set with no password and the `arista` user is set with the password `arista`.
 3. BGP peer groups and their passwords (all passwords are "arista").
-4. Point-to-point interface MTU, in this case, is set to 1500 since the example uses vEOS, but when using hardware, this should be set to 9214 instead.
 
 ## Setting device-specific configuration parameters
 
@@ -418,7 +415,6 @@ core_interfaces:
 
   p2p_links_profiles:
     - name: core_profile # (2)!
-      mtu: 1500
       isis_metric: 50
       ip_pool: core_pool
       isis_circuit_type: level-2

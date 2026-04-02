@@ -17,7 +17,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_dc1-leaf1a_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.2/31
   metadata:
     peer: dc1-leaf1a
@@ -28,7 +28,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_dc1-leaf1b_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.6/31
   metadata:
     peer: dc1-leaf1b
@@ -39,7 +39,7 @@ ethernet_interfaces:
 - name: Ethernet3
   description: P2P_dc1-leaf2a_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.10/31
   metadata:
     peer: dc1-leaf2a
@@ -50,7 +50,7 @@ ethernet_interfaces:
 - name: Ethernet4
   description: P2P_dc1-leaf2b_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.14/31
   metadata:
     peer: dc1-leaf2b
