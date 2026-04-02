@@ -162,3 +162,295 @@ Table below explains how each of the items in the environment variable above wou
 | `2a06:98c1:58::1f6` | IPv6 address match | `2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443 |
 | `2a06:98c1:58::1f6/128` | IPv6 CIDR match | `2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443 |
 | `2a06:98c1:58::/64` | IPv6 CIDR match | `2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443 |
+
+## Troubleshooting
+
+!!! Note
+    This documentation section uses `www.cv-prod-us-central1-c.arista.io` CVaaS cluster in all examples.
+    When running commands from this section to troubleshoot your issues - please use `www.arista.io` or FQDN of the actual CVaaS cluster holding your Tenant.
+
+    All examples as well use the following Proxy-related settings:
+
+    - **Proxy Server IP**: `10.10.10.100`
+    - **Proxy Server port**: `9876`
+    - **Proxy Server username**: `fake_proxy_username`
+    - **Proxy Server password**: `fake_proxy_password`
+
+When HTTP CONNECT Proxy Server is set up correctly and proper Proxy-related inputs are passed to AVD - `cv_deploy` run should succeed without raising any network or proxy-related exceptions.
+
+The following `curl` test commands should return `{"version":"CVaaS"}` in case Proxy Server is set up correctly and all proxy-related variables passed to `curl` are correct as well:
+
+```code
+# When Proxy Server requires credentials
+curl -k -x http://<proxy_server_ip_or_fqdn>:<proxy_server_port> --proxy-user <proxy_server_username>:<proxy_server_password> https://<cluster_fqdn_of_your_cvaas_tenant>/cvpservice/cvpInfo/getCvpInfo.do
+
+# When Proxy Server does not require credentials
+curl -k -x http://<proxy_server_ip_or_fqdn>:<proxy_server_port> https://<cluster_fqdn_of_your_cvaas_tenant>/cvpservice/cvpInfo/getCvpInfo.do
+```
+
+Example:
+
+```code
+# command
+curl -k -x http://10.10.10.100:9876 --proxy-user fake_proxy_username:fake_proxy_password https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
+# response
+{"version":"CVaaS"}
+```
+
+Sections below contain examples of the errors that may be seen when trying to run AVD inside environment that restricts access to CVaaS through HTTP CONNECT Proxy Server only.
+
+### Attempt to connect directly (TCP SYNs dropped with returned TCP RST)
+
+**Issue**: AVD's `cv_deploy` is configured to connect to CVaaS directly (bypassing Proxy Server) although such connections are blocked (by transit network equipment which returns TCP RST).
+
+**Symptoms**: Attempt to run `cv_deploy` immediately returns the following exception:
+
+```code
+pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError('HTTPSConnectionPool(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by NewConnectionError("HTTPSConnection(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Failed to establish a new connection: [Errno 111] Connection refused"))'),).
+```
+
+**Solution**:
+
+- Run `curl` equivalent to confirm symptoms:
+
+```code
+curl -v -k https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
+* Host www.cv-prod-us-central1-c.arista.io:443 was resolved.
+* IPv6: (none)
+* IPv4: 162.159.142.2, 172.66.1.251
+*   Trying 162.159.142.2:443...
+* connect to 162.159.142.2 port 443 from 172.18.0.7 port 39956 failed: Connection refused
+*   Trying 172.66.1.251:443...
+* connect to 172.66.1.251 port 443 from 172.18.0.7 port 43126 failed: Connection refused
+* Failed to connect to www.cv-prod-us-central1-c.arista.io port 443 after 6 ms: Could not connect to server
+* closing connection #0
+curl: (7) Failed to connect to www.cv-prod-us-central1-c.arista.io port 443 after 6 ms: Could not connect to server
+```
+
+- Force AVD/`cv_deploy` through the Proxy Server by passing correct Proxy-related settings using explicit AVD/`cv_deploy` inputs or supported environment variables.
+
+### Attempt to connect directly (TCP SYNs silently dropped)
+
+**Issue**: AVD's `cv_deploy` is configured to connect to CVaaS directly (bypassing Proxy Server) although such connections are silently dropped (by transit network equipment).
+
+**Symptoms**: Attempt to run `cv_deploy` returns the following exception after a variable delay (actual time depends on the TCP stack of your environment and its TCP SYN retransmit logic):
+
+```code
+pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.cv-prod-us-central1-c.arista.io', port=443) at 0xffffb13de660>, 'Connection to www.cv-prod-us-central1-c.arista.io timed out. (connect timeout=None)'))"),).
+```
+
+**Solution**:
+
+- Run `curl` equivalent to confirm symptoms:
+
+```code
+curl -v -k https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
+* Host www.cv-prod-us-central1-c.arista.io:443 was resolved.
+* IPv6: (none)
+* IPv4: 162.159.142.2, 172.66.1.251
+*   Trying 162.159.142.2:443...
+* connect to 162.159.142.2 port 443 from 172.18.0.7 port 45568 failed: Connection timed out
+*   Trying 172.66.1.251:443...
+* connect to 172.66.1.251 port 443 from 172.18.0.7 port 42138 failed: Connection timed out
+* Failed to connect to www.cv-prod-us-central1-c.arista.io port 443 after 271527 ms: Could not connect to server
+* closing connection #0
+curl: (28) Failed to connect to www.cv-prod-us-central1-c.arista.io port 443 after 271527 ms: Could not connect to server
+```
+
+- Force AVD/`cv_deploy` through the Proxy Server by passing correct Proxy-related settings using explicit AVD/`cv_deploy` inputs or supported environment variables.
+
+### Proxy Server does not exist
+
+**Issue**: Proxy Server passed to AVD/`cv_deploy` does not exist on the network (does not respond to ARP requests)
+
+**Symptoms**: Attempt to run `cv_deploy` returns the following exception:
+
+```code
+pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError('HTTPSConnectionPool(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError(\'Unable to connect to proxy\', NewConnectionError("HTTPSConnection(host=\'10.10.10.100\', port=9876): Failed to establish a new connection: [Errno 111] Connection refused")))'),).
+```
+
+**Solution**:
+
+- Run `curl` equivalent to confirm symptoms:
+
+```code
+curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
+*   Trying 10.10.10.100:9876...
+* connect to 10.10.10.100 port 9876 from 172.18.0.7 port 33976 failed: Connection refused
+* Failed to connect to 10.10.10.100 port 9876 after 7108 ms: Could not connect to server
+* closing connection #0
+curl: (7) Failed to connect to 10.10.10.100 port 9876 after 7108 ms: Could not connect to server
+```
+
+- Force AVD/`cv_deploy` through the correct/existing Proxy Server by passing correct Proxy-related settings using explicit AVD/`cv_deploy` inputs or supported environment variables.
+
+### Incorrect Proxy Server port
+
+**Issue**: Proxy Server port passed to AVD/`cv_deploy` is incorrect (is not `listened` by the Proxy service or Proxy service is not running)
+
+**Symptoms**: Attempt to run `cv_deploy` returns the following exception:
+
+```code
+pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError('HTTPSConnectionPool(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError(\'Unable to connect to proxy\', NewConnectionError("HTTPSConnection(host=\'10.10.10.100\', port=9876): Failed to establish a new connection: [Errno 111] Connection refused")))'),).
+```
+
+**Solution**:
+
+- Run `curl` equivalent to confirm symptoms:
+
+```code
+curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
+*   Trying 10.10.10.100:9876...
+* connect to 10.10.10.100 port 9876 from 172.18.0.7 port 45108 failed: Connection refused
+* Failed to connect to 10.10.10.100 port 9876 after 35 ms: Could not connect to server
+* closing connection #0
+curl: (7) Failed to connect to 10.10.10.100 port 9876 after 35 ms: Could not connect to server
+```
+
+- Pass correct Proxy Server port to AVD/`cv_deploy` or make sure Proxy service is running.
+
+### No Proxy Server credentials provided
+
+**Issue**: Proxy Server requires verification of credentials but credentials are not provided to AVD/`cv_deploy`
+
+**Symptoms**: Attempt to run `cv_deploy` returns the following exception:
+
+```code
+pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 407 Proxy Authentication Required')))"),).
+```
+
+**Solution**:
+
+- Run `curl` equivalent to confirm symptoms:
+
+```code
+curl -v -k -x http://10.10.10.100:9876 https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
+*   Trying 10.10.10.100:9876...
+* CONNECT tunnel: HTTP/1.1 negotiated
+* allocate connect buffer
+* Establish HTTP proxy tunnel to www.cv-prod-us-central1-c.arista.io:443
+> CONNECT www.cv-prod-us-central1-c.arista.io:443 HTTP/1.1
+> Host: www.cv-prod-us-central1-c.arista.io:443
+> User-Agent: curl/8.14.1
+> Proxy-Connection: Keep-Alive
+>
+< HTTP/1.1 407 Proxy Authentication Required
+< Server: squid/5.9
+< Mime-Version: 1.0
+< Date: Thu, 02 Apr 2026 00:41:55 GMT
+< Content-Type: text/html;charset=utf-8
+< Content-Length: 3606
+< X-Squid-Error: ERR_CACHE_ACCESS_DENIED 0
+< Vary: Accept-Language
+< Content-Language: en
+< Proxy-Authenticate: Basic realm="proxy"
+< X-Cache: MISS from a0077641e437
+< X-Cache-Lookup: NONE from a0077641e437:9443
+< Via: 1.1 a0077641e437 (squid/5.9)
+< Connection: keep-alive
+<
+* Ignore 3606 bytes of response-body
+* CONNECT tunnel failed, response 407
+* closing connection #0
+curl: (56) CONNECT tunnel failed, response 407
+```
+
+- Pass correct Proxy Server credentials to AVD/`cv_deploy`
+
+### Incorrect Proxy Server credentials provided
+
+**Issue**: Proxy Server requires verification of credentials but credentials provided to AVD/`cv_deploy` are incorrect
+
+**Symptoms**: Attempt to run `cv_deploy` returns the following exception:
+
+```code
+pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 407 Proxy Authentication Required')))"),).
+```
+
+**Solution**:
+
+- Run `curl` equivalent to confirm symptoms:
+
+```code
+curl -v -k -x http://10.10.10.100:9876 --proxy-user fake_proxy_username:fake_proxy_password  https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
+*   Trying 10.10.10.100:9876...
+* CONNECT tunnel: HTTP/1.1 negotiated
+* allocate connect buffer
+* Proxy auth using Basic with user 'fake_proxy_username'
+* Establish HTTP proxy tunnel to www.cv-prod-us-central1-c.arista.io:443
+> CONNECT www.cv-prod-us-central1-c.arista.io:443 HTTP/1.1
+> Host: www.cv-prod-us-central1-c.arista.io:443
+> Proxy-Authorization: Basic ZmFrZV9wcm94eV91c2VybmFtZTpmYWtlX3Byb3h5X3Bhc3N3b3Jk
+> User-Agent: curl/8.14.1
+> Proxy-Connection: Keep-Alive
+>
+< HTTP/1.1 407 Proxy Authentication Required
+< Server: squid/5.9
+< Mime-Version: 1.0
+< Date: Thu, 02 Apr 2026 02:20:29 GMT
+< Content-Type: text/html;charset=utf-8
+< Content-Length: 3738
+< X-Squid-Error: ERR_CACHE_ACCESS_DENIED 0
+< Vary: Accept-Language
+< Content-Language: en
+< Proxy-Authenticate: Basic realm="proxy"
+* Basic authentication problem, ignoring.
+< X-Cache: MISS from a0077641e437
+< X-Cache-Lookup: NONE from a0077641e437:9443
+< Via: 1.1 a0077641e437 (squid/5.9)
+< Connection: keep-alive
+<
+* CONNECT tunnel failed, response 407
+* closing connection #0
+curl: (56) CONNECT tunnel failed, response 407
+```
+
+- Pass correct Proxy Server credentials to AVD/`cv_deploy`
+
+### Proxy Server rules block access to CVaaS
+
+**Issue**: AVD/`cv_deploy` successfully authenticates to Proxy Server but rules/configuration of the Proxy Server deny access to CVaaS.
+
+**Symptoms**: Attempt to run `cv_deploy` returns the following exception:
+
+```code
+pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"),)
+```
+
+**Solution**:
+
+- Run `curl` equivalent to confirm symptoms:
+
+```code
+curl -v -k -x http://10.10.10.100:9876 --proxy-user fake_proxy_username:fake_proxy_password https://www.cv-prod-us-central1-c.arista.io/cvpservice/cvpInfo/getCvpInfo.do
+*   Trying 10.10.10.100:9876...
+* CONNECT tunnel: HTTP/1.1 negotiated
+* allocate connect buffer
+* Proxy auth using Basic with user 'fake_proxy_username'
+* Establish HTTP proxy tunnel to www.cv-prod-us-central1-c.arista.io:443
+> CONNECT www.cv-prod-us-central1-c.arista.io:443 HTTP/1.1
+> Host: www.cv-prod-us-central1-c.arista.io:443
+> Proxy-Authorization: Basic ZmFrZV9wcm94eV91c2VybmFtZTpmYWtlX3Byb3h5X3Bhc3N3b3Jk
+> User-Agent: curl/8.14.1
+> Proxy-Connection: Keep-Alive
+>
+< HTTP/1.1 403 Forbidden
+< Server: squid/5.9
+< Mime-Version: 1.0
+< Date: Thu, 02 Apr 2026 01:00:22 GMT
+< Content-Type: text/html;charset=utf-8
+< Content-Length: 3584
+< X-Squid-Error: ERR_ACCESS_DENIED 0
+< Vary: Accept-Language
+< Content-Language: en
+< X-Cache: MISS from a0077641e437
+< X-Cache-Lookup: NONE from a0077641e437:9443
+< Via: 1.1 a0077641e437 (squid/5.9)
+< Connection: keep-alive
+<
+* CONNECT tunnel failed, response 403
+* closing connection #0
+curl: (56) CONNECT tunnel failed, response 403
+```
+
+- Make sure that configuration of the Proxy Server allows AVD/`cv_deploy` to connect to CVaaS over HTTPS (TCP/443)
