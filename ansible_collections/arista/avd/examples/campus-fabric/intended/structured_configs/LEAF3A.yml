@@ -3488,7 +3488,7 @@ vlan_interfaces:
   description: MLAG
   shutdown: false
   ip_address: 192.168.0.10/31
-  mtu: 1500
+  mtu: 9214
   no_autostate: true
 - name: Vlan10
   description: Inband Management
