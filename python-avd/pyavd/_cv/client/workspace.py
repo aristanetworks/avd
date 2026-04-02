@@ -13,6 +13,10 @@ from pyavd._cv.api.arista.workspace.v1 import (
     Response,
     ResponseStatus,
     Workspace,
+    WorkspaceBuildDetails,
+    WorkspaceBuildDetailsKey,
+    WorkspaceBuildDetailsServiceStub,
+    WorkspaceBuildDetailsStreamRequest,
     WorkspaceConfig,
     WorkspaceConfigDeleteRequest,
     WorkspaceConfigServiceStub,
@@ -317,3 +321,36 @@ class WorkspaceMixin(Protocol):
         # Use case where stream completed without getting Workspace update in the desired state
         msg = f"Workspace '{workspace_id}' has not reached desired state '{state}'."
         raise CVWorkspaceFailed(msg)
+
+    @GRPCRequestHandler()
+    async def get_workspace_build_details(
+        self: CVClientProtocol,
+        workspace_id: str,
+        build_id: str,
+        time: datetime | None = None,
+        timeout: float = DEFAULT_API_TIMEOUT,
+    ) -> list[WorkspaceBuildDetails]:
+        """
+        Get Workspace Build Details using arista.workspace.v1.WorkspaceBuildDetailsService.GetAll API.
+
+        Parameters:
+            workspace_id: Unique identifier the workspace.
+            build_id: Unique identifier of the last WS build attempt.
+            time: Timestamp from which the information is fetched. `now()` if not set.
+            timeout: Timeout in seconds.
+
+        Returns:
+            List of WorkspaceBuildDetails objects.
+        """
+        request = WorkspaceBuildDetailsStreamRequest(
+            partial_eq_filter=[
+                WorkspaceBuildDetails(
+                    key=WorkspaceBuildDetailsKey(workspace_id=workspace_id, build_id=build_id),
+                ),
+            ],
+            time=time,
+        )
+        client = WorkspaceBuildDetailsServiceStub(self._channel)
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+
+        return [response.value async for response in responses]
