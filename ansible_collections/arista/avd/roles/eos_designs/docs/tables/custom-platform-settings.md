@@ -33,6 +33,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "custom_platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy.<br>An error will be raised if the feature is enabled and this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_rd_rt_rewrite</samp>](## "custom_platform_settings.[].feature_support.evpn_gateway_rd_rt_rewrite") | Boolean |  | `False` |  | Support for EVPN gateway RD/RT rewrite mode.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counters</samp>](## "custom_platform_settings.[].feature_support.hardware_counters") | Boolean |  | `True` |  | Support for enabling counters using programmable hardware counter resources.<br>Setting this key to `false` for the specific platform will ignore all hardware counter features for this platform. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counter_features</samp>](## "custom_platform_settings.[].feature_support.hardware_counter_features") | Dictionary |  |  |  | Per-feature support for the hardware counters.<br>Features set to `false` will be ignored for this platform. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "custom_platform_settings.[].feature_support.hardware_counter_features.acl") | Boolean |  | `True` |  |  |
@@ -173,6 +174,10 @@
           # Support for all-active EVPN gateway redundancy.
           # An error will be raised if the feature is enabled and this is false.
           evpn_gateway_all_active_multihoming: <bool; default=False>
+
+          # Support for EVPN gateway RD/RT rewrite mode.
+          # An error will be raised if the feature is enabled and this is false.
+          evpn_gateway_rd_rt_rewrite: <bool; default=False>
 
           # Support for enabling counters using programmable hardware counter resources.
           # Setting this key to `false` for the specific platform will ignore all hardware counter features for this platform.
