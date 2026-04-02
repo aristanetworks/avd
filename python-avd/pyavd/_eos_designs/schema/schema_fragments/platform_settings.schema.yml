@@ -203,6 +203,7 @@ keys:
         tcam_profile: vxlan-routing
         feature_support:
           evpn_gateway_all_active_multihoming: true
+          evpn_gateway_rd_rt_rewrite: true
           per_interface_l2_mtu: false
           private_vlan: false
         digital_twin:
@@ -268,6 +269,7 @@ keys:
         feature_support:
           per_interface_l2_mtu: false
           evpn_gateway_all_active_multihoming: true
+          evpn_gateway_rd_rt_rewrite: true
           private_vlan: false
         digital_twin:
           platform: vEOS-lab
@@ -281,6 +283,7 @@ keys:
         feature_support:
           per_interface_l2_mtu: false
           evpn_gateway_all_active_multihoming: true
+          evpn_gateway_rd_rt_rewrite: true
           private_vlan: false
         digital_twin:
           platform: vEOS-lab
@@ -339,6 +342,7 @@ keys:
           per_interface_l2_mtu: false
           per_interface_l2_mru: false
           evpn_gateway_all_active_multihoming: true
+          evpn_gateway_rd_rt_rewrite: true
           sflow_subinterfaces: false
           hardware_validation: false
         reload_delay:
@@ -360,6 +364,7 @@ keys:
           per_interface_l2_mtu: false
           per_interface_l2_mru: false
           evpn_gateway_all_active_multihoming: true
+          evpn_gateway_rd_rt_rewrite: true
           sflow_subinterfaces: false
           hardware_validation: false
         management_interface: Management1
