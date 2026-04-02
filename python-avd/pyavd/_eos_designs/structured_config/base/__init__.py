@@ -405,10 +405,13 @@ class AvdStructuredConfigBaseProtocol(
             shutdown=self.inputs.monitor_connectivity.shutdown,
             interval=self.inputs.monitor_connectivity.interval,
             interface_sets=self.inputs.monitor_connectivity.interface_sets._cast_as(EosCliConfigGen.MonitorConnectivity.InterfaceSets),
-            local_interfaces=self.inputs.monitor_connectivity.local_interfaces,
             address_only=self.inputs.monitor_connectivity.address_only,
             name_server_group=self.inputs.monitor_connectivity.name_server_group,
         )
+        if (local_interfaces := self.inputs.monitor_connectivity.local_interfaces is not None) and local_interfaces in (
+            self.inputs.monitor_connectivity.interface_sets._as_list()
+        ):
+            monitor_connectivity.local_interfaces = local_interfaces
         self._set_monitor_connectivity_hosts(self.inputs.monitor_connectivity.hosts, monitor_connectivity.hosts)
 
         for vrf in self.inputs.monitor_connectivity.vrfs:
@@ -417,9 +420,10 @@ class AvdStructuredConfigBaseProtocol(
                 description=vrf.description,
                 single_line_description=vrf.single_line_description,
                 interface_sets=vrf.interface_sets._cast_as(EosCliConfigGen.MonitorConnectivity.VrfsItem.InterfaceSets),
-                local_interfaces=vrf.local_interfaces,
                 address_only=vrf.address_only,
             )
+            if (vrf_local_interfaces := vrf.local_interfaces is not None) and vrf_local_interfaces in (vrf.interface_sets._as_list()):
+                monitor_connectivity_vrf.local_interfaces = vrf_local_interfaces
             self._set_monitor_connectivity_hosts(vrf.hosts, monitor_connectivity_vrf.hosts)
 
     @structured_config_contributor

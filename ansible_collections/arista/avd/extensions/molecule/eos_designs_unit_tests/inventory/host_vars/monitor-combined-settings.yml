@@ -24,21 +24,28 @@ logging_settings:
 monitor_connectivity:
   # global address_only not set
   interval: 10
+  interface_sets:
+    - name: SET_LOOPBACK0
+      interfaces: Loopback0
+    - name: SET_LOOPBACK1
+      interfaces: Loopback1
+    - name: SET_LOOPBACK2
+      interfaces: Loopback2
   hosts:
     - name: INTERNET_CHECK
       # local address_only: true with local_interfaces
-      local_interfaces: Loopback0
+      local_interfaces: SET_LOOPBACK0
       address_only: true
       ip: 8.8.4.4
     - name: INTERNET_CHECK_1
       # local address_only not set no local_interfaces
       ip: 8.8.4.5
     - name: INTERNET_CHECK_2
-      local_interfaces: Loopback1
+      local_interfaces: SET_LOOPBACK1
       # local address_only: false
       address_only: false
       ip: 8.8.4.6
     - name: INTERNET_CHECK_3
       # local address_only not set with local_interfaces
-      local_interfaces: Loopback2
+      local_interfaces: SET_LOOPBACK2
       ip: 8.8.4.7

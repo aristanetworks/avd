@@ -19,7 +19,9 @@ monitor_connectivity:
   interface_sets:
     - name: SET_INTERNET
       interfaces: Ethernet1-2
-  local_interfaces: Loopback0
+    - name: SET_LOOPBACK0
+      interfaces: Loopback0
+  local_interfaces: SET_LOOPBACK0
   address_only: true
   hosts:
     - name: DNS1
@@ -66,7 +68,8 @@ monitor_connectivity:
           local_interfaces: SET_MGMT_2
     - name: MGMT_1
       description: Management VRF monitoring 1
-      # testing vrf.address_only: true
+      # testing vrf.address_only: true.
+      # local_interfaces will not reflect in configuration since it is not mention in interface_sets.
       local_interfaces: Vrf_Set_MGMT
       address_only: true
       hosts:
