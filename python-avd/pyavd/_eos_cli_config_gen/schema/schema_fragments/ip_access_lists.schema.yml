@@ -75,6 +75,7 @@ keys:
                   warning: true
                   removed: false
                   remove_in_version: 7.0.0
+                  new_key: inner_vlan_number and inner_vlan_mask
         permit_response_traffic:
           type: str
           valid_values:
