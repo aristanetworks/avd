@@ -1,5 +1,5 @@
 ---
-- name: "Converge - Configuration deployment with CVP - {{ test_id | upper }}"
+- name: "Converge - Configuration deployment with CVP using hostvars - {{ test_id | upper }}"
   hosts: SITE1_FABRIC
   connection: local
   gather_facts: false
@@ -13,11 +13,10 @@
     cv_verify_certs: "{{ lookup('env', 'CV_VERIFY_CERTS') | default(true, true) | bool }}"
     cv_skip_missing_devices: true
     eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
-    structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
     cv_deploy_tmp_dir: "{{ playbook_dir }}/intended/tmp_cv_deploy"
     intended_tag_device: avd-ci-leaf1
-    intended_tags: "{{ lookup('file', structured_dir ~ '/' ~ intended_tag_device ~ '.yml')| from_yaml }}"
-    test_id: "force-ws-true_run-cc-true"
+    intended_tags: "{{ hostvars[intended_tag_device] }}"
+    test_id: "hostvars-deploy"
     cv_common_pattern: "avd_cv-deploy_{{ test_id }}"
 
   tasks:
@@ -36,7 +35,7 @@
       ansible.builtin.set_fact:
         r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
 
-    - name: "Code block to provision CVP with AVD configuration - {{ test_id | upper }}"
+    - name: "Code block to provision CVP with AVD configuration from hostvars - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       run_once: true
       delegate_to: localhost
@@ -48,9 +47,9 @@
           run_once: true
           ansible.builtin.debug:
             msg:
-              - "### ENGAGE CV_DEPLOY ROLE TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
+              - "### ENGAGE CV_DEPLOY ROLE (HOSTVARS MODE) TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
 
-        - name: "(BLOCK) Provision CVP with AVD configuration - {{ test_id | upper }}"
+        - name: "(BLOCK) Provision CVP with AVD configuration from hostvars - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost
@@ -64,6 +63,8 @@
             cv_register_detailed_results: true
             cv_submit_workspace_force: true
             cv_run_change_control: true
+            # Use hostvars instead of structured config files
+            read_structured_config_from_file: false
 
         - name: "(BLOCK) Check CVP returns - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
@@ -100,7 +101,7 @@
               - item.0.value == item.1.value
           loop: "{{ cv_deploy_results.deployed_device_tags | zip(cv_deploy_results.device_tags) | list }}"
 
-        - name: "(BLOCK) Extract all device tags from structured configs - {{ test_id | upper }}"
+        - name: "(BLOCK) Extract all device tags from hostvars - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
@@ -122,12 +123,12 @@
           ansible.builtin.set_fact:
             output_interface_tags: "{{ cv_deploy_results.deployed_interface_tags }}"
 
-        - name: "(BLOCK) Extract all interface tags from structured configs - {{ test_id | upper }}"
+        - name: "(BLOCK) Extract all interface tags from hostvars - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
             expected_interface_tags: "{{ expected_interface_tags | default([]) + [item.tags | list | first | combine({'interface': item.interface})] }}"
-          loop: "{{ intended_tags.metadata.cv_tags.interface_tags }}"
+          loop: "{{ intended_tags.cv_interface_tags }}"
           loop_control:
             label: "{{ item.interface }}"
 
