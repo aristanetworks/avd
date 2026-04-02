@@ -152,7 +152,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         self.structured_config.as_path.access_lists.append_new(name="ASPATH-WAN", entries=entries)
 
     @run_once_method
-    def set_ip_extcommunity_list_evpn_soo(self: StructuredConfigUtils) -> None:
+    def set_once_ip_extcommunity_list_evpn_soo(self: StructuredConfigUtils) -> None:
         """Set ip extcommunity-list ECL-EVPN-SOO."""
         ip_extcommunity_list = EosCliConfigGen.IpExtcommunityListsItem(name="ECL-EVPN-SOO")
         ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
