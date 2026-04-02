@@ -605,6 +605,8 @@ router_bgp:
       remote_as: '12345'
       send_community: all
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+    - ip_address: fd5a:fe45:8831:06c5::b
+      remote_as: '12345'
     redistribute:
       connected:
         enabled: true
@@ -626,6 +628,8 @@ router_bgp:
         activate: true
         prefix_list_in: PL-TEST-IN-AF6
         prefix_list_out: PL-TEST-OUT-AF6
+      - ip_address: fd5a:fe45:8831:06c5::b
+        activate: true
   - name: Tenant_B_OP_Zone
     rd: 192.168.254.14:20
     route_targets:

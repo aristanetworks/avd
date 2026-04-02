@@ -109,6 +109,17 @@ $defs:
                 description: |-
                   BGP peer group cleartext password.
                   To protect the password at rest it is strongly recommended to make use of a vault or similar.
+              listen_ranges:
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    prefix:
+                      type: str
+                    remote_as:
+                      type: str
+                      convert_types:
+                        - int
               nodes:
                 type: list
                 items:
@@ -1600,6 +1611,17 @@ $defs:
                       description: |-
                         BGP peer group cleartext password.
                         To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                    listen_ranges:
+                      type: list
+                      items:
+                        type: dict
+                        keys:
+                          prefix:
+                            type: str
+                          remote_as:
+                            type: str
+                            convert_types:
+                              - int
                     address_family_ipv4:
                       type: dict
                       keys:

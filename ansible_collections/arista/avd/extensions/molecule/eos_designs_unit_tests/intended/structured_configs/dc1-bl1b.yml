@@ -317,6 +317,10 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  listen_ranges:
+  - prefix: 192.168.141.0/24
+    peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+    remote_as: '111'
   peer_groups:
   - name: UNDERLAY-PEERS
     metadata:
@@ -341,6 +345,21 @@ router_bgp:
     ebgp_multihop: 15
     send_community: all
     maximum_routes: 0
+  - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+    remote_as: '666'
+    local_as: '777'
+    description: Tenant C VRF WAN Zone peer group
+    update_source: lo0
+    bfd: false
+    ebgp_multihop: 3
+    next_hop_self: true
+    default_originate:
+      enabled: true
+      always: true
+    send_community: all
+    maximum_routes: 1000
+    route_map_in: TEST_IN
+    route_map_out: TEST_OUT
   neighbors:
   - ip_address: 172.31.254.192
     peer_group: UNDERLAY-PEERS
@@ -481,6 +500,20 @@ router_bgp:
       activate: false
     - name: EVPN-OVERLAY-CORE
       activate: false
+    - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      activate: true
+      route_map_in: TEST_IN
+      route_map_out: TEST_OUT
+      rcf_in: TEST_RCF_IN()
+      rcf_out: TEST_RCF_OUT()
+  address_family_ipv6:
+    peer_groups:
+    - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      activate: true
+      route_map_in: TEST_IN
+      route_map_out: TEST_OUT
+      rcf_in: TEST_RCF_IN()
+      rcf_out: TEST_RCF_OUT()
   vrfs:
   - name: Tenant_A_L3_VRF_Zone
     rd: 192.168.254.15:15
@@ -554,6 +587,8 @@ router_bgp:
       remote_as: '12345'
       send_community: all
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+    - ip_address: fd5a:fe45:8831:06c5::b
+      remote_as: '12345'
     redistribute:
       connected:
         enabled: true
@@ -575,6 +610,8 @@ router_bgp:
         activate: true
         prefix_list_in: PL-TEST-IN-AF6
         prefix_list_out: PL-TEST-OUT-AF6
+      - ip_address: fd5a:fe45:8831:06c5::b
+        activate: true
   - name: Tenant_B_OP_Zone
     rd: 192.168.254.15:20
     route_targets:

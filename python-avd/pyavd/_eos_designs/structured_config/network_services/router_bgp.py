@@ -11,7 +11,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict
+from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict, Undefined
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -51,7 +51,7 @@ class RouterBgpMixin(Protocol):
         # These functions update structured config directly.
         self._router_bgp_peer_groups()
         self._router_bgp_vrfs()
-
+        self._set_router_bgp_listen_ranges()
         self._router_bgp_vlans(tenant_svis_l2vlans_dict)
         self._router_bgp_vlan_aware_bundles(tenant_svis_l2vlans_dict)
         self._router_bgp_redistribute_routes()
@@ -309,6 +309,18 @@ class RouterBgpMixin(Protocol):
         bgp_vrf.evpn_multicast = getattr(vrf._internal_data, "evpn_l3_multicast_enabled", None)
         if evpn_multicast_transit_mode := getattr(vrf._internal_data, "evpn_l3_multicast_evpn_peg_transit", False):
             bgp_vrf.evpn_multicast_address_family.ipv4.transit = evpn_multicast_transit_mode
+
+    def _set_router_bgp_listen_ranges(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+        for tenant in self.shared_utils.filtered_tenants:
+            for bgp_peer_group in tenant.bgp_peer_groups:
+                if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
+                    for listen_range in bgp_peer_group.listen_ranges:
+                        self.structured_config.router_bgp.listen_ranges.append_new(prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined)
+            for vrf in tenant.vrfs:
+                for bgp_peer_group in vrf.bgp_peer_groups:
+                    if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
+                        for listen_range in bgp_peer_group.listen_ranges:
+                            self.structured_config.router_bgp.listen_ranges.append_new(prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined)
 
     def _update_router_bgp_vrf_mlag_neighbor_cfg(
         self: AvdStructuredConfigNetworkServicesProtocol,

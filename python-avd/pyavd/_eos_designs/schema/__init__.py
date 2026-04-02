@@ -59995,6 +59995,33 @@ class EosDesigns(EosDesignsRootModel):
                 class BgpPeerGroupsItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    class ListenRangesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"prefix": {"type": str}, "remote_as": {"type": str}}
+                        prefix: str | None
+                        remote_as: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, prefix: str | None | UndefinedType = Undefined, remote_as: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                ListenRangesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    prefix: prefix
+                                    remote_as: remote_as
+
+                                """
+
+                    class ListenRanges(AvdList[ListenRangesItem]):
+                        """Subclass of AvdList with `ListenRangesItem` items."""
+
+                    ListenRanges._item_type = ListenRangesItem
+
                     class Nodes(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -60532,6 +60559,7 @@ class EosDesigns(EosDesignsRootModel):
                         "name": {"type": str},
                         "password": {"type": str},
                         "cleartext_password": {"type": str},
+                        "listen_ranges": {"type": ListenRanges},
                         "nodes": {"type": Nodes},
                         "address_family_ipv4": {"type": AddressFamilyIpv4},
                         "address_family_ipv6": {"type": AddressFamilyIpv6},
@@ -60585,6 +60613,8 @@ class EosDesigns(EosDesignsRootModel):
                     To protect the password at rest it is strongly recommended to
                     make use of a vault or similar.
                     """
+                    listen_ranges: ListenRanges
+                    """Subclass of AvdList with `ListenRangesItem` items."""
                     nodes: Nodes
                     """
                     List of node names or regular expressions to match against hostnames to configure the peer-group.
@@ -60701,6 +60731,7 @@ class EosDesigns(EosDesignsRootModel):
                             name: str | UndefinedType = Undefined,
                             password: str | None | UndefinedType = Undefined,
                             cleartext_password: str | None | UndefinedType = Undefined,
+                            listen_ranges: ListenRanges | UndefinedType = Undefined,
                             nodes: Nodes | UndefinedType = Undefined,
                             address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                             address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
@@ -60756,6 +60787,7 @@ class EosDesigns(EosDesignsRootModel):
                                    BGP peer group cleartext password.
                                    To protect the password at rest it is strongly recommended to
                                    make use of a vault or similar.
+                                listen_ranges: Subclass of AvdList with `ListenRangesItem` items.
                                 nodes:
                                    List of node names or regular expressions to match against hostnames to configure the peer-group.
                                    The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
@@ -66397,6 +66429,35 @@ class EosDesigns(EosDesignsRootModel):
 
                         Nodes._item_type = str
 
+                        class ListenRangesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"prefix": {"type": str}, "remote_as": {"type": str}}
+                            prefix: str | None
+                            remote_as: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, prefix: str | None | UndefinedType = Undefined, remote_as: str | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    ListenRangesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        remote_as: remote_as
+
+                                    """
+
+                        class ListenRanges(AvdList[ListenRangesItem]):
+                            """Subclass of AvdList with `ListenRangesItem` items."""
+
+                        ListenRanges._item_type = ListenRangesItem
+
                         class AddressFamilyIpv4(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -66934,6 +66995,7 @@ class EosDesigns(EosDesignsRootModel):
                             "nodes": {"type": Nodes},
                             "password": {"type": str},
                             "cleartext_password": {"type": str},
+                            "listen_ranges": {"type": ListenRanges},
                             "address_family_ipv4": {"type": AddressFamilyIpv4},
                             "address_family_ipv6": {"type": AddressFamilyIpv6},
                             "metadata": {"type": Metadata},
@@ -66997,6 +67059,8 @@ class EosDesigns(EosDesignsRootModel):
                         To protect the password at rest it is strongly recommended to
                         make use of a vault or similar.
                         """
+                        listen_ranges: ListenRanges
+                        """Subclass of AvdList with `ListenRangesItem` items."""
                         address_family_ipv4: AddressFamilyIpv4
                         """Subclass of AvdModel."""
                         address_family_ipv6: AddressFamilyIpv6
@@ -67103,6 +67167,7 @@ class EosDesigns(EosDesignsRootModel):
                                 nodes: Nodes | UndefinedType = Undefined,
                                 password: str | None | UndefinedType = Undefined,
                                 cleartext_password: str | None | UndefinedType = Undefined,
+                                listen_ranges: ListenRanges | UndefinedType = Undefined,
                                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                                 metadata: Metadata | UndefinedType = Undefined,
@@ -67166,6 +67231,7 @@ class EosDesigns(EosDesignsRootModel):
                                        BGP peer group cleartext password.
                                        To protect the password at rest it is strongly recommended to
                                        make use of a vault or similar.
+                                    listen_ranges: Subclass of AvdList with `ListenRangesItem` items.
                                     address_family_ipv4: Subclass of AvdModel.
                                     address_family_ipv6: Subclass of AvdModel.
                                     metadata: Subclass of AvdModel.

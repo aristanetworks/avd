@@ -28,6 +28,9 @@ tenant_c:
       - name: Tenant_C_BGP_PEER_GROUP_RESTRICTED
         remote_as: "666"
         description: "Tenant C peer group"
+        listen_ranges:
+          - prefix:  192.168.142.0/24
+            remote_as: 111
         nodes: ['DC1-BL[12]A']
       - name: Tenant_C_BGP_PEER_GROUP2
         remote_as: "667"
@@ -74,6 +77,9 @@ tenant_c:
             send_community: all
             next_hop_self: true
             maximum_routes: 1000
+            listen_ranges:
+              - prefix:  192.168.141.0/24
+                remote_as: 111
             default_originate:
               enabled: true
               always: true
@@ -89,7 +95,7 @@ tenant_c:
               route_map_out: TEST_OUT
               rcf_in: TEST_RCF_IN()
               rcf_out: TEST_RCF_OUT()
-            nodes: ['DC1-BL[12]B']
+            nodes: ['dc1-bl[12]b']
             update_source: lo0
             bfd: false
             ebgp_multihop: 3
