@@ -13,5 +13,15 @@
     // "true" is required to exit "postStartCommand" without entering ZSH.
     // the script must be executed ONLY if Ansible is not installed
     "postStartCommand": "/bin/entrypoint.sh true",
-    "remoteUser": "avd"
+    "remoteUser": "avd",
+    // use .env file to setup dev environment
+    "runArgs": ["--env-file", ".vscode/dev_vars.env"],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "anthropic.claude-code",
+                "openai.chatgpt"
+            ]
+        }
+    }
 }
