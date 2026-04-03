@@ -718,6 +718,9 @@ router_bgp:
           send: ecmp
           send_limit: 20
           prefix_list: PL2
+        default_originate:
+          route_map: RM-FOO
+          always: true
       - name: FOOBAR
         activate: false
     neighbors:

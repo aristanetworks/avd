@@ -18220,6 +18220,15 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                default_originate:
+                  type: dict
+                  keys:
+                    always:
+                      type: bool
+                      description: Always advertise a default route to this peer.
+                    route_map:
+                      type: str
+                      description: Route-map name.
           neighbors:
             type: list
             primary_key: ip_address

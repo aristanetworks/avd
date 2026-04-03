@@ -48457,6 +48457,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class DefaultOriginate(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"always": {"type": bool}, "route_map": {"type": str}}
+                    always: bool | None
+                    """Always advertise a default route to this peer."""
+                    route_map: str | None
+                    """Route-map name."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, always: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            DefaultOriginate.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                always: Always advertise a default route to this peer.
+                                route_map: Route-map name.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "activate": {"type": bool},
@@ -48469,6 +48493,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "prefix_list_in": {"type": str},
                     "prefix_list_out": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
+                    "default_originate": {"type": DefaultOriginate},
                 }
                 name: str
                 """Peer-group name."""
@@ -48497,6 +48522,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Outbound prefix-list name."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
+                default_originate: DefaultOriginate
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -48514,6 +48541,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         prefix_list_in: str | None | UndefinedType = Undefined,
                         prefix_list_out: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
+                        default_originate: DefaultOriginate | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -48537,6 +48565,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             prefix_list_in: Inbound prefix-list name.
                             prefix_list_out: Outbound prefix-list name.
                             additional_paths: Subclass of AvdModel.
+                            default_originate: Subclass of AvdModel.
 
                         """
 
