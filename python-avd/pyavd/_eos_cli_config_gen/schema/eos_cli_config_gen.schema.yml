@@ -6180,6 +6180,17 @@ keys:
                     max: 7
                     convert_types:
                     - str
+  ip_hosts:
+    type: list
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+        ipv4_address:
+          type: str
+          required: true
   ip_http_client:
     type: dict
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf

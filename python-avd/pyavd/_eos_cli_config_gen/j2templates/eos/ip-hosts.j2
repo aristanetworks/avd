@@ -1,0 +1,9 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - ip host #}
+{% for ip_host in ip_hosts | arista.avd.natural_sort(sort_key='hostname', ignore_case=false) %}
+ip host {{ ip_host.hostname }} {{ ip_host.ipv4_address }}
+{% endfor %}

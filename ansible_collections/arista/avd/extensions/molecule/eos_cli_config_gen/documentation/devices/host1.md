@@ -14,6 +14,7 @@ Serial Number: DEADBEEFC0FFEW
   - [IP Name Servers](#ip-name-servers)
   - [IP Name Server Groups](#ip-name-server-groups)
   - [Domain Lookup](#domain-lookup)
+  - [IP Hosts](#ip-hosts)
   - [Clock Settings](#clock-settings)
   - [NTP](#ntp)
   - [PTP](#ptp)
@@ -671,6 +672,24 @@ ip name-server group mynameserver2
 ```eos
 ip domain lookup source-interface Loopback0
 ip domain lookup vrf mgt source-interface Management0
+```
+
+### IP Hosts
+
+#### IP Host Summary
+
+| Host | IPv4 Address |
+| ---- | ------------ |
+| TEST1 | 10.1.1.1 |
+| host_with_same_ip | 10.1.1.1 |
+| small_host | 1.1.1.1 |
+
+#### IP Host Device Configuration
+
+```eos
+ip host TEST1 10.1.1.1
+ip host host_with_same_ip 10.1.1.1
+ip host small_host 1.1.1.1
 ```
 
 ### Clock Settings

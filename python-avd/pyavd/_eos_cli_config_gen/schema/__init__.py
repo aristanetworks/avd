@@ -16021,6 +16021,35 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpHostsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"hostname": {"type": str}, "ipv4_address": {"type": str}}
+        hostname: str
+        ipv4_address: str
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, hostname: str | UndefinedType = Undefined, ipv4_address: str | UndefinedType = Undefined) -> None:
+                """
+                IpHostsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    hostname: hostname
+                    ipv4_address: ipv4_address
+
+                """
+
+    class IpHosts(AvdIndexedList[str, IpHostsItem]):
+        """Subclass of AvdIndexedList with `IpHostsItem` items. Primary key is `hostname` (`str`)."""
+
+        _primary_key: ClassVar[str] = "hostname"
+
+    IpHosts._item_type = IpHostsItem
+
     class IpHttpClient(AvdModel):
         """Subclass of AvdModel."""
 
@@ -71938,6 +71967,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_extcommunity_lists_regexp": {"type": IpExtcommunityListsRegexp},
         "ip_ftp_client": {"type": IpFtpClient},
         "ip_hardware": {"type": IpHardware},
+        "ip_hosts": {"type": IpHosts},
         "ip_http_client": {"type": IpHttpClient},
         "ip_icmp_redirect": {"type": bool},
         "ip_igmp_snooping": {"type": IpIgmpSnooping},
@@ -72340,6 +72370,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     ip_hardware: IpHardware
     """Subclass of AvdModel."""
+    ip_hosts: IpHosts
+    """Subclass of AvdIndexedList with `IpHostsItem` items. Primary key is `hostname` (`str`)."""
     ip_http_client: IpHttpClient
     """Subclass of AvdModel."""
     ip_icmp_redirect: bool | None
@@ -72780,6 +72812,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_extcommunity_lists_regexp: IpExtcommunityListsRegexp | UndefinedType = Undefined,
             ip_ftp_client: IpFtpClient | UndefinedType = Undefined,
             ip_hardware: IpHardware | UndefinedType = Undefined,
+            ip_hosts: IpHosts | UndefinedType = Undefined,
             ip_http_client: IpHttpClient | UndefinedType = Undefined,
             ip_icmp_redirect: bool | None | UndefinedType = Undefined,
             ip_igmp_snooping: IpIgmpSnooping | UndefinedType = Undefined,
@@ -73098,6 +73131,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    (`str`).
                 ip_ftp_client: Subclass of AvdModel.
                 ip_hardware: Subclass of AvdModel.
+                ip_hosts: Subclass of AvdIndexedList with `IpHostsItem` items. Primary key is `hostname` (`str`).
                 ip_http_client: Subclass of AvdModel.
                 ip_icmp_redirect: ip_icmp_redirect
                 ip_igmp_snooping: Subclass of AvdModel.
