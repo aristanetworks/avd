@@ -1,9 +1,8 @@
-# Copyright (c) 2026 Arista Networks, Inc.
-# Use of this source code is governed by the Apache License 2.0
-# that can be found in the LICENSE file.
 ---
 type: l3leaf
 l3leaf:
+  defaults: 
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
   nodes:
     - name: monitor-connectivity-vrf-local-interfaces-not-in-interface-sets
       id: 202
