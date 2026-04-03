@@ -8,23 +8,23 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet5
-  description: MLAG_dhcp-relay-1_Ethernet5
+  description: MLAG_dhcp-relay-vtep-mlag-1_Ethernet5
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: dhcp-relay-1
+    peer: dhcp-relay-vtep-mlag-1
     peer_interface: Ethernet5
     peer_type: mlag_peer
 - name: Ethernet6
-  description: MLAG_dhcp-relay-1_Ethernet6
+  description: MLAG_dhcp-relay-vtep-mlag-1_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: dhcp-relay-1
+    peer: dhcp-relay-vtep-mlag-1
     peer_interface: Ethernet6
     peer_type: mlag_peer
 - name: Ethernet1
@@ -38,7 +38,7 @@ ethernet_interfaces:
     peer_type: spine
   switchport:
     enabled: false
-hostname: dhcp-relay-2
+hostname: dhcp-relay-vtep-mlag-2
 ip_dhcp_relay:
   information_option: true
 ip_igmp_snooping:
@@ -65,7 +65,7 @@ metadata:
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
-  domain_id: DHCP_RELAY_1
+  domain_id: DHCP_RELAY_VTEP_MLAG
   local_interface: Vlan4094
   peer_address: 10.10.255.6
   peer_link: Port-Channel5
@@ -73,7 +73,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_dhcp-relay-1_Port-Channel5
+  description: MLAG_dhcp-relay-vtep-mlag-1_Port-Channel5
   shutdown: false
   switchport:
     enabled: true
@@ -122,7 +122,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65161'
-    description: dhcp-relay-1
+    description: dhcp-relay-vtep-mlag-1
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -144,8 +144,8 @@ router_bgp:
   - ip_address: 10.10.255.6
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: dhcp-relay-1
-    description: dhcp-relay-1_Vlan4094
+      peer: dhcp-relay-vtep-mlag-1
+    description: dhcp-relay-vtep-mlag-1_Vlan4094
   - ip_address: 10.10.101.8
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
@@ -219,7 +219,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: dhcp-relay-2_VTEP
+    description: dhcp-relay-vtep-mlag-2_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

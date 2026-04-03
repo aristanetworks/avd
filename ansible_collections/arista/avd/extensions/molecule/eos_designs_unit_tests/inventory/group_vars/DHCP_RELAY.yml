@@ -16,15 +16,15 @@ l3leaf:
     uplink_switches: ["mlag-isis-spine"]
     uplink_interfaces: ["Ethernet1"]
   node_groups:
-    - group: DHCP_RELAY_1
+    - group: DHCP_RELAY_VTEP_MLAG
       nodes:
-        - name: dhcp-relay-1
+        - name: dhcp-relay-vtep-mlag-1
           id: 4
           bgp_as: 65161
           mgmt_ip: 192.168.201.116/24
           uplink_switch_interfaces: [Ethernet34]
           mlag_interfaces: [Ethernet5, Ethernet6]
-        - name: dhcp-relay-2
+        - name: dhcp-relay-vtep-mlag-2
           id: 5
           bgp_as: 65161
           mgmt_ip: 192.168.201.117/24

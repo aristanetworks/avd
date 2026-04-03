@@ -1,0 +1,12 @@
+---
+# Test for DHCP Relay option-82
+
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: dhcp-relay-option-82
+      id: 101
+
+general_settings:
+  dhcp_relay:
+    information_option: true

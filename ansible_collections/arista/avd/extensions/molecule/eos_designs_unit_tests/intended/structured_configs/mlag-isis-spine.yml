@@ -85,7 +85,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet34
-  description: P2P_dhcp-relay-1_Ethernet1
+  description: P2P_dhcp-relay-vtep-mlag-1_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 10.10.101.6/31
@@ -99,13 +99,13 @@ ethernet_interfaces:
       key: $1c$sTNAlR6rKSw=
       mode: md5
   metadata:
-    peer: dhcp-relay-1
+    peer: dhcp-relay-vtep-mlag-1
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet35
-  description: P2P_dhcp-relay-2_Ethernet1
+  description: P2P_dhcp-relay-vtep-mlag-2_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 10.10.101.8/31
@@ -119,7 +119,7 @@ ethernet_interfaces:
       key: $1c$sTNAlR6rKSw=
       mode: md5
   metadata:
-    peer: dhcp-relay-2
+    peer: dhcp-relay-vtep-mlag-2
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
@@ -166,14 +166,14 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65161'
     metadata:
-      peer: dhcp-relay-1
-    description: dhcp-relay-1_Loopback0
+      peer: dhcp-relay-vtep-mlag-1
+    description: dhcp-relay-vtep-mlag-1_Loopback0
   - ip_address: 172.31.255.37
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65161'
     metadata:
-      peer: dhcp-relay-2
-    description: dhcp-relay-2_Loopback0
+      peer: dhcp-relay-vtep-mlag-2
+    description: dhcp-relay-vtep-mlag-2_Loopback0
   - ip_address: 192.168.254.36
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65161'
