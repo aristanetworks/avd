@@ -65,7 +65,7 @@ monitor_connectivity:
     description: Management VRF monitoring
     interface_sets:
     - name: SET_MGMT
-      interfaces: Management1
+      interfaces: Management0
     - name: SET_MGMT_1
       interfaces: Loopback100
     - name: SET_MGMT_2
@@ -91,7 +91,7 @@ monitor_connectivity:
     description: Management VRF monitoring 1
     interface_sets:
     - name: Vrf_Set_MGMT
-      interfaces: Management1
+      interfaces: Management0
     - name: SET_MGMT_1
       interfaces: Loopback200
     - name: SET_MGMT_2
