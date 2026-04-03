@@ -135,6 +135,8 @@ class UtilsMixin(Protocol):
         self: AvdStructuredConfigBaseProtocol,
         hosts: EosDesigns.MonitorConnectivity.Hosts | EosDesigns.MonitorConnectivity.VrfsItem.Hosts,
         monitor_connectivity_hosts: EosCliConfigGen.MonitorConnectivity.Hosts | EosCliConfigGen.MonitorConnectivity.VrfsItem.Hosts,
+        interface_sets: EosDesigns.MonitorConnectivity.InterfaceSets | EosDesigns.MonitorConnectivity.VrfsItem.InterfaceSets,
+        context: str,
     ) -> None:
         """
         Populate monitor connectivity hosts from EOS Designs host entries.
@@ -147,8 +149,13 @@ class UtilsMixin(Protocol):
                 VRF level of monitor connectivity configuration.
             monitor_connectivity_hosts: Target host list in the EOS CLI config gen
                 structure where the mapped entries will be appended.
+            interface_sets: The parent interface_sets to validate host local_interfaces against.
+            context: Path prefix used in error messages (e.g. "monitor_connectivity" or "monitor_connectivity.vrfs[MGMT]").
         """
         for host in hosts:
+            if host.local_interfaces is not None and host.local_interfaces not in interface_sets:
+                msg = f"{context}.hosts[{host.name}].local_interfaces '{host.local_interfaces}' has to be defined in {context}.interface_sets."
+                raise AristaAvdInvalidInputsError(msg)
             monitor_connectivity_hosts.append_new(
                 name=host.name,
                 description=host.description,

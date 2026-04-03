@@ -409,12 +409,17 @@ class AvdStructuredConfigBaseProtocol(
             name_server_group=self.inputs.monitor_connectivity.name_server_group,
         )
         if (local_interfaces := self.inputs.monitor_connectivity.local_interfaces) is not None:
-            if local_interfaces in self.inputs.monitor_connectivity.interface_sets._as_list():
+            if local_interfaces in self.inputs.monitor_connectivity.interface_sets:
                 monitor_connectivity.local_interfaces = local_interfaces
             else:
                 msg = f"monitor_connectivity.local_interfaces '{local_interfaces}' has to be defined in monitor_connectivity.interface_sets."
                 raise AristaAvdInvalidInputsError(msg)
-        self._set_monitor_connectivity_hosts(self.inputs.monitor_connectivity.hosts, monitor_connectivity.hosts)
+        self._set_monitor_connectivity_hosts(
+            self.inputs.monitor_connectivity.hosts,
+            monitor_connectivity.hosts,
+            self.inputs.monitor_connectivity.interface_sets,
+            "monitor_connectivity",
+        )
 
         for vrf in self.inputs.monitor_connectivity.vrfs:
             monitor_connectivity_vrf = monitor_connectivity.vrfs.append_new(
@@ -425,7 +430,7 @@ class AvdStructuredConfigBaseProtocol(
                 address_only=vrf.address_only,
             )
             if (vrf_local_interfaces := vrf.local_interfaces) is not None:
-                if vrf_local_interfaces in vrf.interface_sets._as_list():
+                if vrf_local_interfaces in vrf.interface_sets:
                     monitor_connectivity_vrf.local_interfaces = vrf_local_interfaces
                 else:
                     msg = (
@@ -433,7 +438,12 @@ class AvdStructuredConfigBaseProtocol(
                         f"has to be defined in monitor_connectivity.vrfs[{vrf.name}].interface_sets."
                     )
                     raise AristaAvdInvalidInputsError(msg)
-            self._set_monitor_connectivity_hosts(vrf.hosts, monitor_connectivity_vrf.hosts)
+            self._set_monitor_connectivity_hosts(
+                vrf.hosts,
+                monitor_connectivity_vrf.hosts,
+                vrf.interface_sets,
+                f"monitor_connectivity.vrfs[{vrf.name}]",
+            )
 
     @structured_config_contributor
     def redundancy(self) -> None:

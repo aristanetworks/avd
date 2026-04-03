@@ -1,0 +1,25 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+---
+type: l3leaf
+l3leaf:
+  nodes:
+    - name: monitor-connectivity-host-local-interfaces-not-in-interface-sets
+      id: 203
+      bgp_as: 203
+      loopback_ipv4_pool: 192.168.255.0/24
+      mgmt_ip: 1.1.10.203
+
+monitor_connectivity:
+  interval: 5
+  interface_sets:
+    - name: SET_INTERNET
+      interfaces: Ethernet1-2
+  hosts:
+    - name: DNS1
+      ip: 8.8.8.8
+      local_interfaces: Loopback0
+
+expected_error_message: >-
+  monitor_connectivity.hosts[DNS1].local_interfaces 'Loopback0' has to be defined in monitor_connectivity.interface_sets.
