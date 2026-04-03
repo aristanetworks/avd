@@ -69,14 +69,6 @@ class PrefixListsMixin(Protocol):
         return natural_sort(mlag_prefixes)
 
     @run_once_method
-    def set_once_prefix_list_svi_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
-        """Set prefix-list PL-SVI-VRF-DEFAULT."""
-        sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
-        for index, subnet in enumerate(self._vrf_default_ipv4_subnets, start=1):
-            sequence_numbers.append_new(sequence=index * 10, action=f"permit {subnet}")
-        self.structured_config.prefix_lists.append_new(name="PL-SVI-VRF-DEFAULT", sequence_numbers=sequence_numbers)
-
-    @run_once_method
     def set_once_prefix_list_static_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """Set prefix-list PL-STATIC-VRF-DEFAULT."""
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()

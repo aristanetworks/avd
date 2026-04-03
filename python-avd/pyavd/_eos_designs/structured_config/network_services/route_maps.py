@@ -70,18 +70,17 @@ class RouteMapsMixin(Protocol):
 
         Also checked under router_bgp_vrfs to figure out if a route-map should be set on EVPN export.
         """
-        if not self._vrf_default_evpn:
+        if not self.shared_utils.vrf_default_evpn:
             return
 
-        if not any([self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.is_wan_router]):
+        if not any([self.shared_utils.vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.is_wan_router]):
             return
 
-        self._redistribute_connected_to_bgp_route_map()
         self._redistribute_static_to_bgp_route_map()
 
     def _route_maps_vrf_default_check(self: AvdStructuredConfigNetworkServicesProtocol) -> bool:
         """This should only be called when self._vrf_default_evpn is true."""
-        if any((self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.is_wan_router)):
+        if any((self.shared_utils.vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.is_wan_router)):
             return True
 
         if not self.inputs.underlay_filter_redistribute_connected:
@@ -135,7 +134,7 @@ class RouteMapsMixin(Protocol):
 
         * for WAN routers, all the routes matching the SOO (which includes the two above)
 
-        This should only be called when any one of self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"],
+        This should only be called when any one of self.shared_utils.vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"],
         self.shared_utils.is_wan_router is true.
         """
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
@@ -149,14 +148,14 @@ class RouteMapsMixin(Protocol):
             self.shared_utils.set_once_ip_extcommunity_list_evpn_soo(self.structured_config)
         else:
             # TODO: refactor existing behavior to SoO?
-            if self._vrf_default_ipv4_subnets:
+            if self.shared_utils.vrf_default_ipv4_subnets:
                 sequence_numbers.append_new(
                     sequence=10,
                     type="permit",
                     match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-SVI-VRF-DEFAULT"]),
                 )
                 # Create prefix-list
-                self.set_once_prefix_list_svi_vrf_default()
+                self.structured_config_utils.set_once_prefix_list_svi_vrf_default()
 
             if self._vrf_default_ipv4_static_routes["static_routes"]:
                 sequence_numbers.append_new(
@@ -182,14 +181,14 @@ class RouteMapsMixin(Protocol):
         """
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
 
-        if self._vrf_default_ipv4_subnets:
+        if self.shared_utils.vrf_default_ipv4_subnets:
             sequence_numbers.append_new(
                 sequence=10,
                 type="deny",
                 match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-SVI-VRF-DEFAULT"]),
             )
             # Create prefix-list
-            self.set_once_prefix_list_svi_vrf_default()
+            self.structured_config_utils.set_once_prefix_list_svi_vrf_default()
 
         if self._vrf_default_ipv4_static_routes["static_routes"]:
             sequence_numbers.append_new(
@@ -205,35 +204,6 @@ class RouteMapsMixin(Protocol):
             type="permit",
         )
         self.structured_config.route_maps.append_new(name="RM-BGP-UNDERLAY-PEERS-OUT", sequence_numbers=sequence_numbers)
-
-    def _redistribute_connected_to_bgp_route_map(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
-        """
-        Append network services relevant entries to the route-map used to redistribute connected subnets in BGP.
-
-        sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here
-        """
-        if not self.inputs.underlay_filter_redistribute_connected:
-            return
-
-        sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
-
-        if self._vrf_default_ipv4_subnets:
-            # Add subnets to redistribution in default VRF
-            sequence_30 = EosCliConfigGen.RouteMapsItem.SequenceNumbersItem(
-                sequence=30, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-SVI-VRF-DEFAULT"])
-            )
-            # Create prefix-list
-            self.set_once_prefix_list_svi_vrf_default()
-
-            if self.shared_utils.wan_role:
-                sequence_30.set = EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Set([f"extcommunity soo {self.shared_utils.evpn_soo} additive"])
-
-            sequence_numbers.append(sequence_30)
-
-        if not sequence_numbers:
-            return
-        route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
-        route_map.sequence_numbers.extend(sequence_numbers)
 
     def _redistribute_static_to_bgp_route_map(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """Append network services relevant entries to the route-map used to redistribute static routes to BGP."""

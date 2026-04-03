@@ -120,8 +120,8 @@ class RouterBgpMixin(Protocol):
 
         # router bgp default vrf configuration for evpn
         if (
-            self._vrf_default_evpn
-            and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"])
+            self.shared_utils.vrf_default_evpn
+            and (self.shared_utils.vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"])
             and (target_peer_group := self.structured_config.router_bgp.peer_groups.get(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name))
         ):
             # Set this only when peer group exists.
@@ -295,7 +295,7 @@ class RouterBgpMixin(Protocol):
                 [rt.route_target]
             ) if rt.type == "import" else bgp_vrf.route_targets.export.obtain(rt.address_family).route_targets.extend([rt.route_target])
 
-        if vrf.name == "default" and self._vrf_default_evpn and self._route_maps_vrf_default_check() and vrf.rt_export:
+        if vrf.name == "default" and self.shared_utils.vrf_default_evpn and self._route_maps_vrf_default_check() and vrf.rt_export:
             # Special handling of vrf default with evpn.
             bgp_vrf.route_targets.export.obtain("evpn").route_targets.extend(["route-map RM-EVPN-EXPORT-VRF-DEFAULT"])
             # Create route-map

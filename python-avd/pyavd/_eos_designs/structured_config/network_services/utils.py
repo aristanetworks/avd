@@ -30,45 +30,6 @@ class UtilsMixin(Protocol):
         return set(self.facts.local_endpoint_trunk_groups)
 
     @cached_property
-    def _vrf_default_evpn(self: AvdStructuredConfigNetworkServicesProtocol) -> bool:
-        """Return boolean telling if VRF "default" is running EVPN or not."""
-        if not (
-            self.shared_utils.network_services_l3 and ((self.shared_utils.overlay_vtep and self.shared_utils.overlay_evpn) or self.shared_utils.is_wan_router)
-        ):
-            return False
-
-        for tenant in self.shared_utils.filtered_tenants:
-            if "default" not in tenant.vrfs:
-                continue
-
-            if "evpn" in tenant.vrfs["default"].address_families:
-                if self.inputs.underlay_filter_peer_as:
-                    msg = "'underlay_filter_peer_as' cannot be used while there are EVPN services in the default VRF."
-                    raise AristaAvdError(msg)
-                return True
-
-        return False
-
-    @cached_property
-    def _vrf_default_ipv4_subnets(self: AvdStructuredConfigNetworkServicesProtocol) -> list[str]:
-        """Return list of ipv4 subnets in VRF "default"."""
-        subnets = set()
-        for tenant in self.shared_utils.filtered_tenants:
-            if "default" not in tenant.vrfs:
-                continue
-
-            for svi in tenant.vrfs["default"].svis:
-                ip_address = default(svi.ip_address, svi.ip_address_virtual)
-                if ip_address is None:
-                    continue
-
-                subnets.add(str(ipaddress.ip_network(ip_address, strict=False)))
-                for ip_address_secondary in svi.ip_address_secondaries:
-                    subnets.add(str(ipaddress.ip_network(ip_address_secondary, strict=False)))
-
-        return list(subnets)
-
-    @cached_property
     def _vrf_default_ipv4_static_routes(self: AvdStructuredConfigNetworkServicesProtocol) -> dict:
         """
         Finds static routes defined under VRF "default" and find out if they should be redistributed in underlay and/or overlay.

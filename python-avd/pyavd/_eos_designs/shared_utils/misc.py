@@ -461,6 +461,45 @@ class MiscMixin(Protocol):
 
         return all_connected_endpoints
 
+    @cached_property
+    def vrf_default_evpn(self: SharedUtilsProtocol) -> bool:
+        """Return boolean telling if VRF "default" is running EVPN or not."""
+        if not (
+            self.network_services_l3 and ((self.overlay_vtep and self.overlay_evpn) or self.is_wan_router)
+        ):
+            return False
+
+        for tenant in self.filtered_tenants:
+            if "default" not in tenant.vrfs:
+                continue
+
+            if "evpn" in tenant.vrfs["default"].address_families:
+                if self.inputs.underlay_filter_peer_as:
+                    msg = "'underlay_filter_peer_as' cannot be used while there are EVPN services in the default VRF."
+                    raise AristaAvdError(msg)
+                return True
+
+        return False
+
+    @cached_property
+    def vrf_default_ipv4_subnets(self: SharedUtilsProtocol) -> list[str]:
+        """Return list of ipv4 subnets in VRF "default"."""
+        subnets = set()
+        for tenant in self.filtered_tenants:
+            if "default" not in tenant.vrfs:
+                continue
+
+            for svi in tenant.vrfs["default"].svis:
+                ip_address = default(svi.ip_address, svi.ip_address_virtual)
+                if ip_address is None:
+                    continue
+
+                subnets.add(str(ipaddress.ip_network(ip_address, strict=False)))
+                for ip_address_secondary in svi.ip_address_secondaries:
+                    subnets.add(str(ipaddress.ip_network(ip_address_secondary, strict=False)))
+
+        return list(subnets)
+
     def get_ipsec_key(self: SharedUtilsProtocol, cleartext_key: str, profile_name: str) -> str:
         """
         Return a type 7 encrypted shared key for IPsec.

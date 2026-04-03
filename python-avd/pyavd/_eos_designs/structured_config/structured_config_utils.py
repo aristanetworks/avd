@@ -108,6 +108,19 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
                 )
                 self.set_prefix_list_l2leaf_ipv6_inband_mgmt()
 
+        if self.shared_utils.vrf_default_evpn and self.shared_utils.vrf_default_ipv4_subnets:
+            # Add subnets to redistribution in default VRF
+            sequence_30 = EosCliConfigGen.RouteMapsItem.SequenceNumbersItem(
+                sequence=30, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-SVI-VRF-DEFAULT"])
+            )
+            # Create prefix-list
+            self.set_once_prefix_list_svi_vrf_default()
+
+            if self.shared_utils.wan_role:
+                sequence_30.set = EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Set([f"extcommunity soo {self.shared_utils.evpn_soo} additive"])
+
+            sequence_numbers.append(sequence_30)
+
         subnets = []
         for peer in self.shared_utils.switch_facts.downlink_switches:
             peer_facts = self.shared_utils.get_peer_facts(peer)
@@ -217,5 +230,12 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
 
         self.structured_config.ipv6_prefix_lists.append_new(name="IPv6-PL-L2LEAF-INBAND-MGMT", sequence_numbers=sequence_numbers)
 
+    @run_once_method
+    def set_once_prefix_list_svi_vrf_default(self: StructuredConfigUtils) -> None:
+        """Set prefix-list PL-SVI-VRF-DEFAULT."""
+        sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
+        for index, subnet in enumerate(self.shared_utils.vrf_default_ipv4_subnets, start=1):
+            sequence_numbers.append_new(sequence=index * 10, action=f"permit {subnet}")
+        self.structured_config.prefix_lists.append_new(name="PL-SVI-VRF-DEFAULT", sequence_numbers=sequence_numbers)
 
 __all__ = ["StructuredConfigUtils"]
