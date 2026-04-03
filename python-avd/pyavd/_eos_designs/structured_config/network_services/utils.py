@@ -3,12 +3,11 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import ipaddress
 from functools import cached_property
 from re import fullmatch as re_fullmatch
 from typing import TYPE_CHECKING, Protocol, cast
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort
 

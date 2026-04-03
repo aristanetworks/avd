@@ -464,9 +464,7 @@ class MiscMixin(Protocol):
     @cached_property
     def vrf_default_evpn(self: SharedUtilsProtocol) -> bool:
         """Return boolean telling if VRF "default" is running EVPN or not."""
-        if not (
-            self.network_services_l3 and ((self.overlay_vtep and self.overlay_evpn) or self.is_wan_router)
-        ):
+        if not (self.network_services_l3 and ((self.overlay_vtep and self.overlay_evpn) or self.is_wan_router)):
             return False
 
         for tenant in self.filtered_tenants:

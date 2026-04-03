@@ -238,4 +238,5 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
             sequence_numbers.append_new(sequence=index * 10, action=f"permit {subnet}")
         self.structured_config.prefix_lists.append_new(name="PL-SVI-VRF-DEFAULT", sequence_numbers=sequence_numbers)
 
+
 __all__ = ["StructuredConfigUtils"]
