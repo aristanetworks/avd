@@ -681,15 +681,15 @@ ip domain lookup vrf mgt source-interface Management0
 | Host | IPv4 Address |
 | ---- | ------------ |
 | TEST1 | 10.1.1.1 |
-| host_with_same_ip | 10.1.1.1 |
-| small_host | 1.1.1.1 |
+| host-with-same-ip | 10.1.1.1 |
+| small-host | 1.1.1.1 |
 
 #### IP Host Device Configuration
 
 ```eos
 ip host TEST1 10.1.1.1
-ip host host_with_same_ip 10.1.1.1
-ip host small_host 1.1.1.1
+ip host host-with-same-ip 10.1.1.1
+ip host small-host 1.1.1.1
 ```
 
 ### Clock Settings
