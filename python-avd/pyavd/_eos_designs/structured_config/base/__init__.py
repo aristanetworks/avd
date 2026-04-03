@@ -887,6 +887,25 @@ class AvdStructuredConfigBaseProtocol(
         """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
         return self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_ensure_eapi_access
 
+    @structured_config_contributor
+    def ip_dhcp_relay(self: AvdStructuredConfigBaseProtocol) -> None:
+        """Set ip dhcp relay global configuratios."""
+        if not (relay_settings := self.inputs.general_settings.dhcp_relay):
+            return
+
+        self.structured_config.ip_dhcp_relay.information_option = relay_settings.information_option
+
+    @structured_config_contributor
+    def dhcp_relay(self: AvdStructuredConfigBaseProtocol) -> None:
+        """Set general relay agent configuration."""
+        if not (relay_settings := self.inputs.general_settings.dhcp_relay):
+            return
+
+        if self.shared_utils.vtep:
+            self.structured_config.dhcp_relay.tunnel_requests_disabled = relay_settings.tunnel_requests_disabled
+            if self.shared_utils.mlag:
+                self.structured_config.dhcp_relay.mlag_peerlink_requests_disabled = relay_settings.mlag_peerlink_requests_disabled
+
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):
     """

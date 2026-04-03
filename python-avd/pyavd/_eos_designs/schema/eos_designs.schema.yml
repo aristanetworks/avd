@@ -3076,6 +3076,28 @@ keys:
       ip_icmp_redirect:
         type: bool
         $ref: eos_cli_config_gen#/keys/ip_icmp_redirect
+      dhcp_relay:
+        type: dict
+        keys:
+          information_option:
+            type: bool
+            description: Enables the insertion of DHCP Relay Agent Information (Option
+              82).
+            default: false
+          tunnel_requests_disabled:
+            type: bool
+            description: 'Blocks DHCP relay for packets received over VXLAN tunnels.
+
+              This is a VTEP-specific optimization and should not be configured on
+              non-VXLAN termination nodes.'
+            default: false
+          mlag_peerlink_requests_disabled:
+            type: bool
+            description: 'Blocks DHCP relay for packets arriving via the MLAG peer-link.
+
+              This should only be configured on devices acting as both an MLAG node
+              and a VXLAN VTEP.'
+            default: false
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
