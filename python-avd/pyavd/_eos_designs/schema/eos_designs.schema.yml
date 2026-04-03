@@ -3640,7 +3640,7 @@ keys:
   management_settings:
     type: dict
     documentation_options:
-      table: management_settings
+      table: management-settings
     keys:
       console:
         type: dict
