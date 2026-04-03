@@ -15,7 +15,14 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, raise_action_fail
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    AVDFileHandler,
+    AVDVaultHandler,
+    PythonToAnsibleHandler,
+    YamlLoader,
+    get_tmp_paths,
+    raise_action_fail,
+)
 
 PLUGIN_NAME = "arista.avd.cv_workflow"
 
@@ -35,7 +42,7 @@ try:
         CVWorkspaceBuildWarningsConfig,
         DeployToCvResult,
     )
-    from pyavd._utils import get, strip_empties_from_dict
+    from pyavd._utils import default, get, strip_empties_from_dict
 
     HAS_PYAVD = True
 except ImportError:
@@ -46,6 +53,13 @@ LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 ARGUMENT_SPEC = {
+    "tmp_dir": {"type": "str", "required": False},
+    "preview_features": {
+        "type": "dict",
+        "options": {
+            "read_from_validated_inputs": {"type": "bool", "default": False},
+        },
+    },
     "configuration_dir": {"type": "str", "required": True},
     "structured_config_dir": {"type": "str", "required": False},
     "structured_config_suffix": {"type": "str", "default": "yml"},
@@ -146,6 +160,14 @@ class ActionModule(ActionBase):
         if "proxy_password" in logged_args:
             logged_args["proxy_password"] = "<removed>"  # NOSONAR # noqa: S105
         LOGGER.info("deploy: %s", logged_args)
+
+        # Validate preview_features requirements before starting deployment.
+        read_from_validated_inputs = get(validated_args, "preview_features.read_from_validated_inputs", False)
+        tmp_dir = validated_args.get("tmp_dir")
+        if read_from_validated_inputs and not tmp_dir:
+            msg = "tmp_dir is required when preview_features.read_from_validated_inputs is true"
+            raise AnsibleActionFail(msg)
+
         try:
             # Create CloudVision object
             cloudvision = CloudVision(
@@ -159,11 +181,21 @@ class ActionModule(ActionBase):
                 proxy_username=validated_args.get("proxy_username"),
                 proxy_password=validated_args.get("proxy_password"),
             )
+
+            # If read_from_validated_inputs is enabled, we use the tmp_dir which contains validated inputs as JSON for structured_config_dir.
+            if read_from_validated_inputs:
+                _templated_path, validated_path = get_tmp_paths(tmp_dir)
+                structured_config_dir = str(validated_path)
+                structured_config_suffix = "json"
+            else:
+                structured_config_dir = validated_args.get("structured_config_dir")
+                structured_config_suffix = validated_args.get("structured_config_suffix")
+
             # Build lists of CVEosConfig, CVDeviceTag, CVInterfaceTag and CVPathfinderMetadata objects.
             eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = await self.build_objects(
                 device_list=get(validated_args, "device_list", default=[]),
-                structured_config_dir=get(validated_args, "structured_config_dir"),
-                structured_config_suffix=get(validated_args, "structured_config_suffix"),
+                structured_config_dir=structured_config_dir,
+                structured_config_suffix=structured_config_suffix,
                 configuration_dir=get(validated_args, "configuration_dir"),
                 configlet_name_template=get(validated_args, "configlet_name_template"),
             )
@@ -339,36 +371,18 @@ class ActionModule(ActionBase):
         TODO: Refactor into smaller functions.
         """
         LOGGER.info("build_object_for_device: %s", hostname)
-        if structured_config_dir and (file_path := Path(structured_config_dir, f"{hostname}.{structured_config_suffix}")).exists():
-            with file_path.open(  # noqa: ASYNC230
-                mode="r", encoding="UTF-8"
-            ) as structured_config_stream:
-                if structured_config_suffix in ["yml", "yaml"]:
-                    interesting_keys = ("is_deployed", "serial_number", "metadata")
-                    in_interesting_context = False
-                    structured_config_lines = []
-                    for line in structured_config_stream:
-                        if line.startswith(interesting_keys) or (in_interesting_context and line.startswith(" ")):
-                            structured_config_lines.append(line)
-                            in_interesting_context = True
-                        else:
-                            in_interesting_context = False
 
-                    structured_config = load("".join(structured_config_lines), Loader=YamlLoader)  # noqa: S506 TODO: Consider safeload
-                else:
-                    # Load as JSON
-                    structured_config = json.load(structured_config_stream)
-        else:
-            # No structured config file.
-            structured_config = {}
+        structured_config = self.load_structured_config(hostname, structured_config_dir, structured_config_suffix)
 
-        if not get(structured_config, "metadata.is_deployed", default=True):
+        # TODO: Use CVDeploy schema class.
+        # metadata.* keys take precedence over global cv_deploy schema keys.
+        if not default(get(structured_config, "metadata.is_deployed"), get(structured_config, "is_deployed", default=True)):
             del structured_config
             return ([], [], [], [])
 
         # Build device object to be used in other objects.
-        serial_number = get(structured_config, "metadata.serial_number")
-        system_mac_address = get(structured_config, "metadata.system_mac_address")
+        serial_number = default(get(structured_config, "metadata.serial_number"), get(structured_config, "serial_number"))
+        system_mac_address = default(get(structured_config, "metadata.system_mac_address"), get(structured_config, "system_mac_address"))
         device_object = CVDevice(hostname=hostname, serial_number=serial_number, system_mac_address=system_mac_address)
 
         # Build device config objects
@@ -382,7 +396,7 @@ class ActionModule(ActionBase):
         # !     device_tags:
         # !     - name: topology_hint_datacenter
         # !       value: DC1
-        device_tags = get(structured_config, "metadata.cv_tags.device_tags", default=[])
+        device_tags = default(get(structured_config, "metadata.cv_tags.device_tags"), get(structured_config, "cv_device_tags"), [])
         device_tag_objects = [
             CVDeviceTag(label=device_tag["name"], value=device_tag["value"], device=device_object)
             for device_tag in device_tags
@@ -397,7 +411,7 @@ class ActionModule(ActionBase):
         # !      tags:
         # !      - name: peer_device_interface
         # !        value: Ethernet3
-        all_interface_tags = get(structured_config, "metadata.cv_tags.interface_tags", default=[])
+        all_interface_tags = default(get(structured_config, "metadata.cv_tags.interface_tags"), get(structured_config, "cv_interface_tags"), [])
         interface_tag_objects = [
             CVInterfaceTag(
                 label=interface_tag["name"],
@@ -413,11 +427,46 @@ class ActionModule(ActionBase):
 
         # Build WAN metadata object for this device.
         cv_pathfinder_metadata_objects = []
-        if (cv_pathfinder_metadata := get(structured_config, "metadata.cv_pathfinder")) is not None:
+        if (cv_pathfinder_metadata := default(get(structured_config, "metadata.cv_pathfinder"), get(structured_config, "cv_pathfinder_metadata"))) is not None:
             cv_pathfinder_metadata_objects.append(CVPathfinderMetadata(metadata=cv_pathfinder_metadata, device=device_object))
 
         del structured_config
         return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects
+
+    def load_structured_config(self, hostname: str, structured_config_dir: str | None, structured_config_suffix: str) -> dict[str, Any]:
+        """
+        Load the structured config for the host.
+
+        Args:
+            hostname: Inventory hostname.
+            structured_config_dir: Path to structured config files.
+            structured_config_suffix: Suffix for structured config files.
+
+        Returns:
+            Dict containing the structured config for the host.
+        """
+        if not structured_config_dir or not (file_path := Path(structured_config_dir, f"{hostname}.{structured_config_suffix}")).exists():
+            LOGGER.info("load_structured_config: No structured config file for %s", hostname)
+            return {}
+
+        if structured_config_suffix in ["yml", "yaml"]:
+            with file_path.open(mode="r", encoding="UTF-8") as structured_config_stream:
+                metadata_lines = []
+                in_metadata = False
+                for line in structured_config_stream:
+                    if line.startswith("metadata"):
+                        in_metadata = True
+                    elif in_metadata and not line.startswith(" "):
+                        break
+                    if in_metadata:
+                        metadata_lines.append(line)
+
+                return load("".join(metadata_lines), Loader=YamlLoader) or {}  # noqa: S506 TODO: Consider safeload
+
+        # JSON files may be encrypted by the validate_inputs plugin, so we use AVDFileHandler to decrypt if needed.
+        vault_handler = AVDVaultHandler(self._loader)
+        file_handler = AVDFileHandler(vault_handler)
+        return file_handler.load_json(file_path)
 
 
 def setup_module_logging(result: dict) -> None:

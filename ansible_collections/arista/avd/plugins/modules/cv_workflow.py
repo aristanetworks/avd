@@ -210,10 +210,29 @@ options:
       For large inventories this can affect performance, so it is disabled by default.
     type: bool
     default: false
+  preview_features:
+    description: |-
+      Enable preview features of the plugin.
+      Preview features may change or be removed without notice.
+    type: dict
+    suboptions:
+      read_from_validated_inputs:
+        description: |-
+          When enabled, structured configurations are loaded from validated JSON files in `tmp_dir` instead of `structured_config_dir`.
+          This requires the `arista.avd.validate_inputs` plugin to run first in the same playbook to generate the validated files.
+        type: bool
+        default: false
+  tmp_dir:
+    description: |-
+      Path to the AVD temporary directory containing validated input files.
+      Must be the same path as used for the `arista.avd.validate_inputs` plugin.
+      Required when `preview_features.read_from_validated_inputs` is `true`.
+    type: str
+    required: false
 notes:
   - |-
     When interacting with CVaaS the regional URL where the tenant is deployed should be used, e.g:
-    `cv_servers: [ www.cv-prod-euwest-2.arista.io ]`
+    `cv_servers: [www.cv-prod-euwest-2.arista.io]`
     To see the full list of regional URLs, please visit the
     [cv_deploy](../../../ansible_collections/arista/avd/roles/cv_deploy/README.md#overview)
     role documentation.
@@ -234,7 +253,7 @@ EXAMPLES = r"""
       run_once: true
       delegate_to: localhost
       arista.avd.cv_workflow:
-        cv_servers: [ "www.arista.io" ]
+        cv_servers: ["www.arista.io"]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
         # proxy_host: "proxy.local.domain"
