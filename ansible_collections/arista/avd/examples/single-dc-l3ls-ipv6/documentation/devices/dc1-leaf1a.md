@@ -356,8 +356,8 @@ vlan 4094
 
 | Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Ethernet1 | P2P_dc1-spine1_Ethernet1 | - | 2001:db8:2::2/64 | default | 1500 | False | - | - | - | - | - | - | - |
-| Ethernet2 | P2P_dc1-spine2_Ethernet1 | - | 2001:db8:2:1::2/64 | default | 1500 | False | - | - | - | - | - | - | - |
+| Ethernet1 | P2P_dc1-spine1_Ethernet1 | - | 2001:db8:2::2/64 | default | 9214 | False | - | - | - | - | - | - | - |
+| Ethernet2 | P2P_dc1-spine2_Ethernet1 | - | 2001:db8:2:1::2/64 | default | 9214 | False | - | - | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -366,14 +366,14 @@ vlan 4094
 interface Ethernet1
    description P2P_dc1-spine1_Ethernet1
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ipv6 address 2001:db8:2::2/64
 !
 interface Ethernet2
    description P2P_dc1-spine2_Ethernet1
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ipv6 address 2001:db8:2:1::2/64
 !
@@ -509,11 +509,11 @@ interface Loopback12
 | Vlan22 | VRF11_VLAN22 | VRF11 | - | False |
 | Vlan31 | VRF12_VLAN31 | VRF12 | - | False |
 | Vlan32 | VRF12_VLAN32 | VRF12 | - | False |
-| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 1500 | False |
-| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 1500 | False |
-| Vlan3011 | MLAG_L3_VRF_VRF12 | VRF12 | 1500 | False |
-| Vlan4093 | MLAG_L3 | default | 1500 | False |
-| Vlan4094 | MLAG | default | 1500 | False |
+| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 9214 | False |
+| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 9214 | False |
+| Vlan3011 | MLAG_L3_VRF_VRF12 | VRF12 | 9214 | False |
+| Vlan4093 | MLAG_L3 | default | 9214 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
@@ -590,34 +590,34 @@ interface Vlan32
 interface Vlan3009
    description MLAG_L3_VRF_VRF10
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF10
    ipv6 address 2001:db8:4::1/64
 !
 interface Vlan3010
    description MLAG_L3_VRF_VRF11
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF11
    ipv6 address 2001:db8:4::1/64
 !
 interface Vlan3011
    description MLAG_L3_VRF_VRF12
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF12
    ipv6 address 2001:db8:4::1/64
 !
 interface Vlan4093
    description MLAG_L3
    no shutdown
-   mtu 1500
+   mtu 9214
    ipv6 address 2001:db8:4::1/64
 !
 interface Vlan4094
    description MLAG
    no shutdown
-   mtu 1500
+   mtu 9214
    no autostate
    ipv6 address 2001:db8:3::1/64
 ```

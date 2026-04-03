@@ -70,11 +70,14 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;workspace_build_timeout</samp> | float | optional | 300.0 | - | Time to wait for Workspace build before failing. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;change_control_creation_timeout</samp> | float | optional | 300.0 | - | Time to wait for Change Control creation before failing. |
 | <samp>return_details</samp> | bool | optional | False | - | If `true` all details will be returned to Ansible and can be registered.<br>For large inventories this can affect performance, so it is disabled by default. |
+| <samp>preview_features</samp> | dict | optional | None | - | Enable preview features of the plugin.<br>Preview features may change or be removed without notice. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;read_from_validated_inputs</samp> | bool | optional | False | - | When enabled, structured configurations are loaded from validated JSON files in `tmp_dir` instead of `structured_config_dir`.<br>This requires the `arista.avd.validate_inputs` plugin to run first in the same playbook to generate the validated files. |
+| <samp>tmp_dir</samp> | str | False | None | - | Path to the AVD temporary directory containing validated input files.<br>Must be the same path as used for the `arista.avd.validate_inputs` plugin.<br>Required when `preview_features.read_from_validated_inputs` is `true`. |
 
 ## Notes
 
 - When interacting with CVaaS the regional URL where the tenant is deployed should be used, e.g:
-  `cv_servers: [ www.cv-prod-euwest-2.arista.io ]`
+  `cv_servers: [www.cv-prod-euwest-2.arista.io]`
   To see the full list of regional URLs, please visit the
   [cv_deploy](../../../ansible_collections/arista/avd/roles/cv_deploy/README.md#overview)
   role documentation.
@@ -95,7 +98,7 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
       run_once: true
       delegate_to: localhost
       arista.avd.cv_workflow:
-        cv_servers: [ "www.arista.io" ]
+        cv_servers: ["www.arista.io"]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
         # proxy_host: "proxy.local.domain"
