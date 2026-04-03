@@ -77,7 +77,6 @@ ip_access_lists:
     protocol: ip
     source: 172.16.0.1/30
     destination: 172.16.0.2
-    vlan_inner: true
     inner_vlan_number: 123
     inner_vlan_mask: '0x000'
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet1
@@ -98,7 +97,6 @@ ip_access_lists:
     protocol: ip
     source: 172.17.17.1
     destination: 172.17.17.17
-    vlan_inner: true
     inner_vlan_number: 123
     inner_vlan_mask: '0x000'
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet2
@@ -131,7 +129,6 @@ ip_access_lists:
     protocol: ip
     source: 172.20.20.1/30
     destination: 172.20.20.0
-    vlan_inner: true
     inner_vlan_number: 123
     inner_vlan_mask: '0x000'
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet6_6.6
