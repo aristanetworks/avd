@@ -37,7 +37,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_dc1-spine1_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ipv6_addresses:
   - 2001:db8:2:2::2/64
   metadata:
@@ -49,7 +49,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_dc1-spine2_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ipv6_addresses:
   - 2001:db8:2:3::2/64
   metadata:
@@ -479,13 +479,13 @@ vlan_interfaces:
   shutdown: false
   ipv6_addresses:
   - 2001:db8:4::2/64
-  mtu: 1500
+  mtu: 9214
 - name: Vlan4094
   description: MLAG
   shutdown: false
   ipv6_addresses:
   - 2001:db8:3::2/64
-  mtu: 1500
+  mtu: 9214
   no_autostate: true
 - name: Vlan11
   description: VRF10_VLAN11
@@ -509,7 +509,7 @@ vlan_interfaces:
   vrf: VRF10
   ipv6_addresses:
   - 2001:db8:4::2/64
-  mtu: 1500
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1
@@ -538,7 +538,7 @@ vlan_interfaces:
   vrf: VRF11
   ipv6_addresses:
   - 2001:db8:4::2/64
-  mtu: 1500
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1
@@ -569,7 +569,7 @@ vlan_interfaces:
   vrf: VRF12
   ipv6_addresses:
   - 2001:db8:4::2/64
-  mtu: 1500
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1

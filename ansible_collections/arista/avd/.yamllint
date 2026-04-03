@@ -36,6 +36,11 @@ rules:
   commas:
     max-spaces-after: -1
     level: error
+  # TODO: the following rule is also not applied in default config
+  #       for ansible-lint and so expect list without spaces likes [blah]
+  #       not [ blah ]
+  #       because the .yamllint is not included in the collection manifest
+  #       this could lead to errors in CI that would be unobservable locally
   brackets:
     max-spaces-inside: 1
     level: error
@@ -50,7 +55,11 @@ rules:
     type: unix
   indentation:
     level: error
-    # NOTE: Here we diverge from the ansible-lint default configuration
+    # TODO: Here we diverge from the ansible-lint default configuration
     #       and this is causing issues when running ansible-lint without
     #       out custom configuration.
+    #       because the .yamllint is not included in the collection manifest
+    #       this could lead to errors in CI that would be unobservable locally
     indent-sequences: consistent
+    ignore:
+      - /tests/output/**

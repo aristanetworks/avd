@@ -31,9 +31,12 @@ The plugin performs two phases:
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>tmp_dir</samp> | str | True | None | - | Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.<br>Must be the same across all plugins. |
-| <samp>schema_name</samp> | str | optional | avd_design | Valid values:<br>- <code>avd_design</code><br>- <code>eos_config</code> | The AVD schema to validate against.<br>If set to `avd_design`, the plugin will validate the inputs for the entire fabric (requiring `fabric_name` to be set).<br>If set to `eos_config`, the plugin will validate the inputs for the devices in the current play. |
+| <samp>device_list</samp> | list | False | None | - | Optional list of hostnames to process. If not provided, fallback to all hosts in the current play.<br>For `eos_config` and `cv_deploy` schemas, only these hosts will be validated.<br>For `avd_design`, these hosts must be a subset of the `fabric_name` group and the entire group will be processed. |
+| <samp>schema_name</samp> | str | optional | avd_design | Valid values:<br>- <code>avd_design</code><br>- <code>eos_config</code><br>- <code>cv_deploy</code> | The AVD schema to validate against.<br>If set to `avd_design`, the plugin will validate the inputs for the entire fabric (requiring `fabric_name` to be set).<br>If set to `eos_config` or `cv_deploy`, the plugin will validate the inputs for the devices in the `device_list` if provided, otherwise all hosts in the current play. |
 | <samp>input_dir</samp> | str | False | None | - | Optional path to a directory containing input files to validate directly.<br>If provided, the templating phase is skipped and files are read from this directory.<br>Files must be named `device_name.input_suffix`. |
 | <samp>input_suffix</samp> | str | optional | json | Valid values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | File suffix for files located in `input_dir`.<br>Only used when `input_dir` is provided. |
+| <samp>read_from_input_dir</samp> | bool | optional | False | - | If `true`, the templating phase is skipped and input files are read directly from `input_dir`.<br>If `false`, the plugin resolves Ansible hostvars and writes templated data before validation.<br>Requires `input_dir` to be set when `true`. |
+| <samp>fail_on_missing_input_files</samp> | bool | optional | True | - | If `true`, the task will fail if any device input files are missing.<br>If `false`, devices with missing input files will be skipped with an informational log message. |
 | <samp>fail_on_validation_errors</samp> | bool | optional | False | - | If `true`, the task will fail if any validation errors are detected.<br>If `false`, errors will be reported but the task will succeed. |
 | <samp>batch_size</samp> | int | optional | 10 | - | The number of devices to process per child process during the templating phase. |
 | <samp>validation_configuration</samp> | dict | False | None | - | Optional dictionary containing configuration options to control validation behavior. |
@@ -76,6 +79,23 @@ The plugin performs two phases:
   # [defaults]
   # vault_identity_list = dev@.vault_dev, prod@.vault_prod
   # The 'prod' vault identity will be used to encrypt temporary files.
+
+- name: Validate cv_deploy inputs from structured config files
+  arista.avd.validate_inputs:
+    tmp_dir: "intended/tmp_cv_deploy"
+    schema_name: cv_deploy
+    input_dir: "{{ inventory_dir }}/intended/structured_configs"
+    input_suffix: "yml"
+    read_from_input_dir: true
+    fail_on_missing_input_files: false
+    fail_on_validation_errors: true
+
+- name: Validate cv_deploy inputs from Ansible hostvars
+  arista.avd.validate_inputs:
+    tmp_dir: "intended/tmp_cv_deploy"
+    schema_name: cv_deploy
+    read_from_input_dir: false
+    fail_on_validation_errors: true
 ```
 
 ## Authors
