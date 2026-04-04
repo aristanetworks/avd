@@ -1,0 +1,520 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: evpn-gateway-l3-rd-rt-rewrite
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.6/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.6/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.209/24
+  type: oob
+metadata:
+  is_deployed: true
+  platform: vEOS
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65233'
+  router_id: 192.168.255.6
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: EVPN-OVERLAY-PEERS
+    metadata:
+      type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  - name: EVPN-OVERLAY-CORE
+    metadata:
+      type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 15
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65233'
+    metadata:
+      peer: evpn-gateway-l2-evpn-role-server
+    description: evpn-gateway-l2-evpn-role-server_Loopback0
+  - ip_address: 192.168.100.10
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65002'
+    metadata:
+      peer: DCI_TEST
+    description: DCI_TEST
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 11
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.6:10011
+    route_targets:
+      both:
+      - 10011:10011
+    redistribute_routes:
+    - learned
+  - id: 12
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.6:10012
+    route_targets:
+      both:
+      - 10012:10012
+    redistribute_routes:
+    - learned
+  - id: 21
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.6:10021
+    route_targets:
+      both:
+      - 10021:10021
+    redistribute_routes:
+    - learned
+  - id: 22
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.6:10022
+    route_targets:
+      both:
+      - 10022:10022
+    redistribute_routes:
+    - learned
+  - id: 300
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.6:10300
+    route_targets:
+      both:
+      - 10300:10300
+    redistribute_routes:
+    - learned
+  - id: 3401
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.6:13401
+    route_targets:
+      both:
+      - 13401:13401
+    redistribute_routes:
+    - learned
+  - id: 3402
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.6:13402
+    route_targets:
+      both:
+      - 13402:13402
+    redistribute_routes:
+    - learned
+  - id: 301
+    metadata:
+      tenants:
+      - RD_RT_REWRITE_PARTIAL_TESTS
+    rd: 192.168.255.6:30301
+    route_targets:
+      both:
+      - 30301:30301
+    redistribute_routes:
+    - learned
+  - id: 302
+    metadata:
+      tenants:
+      - RD_RT_REWRITE_PARTIAL_TESTS
+    rd: 192.168.255.6:30302
+    route_targets:
+      both:
+      - 30302:30302
+    redistribute_routes:
+    - learned
+  - id: 303
+    metadata:
+      tenants:
+      - RD_RT_REWRITE_PARTIAL_TESTS
+    rd: 192.168.255.6:30303
+    route_targets:
+      both:
+      - 30303:30303
+    redistribute_routes:
+    - learned
+  - id: 304
+    metadata:
+      tenants:
+      - RD_RT_REWRITE_PARTIAL_TESTS
+    rd: 192.168.255.6:30304
+    route_targets:
+      both:
+      - 30304:30304
+    redistribute_routes:
+    - learned
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-CORE
+      activate: true
+      domain_remote: true
+  address_family_rtc:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-CORE
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: EVPN-OVERLAY-CORE
+      activate: false
+  vrfs:
+  - name: VRF10
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:10
+    route_targets:
+      import_evpn_domains:
+      - route_target: '10:10'
+        domain: all
+      export_evpn_domains:
+      - route_target: '10:10'
+        domain: all
+    router_id: 192.168.255.6
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF11
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:11
+    route_targets:
+      import_evpn_domains:
+      - route_target: '11:11'
+        domain: all
+      export_evpn_domains:
+      - route_target: '11:11'
+        domain: all
+    router_id: 192.168.255.6
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:30
+    route_targets:
+      import_evpn_domains:
+      - route_target: '30:30'
+        domain: all
+      export_evpn_domains:
+      - route_target: '30:30'
+        domain: remote
+    router_id: 192.168.255.6
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:31
+    route_targets:
+      import_evpn_domains:
+      - route_target: '31:31'
+        domain: remote
+      export_evpn_domains:
+      - route_target: '31:31'
+        domain: all
+    router_id: 192.168.255.6
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_RT_IMPORT_LOCAL_NO_EXPORT
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:32
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '32:32'
+    router_id: 192.168.255.6
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_RT_NO_IMPORT_LOCAL_EXPORT
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:33
+    route_targets:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '33:33'
+    router_id: 192.168.255.6
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan11
+  description: VRF10_VLAN11
+  shutdown: false
+  vrf: VRF10
+  ip_address_virtual: 10.10.11.1/24
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: Vlan12
+  description: VRF10_VLAN12
+  shutdown: false
+  vrf: VRF10
+  ip_address_virtual: 10.10.12.1/24
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: Vlan21
+  description: VRF11_VLAN21
+  shutdown: false
+  vrf: VRF11
+  ip_address_virtual: 10.10.21.1/24
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: Vlan22
+  description: VRF11_VLAN22
+  shutdown: false
+  vrf: VRF11
+  ip_address_virtual: 10.10.22.1/24
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: Vlan300
+  description: VRF11_VLAN300
+  shutdown: false
+  vrf: VRF11
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: Vlan301
+  description: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE_VLAN301
+  shutdown: false
+  vrf: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE
+  ip_address_virtual: 10.3.1.1/24
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: Vlan302
+  description: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL_VLAN302
+  shutdown: false
+  vrf: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL
+  ip_address_virtual: 10.3.2.1/24
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: Vlan303
+  description: VRF_RT_IMPORT_LOCAL_NO_EXPORT_VLAN303
+  shutdown: false
+  vrf: VRF_RT_IMPORT_LOCAL_NO_EXPORT
+  ip_address_virtual: 10.3.3.1/24
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: Vlan304
+  description: VRF_RT_NO_IMPORT_LOCAL_EXPORT_VLAN304
+  shutdown: false
+  vrf: VRF_RT_NO_IMPORT_LOCAL_EXPORT
+  ip_address_virtual: 10.3.4.1/24
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VRF10_VLAN11
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 12
+  name: VRF10_VLAN12
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 21
+  name: VRF11_VLAN21
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 22
+  name: VRF11_VLAN22
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 300
+  name: VRF11_VLAN300
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 3401
+  name: L2_VLAN3401
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 3402
+  name: L2_VLAN3402
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 301
+  name: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE_VLAN301
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- id: 302
+  name: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL_VLAN302
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- id: 303
+  name: VRF_RT_IMPORT_LOCAL_NO_EXPORT_VLAN303
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- id: 304
+  name: VRF_RT_NO_IMPORT_LOCAL_EXPORT_VLAN304
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF10
+  ip_routing: true
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: VRF11
+  ip_routing: true
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE
+  ip_routing: true
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL
+  ip_routing: true
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: VRF_RT_IMPORT_LOCAL_NO_EXPORT
+  ip_routing: true
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: VRF_RT_NO_IMPORT_LOCAL_EXPORT
+  ip_routing: true
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+vxlan_interface:
+  vxlan1:
+    description: evpn-gateway-l3-rd-rt-rewrite_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 11
+        vni: 10011
+      - id: 12
+        vni: 10012
+      - id: 21
+        vni: 10021
+      - id: 22
+        vni: 10022
+      - id: 300
+        vni: 10300
+      - id: 3401
+        vni: 13401
+      - id: 3402
+        vni: 13402
+      - id: 301
+        vni: 30301
+      - id: 302
+        vni: 30302
+      - id: 303
+        vni: 30303
+      - id: 304
+        vni: 30304
+      vrfs:
+      - name: VRF10
+        vni: 10
+      - name: VRF11
+        vni: 11
+      - name: VRF_RT_IMPORT_DOMAIN_ALL_EXPORT_DOMAIN_REMOTE
+        vni: 30
+      - name: VRF_RT_IMPORT_DOMAIN_REMOTE_EXPORT_DOMAIN_ALL
+        vni: 31
+      - name: VRF_RT_IMPORT_LOCAL_NO_EXPORT
+        vni: 32
+      - name: VRF_RT_NO_IMPORT_LOCAL_EXPORT
+        vni: 33

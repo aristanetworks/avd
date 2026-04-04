@@ -741,6 +741,16 @@ $defs:
                   inter_domain:
                     type: bool
                     default: true
+                  mode:
+                    type: str
+                    valid_values:
+                      - "next-hop-self"
+                      - "rd-rt-rewrite"
+                    default: "next-hop-self"
+                    description: |
+                      Defines the rewriting mode for EVPN L3 inter-domain routing.
+                      - next-hop-self: (default) Forward EVPN IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                      - rd-rt-rewrite: Re-export local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
               d_path:
                 type: dict
                 keys:

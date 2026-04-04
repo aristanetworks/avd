@@ -31,6 +31,18 @@ MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS = {
 """
 recorded mocked api Set responses:
   tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/\\
+  3e5f35a5e74c704bd5ab2489162a937d7205b1da.json
+"""
+MOCKED_WORKSPACE_REQUEST_ID_BUILD_FAIL_CONFIG_VALIDATION = {
+    "id": "req-914310f3-08dd-4239-bd42-6d78b0000100",
+    "status": ResponseStatus.FAIL,
+    "message": "device build error",
+    "code": ResponseCode.UNSPECIFIED,
+}
+
+"""
+recorded mocked api Set responses:
+  tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/\\
   094fa72d5437063770b645129730633334c7e4ed.json
 """
 MOCKED_WORKSPACE_REQUEST_ID_BUILD_FAIL = {
