@@ -233,10 +233,10 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Ethernet1 | P2P_dc1-leaf1a_Ethernet2 | - | 2001:db8:2:1::1/64 | default | 1500 | False | - | - | - | - | - | - | - |
-| Ethernet2 | P2P_dc1-leaf1b_Ethernet2 | - | 2001:db8:2:3::1/64 | default | 1500 | False | - | - | - | - | - | - | - |
-| Ethernet3 | P2P_dc1-leaf2a_Ethernet2 | - | 2001:db8:2:5::1/64 | default | 1500 | False | - | - | - | - | - | - | - |
-| Ethernet4 | P2P_dc1-leaf2b_Ethernet2 | - | 2001:db8:2:7::1/64 | default | 1500 | False | - | - | - | - | - | - | - |
+| Ethernet1 | P2P_dc1-leaf1a_Ethernet2 | - | 2001:db8:2:1::1/64 | default | 9214 | False | - | - | - | - | - | - | - |
+| Ethernet2 | P2P_dc1-leaf1b_Ethernet2 | - | 2001:db8:2:3::1/64 | default | 9214 | False | - | - | - | - | - | - | - |
+| Ethernet3 | P2P_dc1-leaf2a_Ethernet2 | - | 2001:db8:2:5::1/64 | default | 9214 | False | - | - | - | - | - | - | - |
+| Ethernet4 | P2P_dc1-leaf2b_Ethernet2 | - | 2001:db8:2:7::1/64 | default | 9214 | False | - | - | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -245,28 +245,28 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_dc1-leaf1a_Ethernet2
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ipv6 address 2001:db8:2:1::1/64
 !
 interface Ethernet2
    description P2P_dc1-leaf1b_Ethernet2
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ipv6 address 2001:db8:2:3::1/64
 !
 interface Ethernet3
    description P2P_dc1-leaf2a_Ethernet2
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ipv6 address 2001:db8:2:5::1/64
 !
 interface Ethernet4
    description P2P_dc1-leaf2b_Ethernet2
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ipv6 address 2001:db8:2:7::1/64
 ```
