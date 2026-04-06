@@ -213,6 +213,9 @@ router_bgp:
     maximum_routes: 1000
     route_map_in: TEST_IN
     route_map_out: TEST_OUT
+  - name: Tenant_C_BGP_PEER_GROUP_RESTRICTED
+    remote_as: '666'
+    description: Tenant C peer group
   - name: Tenant_C_BGP_PEER_GROUP2
     remote_as: '667'
     description: Tenant C peer group2

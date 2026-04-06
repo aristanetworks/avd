@@ -31,7 +31,7 @@ tenant_c:
         listen_ranges:
           - prefix:  192.168.142.0/24
             remote_as: 111
-        nodes: ['DC1-BL[12]A']
+        nodes: ['dc1-bl[12]a']
       - name: Tenant_C_BGP_PEER_GROUP2
         remote_as: "667"
         description: "Tenant C peer group2"
