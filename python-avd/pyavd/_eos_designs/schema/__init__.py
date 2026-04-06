@@ -4425,10 +4425,13 @@ class EosDesigns(EosDesignsRootModel):
             use_underlay_authentication: bool
             """
             Enable underlay authentication for this link.
-            When set to `true` and OSPF is used as the underlay
-            routing protocol with 'underlay_ospf_authentication.enabled',
-            OSPF message digest keys defined in
+            When set to `true`:
+            - For OSPF underlay with
+            'underlay_ospf_authentication.enabled', OSPF message digest keys defined in
             'underlay_ospf_authentication.message_digest_keys' will be configured on the interface.
+            - For ISIS
+            underlay, the ISIS authentication key defined in 'underlay_isis_authentication_key' or
+            'underlay_isis_authentication_cleartext_key' will be configured on the interface.
 
             Default value: `False`
             """
@@ -4638,10 +4641,13 @@ class EosDesigns(EosDesignsRootModel):
                            addresses are used.
                         use_underlay_authentication:
                            Enable underlay authentication for this link.
-                           When set to `true` and OSPF is used as the underlay
-                           routing protocol with 'underlay_ospf_authentication.enabled',
-                           OSPF message digest keys defined in
+                           When set to `true`:
+                           - For OSPF underlay with
+                           'underlay_ospf_authentication.enabled', OSPF message digest keys defined in
                            'underlay_ospf_authentication.message_digest_keys' will be configured on the interface.
+                           - For ISIS
+                           underlay, the ISIS authentication key defined in 'underlay_isis_authentication_key' or
+                           'underlay_isis_authentication_cleartext_key' will be configured on the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -5227,10 +5233,13 @@ class EosDesigns(EosDesignsRootModel):
             use_underlay_authentication: bool
             """
             Enable underlay authentication for this link.
-            When set to `true` and OSPF is used as the underlay
-            routing protocol with 'underlay_ospf_authentication.enabled',
-            OSPF message digest keys defined in
+            When set to `true`:
+            - For OSPF underlay with
+            'underlay_ospf_authentication.enabled', OSPF message digest keys defined in
             'underlay_ospf_authentication.message_digest_keys' will be configured on the interface.
+            - For ISIS
+            underlay, the ISIS authentication key defined in 'underlay_isis_authentication_key' or
+            'underlay_isis_authentication_cleartext_key' will be configured on the interface.
 
             Default value: `False`
             """
@@ -5440,10 +5449,13 @@ class EosDesigns(EosDesignsRootModel):
                            addresses are used.
                         use_underlay_authentication:
                            Enable underlay authentication for this link.
-                           When set to `true` and OSPF is used as the underlay
-                           routing protocol with 'underlay_ospf_authentication.enabled',
-                           OSPF message digest keys defined in
+                           When set to `true`:
+                           - For OSPF underlay with
+                           'underlay_ospf_authentication.enabled', OSPF message digest keys defined in
                            'underlay_ospf_authentication.message_digest_keys' will be configured on the interface.
+                           - For ISIS
+                           underlay, the ISIS authentication key defined in 'underlay_isis_authentication_key' or
+                           'underlay_isis_authentication_cleartext_key' will be configured on the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -21205,10 +21217,13 @@ class EosDesigns(EosDesignsRootModel):
             use_underlay_authentication: bool
             """
             Enable underlay authentication for this link.
-            When set to `true` and OSPF is used as the underlay
-            routing protocol with 'underlay_ospf_authentication.enabled',
-            OSPF message digest keys defined in
+            When set to `true`:
+            - For OSPF underlay with
+            'underlay_ospf_authentication.enabled', OSPF message digest keys defined in
             'underlay_ospf_authentication.message_digest_keys' will be configured on the interface.
+            - For ISIS
+            underlay, the ISIS authentication key defined in 'underlay_isis_authentication_key' or
+            'underlay_isis_authentication_cleartext_key' will be configured on the interface.
 
             Default value: `False`
             """
@@ -21418,10 +21433,13 @@ class EosDesigns(EosDesignsRootModel):
                            addresses are used.
                         use_underlay_authentication:
                            Enable underlay authentication for this link.
-                           When set to `true` and OSPF is used as the underlay
-                           routing protocol with 'underlay_ospf_authentication.enabled',
-                           OSPF message digest keys defined in
+                           When set to `true`:
+                           - For OSPF underlay with
+                           'underlay_ospf_authentication.enabled', OSPF message digest keys defined in
                            'underlay_ospf_authentication.message_digest_keys' will be configured on the interface.
+                           - For ISIS
+                           underlay, the ISIS authentication key defined in 'underlay_isis_authentication_key' or
+                           'underlay_isis_authentication_cleartext_key' will be configured on the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -22007,10 +22025,13 @@ class EosDesigns(EosDesignsRootModel):
             use_underlay_authentication: bool
             """
             Enable underlay authentication for this link.
-            When set to `true` and OSPF is used as the underlay
-            routing protocol with 'underlay_ospf_authentication.enabled',
-            OSPF message digest keys defined in
+            When set to `true`:
+            - For OSPF underlay with
+            'underlay_ospf_authentication.enabled', OSPF message digest keys defined in
             'underlay_ospf_authentication.message_digest_keys' will be configured on the interface.
+            - For ISIS
+            underlay, the ISIS authentication key defined in 'underlay_isis_authentication_key' or
+            'underlay_isis_authentication_cleartext_key' will be configured on the interface.
 
             Default value: `False`
             """
@@ -22220,10 +22241,13 @@ class EosDesigns(EosDesignsRootModel):
                            addresses are used.
                         use_underlay_authentication:
                            Enable underlay authentication for this link.
-                           When set to `true` and OSPF is used as the underlay
-                           routing protocol with 'underlay_ospf_authentication.enabled',
-                           OSPF message digest keys defined in
+                           When set to `true`:
+                           - For OSPF underlay with
+                           'underlay_ospf_authentication.enabled', OSPF message digest keys defined in
                            'underlay_ospf_authentication.message_digest_keys' will be configured on the interface.
+                           - For ISIS
+                           underlay, the ISIS authentication key defined in 'underlay_isis_authentication_key' or
+                           'underlay_isis_authentication_cleartext_key' will be configured on the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type

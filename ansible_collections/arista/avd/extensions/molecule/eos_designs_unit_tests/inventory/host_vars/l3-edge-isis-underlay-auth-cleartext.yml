@@ -1,0 +1,26 @@
+underlay_routing_protocol: isis
+underlay_isis_authentication_mode: md5
+underlay_isis_authentication_cleartext_key: arista
+
+type: spine
+spine:
+  nodes:
+    - name: l3-edge-isis-underlay-auth-cleartext
+      id: 1
+      evpn_role: "none"
+      loopback_ipv4_pool: 1.2.6.0/24
+      bgp_as: 65000
+
+l3_edge:
+  p2p_links:
+    # Global cleartext key applied via use_underlay_authentication: true - cleartext gets encrypted (new code path).
+    - nodes: [l3-edge-isis-underlay-auth-cleartext, peer1]
+      interfaces: [ethernet1, ethernet1]
+      ip: [192.168.3.0/31, 192.168.3.1/31]
+      use_underlay_authentication: true
+
+    # use_underlay_authentication: false - legacy fallback still encrypts and applies global cleartext key.
+    - nodes: [l3-edge-isis-underlay-auth-cleartext, peer2]
+      interfaces: [ethernet2, ethernet2]
+      ip: [192.168.3.2/31, 192.168.3.3/31]
+      use_underlay_authentication: false

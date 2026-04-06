@@ -297,6 +297,7 @@ class UtilsMixin(Protocol):
             if self.shared_utils.underlay_ospf:
                 interface._update(ospf_network_point_to_point=True, ospf_area=self.inputs.underlay_ospf_area)
                 if p2p_link.use_underlay_authentication is True and self.inputs.underlay_ospf_authentication.enabled:
+                    interface.ospf_authentication = "message-digest"
                     for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
                         interface.ospf_message_digest_keys.append_new(
                             id=ospf_key.id,
@@ -323,17 +324,26 @@ class UtilsMixin(Protocol):
                 mode: Literal["md5", "text"] | None = default(p2p_link.isis_authentication_mode, self.inputs.underlay_isis_authentication_mode)
                 interface.isis_authentication.both.mode = mode
 
-                if p2p_link.isis_authentication_key is not None:
-                    interface.isis_authentication.both._update(key=p2p_link.isis_authentication_key, key_type="7")
-                elif p2p_link.isis_authentication_cleartext_key is not None:
+                isis_authentication_key = default(
+                    p2p_link.isis_authentication_key, self.inputs.underlay_isis_authentication_key if p2p_link.use_underlay_authentication else None
+                )
+                isis_authentication_cleartext_key = default(
+                    p2p_link.isis_authentication_cleartext_key,
+                    self.inputs.underlay_isis_authentication_cleartext_key if p2p_link.use_underlay_authentication else None,
+                )
+                if isis_authentication_key is not None:
+                    interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
+                elif isis_authentication_cleartext_key is not None:
                     interface.isis_authentication.both._update(
                         key=isis_encrypt(
-                            password=p2p_link.isis_authentication_cleartext_key,
+                            password=isis_authentication_cleartext_key,
                             key=cast("str", self.shared_utils.isis_instance_name),
                             mode=mode or "none",
                         ),
                         key_type="7",
                     )
+                # Need to keep this for non breaking changes as earlier we were setting the global isis authentication
+                # without p2p_link.use_underlay_authentication as true
                 elif (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                     interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 

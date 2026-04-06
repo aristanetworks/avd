@@ -13274,13 +13274,12 @@ $defs:
         use_underlay_authentication:
           type: bool
           default: false
-          description: 'Enable underlay authentication for this link.
-
-            When set to `true` and OSPF is used as the underlay routing protocol with
-            ''underlay_ospf_authentication.enabled'',
-
-            OSPF message digest keys defined in ''underlay_ospf_authentication.message_digest_keys''
-            will be configured on the interface.'
+          description: "Enable underlay authentication for this link.\nWhen set to
+            `true`:\n- For OSPF underlay with 'underlay_ospf_authentication.enabled',
+            OSPF message digest keys defined in\n  'underlay_ospf_authentication.message_digest_keys'
+            will be configured on the interface.\n- For ISIS underlay, the ISIS authentication
+            key defined in 'underlay_isis_authentication_key' or\n  'underlay_isis_authentication_cleartext_key'
+            will be configured on the interface."
         isis_hello_padding:
           type: bool
           default: true
