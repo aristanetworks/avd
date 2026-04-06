@@ -590,7 +590,7 @@ $defs:
             keys:
               enabled:
                 type: bool
-                default: true
+                default: false
                 description: |
                   Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
                   Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.

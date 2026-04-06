@@ -68,7 +68,12 @@ class VxlanInterfaceMixin(Protocol):
 
     def _set_vxlan_decap_filter(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """Set vxlan decapsulation filter for SA055 mitigation when multi_vtep_mlag is active."""
-        if not (self._multi_vtep and self.shared_utils.node_config.multi_vtep_mlag.vxlan_decap_on_default_vrf_only is True):
+        # Ideally the first part of the condition should check `_multi_vtep` instead of `multi_vtep_mlag.enabled`, but this is needed
+        # for backwards compatibility to avoid changing the behavior of existing users that have evpn multicast enabled
+        if not (
+            self.shared_utils.node_config.multi_vtep_mlag.enabled is True
+            and self.shared_utils.node_config.multi_vtep_mlag.vxlan_decap_on_default_vrf_only is True
+        ):
             return
         vxlan = self.structured_config.vxlan_interface.vxlan1.vxlan
         if self.shared_utils.platform_settings.feature_support.vxlan_decap_vrf_filter:
@@ -98,10 +103,9 @@ class VxlanInterfaceMixin(Protocol):
         if self._multi_vtep:
             vxlan.source_interface = "Loopback0"
             vxlan.mlag_source_interface = self.shared_utils.vtep_loopback
+            self._set_vxlan_decap_filter()
         else:
             vxlan.source_interface = self.shared_utils.vtep_loopback
-
-        self._set_vxlan_decap_filter()
 
         if self.shared_utils.mlag_l3 and self.shared_utils.network_services_l3 and self.shared_utils.overlay_evpn:
             vxlan.virtual_router_encapsulation_mac_address = "mlag-system-id"

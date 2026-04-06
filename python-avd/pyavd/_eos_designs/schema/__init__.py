@@ -7213,14 +7213,14 @@ class EosDesigns(EosDesignsRootModel):
         class MultiVtepMlag(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True}}
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True}}
             enabled: bool
             """
             Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
             Cannot be enabled when
             evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
 
-            Default value: `True`
+            Default value: `False`
             """
             vxlan_decap_on_default_vrf_only: bool
             """
@@ -12423,14 +12423,14 @@ class EosDesigns(EosDesignsRootModel):
         class MultiVtepMlag(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True}}
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True}}
             enabled: bool
             """
             Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
             Cannot be enabled when
             evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
 
-            Default value: `True`
+            Default value: `False`
             """
             vxlan_decap_on_default_vrf_only: bool
             """
@@ -36646,7 +36646,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {
-                            "enabled": {"type": bool, "default": True},
+                            "enabled": {"type": bool, "default": False},
                             "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
                         }
                         enabled: bool
@@ -36655,7 +36655,7 @@ class EosDesigns(EosDesignsRootModel):
                         Cannot be enabled when
                         evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
 
-                        Default value: `True`
+                        Default value: `False`
                         """
                         vxlan_decap_on_default_vrf_only: bool
                         """
@@ -41838,7 +41838,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {
-                                "enabled": {"type": bool, "default": True},
+                                "enabled": {"type": bool, "default": False},
                                 "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
                             }
                             enabled: bool
@@ -41847,7 +41847,7 @@ class EosDesigns(EosDesignsRootModel):
                             Cannot be enabled when
                             evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
 
-                            Default value: `True`
+                            Default value: `False`
                             """
                             vxlan_decap_on_default_vrf_only: bool
                             """
@@ -46993,7 +46993,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {
-                            "enabled": {"type": bool, "default": True},
+                            "enabled": {"type": bool, "default": False},
                             "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
                         }
                         enabled: bool
@@ -47002,7 +47002,7 @@ class EosDesigns(EosDesignsRootModel):
                         Cannot be enabled when
                         evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
 
-                        Default value: `True`
+                        Default value: `False`
                         """
                         vxlan_decap_on_default_vrf_only: bool
                         """
@@ -52211,7 +52211,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {
-                            "enabled": {"type": bool, "default": True},
+                            "enabled": {"type": bool, "default": False},
                             "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
                         }
                         enabled: bool
@@ -52220,7 +52220,7 @@ class EosDesigns(EosDesignsRootModel):
                         Cannot be enabled when
                         evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
 
-                        Default value: `True`
+                        Default value: `False`
                         """
                         vxlan_decap_on_default_vrf_only: bool
                         """
@@ -70392,7 +70392,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {
-                            "enabled": {"type": bool, "default": True},
+                            "enabled": {"type": bool, "default": False},
                             "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
                         }
                         enabled: bool
@@ -70401,7 +70401,7 @@ class EosDesigns(EosDesignsRootModel):
                         Cannot be enabled when
                         evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
 
-                        Default value: `True`
+                        Default value: `False`
                         """
                         vxlan_decap_on_default_vrf_only: bool
                         """
@@ -75584,7 +75584,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {
-                                "enabled": {"type": bool, "default": True},
+                                "enabled": {"type": bool, "default": False},
                                 "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
                             }
                             enabled: bool
@@ -75593,7 +75593,7 @@ class EosDesigns(EosDesignsRootModel):
                             Cannot be enabled when
                             evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
 
-                            Default value: `True`
+                            Default value: `False`
                             """
                             vxlan_decap_on_default_vrf_only: bool
                             """
@@ -80739,7 +80739,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {
-                            "enabled": {"type": bool, "default": True},
+                            "enabled": {"type": bool, "default": False},
                             "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
                         }
                         enabled: bool
@@ -80748,7 +80748,7 @@ class EosDesigns(EosDesignsRootModel):
                         Cannot be enabled when
                         evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
 
-                        Default value: `True`
+                        Default value: `False`
                         """
                         vxlan_decap_on_default_vrf_only: bool
                         """
@@ -85957,7 +85957,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {
-                            "enabled": {"type": bool, "default": True},
+                            "enabled": {"type": bool, "default": False},
                             "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
                         }
                         enabled: bool
@@ -85966,7 +85966,7 @@ class EosDesigns(EosDesignsRootModel):
                         Cannot be enabled when
                         evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
 
-                        Default value: `True`
+                        Default value: `False`
                         """
                         vxlan_decap_on_default_vrf_only: bool
                         """
