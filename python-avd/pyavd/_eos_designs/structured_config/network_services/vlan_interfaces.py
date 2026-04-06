@@ -196,10 +196,10 @@ class VlanInterfacesMixin(Protocol):
         ip_config = self._get_vlan_ip_config_for_mlag_peering(vrf)
         if "ipv6_enable" in ip_config:
             vlan_interface_config.ipv6_enable = True
-        elif isinstance(ipv6_address := ip_config.get("ipv6_address"), str):
-            vlan_interface_config.ipv6_addresses = EosCliConfigGen.VlanInterfacesItem.Ipv6Addresses([ipv6_address])
-        elif isinstance(ipv4_address := ip_config.get("ipv4_address"), str):
-            vlan_interface_config.ip_address = ipv4_address
+        elif ipv6_address := ip_config.get("ipv6_address"):
+            vlan_interface_config.ipv6_addresses = EosCliConfigGen.VlanInterfacesItem.Ipv6Addresses([str(ipv6_address)])
+        elif ipv4_address := ip_config.get("ipv4_address"):
+            vlan_interface_config.ip_address = str(ipv4_address)
         return vlan_interface_config
 
     def _get_vlan_ip_config_for_mlag_peering(
