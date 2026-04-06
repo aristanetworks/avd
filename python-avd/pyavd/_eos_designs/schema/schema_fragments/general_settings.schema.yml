@@ -30,6 +30,7 @@ keys:
       ip_icmp_redirect:
         type: bool
         $ref: "eos_cli_config_gen#/keys/ip_icmp_redirect"
+      # TODO: Revisit for default values in AVD 7.0
       dhcp_relay:
         type: dict
         keys:
