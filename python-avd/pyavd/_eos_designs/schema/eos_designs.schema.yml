@@ -3324,6 +3324,34 @@ keys:
         name:
           type: str
           description: Access-list name.
+        entries:
+          type: list
+          required: true
+          items:
+            type: dict
+            keys:
+              source:
+                type: str
+                description: 'This field supports substitution of the fields "interface_ip"
+                  for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+
+                  Alternatively it can be set with a static value of "any", "<ip>/<mask>"
+                  or "<ip>".
+
+                  "<ip>" without a mask means host.
+
+                  Required except for remarks.'
+              destination:
+                type: str
+                description: 'This field supports substitution of the fields "interface_ip"
+                  for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+
+                  Alternatively it can be set with a static value of "any", "<ip>/<mask>"
+                  or "<ip>".
+
+                  "<ip>" without a mask means host.
+
+                  Required except for remarks.'
   ipv6_mgmt_destination_networks:
     documentation_options:
       table: management-interface-settings
@@ -14199,6 +14227,22 @@ $defs:
         items:
           type: str
           description: IPv6_address.
+      ipv6_acl_in:
+        description: 'Name of the IPv6 Access-list to be assigned in the ingress direction.
+
+          The access-list must be defined under `ipv6_acls` and supports substitution
+          of the field "interface_ip".'
+        type: str
+        convert_types:
+        - int
+      ipv6_acl_out:
+        description: 'Name of the IPv6 Access-list to be assigned in the egress direction.
+
+          The access-list must be defined under `ipv6_acls` and supports substitution
+          of the field "interface_ip".'
+        type: str
+        convert_types:
+        - int
       ipv4_acl_in:
         description: 'Name of the IPv4 access-list to be assigned in the ingress direction.
 

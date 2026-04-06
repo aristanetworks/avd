@@ -60,6 +60,26 @@ ipv4_acls:
         source: any
         destination: any
 
+ipv6_acls:
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+    entries:
+      - sequence: 15
+        action: deny
+        protocol: ip
+        source: any
+        destination: interface_ip
+      - action: permit
+        protocol: ip
+        source: peer_ip
+        destination: interface_ip
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+    entries:
+      - remark: Some remark will not require source and destination fields.
+      - action: permit
+        protocol: ip
+        source: interface_ip
+        destination: any
+
 platform_settings:
   - platforms:
       - default

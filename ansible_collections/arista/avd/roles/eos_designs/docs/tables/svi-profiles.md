@@ -34,6 +34,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ip_virtual_router_addresses.[]") | String |  |  |  | IPv4_address/Mask or IPv4_address.<br>IPv4_address/Mask will also configure a static route to the SVI per best practice.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_virtual_router_addresses</samp>](## "svi_profiles.[].nodes.[].ipv6_virtual_router_addresses") | List, items: String |  |  |  | IPv6 VARP addresses.<br>Requires an IPv6 address to be configured on the SVI.<br>If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence<br>_if_ there is an ipv6_address configured for the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].nodes.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "svi_profiles.[].nodes.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "svi_profiles.[].nodes.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "svi_profiles.[].nodes.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "svi_profiles.[].nodes.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "svi_profiles.[].nodes.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
@@ -94,6 +96,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ip_virtual_router_addresses.[]") | String |  |  |  | IPv4_address/Mask or IPv4_address.<br>IPv4_address/Mask will also configure a static route to the SVI per best practice.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_virtual_router_addresses</samp>](## "svi_profiles.[].ipv6_virtual_router_addresses") | List, items: String |  |  |  | IPv6 VARP addresses.<br>Requires an IPv6 address to be configured on the SVI.<br>If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence<br>_if_ there is an ipv6_address configured for the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "svi_profiles.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "svi_profiles.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 Access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "svi_profiles.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "svi_profiles.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "svi_profiles.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "svi_profiles.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
@@ -232,6 +236,14 @@
 
                 # IPv6_address.
               - <str>
+
+            # Name of the IPv6 Access-list to be assigned in the ingress direction.
+            # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+            ipv6_acl_in: <str>
+
+            # Name of the IPv6 Access-list to be assigned in the egress direction.
+            # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+            ipv6_acl_out: <str>
 
             # Name of the IPv4 access-list to be assigned in the ingress direction.
             # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
@@ -410,6 +422,14 @@
 
             # IPv6_address.
           - <str>
+
+        # Name of the IPv6 Access-list to be assigned in the ingress direction.
+        # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        ipv6_acl_in: <str>
+
+        # Name of the IPv6 Access-list to be assigned in the egress direction.
+        # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        ipv6_acl_out: <str>
 
         # Name of the IPv4 access-list to be assigned in the ingress direction.
         # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".

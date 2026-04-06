@@ -9,21 +9,62 @@ spine:
       loopback_ipv4_pool: 192.168.0.0/24
       l3_interfaces:
         - name: Ethernet1
-          ip_address: 172.16.0.2/30
-          ipv6_acl_in: TEST-IPV6-ACL-IN
-          ipv6_acl_out: TEST-IPV6-ACL-OUT
+          ip_address: 2001:db8:172:16::2/127
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+          peer_ip: 2001:db8:172:16::1/127
+        - name: Ethernet2
+          ip_address: dhcp
+          dhcp_ip: 2001:db8:1::1
+          peer_ip: 2001:db8:1::2
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+        - name: Ethernet3
+          ip_address: dhcp
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-NO-FIELDS-IN
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
         # Testing using the same ACL name on multiple interfaces - should not produce duplicate ACLs in structured config.
         - name: Ethernet4
-          ip_address: 172.19.19.0/31
-          ipv6_acl_in: TEST-IPV6-ACL-IN
-          ipv6_acl_out: TEST-IPV6-ACL-OUT
+          ip_address: 2001:db8:172:19::/127
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-NO-FIELDS-IN
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
+        - name: Ethernet5/1
+          ip_address: 2001:db8:172:20::/127
+          ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+          peer_ip: 2001:db8:172:20::1/127
+        - name: Ethernet6/6.6
+          ip_address: 2001:db8:172:21::/127
+          ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+          peer_ip: 2001:db8:172:21::1/127
 
 ipv6_acls:
-  - name: TEST-IPV6-ACL-IN
-    sequence_numbers:
-      - sequence: 15
-        action: allow
-  - name: TEST-IPV6-ACL-OUT
-    sequence_numbers:
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+    entries:
       - sequence: 15
         action: deny
+        protocol: ip
+        source: any
+        destination: interface_ip
+      - action: permit
+        protocol: ip
+        source: peer_ip
+        destination: interface_ip
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+    entries:
+      - remark: Some remark will not require source and destination fields.
+      - action: permit
+        protocol: ip
+        source: interface_ip
+        destination: any
+  - name: TEST-IPV6-ACL-WITH-NO-FIELDS-IN
+    entries:
+      - action: permit
+        protocol: ip
+        source: 172.18.18.18
+        destination: any
+  - name: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
+    entries:
+      - action: permit
+        protocol: ip
+        source: 172.18.18.18
+        destination: any

@@ -46,14 +46,17 @@ cv_pathfinder_regions:
         location: Miami
 
 ipv6_acls:
-  - name: TEST-IPV6-ACL-IN
-    sequence_numbers:
-      - sequence: 15
-        action: allow
-  - name: TEST-IPV6-ACL-OUT
-    sequence_numbers:
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+    entries:
       - sequence: 15
         action: deny
+        protocol: ip
+        source: any
+        destination: interface_ip
+      - action: permit
+        protocol: ip
+        source: peer_ip
+        destination: interface_ip
 
 ipv4_acls:
   - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
@@ -194,6 +197,7 @@ wan_router:
               dhcp_ip: 172.24.49.3
               peer_ip: 172.24.49.2
               ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+              ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
             - name: Ethernet2
               wan_carrier: AWS-1
               wan_circuit_id: 212
@@ -300,8 +304,8 @@ wan_router:
               static_routes:
                 - prefix: 172.18.0.0/16
               # flow_tracking not set, hence not configured
-              ipv6_acl_in: TEST-IPV6-ACL-IN
-              ipv6_acl_out: TEST-IPV6-ACL-OUT
+              ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+              ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
               ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
               ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
 

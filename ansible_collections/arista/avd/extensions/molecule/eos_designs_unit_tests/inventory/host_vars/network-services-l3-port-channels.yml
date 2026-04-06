@@ -1,14 +1,18 @@
 ---
 # This yml file is being used to test the various supported schema attributes for L3 Port-Channel
 ipv6_acls:
-  - name: Ipv6AclIn
-    sequence_numbers:
+  - name: Ipv6inAcl
+    entries:
       - sequence: 14
-        action: allow
-  - name: Ipv6AclOut
-    sequence_numbers:
+        action: permit
+        source: any
+        destination: any
+  - name: Ipv6outAcl
+    entries:
       - sequence: 14
-        action: allow
+        action: permit
+        source: any
+        destination: any
 
 ipv4_acls:
   - name: inACL
@@ -190,8 +194,8 @@ tenants:
             enabled: true
             ip_address: 1.1.1.30/29
             ipv4_acl_in: inACL
-            ipv6_acl_in: Ipv6AclIn
-            ipv6_acl_out: Ipv6AclOut
+            ipv6_acl_in: Ipv6inAcl
+            ipv6_acl_out: Ipv6inAcl
             ipv4_acl_out: outACL
             node: network-services-l3-port-channels
             flow_tracking:

@@ -112,8 +112,8 @@ ethernet_interfaces:
   ip_address: 10.10.50.10/24
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet12
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
-  ipv6_access_group_in: TEST-IPV6-ACL-IN
-  ipv6_access_group_out: TEST-IPV6-ACL-OUT
+  ipv6_access_group_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Ethernet12
+  ipv6_access_group_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet12
   metadata:
     peer_type: l3_interface
   switchport:
@@ -128,8 +128,8 @@ ethernet_interfaces:
   ip_address: 10.10.50.20/24
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
-  ipv6_access_group_in: TEST-IPV6-ACL-IN
-  ipv6_access_group_out: TEST-IPV6-ACL-OUT
+  ipv6_access_group_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
+  ipv6_access_group_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
   metadata:
     peer_type: l3_interface
 - name: Ethernet7
@@ -214,14 +214,34 @@ ip_name_server:
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 ipv6_access_lists:
-- name: TEST-IPV6-ACL-IN
-  sequence_numbers:
-  - sequence: 20
-    action: allow
-- name: TEST-IPV6-ACL-OUT
-  sequence_numbers:
-  - sequence: 20
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Ethernet12
+  entries:
+  - protocol: ip
+    source: any
+    destination: 10.10.50.10
+    sequence: 15
     action: deny
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet12
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - protocol: ip
+    source: 10.10.50.10
+    destination: any
+    action: permit
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
+  entries:
+  - protocol: ip
+    source: any
+    destination: 10.10.50.20
+    sequence: 15
+    action: deny
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - protocol: ip
+    source: 10.10.50.20
+    destination: any
+    action: permit
 local_users:
 - name: admin
   disabled: true

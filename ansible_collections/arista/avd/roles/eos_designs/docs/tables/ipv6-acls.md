@@ -9,11 +9,10 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>ipv6_acls</samp>](## "ipv6_acls") | List, items: Dictionary |  |  |  | IPv6 extended access-lists.<br>These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv6_acls.[].name") | String | Required, Unique |  |  | Access-list name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "ipv6_acls.[].counters_per_entry") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ipv6_acls.[].entries") | List, items: Dictionary |  |  |  | ACL Entries. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;protocol</samp>](## "ipv6_acls.[].entries.[].protocol") | String |  |  |  | "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.<br>Required except for remarks. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "ipv6_acls.[].entries.[].source") | String |  |  |  | "any", "<ipv6>/<mask>" or "<ipv6>".<br>"<ipv6>" without a mask means host.<br>Required except for remarks. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "ipv6_acls.[].entries.[].destination") | String |  |  |  | "any", "<ipv6>/<mask>" or "<ipv6>".<br>"<ipv6>" without a mask means host.<br>Required except for remarks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ipv6_acls.[].entries") | List, items: Dictionary | Required |  |  | ACL Entries. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "ipv6_acls.[].entries.[].source") | String |  |  |  | This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.<br>Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".<br>"<ip>" without a mask means host.<br>Required except for remarks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "ipv6_acls.[].entries.[].destination") | String |  |  |  | This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.<br>Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".<br>"<ip>" without a mask means host.<br>Required except for remarks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ipv6_acls.[].entries.[].protocol") | String |  |  |  | "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.<br>Required except for remarks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hop_limit</samp>](## "ipv6_acls.[].entries.[].hop_limit") | Integer |  |  | Min: 0 | Match Hop Limit value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hop_limit_match</samp>](## "ipv6_acls.[].entries.[].hop_limit_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_mask</samp>](## "ipv6_acls.[].entries.[].dscp_mask") | String |  |  |  | DSCP mask ranges from 0x00 to 0x3F. |
@@ -38,6 +37,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "ipv6_acls.[].entries.[].dscp") | String |  |  |  | DSCP value or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_number</samp>](## "ipv6_acls.[].entries.[].vlan_number") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_mask</samp>](## "ipv6_acls.[].entries.[].vlan_mask") | String |  |  |  | 0x000-0xFFF VLAN mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "ipv6_acls.[].counters_per_entry") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "ipv6_acls.[].sequence_numbers") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "ipv6_acls.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "ipv6_acls.[].sequence_numbers.[].action") | String | Required |  |  | Action as string.<br>Example: "deny ipv6 any any"<br> |
@@ -51,24 +51,25 @@
 
         # Access-list name.
       - name: <str; required; unique>
-        counters_per_entry: <bool>
 
         # ACL Entries.
-        entries:
+        entries: # required
+
+            # This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+            # Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".
+            # "<ip>" without a mask means host.
+            # Required except for remarks.
+          - source: <str>
+
+            # This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and "peer_ip" for Layer 3 interfaces.
+            # Alternatively it can be set with a static value of "any", "<ip>/<mask>" or "<ip>".
+            # "<ip>" without a mask means host.
+            # Required except for remarks.
+            destination: <str>
 
             # "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
             # Required except for remarks.
-          - protocol: <str>
-
-            # "any", "<ipv6>/<mask>" or "<ipv6>".
-            # "<ipv6>" without a mask means host.
-            # Required except for remarks.
-            source: <str>
-
-            # "any", "<ipv6>/<mask>" or "<ipv6>".
-            # "<ipv6>" without a mask means host.
-            # Required except for remarks.
-            destination: <str>
+            protocol: <str>
 
             # Match Hop Limit value.
             hop_limit: <int; >=0>
@@ -127,6 +128,7 @@
 
             # 0x000-0xFFF VLAN mask.
             vlan_mask: <str>
+        counters_per_entry: <bool>
         # This key is deprecated.
         # Support will be removed in AVD version 7.0.0.
         sequence_numbers:

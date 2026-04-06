@@ -20230,9 +20230,9 @@ class EosDesigns(EosDesignsRootModel):
             TcpFlags._item_type = str
 
             _fields: ClassVar[dict] = {
-                "protocol": {"type": str},
                 "source": {"type": str},
                 "destination": {"type": str},
+                "protocol": {"type": str},
                 "hop_limit": {"type": int},
                 "hop_limit_match": {"type": str, "default": "eq"},
                 "dscp_mask": {"type": str},
@@ -20255,21 +20255,27 @@ class EosDesigns(EosDesignsRootModel):
                 "vlan_number": {"type": int},
                 "vlan_mask": {"type": str},
             }
-            protocol: str | None
-            """
-            "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
-            Required except for remarks.
-            """
             source: str | None
             """
-            "any", "<ipv6>/<mask>" or "<ipv6>".
-            "<ipv6>" without a mask means host.
+            This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and
+            "peer_ip" for Layer 3 interfaces.
+            Alternatively it can be set with a static value of "any",
+            "<ip>/<mask>" or "<ip>".
+            "<ip>" without a mask means host.
             Required except for remarks.
             """
             destination: str | None
             """
-            "any", "<ipv6>/<mask>" or "<ipv6>".
-            "<ipv6>" without a mask means host.
+            This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and
+            "peer_ip" for Layer 3 interfaces.
+            Alternatively it can be set with a static value of "any",
+            "<ip>/<mask>" or "<ip>".
+            "<ip>" without a mask means host.
+            Required except for remarks.
+            """
+            protocol: str | None
+            """
+            "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
             Required except for remarks.
             """
             hop_limit: int | None
@@ -20324,9 +20330,9 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    protocol: str | None | UndefinedType = Undefined,
                     source: str | None | UndefinedType = Undefined,
                     destination: str | None | UndefinedType = Undefined,
+                    protocol: str | None | UndefinedType = Undefined,
                     hop_limit: int | None | UndefinedType = Undefined,
                     hop_limit_match: HopLimitMatch | UndefinedType = Undefined,
                     dscp_mask: str | None | UndefinedType = Undefined,
@@ -20356,16 +20362,22 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        protocol:
-                           "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
-                           Required except for remarks.
                         source:
-                           "any", "<ipv6>/<mask>" or "<ipv6>".
-                           "<ipv6>" without a mask means host.
+                           This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and
+                           "peer_ip" for Layer 3 interfaces.
+                           Alternatively it can be set with a static value of "any",
+                           "<ip>/<mask>" or "<ip>".
+                           "<ip>" without a mask means host.
                            Required except for remarks.
                         destination:
-                           "any", "<ipv6>/<mask>" or "<ipv6>".
-                           "<ipv6>" without a mask means host.
+                           This field supports substitution of the fields "interface_ip" for SVIs and both "interface_ip" and
+                           "peer_ip" for Layer 3 interfaces.
+                           Alternatively it can be set with a static value of "any",
+                           "<ip>/<mask>" or "<ip>".
+                           "<ip>" without a mask means host.
+                           Required except for remarks.
+                        protocol:
+                           "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
                            Required except for remarks.
                         hop_limit: Match Hop Limit value.
                         hop_limit_match: hop_limit_match
@@ -20438,19 +20450,19 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "name": {"type": str},
-            "counters_per_entry": {"type": bool},
             "entries": {"type": Entries},
+            "counters_per_entry": {"type": bool},
             "sequence_numbers": {"type": SequenceNumbers},
         }
         name: str
         """Access-list name."""
-        counters_per_entry: bool | None
         entries: Entries
         """
         ACL Entries.
 
         Subclass of AvdList with `EntriesItem` items.
         """
+        counters_per_entry: bool | None
         sequence_numbers: SequenceNumbers
         """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
 
@@ -20460,8 +20472,8 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 name: str | UndefinedType = Undefined,
-                counters_per_entry: bool | None | UndefinedType = Undefined,
                 entries: Entries | UndefinedType = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
                 sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -20472,11 +20484,11 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     name: Access-list name.
-                    counters_per_entry: counters_per_entry
                     entries:
                        ACL Entries.
 
                        Subclass of AvdList with `EntriesItem` items.
+                    counters_per_entry: counters_per_entry
                     sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
 
                 """
@@ -32550,6 +32562,8 @@ class EosDesigns(EosDesignsRootModel):
                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
+                "ipv6_acl_in": {"type": str},
+                "ipv6_acl_out": {"type": str},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
                 "ip_helpers": {"type": IpHelpers},
@@ -32639,6 +32653,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
             Subclass of AvdList with `str` items.
+            """
+            ipv6_acl_in: str | None
+            """
+            Name of the IPv6 Access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+            """
+            ipv6_acl_out: str | None
+            """
+            Name of the IPv6 Access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv6_acls` and supports substitution of the field "interface_ip".
             """
             ipv4_acl_in: str | None
             """
@@ -32796,6 +32822,8 @@ class EosDesigns(EosDesignsRootModel):
                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
+                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                     ip_helpers: IpHelpers | UndefinedType = Undefined,
@@ -32873,6 +32901,14 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdList with `str` items.
+                        ipv6_acl_in:
+                           Name of the IPv6 Access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        ipv6_acl_out:
+                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv6_acls` and supports substitution of the field "interface_ip".
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
                            The access-list must be
@@ -33644,6 +33680,8 @@ class EosDesigns(EosDesignsRootModel):
             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
+            "ipv6_acl_in": {"type": str},
+            "ipv6_acl_out": {"type": str},
             "ipv4_acl_in": {"type": str},
             "ipv4_acl_out": {"type": str},
             "ip_helpers": {"type": IpHelpers},
@@ -33749,6 +33787,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
         Subclass of AvdList with `str` items.
+        """
+        ipv6_acl_in: str | None
+        """
+        Name of the IPv6 Access-list to be assigned in the ingress direction.
+        The access-list must be
+        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        """
+        ipv6_acl_out: str | None
+        """
+        Name of the IPv6 Access-list to be assigned in the egress direction.
+        The access-list must be defined
+        under `ipv6_acls` and supports substitution of the field "interface_ip".
         """
         ipv4_acl_in: str | None
         """
@@ -33908,6 +33958,8 @@ class EosDesigns(EosDesignsRootModel):
                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
+                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                ipv6_acl_out: str | None | UndefinedType = Undefined,
                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
@@ -33997,6 +34049,14 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    ipv6_acl_in:
+                       Name of the IPv6 Access-list to be assigned in the ingress direction.
+                       The access-list must be
+                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                    ipv6_acl_out:
+                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                       The access-list must be defined
+                       under `ipv6_acls` and supports substitution of the field "interface_ip".
                     ipv4_acl_in:
                        Name of the IPv4 access-list to be assigned in the ingress direction.
                        The access-list must be
@@ -63410,6 +63470,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
+                                "ipv6_acl_in": {"type": str},
+                                "ipv6_acl_out": {"type": str},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
                                 "ip_helpers": {"type": IpHelpers},
@@ -63509,6 +63571,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                             Subclass of AvdList with `str` items.
+                            """
+                            ipv6_acl_in: str | None
+                            """
+                            Name of the IPv6 Access-list to be assigned in the ingress direction.
+                            The access-list must be
+                            defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                            """
+                            ipv6_acl_out: str | None
+                            """
+                            Name of the IPv6 Access-list to be assigned in the egress direction.
+                            The access-list must be defined
+                            under `ipv6_acls` and supports substitution of the field "interface_ip".
                             """
                             ipv4_acl_in: str | None
                             """
@@ -63667,6 +63741,8 @@ class EosDesigns(EosDesignsRootModel):
                                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
+                                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                                     ip_helpers: IpHelpers | UndefinedType = Undefined,
@@ -63750,6 +63826,14 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                            Subclass of AvdList with `str` items.
+                                        ipv6_acl_in:
+                                           Name of the IPv6 Access-list to be assigned in the ingress direction.
+                                           The access-list must be
+                                           defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                        ipv6_acl_out:
+                                           Name of the IPv6 Access-list to be assigned in the egress direction.
+                                           The access-list must be defined
+                                           under `ipv6_acls` and supports substitution of the field "interface_ip".
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
                                            The access-list must be
@@ -64533,6 +64617,8 @@ class EosDesigns(EosDesignsRootModel):
                             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
                             "ip_helpers": {"type": IpHelpers},
@@ -64662,6 +64748,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                         Subclass of AvdList with `str` items.
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports substitution of the field "interface_ip".
                         """
                         ipv4_acl_in: str | None
                         """
@@ -64824,6 +64922,8 @@ class EosDesigns(EosDesignsRootModel):
                                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                                 ip_helpers: IpHelpers | UndefinedType = Undefined,
@@ -64929,6 +65029,14 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
+                                    ipv6_acl_in:
+                                       Name of the IPv6 Access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 Access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports substitution of the field "interface_ip".
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
                                        The access-list must be

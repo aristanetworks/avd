@@ -160,14 +160,12 @@ ip_igmp_snooping:
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 ipv6_access_lists:
-- name: Ipv6AclIn
-  sequence_numbers:
-  - sequence: 14
-    action: allow
-- name: Ipv6AclOut
-  sequence_numbers:
-  - sequence: 14
-    action: allow
+- name: Ipv6inAcl
+  entries:
+  - source: any
+    destination: any
+    sequence: 14
+    action: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -292,8 +290,8 @@ port_channel_interfaces:
   ip_address: 1.1.1.30/29
   access_group_in: inACL
   access_group_out: outACL
-  ipv6_access_group_in: Ipv6AclIn
-  ipv6_access_group_out: Ipv6AclOut
+  ipv6_access_group_in: Ipv6inAcl
+  ipv6_access_group_out: Ipv6inAcl
   ospf_network_point_to_point: false
   ospf_area: 0.0.0.0
   ospf_cost: 1
