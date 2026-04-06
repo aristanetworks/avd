@@ -5,26 +5,26 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet5
-  description: MLAG_multi-vtep-mlag-l3leaf1b_Ethernet5
+  description: MLAG_multi-vtep-mlag-l3leaf3b_Ethernet5
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: multi-vtep-mlag-l3leaf1b
+    peer: multi-vtep-mlag-l3leaf3b
     peer_interface: Ethernet5
     peer_type: mlag_peer
 - name: Ethernet6
-  description: MLAG_multi-vtep-mlag-l3leaf1b_Ethernet6
+  description: MLAG_multi-vtep-mlag-l3leaf3b_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: multi-vtep-mlag-l3leaf1b
+    peer: multi-vtep-mlag-l3leaf3b
     peer_interface: Ethernet6
     peer_type: mlag_peer
-hostname: multi-vtep-mlag-l3leaf1a
+hostname: multi-vtep-mlag-l3leaf3a
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -32,32 +32,32 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.38/32
+  ip_address: 192.168.255.42/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.254.38/32
+  ip_address: 192.168.254.42/32
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.201.118/24
+  ip_address: 192.168.201.122/24
   type: oob
 metadata:
   is_deployed: true
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
-  domain_id: MULTI_VTEP_MLAG_L3LEAF1
+  domain_id: MULTI_VTEP_MLAG_L3LEAF3
   local_interface: Vlan4094
-  peer_address: 10.10.255.11
+  peer_address: 10.10.255.19
   peer_link: Port-Channel5
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_multi-vtep-mlag-l3leaf1b_Port-Channel5
+  description: MLAG_multi-vtep-mlag-l3leaf3b_Port-Channel5
   shutdown: false
   switchport:
     enabled: true
@@ -92,8 +92,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65161'
-  router_id: 192.168.255.38
+  as: '65163'
+  router_id: 192.168.255.42
   maximum_paths:
     paths: 4
   updates:
@@ -105,18 +105,18 @@ router_bgp:
   - name: MLAG-IPv4-UNDERLAY-PEER
     metadata:
       type: ipv4
-    remote_as: '65161'
-    description: multi-vtep-mlag-l3leaf1b
+    remote_as: '65163'
+    description: multi-vtep-mlag-l3leaf3b
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbors:
-  - ip_address: 10.10.255.11
+  - ip_address: 10.10.255.19
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: multi-vtep-mlag-l3leaf1b
-    description: multi-vtep-mlag-l3leaf1b_Vlan4094
+      peer: multi-vtep-mlag-l3leaf3b
+    description: multi-vtep-mlag-l3leaf3b_Vlan4094
   redistribute:
     connected:
       enabled: true
@@ -133,7 +133,7 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG
   shutdown: false
-  ip_address: 10.10.255.10/31
+  ip_address: 10.10.255.18/31
   mtu: 9214
   no_autostate: true
 vlan_internal_order:
@@ -154,13 +154,9 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: multi-vtep-mlag-l3leaf1a_VTEP
+    description: multi-vtep-mlag-l3leaf3a_VTEP
     vxlan:
       source_interface: Loopback0
       mlag_source_interface: Loopback1
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id
-      decapsulation_filter:
-        interface_multiple_vrf_disabled:
-        - Ethernet5
-        - Ethernet6

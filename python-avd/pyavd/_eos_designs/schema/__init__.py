@@ -7210,6 +7210,54 @@ class EosDesigns(EosDesignsRootModel):
 
         IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
 
+        class MultiVtepMlag(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True}}
+            enabled: bool
+            """
+            Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+            Cannot be enabled when
+            evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+
+            Default value: `True`
+            """
+            vxlan_decap_on_default_vrf_only: bool
+            """
+            Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+            On supported platforms: sets
+            'vxlan decapsulation filter vrf non-default ipv4'.
+            On unsupported platforms: sets 'vxlan
+            decapsulation filter interface
+            multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+            Default value: `True`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, vxlan_decap_on_default_vrf_only: bool | UndefinedType = Undefined) -> None:
+                    """
+                    MultiVtepMlag.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                           Cannot be enabled when
+                           evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+                        vxlan_decap_on_default_vrf_only:
+                           Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                           On supported platforms: sets
+                           'vxlan decapsulation filter vrf non-default ipv4'.
+                           On unsupported platforms: sets 'vxlan
+                           decapsulation filter interface
+                           multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                    """
+
         class BgpDefaults(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
@@ -10107,7 +10155,7 @@ class EosDesigns(EosDesignsRootModel):
             "loopback_ipv6_offset": {"type": int, "default": 0},
             "vtep": {"type": bool},
             "vtep_loopback": {"type": str},
-            "multi_vtep_mlag": {"type": bool, "default": False},
+            "multi_vtep_mlag": {"type": MultiVtepMlag},
             "bgp_as": {"type": str},
             "bgp_defaults": {"type": BgpDefaults},
             "evpn_role": {"type": str},
@@ -10559,13 +10607,12 @@ class EosDesigns(EosDesignsRootModel):
         """
         vtep_loopback: str | None
         """Set VXLAN source interface."""
-        multi_vtep_mlag: bool
+        multi_vtep_mlag: MultiVtepMlag
         """
-        Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-        This feature cannot be enabled when
-        evpn gw or ipv6 underlay is enabled.
+        Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
 
-        Default value: `False`
+
+        Subclass of AvdModel.
         """
         bgp_as: str | None
         """
@@ -11160,7 +11207,7 @@ class EosDesigns(EosDesignsRootModel):
                 loopback_ipv6_offset: int | UndefinedType = Undefined,
                 vtep: bool | None | UndefinedType = Undefined,
                 vtep_loopback: str | None | UndefinedType = Undefined,
-                multi_vtep_mlag: bool | UndefinedType = Undefined,
+                multi_vtep_mlag: MultiVtepMlag | UndefinedType = Undefined,
                 bgp_as: str | None | UndefinedType = Undefined,
                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                 evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -11502,9 +11549,10 @@ class EosDesigns(EosDesignsRootModel):
                        setting inherited from node_type_keys.
                     vtep_loopback: Set VXLAN source interface.
                     multi_vtep_mlag:
-                       Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                       This feature cannot be enabled when
-                       evpn gw or ipv6 underlay is enabled.
+                       Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
+
+
+                       Subclass of AvdModel.
                     bgp_as:
                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                        For asdot notation in
@@ -12371,6 +12419,54 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+        class MultiVtepMlag(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True}}
+            enabled: bool
+            """
+            Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+            Cannot be enabled when
+            evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+
+            Default value: `True`
+            """
+            vxlan_decap_on_default_vrf_only: bool
+            """
+            Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+            On supported platforms: sets
+            'vxlan decapsulation filter vrf non-default ipv4'.
+            On unsupported platforms: sets 'vxlan
+            decapsulation filter interface
+            multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+            Default value: `True`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, vxlan_decap_on_default_vrf_only: bool | UndefinedType = Undefined) -> None:
+                    """
+                    MultiVtepMlag.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                           Cannot be enabled when
+                           evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+                        vxlan_decap_on_default_vrf_only:
+                           Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                           On supported platforms: sets
+                           'vxlan decapsulation filter vrf non-default ipv4'.
+                           On unsupported platforms: sets 'vxlan
+                           decapsulation filter interface
+                           multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                    """
 
         class BgpDefaults(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -15270,7 +15366,7 @@ class EosDesigns(EosDesignsRootModel):
             "loopback_ipv6_offset": {"type": int, "default": 0},
             "vtep": {"type": bool},
             "vtep_loopback": {"type": str},
-            "multi_vtep_mlag": {"type": bool, "default": False},
+            "multi_vtep_mlag": {"type": MultiVtepMlag},
             "bgp_as": {"type": str},
             "bgp_defaults": {"type": BgpDefaults},
             "evpn_role": {"type": str},
@@ -15732,13 +15828,12 @@ class EosDesigns(EosDesignsRootModel):
         """
         vtep_loopback: str | None
         """Set VXLAN source interface."""
-        multi_vtep_mlag: bool
+        multi_vtep_mlag: MultiVtepMlag
         """
-        Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-        This feature cannot be enabled when
-        evpn gw or ipv6 underlay is enabled.
+        Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
 
-        Default value: `False`
+
+        Subclass of AvdModel.
         """
         bgp_as: str | None
         """
@@ -16334,7 +16429,7 @@ class EosDesigns(EosDesignsRootModel):
                 loopback_ipv6_offset: int | UndefinedType = Undefined,
                 vtep: bool | None | UndefinedType = Undefined,
                 vtep_loopback: str | None | UndefinedType = Undefined,
-                multi_vtep_mlag: bool | UndefinedType = Undefined,
+                multi_vtep_mlag: MultiVtepMlag | UndefinedType = Undefined,
                 bgp_as: str | None | UndefinedType = Undefined,
                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                 evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -16684,9 +16779,10 @@ class EosDesigns(EosDesignsRootModel):
                        setting inherited from node_type_keys.
                     vtep_loopback: Set VXLAN source interface.
                     multi_vtep_mlag:
-                       Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                       This feature cannot be enabled when
-                       evpn gw or ipv6 underlay is enabled.
+                       Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
+
+
+                       Subclass of AvdModel.
                     bgp_as:
                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                        For asdot notation in
@@ -26968,6 +27064,7 @@ class EosDesigns(EosDesignsRootModel):
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
                 "evpn_gateway_rd_rt_rewrite": {"type": bool, "default": False},
+                "vxlan_decap_vrf_filter": {"type": bool, "default": False},
                 "hardware_counters": {"type": bool, "default": True},
                 "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
@@ -27085,6 +27182,16 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            vxlan_decap_vrf_filter: bool
+            """
+            Support for 'vxlan decapsulation filter vrf non-default ipv4' (SA055 mitigation).
+            When false, 'vxlan
+            decapsulation filter interface multiple-vrf disabled' is used
+            with the MLAG peer link member
+            interfaces as the fallback.
+
+            Default value: `False`
+            """
             hardware_counters: bool
             """
             Support for enabling counters using programmable hardware counter resources.
@@ -27177,6 +27284,7 @@ class EosDesigns(EosDesignsRootModel):
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
                     evpn_gateway_rd_rt_rewrite: bool | UndefinedType = Undefined,
+                    vxlan_decap_vrf_filter: bool | UndefinedType = Undefined,
                     hardware_counters: bool | UndefinedType = Undefined,
                     hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
@@ -27251,6 +27359,12 @@ class EosDesigns(EosDesignsRootModel):
                            Support for EVPN gateway RD/RT rewrite mode.
                            An error will be raised if the feature is enabled and
                            this is false.
+                        vxlan_decap_vrf_filter:
+                           Support for 'vxlan decapsulation filter vrf non-default ipv4' (SA055 mitigation).
+                           When false, 'vxlan
+                           decapsulation filter interface multiple-vrf disabled' is used
+                           with the MLAG peer link member
+                           interfaces as the fallback.
                         hardware_counters:
                            Support for enabling counters using programmable hardware counter resources.
                            Setting this key to
@@ -27739,6 +27853,7 @@ class EosDesigns(EosDesignsRootModel):
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
                 "evpn_gateway_rd_rt_rewrite": {"type": bool, "default": False},
+                "vxlan_decap_vrf_filter": {"type": bool, "default": False},
                 "hardware_counters": {"type": bool, "default": True},
                 "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
@@ -27856,6 +27971,16 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            vxlan_decap_vrf_filter: bool
+            """
+            Support for 'vxlan decapsulation filter vrf non-default ipv4' (SA055 mitigation).
+            When false, 'vxlan
+            decapsulation filter interface multiple-vrf disabled' is used
+            with the MLAG peer link member
+            interfaces as the fallback.
+
+            Default value: `False`
+            """
             hardware_counters: bool
             """
             Support for enabling counters using programmable hardware counter resources.
@@ -27948,6 +28073,7 @@ class EosDesigns(EosDesignsRootModel):
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
                     evpn_gateway_rd_rt_rewrite: bool | UndefinedType = Undefined,
+                    vxlan_decap_vrf_filter: bool | UndefinedType = Undefined,
                     hardware_counters: bool | UndefinedType = Undefined,
                     hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
@@ -28022,6 +28148,12 @@ class EosDesigns(EosDesignsRootModel):
                            Support for EVPN gateway RD/RT rewrite mode.
                            An error will be raised if the feature is enabled and
                            this is false.
+                        vxlan_decap_vrf_filter:
+                           Support for 'vxlan decapsulation filter vrf non-default ipv4' (SA055 mitigation).
+                           When false, 'vxlan
+                           decapsulation filter interface multiple-vrf disabled' is used
+                           with the MLAG peer link member
+                           interfaces as the fallback.
                         hardware_counters:
                            Support for enabling counters using programmable hardware counter resources.
                            Setting this key to
@@ -36510,6 +36642,59 @@ class EosDesigns(EosDesignsRootModel):
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
 
+                    class MultiVtepMlag(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": True},
+                            "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
+                        }
+                        enabled: bool
+                        """
+                        Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                        Cannot be enabled when
+                        evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+
+                        Default value: `True`
+                        """
+                        vxlan_decap_on_default_vrf_only: bool
+                        """
+                        Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                        On supported platforms: sets
+                        'vxlan decapsulation filter vrf non-default ipv4'.
+                        On unsupported platforms: sets 'vxlan
+                        decapsulation filter interface
+                        multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                        Default value: `True`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, enabled: bool | UndefinedType = Undefined, vxlan_decap_on_default_vrf_only: bool | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                MultiVtepMlag.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                                       Cannot be enabled when
+                                       evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+                                    vxlan_decap_on_default_vrf_only:
+                                       Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                                       On supported platforms: sets
+                                       'vxlan decapsulation filter vrf non-default ipv4'.
+                                       On unsupported platforms: sets 'vxlan
+                                       decapsulation filter interface
+                                       multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                                """
+
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -39418,7 +39603,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
-                        "multi_vtep_mlag": {"type": bool, "default": False},
+                        "multi_vtep_mlag": {"type": MultiVtepMlag},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -39849,13 +40034,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
-                    multi_vtep_mlag: bool
+                    multi_vtep_mlag: MultiVtepMlag
                     """
-                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                    This feature cannot be enabled when
-                    evpn gw or ipv6 underlay is enabled.
+                    Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
 
-                    Default value: `False`
+
+                    Subclass of AvdModel.
                     """
                     bgp_as: str | None
                     """
@@ -40446,7 +40630,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
-                            multi_vtep_mlag: bool | UndefinedType = Undefined,
+                            multi_vtep_mlag: MultiVtepMlag | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -40775,9 +40959,10 @@ class EosDesigns(EosDesignsRootModel):
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
                                 multi_vtep_mlag:
-                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                                   This feature cannot be enabled when
-                                   evpn gw or ipv6 underlay is enabled.
+                                   Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
+
+
+                                   Subclass of AvdModel.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -41648,6 +41833,59 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                        class MultiVtepMlag(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": True},
+                                "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
+                            }
+                            enabled: bool
+                            """
+                            Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                            Cannot be enabled when
+                            evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+
+                            Default value: `True`
+                            """
+                            vxlan_decap_on_default_vrf_only: bool
+                            """
+                            Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                            On supported platforms: sets
+                            'vxlan decapsulation filter vrf non-default ipv4'.
+                            On unsupported platforms: sets 'vxlan
+                            decapsulation filter interface
+                            multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, enabled: bool | UndefinedType = Undefined, vxlan_decap_on_default_vrf_only: bool | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    MultiVtepMlag.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                                           Cannot be enabled when
+                                           evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+                                        vxlan_decap_on_default_vrf_only:
+                                           Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                                           On supported platforms: sets
+                                           'vxlan decapsulation filter vrf non-default ipv4'.
+                                           On unsupported platforms: sets 'vxlan
+                                           decapsulation filter interface
+                                           multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                                    """
 
                         class BgpDefaults(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -44576,7 +44814,7 @@ class EosDesigns(EosDesignsRootModel):
                             "loopback_ipv6_offset": {"type": int, "default": 0},
                             "vtep": {"type": bool},
                             "vtep_loopback": {"type": str},
-                            "multi_vtep_mlag": {"type": bool, "default": False},
+                            "multi_vtep_mlag": {"type": MultiVtepMlag},
                             "bgp_as": {"type": str},
                             "bgp_defaults": {"type": BgpDefaults},
                             "evpn_role": {"type": str},
@@ -45017,13 +45255,12 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         vtep_loopback: str | None
                         """Set VXLAN source interface."""
-                        multi_vtep_mlag: bool
+                        multi_vtep_mlag: MultiVtepMlag
                         """
-                        Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                        This feature cannot be enabled when
-                        evpn gw or ipv6 underlay is enabled.
+                        Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
 
-                        Default value: `False`
+
+                        Subclass of AvdModel.
                         """
                         bgp_as: str | None
                         """
@@ -45616,7 +45853,7 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv6_offset: int | UndefinedType = Undefined,
                                 vtep: bool | None | UndefinedType = Undefined,
                                 vtep_loopback: str | None | UndefinedType = Undefined,
-                                multi_vtep_mlag: bool | UndefinedType = Undefined,
+                                multi_vtep_mlag: MultiVtepMlag | UndefinedType = Undefined,
                                 bgp_as: str | None | UndefinedType = Undefined,
                                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                                 evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -45952,9 +46189,10 @@ class EosDesigns(EosDesignsRootModel):
                                        setting inherited from node_type_keys.
                                     vtep_loopback: Set VXLAN source interface.
                                     multi_vtep_mlag:
-                                       Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                                       This feature cannot be enabled when
-                                       evpn gw or ipv6 underlay is enabled.
+                                       Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
+
+
+                                       Subclass of AvdModel.
                                     bgp_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                        For asdot notation in
@@ -46750,6 +46988,59 @@ class EosDesigns(EosDesignsRootModel):
                                 """
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                    class MultiVtepMlag(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": True},
+                            "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
+                        }
+                        enabled: bool
+                        """
+                        Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                        Cannot be enabled when
+                        evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+
+                        Default value: `True`
+                        """
+                        vxlan_decap_on_default_vrf_only: bool
+                        """
+                        Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                        On supported platforms: sets
+                        'vxlan decapsulation filter vrf non-default ipv4'.
+                        On unsupported platforms: sets 'vxlan
+                        decapsulation filter interface
+                        multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                        Default value: `True`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, enabled: bool | UndefinedType = Undefined, vxlan_decap_on_default_vrf_only: bool | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                MultiVtepMlag.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                                       Cannot be enabled when
+                                       evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+                                    vxlan_decap_on_default_vrf_only:
+                                       Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                                       On supported platforms: sets
+                                       'vxlan decapsulation filter vrf non-default ipv4'.
+                                       On unsupported platforms: sets 'vxlan
+                                       decapsulation filter interface
+                                       multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                                """
 
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -49661,7 +49952,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
-                        "multi_vtep_mlag": {"type": bool, "default": False},
+                        "multi_vtep_mlag": {"type": MultiVtepMlag},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -50105,13 +50396,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
-                    multi_vtep_mlag: bool
+                    multi_vtep_mlag: MultiVtepMlag
                     """
-                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                    This feature cannot be enabled when
-                    evpn gw or ipv6 underlay is enabled.
+                    Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
 
-                    Default value: `False`
+
+                    Subclass of AvdModel.
                     """
                     bgp_as: str | None
                     """
@@ -50704,7 +50994,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
-                            multi_vtep_mlag: bool | UndefinedType = Undefined,
+                            multi_vtep_mlag: MultiVtepMlag | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -51042,9 +51332,10 @@ class EosDesigns(EosDesignsRootModel):
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
                                 multi_vtep_mlag:
-                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                                   This feature cannot be enabled when
-                                   evpn gw or ipv6 underlay is enabled.
+                                   Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
+
+
+                                   Subclass of AvdModel.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -51915,6 +52206,59 @@ class EosDesigns(EosDesignsRootModel):
                                 """
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                    class MultiVtepMlag(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": True},
+                            "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
+                        }
+                        enabled: bool
+                        """
+                        Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                        Cannot be enabled when
+                        evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+
+                        Default value: `True`
+                        """
+                        vxlan_decap_on_default_vrf_only: bool
+                        """
+                        Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                        On supported platforms: sets
+                        'vxlan decapsulation filter vrf non-default ipv4'.
+                        On unsupported platforms: sets 'vxlan
+                        decapsulation filter interface
+                        multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                        Default value: `True`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, enabled: bool | UndefinedType = Undefined, vxlan_decap_on_default_vrf_only: bool | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                MultiVtepMlag.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                                       Cannot be enabled when
+                                       evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+                                    vxlan_decap_on_default_vrf_only:
+                                       Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                                       On supported platforms: sets
+                                       'vxlan decapsulation filter vrf non-default ipv4'.
+                                       On unsupported platforms: sets 'vxlan
+                                       decapsulation filter interface
+                                       multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                                """
 
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -54826,7 +55170,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
-                        "multi_vtep_mlag": {"type": bool, "default": False},
+                        "multi_vtep_mlag": {"type": MultiVtepMlag},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -55267,13 +55611,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
-                    multi_vtep_mlag: bool
+                    multi_vtep_mlag: MultiVtepMlag
                     """
-                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                    This feature cannot be enabled when
-                    evpn gw or ipv6 underlay is enabled.
+                    Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
 
-                    Default value: `False`
+
+                    Subclass of AvdModel.
                     """
                     bgp_as: str | None
                     """
@@ -55866,7 +56209,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
-                            multi_vtep_mlag: bool | UndefinedType = Undefined,
+                            multi_vtep_mlag: MultiVtepMlag | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -56202,9 +56545,10 @@ class EosDesigns(EosDesignsRootModel):
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
                                 multi_vtep_mlag:
-                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                                   This feature cannot be enabled when
-                                   evpn gw or ipv6 underlay is enabled.
+                                   Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
+
+
+                                   Subclass of AvdModel.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -70044,6 +70388,59 @@ class EosDesigns(EosDesignsRootModel):
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
 
+                    class MultiVtepMlag(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": True},
+                            "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
+                        }
+                        enabled: bool
+                        """
+                        Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                        Cannot be enabled when
+                        evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+
+                        Default value: `True`
+                        """
+                        vxlan_decap_on_default_vrf_only: bool
+                        """
+                        Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                        On supported platforms: sets
+                        'vxlan decapsulation filter vrf non-default ipv4'.
+                        On unsupported platforms: sets 'vxlan
+                        decapsulation filter interface
+                        multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                        Default value: `True`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, enabled: bool | UndefinedType = Undefined, vxlan_decap_on_default_vrf_only: bool | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                MultiVtepMlag.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                                       Cannot be enabled when
+                                       evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+                                    vxlan_decap_on_default_vrf_only:
+                                       Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                                       On supported platforms: sets
+                                       'vxlan decapsulation filter vrf non-default ipv4'.
+                                       On unsupported platforms: sets 'vxlan
+                                       decapsulation filter interface
+                                       multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                                """
+
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -72952,7 +73349,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
-                        "multi_vtep_mlag": {"type": bool, "default": False},
+                        "multi_vtep_mlag": {"type": MultiVtepMlag},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -73383,13 +73780,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
-                    multi_vtep_mlag: bool
+                    multi_vtep_mlag: MultiVtepMlag
                     """
-                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                    This feature cannot be enabled when
-                    evpn gw or ipv6 underlay is enabled.
+                    Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
 
-                    Default value: `False`
+
+                    Subclass of AvdModel.
                     """
                     bgp_as: str | None
                     """
@@ -73980,7 +74376,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
-                            multi_vtep_mlag: bool | UndefinedType = Undefined,
+                            multi_vtep_mlag: MultiVtepMlag | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -74309,9 +74705,10 @@ class EosDesigns(EosDesignsRootModel):
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
                                 multi_vtep_mlag:
-                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                                   This feature cannot be enabled when
-                                   evpn gw or ipv6 underlay is enabled.
+                                   Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
+
+
+                                   Subclass of AvdModel.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -75182,6 +75579,59 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                        class MultiVtepMlag(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": True},
+                                "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
+                            }
+                            enabled: bool
+                            """
+                            Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                            Cannot be enabled when
+                            evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+
+                            Default value: `True`
+                            """
+                            vxlan_decap_on_default_vrf_only: bool
+                            """
+                            Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                            On supported platforms: sets
+                            'vxlan decapsulation filter vrf non-default ipv4'.
+                            On unsupported platforms: sets 'vxlan
+                            decapsulation filter interface
+                            multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, enabled: bool | UndefinedType = Undefined, vxlan_decap_on_default_vrf_only: bool | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    MultiVtepMlag.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                                           Cannot be enabled when
+                                           evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+                                        vxlan_decap_on_default_vrf_only:
+                                           Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                                           On supported platforms: sets
+                                           'vxlan decapsulation filter vrf non-default ipv4'.
+                                           On unsupported platforms: sets 'vxlan
+                                           decapsulation filter interface
+                                           multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                                    """
 
                         class BgpDefaults(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -78110,7 +78560,7 @@ class EosDesigns(EosDesignsRootModel):
                             "loopback_ipv6_offset": {"type": int, "default": 0},
                             "vtep": {"type": bool},
                             "vtep_loopback": {"type": str},
-                            "multi_vtep_mlag": {"type": bool, "default": False},
+                            "multi_vtep_mlag": {"type": MultiVtepMlag},
                             "bgp_as": {"type": str},
                             "bgp_defaults": {"type": BgpDefaults},
                             "evpn_role": {"type": str},
@@ -78551,13 +79001,12 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         vtep_loopback: str | None
                         """Set VXLAN source interface."""
-                        multi_vtep_mlag: bool
+                        multi_vtep_mlag: MultiVtepMlag
                         """
-                        Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                        This feature cannot be enabled when
-                        evpn gw or ipv6 underlay is enabled.
+                        Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
 
-                        Default value: `False`
+
+                        Subclass of AvdModel.
                         """
                         bgp_as: str | None
                         """
@@ -79150,7 +79599,7 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ipv6_offset: int | UndefinedType = Undefined,
                                 vtep: bool | None | UndefinedType = Undefined,
                                 vtep_loopback: str | None | UndefinedType = Undefined,
-                                multi_vtep_mlag: bool | UndefinedType = Undefined,
+                                multi_vtep_mlag: MultiVtepMlag | UndefinedType = Undefined,
                                 bgp_as: str | None | UndefinedType = Undefined,
                                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                                 evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -79486,9 +79935,10 @@ class EosDesigns(EosDesignsRootModel):
                                        setting inherited from node_type_keys.
                                     vtep_loopback: Set VXLAN source interface.
                                     multi_vtep_mlag:
-                                       Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                                       This feature cannot be enabled when
-                                       evpn gw or ipv6 underlay is enabled.
+                                       Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
+
+
+                                       Subclass of AvdModel.
                                     bgp_as:
                                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                        For asdot notation in
@@ -80284,6 +80734,59 @@ class EosDesigns(EosDesignsRootModel):
                                 """
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                    class MultiVtepMlag(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": True},
+                            "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
+                        }
+                        enabled: bool
+                        """
+                        Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                        Cannot be enabled when
+                        evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+
+                        Default value: `True`
+                        """
+                        vxlan_decap_on_default_vrf_only: bool
+                        """
+                        Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                        On supported platforms: sets
+                        'vxlan decapsulation filter vrf non-default ipv4'.
+                        On unsupported platforms: sets 'vxlan
+                        decapsulation filter interface
+                        multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                        Default value: `True`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, enabled: bool | UndefinedType = Undefined, vxlan_decap_on_default_vrf_only: bool | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                MultiVtepMlag.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                                       Cannot be enabled when
+                                       evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+                                    vxlan_decap_on_default_vrf_only:
+                                       Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                                       On supported platforms: sets
+                                       'vxlan decapsulation filter vrf non-default ipv4'.
+                                       On unsupported platforms: sets 'vxlan
+                                       decapsulation filter interface
+                                       multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                                """
 
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -83195,7 +83698,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
-                        "multi_vtep_mlag": {"type": bool, "default": False},
+                        "multi_vtep_mlag": {"type": MultiVtepMlag},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -83639,13 +84142,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
-                    multi_vtep_mlag: bool
+                    multi_vtep_mlag: MultiVtepMlag
                     """
-                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                    This feature cannot be enabled when
-                    evpn gw or ipv6 underlay is enabled.
+                    Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
 
-                    Default value: `False`
+
+                    Subclass of AvdModel.
                     """
                     bgp_as: str | None
                     """
@@ -84238,7 +84740,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
-                            multi_vtep_mlag: bool | UndefinedType = Undefined,
+                            multi_vtep_mlag: MultiVtepMlag | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -84576,9 +85078,10 @@ class EosDesigns(EosDesignsRootModel):
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
                                 multi_vtep_mlag:
-                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                                   This feature cannot be enabled when
-                                   evpn gw or ipv6 underlay is enabled.
+                                   Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
+
+
+                                   Subclass of AvdModel.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -85449,6 +85952,59 @@ class EosDesigns(EosDesignsRootModel):
                                 """
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                    class MultiVtepMlag(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": True},
+                            "vxlan_decap_on_default_vrf_only": {"type": bool, "default": True},
+                        }
+                        enabled: bool
+                        """
+                        Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                        Cannot be enabled when
+                        evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+
+                        Default value: `True`
+                        """
+                        vxlan_decap_on_default_vrf_only: bool
+                        """
+                        Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                        On supported platforms: sets
+                        'vxlan decapsulation filter vrf non-default ipv4'.
+                        On unsupported platforms: sets 'vxlan
+                        decapsulation filter interface
+                        multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                        Default value: `True`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, enabled: bool | UndefinedType = Undefined, vxlan_decap_on_default_vrf_only: bool | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                MultiVtepMlag.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                                       Cannot be enabled when
+                                       evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+                                    vxlan_decap_on_default_vrf_only:
+                                       Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                                       On supported platforms: sets
+                                       'vxlan decapsulation filter vrf non-default ipv4'.
+                                       On unsupported platforms: sets 'vxlan
+                                       decapsulation filter interface
+                                       multiple-vrf disabled' with the MLAG peer link member interfaces.
+
+                                """
 
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -88360,7 +88916,7 @@ class EosDesigns(EosDesignsRootModel):
                         "loopback_ipv6_offset": {"type": int, "default": 0},
                         "vtep": {"type": bool},
                         "vtep_loopback": {"type": str},
-                        "multi_vtep_mlag": {"type": bool, "default": False},
+                        "multi_vtep_mlag": {"type": MultiVtepMlag},
                         "bgp_as": {"type": str},
                         "bgp_defaults": {"type": BgpDefaults},
                         "evpn_role": {"type": str},
@@ -88801,13 +89357,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vtep_loopback: str | None
                     """Set VXLAN source interface."""
-                    multi_vtep_mlag: bool
+                    multi_vtep_mlag: MultiVtepMlag
                     """
-                    Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                    This feature cannot be enabled when
-                    evpn gw or ipv6 underlay is enabled.
+                    Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
 
-                    Default value: `False`
+
+                    Subclass of AvdModel.
                     """
                     bgp_as: str | None
                     """
@@ -89400,7 +89955,7 @@ class EosDesigns(EosDesignsRootModel):
                             loopback_ipv6_offset: int | UndefinedType = Undefined,
                             vtep: bool | None | UndefinedType = Undefined,
                             vtep_loopback: str | None | UndefinedType = Undefined,
-                            multi_vtep_mlag: bool | UndefinedType = Undefined,
+                            multi_vtep_mlag: MultiVtepMlag | UndefinedType = Undefined,
                             bgp_as: str | None | UndefinedType = Undefined,
                             bgp_defaults: BgpDefaults | UndefinedType = Undefined,
                             evpn_role: EvpnRole | None | UndefinedType = Undefined,
@@ -89736,9 +90291,10 @@ class EosDesigns(EosDesignsRootModel):
                                    setting inherited from node_type_keys.
                                 vtep_loopback: Set VXLAN source interface.
                                 multi_vtep_mlag:
-                                   Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-                                   This feature cannot be enabled when
-                                   evpn gw or ipv6 underlay is enabled.
+                                   Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
+
+
+                                   Subclass of AvdModel.
                                 bgp_as:
                                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                                    For asdot notation in
@@ -90551,6 +91107,7 @@ class EosDesigns(EosDesignsRootModel):
                             "sflow_subinterfaces": False,
                             "subinterface_mtu": False,
                             "per_interface_l2_mru": False,
+                            "vxlan_decap_vrf_filter": True,
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
@@ -90564,6 +91121,7 @@ class EosDesigns(EosDesignsRootModel):
                             "sflow_subinterfaces": False,
                             "subinterface_mtu": False,
                             "per_interface_l2_mru": False,
+                            "vxlan_decap_vrf_filter": True,
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000",
@@ -90579,6 +91137,7 @@ class EosDesigns(EosDesignsRootModel):
                             "per_interface_mtu": False,
                             "per_interface_l2_mru": False,
                             "sflow_subinterfaces": False,
+                            "vxlan_decap_vrf_filter": True,
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
@@ -90783,7 +91342,12 @@ class EosDesigns(EosDesignsRootModel):
                         "platforms": ["7300X3"],
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 1200, "non_mlag": 1320},
-                        "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False},
+                        "feature_support": {
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                            "vxlan_decap_vrf_filter": True,
+                        },
                         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -92493,7 +93057,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "vxlan_decap_vrf_filter": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "vxlan_decap_vrf_filter": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "vxlan_decap_vrf_filter": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False, "vxlan_decap_vrf_filter": True}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """

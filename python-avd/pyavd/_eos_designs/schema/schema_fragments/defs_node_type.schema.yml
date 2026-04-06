@@ -585,10 +585,23 @@ $defs:
             documentation_options:
               table: node-type-loopback-vtep-configuration
             description: |
-              Enable to make MLAG VTEPs utilize the multi-VTEP MLAG feature.
-              This feature cannot be enabled when evpn gw or ipv6 underlay is enabled.
-            type: bool
-            default: false
+              Configuration for MLAG multi-VTEP feature and SA055 security mitigation.
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: |
+                  Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
+                  Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+              vxlan_decap_on_default_vrf_only:
+                type: bool
+                default: true
+                description: |
+                  Restrict VXLAN decapsulation to the default VRF only, mitigating SA055.
+                  On supported platforms: sets 'vxlan decapsulation filter vrf non-default ipv4'.
+                  On unsupported platforms: sets 'vxlan decapsulation filter interface
+                  multiple-vrf disabled' with the MLAG peer link member interfaces.
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration

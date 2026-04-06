@@ -153,6 +153,13 @@ $defs:
               description: |-
                 Support for EVPN gateway RD/RT rewrite mode.
                 An error will be raised if the feature is enabled and this is false.
+            vxlan_decap_vrf_filter:
+              type: bool
+              default: false
+              description: |
+                Support for 'vxlan decapsulation filter vrf non-default ipv4' (SA055 mitigation).
+                When false, 'vxlan decapsulation filter interface multiple-vrf disabled' is used
+                with the MLAG peer link member interfaces as the fallback.
             hardware_counters:
               type: bool
               description: |-
