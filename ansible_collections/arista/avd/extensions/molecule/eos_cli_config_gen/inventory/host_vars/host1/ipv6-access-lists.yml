@@ -142,7 +142,7 @@ ipv6_access_lists:
         inner_vlan_mask: "0x001"
         vlan_number: 235
         vlan_mask: "0x1FF"
-        protocol: tcp
+        protocol: ipv6
         source: any
         destination: any
       - action: permit
