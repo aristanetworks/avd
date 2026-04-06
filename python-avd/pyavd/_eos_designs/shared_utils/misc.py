@@ -250,8 +250,9 @@ class MiscMixin(Protocol):
             ipv4_acl.name += f"_{self.sanitize_interface_name(interface_name)}"
         return ipv4_acl
 
-    def get_ipv6_acl(self: SharedUtilsProtocol, name: str, interface_name: str, *,
-                     interface_ip: str | None = None, peer_ip: str | None = None) -> EosDesigns.Ipv6AclsItem:
+    def get_ipv6_acl(
+        self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None
+    ) -> EosDesigns.Ipv6AclsItem:
         """
         Get one IPv6 ACL from "ipv6_acls" where fields have been substituted.
 
