@@ -374,6 +374,10 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  listen_ranges:
+  - prefix: 192.168.142.0/24
+    peer_group: Tenant_C_BGP_PEER_GROUP_RESTRICTED
+    remote_as: '111'
   peer_groups:
   - name: UNDERLAY-PEERS
     metadata:
