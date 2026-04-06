@@ -15,6 +15,7 @@
     eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
     original_structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
     structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_duplicated_devices_configs"
+    cv_deploy_tmp_dir: "{{ playbook_dir }}/intended/tmp_cv_deploy"
     intended_tag_device: avd-ci-leaf1
     intended_tags: "{{ lookup('file', structured_dir ~ '/' ~ intended_tag_device ~ '.yml')| from_yaml }}"
     test_id: "no-duplicated-inventory-devices"
