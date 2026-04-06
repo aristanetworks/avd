@@ -11,7 +11,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict, Undefined
+from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -363,12 +363,16 @@ class RouterBgpMixin(Protocol):
             for bgp_peer_group in tenant.bgp_peer_groups:
                 if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
                     for listen_range in bgp_peer_group.listen_ranges:
-                        self.structured_config.router_bgp.listen_ranges.append_new(prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined)
+                        self.structured_config.router_bgp.listen_ranges.append_new(
+                            prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined
+                        )
             for vrf in tenant.vrfs:
                 for bgp_peer_group in vrf.bgp_peer_groups:
                     if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
                         for listen_range in bgp_peer_group.listen_ranges:
-                            self.structured_config.router_bgp.listen_ranges.append_new(prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined)
+                            self.structured_config.router_bgp.listen_ranges.append_new(
+                                prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined
+                            )
 
     def _update_router_bgp_vrf_mlag_neighbor_cfg(
         self: AvdStructuredConfigNetworkServicesProtocol,
