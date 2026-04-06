@@ -209,6 +209,8 @@ class VlanInterfacesMixin(Protocol):
         Build IP config for MLAG peering SVI for the given VRF.
 
         Called from _get_vlan_interface_config_for_mlag_peering and prefix_lists.
+
+        TODO: Refactor to update the input in-place
         """
         if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
             return {"ipv6_enable": True}
