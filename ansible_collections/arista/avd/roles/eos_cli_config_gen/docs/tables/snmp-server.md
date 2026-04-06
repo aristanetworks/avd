@@ -24,15 +24,30 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv6</samp>](## "snmp_server.communities.[].access_list_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_server.communities.[].access_list_ipv6.name") | String |  |  |  | IPv6 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;view</samp>](## "snmp_server.communities.[].view") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;ipv4_acls</samp>](## "snmp_server.ipv4_acls") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;ipv4_acls</samp>](## "snmp_server.ipv4_acls") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>ipv4_acls_per_vrf</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.ipv4_acls.[].name") | String |  |  |  | IPv4 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.ipv4_acls.[].vrf") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;ipv6_acls</samp>](## "snmp_server.ipv6_acls") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;ipv4_acls_per_vrf</samp>](## "snmp_server.ipv4_acls_per_vrf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list</samp>](## "snmp_server.ipv4_acls_per_vrf.access_list") | String |  |  |  | IPv4 access list for VRF default. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "snmp_server.ipv4_acls_per_vrf.vrfs") | List, items: Dictionary |  |  |  | IPv4 access lists for any VRF other than default. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.ipv4_acls_per_vrf.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list</samp>](## "snmp_server.ipv4_acls_per_vrf.vrfs.[].access_list") | String |  |  |  | IPv4 access list name. |
+    | [<samp>&nbsp;&nbsp;ipv6_acls</samp>](## "snmp_server.ipv6_acls") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>ipv6_acls_per_vrf</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.ipv6_acls.[].name") | String |  |  |  | IPv6 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.ipv6_acls.[].vrf") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;local_interfaces</samp>](## "snmp_server.local_interfaces") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;ipv6_acls_per_vrf</samp>](## "snmp_server.ipv6_acls_per_vrf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list</samp>](## "snmp_server.ipv6_acls_per_vrf.access_list") | String |  |  |  | IPv6 access list for VRF default. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "snmp_server.ipv6_acls_per_vrf.vrfs") | List, items: Dictionary |  |  |  | IPv6 access lists for any VRF other than default. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.ipv6_acls_per_vrf.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list</samp>](## "snmp_server.ipv6_acls_per_vrf.vrfs.[].access_list") | String |  |  |  | IPv6 access list name. |
+    | [<samp>&nbsp;&nbsp;local_interfaces</samp>](## "snmp_server.local_interfaces") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>local_interfaces_per_vrf</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.local_interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.local_interfaces.[].vrf") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;local_interfaces_per_vrf</samp>](## "snmp_server.local_interfaces_per_vrf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "snmp_server.local_interfaces_per_vrf.local_interface") | String |  |  |  | local_interface name for VRF default. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "snmp_server.local_interfaces_per_vrf.vrfs") | List, items: Dictionary |  |  |  | Local interfaces for any VRF other than default. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.local_interfaces_per_vrf.vrfs.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "snmp_server.local_interfaces_per_vrf.vrfs.[].local_interface") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;views</samp>](## "snmp_server.views") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.views.[].name") | String |  |  |  | SNMP view name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mib_family_name</samp>](## "snmp_server.views.[].mib_family_name") | String |  |  |  |  |
@@ -110,21 +125,62 @@
             # IPv6 access list name.
             name: <str>
           view: <str>
+      # This key is deprecated.
+      # Use `ipv4_acls_per_vrf` instead.
       ipv4_acls:
 
           # IPv4 access list name.
         - name: <str>
           vrf: <str>
+      ipv4_acls_per_vrf:
+
+        # IPv4 access list for VRF default.
+        access_list: <str>
+
+        # IPv4 access lists for any VRF other than default.
+        vrfs:
+
+            # VRF name.
+          - name: <str; required; unique>
+
+            # IPv4 access list name.
+            access_list: <str>
+      # This key is deprecated.
+      # Use `ipv6_acls_per_vrf` instead.
       ipv6_acls:
 
           # IPv6 access list name.
         - name: <str>
           vrf: <str>
+      ipv6_acls_per_vrf:
+
+        # IPv6 access list for VRF default.
+        access_list: <str>
+
+        # IPv6 access lists for any VRF other than default.
+        vrfs:
+
+            # VRF name.
+          - name: <str; required; unique>
+
+            # IPv6 access list name.
+            access_list: <str>
+      # This key is deprecated.
+      # Use `local_interfaces_per_vrf` instead.
       local_interfaces:
 
           # Interface name.
         - name: <str; required; unique>
           vrf: <str>
+      local_interfaces_per_vrf:
+
+        # local_interface name for VRF default.
+        local_interface: <str>
+
+        # Local interfaces for any VRF other than default.
+        vrfs:
+          - name: <str; required; unique>
+            local_interface: <str; required>
       views:
 
           # SNMP view name.

@@ -23500,6 +23500,11 @@ keys:
               type: str
       ipv4_acls:
         type: list
+        deprecation:
+          warning: true
+          removed: false
+          allow_with_new_key: false
+          new_key: ipv4_acls_per_vrf
         items:
           type: dict
           keys:
@@ -23510,8 +23515,34 @@ keys:
               type: str
               convert_types:
               - int
+      ipv4_acls_per_vrf:
+        type: dict
+        keys:
+          access_list:
+            type: str
+            description: IPv4 access list for VRF default.
+          vrfs:
+            type: list
+            primary_key: name
+            description: IPv4 access lists for any VRF other than default.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  convert_types:
+                  - int
+                  description: VRF name.
+                access_list:
+                  type: str
+                  description: IPv4 access list name.
       ipv6_acls:
         type: list
+        deprecation:
+          warning: true
+          removed: false
+          allow_with_new_key: false
+          new_key: ipv6_acls_per_vrf
         items:
           type: dict
           keys:
@@ -23522,8 +23553,34 @@ keys:
               type: str
               convert_types:
               - int
+      ipv6_acls_per_vrf:
+        type: dict
+        keys:
+          access_list:
+            type: str
+            description: IPv6 access list for VRF default.
+          vrfs:
+            type: list
+            primary_key: name
+            description: IPv6 access lists for any VRF other than default.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  convert_types:
+                  - int
+                  description: VRF name.
+                access_list:
+                  type: str
+                  description: IPv6 access list name.
       local_interfaces:
         type: list
+        deprecation:
+          warning: true
+          removed: false
+          allow_with_new_key: false
+          new_key: local_interfaces_per_vrf
         primary_key: name
         items:
           type: dict
@@ -23535,6 +23592,24 @@ keys:
               type: str
               convert_types:
               - int
+      local_interfaces_per_vrf:
+        type: dict
+        keys:
+          local_interface:
+            type: str
+            description: local_interface name for VRF default.
+          vrfs:
+            type: list
+            primary_key: name
+            description: Local interfaces for any VRF other than default.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                local_interface:
+                  type: str
+                  required: true
       views:
         type: list
         items:
