@@ -7,7 +7,7 @@ dev = [
     "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.3",
+    "pyavd-utils==0.0.4",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     # dev requirements"
@@ -24,7 +24,7 @@ dev = [
     "pre-commit-hooks>=3.3.0",
     "pre-commit>=3.2.0",
     "pylint>=3.2.6",
-    "ruff==0.15.7",
+    "ruff==0.15.8",
     "setuptools>=77.0", # for pyright check in CI
     "tox>4",
     "twine>=6.2.0",
@@ -257,7 +257,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.1.0"
+current_version = "6.2.0-dev1"
 
 allow_dirty = true
 commit = false

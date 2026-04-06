@@ -487,6 +487,20 @@ $defs:
                   This setting applies only to the automatically generated route targets
                   and does not affect any entries defined under `additional_route_targets`.
                 default: true
+              rt_import_evpn_remote:
+                type: bool
+                description: |-
+                  Enable or disable route target import for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_export_evpn_remote:
+                type: bool
+                description: |-
+                  Enable or disable route target export for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
+                default: true
               evpn_vlan_bundle:
                 type: str
                 description: |
