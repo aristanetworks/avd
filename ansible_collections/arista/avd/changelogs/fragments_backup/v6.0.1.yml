@@ -1,5 +1,5 @@
 release_summary: |
   Release 6.0.1 - See documentation on avd.arista.com for details.
 minor_changes:
-- |-
- Bump: grpclib>=0.4.8 (#6590) by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6605
+  - |-
+    Bump: grpclib>=0.4.8 (#6590) by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6605
