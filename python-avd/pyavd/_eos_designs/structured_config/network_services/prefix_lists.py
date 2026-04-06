@@ -57,11 +57,11 @@ class PrefixListsMixin(Protocol):
                     continue
 
                 # Convert mlag_ip_address to network prefix string and add to set.
-                if mlag_ipv4_address := self._get_vlan_ip_config_for_mlag_peering(vrf).get("ip_address"):
-                    mlag_prefixes.add(str(IPv4Network(mlag_ipv4_address, strict=False)))
-                elif mlag_ipv6_addresses := self._get_vlan_ip_config_for_mlag_peering(vrf).get("ipv6_addresses"):
-                    for mlag_ipv6_address in mlag_ipv6_addresses:
-                        mlag_prefixes.add(str(IPv6Network(mlag_ipv6_address, strict=False)))
+                ip_config = self._get_vlan_ip_config_for_mlag_peering(vrf)
+                if ipv4_address := ip_config.get("ipv4_address"):
+                    mlag_prefixes.add(str(IPv4Network(ipv4_address, strict=False)))
+                elif ipv6_address := ip_config.get("ipv6_address"):
+                    mlag_prefixes.add(str(IPv6Network(ipv6_address, strict=False)))
                 else:
                     # No MLAG prefix for this VRF (could be RFC5549)
                     continue

@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Protocol
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -193,18 +193,22 @@ class VlanInterfacesMixin(Protocol):
         )
         vlan_interface_config.metadata.tenants.append(tenant.name)
         vlan_interface_config.metadata.type = "underlay_peering"
-        vlan_interface_config._update(**self._get_vlan_ip_config_for_mlag_peering(vrf))
+        ip_config = self._get_vlan_ip_config_for_mlag_peering(vrf)
+        if "ipv6_enable" in ip_config:
+            vlan_interface_config.ipv6_enable = True
+        elif isinstance(ipv6_address := ip_config.get("ipv6_address"), str):
+            vlan_interface_config.ipv6_addresses = EosCliConfigGen.VlanInterfacesItem.Ipv6Addresses([ipv6_address])
+        elif isinstance(ipv4_address := ip_config.get("ipv4_address"), str):
+            vlan_interface_config.ip_address = ipv4_address
         return vlan_interface_config
 
     def _get_vlan_ip_config_for_mlag_peering(
         self: AvdStructuredConfigNetworkServicesProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
-    ) -> dict[str, Any]:
+    ) -> dict[str, str | bool]:
         """
         Build IP config for MLAG peering SVI for the given VRF.
 
         Called from _get_vlan_interface_config_for_mlag_peering and prefix_lists.
-
-        TODO: Refactor to update the input in-place
         """
         if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
             return {"ipv6_enable": True}
@@ -212,39 +216,33 @@ class VlanInterfacesMixin(Protocol):
         if self.shared_utils.underlay_ipv6_numbered:
             if vrf.mlag_ibgp_peering_ipv6_pool:
                 if self.shared_utils.mlag_role == "primary":
-                    address = (
-                        f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_primary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                    return {
+                        "ipv6_address": (
+                            f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_primary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                            f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+                        )
+                    }
+                return {
+                    "ipv6_address": (
+                        f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_secondary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
                         f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
                     )
-                    return {"ipv6_addresses": EosCliConfigGen.VlanInterfacesItem.Ipv6Addresses([address])}
-                return {
-                    "ipv6_addresses": EosCliConfigGen.VlanInterfacesItem.Ipv6Addresses(
-                        [
-                            f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_secondary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
-                            f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
-                        ]
-                    )
                 }
-            return {
-                "ipv6_addresses": EosCliConfigGen.VlanInterfacesItem.Ipv6Addresses(
-                    [f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"]
-                )
-            }
+            return {"ipv6_address": f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"}
 
         if vrf.mlag_ibgp_peering_ipv4_pool:
             if self.shared_utils.mlag_role == "primary":
                 return {
-                    "ip_address": (
+                    "ipv4_address": (
                         f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(vrf.mlag_ibgp_peering_ipv4_pool)}/"
                         f"{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
                     )
                 }
-
             return {
-                "ip_address": (
+                "ipv4_address": (
                     f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(vrf.mlag_ibgp_peering_ipv4_pool)}/"
                     f"{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
                 )
             }
 
-        return {"ip_address": f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"}
+        return {"ipv4_address": f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"}
