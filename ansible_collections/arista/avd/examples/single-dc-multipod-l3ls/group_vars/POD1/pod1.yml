@@ -5,7 +5,7 @@ spine:
     platform: cEOSLab
     bgp_as: 65001
     loopback_ipv4_pool: 192.168.101.0/24
-    uplink_switches: [dc1-ss1, dc1-ss2] # Where the leaf uplinks go
+    uplink_switches: [dc1-ss1, dc1-ss2] # Where the spine uplinks go
     uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
     evpn_route_servers: [dc1-ss1, dc1-ss2]
   nodes:
