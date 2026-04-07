@@ -664,7 +664,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Check for schema tables in documentation
-        run: make find-missing-tables
+        run: python development/find_missing_tables.py @.find-missing-tables-args
 
   # ----------------------------------- #
   # Test of pyavd

@@ -128,29 +128,6 @@ bump-patch: ## Bump patch release. 6.2.4 -> 6.2.5-dev0
 # Random shortcuts #
 ####################
 
-.PHONY: find-missing-tables
-find-missing-tables: ## Check for schema tables missing in documentation.
-	python development/find_missing_tables.py \
-		--root-path . \
-		--table-files \
-			"ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md" \
-			"ansible_collections/arista/avd/roles/eos_designs/docs/tables/*.md" \
-			"schemas/cv_deploy/docs/tables/*.md" \
-		--global-docs \
-			"ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md" \
-			"ansible_collections/arista/avd/roles/eos_designs/docs/*.md" \
-			"ansible_collections/arista/avd/roles/cv_deploy/README.md" \
-		--ignore-files \
-			ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-input-validation.md \
-			ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md \
-			ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md \
-			ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md \
-			ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validation.md \
-			ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md \
-			ansible_collections/arista/avd/roles/eos_designs/docs/tables/removed-keys.md \
-			schemas/cv_deploy/docs/tables/metadata.md \
-			schemas/cv_deploy/docs/tables/cv_deploy.md
-
 .PHONY: config-diff
 config-diff: ## Run git diff comparing molecule configs with 'devel' using our special config diff ignoring reordering of config lines.
 	@GIT_EXTERNAL_DIFF=development/compare.py git diff devel --ext-diff -- **/configs/*.cfg
