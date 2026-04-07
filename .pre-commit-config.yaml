@@ -3,7 +3,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   autoupdate_commit_msg: "CI: pre-commit autoupdate"
-  skip: [pyright]
+  skip: [pyright, codespell, j2lint, markdownlint-cli2, check-schema-tables-in-docs]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -167,6 +167,20 @@ repos:
         types: [file, yaml]
         args: [--strict, -c=.github/yamllintrc]
 
+  - repo: https://github.com/aristanetworks/j2lint.git
+    rev: "v1.2.0"
+    hooks:
+      - id: j2lint
+        name: Check for Linting errors on Jinja2 files
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.2
+    hooks:
+      - id: codespell
+        name: Check for common misspellings in text files.
+        args: [--config, .codespellrc]
+        pass_filenames: false
+
   - repo: https://github.com/pdm-project/pdm
     rev: "2.26.7"
     hooks:
@@ -246,6 +260,12 @@ repos:
         pass_filenames: false
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.7.2']
 
+      - id: check-schema-tables-in-docs
+        name: Check for schema tables in documentation.
+        entry: make find-missing-tables
+        language: system
+        pass_filenames: false
+
       - id: sort-hosts-yml
         name: Auto-sort host names in Ansible inventory hosts.yml files.
         entry: development/sort_hosts_yml.py
@@ -270,3 +290,10 @@ repos:
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
         additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=43.0.0', 'deepmerge>=1.1.0']
+
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.22.0
+    hooks:
+      - id: markdownlint-cli2
+        name: Check for Linting errors on Markdown files with settings defined in `.github/.markdownlint.yaml`.
+        # Exclusions are configured in .markdownlint-cli2.yaml

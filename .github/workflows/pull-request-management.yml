@@ -615,21 +615,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: codespell-project/actions-codespell@v2.2
+      - uses: actions/setup-python@v6
         with:
-          ignore_words_file: .github/ignore-codespell-words
-          skip: >-
-            *.cfg,
-            *.svg,
-            *.excalidraw,
-            *.rst,
-            ansible_collections/arista/avd/CHANGELOG.rst,
-            ansible_collections/arista/avd/changelogs,
-            ansible_collections/arista/avd/roles/*/docs/tables/*.md,
-            python-avd/pyavd/*/schema/*schema.yml,
-            python-avd/pyavd/_cv/api,
-            python-avd/pyavd/_cv/extra_cv_protos,
-            docs/plugins
+          python-version: "3.12"
+      - name: Install codespell
+        run: pip install codespell==2.4.2
+      - name: Run codespell
+        run: codespell --config .codespellrc
 
   # ----------------------------------- #
   # j2lint
@@ -656,11 +648,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: DavidAnson/markdownlint-cli2-action@v23.0.0
-        with:
-          globs: |
-            **/*.md
-            # TODO: Excluding anta-reports till we clear the errors in anta repo
-            !ansible_collections/arista/avd/extensions/molecule/anta_runner/anta/reports
+        # Exclusions are configured in .markdownlint-cli2.yaml
       - name: Check GIT status
         run: sh .github/check-git-status.sh
 
@@ -676,27 +664,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Check for schema tables in documentation
-        run: >-
-          python development/find_missing_tables.py
-          --root-path .
-          --table-files
-          "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md"
-          "ansible_collections/arista/avd/roles/eos_designs/docs/tables/*.md"
-          "schemas/cv_deploy/docs/tables/*.md"
-          --global-docs
-          "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md"
-          "ansible_collections/arista/avd/roles/eos_designs/docs/*.md"
-          "ansible_collections/arista/avd/roles/cv_deploy/README.md"
-          --ignore-files
-          ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-input-validation.md
-          ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
-          ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md
-          ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md
-          ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validation.md
-          ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
-          ansible_collections/arista/avd/roles/eos_designs/docs/tables/removed-keys.md
-          schemas/cv_deploy/docs/tables/metadata.md
-          schemas/cv_deploy/docs/tables/cv_deploy.md
+        run: make find-missing-tables
 
   # ----------------------------------- #
   # Test of pyavd
