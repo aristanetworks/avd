@@ -1,0 +1,17 @@
+---
+# Management Settings How-To Guide
+# Spine node configuration.
+
+spine:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.8.0/27
+    bgp_as: 65100
+
+  nodes:
+    - name: htms-spine1
+      id: 1
+      mgmt_ip: 172.16.4.11/24
+    - name: htms-spine2
+      id: 2
+      mgmt_ip: 172.16.4.12/24

@@ -141,3 +141,11 @@ artifacts:
       - header: "router bgp 65100"
     artifact: "spine1-bgp.cfg"
     output_dir: "ipv6_numbered/artifacts/"
+
+  # Management Settings artifacts
+  - file: inventory/intended/configs/htms-spine1.cfg
+    sections:
+      - header: "vrf instance MGMT"
+      - header: "interface Management1"
+    artifact: "htms-spine1-mgmt.cfg"
+    output_dir: "management_settings/artifacts/"

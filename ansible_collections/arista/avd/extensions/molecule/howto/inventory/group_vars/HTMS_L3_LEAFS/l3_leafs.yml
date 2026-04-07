@@ -1,0 +1,30 @@
+---
+# Management Settings How-To Guide
+# L3 Leaf node configuration — one MLAG pair.
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.8.0/27
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.255.9.0/27
+    uplink_switches: [htms-spine1, htms-spine2]
+    uplink_ipv4_pool: 10.255.255.192/26
+    mlag_peer_ipv4_pool: 10.255.9.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.9.96/27
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  node_groups:
+    - group: HTMS_LEAF1
+      bgp_as: 65101
+      nodes:
+        - name: htms-leaf1a
+          id: 1
+          mgmt_ip: 172.16.4.101/24
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: htms-leaf1b
+          id: 2
+          mgmt_ip: 172.16.4.102/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
