@@ -1,0 +1,22 @@
+---
+# Inventory Organisation How-To Guide
+# Default interface assignments based on node type and platform.
+# Eliminates repetitive per-node interface definitions.
+
+default_interfaces:  # (1)!
+  - types: [spine]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+    downlink_interfaces: [Ethernet1-8]
+  - types: [l3leaf]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]  # (2)!
+    mlag_interfaces: [Ethernet3-4]  # (3)!
+
+default_node_types:  # (4)!
+  - match_hostnames:
+      - ".*-spine.*"
+    node_type: spine
+  - match_hostnames:
+      - ".*-leaf.*"
+    node_type: l3leaf

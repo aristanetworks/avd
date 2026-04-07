@@ -141,3 +141,20 @@ artifacts:
       - header: "router bgp 65100"
     artifact: "spine1-bgp.cfg"
     output_dir: "ipv6_numbered/artifacts/"
+
+  # Inventory Organisation artifacts
+  - file: inventory/intended/configs/htio-spine1.cfg
+    sections:
+      - header: "interface Ethernet1"
+      - header: "interface Ethernet2"
+      - header: "interface Ethernet3"
+      - header: "interface Ethernet4"
+      - header: "interface Loopback0"
+    artifact: "htio-spine1-p2p.cfg"
+    output_dir: "inventory_organisation/artifacts/"
+
+  - file: inventory/intended/configs/htio-leaf1a.cfg
+    sections:
+      - header: "mlag configuration"
+    artifact: "htio-leaf1a-mlag.cfg"
+    output_dir: "inventory_organisation/artifacts/"

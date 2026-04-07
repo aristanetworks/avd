@@ -1,0 +1,41 @@
+---
+# Inventory Organisation How-To Guide
+# L3 Leaf node configuration — two MLAG pairs representing a medium-scale topology.
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.6.0/27  # (1)!
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.255.7.0/27  # (2)!
+    uplink_switches: [htio-spine1, htio-spine2]  # (3)!
+    uplink_ipv4_pool: 10.255.255.128/26
+    mlag_peer_ipv4_pool: 10.255.7.64/27  # (4)!
+    mlag_peer_l3_ipv4_pool: 10.255.7.96/27
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  node_groups:
+    - group: HTIO_LEAF_PAIR1  # (5)!
+      bgp_as: 65101
+      nodes:
+        - name: htio-leaf1a
+          id: 1
+          mgmt_ip: 172.16.3.101/24
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: htio-leaf1b
+          id: 2
+          mgmt_ip: 172.16.3.102/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+    - group: HTIO_LEAF_PAIR2  # (6)!
+      bgp_as: 65102
+      nodes:
+        - name: htio-leaf2a
+          id: 3
+          mgmt_ip: 172.16.3.103/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+        - name: htio-leaf2b
+          id: 4
+          mgmt_ip: 172.16.3.104/24
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]

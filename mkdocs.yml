@@ -189,6 +189,7 @@ nav:
   - How-to Guides:
       - Fabric Topology: docs/howto/fabric_topology/README.md
       - Connected Endpoints: docs/howto/connected_endpoints/README.md
+      - Inventory Organisation: docs/howto/inventory_organisation/README.md
       - IP Addressing: docs/howto/ip_addressing/README.md
       - IPv6 Addressing: docs/howto/ipv6_numbered/README.md
       - Node Types: docs/howto/node_types/README.md
