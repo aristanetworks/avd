@@ -65,13 +65,13 @@ all:
       children:
         SPINES:
           hosts:
-            lab-spine1:
+            htio-spine1:
               ansible_host: 192.168.1.11
         L3_LEAFS:
           hosts:
-            lab-leaf1:
+            htio-leaf1:
               ansible_host: 192.168.1.101
-            lab-leaf2:
+            htio-leaf2:
               ansible_host: 192.168.1.102
 ```
 
