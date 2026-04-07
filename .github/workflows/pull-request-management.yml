@@ -437,7 +437,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and Ansible requirements
         run: |
-          pip install  ${{ matrix.pip_installation }} "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+          pip install "${{ matrix.pip_installation }}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
       - name: Run ansible-test sanity
         working-directory: ansible_collections/arista/avd
         # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
