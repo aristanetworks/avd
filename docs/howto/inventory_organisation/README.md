@@ -65,13 +65,13 @@ all:
       children:
         SPINES:
           hosts:
-            spine1:
+            lab-spine1:
               ansible_host: 192.168.1.11
         L3_LEAFS:
           hosts:
-            leaf1:
+            lab-leaf1:
               ansible_host: 192.168.1.101
-            leaf2:
+            lab-leaf2:
               ansible_host: 192.168.1.102
 ```
 
