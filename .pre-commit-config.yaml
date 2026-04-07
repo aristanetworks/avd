@@ -36,7 +36,11 @@ repos:
           )
       - id: check-merge-conflict
         name: Checks for files that contain merge conflict strings.
-        exclude: (ansible_collections/arista/avd/extensions/molecule|\.excalidraw$)
+        exclude: >-
+          (?x)
+          (ansible_collections/arista/avd/extensions/molecule
+          |\.excalidraw$
+          )
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.6
