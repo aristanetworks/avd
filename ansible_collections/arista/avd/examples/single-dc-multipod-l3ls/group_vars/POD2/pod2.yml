@@ -34,8 +34,7 @@ l3leaf:
     spanning_tree_priority: 16384
 
   node_groups:
-    - group: mlag2
-      bgp_as: 65299 # Manually set for the external routed connection
+    - group: dc1-leaf1
       nodes:
         - name: dc1-leaf2a
           id: 3

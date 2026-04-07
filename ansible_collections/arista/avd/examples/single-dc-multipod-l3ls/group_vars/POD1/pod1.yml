@@ -34,7 +34,7 @@ l3leaf:
     spanning_tree_priority: 16384
 
   node_groups:
-    - group: mlag1
+    - group: dc1-leaf1
       nodes:
         - name: dc1-leaf1a
           id: 1
