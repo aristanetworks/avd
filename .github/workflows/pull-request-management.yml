@@ -417,7 +417,7 @@ jobs:
           - ansibe_version: stable
             pip_installation: "ansible-core<2.21.0"
           - ansibe_version: devel
-            pip_installation: "--user https://github.com/ansible/ansible/archive/milestone.tar.gz"
+            pip_installation: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
             skip_test: "--skip-test ansible-doc"
     steps:
       - uses: actions/checkout@v6
