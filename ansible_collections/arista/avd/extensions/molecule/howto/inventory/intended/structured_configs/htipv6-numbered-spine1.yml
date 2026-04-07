@@ -17,7 +17,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_htipv6-numbered-leaf1_Ethernet1
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ipv6_addresses:
   - 2001:db8:10::1/64
   metadata:
@@ -29,7 +29,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_htipv6-numbered-leaf2_Ethernet1
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ipv6_addresses:
   - 2001:db8:10:2::1/64
   metadata:

@@ -42,7 +42,6 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 
     - `underlay_ipv6: true` - Enables IPv6 on underlay interfaces
     - `underlay_ipv6_numbered: true` - Uses explicit IPv6 addresses (not link-local)
-    - `underlay_routing_protocol: ebgp` - Default for spine/l3leaf node types (no explicit setting needed)
     - `loopback_ipv6_pool` defined for each node type
     - `router_id_pool` for BGP Router ID (IPv4 format required by BGP)
 
@@ -320,7 +319,7 @@ Some AVD features are not yet supported with IPv6 numbered underlay:
 2. **Use offsets wisely**: When sharing pools between node types, use `loopback_ipv6_offset`
 3. **Size pools appropriately**: Ensure pools have enough addresses for growth
 4. **Use /128 for loopbacks**: Prevents routing table bloat
-5. **Use /64 for P2P links**: Standard practice, though /127 is also valid per RFC 6164
+5. **Use /64 for P2P links**: AVD defaults to /64 prefix length for point-to-point links, though /127 can be configured per RFC [6164](https://datatracker.ietf.org/doc/html/rfc6164)
 6. **Always define router_id_pool**: BGP requires IPv4 Router ID even in IPv6-only deployments
 7. **Use node groups for MLAG**: Define MLAG pairs as node groups for automatic VTEP sharing
 
