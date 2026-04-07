@@ -123,8 +123,6 @@ inventory/
         └── l3_leafs.yml          # Leaf node groups and defaults
 ```
 
-### Inventory
-
 The example below shows a medium-scale topology: 2 spines and 2 MLAG leaf pairs (4 leafs total).
 
 ```yaml title="hosts.yml"
@@ -151,8 +149,6 @@ all:
               ansible_host: 172.16.3.104
 ```
 
-### Fabric-wide Settings
-
 Fabric-wide variables belong in the group that covers all devices — typically named `FABRIC`.
 
 ```yaml title="group_vars/FABRIC/fabric.yml"
@@ -165,8 +161,6 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 2. Underlay protocol — eBGP is standard for EVPN/VXLAN fabrics.
 3. Overlay protocol — eBGP for EVPN peering between leafs and spines.
 4. Set `1500` for vEOS-lab and cEOS; `9214` for physical production hardware.
-
-### Default Interfaces
 
 Splitting `default_interfaces` into its own file keeps the fabric file focused on global settings and makes it easier to adapt interface assignments per platform.
 
@@ -181,8 +175,6 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 3. MLAG peer-link interfaces, bundled into a Port-Channel by AVD.
 4. Hostname patterns auto-assign node types, removing the need to set `type:` on each node.
 
-### Spine Configuration
-
 ```yaml title="group_vars/SPINES/spines.yml"
 --8<--
 ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIO_SPINES/spines.yml
@@ -193,8 +185,6 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 2. All spine loopbacks are allocated from this pool sequentially by node `id`.
 3. All spines share one BGP AS in an eBGP spine-leaf design.
 4. Each entry defines one spine. The `id` drives IP allocation and loopback numbering.
-
-### Leaf Configuration
 
 ```yaml title="group_vars/L3_LEAFS/l3_leafs.yml"
 --8<--
@@ -208,8 +198,6 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 4. MLAG peer-link IP pool (Vlan4094). Each pair gets a /31 allocated automatically.
 5. Two nodes in this group form an MLAG pair. The `group` name becomes the MLAG `domain-id`.
 6. A second MLAG pair with its own BGP AS. Each pair needs a unique AS.
-
-### Generated Configuration
 
 With this layout, AVD generates a complete spine configuration without any per-device interface or BGP neighbor definitions in the vars:
 
