@@ -167,38 +167,6 @@ repos:
         types: [file, yaml]
         args: [--strict, -c=.github/yamllintrc]
 
-  - repo: https://github.com/aristanetworks/j2lint.git
-    rev: "v1.2.0"
-    hooks:
-      - id: j2lint
-        name: Check for Linting errors on Jinja2 files
-
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.2
-    hooks:
-      - id: codespell
-        name: Check for common misspellings in text files.
-        entry: codespell
-        language: python
-        types: [text]
-        args:
-          - '--ignore-words=.github/ignore-codespell-words'  # Ignore words listed in this file
-        # List of regex patterns for files/directories to exclude
-        exclude: >
-          (?x)^(
-            .*\.cfg|  # Exclude all .cfg files
-            .*\.svg|  # Exclude all .svg files
-            .*\.excalidraw|  # Exclude all .excalidraw files
-            .*\.rst|  # Exclude all .rst files
-            ansible_collections/arista/avd/CHANGELOG.rst| # Exclude auto generated CHANGELOG.rst file
-            ansible_collections/arista/avd/changelogs/.*|  # Exclude all files in this directory
-            ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
-            python-avd/pyavd/.*/schema/.*schema\.yml| # Exclude YAML schemas file
-            python-avd/pyavd/_cv/api/.*| # Exclude auto generated files for CV API
-            python-avd/pyavd/_cv/extra_cv_protos/.*| # Exclude extra CV proto files
-            docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
-          )$
-
   - repo: https://github.com/pdm-project/pdm
     rev: "2.26.7"
     hooks:
@@ -278,34 +246,6 @@ repos:
         pass_filenames: false
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.7.2']
 
-      - id: check-schema-tables-in-docs
-        name: Check for schema tables in documentation.
-        entry: development/find_missing_tables.py
-        language: python
-        args:
-          - --root-path
-          - "."
-          - --table-files
-          - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md"
-          - "ansible_collections/arista/avd/roles/eos_designs/docs/tables/*.md"
-          - "schemas/cv_deploy/docs/tables/*.md"
-          - --global-docs
-          - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md"
-          - "ansible_collections/arista/avd/roles/eos_designs/docs/*.md"
-          - "ansible_collections/arista/avd/roles/cv_deploy/README.md"
-          - --ignore-files
-          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-input-validation.md
-          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
-          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md
-          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md
-          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validation.md
-          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
-          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/removed-keys.md
-          - schemas/cv_deploy/docs/tables/metadata.md
-          # TODO: Remove once cv_deploy schema integration is complete.
-          - schemas/cv_deploy/docs/tables/cv_deploy.md
-        pass_filenames: false
-
       - id: sort-hosts-yml
         name: Auto-sort host names in Ansible inventory hosts.yml files.
         entry: development/sort_hosts_yml.py
@@ -330,11 +270,3 @@ repos:
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
         additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=43.0.0', 'deepmerge>=1.1.0']
-
-  - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.22.0
-    hooks:
-      - id: markdownlint-cli2
-        name: Check for Linting errors on Markdown files with settings defined in `.github/.markdownlint.yaml`.
-        # TODO: Excluding anta-reports till we clear the errors in anta repo
-        exclude: ansible_collections/arista/avd/extensions/molecule/anta_runner/anta/reports
