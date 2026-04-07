@@ -1,0 +1,18 @@
+---
+# Platform Settings How-To Guide
+# Fabric-wide settings that apply to all devices
+
+fabric_name: FABRIC # (1)!
+
+underlay_routing_protocol: ebgp # (2)!
+overlay_routing_protocol: ebgp # (3)!
+
+p2p_uplinks_mtu: 1500 # (4)!
+
+# Override default reload delays for vEOS-lab devices # (5)!
+custom_platform_settings:
+  - platforms:
+      - vEOS-lab # (6)!
+    reload_delay:
+      mlag: 180 # (7)!
+      non_mlag: 210 # (8)!

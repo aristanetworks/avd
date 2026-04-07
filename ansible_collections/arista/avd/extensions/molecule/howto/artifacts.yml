@@ -141,3 +141,22 @@ artifacts:
       - header: "router bgp 65100"
     artifact: "spine1-bgp.cfg"
     output_dir: "ipv6_numbered/artifacts/"
+
+  # Platform Settings artifacts
+  - file: inventory/intended/configs/htps-leaf1a.cfg
+    sections:
+      - header: "mlag configuration"
+    artifact: "htps-leaf1a-mlag.cfg"
+    output_dir: "platform_settings/artifacts/"
+
+  - file: inventory/intended/configs/htps-spine1.cfg
+    sections:
+      - header: "router bgp 65100"
+    artifact: "htps-spine1-bgp.cfg"
+    output_dir: "platform_settings/artifacts/"
+
+  - file: inventory/intended/configs/htps-leaf1a.cfg
+    sections:
+      - header: "router bgp 65101"
+    artifact: "htps-leaf1a-bgp.cfg"
+    output_dir: "platform_settings/artifacts/"

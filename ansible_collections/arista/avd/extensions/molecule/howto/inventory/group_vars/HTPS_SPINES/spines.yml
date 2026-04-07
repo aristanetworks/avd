@@ -1,0 +1,17 @@
+---
+# Platform Settings How-To Guide
+# Spine configuration
+
+spine:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.6.0/27
+    bgp_as: 65100
+
+  nodes:
+    - name: htps-spine1
+      id: 1
+      mgmt_ip: 172.16.3.11/24
+    - name: htps-spine2
+      id: 2
+      mgmt_ip: 172.16.3.12/24
