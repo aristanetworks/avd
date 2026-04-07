@@ -185,7 +185,7 @@ Enable password has been disabled
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| mlag2 | Vlan4094 | 10.255.252.4 | Port-Channel3 |
+| dc1-leaf2 | Vlan4094 | 10.255.252.4 | Port-Channel3 |
 
 Dual primary detection is disabled.
 
@@ -194,7 +194,7 @@ Dual primary detection is disabled.
 ```eos
 !
 mlag configuration
-   domain-id mlag2
+   domain-id dc1-leaf2
    local-interface Vlan4094
    peer-address 10.255.252.4
    peer-link Port-Channel3
@@ -571,7 +571,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65299 | 192.168.101.4 |
+| 65102 | 192.168.101.4 |
 
 | BGP Tuning |
 | ---------- |
@@ -604,7 +604,7 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65299 |
+| Remote AS | 65102 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 256000 |
@@ -644,7 +644,7 @@ ASN Notation: asplain
 
 ```eos
 !
-router bgp 65299
+router bgp 65102
    router-id 192.168.101.4
    no bgp default ipv4-unicast
    maximum-paths 4
@@ -658,7 +658,7 @@ router bgp 65299
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65299
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65102
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER description dc1-leaf2a
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in

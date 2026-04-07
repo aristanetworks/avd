@@ -107,7 +107,7 @@ metadata:
   validate_hardware:
     enabled: false
 mlag_configuration:
-  domain_id: mlag2
+  domain_id: dc1-leaf2
   local_interface: Vlan4094
   peer_address: 10.255.252.5
   peer_link: Port-Channel3
@@ -179,7 +179,7 @@ router_bfd:
     min_rx: 1200
     multiplier: 3
 router_bgp:
-  as: '65299'
+  as: '65102'
   router_id: 192.168.101.3
   maximum_paths:
     paths: 4
@@ -190,7 +190,7 @@ router_bgp:
   - name: MLAG-IPv4-UNDERLAY-PEER
     metadata:
       type: ipv4
-    remote_as: '65299'
+    remote_as: '65102'
     description: dc1-leaf2b
     next_hop_self: true
     send_community: all

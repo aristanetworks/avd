@@ -185,7 +185,7 @@ Enable password has been disabled
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| mlag1 | Vlan4094 | 10.255.252.1 | Port-Channel3 |
+| dc1-leaf1 | Vlan4094 | 10.255.252.1 | Port-Channel3 |
 
 Dual primary detection is disabled.
 
@@ -194,7 +194,7 @@ Dual primary detection is disabled.
 ```eos
 !
 mlag configuration
-   domain-id mlag1
+   domain-id dc1-leaf1
    local-interface Vlan4094
    peer-address 10.255.252.1
    peer-link Port-Channel3
