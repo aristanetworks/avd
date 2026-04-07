@@ -34,7 +34,7 @@ This guide covers four topology scales — **Small**, **Medium**, **Large**, and
 ## Choosing Your Topology Scale
 
 | Scale | Nodes | DCs | File Strategy |
-|---|---|---|---|
+| ------- | ------- | ---- | ---------------------------------------------- |
 | **Small** | < 10 | 1 | One file per group, minimal hierarchy |
 | **Medium** | 10–50 | 1 | Multiple files per group, split by purpose |
 | **Large** | 50–200 | 1–2 | Files split by function + DC-level subgroups |
@@ -46,7 +46,7 @@ A Small topology suits lab environments, proof-of-concept builds, and small bran
 
 **Typical layout:**
 
-```
+```text
 inventory/
 ├── hosts.yml
 └── group_vars/
@@ -110,7 +110,7 @@ A Medium topology is the most common AVD deployment: one data centre, 2 spines, 
 
 **Typical layout:**
 
-```
+```text
 inventory/
 ├── hosts.yml
 └── group_vars/
@@ -235,7 +235,7 @@ A Large topology typically spans one or two data centres with 50–200 nodes. Ad
 
 **Typical layout:**
 
-```
+```text
 inventory/
 ├── hosts.yml
 └── group_vars/
@@ -301,7 +301,7 @@ An XL topology covers 200+ nodes across three or more data centres, often with a
 
 **Typical layout:**
 
-```
+```text
 inventory/
 ├── global/
 │   └── group_vars/
@@ -325,7 +325,7 @@ inventory/
 
 **Ansible inventory merging for XL:**
 
-```yaml title="ansible.cfg"
+```ini title="ansible.cfg"
 [defaults]
 inventory = inventory/global,inventory/dc1,inventory/dc2
 ```
@@ -393,6 +393,6 @@ Ansible merges all specified inventory directories, making groups from each DC v
 
 For complete details on all available properties, see:
 
-- [EOS Designs Input Variables](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md)
+- [EOS Designs Schema](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md)
 - [Fabric Topology How-To Guide](../fabric_topology/README.md)
 - [Ansible Inventory documentation](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html)
