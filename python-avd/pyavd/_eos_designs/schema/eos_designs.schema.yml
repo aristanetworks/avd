@@ -3841,8 +3841,6 @@ keys:
       and port-channel interface of the MLAG peer."
     default: MLAG_{mlag_peer}_{peer_interface}
   monitor_connectivity:
-    documentation_options:
-      table: system-settings
     type: dict
     keys:
       shutdown:

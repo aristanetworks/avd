@@ -7,8 +7,6 @@
 type: dict
 keys:
   monitor_connectivity:
-    documentation_options:
-      table: system-settings
     type: dict
     keys:
       shutdown:
