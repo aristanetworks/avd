@@ -340,22 +340,22 @@ class UtilsMixin(Protocol):
         if l3_interface.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
             interface.access_group_in = acl.name
-            self._set_ipv4_acl(acl)
+            self.structured_config_utils._set_ipv4_acl(acl)
 
         if l3_interface.ipv4_acl_out:
             acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_out, l3_interface)
             interface.access_group_out = acl.name
-            self._set_ipv4_acl(acl)
+            self.structured_config_utils._set_ipv4_acl(acl)
 
         if l3_interface.ipv6_acl_in:
             acl = self._get_ipv6_acl_for_l3_generic_interface(l3_interface.ipv6_acl_in, l3_interface)
             interface.ipv6_access_group_in = acl.name
-            self._set_ipv6_acl(acl)
+            self.structured_config_utils._set_ipv6_acl(acl)
 
         if l3_interface.ipv6_acl_out:
             acl = self._get_ipv6_acl_for_l3_generic_interface(l3_interface.ipv6_acl_out, l3_interface)
             interface.ipv6_access_group_out = acl.name
-            self._set_ipv6_acl(acl)
+            self.structured_config_utils._set_ipv6_acl(acl)
 
     @cached_property
     def _underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:

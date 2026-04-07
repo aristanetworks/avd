@@ -20455,7 +20455,11 @@ class EosDesigns(EosDesignsRootModel):
             "sequence_numbers": {"type": SequenceNumbers},
         }
         name: str
-        """Access-list name."""
+        """
+        Access-list name.
+        When using substitution for any fields, the interface name will be appended to the
+        ACL name.
+        """
         entries: Entries
         """
         ACL Entries.
@@ -20483,7 +20487,10 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    name: Access-list name.
+                    name:
+                       Access-list name.
+                       When using substitution for any fields, the interface name will be appended to the
+                       ACL name.
                     entries:
                        ACL Entries.
 
@@ -92690,8 +92697,15 @@ class EosDesigns(EosDesignsRootModel):
     These access-lists can be referenced under node settings
     `l3_interfaces`, and will only be configured on devices where they are in use.
 
-    Subclass of
-    AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
+    The substitution is
+    useful when assigning the same access-list on multiple interfaces,
+    but where certain fields require
+    unique values like the "interface_ip" or "peer_ip".
+    When using substitution, the interface name will
+    be appended to the ACL name.
+
+    Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is
+    `name` (`str`).
     """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
     """
@@ -94704,8 +94718,15 @@ class EosDesigns(EosDesignsRootModel):
                    These access-lists can be referenced under node settings
                    `l3_interfaces`, and will only be configured on devices where they are in use.
 
-                   Subclass of
-                   AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
+                   The substitution is
+                   useful when assigning the same access-list on multiple interfaces,
+                   but where certain fields require
+                   unique values like the "interface_ip" or "peer_ip".
+                   When using substitution, the interface name will
+                   be appended to the ACL name.
+
+                   Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is
+                   `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.

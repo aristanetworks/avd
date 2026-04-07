@@ -12,6 +12,10 @@ keys:
     description: |-
       IPv6 extended access-lists.
       These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.
+
+      The substitution is useful when assigning the same access-list on multiple interfaces,
+      but where certain fields require unique values like the "interface_ip" or "peer_ip".
+      When using substitution, the interface name will be appended to the ACL name.
     items:
       type: dict
       $ref: "eos_cli_config_gen#/keys/ipv6_access_lists/items"
@@ -20,6 +24,7 @@ keys:
           type: str
           description: |-
             Access-list name.
+            When using substitution for any fields, the interface name will be appended to the ACL name.
         entries:
           type: list
           required: true

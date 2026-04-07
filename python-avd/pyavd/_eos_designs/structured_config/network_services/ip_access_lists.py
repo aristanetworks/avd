@@ -6,13 +6,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError
 from pyavd._utils import get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
-
     from . import AvdStructuredConfigNetworkServicesProtocol
 
 
@@ -22,22 +19,6 @@ class IpAccesslistsMixin(Protocol):
 
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
-
-    def _set_ipv4_acl(self: AvdStructuredConfigNetworkServicesProtocol, ipv4_acl: EosDesigns.Ipv4AclsItem) -> None:
-        """
-        Set structured config for ip_access_lists.
-
-        Called for each interface in l3_interfaces and l3_port_channels when applying ipv4_acls
-        """
-        self.structured_config.ip_access_lists.append(ipv4_acl._cast_as(EosCliConfigGen.IpAccessListsItem))
-
-    def _set_ipv6_acl(self: AvdStructuredConfigNetworkServicesProtocol, ipv6_acl: EosDesigns.Ipv6AclsItem) -> None:
-        """
-        Set structured config for ipv6_access_lists.
-
-        Called for each interface in l3_interfaces and l3_port_channels when applying ipv6_acls
-        """
-        self.structured_config.ipv6_access_lists.append(ipv6_acl._cast_as(EosCliConfigGen.Ipv6AccessListsItem))
 
     def _set_direct_ie_policy_acl(self: AvdStructuredConfigNetworkServicesProtocol, interface_ips: set[str], acl_name: str) -> None:
         """
