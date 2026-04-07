@@ -30,13 +30,22 @@
     return_structured_config: true
     tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
 
+- name: Load expected output YAML
+  ansible.builtin.include_vars:
+    name: expected_output
+    file: "{{ expected_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
+
+- name: Load actual output YAML
+  ansible.builtin.include_vars:
+    name: actual_output
+    file: "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
+
 - name: Compare actual output with expected output
-  ansible.builtin.shell: >-
-    diff "{{ expected_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
-    "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
-  failed_when: diff_output.rc > 0
-  register: diff_output
-  delegate_to: localhost
+  ansible.builtin.assert:
+    that:
+      - actual_output == expected_output
+    fail_msg: "Actual output does not match expected output"
+    success_msg: "Actual output matches expected output"
 
 - name: Set expected_ansible_facts variable
   ansible.builtin.include_vars:
