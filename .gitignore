@@ -23,6 +23,7 @@ coverage.xml
 
 # mkdocs
 /site
+docs/_media/excalidraw/exported/
 
 # ansible-lint cache and .ansible/.lock file
 .ansible/
