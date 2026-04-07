@@ -1,0 +1,8 @@
+---
+default_node_types:
+  - node_type: wan_rr
+    match_hostnames:
+      - "htws-pf.*"
+  - node_type: wan_router
+    match_hostnames:
+      - "htws-edge.*"

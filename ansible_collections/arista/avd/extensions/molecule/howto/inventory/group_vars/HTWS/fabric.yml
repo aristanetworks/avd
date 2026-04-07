@@ -1,0 +1,58 @@
+---
+# WAN Settings How-To Guide
+
+fabric_name: FABRIC
+
+wan_mode: cv-pathfinder # (1)!
+
+wan_ipsec_profiles: # (2)!
+  control_plane:
+    cleartext_shared_key: MyControlPlaneKey
+  data_plane:
+    cleartext_shared_key: MyDataPlaneKey
+
+wan_stun_dtls_disable: true # (3)!
+
+wan_encapsulation: path-selection # (4)!
+
+# WAN hierarchy required for cv-pathfinder mode
+cv_pathfinder_global_sites: # (5)!
+  - name: GLOBAL-SITE
+    location: "Global"
+
+cv_pathfinder_regions: # (6)!
+  - name: REGION1
+    id: 1
+    sites:
+      - name: SITE1
+        id: 101
+        location: "New York, US"
+
+wan_route_servers:
+  - hostname: htws-pf1
+
+wan_path_groups:
+  - name: INTERNET
+    id: 101
+
+wan_carriers:
+  - name: ISP1
+    path_group: INTERNET
+    trusted: true
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    listen_range_prefixes:
+      - 10.255.9.0/27
+
+wan_virtual_topologies:
+  policies:
+    - name: DEFAULT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INTERNET]
+            preference: preferred
+  vrfs:
+    - name: default
+      policy: DEFAULT-POLICY
+      wan_vni: 1

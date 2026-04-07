@@ -1,0 +1,21 @@
+---
+wan_rr:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.8.0/27
+    vtep_loopback_ipv4_pool: 10.255.9.0/27
+    bgp_as: 65000
+    data_plane_cpu_allocation_max: 1
+    cv_pathfinder_site: GLOBAL-SITE
+  nodes:
+    - name: htws-pf1
+      id: 1
+      mgmt_ip: 172.16.4.11/24
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ISP1
+          wan_circuit_id: ISP1-PF1
+          ip_address: 100.64.1.1/30
+          peer_ip: 100.64.1.2
+          static_routes:
+            - prefix: 0.0.0.0/0

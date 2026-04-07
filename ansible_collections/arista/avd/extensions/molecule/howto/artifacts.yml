@@ -141,3 +141,22 @@ artifacts:
       - header: "router bgp 65100"
     artifact: "spine1-bgp.cfg"
     output_dir: "ipv6_numbered/artifacts/"
+
+  # WAN Settings artifacts
+  - file: inventory/intended/configs/htws-edge1.cfg
+    sections:
+      - header: "ip security"
+    artifact: "htws-edge1-ipsec.cfg"
+    output_dir: "wan_settings/artifacts/"
+
+  - file: inventory/intended/configs/htws-pf1.cfg
+    sections:
+      - header: "router path-selection"
+    artifact: "htws-pf1-path-selection.cfg"
+    output_dir: "wan_settings/artifacts/"
+
+  - file: inventory/intended/configs/htws-pf1.cfg
+    sections:
+      - header: "router bgp 65000"
+    artifact: "htws-pf1-bgp.cfg"
+    output_dir: "wan_settings/artifacts/"

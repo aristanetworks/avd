@@ -1,0 +1,376 @@
+aaa_root:
+  disabled: true
+application_traffic_recognition:
+  field_sets:
+    ipv4_prefixes:
+    - name: PFX-PATHFINDERS
+      prefix_values:
+      - 10.255.9.1/32
+  applications:
+    ipv4_applications:
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
+  application_profiles:
+  - name: APP-PROFILE-CONTROL-PLANE
+    applications:
+    - name: APP-CONTROL-PLANE
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.1.12:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvsourceintf: Management1
+  cvvrf: MGMT
+  disable_aaa: true
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  mtu: 9194
+  ip_address: 10.255.9.3/32
+  flow_tracker:
+    hardware: FLOW-TRACKER
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: ISP1_ISP1-EDGE1
+  shutdown: false
+  ip_address: 100.64.2.1/30
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collectors:
+        - host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
+hostname: htws-edge1
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 10.255.8.3:101
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.1.1
+ip_routing: true
+ip_security:
+  ike_policies:
+  - name: CP-IKE-POLICY
+    local_id: 10.255.9.3
+  sa_policies:
+  - name: DP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
+  - name: CP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
+  profiles:
+  - name: DP-PROFILE
+    sa_policy: DP-SA-POLICY
+    connection: start
+    shared_key: 022B1D7F0A120E11404F071C2E120B
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  - name: CP-PROFILE
+    ike_policy: CP-IKE-POLICY
+    sa_policy: CP-SA-POLICY
+    connection: start
+    shared_key: 013E1F275405121D2E407E05180B12390E15
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  key_controller:
+    profile: DP-PROFILE
+kernel:
+  software_forwarding_ecmp: true
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: arista
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.255.8.3/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.16.4.101/24
+  type: oob
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: edge
+    - name: Region
+      value: REGION1
+    - name: Zone
+      value: REGION1-ZONE
+    - name: Site
+      value: SITE1
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: ISP1
+      - name: Circuit
+        value: ISP1-EDGE1
+  cv_pathfinder:
+    role: edge
+    region: REGION1
+    zone: REGION1-ZONE
+    site: SITE1
+    vtep_ip: 10.255.9.3
+    pathfinders:
+    - vtep_ip: 10.255.9.1
+    interfaces:
+    - name: Ethernet1
+      carrier: ISP1
+      circuit_id: ISP1-EDGE1
+      pathgroup: INTERNET
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 0.pool.ntp.org
+    preferred: true
+  vrf: MGMT
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.8.0/27 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 10.255.8.3:101 additive
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 10.255.8.3:101 additive
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - extcommunity ECL-EVPN-SOO
+router_adaptive_virtual_topology:
+  topology_role: edge
+  region:
+    name: REGION1
+    id: 1
+  zone:
+    name: REGION1-ZONE
+    id: 1
+  site:
+    name: SITE1
+    id: 101
+  profiles:
+  - name: DEFAULT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+  policies:
+  - name: DEFAULT-POLICY-WITH-CP
+    matches:
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-POLICY-CONTROL-PLANE
+    - application_profile: default
+      avt_profile: DEFAULT-POLICY-DEFAULT
+  vrfs:
+  - name: default
+    policy: DEFAULT-POLICY-WITH-CP
+    profiles:
+    - name: DEFAULT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65000'
+  router_id: 10.255.8.3
+  maximum_paths:
+    paths: 16
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: WAN-OVERLAY-PEERS
+    metadata:
+      type: wan
+    remote_as: '65000'
+    update_source: Dps1
+    bfd: true
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
+    send_community: all
+    maximum_routes: 0
+    ttl_maximum_hops: 1
+  neighbors:
+  - ip_address: 10.255.9.1
+    peer_group: WAN-OVERLAY-PEERS
+    metadata:
+      peer: htws-pf1
+    description: htws-pf1_Dps1
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
+      encapsulation: path-selection
+  address_family_ipv4:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+  address_family_ipv4_sr_te:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  address_family_link_state:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    path_selection:
+      roles:
+        producer: true
+  address_family_path_selection:
+    bgp:
+      additional_paths:
+        receive: true
+        send: any
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  vrfs:
+  - name: default
+    rd: 10.255.8.3:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+router_path_selection:
+  path_groups:
+  - name: INTERNET
+    id: 101
+    ipsec_profile: CP-PROFILE
+    local_interfaces:
+    - name: Ethernet1
+      stun:
+        server_profiles:
+        - INTERNET-htws-pf1-Ethernet1
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 10.255.9.1
+      name: htws-pf1
+      ipv4_addresses:
+      - 100.64.1.1
+  load_balance_policies:
+  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
+    path_groups:
+    - name: INTERNET
+  - name: LB-DEFAULT-POLICY-DEFAULT
+    path_groups:
+    - name: INTERNET
+  tcp_mss_ceiling:
+    ipv4: auto
+router_traffic_engineering:
+  enabled: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+static_routes:
+- prefix: 0.0.0.0/0
+  next_hop: 100.64.2.2
+stun:
+  client:
+    server_profiles:
+    - name: INTERNET-htws-pf1-Ethernet1
+      ip_address: 100.64.1.1
+transceiver_qsfp_default_mode_4x10: false
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: htws-edge1_VTEP
+    vxlan:
+      source_interface: Dps1
+      udp_port: 4789
+      vrfs:
+      - name: default
+        vni: 1

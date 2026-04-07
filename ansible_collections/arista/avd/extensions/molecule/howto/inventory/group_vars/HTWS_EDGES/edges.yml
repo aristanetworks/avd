@@ -1,0 +1,21 @@
+---
+wan_router:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.8.0/27
+    vtep_loopback_ipv4_pool: 10.255.9.0/27
+    bgp_as: 65000
+    cv_pathfinder_region: REGION1
+    cv_pathfinder_site: SITE1
+  nodes:
+    - name: htws-edge1
+      id: 3
+      mgmt_ip: 172.16.4.101/24
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ISP1
+          wan_circuit_id: ISP1-EDGE1
+          ip_address: 100.64.2.1/30
+          peer_ip: 100.64.2.2
+          static_routes:
+            - prefix: 0.0.0.0/0
