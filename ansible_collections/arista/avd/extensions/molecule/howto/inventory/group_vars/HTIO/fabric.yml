@@ -8,8 +8,6 @@ fabric_name: FABRIC  # (1)!
 underlay_routing_protocol: ebgp  # (2)!
 overlay_routing_protocol: ebgp  # (3)!
 
-p2p_uplinks_mtu: 1500  # (4)!
-
 bgp_peer_groups:
   ipv4_underlay_peers:
     password: "AQQvKeimxJu+uGQ/yYvv9w=="

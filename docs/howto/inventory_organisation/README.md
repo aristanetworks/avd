@@ -82,7 +82,6 @@ all:
 fabric_name: FABRIC
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
-p2p_uplinks_mtu: 1500
 
 default_interfaces:
   - types: [spine]
@@ -115,7 +114,7 @@ inventory/
 ├── hosts.yml
 └── group_vars/
     ├── FABRIC/
-    │   ├── fabric.yml            # BGP, underlay/overlay protocols, MTU
+    │   ├── fabric.yml            # BGP, underlay/overlay protocols
     │   └── default_interfaces.yml # Interface assignments by node type
     ├── SPINES/
     │   └── spines.yml            # Spine node definitions
@@ -160,7 +159,6 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 1. `fabric_name` must exactly match the inventory group covering all devices in scope of the AVD run.
 2. Underlay protocol — eBGP is standard for EVPN/VXLAN fabrics.
 3. Overlay protocol — eBGP for EVPN peering between leafs and spines.
-4. Set `1500` for vEOS-lab and cEOS; `9214` for physical production hardware.
 
 Splitting `default_interfaces` into its own file keeps the fabric file focused on global settings and makes it easier to adapt interface assignments per platform.
 
@@ -329,7 +327,7 @@ Ansible merges all specified inventory directories, making groups from each DC v
 
 2. **One file per purpose within a group folder**: Split `fabric.yml`, `default_interfaces.yml`, and `network_services.yml` rather than growing a single file. Each file can then be reviewed, templated, or overridden independently.
 
-3. **Inherit via the group hierarchy instead of duplicating**: Define shared settings (loopback pools, BGP policies, MTU) at the highest common parent group. Only define overrides at the child level.
+3. **Inherit via the group hierarchy instead of duplicating**: Define shared settings (loopback pools, BGP policies) at the highest common parent group. Only define overrides at the child level.
 
 4. **Keep `hosts.yml` focused on structure, not variables**: `hosts.yml` should only contain group hierarchy and `ansible_host` values. All variable content belongs in `group_vars/`.
 
