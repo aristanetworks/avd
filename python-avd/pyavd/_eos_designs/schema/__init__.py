@@ -19465,15 +19465,15 @@ class EosDesigns(EosDesignsRootModel):
             """
             Blocks DHCP relay for packets received over VXLAN tunnels.
             This is a VTEP-specific optimization and
-            should not be configured on non-VXLAN termination nodes.
+            will only be configured on VXLAN VTEPs.
 
             Default value: `False`
             """
             mlag_peerlink_requests_disabled: bool
             """
             Blocks DHCP relay for packets arriving via the MLAG peer-link.
-            This should only be configured on
-            devices acting as both an MLAG node and a VXLAN VTEP.
+            This will only be configured on VXLAN
+            VTEPs which are also MLAG devices.
 
             Default value: `False`
             """
@@ -19498,11 +19498,11 @@ class EosDesigns(EosDesignsRootModel):
                         tunnel_requests_disabled:
                            Blocks DHCP relay for packets received over VXLAN tunnels.
                            This is a VTEP-specific optimization and
-                           should not be configured on non-VXLAN termination nodes.
+                           will only be configured on VXLAN VTEPs.
                         mlag_peerlink_requests_disabled:
                            Blocks DHCP relay for packets arriving via the MLAG peer-link.
-                           This should only be configured on
-                           devices acting as both an MLAG node and a VXLAN VTEP.
+                           This will only be configured on VXLAN
+                           VTEPs which are also MLAG devices.
 
                     """
 
