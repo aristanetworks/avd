@@ -6,8 +6,6 @@ dhcp_relay:
 enable_password:
   disabled: true
 hostname: dhcp-relay-vtep
-ip_dhcp_relay:
-  information_option: false
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true

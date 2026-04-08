@@ -903,11 +903,12 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def ip_dhcp_relay(self: AvdStructuredConfigBaseProtocol) -> None:
-        """Set ip dhcp relay global configuratios."""
+        """Set ip dhcp relay global configurations."""
         if not (relay_settings := self.inputs.general_settings.dhcp_relay):
             return
 
-        self.structured_config.ip_dhcp_relay.information_option = relay_settings.information_option
+        if relay_settings.information_option:
+            self.structured_config.ip_dhcp_relay.information_option = relay_settings.information_option
 
     @structured_config_contributor
     def dhcp_relay(self: AvdStructuredConfigBaseProtocol) -> None:
@@ -916,8 +917,9 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         if self.shared_utils.vtep:
-            self.structured_config.dhcp_relay.tunnel_requests_disabled = relay_settings.tunnel_requests_disabled
-            if self.shared_utils.mlag:
+            if relay_settings.tunnel_requests_disabled:
+                self.structured_config.dhcp_relay.tunnel_requests_disabled = relay_settings.tunnel_requests_disabled
+            if self.shared_utils.mlag and relay_settings.mlag_peerlink_requests_disabled:
                 self.structured_config.dhcp_relay.mlag_peerlink_requests_disabled = relay_settings.mlag_peerlink_requests_disabled
 
 
