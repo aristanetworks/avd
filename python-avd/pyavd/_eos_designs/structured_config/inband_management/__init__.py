@@ -52,7 +52,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         inband_mgmt_vlan.name = self.shared_utils.node_config.inband_mgmt_vlan_name
         inband_mgmt_vlan.metadata.tenants.append_unique("system")
 
-    def _set_parent_vlans(self):
+    def _set_parent_vlans(self) -> None:
         for svi in self.shared_utils.inband_management_parent_vlans:
             # TODO: explore combine here
             self.structured_config.vlans.append_new(
