@@ -3855,6 +3855,17 @@ keys:
               description: IPv6 access-list name.
               convert_types:
               - int
+  management_settings:
+    type: dict
+    documentation_options:
+      table: management-settings
+    keys:
+      console:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/management_console
+      banners:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/banners
   mgmt_destination_networks:
     documentation_options:
       table: management-interface-settings

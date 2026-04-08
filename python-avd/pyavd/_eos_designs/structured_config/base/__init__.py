@@ -982,6 +982,20 @@ class AvdStructuredConfigBaseProtocol(
         """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
         return self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_ensure_eapi_access
 
+    @structured_config_contributor
+    def management_settings(self) -> None:
+        """Configures management settings based on the input data model."""
+        if not (management_settings := self.inputs.management_settings):
+            return
+
+        # Apply management console settings
+        if management_settings.console:
+            self.structured_config.management_console = management_settings.console._cast_as(EosCliConfigGen.ManagementConsole)
+
+        # Apply banner settings
+        if management_settings.banners:
+            self.structured_config.banners = management_settings.banners._cast_as(EosCliConfigGen.Banners)
+
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):
     """
