@@ -14,7 +14,7 @@ from pyavd._errors import AristaAvdInvalidInputsError
 
 class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
     @structured_config_contributor
-    def inband_management(self):
+    def inband_management(self) -> None:
         if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
             self._set_vlans()
             self._set_vlan_interfaces()
@@ -76,7 +76,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         if ipv6_address := self.shared_utils.inband_mgmt_ipv6_address:
             vlan_interface.ipv6_addresses.append(ipv6_address)
 
-    def _set_parent_vlan_interfaces(self):
+    def _set_parent_vlan_interfaces(self) -> None:
         for vlan, subnet in self.shared_utils.inband_management_parent_vlans.items():
             self.structured_config.vlan_interfaces.append(self._get_parent_svi_cfg(vlan, subnet["ipv4"], subnet["ipv6"]))
 
