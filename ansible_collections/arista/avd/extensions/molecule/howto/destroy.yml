@@ -27,5 +27,6 @@
         - fabric_topology/artifacts
         - ip_addressing/artifacts
         - ipv6_numbered/artifacts
+        - management_settings/artifacts
         - network_services/artifacts
         - node_types/artifacts
