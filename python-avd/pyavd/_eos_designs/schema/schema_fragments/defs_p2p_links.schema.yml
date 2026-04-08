@@ -103,17 +103,14 @@ $defs:
           description: |-
             Add this interface to the underlay routing protocols.
             This is currently not supported when IPv6 addresses are used.
-        use_underlay_authentication:
+        use_underlay_ospf_authentication:
           type: bool
-          # TODO: AVD7.0 change the default to true
+          # TODO: AVD7.0 change the key name use_underlay_authentication with default true.
           default: false
           description: |-
-            Enable underlay authentication for this link.
-            When set to `true`:
-            - For OSPF underlay with 'underlay_ospf_authentication.enabled', OSPF message digest keys defined in
-              'underlay_ospf_authentication.message_digest_keys' will be configured on the interface.
-            - For ISIS underlay, the ISIS authentication key defined in 'underlay_isis_authentication_key' or
-              'underlay_isis_authentication_cleartext_key' will be configured on the interface.
+            Enable OSPF authentication on this P2P link.
+            Requires `include_in_underlay_protocol: true` and OSPF as the underlay routing protocol (`underlay_ospf_authentication.enabled: true`).
+            When enabled, the message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
         isis_hello_padding:
           type: bool
           default: true

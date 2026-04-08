@@ -4,8 +4,8 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: ethernet1
-  description: P2P_peer1_ethernet1
+- name: Ethernet1
+  description: P2P_peer1_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 192.168.1.0/31
@@ -15,18 +15,18 @@ ethernet_interfaces:
   ospf_message_digest_keys:
   - id: 1
     hash_algorithm: sha512
-    key: eiB1ByxaLcy1UPdkugTsIOW9ZB1+QG1r
+    key: qO39Oo+xVTO7l/La1StOQcW1t7hpfAAH
   - id: 2
     hash_algorithm: sha512
-    key: tiJ3eqT1+82aJYMaft7drlLb9eDFkbMr
+    key: pWGuZ4QaDATcfTOKCkm1p2Rq2A4O9j5j
   metadata:
     peer: peer1
-    peer_interface: ethernet1
+    peer_interface: Ethernet1
     peer_type: other
   switchport:
     enabled: false
-- name: ethernet2
-  description: P2P_peer2_ethernet2
+- name: Ethernet2
+  description: P2P_peer2_Ethernet2
   shutdown: false
   mtu: 9214
   ip_address: 192.168.1.2/31
@@ -34,12 +34,12 @@ ethernet_interfaces:
   ospf_area: 0.0.0.0
   metadata:
     peer: peer2
-    peer_interface: ethernet2
+    peer_interface: Ethernet2
     peer_type: other
   switchport:
     enabled: false
-- name: ethernet3
-  description: P2P_peer3_ethernet3
+- name: Ethernet3
+  description: P2P_peer3_Ethernet3
   shutdown: false
   mtu: 9214
   ip_address: 192.168.1.4/31
@@ -47,7 +47,7 @@ ethernet_interfaces:
   ospf_area: 0.0.0.0
   metadata:
     peer: peer3
-    peer_interface: ethernet3
+    peer_interface: Ethernet3
     peer_type: other
   switchport:
     enabled: false
@@ -69,9 +69,9 @@ router_ospf:
     router_id: 1.2.4.1
     bfd_enable: false
     no_passive_interfaces:
-    - ethernet1
-    - ethernet2
-    - ethernet3
+    - Ethernet1
+    - Ethernet2
+    - Ethernet3
     max_lsa: 12000
 service_routing_protocols_model: multi-agent
 spanning_tree:
