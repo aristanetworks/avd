@@ -78,7 +78,7 @@ tenant_c:
             next_hop_self: true
             maximum_routes: 1000
             listen_ranges:
-              - prefix:  192.168.141.0/24
+              - prefix: 192.168.141.0/24
                 remote_as: 111
             default_originate:
               enabled: true
