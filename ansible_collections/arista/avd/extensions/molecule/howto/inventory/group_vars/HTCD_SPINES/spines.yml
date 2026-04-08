@@ -1,0 +1,17 @@
+---
+# CloudVision Deployment How-To Guide
+# Spine configuration
+
+spine:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.12.0/27
+    bgp_as: 65100
+
+  nodes:
+    - name: htcd-spine1
+      id: 1
+      mgmt_ip: 172.16.6.11/24
+    - name: htcd-spine2
+      id: 2
+      mgmt_ip: 172.16.6.12/24

@@ -141,3 +141,23 @@ artifacts:
       - header: "router bgp 65100"
     artifact: "spine1-bgp.cfg"
     output_dir: "ipv6_numbered/artifacts/"
+
+  # CloudVision Deployment artifacts
+  - file: inventory/intended/configs/htcd-leaf1a.cfg
+    sections:
+      - header: "daemon TerminAttr"
+    artifact: "htcd-leaf1a-terminattr.cfg"
+    output_dir: "cloudvision_deployment/artifacts/"
+
+  - file: inventory/intended/configs/htcd-leaf1a.cfg
+    sections:
+      - header: "vrf instance MGMT"
+      - header: "interface Management1"
+    artifact: "htcd-leaf1a-management.cfg"
+    output_dir: "cloudvision_deployment/artifacts/"
+
+  - file: inventory/intended/configs/htcd-spine1.cfg
+    sections:
+      - header: "daemon TerminAttr"
+    artifact: "htcd-spine1-terminattr.cfg"
+    output_dir: "cloudvision_deployment/artifacts/"

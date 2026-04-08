@@ -23,6 +23,7 @@
         path: "{{ how_to_root_dir }}/{{ item }}"
         state: absent
       with_items:
+        - cloudvision_deployment/artifacts
         - connected_endpoints/artifacts
         - fabric_topology/artifacts
         - ip_addressing/artifacts
