@@ -23780,6 +23780,30 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class ManagementSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"console": {"type": EosCliConfigGen.ManagementConsole}, "banners": {"type": EosCliConfigGen.Banners}}
+        console: EosCliConfigGen.ManagementConsole
+        banners: EosCliConfigGen.Banners
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self, *, console: EosCliConfigGen.ManagementConsole | UndefinedType = Undefined, banners: EosCliConfigGen.Banners | UndefinedType = Undefined
+            ) -> None:
+                """
+                ManagementSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    console: console
+                    banners: banners
+
+                """
+
     class MgmtDestinationNetworks(AvdList[str]):
         """Subclass of AvdList with `str` items."""
 
@@ -91167,6 +91191,7 @@ class EosDesigns(EosDesignsRootModel):
         "logging_settings": {"type": LoggingSettings},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
+        "management_settings": {"type": ManagementSettings},
         "mgmt_destination_networks": {"type": MgmtDestinationNetworks},
         "mgmt_gateway": {"type": str},
         "mgmt_interface": {"type": str, "default": "Management1"},
@@ -92809,6 +92834,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    management_settings: ManagementSettings
+    """Subclass of AvdModel."""
     mgmt_destination_networks: MgmtDestinationNetworks
     """
     List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
@@ -93922,6 +93949,7 @@ class EosDesigns(EosDesignsRootModel):
             logging_settings: LoggingSettings | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
+            management_settings: ManagementSettings | UndefinedType = Undefined,
             mgmt_destination_networks: MgmtDestinationNetworks | UndefinedType = Undefined,
             mgmt_gateway: str | None | UndefinedType = Undefined,
             mgmt_interface: str | UndefinedType = Undefined,
@@ -94791,6 +94819,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                management_settings: Subclass of AvdModel.
                 mgmt_destination_networks:
                    List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
                    Replaces the default route.
