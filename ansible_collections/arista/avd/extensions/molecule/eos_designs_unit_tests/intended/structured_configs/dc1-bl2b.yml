@@ -175,10 +175,6 @@ router_bgp:
       ipv4_unicast: false
     bestpath:
       d_path: true
-  listen_ranges:
-  - prefix: 192.168.141.0/24
-    peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
-    remote_as: '111'
   peer_groups:
   - name: UNDERLAY-PEERS
     metadata:
@@ -444,6 +440,10 @@ router_bgp:
     router_id: 192.168.255.17
     updates:
       wait_install: true
+    listen_ranges:
+    - prefix: 192.168.141.0/24
+      peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      remote_as: '111'
     neighbors:
     - ip_address: 1.1.1.1
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP

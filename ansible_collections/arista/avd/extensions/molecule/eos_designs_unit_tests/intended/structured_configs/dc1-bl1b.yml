@@ -317,10 +317,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  listen_ranges:
-  - prefix: 192.168.141.0/24
-    peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
-    remote_as: '111'
   peer_groups:
   - name: UNDERLAY-PEERS
     metadata:
@@ -654,6 +650,10 @@ router_bgp:
         route_targets:
         - '65105:31'
     router_id: 192.168.255.15
+    listen_ranges:
+    - prefix: 192.168.141.0/24
+      peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+      remote_as: '111'
     redistribute:
       connected:
         enabled: true

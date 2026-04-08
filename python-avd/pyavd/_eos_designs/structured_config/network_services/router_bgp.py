@@ -370,7 +370,8 @@ class RouterBgpMixin(Protocol):
                 for bgp_peer_group in vrf.bgp_peer_groups:
                     if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
                         for listen_range in bgp_peer_group.listen_ranges:
-                            self.structured_config.router_bgp.listen_ranges.append_new(
+                            vrf_config = self.structured_config.router_bgp.vrfs.obtain(vrf.name)
+                            vrf_config.listen_ranges.append_new(
                                 prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined
                             )
 
