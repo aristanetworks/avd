@@ -546,6 +546,12 @@ class RouterBgpMixin(Protocol):
         if self.inputs.dot1x_settings.enabled and self.inputs.dot1x_settings.redistribute_in_evpn:
             bgp_vlan.redistribute_routes.append("dot1x")
 
+        if (
+            isinstance(vlan, EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem)
+            and vlan.evpn_redistribute_router_mac_system
+        ):
+            bgp_vlan.redistribute_routes.append("router-mac system")
+
         return bgp_vlan
 
     @staticmethod
