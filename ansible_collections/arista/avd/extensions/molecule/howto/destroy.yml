@@ -25,6 +25,7 @@
       with_items:
         - connected_endpoints/artifacts
         - fabric_topology/artifacts
+        - inventory_organisation/artifacts
         - ip_addressing/artifacts
         - ipv6_numbered/artifacts
         - network_services/artifacts
