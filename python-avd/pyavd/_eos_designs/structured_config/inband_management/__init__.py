@@ -13,7 +13,6 @@ from pyavd._errors import AristaAvdInvalidInputsError
 
 
 class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
-
     @structured_config_contributor
     def inband_management(self):
         if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
