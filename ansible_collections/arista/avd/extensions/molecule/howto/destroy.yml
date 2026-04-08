@@ -29,3 +29,4 @@
         - ipv6_numbered/artifacts
         - network_services/artifacts
         - node_types/artifacts
+        - wan_settings/artifacts
