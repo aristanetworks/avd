@@ -24410,6 +24410,7 @@ keys:
               keys:
                 traffic_policy:
                   type: dict
+                  required: true
                   keys:
                     name:
                       type: str

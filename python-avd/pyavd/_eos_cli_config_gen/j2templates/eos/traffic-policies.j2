@@ -15,7 +15,7 @@ traffic-policies
 {%             endif %}
 {%             set ns.first = false %}
    vrf {{ vrf.name }}
-{%             if vrf.cpu.traffic_policy is arista.avd.defined %}
+{%             if vrf.cpu is arista.avd.defined %}
       cpu traffic-policy {{ vrf.cpu.traffic_policy.name }} fallback traffic-policy none
 {%                 if vrf.cpu.traffic_policy.enforcement_management is arista.avd.defined(true) %}
          enforcement management
