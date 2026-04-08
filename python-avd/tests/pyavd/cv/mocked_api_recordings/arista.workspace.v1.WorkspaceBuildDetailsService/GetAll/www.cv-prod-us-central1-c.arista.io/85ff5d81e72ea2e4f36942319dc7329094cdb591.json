@@ -1,0 +1,390 @@
+{
+    "payload": [
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "buildId": "req-914310f3-08dd-4239-bd42-6d78b0000100",
+                    "deviceId": "2933A37F0B11257CE0A4D1A62C6B5425"
+                },
+                "state": "SKIPPED",
+                "stage": "CONFIG_VALIDATION",
+                "inputValidationResults": {},
+                "configletBuildResults": {
+                    "values": {
+                        "studio-static-configlet": {
+                            "templateErrors": {},
+                            "generatedConfig": "",
+                            "otherError": "",
+                            "executionId": "",
+                            "inputErrors": {}
+                        }
+                    }
+                },
+                "configValidationResult": {
+                    "errors": {},
+                    "warnings": {},
+                    "configSources": {},
+                    "onlyFilterInputsChanged": false
+                },
+                "imageValidationResult": {
+                    "imageInputError": ""
+                },
+                "configValidationSkipCause": "CONFIG_UNCHANGED",
+                "imageValidationSkipCause": "IMAGE_UNCHANGED",
+                "buildStageState": {
+                    "values": {
+                        "BUILD_STAGE_CONFIG_VALIDATION": 5,
+                        "BUILD_STAGE_CONFIGLET_BUILD": 3,
+                        "BUILD_STAGE_IMAGE_VALIDATION": 5,
+                        "BUILD_STAGE_INPUT_VALIDATION": 3
+                    }
+                }
+            },
+            "time": "2025-12-01T21:57:41.600234148",
+            "type": "INITIAL"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "buildId": "req-914310f3-08dd-4239-bd42-6d78b0000100",
+                    "deviceId": "13C20F1EDCCED2D85F6DB2FB9E3AC5B6"
+                },
+                "state": "SUCCESS",
+                "stage": "CONFIG_VALIDATION",
+                "inputValidationResults": {},
+                "configletBuildResults": {
+                    "values": {
+                        "studio-static-configlet": {
+                            "templateErrors": {},
+                            "generatedConfig": "",
+                            "otherError": "",
+                            "executionId": "",
+                            "inputErrors": {}
+                        }
+                    }
+                },
+                "configValidationResult": {
+                    "summary": {
+                        "sync": "OUT_OF_SYNC",
+                        "nopLines": 199,
+                        "ignoredLines": 1,
+                        "addedLines": 1,
+                        "deletedLines": 0,
+                        "changedLines": 0,
+                        "designedConfigErrors": 0,
+                        "designedConfigWarnings": 1,
+                        "diffUri": "/api/rest/workspace/v1/workspace/ws-cbf7c7ea-a57c-481d-b96b-97c12856395e/build/req-914310f3-08dd-4239-bd42-6d78b0000100/diff?deviceIds=13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
+                        "digest": "204151db49c340581cb1c1b53a8e392ea3ba168d1d36cf456cc8bd94938f9511"
+                    },
+                    "errors": {},
+                    "warnings": {
+                        "values": [
+                            {
+                                "errorCode": "DEVICE_WARNING",
+                                "errorMsg": "! portfast should only be enabled on ports connected to a single host. Connecting hubs, concentrators, switches, bridges, etc. to this interface when portfast is enabled can cause temporary bridging loops. Use with CAUTION.",
+                                "lineNum": 3,
+                                "configletName": "avd-13C20F1EDCCED2D85F6DB2FB9E3AC5B6"
+                            }
+                        ]
+                    },
+                    "configSources": {
+                        "values": [
+                            {
+                                "sourceType": "STUDIO_STATIC",
+                                "sourceId": "avd-13C20F1EDCCED2D85F6DB2FB9E3AC5B6"
+                            }
+                        ]
+                    },
+                    "onlyFilterInputsChanged": false
+                },
+                "imageValidationResult": {
+                    "imageInputError": ""
+                },
+                "imageValidationSkipCause": "IMAGE_UNCHANGED",
+                "buildStageState": {
+                    "values": {
+                        "BUILD_STAGE_IMAGE_VALIDATION": 5,
+                        "BUILD_STAGE_INPUT_VALIDATION": 3,
+                        "BUILD_STAGE_CONFIG_VALIDATION": 3,
+                        "BUILD_STAGE_CONFIGLET_BUILD": 3
+                    }
+                }
+            },
+            "time": "2025-12-01T21:57:41.599166059",
+            "type": "INITIAL"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "buildId": "req-914310f3-08dd-4239-bd42-6d78b0000100",
+                    "deviceId": "B51AA89B6E51E89E1422107EDE3A9438"
+                },
+                "state": "SKIPPED",
+                "stage": "CONFIG_VALIDATION",
+                "inputValidationResults": {},
+                "configletBuildResults": {
+                    "values": {
+                        "studio-static-configlet": {
+                            "templateErrors": {},
+                            "generatedConfig": "",
+                            "otherError": "",
+                            "executionId": "",
+                            "inputErrors": {}
+                        }
+                    }
+                },
+                "configValidationResult": {
+                    "errors": {},
+                    "warnings": {},
+                    "configSources": {},
+                    "onlyFilterInputsChanged": false
+                },
+                "imageValidationResult": {
+                    "imageInputError": ""
+                },
+                "configValidationSkipCause": "CONFIG_UNCHANGED",
+                "imageValidationSkipCause": "IMAGE_UNCHANGED",
+                "buildStageState": {
+                    "values": {
+                        "BUILD_STAGE_INPUT_VALIDATION": 3,
+                        "BUILD_STAGE_CONFIG_VALIDATION": 5,
+                        "BUILD_STAGE_CONFIGLET_BUILD": 3,
+                        "BUILD_STAGE_IMAGE_VALIDATION": 5
+                    }
+                }
+            },
+            "time": "2025-12-01T21:57:41.600253128",
+            "type": "INITIAL"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "buildId": "req-914310f3-08dd-4239-bd42-6d78b0000100",
+                    "deviceId": "C7B26167EFD6EBD42E01D55187B3C7B3"
+                },
+                "state": "SKIPPED",
+                "stage": "CONFIG_VALIDATION",
+                "inputValidationResults": {},
+                "configletBuildResults": {
+                    "values": {
+                        "studio-static-configlet": {
+                            "templateErrors": {},
+                            "generatedConfig": "",
+                            "otherError": "",
+                            "executionId": "",
+                            "inputErrors": {}
+                        }
+                    }
+                },
+                "configValidationResult": {
+                    "errors": {},
+                    "warnings": {},
+                    "configSources": {},
+                    "onlyFilterInputsChanged": false
+                },
+                "imageValidationResult": {
+                    "imageInputError": ""
+                },
+                "configValidationSkipCause": "CONFIG_UNCHANGED",
+                "imageValidationSkipCause": "IMAGE_UNCHANGED",
+                "buildStageState": {
+                    "values": {
+                        "BUILD_STAGE_CONFIGLET_BUILD": 3,
+                        "BUILD_STAGE_IMAGE_VALIDATION": 5,
+                        "BUILD_STAGE_INPUT_VALIDATION": 3,
+                        "BUILD_STAGE_CONFIG_VALIDATION": 5
+                    }
+                }
+            },
+            "time": "2025-12-01T21:57:41.599447959",
+            "type": "INITIAL"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "buildId": "req-914310f3-08dd-4239-bd42-6d78b0000100",
+                    "deviceId": "8A5B1A53C0AD190F6D48FE7208FD9E41"
+                },
+                "state": "SKIPPED",
+                "stage": "CONFIG_VALIDATION",
+                "inputValidationResults": {},
+                "configletBuildResults": {
+                    "values": {
+                        "studio-static-configlet": {
+                            "templateErrors": {},
+                            "generatedConfig": "",
+                            "otherError": "",
+                            "executionId": "",
+                            "inputErrors": {}
+                        }
+                    }
+                },
+                "configValidationResult": {
+                    "errors": {},
+                    "warnings": {},
+                    "configSources": {},
+                    "onlyFilterInputsChanged": false
+                },
+                "imageValidationResult": {
+                    "imageInputError": ""
+                },
+                "configValidationSkipCause": "CONFIG_UNCHANGED",
+                "imageValidationSkipCause": "IMAGE_UNCHANGED",
+                "buildStageState": {
+                    "values": {
+                        "BUILD_STAGE_CONFIGLET_BUILD": 3,
+                        "BUILD_STAGE_IMAGE_VALIDATION": 5,
+                        "BUILD_STAGE_INPUT_VALIDATION": 3,
+                        "BUILD_STAGE_CONFIG_VALIDATION": 5
+                    }
+                }
+            },
+            "time": "2025-12-01T21:57:41.599360229",
+            "type": "INITIAL"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "buildId": "req-914310f3-08dd-4239-bd42-6d78b0000100",
+                    "deviceId": "DCC816CEAC4BBD6319385043AD318362"
+                },
+                "state": "FAIL",
+                "stage": "CONFIG_VALIDATION",
+                "inputValidationResults": {},
+                "configletBuildResults": {
+                    "values": {
+                        "studio-static-configlet": {
+                            "templateErrors": {},
+                            "generatedConfig": "",
+                            "otherError": "",
+                            "executionId": "",
+                            "inputErrors": {}
+                        }
+                    }
+                },
+                "configValidationResult": {
+                    "errors": {
+                        "values": [
+                            {
+                                "errorCode": "DEVICE_ERROR",
+                                "errorMsg": "> spanning-tree mode spine1 % Invalid input (at token 2: 'spine1')",
+                                "lineNum": 1,
+                                "configletName": "avd-DCC816CEAC4BBD6319385043AD318362"
+                            },
+                            {
+                                "errorCode": "DEVICE_ERROR",
+                                "errorMsg": ">    seqq 10 permit 10.20.0.0/24 eq 32 % Invalid input (at token 0: 'seqq')",
+                                "lineNum": 4,
+                                "configletName": "avd-DCC816CEAC4BBD6319385043AD318362"
+                            }
+                        ]
+                    },
+                    "warnings": {
+                        "values": [
+                            {
+                                "errorCode": "DEVICE_WARNING",
+                                "errorMsg": "! portfast should only be enabled on ports connected to a single host. Connecting hubs, concentrators, switches, bridges, etc. to this interface when portfast is enabled can cause temporary bridging loops. Use with CAUTION.",
+                                "lineNum": 8,
+                                "configletName": "avd-DCC816CEAC4BBD6319385043AD318362"
+                            },
+                            {
+                                "errorCode": "DEVICE_WARNING",
+                                "errorMsg": "! /32 IPv4 address is not configured on the interface",
+                                "lineNum": 15,
+                                "configletName": "avd-DCC816CEAC4BBD6319385043AD318362"
+                            }
+                        ]
+                    },
+                    "configSources": {
+                        "values": [
+                            {
+                                "sourceType": "STUDIO_STATIC",
+                                "sourceId": "avd-DCC816CEAC4BBD6319385043AD318362"
+                            }
+                        ]
+                    },
+                    "onlyFilterInputsChanged": false
+                },
+                "imageValidationResult": {
+                    "imageInputError": ""
+                },
+                "imageValidationSkipCause": "IMAGE_UNCHANGED",
+                "buildStageState": {
+                    "values": {
+                        "BUILD_STAGE_INPUT_VALIDATION": 3,
+                        "BUILD_STAGE_CONFIG_VALIDATION": 4,
+                        "BUILD_STAGE_CONFIGLET_BUILD": 3,
+                        "BUILD_STAGE_IMAGE_VALIDATION": 5
+                    }
+                }
+            },
+            "time": "2025-12-01T21:57:41.600258688",
+            "type": "INITIAL"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "buildId": "req-914310f3-08dd-4239-bd42-6d78b0000100",
+                    "deviceId": "A7D46613D44DE45D68D5B5C5CBA06B0D"
+                },
+                "state": "FAIL",
+                "stage": "CONFIG_VALIDATION",
+                "inputValidationResults": {},
+                "configletBuildResults": {
+                    "values": {
+                        "studio-static-configlet": {
+                            "templateErrors": {},
+                            "generatedConfig": "",
+                            "otherError": "",
+                            "executionId": "",
+                            "inputErrors": {}
+                        }
+                    }
+                },
+                "configValidationResult": {
+                    "errors": {
+                        "values": [
+                            {
+                                "errorCode": "DEVICE_ERROR",
+                                "errorMsg": "> spanning-tree mode spine2 % Invalid input (at token 2: 'spine2')",
+                                "lineNum": 1,
+                                "configletName": "avd-A7D46613D44DE45D68D5B5C5CBA06B0D"
+                            }
+                        ]
+                    },
+                    "warnings": {},
+                    "configSources": {
+                        "values": [
+                            {
+                                "sourceType": "STUDIO_STATIC",
+                                "sourceId": "avd-A7D46613D44DE45D68D5B5C5CBA06B0D"
+                            }
+                        ]
+                    },
+                    "onlyFilterInputsChanged": false
+                },
+                "imageValidationResult": {
+                    "imageInputError": ""
+                },
+                "imageValidationSkipCause": "IMAGE_UNCHANGED",
+                "buildStageState": {
+                    "values": {
+                        "BUILD_STAGE_CONFIGLET_BUILD": 3,
+                        "BUILD_STAGE_IMAGE_VALIDATION": 5,
+                        "BUILD_STAGE_INPUT_VALIDATION": 3,
+                        "BUILD_STAGE_CONFIG_VALIDATION": 4
+                    }
+                }
+            },
+            "time": "2025-12-01T21:57:41.600094838",
+            "type": "INITIAL"
+        }
+    ]
+}

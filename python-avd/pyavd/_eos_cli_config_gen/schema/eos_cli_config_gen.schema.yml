@@ -912,10 +912,12 @@ keys:
     keys:
       login:
         type: str
-        description: Multiline string ending with EOF on the last line.
+        description: Legal notification or security warning displayed to all users
+          before authentication.
       motd:
         type: str
-        description: Multiline string ending with EOF on the last line.
+        description: Informational or operational message displayed to authorized
+          users after a successful login.
   bgp_groups:
     type: list
     primary_key: name
@@ -18220,6 +18222,15 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                default_originate:
+                  type: dict
+                  keys:
+                    always:
+                      type: bool
+                      description: Always advertise a default route to this peer.
+                    route_map:
+                      type: str
+                      description: Route-map name.
           neighbors:
             type: list
             primary_key: ip_address

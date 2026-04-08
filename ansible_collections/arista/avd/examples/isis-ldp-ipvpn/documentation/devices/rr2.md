@@ -176,9 +176,9 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Ethernet2 | P2P_p4_Ethernet2 | - | 10.255.3.18/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_p2_Ethernet3 | - | 10.255.3.16/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_rr1_Ethernet4 | - | 10.255.3.15/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_p4_Ethernet2 | - | 10.255.3.18/31 | default | 9214 | False | - | - |
+| Ethernet3 | P2P_p2_Ethernet3 | - | 10.255.3.16/31 | default | 9214 | False | - | - |
+| Ethernet4 | P2P_rr1_Ethernet4 | - | 10.255.3.15/31 | default | 9214 | False | - | - |
 
 ##### ISIS
 
@@ -195,7 +195,7 @@ vlan internal order ascending range 1006 1199
 interface Ethernet2
    description P2P_p4_Ethernet2
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 10.255.3.18/31
    mpls ldp igp sync
@@ -212,7 +212,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_p2_Ethernet3
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 10.255.3.16/31
    mpls ldp igp sync
@@ -229,7 +229,7 @@ interface Ethernet3
 interface Ethernet4
    description P2P_rr1_Ethernet4
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 10.255.3.15/31
    mpls ldp igp sync

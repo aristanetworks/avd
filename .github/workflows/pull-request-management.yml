@@ -284,6 +284,15 @@ jobs:
           - avd_scenario: "eos_designs_negative_unit_tests"
             ansible_version: "ansible-core<2.21.0"
             python_version: "3.14"
+          # Test ansible-core milestone release
+          # We need to ignore requirements checks to avoid raising an error with new ansible versions not officially supported
+          - avd_scenario: "eos_designs_unit_tests -- -e avd_ignore_requirements=True"
+            ansible_version: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
+            python_version: "3.14"
+          - avd_scenario: "eos_designs_negative_unit_tests -- -e avd_ignore_requirements=True"
+            ansible_version: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
+            python_version: "3.14"
+
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact
@@ -300,6 +309,8 @@ jobs:
           python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
+        env:
+          ANSIBLE_COLLECTIONS_ON_ANSIBLE_VERSION_MISMATCH: ignore
         run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -406,7 +417,7 @@ jobs:
           - ansibe_version: stable
             pip_installation: "ansible-core<2.21.0"
           - ansibe_version: devel
-            pip_installation: "--user https://github.com/ansible/ansible/archive/devel.tar.gz"
+            pip_installation: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
             skip_test: "--skip-test ansible-doc"
     steps:
       - uses: actions/checkout@v6
@@ -426,7 +437,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and Ansible requirements
         run: |
-          pip install  ${{ matrix.pip_installation }} "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+          pip install "${{ matrix.pip_installation }}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
       - name: Run ansible-test sanity
         working-directory: ansible_collections/arista/avd
         # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version

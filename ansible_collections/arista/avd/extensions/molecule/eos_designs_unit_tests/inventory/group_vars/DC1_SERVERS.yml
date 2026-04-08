@@ -206,7 +206,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
-        switches: [ dc1-svc3a, DC1-SVC4A ]
+        switches: [ dc1-svc3a, dc1-svc4a ]
         profile: TENANT_A_B
         ethernet_segment:
           short_esi: '0303:0202:0101'

@@ -14,6 +14,7 @@
     cv_skip_missing_devices: true
     eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
     structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
+    cv_deploy_tmp_dir: "{{ playbook_dir }}/intended/tmp_cv_deploy"
     intended_tag_device: avd-ci-leaf1
     intended_tags: "{{ lookup('file', structured_dir ~ '/' ~ intended_tag_device ~ '.yml')| from_yaml }}"
     test_id: "force-ws-true_run-cc-true"
@@ -143,7 +144,7 @@
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
-            deivces_structure: '{{ cv_deploy_results.deployed_configs | from_yaml }}'
+            devices_structure: '{{ cv_deploy_results.deployed_configs | from_yaml }}'
             output_devices: []
 
         - name: "(BLOCK) Extract devices from output - {{ test_id | upper }}"
@@ -151,7 +152,7 @@
           run_once: true
           ansible.builtin.set_fact:
             output_devices: "{{ output_devices + [item.device.hostname] }}"
-          loop: "{{ deivces_structure }}"
+          loop: "{{ devices_structure }}"
           loop_control:
             label: "{{ item.configlet_name }}"
 

@@ -306,12 +306,12 @@ vlan_interfaces:
   description: MLAG_L3
   shutdown: false
   ip_address: 10.255.1.96/31
-  mtu: 1500
+  mtu: 9214
 - name: Vlan4094
   description: MLAG
   shutdown: false
   ip_address: 10.255.1.64/31
-  mtu: 1500
+  mtu: 9214
   no_autostate: true
 - name: Vlan200
   description: Dev_App1
@@ -328,7 +328,7 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF_DEVELOPMENT
   ip_address: 10.255.1.96/31
-  mtu: 1500
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1
@@ -362,7 +362,7 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF_PRODUCTION
   ip_address: 10.255.1.96/31
-  mtu: 1500
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1
