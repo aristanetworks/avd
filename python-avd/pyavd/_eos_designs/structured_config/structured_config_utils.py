@@ -37,11 +37,11 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         super().__init__()
         self.structured_config = structured_config
         self.inputs = inputs
+        """The shared structured config instance to write config into."""
         self.shared_utils = shared_utils
         self.custom_structured_configs = custom_structured_configs
-        """The shared structured config instance to write config into."""
-        self.parent_interfaces_tracker = ParentInterfacesTracker()
         """Tracker for parent interfaces that need to be created for subinterfaces."""
+        self.parent_interfaces_tracker = ParentInterfacesTracker()
 
     @run_once_method
     def set_once_peer_group_ipv4_underlay_peers(self: StructuredConfigUtils) -> None:
