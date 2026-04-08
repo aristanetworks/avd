@@ -116,8 +116,12 @@ $defs:
                   keys:
                     prefix:
                       type: str
+                      description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                     remote_as:
                       type: str
+                      description: |-
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                       convert_types:
                         - int
               nodes:
@@ -1632,8 +1636,12 @@ $defs:
                         keys:
                           prefix:
                             type: str
+                            description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                           remote_as:
                             type: str
+                            description: |-
+                              BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                              For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                             convert_types:
                               - int
                     address_family_ipv4:

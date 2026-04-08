@@ -60190,7 +60190,14 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {"prefix": {"type": str}, "remote_as": {"type": str}}
                         prefix: str | None
+                        """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                         remote_as: str | None
+                        """
+                        BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                        For asdot notation in
+                        YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                        number.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -60202,8 +60209,12 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    prefix: prefix
-                                    remote_as: remote_as
+                                    prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                    remote_as:
+                                       BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                                       For asdot notation in
+                                       YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                                       number.
 
                                 """
 
@@ -66624,7 +66635,14 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {"prefix": {"type": str}, "remote_as": {"type": str}}
                             prefix: str | None
+                            """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                             remote_as: str | None
+                            """
+                            BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                            For asdot notation in
+                            YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                            number.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -66638,8 +66656,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        prefix: prefix
-                                        remote_as: remote_as
+                                        prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                        remote_as:
+                                           BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+                                           For asdot notation in
+                                           YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
+                                           number.
 
                                     """
 
