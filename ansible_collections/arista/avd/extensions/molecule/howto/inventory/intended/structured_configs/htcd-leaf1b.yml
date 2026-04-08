@@ -37,7 +37,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_htcd-spine1_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.5/31
   metadata:
     peer: htcd-spine1
@@ -48,7 +48,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_htcd-spine2_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.7/31
   metadata:
     peer: htcd-spine2
@@ -245,12 +245,12 @@ vlan_interfaces:
   description: MLAG_L3
   shutdown: false
   ip_address: 10.255.13.97/31
-  mtu: 1500
+  mtu: 9214
 - name: Vlan4094
   description: MLAG
   shutdown: false
   ip_address: 10.255.13.65/31
-  mtu: 1500
+  mtu: 9214
   no_autostate: true
 vlan_internal_order:
   allocation: ascending
