@@ -13,22 +13,47 @@ from pyavd._errors import AristaAvdInvalidInputsError
 
 
 class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
+
     @structured_config_contributor
-    def vlans(self) -> None:
-        if not self.shared_utils.inband_management_parent_vlans and not (
-            self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6
-        ):
+    def inband_management(self):
+        if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
+            self._set_vlans()
+            self._set_vlan_interfaces()
+            if self.shared_utils.configure_inband_mgmt:
+                self._set_vrfs()
+                if self.shared_utils.inband_mgmt_gateway is not None:
+                    self._set_static_route()
+            if self.shared_utils.configure_inband_mgmt_ipv6 and self.shared_utils.inband_mgmt_ipv6_gateway is not None:
+                self._set_ipv6_static_route()
             return
 
-        if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
-            # TODO: Refactor this later to inject from filtered tenants
-            # Note that an attempt was made for this in #6073 but it has been postponed
-            # To keep current behavior we need to overwrite the existing values if the vlan was introduced via network_services
-            # otherwise it is created via obtain and updated accordingly.
-            inband_mgmt_vlan = self.structured_config.vlans.obtain(self.shared_utils.node_config.inband_mgmt_vlan)
-            inband_mgmt_vlan.name = self.shared_utils.node_config.inband_mgmt_vlan_name
-            inband_mgmt_vlan.metadata.tenants.append_unique("system")
-            return
+        if self.shared_utils.inband_management_parent_vlans:
+            self._set_ip_virtual_router_mac_address()
+            self._set_parent_vlans()
+            self._set_parent_vlan_interfaces()
+            if self.shared_utils.inband_mgmt_vrf is not None:
+                self._set_vrfs()
+            if self.shared_utils.inband_mgmt_vrf is None and self.shared_utils.underlay_bgp:
+                self._set_router_bgp()
+                if self.inputs.underlay_filter_redistribute_connected:
+                    if self._inband_mgmt_ipv6_parent:
+                        if self.shared_utils.overlay_routing_protocol != "none":
+                            self._set_ipv6_route_maps()
+                        self._set_ipv6_prefix_lists()
+                    if self.shared_utils.overlay_routing_protocol != "none" and self._inband_mgmt_ipv4_parent:
+                        self._set_ipv4_route_maps()
+                        self._set_prefix_lists()
+
+    def _set_vlans(self) -> None:
+        # TODO: Refactor this later to inject from filtered tenants
+        # Note that an attempt was made for this in #6073 but it has been postponed
+        # To keep current behavior we need to overwrite the existing values if the vlan was introduced via network_services
+        # otherwise it is created via obtain and updated accordingly.
+        inband_mgmt_vlan = self.structured_config.vlans.obtain(self.shared_utils.node_config.inband_mgmt_vlan)
+        inband_mgmt_vlan.name = self.shared_utils.node_config.inband_mgmt_vlan_name
+        inband_mgmt_vlan.metadata.tenants.append_unique("system")
+
+    def _set_parent_vlans(self):
         for svi in self.shared_utils.inband_management_parent_vlans:
             # TODO: explore combine here
             self.structured_config.vlans.append_new(
@@ -37,159 +62,82 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                 name=self.shared_utils.node_config.inband_mgmt_vlan_name,
             )
 
-    @structured_config_contributor
-    def vlan_interfaces(self) -> None:
+    def _set_vlan_interfaces(self) -> None:
         """VLAN interfaces can be our own management interface and/or SVIs created on behalf of child switches using us as uplink_switch."""
-        if not self.shared_utils.inband_management_parent_vlans and not (
-            self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6
-        ):
-            return
+        vlan_interface = self.structured_config.vlan_interfaces.append_new(
+            name=cast("str", self.shared_utils.inband_mgmt_interface),
+            description=self.shared_utils.node_config.inband_mgmt_description,
+            shutdown=False,
+            mtu=self.shared_utils.inband_mgmt_mtu,
+            vrf=self.shared_utils.inband_mgmt_vrf,
+            ip_address=self.shared_utils.inband_mgmt_ip,
+            ipv6_enable=None if not self.shared_utils.configure_inband_mgmt_ipv6 else True,
+            metadata=EosCliConfigGen.VlanInterfacesItem.Metadata(type="inband_mgmt"),
+        )
+        if ipv6_address := self.shared_utils.inband_mgmt_ipv6_address:
+            vlan_interface.ipv6_addresses.append(ipv6_address)
 
-        if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
-            vlan_interface = self.structured_config.vlan_interfaces.append_new(
-                name=cast("str", self.shared_utils.inband_mgmt_interface),
-                description=self.shared_utils.node_config.inband_mgmt_description,
-                shutdown=False,
-                mtu=self.shared_utils.inband_mgmt_mtu,
-                vrf=self.shared_utils.inband_mgmt_vrf,
-                ip_address=self.shared_utils.inband_mgmt_ip,
-                ipv6_enable=None if not self.shared_utils.configure_inband_mgmt_ipv6 else True,
-                metadata=EosCliConfigGen.VlanInterfacesItem.Metadata(type="inband_mgmt"),
-            )
-            if ipv6_address := self.shared_utils.inband_mgmt_ipv6_address:
-                vlan_interface.ipv6_addresses.append(ipv6_address)
-
-            return
+    def _set_parent_vlan_interfaces(self):
         for vlan, subnet in self.shared_utils.inband_management_parent_vlans.items():
-            self.structured_config.vlan_interfaces.append(self.get_parent_svi_cfg(vlan, subnet["ipv4"], subnet["ipv6"]))
+            self.structured_config.vlan_interfaces.append(self._get_parent_svi_cfg(vlan, subnet["ipv4"], subnet["ipv6"]))
 
-    @cached_property
-    def _inband_mgmt_ipv6_parent(self) -> bool:
-        if self.shared_utils.inband_management_parent_vlans:
-            for subnet in self.shared_utils.inband_management_parent_vlans.values():
-                if subnet["ipv6"]:
-                    return True
-        return False
-
-    @cached_property
-    def _inband_mgmt_ipv4_parent(self) -> bool:
-        if self.shared_utils.inband_management_parent_vlans:
-            for subnet in self.shared_utils.inband_management_parent_vlans.values():
-                if subnet["ipv4"]:
-                    return True
-        return False
-
-    @structured_config_contributor
-    def static_routes(self) -> None:
-        if not self.shared_utils.configure_inband_mgmt or self.shared_utils.inband_mgmt_gateway is None:
-            return
-
+    def _set_static_route(self) -> None:
         self.structured_config.static_routes.append_new(
             prefix="0.0.0.0/0", next_hop=self.shared_utils.inband_mgmt_gateway, vrf=self.shared_utils.inband_mgmt_vrf
         )
 
-    @structured_config_contributor
-    def ipv6_static_routes(self) -> None:
-        if not self.shared_utils.configure_inband_mgmt_ipv6 or self.shared_utils.inband_mgmt_ipv6_gateway is None:
-            return
-
+    def _set_ipv6_static_route(self) -> None:
         self.structured_config.ipv6_static_routes.append_new(
             prefix="::/0", next_hop=self.shared_utils.inband_mgmt_ipv6_gateway, vrf=self.shared_utils.inband_mgmt_vrf
         )
 
-    @structured_config_contributor
-    def vrfs(self) -> None:
-        if self.shared_utils.inband_mgmt_vrf is None:
-            return
-
-        if not self.shared_utils.inband_management_parent_vlans and not self.shared_utils.configure_inband_mgmt:
-            return
-        if self.shared_utils.inband_mgmt_vrf not in self.structured_config.vrfs:
+    def _set_vrfs(self) -> None:
+        if self.shared_utils.inband_mgmt_vrf and self.shared_utils.inband_mgmt_vrf not in self.structured_config.vrfs:
             self.structured_config.vrfs.append_new(name=self.shared_utils.inband_mgmt_vrf)
 
-    @structured_config_contributor
-    def ip_virtual_router_mac_address(self) -> None:
-        if not self.shared_utils.inband_management_parent_vlans:
-            return
-
+    def _set_ip_virtual_router_mac_address(self) -> None:
         if self.shared_utils.node_config.virtual_router_mac_address is None:
             msg = "'virtual_router_mac_address' must be set for inband management parent."
             raise AristaAvdInvalidInputsError(msg)
         self.structured_config.ip_virtual_router_mac_address = self.shared_utils.node_config.virtual_router_mac_address.lower()
 
-    @structured_config_contributor
-    def router_bgp(self) -> None:
-        if self.shared_utils.inband_mgmt_vrf is not None:
-            return
-
-        if not self.shared_utils.inband_management_parent_vlans or not self.shared_utils.underlay_bgp:
-            return
-
+    def _set_router_bgp(self) -> None:
         self.structured_config.router_bgp.redistribute.attached_host.enabled = True
 
-    @structured_config_contributor
-    def prefix_lists(self) -> None:
-        if (
-            not self.shared_utils.inband_management_parent_vlans
-            or not self.shared_utils.underlay_bgp
-            or not self.inputs.underlay_filter_redistribute_connected
-            or not self._inband_mgmt_ipv4_parent
-        ):
-            return
-
-        if self.shared_utils.inband_mgmt_vrf is not None or self.shared_utils.overlay_routing_protocol == "none":
-            return
-
+    def _set_prefix_lists(self) -> None:
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
         for index, subnet in enumerate(self.shared_utils.inband_management_parent_vlans.values(), start=1):
             sequence_numbers.append_new(sequence=(index) * 10, action=f"permit {subnet['ipv4']}")
 
         self.structured_config.prefix_lists.append_new(name="PL-L2LEAF-INBAND-MGMT", sequence_numbers=sequence_numbers)
 
-    @structured_config_contributor
-    def ipv6_prefix_lists(self) -> None:
-        if (
-            not self.shared_utils.inband_management_parent_vlans
-            or not self.shared_utils.underlay_bgp
-            or not self.inputs.underlay_filter_redistribute_connected
-            or not self._inband_mgmt_ipv6_parent
-        ):
-            return
-
-        if self.shared_utils.inband_mgmt_vrf is not None:
-            return
-
+    def _set_ipv6_prefix_lists(self) -> None:
         sequence_numbers = EosCliConfigGen.Ipv6PrefixListsItem.SequenceNumbers()
         for index, subnet in enumerate(self.shared_utils.inband_management_parent_vlans.values(), start=1):
             sequence_numbers.append_new(sequence=(index) * 10, action=f"permit {subnet['ipv6']}")
 
         self.structured_config.ipv6_prefix_lists.append_new(name="IPv6-PL-L2LEAF-INBAND-MGMT", sequence_numbers=sequence_numbers)
 
-    @structured_config_contributor
-    def route_maps(self) -> None:
-        if not self.shared_utils.inband_management_parent_vlans or not self.shared_utils.underlay_bgp or not self.inputs.underlay_filter_redistribute_connected:
-            return
-
-        if self.shared_utils.inband_mgmt_vrf is not None or self.shared_utils.overlay_routing_protocol == "none":
-            return
-
+    def _set_ipv4_route_maps(self) -> None:
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
-        if self._inband_mgmt_ipv4_parent:
-            sequence_numbers.append_new(
-                sequence=20, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-L2LEAF-INBAND-MGMT"])
-            )
+        sequence_numbers.append_new(
+            sequence=20, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-L2LEAF-INBAND-MGMT"])
+        )
+        route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
+        route_map.sequence_numbers.extend(sequence_numbers)
 
-        if self._inband_mgmt_ipv6_parent:
-            sequence_numbers.append_new(
-                sequence=60,
-                type="permit",
-                match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]),
-            )
+    def _set_ipv6_route_maps(self) -> None:
+        sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
+        sequence_numbers.append_new(
+            sequence=60,
+            type="permit",
+            match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]),
+        )
 
         route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
         route_map.sequence_numbers.extend(sequence_numbers)
 
-    def get_parent_svi_cfg(self, vlan: int, subnet: str | None, ipv6_subnet: str | None) -> EosCliConfigGen.VlanInterfacesItem:
+    def _get_parent_svi_cfg(self, vlan: int, subnet: str | None, ipv6_subnet: str | None) -> EosCliConfigGen.VlanInterfacesItem:
         svi = EosCliConfigGen.VlanInterfacesItem(
             name=f"Vlan{vlan}",
             description=self.shared_utils.node_config.inband_mgmt_description,
@@ -216,3 +164,19 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                 svi.ipv6_attached_host_route_export._update(enabled=True, distance=19)
 
         return svi
+
+    @cached_property
+    def _inband_mgmt_ipv6_parent(self) -> bool:
+        if self.shared_utils.inband_management_parent_vlans:
+            for subnet in self.shared_utils.inband_management_parent_vlans.values():
+                if subnet["ipv6"]:
+                    return True
+        return False
+
+    @cached_property
+    def _inband_mgmt_ipv4_parent(self) -> bool:
+        if self.shared_utils.inband_management_parent_vlans:
+            for subnet in self.shared_utils.inband_management_parent_vlans.values():
+                if subnet["ipv4"]:
+                    return True
+        return False
