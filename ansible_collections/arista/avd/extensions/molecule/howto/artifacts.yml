@@ -141,3 +141,37 @@ artifacts:
       - header: "router bgp 65100"
     artifact: "spine1-bgp.cfg"
     output_dir: "ipv6_numbered/artifacts/"
+
+  # 802.1X Port Authentication artifacts
+  - file: inventory/intended/configs/htdx-leaf1a.cfg
+    sections:
+      - header: "radius-server host"
+      - header: "aaa group server radius DOT1X-RADIUS"
+      - header: "aaa authentication dot1x"
+      - header: "aaa accounting dot1x"
+      - header: "dot1x"
+      - header: "ip radius"
+      - header: "dot1x system-auth-control"
+      - header: "dot1x protocol lldp bypass"
+      - header: "dot1x protocol bpdu bypass"
+      - header: "dot1x dynamic-authorization"
+    artifact: "htdx-leaf1a-dot1x-global.cfg"
+    output_dir: "dot1x/artifacts/"
+
+  - file: inventory/intended/configs/htdx-leaf1a.cfg
+    sections:
+      - header: "interface Ethernet5"
+    artifact: "htdx-leaf1a-dot1x-workstation.cfg"
+    output_dir: "dot1x/artifacts/"
+
+  - file: inventory/intended/configs/htdx-leaf1a.cfg
+    sections:
+      - header: "interface Ethernet6"
+    artifact: "htdx-leaf1a-dot1x-phone.cfg"
+    output_dir: "dot1x/artifacts/"
+
+  - file: inventory/intended/configs/htdx-leaf1b.cfg
+    sections:
+      - header: "interface Ethernet5"
+    artifact: "htdx-leaf1b-dot1x-printer.cfg"
+    output_dir: "dot1x/artifacts/"

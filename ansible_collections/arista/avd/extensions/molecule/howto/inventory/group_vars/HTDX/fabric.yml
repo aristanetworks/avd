@@ -1,0 +1,74 @@
+---
+# 802.1X Port Authentication How-To Guide
+
+fabric_name: FABRIC
+
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp
+
+# Global 802.1X settings
+dot1x_settings: # (1)!
+  enabled: true # (2)!
+  authentication: # (3)!
+    radius_groups:
+      - DOT1X-RADIUS
+  accounting: # (4)!
+    mode: start-stop
+    radius_groups:
+      - DOT1X-RADIUS
+  dynamic_authorization: # (5)!
+    enabled: true
+  mac_based_authentication: # (6)!
+    username_format:
+      delimiter: colon
+      letter_case: lowercase
+  bypass_bpdu: true # (7)!
+  bypass_lldp: true # (8)!
+
+# RADIUS server configuration
+aaa_settings: # (9)!
+  radius:
+    servers:
+      - host: radius.example.com # (10)!
+        groups:
+          - DOT1X-RADIUS # (11)!
+        cleartext_key: my-radius-secret
+
+# Port profiles for dot1x
+port_profiles: # (1)!
+  - profile: PP-DOT1X # (2)!
+    mode: access
+    spanning_tree_portfast: edge
+    spanning_tree_bpduguard: enabled
+    dot1x:
+      port_control: auto # (3)!
+      reauthentication: true # (4)!
+      pae:
+        mode: authenticator # (5)!
+      host_mode:
+        mode: single-host # (6)!
+      mac_based_authentication:
+        enabled: true # (7)!
+      timeout:
+        reauth_period: server # (8)!
+        tx_period: 3
+      reauthorization_request_limit: 3
+
+  - profile: PP-DOT1X-PHONE # (9)!
+    mode: "trunk phone"
+    spanning_tree_portfast: edge
+    spanning_tree_bpduguard: enabled
+    dot1x:
+      port_control: auto
+      reauthentication: true
+      pae:
+        mode: authenticator
+      host_mode:
+        mode: multi-host # (10)!
+        multi_host_authenticated: true # (11)!
+      mac_based_authentication:
+        enabled: true
+      timeout:
+        reauth_period: server
+        tx_period: 3
+      reauthorization_request_limit: 3

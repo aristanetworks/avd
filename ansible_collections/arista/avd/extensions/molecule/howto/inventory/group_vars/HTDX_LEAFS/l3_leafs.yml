@@ -1,0 +1,30 @@
+---
+# 802.1X Port Authentication How-To Guide
+# L3 Leaf configuration
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.10.0/27
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.255.11.0/27
+    uplink_switches: [htdx-spine1, htdx-spine2]
+    uplink_ipv4_pool: 10.255.255.0/26
+    mlag_peer_ipv4_pool: 10.255.11.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.11.96/27
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  node_groups:
+    - group: HTDX_LEAF1
+      bgp_as: 65101
+      nodes:
+        - name: htdx-leaf1a
+          id: 1
+          mgmt_ip: 172.16.5.101/24
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: htdx-leaf1b
+          id: 2
+          mgmt_ip: 172.16.5.102/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]

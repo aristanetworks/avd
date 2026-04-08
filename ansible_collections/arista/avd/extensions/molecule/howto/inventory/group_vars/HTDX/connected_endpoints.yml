@@ -1,0 +1,40 @@
+---
+# 802.1X Port Authentication How-To Guide
+# Connected endpoints with dot1x configuration
+
+connected_endpoints:
+  - name: WORKSTATION-01 # (1)!
+    adapters:
+      - endpoint_ports: [eth0]
+        switches: [htdx-leaf1a]
+        switch_ports: [Ethernet5]
+        profile: PP-DOT1X # (2)!
+        vlans: 100
+
+  - name: IP-PHONE-01 # (3)!
+    adapters:
+      - endpoint_ports: [eth0]
+        switches: [htdx-leaf1a]
+        switch_ports: [Ethernet6]
+        profile: PP-DOT1X-PHONE # (4)!
+        native_vlan: 100 # (5)!
+        phone_vlan: 200 # (6)!
+        phone_trunk_mode: untagged # (7)!
+        dot1x: # (8)!
+          authentication_failure:
+            action: allow
+            allow_vlan: 999 # (9)!
+
+  - name: PRINTER-01 # (10)!
+    adapters:
+      - endpoint_ports: [eth0]
+        switches: [htdx-leaf1b]
+        switch_ports: [Ethernet5]
+        profile: PP-DOT1X # (11)!
+        vlans: 100
+        dot1x: # (12)!
+          mac_based_authentication:
+            enabled: true
+            always: true # (13)!
+          host_mode:
+            mode: multi-host # (14)!

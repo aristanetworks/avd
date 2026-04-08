@@ -1,0 +1,17 @@
+---
+# 802.1X Port Authentication How-To Guide
+# Spine configuration
+
+spine:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.10.0/27
+    bgp_as: 65100
+
+  nodes:
+    - name: htdx-spine1
+      id: 1
+      mgmt_ip: 172.16.5.11/24
+    - name: htdx-spine2
+      id: 2
+      mgmt_ip: 172.16.5.12/24
