@@ -507,8 +507,8 @@ class TestAvdManifestMerge:
 
     def test_merge_same_name_containers(self) -> None:
         """Merging manifests with same name, compatible containers merges them."""
-        container_a = AvdContainer(name="RACK_1", tag_query="rack:1", configlets=("cfg_a",))
-        container_b = AvdContainer(name="RACK_1", tag_query="rack:1", configlets=("cfg_b",))
+        container_a = AvdContainer(name="RACK_1", tag_query="rack:1", configlets=("cfg_a", "cfg_b"))
+        container_b = AvdContainer(name="RACK_1", tag_query="rack:1", configlets=("cfg_a", "cfg_b"))
         manifest_a = AvdManifest(configlets=(), containers=(container_a,))
         manifest_b = AvdManifest(configlets=(), containers=(container_b,))
 
@@ -518,6 +518,16 @@ class TestAvdManifestMerge:
         assert result.containers[0].name == "RACK_1"
         assert result.containers[0].configlets == ("cfg_a", "cfg_b")
 
+    def test_merge_same_name_containers_conflicting_configlets_raises(self) -> None:
+        """Merging manifests with same name containers but different configlets raises ValueError."""
+        container_a = AvdContainer(name="RACK_1", tag_query="rack:1", configlets=("cfg_a",))
+        container_b = AvdContainer(name="RACK_1", tag_query="rack:1", configlets=("cfg_b",))
+        manifest_a = AvdManifest(configlets=(), containers=(container_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(container_b,))
+
+        with pytest.raises(ValueError, match="Cannot merge containers 'RACK_1': configlets"):
+            AvdManifest.merge(manifest_a, manifest_b)
+
     def test_merge_containers_conflicting_tag_query_raises(self) -> None:
         """Merging containers with the same name but different tag_query raises ValueError."""
         container_a = AvdContainer(name="RACK_1", tag_query="rack:1")
@@ -525,7 +535,7 @@ class TestAvdManifestMerge:
         manifest_a = AvdManifest(configlets=(), containers=(container_a,))
         manifest_b = AvdManifest(configlets=(), containers=(container_b,))
 
-        with pytest.raises(ValueError, match="Cannot merge containers 'RACK_1': conflicting tag_query"):
+        with pytest.raises(ValueError, match="Cannot merge containers 'RACK_1': tag_query"):
             AvdManifest.merge(manifest_a, manifest_b)
 
     def test_merge_containers_conflicting_match_policy_raises(self) -> None:
@@ -535,13 +545,23 @@ class TestAvdManifestMerge:
         manifest_a = AvdManifest(configlets=(), containers=(container_a,))
         manifest_b = AvdManifest(configlets=(), containers=(container_b,))
 
-        with pytest.raises(ValueError, match="Cannot merge containers 'RACK_1': conflicting match_policy"):
+        with pytest.raises(ValueError, match="Cannot merge containers 'RACK_1': match_policy"):
+            AvdManifest.merge(manifest_a, manifest_b)
+
+    def test_merge_containers_multiple_conflicts_raises(self) -> None:
+        """Merging containers with multiple conflicting properties reports all conflicts in one error."""
+        container_a = AvdContainer(name="RACK_1", tag_query="rack:1", match_policy="match_all", configlets=("cfg_a",))
+        container_b = AvdContainer(name="RACK_1", tag_query="rack:2", match_policy="match_first", configlets=("cfg_b",))
+        manifest_a = AvdManifest(configlets=(), containers=(container_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(container_b,))
+
+        with pytest.raises(ValueError, match=r"Cannot merge containers 'RACK_1':.*tag_query.*match_policy.*configlets"):
             AvdManifest.merge(manifest_a, manifest_b)
 
     def test_merge_nested_sub_containers(self) -> None:
         """Merging manifests recursively merges sub_containers with the same name."""
-        child_a = AvdContainer(name="CHILD", tag_query="child:1", configlets=("cfg_a",))
-        child_b = AvdContainer(name="CHILD", tag_query="child:1", configlets=("cfg_b",))
+        child_a = AvdContainer(name="CHILD", tag_query="child:1", configlets=("cfg_shared",))
+        child_b = AvdContainer(name="CHILD", tag_query="child:1", configlets=("cfg_shared",))
         root_a = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_a,))
         root_b = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_b,))
         manifest_a = AvdManifest(configlets=(), containers=(root_a,))
@@ -552,7 +572,19 @@ class TestAvdManifestMerge:
         assert len(result.containers) == 1
         root = result.containers[0]
         assert len(root.sub_containers) == 1
-        assert root.sub_containers[0].configlets == ("cfg_a", "cfg_b")
+        assert root.sub_containers[0].configlets == ("cfg_shared",)
+
+    def test_merge_nested_sub_containers_conflicting_configlets_raises(self) -> None:
+        """Merging sub_containers with the same name but different configlets raises ValueError."""
+        child_a = AvdContainer(name="CHILD", tag_query="child:1", configlets=("cfg_a",))
+        child_b = AvdContainer(name="CHILD", tag_query="child:1", configlets=("cfg_b",))
+        root_a = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_a,))
+        root_b = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_b,))
+        manifest_a = AvdManifest(configlets=(), containers=(root_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(root_b,))
+
+        with pytest.raises(ValueError, match="Cannot merge containers 'CHILD': configlets"):
+            AvdManifest.merge(manifest_a, manifest_b)
 
     def test_merge_sub_containers_disjoint(self) -> None:
         """Merging containers with different sub_containers produces their union."""
@@ -568,17 +600,6 @@ class TestAvdManifestMerge:
         root = result.containers[0]
         child_names = {child.name for child in root.sub_containers}
         assert child_names == {"CHILD_A", "CHILD_B"}
-
-    def test_merge_configlet_refs_deduplicated_preserving_order(self) -> None:
-        """Duplicate configlet references within containers are deduplicated, preserving insertion order."""
-        container_a = AvdContainer(name="ROOT", tag_query="all", configlets=("cfg_1", "cfg_2"))
-        container_b = AvdContainer(name="ROOT", tag_query="all", configlets=("cfg_2", "cfg_3"))
-        manifest_a = AvdManifest(configlets=(), containers=(container_a,))
-        manifest_b = AvdManifest(configlets=(), containers=(container_b,))
-
-        result = AvdManifest.merge(manifest_a, manifest_b)
-
-        assert result.containers[0].configlets == ("cfg_1", "cfg_2", "cfg_3")
 
     def test_merge_description_first_non_none_wins(self) -> None:
         """When merging containers, the first non-None description is used."""
@@ -604,11 +625,11 @@ class TestAvdManifestMerge:
         """Merging three manifests correctly combines all configlets and containers."""
         manifest_a = AvdManifest(
             configlets=(AvdConfiglet(name="cfg_a", file="a.cfg"),),
-            containers=(AvdContainer(name="ROOT", tag_query="all", configlets=("cfg_a",)),),
+            containers=(AvdContainer(name="ROOT", tag_query="all", configlets=("cfg_shared",)),),
         )
         manifest_b = AvdManifest(
             configlets=(AvdConfiglet(name="cfg_b", file="b.cfg"),),
-            containers=(AvdContainer(name="ROOT", tag_query="all", configlets=("cfg_b",)),),
+            containers=(AvdContainer(name="ROOT", tag_query="all", configlets=("cfg_shared",)),),
         )
         manifest_c = AvdManifest(
             configlets=(AvdConfiglet(name="cfg_c", file="c.cfg"),),
@@ -624,7 +645,7 @@ class TestAvdManifestMerge:
         assert container_names == {"ROOT", "STANDALONE"}
 
         root = next(cont for cont in result.containers if cont.name == "ROOT")
-        assert root.configlets == ("cfg_a", "cfg_b")
+        assert root.configlets == ("cfg_shared",)
 
     def test_merge_configlets_only(self) -> None:
         """Merging manifests that only have configlets (no containers) works correctly."""
@@ -654,11 +675,11 @@ class TestAvdManifestMerge:
 
     def test_merge_deeply_nested_containers(self) -> None:
         """Merging works correctly with deeply nested container hierarchies."""
-        grandchild_a = AvdContainer(name="GRANDCHILD", tag_query="gc:1", configlets=("gc_cfg_a",))
+        grandchild_a = AvdContainer(name="GRANDCHILD", tag_query="gc:1", configlets=("gc_cfg_shared",))
         child_a = AvdContainer(name="CHILD", tag_query="child:1", sub_containers=(grandchild_a,))
         root_a = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_a,))
 
-        grandchild_b = AvdContainer(name="GRANDCHILD", tag_query="gc:1", configlets=("gc_cfg_b",))
+        grandchild_b = AvdContainer(name="GRANDCHILD", tag_query="gc:1", configlets=("gc_cfg_shared",))
         child_b = AvdContainer(name="CHILD", tag_query="child:1", sub_containers=(grandchild_b,))
         root_b = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_b,))
 
@@ -670,4 +691,20 @@ class TestAvdManifestMerge:
         root = result.containers[0]
         child = root.sub_containers[0]
         grandchild = child.sub_containers[0]
-        assert grandchild.configlets == ("gc_cfg_a", "gc_cfg_b")
+        assert grandchild.configlets == ("gc_cfg_shared",)
+
+    def test_merge_deeply_nested_containers_conflicting_configlets_raises(self) -> None:
+        """Merging deeply nested containers with different configlets raises ValueError."""
+        grandchild_a = AvdContainer(name="GRANDCHILD", tag_query="gc:1", configlets=("gc_cfg_a",))
+        child_a = AvdContainer(name="CHILD", tag_query="child:1", sub_containers=(grandchild_a,))
+        root_a = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_a,))
+
+        grandchild_b = AvdContainer(name="GRANDCHILD", tag_query="gc:1", configlets=("gc_cfg_b",))
+        child_b = AvdContainer(name="CHILD", tag_query="child:1", sub_containers=(grandchild_b,))
+        root_b = AvdContainer(name="ROOT", tag_query="all", sub_containers=(child_b,))
+
+        manifest_a = AvdManifest(configlets=(), containers=(root_a,))
+        manifest_b = AvdManifest(configlets=(), containers=(root_b,))
+
+        with pytest.raises(ValueError, match="Cannot merge containers 'GRANDCHILD': configlets"):
+            AvdManifest.merge(manifest_a, manifest_b)

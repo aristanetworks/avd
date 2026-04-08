@@ -424,25 +424,26 @@ class AvdManifest:
     @classmethod
     def _merge_two_containers(cls, existing: AvdContainer, other: AvdContainer) -> AvdContainer:
         """Merge two containers with the same name, raising on conflicting properties."""
+        conflicts = []
         if existing.tag_query != other.tag_query:
-            msg = f"Cannot merge containers '{existing.name}': conflicting tag_query '{existing.tag_query}' vs '{other.tag_query}'"
-            raise ValueError(msg)
+            conflicts.append(f"tag_query '{existing.tag_query}' vs '{other.tag_query}'")
         if existing.match_policy != other.match_policy:
-            msg = f"Cannot merge containers '{existing.name}': conflicting match_policy '{existing.match_policy}' vs '{other.match_policy}'"
+            conflicts.append(f"match_policy '{existing.match_policy}' vs '{other.match_policy}'")
+        if set(existing.configlets) != set(other.configlets):
+            conflicts.append(f"configlets {list(existing.configlets)} vs {list(other.configlets)}")
+        if conflicts:
+            msg = f"Cannot merge containers '{existing.name}': {', '.join(conflicts)}"
             raise ValueError(msg)
 
         # Merge sub_containers recursively by name.
         merged_sub_containers = cls._merge_containers(existing.sub_containers, other.sub_containers)
-
-        # Merge configlet references (union, preserving order).
-        merged_configlets = tuple(dict.fromkeys(existing.configlets + other.configlets))
 
         return AvdContainer(
             name=existing.name,
             tag_query=existing.tag_query,
             description=existing.description or other.description,
             match_policy=existing.match_policy,
-            configlets=merged_configlets,
+            configlets=existing.configlets,
             sub_containers=merged_sub_containers,
         )
 
