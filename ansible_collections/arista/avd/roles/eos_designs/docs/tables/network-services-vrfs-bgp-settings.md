@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].password") | String |  |  |  | Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listen_ranges</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].listen_ranges") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].listen_ranges.[].prefix") | String |  |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].listen_ranges.[].prefix") | String | Required |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].listen_ranges.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].nodes") | List, items: String |  |  |  | List of node names or regular expressions to match against hostnames to configure the peer-group.<br>The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.<br>The peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].nodes.[]") | String |  |  |  |  |
@@ -150,7 +150,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].password") | String |  |  |  | Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listen_ranges</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].listen_ranges") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].listen_ranges.[].prefix") | String |  |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].listen_ranges.[].prefix") | String | Required |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].listen_ranges.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].address_family_ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].address_family_ipv4.activate") | Boolean |  |  |  |  |
@@ -274,7 +274,7 @@
             listen_ranges:
 
                 # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
-              - prefix: <str>
+              - prefix: <str; required>
 
                 # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                 # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
@@ -612,7 +612,7 @@
                 listen_ranges:
 
                     # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
-                  - prefix: <str>
+                  - prefix: <str; required>
 
                     # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                     # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.

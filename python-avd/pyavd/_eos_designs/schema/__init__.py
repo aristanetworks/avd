@@ -60189,7 +60189,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"prefix": {"type": str}, "remote_as": {"type": str}}
-                        prefix: str | None
+                        prefix: str
                         """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                         remote_as: str | None
                         """
@@ -60201,7 +60201,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, prefix: str | None | UndefinedType = Undefined, remote_as: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, prefix: str | UndefinedType = Undefined, remote_as: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 ListenRangesItem.
 
@@ -66634,7 +66634,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"prefix": {"type": str}, "remote_as": {"type": str}}
-                            prefix: str | None
+                            prefix: str
                             """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                             remote_as: str | None
                             """
@@ -66646,9 +66646,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(
-                                    self, *, prefix: str | None | UndefinedType = Undefined, remote_as: str | None | UndefinedType = Undefined
-                                ) -> None:
+                                def __init__(self, *, prefix: str | UndefinedType = Undefined, remote_as: str | None | UndefinedType = Undefined) -> None:
                                     """
                                     ListenRangesItem.
 

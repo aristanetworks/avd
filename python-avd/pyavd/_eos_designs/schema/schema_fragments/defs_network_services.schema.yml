@@ -116,6 +116,7 @@ $defs:
                   keys:
                     prefix:
                       type: str
+                      required: true
                       description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                     remote_as:
                       type: str
@@ -1636,6 +1637,7 @@ $defs:
                         keys:
                           prefix:
                             type: str
+                            required: true
                             description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                           remote_as:
                             type: str
