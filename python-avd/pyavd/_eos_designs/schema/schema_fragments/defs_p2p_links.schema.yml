@@ -108,8 +108,8 @@ $defs:
           # TODO: AVD7.0 change the key name use_underlay_authentication with default true.
           default: false
           description: |-
-            Enable OSPF authentication on this P2P link.
-            Requires `include_in_underlay_protocol: true` and OSPF as the underlay routing protocol (`underlay_ospf_authentication.enabled: true`).
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled: true`.
             When enabled, the message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
         isis_hello_padding:
           type: bool

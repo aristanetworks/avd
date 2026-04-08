@@ -296,7 +296,14 @@ class UtilsMixin(Protocol):
 
             if self.shared_utils.underlay_ospf:
                 interface._update(ospf_network_point_to_point=True, ospf_area=self.inputs.underlay_ospf_area)
-                if p2p_link.use_underlay_ospf_authentication is True and self.inputs.underlay_ospf_authentication.enabled:
+                if p2p_link.use_underlay_ospf_authentication is True:
+                    if not self.inputs.underlay_ospf_authentication.enabled:
+                        p2p_link_nodes = ", ".join(p2p_link.nodes)
+                        msg = (
+                            f"'use_underlay_ospf_authentication' is set to true for {self.data_model}.p2p_links "
+                            f"(nodes: {p2p_link_nodes}) but 'underlay_ospf_authentication.enabled' is set to false."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
                     interface.ospf_authentication = "message-digest"
                     for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
                         interface.ospf_message_digest_keys.append_new(

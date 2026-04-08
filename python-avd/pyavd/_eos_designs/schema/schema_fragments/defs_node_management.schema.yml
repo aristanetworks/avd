@@ -1,0 +1,100 @@
+# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+#
+# This fragment defines the per-device `management` key to be incorporated into defs_node_type.schema.yml.
+# It replaces the previously flat node-level OOB keys:
+#   - `mgmt_interface`    → `management.interface`
+#   - `mgmt_ip`           → `management.ip`
+#   - `mgmt_gateway`      → `management.gateway`
+#   - `ipv6_mgmt_ip`      → `management.ipv6.ip`
+#   - `ipv6_mgmt_gateway` → `management.ipv6.gateway`
+type: dict
+keys:
+  management:
+    documentation_options:
+      table: node-type-management-configuration
+    type: dict
+    description: |-
+      Per-device OOB management interface settings.
+      These override the fabric-wide defaults from `management_interface_settings` for this device.
+    keys:
+      interface:
+        type: str
+        description: |-
+          OOB Management interface name for this device.
+          Resolution order (highest priority first):
+            1. `management.interface` (this key)
+            2. Platform `platform_settings.management_interface`
+            3. `management_interface_settings.interface`
+            4. Default: "Management1"
+      ip:
+        type: str
+        description: |-
+          Node OOB management interface IPv4 address/Mask or 'dhcp'.
+          When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true',
+          the `management_interface_settings.destination_networks` and `management_interface_settings.gateway`
+          settings are ignored, since the DHCP server is expected to provide the gateway and the default route.
+      gateway:
+        type: str
+        format: ipv4
+        description: |-
+          OOB Management gateway for this device.
+          Takes precedence over `management_interface_settings.gateway`.
+          This setting is ignored when `management.ip` is set to 'dhcp' and
+          'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true'.
+      ipv6:
+        type: dict
+        description: Per-device IPv6 OOB management settings.
+        keys:
+          enable:
+            type: bool
+            description: |-
+              Enable IPv6 on the OOB Management interface for this device.
+              Overrides `management_interface_settings.ipv6.enable`.
+          ip:
+            type: str
+            format: cidr
+            description: |-
+              Node OOB management interface IPv6 address/Mask.
+              Mutually exclusive with `management_interface_settings.ipv6.address_auto_config` — static
+              assignment takes precedence when both are defined.
+          address_auto_config:
+            type: bool
+            description: |-
+              Use SLAAC to automatically configure the IPv6 address on the OOB Management interface for
+              this device. Overrides `management_interface_settings.ipv6.address_auto_config`.
+              Mutually exclusive with `management.ipv6.ip` — static assignment takes precedence.
+          nd:
+            type: dict
+            description: |-
+              IPv6 Neighbor Discovery settings for the OOB Management interface on this device.
+              Overrides `management_interface_settings.ipv6.nd.*`.
+            keys:
+              ra:
+                type: dict
+                description: Router Advertisement receive settings.
+                keys:
+                  rx_accept:
+                    type: dict
+                    description: Options controlling which information is accepted from received Router Advertisements.
+                    keys:
+                      default_route:
+                        type: bool
+                        description: |-
+                          Accept the default route from received Router Advertisements for this device.
+                          Overrides `management_interface_settings.ipv6.nd.ra.rx_accept.default_route`.
+                      route_preference:
+                        type: bool
+                        description: |-
+                          Accept route preference from received Router Advertisements for this device.
+                          Overrides `management_interface_settings.ipv6.nd.ra.rx_accept.route_preference`.
+          gateway:
+            type: str
+            format: ipv6
+            description: |-
+              IPv6 OOB Management gateway for this device.
+              Takes precedence over `management_interface_settings.ipv6.gateway`.

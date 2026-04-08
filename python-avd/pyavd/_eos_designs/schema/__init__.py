@@ -4424,12 +4424,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             use_underlay_ospf_authentication: bool
             """
-            Enable OSPF authentication on this P2P link.
-            Requires `include_in_underlay_protocol: true` and OSPF
-            as the underlay routing protocol (`underlay_ospf_authentication.enabled: true`).
-            When enabled, the
-            message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to
-            the interface.
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
 
             Default value: `False`
             """
@@ -4638,12 +4638,12 @@ class EosDesigns(EosDesignsRootModel):
                            This is currently not supported when IPv6
                            addresses are used.
                         use_underlay_ospf_authentication:
-                           Enable OSPF authentication on this P2P link.
-                           Requires `include_in_underlay_protocol: true` and OSPF
-                           as the underlay routing protocol (`underlay_ospf_authentication.enabled: true`).
-                           When enabled, the
-                           message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to
-                           the interface.
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -5228,12 +5228,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             use_underlay_ospf_authentication: bool
             """
-            Enable OSPF authentication on this P2P link.
-            Requires `include_in_underlay_protocol: true` and OSPF
-            as the underlay routing protocol (`underlay_ospf_authentication.enabled: true`).
-            When enabled, the
-            message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to
-            the interface.
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
 
             Default value: `False`
             """
@@ -5442,12 +5442,12 @@ class EosDesigns(EosDesignsRootModel):
                            This is currently not supported when IPv6
                            addresses are used.
                         use_underlay_ospf_authentication:
-                           Enable OSPF authentication on this P2P link.
-                           Requires `include_in_underlay_protocol: true` and OSPF
-                           as the underlay routing protocol (`underlay_ospf_authentication.enabled: true`).
-                           When enabled, the
-                           message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to
-                           the interface.
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -6828,6 +6828,287 @@ class EosDesigns(EosDesignsRootModel):
         _primary_key: ClassVar[str] = "node_type"
 
     DefaultNodeTypes._item_type = DefaultNodeTypesItem
+
+    class Management(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Ipv6(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Nd(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Ra(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class RxAccept(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                        default_route: bool | None
+                        """
+                        Accept the default route from received Router Advertisements for this device.
+                        Overrides
+                        `management_interface_settings.ipv6.nd.ra.rx_accept.default_route`.
+                        """
+                        route_preference: bool | None
+                        """
+                        Accept route preference from received Router Advertisements for this device.
+                        Overrides
+                        `management_interface_settings.ipv6.nd.ra.rx_accept.route_preference`.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                RxAccept.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    default_route:
+                                       Accept the default route from received Router Advertisements for this device.
+                                       Overrides
+                                       `management_interface_settings.ipv6.nd.ra.rx_accept.default_route`.
+                                    route_preference:
+                                       Accept route preference from received Router Advertisements for this device.
+                                       Overrides
+                                       `management_interface_settings.ipv6.nd.ra.rx_accept.route_preference`.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"rx_accept": {"type": RxAccept}}
+                    rx_accept: RxAccept
+                    """
+                    Options controlling which information is accepted from received Router Advertisements.
+
+                    Subclass of
+                    AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                            """
+                            Ra.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                rx_accept:
+                                   Options controlling which information is accepted from received Router Advertisements.
+
+                                   Subclass of
+                                   AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"ra": {"type": Ra}}
+                ra: Ra
+                """
+                Router Advertisement receive settings.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ra: Ra | UndefinedType = Undefined) -> None:
+                        """
+                        Nd.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ra:
+                               Router Advertisement receive settings.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "enable": {"type": bool},
+                "ip": {"type": str},
+                "address_auto_config": {"type": bool},
+                "nd": {"type": Nd},
+                "gateway": {"type": str},
+            }
+            enable: bool | None
+            """
+            Enable IPv6 on the OOB Management interface for this device.
+            Overrides
+            `management_interface_settings.ipv6.enable`.
+            """
+            ip: str | None
+            """
+            Node OOB management interface IPv6 address/Mask.
+            Mutually exclusive with
+            `management_interface_settings.ipv6.address_auto_config` — static
+            assignment takes precedence when
+            both are defined.
+            """
+            address_auto_config: bool | None
+            """
+            Use SLAAC to automatically configure the IPv6 address on the OOB Management interface for
+            this
+            device. Overrides `management_interface_settings.ipv6.address_auto_config`.
+            Mutually exclusive with
+            `management.ipv6.ip` — static assignment takes precedence.
+            """
+            nd: Nd
+            """
+            IPv6 Neighbor Discovery settings for the OOB Management interface on this device.
+            Overrides
+            `management_interface_settings.ipv6.nd.*`.
+
+            Subclass of AvdModel.
+            """
+            gateway: str | None
+            """
+            IPv6 OOB Management gateway for this device.
+            Takes precedence over
+            `management_interface_settings.ipv6.gateway`.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enable: bool | None | UndefinedType = Undefined,
+                    ip: str | None | UndefinedType = Undefined,
+                    address_auto_config: bool | None | UndefinedType = Undefined,
+                    nd: Nd | UndefinedType = Undefined,
+                    gateway: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enable:
+                           Enable IPv6 on the OOB Management interface for this device.
+                           Overrides
+                           `management_interface_settings.ipv6.enable`.
+                        ip:
+                           Node OOB management interface IPv6 address/Mask.
+                           Mutually exclusive with
+                           `management_interface_settings.ipv6.address_auto_config` — static
+                           assignment takes precedence when
+                           both are defined.
+                        address_auto_config:
+                           Use SLAAC to automatically configure the IPv6 address on the OOB Management interface for
+                           this
+                           device. Overrides `management_interface_settings.ipv6.address_auto_config`.
+                           Mutually exclusive with
+                           `management.ipv6.ip` — static assignment takes precedence.
+                        nd:
+                           IPv6 Neighbor Discovery settings for the OOB Management interface on this device.
+                           Overrides
+                           `management_interface_settings.ipv6.nd.*`.
+
+                           Subclass of AvdModel.
+                        gateway:
+                           IPv6 OOB Management gateway for this device.
+                           Takes precedence over
+                           `management_interface_settings.ipv6.gateway`.
+
+                    """
+
+        _fields: ClassVar[dict] = {"interface": {"type": str}, "ip": {"type": str}, "gateway": {"type": str}, "ipv6": {"type": Ipv6}}
+        interface: str | None
+        """
+        OOB Management interface name for this device.
+        Resolution order (highest priority first):
+          1.
+        `management.interface` (this key)
+          2. Platform `platform_settings.management_interface`
+          3.
+        `management_interface_settings.interface`
+          4. Default: "Management1"
+        """
+        ip: str | None
+        """
+        Node OOB management interface IPv4 address/Mask or 'dhcp'.
+        When set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true',
+        the
+        `management_interface_settings.destination_networks` and `management_interface_settings.gateway`
+        settings are ignored, since the DHCP server is expected to provide the gateway and the default
+        route.
+        """
+        gateway: str | None
+        """
+        OOB Management gateway for this device.
+        Takes precedence over
+        `management_interface_settings.gateway`.
+        This setting is ignored when `management.ip` is set to
+        'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true'.
+        """
+        ipv6: Ipv6
+        """
+        Per-device IPv6 OOB management settings.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                interface: str | None | UndefinedType = Undefined,
+                ip: str | None | UndefinedType = Undefined,
+                gateway: str | None | UndefinedType = Undefined,
+                ipv6: Ipv6 | UndefinedType = Undefined,
+            ) -> None:
+                """
+                Management.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    interface:
+                       OOB Management interface name for this device.
+                       Resolution order (highest priority first):
+                         1.
+                       `management.interface` (this key)
+                         2. Platform `platform_settings.management_interface`
+                         3.
+                       `management_interface_settings.interface`
+                         4. Default: "Management1"
+                    ip:
+                       Node OOB management interface IPv4 address/Mask or 'dhcp'.
+                       When set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true',
+                       the
+                       `management_interface_settings.destination_networks` and `management_interface_settings.gateway`
+                       settings are ignored, since the DHCP server is expected to provide the gateway and the default
+                       route.
+                    gateway:
+                       OOB Management gateway for this device.
+                       Takes precedence over
+                       `management_interface_settings.gateway`.
+                       This setting is ignored when `management.ip` is set to
+                       'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true'.
+                    ipv6:
+                       Per-device IPv6 OOB management settings.
+
+                       Subclass of AvdModel.
+
+                """
 
     class DeviceProfilesItem(AvdModel):
         """Subclass of AvdModel."""
@@ -21262,12 +21543,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             use_underlay_ospf_authentication: bool
             """
-            Enable OSPF authentication on this P2P link.
-            Requires `include_in_underlay_protocol: true` and OSPF
-            as the underlay routing protocol (`underlay_ospf_authentication.enabled: true`).
-            When enabled, the
-            message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to
-            the interface.
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
 
             Default value: `False`
             """
@@ -21476,12 +21757,12 @@ class EosDesigns(EosDesignsRootModel):
                            This is currently not supported when IPv6
                            addresses are used.
                         use_underlay_ospf_authentication:
-                           Enable OSPF authentication on this P2P link.
-                           Requires `include_in_underlay_protocol: true` and OSPF
-                           as the underlay routing protocol (`underlay_ospf_authentication.enabled: true`).
-                           When enabled, the
-                           message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to
-                           the interface.
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -22066,12 +22347,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             use_underlay_ospf_authentication: bool
             """
-            Enable OSPF authentication on this P2P link.
-            Requires `include_in_underlay_protocol: true` and OSPF
-            as the underlay routing protocol (`underlay_ospf_authentication.enabled: true`).
-            When enabled, the
-            message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to
-            the interface.
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
 
             Default value: `False`
             """
@@ -22280,12 +22561,12 @@ class EosDesigns(EosDesignsRootModel):
                            This is currently not supported when IPv6
                            addresses are used.
                         use_underlay_ospf_authentication:
-                           Enable OSPF authentication on this P2P link.
-                           Requires `include_in_underlay_protocol: true` and OSPF
-                           as the underlay routing protocol (`underlay_ospf_authentication.enabled: true`).
-                           When enabled, the
-                           message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to
-                           the interface.
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -23432,6 +23713,363 @@ class EosDesigns(EosDesignsRootModel):
                     enable_https: enable_https
                     default_services: default_services
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
+    class ManagementInterfaceSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class DestinationNetworks(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DestinationNetworks._item_type = str
+
+        class Ipv6(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Nd(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Ra(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class RxAccept(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                        default_route: bool | None
+                        """
+                        Accept the default route from received Router Advertisements.
+                        Generates `ipv6 nd ra rx accept
+                        default-route`.
+                        Required when using SLAAC (`ipv6.address_auto_config: true`) and relying on the
+                        router to advertise the default route instead of configuring a static `ipv6.gateway`.
+                        """
+                        route_preference: bool | None
+                        """
+                        Accept route preference from received Router Advertisements.
+                        Generates `ipv6 nd ra rx accept route-
+                        preference`.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                RxAccept.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    default_route:
+                                       Accept the default route from received Router Advertisements.
+                                       Generates `ipv6 nd ra rx accept
+                                       default-route`.
+                                       Required when using SLAAC (`ipv6.address_auto_config: true`) and relying on the
+                                       router to advertise the default route instead of configuring a static `ipv6.gateway`.
+                                    route_preference:
+                                       Accept route preference from received Router Advertisements.
+                                       Generates `ipv6 nd ra rx accept route-
+                                       preference`.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"rx_accept": {"type": RxAccept}}
+                    rx_accept: RxAccept
+                    """
+                    Options controlling which information is accepted from received Router Advertisements.
+
+                    Subclass of
+                    AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                            """
+                            Ra.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                rx_accept:
+                                   Options controlling which information is accepted from received Router Advertisements.
+
+                                   Subclass of
+                                   AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"ra": {"type": Ra}}
+                ra: Ra
+                """
+                Router Advertisement receive settings.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ra: Ra | UndefinedType = Undefined) -> None:
+                        """
+                        Nd.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ra:
+                               Router Advertisement receive settings.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            class DestinationNetworks(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            DestinationNetworks._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "enable": {"type": bool},
+                "address_auto_config": {"type": bool},
+                "nd": {"type": Nd},
+                "gateway": {"type": str},
+                "destination_networks": {"type": DestinationNetworks},
+            }
+            enable: bool | None
+            """
+            Enable IPv6 on the OOB Management interface.
+            Generates `ipv6 enable` on the management interface.
+            Automatically set to `true` when any other `ipv6` key is configured.
+            """
+            address_auto_config: bool | None
+            """
+            Use SLAAC to automatically configure the IPv6 address on the OOB Management interface.
+            Generates
+            `ipv6 address auto-config`.
+            Mutually exclusive with per-device `management.ipv6.ip` — static
+            assignment takes precedence
+            when both are defined.
+            """
+            nd: Nd
+            """
+            IPv6 Neighbor Discovery settings for the OOB Management interface.
+            Only RA receive-path options are
+            exposed here since management interfaces act as ND clients,
+            not routers.
+
+            Subclass of AvdModel.
+            """
+            gateway: str | None
+            """
+            OOB Management gateway in IPv6 format applied to all devices.
+            Used as next-hop for the default IPv6
+            route or static routes defined under `ipv6.destination_networks`.
+            Not required when
+            `ipv6.address_auto_config: true` and `ipv6.nd.ra.rx_accept.default_route: true`
+            are set, since the
+            default route is then learned from the Router Advertisement.
+            Per-device override:
+            `management.ipv6.gateway` (takes precedence).
+            """
+            destination_networks: DestinationNetworks
+            """
+            List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management gateway.
+            When
+            set, these specific prefixes replace the default IPv6 route (::/0).
+
+            Subclass of AvdList with `str`
+            items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enable: bool | None | UndefinedType = Undefined,
+                    address_auto_config: bool | None | UndefinedType = Undefined,
+                    nd: Nd | UndefinedType = Undefined,
+                    gateway: str | None | UndefinedType = Undefined,
+                    destination_networks: DestinationNetworks | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enable:
+                           Enable IPv6 on the OOB Management interface.
+                           Generates `ipv6 enable` on the management interface.
+                           Automatically set to `true` when any other `ipv6` key is configured.
+                        address_auto_config:
+                           Use SLAAC to automatically configure the IPv6 address on the OOB Management interface.
+                           Generates
+                           `ipv6 address auto-config`.
+                           Mutually exclusive with per-device `management.ipv6.ip` — static
+                           assignment takes precedence
+                           when both are defined.
+                        nd:
+                           IPv6 Neighbor Discovery settings for the OOB Management interface.
+                           Only RA receive-path options are
+                           exposed here since management interfaces act as ND clients,
+                           not routers.
+
+                           Subclass of AvdModel.
+                        gateway:
+                           OOB Management gateway in IPv6 format applied to all devices.
+                           Used as next-hop for the default IPv6
+                           route or static routes defined under `ipv6.destination_networks`.
+                           Not required when
+                           `ipv6.address_auto_config: true` and `ipv6.nd.ra.rx_accept.default_route: true`
+                           are set, since the
+                           default route is then learned from the Router Advertisement.
+                           Per-device override:
+                           `management.ipv6.gateway` (takes precedence).
+                        destination_networks:
+                           List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management gateway.
+                           When
+                           set, these specific prefixes replace the default IPv6 route (::/0).
+
+                           Subclass of AvdList with `str`
+                           items.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "interface": {"type": str, "default": "Management1"},
+            "description": {"type": str, "default": "OOB_MANAGEMENT"},
+            "vrf": {"type": str, "default": "MGMT"},
+            "vrf_routing": {"type": bool, "default": False},
+            "gateway": {"type": str},
+            "destination_networks": {"type": DestinationNetworks},
+            "ipv6": {"type": Ipv6},
+        }
+        interface: str
+        """
+        OOB Management interface name applied to all devices.
+        Resolution order (highest priority first):
+        1. Per-device `management.interface`
+          2. Platform `platform_settings.management_interface`
+          3.
+        `management_interface_settings.interface`
+          4. Default: "Management1"
+
+        Default value: `"Management1"`
+        """
+        description: str
+        """
+        OOB Management interface description applied to all devices.
+
+        Default value: `"OOB_MANAGEMENT"`
+        """
+        vrf: str
+        """
+        OOB Management VRF applied to all devices.
+
+        Default value: `"MGMT"`
+        """
+        vrf_routing: bool
+        """
+        Configure IP routing for the OOB Management VRF.
+
+        Default value: `False`
+        """
+        gateway: str | None
+        """
+        OOB Management gateway in IPv4 format applied to all devices.
+        Used as next-hop for the default route
+        or static routes defined under `destination_networks`.
+        Per-device override: `management.gateway`
+        (takes precedence).
+        This setting is ignored when `management.ip` is set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server
+        will
+        provide the gateway.
+        """
+        destination_networks: DestinationNetworks
+        """
+        List of IPv4 prefixes to configure as static routes towards the OOB Management gateway.
+        When set,
+        these specific prefixes replace the default route (0.0.0.0/0).
+        This setting is ignored when
+        `management.ip` is set to 'dhcp' and
+        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+        true', since the DHCP server
+        will provide the default route.
+
+        Subclass of AvdList with `str` items.
+        """
+        ipv6: Ipv6
+        """
+        IPv6 OOB Management settings applied fabric-wide.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                interface: str | UndefinedType = Undefined,
+                description: str | UndefinedType = Undefined,
+                vrf: str | UndefinedType = Undefined,
+                vrf_routing: bool | UndefinedType = Undefined,
+                gateway: str | None | UndefinedType = Undefined,
+                destination_networks: DestinationNetworks | UndefinedType = Undefined,
+                ipv6: Ipv6 | UndefinedType = Undefined,
+            ) -> None:
+                """
+                ManagementInterfaceSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    interface:
+                       OOB Management interface name applied to all devices.
+                       Resolution order (highest priority first):
+                       1. Per-device `management.interface`
+                         2. Platform `platform_settings.management_interface`
+                         3.
+                       `management_interface_settings.interface`
+                         4. Default: "Management1"
+                    description: OOB Management interface description applied to all devices.
+                    vrf: OOB Management VRF applied to all devices.
+                    vrf_routing: Configure IP routing for the OOB Management VRF.
+                    gateway:
+                       OOB Management gateway in IPv4 format applied to all devices.
+                       Used as next-hop for the default route
+                       or static routes defined under `destination_networks`.
+                       Per-device override: `management.gateway`
+                       (takes precedence).
+                       This setting is ignored when `management.ip` is set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server
+                       will
+                       provide the gateway.
+                    destination_networks:
+                       List of IPv4 prefixes to configure as static routes towards the OOB Management gateway.
+                       When set,
+                       these specific prefixes replace the default route (0.0.0.0/0).
+                       This setting is ignored when
+                       `management.ip` is set to 'dhcp' and
+                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+                       true', since the DHCP server
+                       will provide the default route.
+
+                       Subclass of AvdList with `str` items.
+                    ipv6:
+                       IPv6 OOB Management settings applied fabric-wide.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -90284,6 +90922,7 @@ class EosDesigns(EosDesignsRootModel):
         "default_underlay_p2p_ethernet_description": {"type": str, "default": "P2P_{peer}_{peer_interface}{vrf?<_VRF_}"},
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
+        "management": {"type": Management},
         "device_profile": {"type": str},
         "device_profiles": {"type": DeviceProfiles},
         "devices": {"type": Devices},
@@ -90347,6 +90986,7 @@ class EosDesigns(EosDesignsRootModel):
         "logging_settings": {"type": LoggingSettings},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
+        "management_interface_settings": {"type": ManagementInterfaceSettings},
         "management_settings": {"type": ManagementSettings},
         "mgmt_destination_networks": {"type": MgmtDestinationNetworks},
         "mgmt_gateway": {"type": str},
@@ -91529,6 +92169,14 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"DIAG_VRF_{vrf}"`
     """
+    management: Management
+    """
+    Per-device OOB management interface settings.
+    These override the fabric-wide defaults from
+    `management_interface_settings` for this device.
+
+    Subclass of AvdModel.
+    """
     device_profile: str | None
     """
     PREVIEW - This datamodel is still under development and may change or get removed at any time.
@@ -91972,6 +92620,11 @@ class EosDesigns(EosDesignsRootModel):
     Default is HTTPS management eAPI enabled.
 
 
+    Subclass of AvdModel.
+    """
+    management_interface_settings: ManagementInterfaceSettings
+    """
+    Global OOB (Out-of-Band) management interface settings applied to all devices in the fabric.
     Subclass of AvdModel.
     """
     management_settings: ManagementSettings
@@ -93028,6 +93681,7 @@ class EosDesigns(EosDesignsRootModel):
             default_underlay_p2p_ethernet_description: str | UndefinedType = Undefined,
             default_underlay_p2p_port_channel_description: str | UndefinedType = Undefined,
             default_vrf_diag_loopback_description: str | UndefinedType = Undefined,
+            management: Management | UndefinedType = Undefined,
             device_profile: str | None | UndefinedType = Undefined,
             device_profiles: DeviceProfiles | UndefinedType = Undefined,
             devices: Devices | UndefinedType = Undefined,
@@ -93088,6 +93742,7 @@ class EosDesigns(EosDesignsRootModel):
             logging_settings: LoggingSettings | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
+            management_interface_settings: ManagementInterfaceSettings | UndefinedType = Undefined,
             management_settings: ManagementSettings | UndefinedType = Undefined,
             mgmt_destination_networks: MgmtDestinationNetworks | UndefinedType = Undefined,
             mgmt_gateway: str | None | UndefinedType = Undefined,
@@ -93644,6 +94299,12 @@ class EosDesigns(EosDesignsRootModel):
                      - `vrf`: The VRF name.
                      - `tenant`: The tenant name.
                    By default the description is templated from the VRF name.
+                management:
+                   Per-device OOB management interface settings.
+                   These override the fabric-wide defaults from
+                   `management_interface_settings` for this device.
+
+                   Subclass of AvdModel.
                 device_profile:
                    PREVIEW - This datamodel is still under development and may change or get removed at any time.
                    Inherit settings from a device profile defined under `device_profiles`.
@@ -93943,6 +94604,9 @@ class EosDesigns(EosDesignsRootModel):
                    Default is HTTPS management eAPI enabled.
 
 
+                   Subclass of AvdModel.
+                management_interface_settings:
+                   Global OOB (Out-of-Band) management interface settings applied to all devices in the fabric.
                    Subclass of AvdModel.
                 management_settings: Subclass of AvdModel.
                 mgmt_destination_networks:
