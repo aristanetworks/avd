@@ -146,7 +146,7 @@ class RouteMapsMixin(Protocol):
                 match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["extcommunity ECL-EVPN-SOO"]),
             )
             # Create the extcommunity-list
-            self.shared_utils.set_once_ip_extcommunity_list_evpn_soo(self.structured_config)
+            self.structured_config_utils.set_once_ip_extcommunity_list_evpn_soo()
         else:
             # TODO: refactor existing behavior to SoO?
             if self._vrf_default_ipv4_subnets:
