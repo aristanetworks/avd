@@ -2457,9 +2457,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {"login": {"type": str}, "motd": {"type": str}}
         login: str | None
-        """Multiline string ending with EOF on the last line."""
+        """Legal notification or security warning displayed to all users before authentication."""
         motd: str | None
-        """Multiline string ending with EOF on the last line."""
+        """Informational or operational message displayed to authorized users after a successful login."""
 
         if TYPE_CHECKING:
 
@@ -2471,8 +2471,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    login: Multiline string ending with EOF on the last line.
-                    motd: Multiline string ending with EOF on the last line.
+                    login: Legal notification or security warning displayed to all users before authentication.
+                    motd: Informational or operational message displayed to authorized users after a successful login.
 
                 """
 
