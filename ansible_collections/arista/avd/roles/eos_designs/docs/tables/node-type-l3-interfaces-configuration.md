@@ -14,8 +14,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  | List of IPv6 addresses assigned to the interface.<br>Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -62,8 +62,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  | List of IPv6 addresses assigned to the interface.<br>Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -106,8 +106,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  | List of IPv6 addresses assigned to the interface.<br>Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -152,8 +152,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  | List of IPv6 addresses assigned to the interface.<br>Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -198,8 +198,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "device_profiles.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "device_profiles.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "device_profiles.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "device_profiles.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  | List of IPv6 addresses assigned to the interface.<br>Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "device_profiles.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "device_profiles.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "device_profiles.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "device_profiles.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -244,8 +244,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "devices.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "devices.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "devices.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  | List of IPv6 addresses assigned to the interface.<br>Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "devices.[].l3_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].l3_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "devices.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "devices.[].l3_interfaces.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "devices.[].l3_interfaces.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -288,8 +288,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_interface_profiles.[].name") | String |  |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_interface_profiles.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "l3_interface_profiles.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "l3_interface_profiles.[].ipv6_addresses") | List, items: String |  |  |  | List of IPv6 addresses assigned to the interface.<br>Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_interface_profiles.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "l3_interface_profiles.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_interface_profiles.[].ipv6_addresses.[]") | String |  |  |  | IPv6 address with prefix length, e.g., '2001:db8::1/64'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "l3_interface_profiles.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;public_ip</samp>](## "l3_interface_profiles.[].public_ip") | String |  |  |  | Node IPv4 address (no mask).<br><br>This is used to get the public IP (if known) when the device is behind NAT.<br>This is only used for `wan_rr` routers (AutoVPN RRs and Pathfinders) to determine the Public IP<br>with the following preference:<br>  `wan_route_servers.path_groups.interfaces.ip_address`<br>      -> `l3_interfaces.public_ip`<br>          -> `l3_interfaces.ip_address`<br><br>The determined Public IP is used by WAN routers when peering with this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "l3_interface_profiles.[].encapsulation_dot1q_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified. |
@@ -352,12 +352,9 @@
 
             # Node IPv4 address/Mask or 'dhcp'.
             ip_address: <str>
-
-            # List of IPv6 addresses assigned to the interface.
-            # Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'.
             ipv6_addresses:
 
-                # IPv6 address with prefix length.
+                # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
               - <str>
 
             # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -525,12 +522,9 @@
 
                   # Node IPv4 address/Mask or 'dhcp'.
                   ip_address: <str>
-
-                  # List of IPv6 addresses assigned to the interface.
-                  # Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'.
                   ipv6_addresses:
 
-                      # IPv6 address with prefix length.
+                      # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
                     - <str>
 
                   # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -685,12 +679,9 @@
 
               # Node IPv4 address/Mask or 'dhcp'.
               ip_address: <str>
-
-              # List of IPv6 addresses assigned to the interface.
-              # Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'.
               ipv6_addresses:
 
-                  # IPv6 address with prefix length.
+                  # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
                 - <str>
 
               # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -851,12 +842,9 @@
 
               # Node IPv4 address/Mask or 'dhcp'.
               ip_address: <str>
-
-              # List of IPv6 addresses assigned to the interface.
-              # Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'.
               ipv6_addresses:
 
-                  # IPv6 address with prefix length.
+                  # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
                 - <str>
 
               # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -1017,12 +1005,9 @@
 
             # Node IPv4 address/Mask or 'dhcp'.
             ip_address: <str>
-
-            # List of IPv6 addresses assigned to the interface.
-            # Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'.
             ipv6_addresses:
 
-                # IPv6 address with prefix length.
+                # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
               - <str>
 
             # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -1183,12 +1168,9 @@
 
             # Node IPv4 address/Mask or 'dhcp'.
             ip_address: <str>
-
-            # List of IPv6 addresses assigned to the interface.
-            # Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'.
             ipv6_addresses:
 
-                # IPv6 address with prefix length.
+                # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
               - <str>
 
             # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -1344,12 +1326,9 @@
 
         # Node IPv4 address/Mask or 'dhcp'.
         ip_address: <str>
-
-        # List of IPv6 addresses assigned to the interface.
-        # Each item must be an IPv6 address with prefix length, e.g., '2001:db8::1/64'.
         ipv6_addresses:
 
-            # IPv6 address with prefix length.
+            # IPv6 address with prefix length, e.g., '2001:db8::1/64'.
           - <str>
 
         # When the `ip_address` is `dhcp`, this optional field allows to indicate the expected

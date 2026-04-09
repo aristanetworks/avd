@@ -8856,13 +8856,7 @@ class EosDesigns(EosDesignsRootModel):
             ip_address: str | None
             """Node IPv4 address/Mask or 'dhcp'."""
             ipv6_addresses: Ipv6Addresses
-            """
-            List of IPv6 addresses assigned to the interface.
-            Each item must be an IPv6 address with prefix
-            length, e.g., '2001:db8::1/64'.
-
-            Subclass of AvdList with `str` items.
-            """
+            """Subclass of AvdList with `str` items."""
             dhcp_ip: str | None
             """
             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -9056,12 +9050,7 @@ class EosDesigns(EosDesignsRootModel):
                            If not set a default description will be configured with '[<peer>[
                            <peer_interface>]]'.
                         ip_address: Node IPv4 address/Mask or 'dhcp'.
-                        ipv6_addresses:
-                           List of IPv6 addresses assigned to the interface.
-                           Each item must be an IPv6 address with prefix
-                           length, e.g., '2001:db8::1/64'.
-
-                           Subclass of AvdList with `str` items.
+                        ipv6_addresses: Subclass of AvdList with `str` items.
                         dhcp_ip:
                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                            IPv4 address
@@ -14025,13 +14014,7 @@ class EosDesigns(EosDesignsRootModel):
             ip_address: str | None
             """Node IPv4 address/Mask or 'dhcp'."""
             ipv6_addresses: Ipv6Addresses
-            """
-            List of IPv6 addresses assigned to the interface.
-            Each item must be an IPv6 address with prefix
-            length, e.g., '2001:db8::1/64'.
-
-            Subclass of AvdList with `str` items.
-            """
+            """Subclass of AvdList with `str` items."""
             dhcp_ip: str | None
             """
             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -14225,12 +14208,7 @@ class EosDesigns(EosDesignsRootModel):
                            If not set a default description will be configured with '[<peer>[
                            <peer_interface>]]'.
                         ip_address: Node IPv4 address/Mask or 'dhcp'.
-                        ipv6_addresses:
-                           List of IPv6 addresses assigned to the interface.
-                           Each item must be an IPv6 address with prefix
-                           length, e.g., '2001:db8::1/64'.
-
-                           Subclass of AvdList with `str` items.
+                        ipv6_addresses: Subclass of AvdList with `str` items.
                         dhcp_ip:
                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                            IPv4 address
@@ -22801,13 +22779,7 @@ class EosDesigns(EosDesignsRootModel):
         ip_address: str | None
         """Node IPv4 address/Mask or 'dhcp'."""
         ipv6_addresses: Ipv6Addresses
-        """
-        List of IPv6 addresses assigned to the interface.
-        Each item must be an IPv6 address with prefix
-        length, e.g., '2001:db8::1/64'.
-
-        Subclass of AvdList with `str` items.
-        """
+        """Subclass of AvdList with `str` items."""
         dhcp_ip: str | None
         """
         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -23003,12 +22975,7 @@ class EosDesigns(EosDesignsRootModel):
                        If not set a default description will be configured with '[<peer>[
                        <peer_interface>]]'.
                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                    ipv6_addresses:
-                       List of IPv6 addresses assigned to the interface.
-                       Each item must be an IPv6 address with prefix
-                       length, e.g., '2001:db8::1/64'.
-
-                       Subclass of AvdList with `str` items.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
                     dhcp_ip:
                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                        IPv4 address
@@ -38298,13 +38265,7 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
                         ipv6_addresses: Ipv6Addresses
-                        """
-                        List of IPv6 addresses assigned to the interface.
-                        Each item must be an IPv6 address with prefix
-                        length, e.g., '2001:db8::1/64'.
-
-                        Subclass of AvdList with `str` items.
-                        """
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -38498,12 +38459,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ipv6_addresses:
-                                       List of IPv6 addresses assigned to the interface.
-                                       Each item must be an IPv6 address with prefix
-                                       length, e.g., '2001:db8::1/64'.
-
-                                       Subclass of AvdList with `str` items.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -43455,13 +43411,7 @@ class EosDesigns(EosDesignsRootModel):
                             ip_address: str | None
                             """Node IPv4 address/Mask or 'dhcp'."""
                             ipv6_addresses: Ipv6Addresses
-                            """
-                            List of IPv6 addresses assigned to the interface.
-                            Each item must be an IPv6 address with prefix
-                            length, e.g., '2001:db8::1/64'.
-
-                            Subclass of AvdList with `str` items.
-                            """
+                            """Subclass of AvdList with `str` items."""
                             dhcp_ip: str | None
                             """
                             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -43655,12 +43605,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set a default description will be configured with '[<peer>[
                                            <peer_interface>]]'.
                                         ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                        ipv6_addresses:
-                                           List of IPv6 addresses assigned to the interface.
-                                           Each item must be an IPv6 address with prefix
-                                           length, e.g., '2001:db8::1/64'.
-
-                                           Subclass of AvdList with `str` items.
+                                        ipv6_addresses: Subclass of AvdList with `str` items.
                                         dhcp_ip:
                                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                            IPv4 address
@@ -48553,13 +48498,7 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
                         ipv6_addresses: Ipv6Addresses
-                        """
-                        List of IPv6 addresses assigned to the interface.
-                        Each item must be an IPv6 address with prefix
-                        length, e.g., '2001:db8::1/64'.
-
-                        Subclass of AvdList with `str` items.
-                        """
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -48753,12 +48692,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ipv6_addresses:
-                                       List of IPv6 addresses assigned to the interface.
-                                       Each item must be an IPv6 address with prefix
-                                       length, e.g., '2001:db8::1/64'.
-
-                                       Subclass of AvdList with `str` items.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -53725,13 +53659,7 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
                         ipv6_addresses: Ipv6Addresses
-                        """
-                        List of IPv6 addresses assigned to the interface.
-                        Each item must be an IPv6 address with prefix
-                        length, e.g., '2001:db8::1/64'.
-
-                        Subclass of AvdList with `str` items.
-                        """
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -53925,12 +53853,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ipv6_addresses:
-                                       List of IPv6 addresses assigned to the interface.
-                                       Each item must be an IPv6 address with prefix
-                                       length, e.g., '2001:db8::1/64'.
-
-                                       Subclass of AvdList with `str` items.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -71860,13 +71783,7 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
                         ipv6_addresses: Ipv6Addresses
-                        """
-                        List of IPv6 addresses assigned to the interface.
-                        Each item must be an IPv6 address with prefix
-                        length, e.g., '2001:db8::1/64'.
-
-                        Subclass of AvdList with `str` items.
-                        """
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -72060,12 +71977,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ipv6_addresses:
-                                       List of IPv6 addresses assigned to the interface.
-                                       Each item must be an IPv6 address with prefix
-                                       length, e.g., '2001:db8::1/64'.
-
-                                       Subclass of AvdList with `str` items.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -77017,13 +76929,7 @@ class EosDesigns(EosDesignsRootModel):
                             ip_address: str | None
                             """Node IPv4 address/Mask or 'dhcp'."""
                             ipv6_addresses: Ipv6Addresses
-                            """
-                            List of IPv6 addresses assigned to the interface.
-                            Each item must be an IPv6 address with prefix
-                            length, e.g., '2001:db8::1/64'.
-
-                            Subclass of AvdList with `str` items.
-                            """
+                            """Subclass of AvdList with `str` items."""
                             dhcp_ip: str | None
                             """
                             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -77217,12 +77123,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set a default description will be configured with '[<peer>[
                                            <peer_interface>]]'.
                                         ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                        ipv6_addresses:
-                                           List of IPv6 addresses assigned to the interface.
-                                           Each item must be an IPv6 address with prefix
-                                           length, e.g., '2001:db8::1/64'.
-
-                                           Subclass of AvdList with `str` items.
+                                        ipv6_addresses: Subclass of AvdList with `str` items.
                                         dhcp_ip:
                                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                            IPv4 address
@@ -82115,13 +82016,7 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
                         ipv6_addresses: Ipv6Addresses
-                        """
-                        List of IPv6 addresses assigned to the interface.
-                        Each item must be an IPv6 address with prefix
-                        length, e.g., '2001:db8::1/64'.
-
-                        Subclass of AvdList with `str` items.
-                        """
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -82315,12 +82210,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ipv6_addresses:
-                                       List of IPv6 addresses assigned to the interface.
-                                       Each item must be an IPv6 address with prefix
-                                       length, e.g., '2001:db8::1/64'.
-
-                                       Subclass of AvdList with `str` items.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -87287,13 +87177,7 @@ class EosDesigns(EosDesignsRootModel):
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
                         ipv6_addresses: Ipv6Addresses
-                        """
-                        List of IPv6 addresses assigned to the interface.
-                        Each item must be an IPv6 address with prefix
-                        length, e.g., '2001:db8::1/64'.
-
-                        Subclass of AvdList with `str` items.
-                        """
+                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -87487,12 +87371,7 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ipv6_addresses:
-                                       List of IPv6 addresses assigned to the interface.
-                                       Each item must be an IPv6 address with prefix
-                                       length, e.g., '2001:db8::1/64'.
-
-                                       Subclass of AvdList with `str` items.
+                                    ipv6_addresses: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
