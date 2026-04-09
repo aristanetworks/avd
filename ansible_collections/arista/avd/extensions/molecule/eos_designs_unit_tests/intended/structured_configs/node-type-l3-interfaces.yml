@@ -77,15 +77,6 @@ ethernet_interfaces:
     peer_type: l3_interface
   sflow:
     enable: true
-- name: Ethernet45
-  description: Main interface without ip address
-  shutdown: false
-  metadata:
-    peer_type: l3_interface
-  sflow:
-    enable: true
-  switchport:
-    enabled: false
 - name: Ethernet46
   description: peer4_Ethernet1
   shutdown: false
@@ -96,6 +87,15 @@ ethernet_interfaces:
   metadata:
     peer: peer4
     peer_interface: Ethernet1
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet45
+  description: Main interface without ip address
+  shutdown: false
+  metadata:
     peer_type: l3_interface
   sflow:
     enable: true
