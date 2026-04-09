@@ -17,7 +17,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_htps-leaf1a_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.2/31
   metadata:
     peer: htps-leaf1a
@@ -28,7 +28,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_htps-leaf1b_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.6/31
   metadata:
     peer: htps-leaf1b

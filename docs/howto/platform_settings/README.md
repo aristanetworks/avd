@@ -12,21 +12,14 @@
 
 This guide explains how to configure platform settings, understand feature support, and customize platform-specific behaviors.
 
-### When to Use Platform Settings
+### When to Use Custom Platform Settings
 
-Use platform settings when:
+AVD includes default platform settings for all major Arista platforms. You only need to define `custom_platform_settings` when:
 
-- You need to configure platform-specific features (TCAM profiles, reload delay, forwarding table partitions, PoE)
-- You need to define feature support capabilities for different platforms
-- You want to override default platform configurations
-- You want to customize reload delays for MLAG and non-MLAG devices
-- You need to configure Digital Twin or validation settings per platform
-
-AVD includes comprehensive default platform settings for all major Arista platforms. You typically only need to define `custom_platform_settings` when:
-
+- Overriding default reload delays, TCAM profiles, or feature support for an existing platform
 - Adding support for a new or custom platform
-- Overriding specific settings for an existing platform
-- Applying platform-specific structured configuration
+- Applying platform-specific structured configuration (QoS, hardware counters, etc.)
+- Configuring Digital Twin or hardware validation settings per platform
 
 This configuration is typically defined at the fabric level, but it can be defined elsewhere, depending on your environment.
 
@@ -59,7 +52,7 @@ AVD uses the first matching entry from the platform settings list:
 
 ### Digital Twin
 
-Digital Twin settings allow you to run AVD in simulation mode:
+Digital Twin settings allow you to run AVD against virtual devices instead of physical hardware:
 
 - `platform`: Alternate platform to use in Digital Twin mode (e.g., `vEOS-lab`)
 - `act_node_type`: ACT node type for simulation (veos, cloudeos, generic, etc.)
@@ -201,18 +194,14 @@ When `custom_platform_settings` overrides the reload delays for a platform, AVD 
 
 ```yaml title="group_vars/HTPS/fabric.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTPS/fabric.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTPS/fabric.yml:basic
 --8<--
 ```
 
-1. `fabric_name` sets the fabric-wide identifier.
-2. `underlay_routing_protocol` selects eBGP for the underlay.
-3. `overlay_routing_protocol` selects eBGP for the overlay.
-4. `p2p_uplinks_mtu` limits the MTU on point-to-point links (required for vEOS-lab).
-5. The `custom_platform_settings` block overrides default settings for the matched platform.
-6. Exact match for `vEOS-lab` — takes priority over the built-in default entry.
-7. `mlag` reload delay in seconds — how long a rebooting device waits before re-asserting as the MLAG primary.
-8. `non_mlag` reload delay in seconds — used on standalone devices.
+1. The `custom_platform_settings` block overrides default settings for the matched platform.
+2. Exact match for `vEOS-lab` — takes priority over the built-in default entry.
+3. `mlag` reload delay in seconds — how long a rebooting device waits before re-asserting as the MLAG primary.
+4. `non_mlag` reload delay in seconds — used on standalone devices.
 
 ```cli title="htps-leaf1a MLAG configuration"
 --8<--
@@ -226,242 +215,83 @@ The `reload-delay mlag 180` and `reload-delay non-mlag 210` values come directly
 
 ### Assign Default MTU
 
-This example shows how to set a default MTU for the 7280R3 platform using `default_interface_mtu`.
+This example shows how to set a default MTU for different platforms using `default_interface_mtu`.
 
-```yaml title="group_vars/FABRIC/fabric.yml"
-custom_platform_settings:
-  - platforms:
-      - 7280R3 # (1)!
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    tcam_profile: vxlan-routing
-    default_interface_mtu: 9000 # (2)!
-
-  - platforms:
-      - 7280R2 # (3)!
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    default_interface_mtu: 9214
-
-  - platforms:
-      - 7280R.* # (4)!
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    tcam_profile: vxlan-routing
-    default_interface_mtu: 9000 # (5)!
-
-  - platforms:
-      - 7050X3 # (6)!
-    reload_delay:
-      mlag: 300
-      non_mlag: 330
-    default_interface_mtu: 9000 # (7)!
-    p2p_uplinks_mtu: 9214 # (8)!
+```yaml title="group_vars/HTPS/fabric.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTPS/fabric.yml:mtu
+--8<--
 ```
 
 1. Exact platform name match for 7280R3
 2. Set `default_interface_mtu` to 9000 — applies to all interfaces via EOS `interface defaults`
 3. Different platforms can have different default MTU values
-4. Use regex to match all 7280R variants (7280R, 7280R2, 7280R3, etc.)
-5. All matching platforms will use MTU 9000 as default
-6. A second platform with both `default_interface_mtu` and `p2p_uplinks_mtu`
-7. `default_interface_mtu` sets the global default (configured under `interface defaults` in EOS)
-8. `p2p_uplinks_mtu` sets MTU specifically for point-to-point uplink interfaces (overrides default)
+4. A second platform with both `default_interface_mtu` and `p2p_uplinks_mtu`
+5. `default_interface_mtu` sets the global default (configured under `interface defaults` in EOS)
+6. `p2p_uplinks_mtu` sets MTU specifically for point-to-point uplink interfaces (overrides default)
 
 ### TCAM Profile
 
 This example shows platform settings for devices requiring TCAM profiles.
 
-```yaml title="group_vars/FABRIC/fabric.yml"
-custom_platform_settings:
-  - platforms:
-      - 7280R
-      - 7280R2
-      - 7020R
-    lag_hardware_only: true
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    tcam_profile: vxlan-routing
-    feature_support:
-      private_vlan: false
-      queue_monitor_length_notify: true
-      interface_storm_control: true
-    digital_twin:
-      platform: vEOS-lab
-      act_node_type: veos
-
-  - platforms:
-      - 7280R3
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    tcam_profile: vxlan-routing
-    feature_support:
-      evpn_gateway_all_active_multihoming: true
-      private_vlan: false
-      queue_monitor_length_notify: true
-    digital_twin:
-      platform: vEOS-lab
+```yaml title="group_vars/HTPS/fabric.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTPS/fabric.yml:tcam
+--8<--
 ```
 
 ### Hardware Validation
 
-This example shows comprehensive hardware validation requirements.
+Hardware validation checks the physical hardware inventory of each device. Set `feature_support.hardware_validation` to `true` in the platform settings to enable it. The actual validation thresholds (minimum power supplies, fans, supervisors, transceiver manufacturers) are configured separately under `validation_profiles` at the fabric level.
 
-```yaml title="group_vars/FABRIC/fabric.yml"
-custom_platform_settings:
-  - platforms:
-      - 7280R3
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    tcam_profile: vxlan-routing
-    feature_support:
-      evpn_gateway_all_active_multihoming: true
-      private_vlan: false
-    validate_hardware:
-      enabled: true
-      min_power_supplies: 2
-      min_fans: 4
-      min_supervisors: 1
-      transceiver_manufacturers:
-        - Arista Networks
-        - Approved Vendor
-
-  - platforms:
-      - vEOS.*
-      - cEOS.*
-    feature_support:
-      bgp_update_wait_for_convergence: false
-      bgp_update_wait_install: false
-      interface_storm_control: false
-      queue_monitor_length_notify: false
-    reload_delay:
-      mlag: 300
-      non_mlag: 330
-    validate_hardware:
-      enabled: false
-    digital_twin:
-      act_node_type: veos
+```yaml title="group_vars/HTPS/fabric.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTPS/fabric.yml:hardware_validation
+--8<--
 ```
+
+1. Enables hardware validation for this platform. Configure thresholds under `validation_profiles`.
 
 ### Platform with Structured Config
 
-This example shows how to apply platform-specific structured configuration.
+This example shows how to apply platform-specific structured configuration using the `structured_config` key to inject EOS CLI configuration directly.
 
-```yaml title="group_vars/FABRIC/fabric.yml"
-custom_platform_settings:
-  - platforms:
-      - 7280R.*
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    tcam_profile: vxlan-routing
-    structured_config:
-      hardware:
-        access_list:
-          mechanism: tcam
-        counter:
-          default:
-            per_interface_ingress: true
-      platform:
-        sand:
-          lag:
-            hardware_only: true
-
-  - platforms:
-      - 720XP
-    management_interface: Management0
-    feature_support:
-      poe: true
-    reload_delay:
-      mlag: 300
-      non_mlag: 330
-    structured_config:
-      qos:
-        map:
-          cos:
-            - from: 0
-              to: 1
-            - from: 1
-              to: 0
-      priority_flow_control:
-        enabled: true
-        priorities:
-          - priority: 3
-            no_drop: true
+```yaml title="group_vars/HTPS/fabric.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTPS/fabric.yml:structured_config
+--8<--
 ```
 
 ## Common Patterns
 
-### Pattern 1: Regex Platform Matching
+### Pattern 1: Digital Twin Configuration
 
-Match multiple platform variants with regex:
+Configure platforms to run AVD against virtual devices instead of physical hardware:
 
-```yaml
-custom_platform_settings:
-  - platforms:
-      - 7280R.*  # Matches 7280R, 7280R2, 7280R3
-    reload_delay:
-      mlag: 900
-      non_mlag: 1020
-    tcam_profile: vxlan-routing
+```yaml title="group_vars/HTPS/fabric.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTPS/fabric.yml:digital_twin
+--8<--
 ```
 
-### Pattern 2: Digital Twin Configuration
-
-Configure platforms for Digital Twin simulation:
-
-```yaml
-custom_platform_settings:
-  - platforms:
-      - 7050X3
-    reload_delay:
-      mlag: 300
-      non_mlag: 330
-    digital_twin:
-      platform: vEOS-lab  # Use vEOS-lab in Digital Twin mode
-      act_node_type: veos
-```
-
-### Pattern 3: Campus Platform with PoE
+### Pattern 2: Campus Platform with PoE
 
 Configure campus switches with PoE support:
 
-```yaml
-custom_platform_settings:
-  - platforms:
-      - 720XP
-      - 750
-      - 755
-    management_interface: Management0
-    feature_support:
-      poe: true
-      queue_monitor_length_notify: false
-    reload_delay:
-      mlag: 300
-      non_mlag: 330
+```yaml title="group_vars/HTPS/fabric.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTPS/fabric.yml:campus_poe
+--8<--
 ```
 
-### Pattern 4: Disable Features for Virtual Platforms
+### Pattern 3: Disable Features for Virtual Platforms
 
 Disable unsupported features on virtual platforms:
 
-```yaml
-custom_platform_settings:
-  - platforms:
-      - vEOS.*
-      - cEOS.*
-    feature_support:
-      bgp_update_wait_for_convergence: false
-      bgp_update_wait_install: false
-      interface_storm_control: false
-      queue_monitor_length_notify: false
-      hardware_validation: false
+```yaml title="group_vars/HTPS/fabric.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTPS/fabric.yml:virtual_features
+--8<--
 ```
 
 ## Troubleshooting
