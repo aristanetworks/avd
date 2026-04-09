@@ -82,19 +82,6 @@ ethernet_interfaces:
     peer_type: l3leaf
   switchport:
     enabled: false
-- name: Ethernet7
-  description: P2P_dc2-leaf4a.arista.com_Ethernet1
-  shutdown: false
-  mtu: 1500
-  ip_address: 10.255.255.128/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  metadata:
-    peer: dc2-leaf4a.arista.com
-    peer_interface: Ethernet1
-    peer_type: l3leaf
-  switchport:
-    enabled: false
 hostname: dc2-spine1
 ip_routing: true
 local_users:
@@ -193,12 +180,6 @@ router_bgp:
     metadata:
       peer: dc2-leaf3b.arista.com
     description: dc2-leaf3b.arista.com_Loopback0
-  - ip_address: 10.255.128.19
-    peer_group: EVPN-OVERLAY-PEERS
-    remote_as: '65204'
-    metadata:
-      peer: dc2-leaf4a.arista.com
-    description: dc2-leaf4a.arista.com_Loopback0
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -220,7 +201,6 @@ router_ospf:
     - Ethernet4
     - Ethernet5
     - Ethernet6
-    - Ethernet7
     max_lsa: 12000
     graceful_restart:
       enabled: true

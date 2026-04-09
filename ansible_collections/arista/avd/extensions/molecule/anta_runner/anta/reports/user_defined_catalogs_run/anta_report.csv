@@ -77,9 +77,6 @@ dc2-leaf3b.arista.com,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr ver
 dc2-leaf3c,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf3c,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf3c,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc2-leaf4a.arista.com,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc2-leaf4a.arista.com,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc2-leaf4a.arista.com,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
 dc2-spine1,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-spine1,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-spine1,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
