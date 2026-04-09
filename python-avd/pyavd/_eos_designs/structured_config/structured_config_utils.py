@@ -46,6 +46,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         self.parent_interfaces_tracker = ParentInterfacesTracker()
         """Tracker for parent interfaces that need to be created for subinterfaces."""
 
+    @run_once_method
     def set_once_route_map_mlag_peer_in(self) -> None:
         """
         Set route-map RM-MLAG-PEER-IN.
