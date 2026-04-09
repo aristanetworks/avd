@@ -43,7 +43,7 @@ spine:
           enabled: true
           description: "{main_interface_wan_carrier}"
           ip_address: 192.168.44.45/24
-        - # IPv6 addresses on an uplink for BGP connectivity
+        - # IPv6 addresses on L3 interface
           name: Ethernet46
           ip_address: 192.168.46.1/31
           ipv6_addresses:
