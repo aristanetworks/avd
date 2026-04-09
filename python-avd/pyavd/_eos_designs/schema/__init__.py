@@ -19543,12 +19543,78 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"interface_defaults": {"type": InterfaceDefaults}, "arp": {"type": Arp}, "ip_icmp_redirect": {"type": bool}}
+        class DhcpRelay(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "information_option": {"type": bool, "default": False},
+                "tunnel_requests_disabled": {"type": bool, "default": False},
+                "mlag_peerlink_requests_disabled": {"type": bool, "default": False},
+            }
+            information_option: bool
+            """
+            Enables the insertion of DHCP Relay Agent Information (Option 82).
+
+            Default value: `False`
+            """
+            tunnel_requests_disabled: bool
+            """
+            Blocks DHCP relay for packets received over VXLAN tunnels.
+            This is a VTEP-specific optimization and
+            will only be configured on VXLAN VTEPs.
+
+            Default value: `False`
+            """
+            mlag_peerlink_requests_disabled: bool
+            """
+            Blocks DHCP relay for packets arriving via the MLAG peer-link.
+            This will only be configured on VXLAN
+            VTEPs which are also MLAG devices.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    information_option: bool | UndefinedType = Undefined,
+                    tunnel_requests_disabled: bool | UndefinedType = Undefined,
+                    mlag_peerlink_requests_disabled: bool | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DhcpRelay.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        information_option: Enables the insertion of DHCP Relay Agent Information (Option 82).
+                        tunnel_requests_disabled:
+                           Blocks DHCP relay for packets received over VXLAN tunnels.
+                           This is a VTEP-specific optimization and
+                           will only be configured on VXLAN VTEPs.
+                        mlag_peerlink_requests_disabled:
+                           Blocks DHCP relay for packets arriving via the MLAG peer-link.
+                           This will only be configured on VXLAN
+                           VTEPs which are also MLAG devices.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "interface_defaults": {"type": InterfaceDefaults},
+            "arp": {"type": Arp},
+            "ip_icmp_redirect": {"type": bool},
+            "dhcp_relay": {"type": DhcpRelay},
+        }
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
         arp: Arp
         """Subclass of AvdModel."""
         ip_icmp_redirect: bool | None
+        dhcp_relay: DhcpRelay
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -19558,6 +19624,7 @@ class EosDesigns(EosDesignsRootModel):
                 interface_defaults: InterfaceDefaults | UndefinedType = Undefined,
                 arp: Arp | UndefinedType = Undefined,
                 ip_icmp_redirect: bool | None | UndefinedType = Undefined,
+                dhcp_relay: DhcpRelay | UndefinedType = Undefined,
             ) -> None:
                 """
                 GeneralSettings.
@@ -19569,6 +19636,7 @@ class EosDesigns(EosDesignsRootModel):
                     interface_defaults: Subclass of AvdModel.
                     arp: Subclass of AvdModel.
                     ip_icmp_redirect: ip_icmp_redirect
+                    dhcp_relay: Subclass of AvdModel.
 
                 """
 
