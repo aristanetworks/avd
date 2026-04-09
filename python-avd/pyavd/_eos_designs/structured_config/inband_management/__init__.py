@@ -30,8 +30,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             self._set_ip_virtual_router_mac_address()
             self._set_parent_vlans()
             self._set_parent_vlan_interfaces()
-            if self.shared_utils.inband_mgmt_vrf is not None:
-                self._set_vrfs()
+            self._set_vrfs()
             if self.shared_utils.inband_mgmt_vrf is None and self.shared_utils.underlay_bgp:
                 self._set_router_bgp()
                 if self.inputs.underlay_filter_redistribute_connected:
