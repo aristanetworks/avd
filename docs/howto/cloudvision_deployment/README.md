@@ -53,7 +53,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 8. Sysdb paths excluded from streaming to reduce load
 9. When `false` (default), TerminAttr uses AAA authorization and accounting
 
-### Generated TerminAttr Configuration
+**Generated TerminAttr Configuration**
 
 AVD generates the following `daemon TerminAttr` configuration on each device:
 
@@ -75,7 +75,7 @@ AVD generates the following `daemon TerminAttr` configuration on each device:
 
 The `-cvaddr` flag points to the CVaaS regional API server. The `-cvauth=token-secure` method uses a token file at `/tmp/cv-onboarding-token` that must be provisioned on each device before TerminAttr can connect.
 
-### Management Interface
+**Management Interface**
 
 TerminAttr streams over the management interface in VRF `MGMT`:
 
