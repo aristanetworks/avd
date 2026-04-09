@@ -25,6 +25,7 @@ errdisable:
       interval: 60
     - name: storm-control
       interval: 120
+    interval: 200
 hostname: errdisable-settings
 ip_igmp_snooping:
   globally_enabled: true

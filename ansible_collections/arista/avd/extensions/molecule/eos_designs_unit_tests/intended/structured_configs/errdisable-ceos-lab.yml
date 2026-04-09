@@ -9,8 +9,6 @@ errdisable:
     - link-change
     - acl
     - arp-inspection
-    - dot1x
-    - storm-control
   recovery:
     causes:
     - name: acl
@@ -19,12 +17,8 @@ errdisable:
       interval: 90
     - name: bpduguard
       interval: 300
-    - name: dot1x
-      interval: 60
     - name: link-flap
       interval: 60
-    - name: storm-control
-      interval: 120
 ethernet_interfaces:
 - name: Ethernet1
   description: P2P_errdisable-veos-lab_Ethernet2

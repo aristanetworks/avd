@@ -9,40 +9,17 @@ errdisable:
     - link-change
     - acl
     - arp-inspection
-    - dot1x
-    - error-correction-encoding
-    - hardware-speed-group
-    - port-breakout
-    - storm-control
-    - switchcard-unreachable
-    - transceiver-adapter
     - xcvr-misconfigured
     - xcvr-overheat
     - xcvr-power-unsupported
   recovery:
     causes:
-    - name: acl
-      interval: 60
     - name: arp-inspection
       interval: 90
     - name: bpduguard
       interval: 300
-    - name: dot1x
-      interval: 60
-    - name: error-correction-encoding
-      interval: 300
-    - name: hardware-speed-group
-      interval: 300
     - name: link-flap
       interval: 60
-    - name: port-breakout
-      interval: 300
-    - name: storm-control
-      interval: 120
-    - name: switchcard-unreachable
-      interval: 300
-    - name: transceiver-adapter
-      interval: 300
     - name: xcvr-misconfigured
       interval: 300
     - name: xcvr-overheat

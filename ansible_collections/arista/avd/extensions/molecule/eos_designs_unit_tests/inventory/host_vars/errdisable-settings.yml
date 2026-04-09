@@ -8,6 +8,7 @@ l2leaf:
       id: 42
 
 errdisable_settings:
+  recovery_interval: 200
   causes:
     acl:
       detection: true

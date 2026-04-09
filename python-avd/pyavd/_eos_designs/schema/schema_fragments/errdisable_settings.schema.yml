@@ -16,11 +16,19 @@ $defs:
       recovery_interval:
         type: int
         description: |-
-          Interval for recovery cause in seconds.
+          Interval for each recovery cause in seconds.
         min: 30
         max: 86400
         convert_types:
           - str
+  recovery_only:
+    type: dict
+    keys:
+      recovery:
+        type: bool
+      recovery_interval:
+        type: int
+        $ref: "eos_designs#/$defs/detect_and_recovery/keys/recovery_interval"
 keys:
   errdisable_settings:
     type: dict
@@ -32,6 +40,14 @@ keys:
       `platform_settings.feature_support.errdisable_causes.<cause>.detection` and
       `platform_settings.feature_support.errdisable_causes.<cause>.recovery`.
     keys:
+      recovery_interval:
+        type: int
+        description: |-
+          Interval for all recovery causes in seconds.
+        min: 30
+        max: 86400
+        convert_types:
+          - str
       causes:
         type: dict
         keys:
@@ -43,17 +59,7 @@ keys:
             $ref: "eos_designs#/$defs/detect_and_recovery"
           bpduguard:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"
           dot1x:
             type: dict
             $ref: "eos_designs#/$defs/detect_and_recovery"
@@ -74,17 +80,7 @@ keys:
             $ref: "eos_designs#/$defs/detect_and_recovery"
           hitless_reload_down:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"
           interface_speed:
             type: dict
             $ref: "eos_designs#/$defs/detect_and_recovery"
@@ -93,17 +89,7 @@ keys:
             $ref: "eos_designs#/$defs/detect_and_recovery"
           lacp_rate_limit:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"
           link_change:
             type: dict
             keys:
@@ -111,104 +97,34 @@ keys:
                 type: bool
           link_flap:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"
           no_internal_vlan:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"
           port_breakout:
             type: dict
             $ref: "eos_designs#/$defs/detect_and_recovery"
           portchannelguard:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"
           portsec:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"
           speed_misconfigured:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"
           storm_control:
             type: dict
             $ref: "eos_designs#/$defs/detect_and_recovery"
           stuck_queue:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"
           switchcard_unreachable:
             type: dict
             $ref: "eos_designs#/$defs/detect_and_recovery"
           tap_port_init:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"
           tapagg:
             type: dict
             $ref: "eos_designs#/$defs/detect_and_recovery"
@@ -217,17 +133,7 @@ keys:
             $ref: "eos_designs#/$defs/detect_and_recovery"
           uplink_failure_detection:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"
           xcvr_misconfigured:
             type: dict
             $ref: "eos_designs#/$defs/detect_and_recovery"
@@ -239,14 +145,4 @@ keys:
             $ref: "eos_designs#/$defs/detect_and_recovery"
           xcvr_unsupported:
             type: dict
-            keys:
-              recovery:
-                type: bool
-              recovery_interval:
-                type: int
-                description: |-
-                  Interval for recovery cause in seconds.
-                min: 30
-                max: 86400
-                convert_types:
-                  - str
+            $ref: "eos_designs#/$defs/recovery_only"

@@ -48,7 +48,7 @@ l3leaf:
       nodes:
         - name: errdisable-7280r
           id: 3
-          # Physical platform: all causes should pass through unfiltered.
+          # Physical platform: hardware causes (dot1x, storm-control, error-correction-encoding, etc.) filtered by platform_settings.
           platform: 7280R
           uplink_interfaces:
             - Ethernet1
