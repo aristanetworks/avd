@@ -43,15 +43,12 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 --8<--
 ```
 
-1. Fabric name shared by all devices in the topology
-2. eBGP underlay routing protocol
-3. eBGP overlay routing protocol
-4. The `cv_settings` key configures TerminAttr on all devices in the fabric
-5. Enable CloudVision-as-a-Service connectivity
-6. Cluster name used in the TerminAttr `-cvopt` flags
-7. CVaaS region - must match the region where your tenant is deployed. See the [regional URLs](#cvaas-regional-urls) table below
-8. Sysdb paths excluded from streaming to reduce load
-9. When `false` (default), TerminAttr uses AAA authorization and accounting
+1. The `cv_settings` key configures TerminAttr on all devices in the fabric
+2. Enable CloudVision-as-a-Service connectivity
+3. Cluster name used in the TerminAttr `-cvopt` flags
+4. CVaaS region - must match the region where your tenant is deployed. See the [regional URLs](#cvaas-regional-urls) table below
+5. Sysdb paths excluded from streaming to reduce load
+6. When `false` (default), TerminAttr uses AAA authorization and accounting
 
 **Generated TerminAttr Configuration**
 

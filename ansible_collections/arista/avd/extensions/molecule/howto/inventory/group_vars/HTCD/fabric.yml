@@ -2,18 +2,18 @@
 # CloudVision Deployment How-To Guide
 # Fabric-wide settings
 
-fabric_name: FABRIC # (1)!
+fabric_name: FABRIC
 
-underlay_routing_protocol: ebgp # (2)!
-overlay_routing_protocol: ebgp # (3)!
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp
 
 # CloudVision settings - configures TerminAttr on all devices
-cv_settings: # (4)!
+cv_settings: # (1)!
   cvaas:
-    enabled: true # (5)!
+    enabled: true # (2)!
     clusters:
-      - name: cvaas # (6)!
-        region: us-central1-a # (7)!
+      - name: cvaas # (3)!
+        region: us-central1-a # (4)!
   terminattr:
-    smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata" # (8)!
-    disable_aaa: false # (9)!
+    smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata" # (5)!
+    disable_aaa: false # (6)!
