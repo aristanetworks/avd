@@ -12,6 +12,8 @@ keys:
       shutdown:
         type: bool
       interval:
+        # TODO: AVD7.0 add min/max value(5 - 65535).
+        # EOS CLI shows 1-65535 but all values less than 5 are auto-converted to 5 seconds.
         type: int
         convert_types:
           - str
