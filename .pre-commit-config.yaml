@@ -3,7 +3,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   autoupdate_commit_msg: "CI: pre-commit autoupdate"
-  skip: [pyright]
+  skip: [pyright, codespell, j2lint, markdownlint-cli2, check-schema-tables-in-docs]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -178,26 +178,7 @@ repos:
     hooks:
       - id: codespell
         name: Check for common misspellings in text files.
-        entry: codespell
-        language: python
-        types: [text]
-        args:
-          - '--ignore-words=.github/ignore-codespell-words'  # Ignore words listed in this file
-        # List of regex patterns for files/directories to exclude
-        exclude: >
-          (?x)^(
-            .*\.cfg|  # Exclude all .cfg files
-            .*\.svg|  # Exclude all .svg files
-            .*\.excalidraw|  # Exclude all .excalidraw files
-            .*\.rst|  # Exclude all .rst files
-            ansible_collections/arista/avd/CHANGELOG.rst| # Exclude auto generated CHANGELOG.rst file
-            ansible_collections/arista/avd/changelogs/.*|  # Exclude all files in this directory
-            ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables
-            python-avd/pyavd/.*/schema/.*schema\.yml| # Exclude YAML schemas file
-            python-avd/pyavd/_cv/api/.*| # Exclude auto generated files for CV API
-            python-avd/pyavd/_cv/extra_cv_protos/.*| # Exclude extra CV proto files
-            docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
-          )$
+        args: [--config, .codespellrc]
 
   - repo: https://github.com/pdm-project/pdm
     rev: "2.26.7"
@@ -280,30 +261,8 @@ repos:
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
-        entry: development/find_missing_tables.py
-        language: python
-        args:
-          - --root-path
-          - "."
-          - --table-files
-          - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md"
-          - "ansible_collections/arista/avd/roles/eos_designs/docs/tables/*.md"
-          - "schemas/cv_deploy/docs/tables/*.md"
-          - --global-docs
-          - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md"
-          - "ansible_collections/arista/avd/roles/eos_designs/docs/*.md"
-          - "ansible_collections/arista/avd/roles/cv_deploy/README.md"
-          - --ignore-files
-          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-input-validation.md
-          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
-          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md
-          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md
-          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validation.md
-          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
-          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/removed-keys.md
-          - schemas/cv_deploy/docs/tables/metadata.md
-          # TODO: Remove once cv_deploy schema integration is complete.
-          - schemas/cv_deploy/docs/tables/cv_deploy.md
+        entry: python development/find_missing_tables.py @.find-missing-tables-args
+        language: system
         pass_filenames: false
 
       - id: sort-hosts-yml
@@ -336,5 +295,4 @@ repos:
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.github/.markdownlint.yaml`.
-        # TODO: Excluding anta-reports till we clear the errors in anta repo
-        exclude: ansible_collections/arista/avd/extensions/molecule/anta_runner/anta/reports
+        # Exclusions are configured in .markdownlint-cli2.yaml
