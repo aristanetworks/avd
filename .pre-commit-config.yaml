@@ -179,7 +179,6 @@ repos:
       - id: codespell
         name: Check for common misspellings in text files.
         args: [--config, .codespellrc]
-        pass_filenames: false
 
   - repo: https://github.com/pdm-project/pdm
     rev: "2.26.7"
