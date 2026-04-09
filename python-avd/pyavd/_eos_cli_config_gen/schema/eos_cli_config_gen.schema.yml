@@ -5926,6 +5926,8 @@ keys:
               vlan_inner:
                 type: bool
                 default: false
+                description: Both 'inner_vlan_number' and 'inner_vlan_mask' are required
+                  when migrating to the new keys.
                 deprecation:
                   warning: true
                   removed: false

@@ -19862,7 +19862,11 @@ class EosDesigns(EosDesignsRootModel):
             ttl_match: TtlMatch
             """Default value: `"eq"`"""
             vlan_inner: bool
-            """Default value: `False`"""
+            """
+            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when migrating to the new keys.
+
+            Default value: `False`
+            """
             source_ports_match: SourcePortsMatch
             """Default value: `"eq"`"""
             source_ports: SourcePorts
@@ -19957,7 +19961,7 @@ class EosDesigns(EosDesignsRootModel):
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match
-                        vlan_inner: vlan_inner
+                        vlan_inner: Both 'inner_vlan_number' and 'inner_vlan_mask' are required when migrating to the new keys.
                         source_ports_match: source_ports_match
                         source_ports: Subclass of AvdList with `str` items.
                         destination_ports_match: destination_ports_match
