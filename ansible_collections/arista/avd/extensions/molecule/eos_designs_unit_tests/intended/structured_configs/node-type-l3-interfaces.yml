@@ -86,6 +86,21 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
+- name: Ethernet46
+  description: peer4_Ethernet1
+  shutdown: false
+  ip_address: 192.168.46.1/31
+  ipv6_addresses:
+  - 2001:db8::1/64
+  - 2001:db8:1::1/64
+  metadata:
+    peer: peer4
+    peer_interface: Ethernet1
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
 hostname: node-type-l3-interfaces
 ip_routing: true
 loopback_interfaces:

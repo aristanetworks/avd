@@ -260,6 +260,8 @@ class EthernetInterfacesMixin(Protocol):
             speed=l3_interface.speed,
         )
         interface.metadata._update(peer_interface=l3_interface.peer_interface, peer_type="l3_interface")
+        interface.ipv6_addresses.extend(l3_interface.ipv6_addresses)
+
         if l3_interface.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
             interface.access_group_in = acl.name

@@ -12822,6 +12822,14 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
+        ipv6_addresses:
+          type: list
+          description: 'List of IPv6 addresses assigned to the interface.
+
+            Each item must be an IPv6 address with prefix length, e.g., ''2001:db8::1/64''.'
+          items:
+            type: str
+            description: IPv6 address with prefix length.
         dhcp_ip:
           type: str
           description: 'When the `ip_address` is `dhcp`, this optional field allows
