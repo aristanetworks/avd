@@ -14,7 +14,7 @@ This guide covers four topology scales — **Small**, **Medium**, **Large**, and
 
 ### When to Think About Inventory Organisation
 
-- When adding a second data centre to an existing single-DC fabric
+- When adding a second data center to an existing single-DC fabric
 - When a single `group_vars/all.yml` file has grown beyond a few hundred lines
 - When multiple teams need to manage different parts of the same inventory
 - When you want to reuse common settings (default interfaces, BGP policies) across groups
@@ -105,7 +105,7 @@ default_node_types:
 
 ## Medium Topology
 
-A Medium topology is the most common AVD deployment: one data centre, 2 spines, and multiple MLAG leaf pairs. At this scale, split variables across **one file per purpose** within each group folder. This makes it easy to find and modify fabric settings, interface assignments, and node definitions independently.
+A Medium topology is the most common AVD deployment: one data center, two spines, and multiple MLAG leaf pairs. At this scale, split variables across **one file per purpose** within each group folder. This makes it easy to find and modify fabric settings, interface assignments, and node definitions independently.
 
 **Typical layout:**
 
@@ -122,7 +122,7 @@ inventory/
         └── l3_leafs.yml          # Leaf node groups and defaults
 ```
 
-The example below shows a medium-scale topology: 2 spines and 2 MLAG leaf pairs (4 leafs total).
+The example below shows a medium-scale topology: two spines and two MLAG leaf pairs (four leafs total).
 
 ```yaml title="hosts.yml"
 ---
@@ -179,7 +179,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 --8<--
 ```
 
-1. Platform controls which EOS features are available. Use `vEOS-lab` for virtual topologies.
+1. Platform controls which EOS features are available. Use `cEOSLab` for virtual topologies.
 2. All spine loopbacks are allocated from this pool sequentially by node `id`.
 3. All spines share one BGP AS in an eBGP spine-leaf design.
 4. Each entry defines one spine. The `id` drives IP allocation and loopback numbering.
@@ -217,7 +217,7 @@ The `domain-id` matches the `group` name from `node_groups`, and the peer addres
 
 ## Large Topology
 
-A Large topology typically spans one or two data centres with 50–200 nodes. Add a **DC-level group** in the inventory hierarchy to isolate per-DC settings, and split node variables further — for example, separating network services from node definitions.
+A Large topology typically spans one or two data centers with 50–200 nodes. Add a **DC-level group** in the inventory hierarchy to isolate per-DC settings, and split node variables further — for example, separating network services from node definitions.
 
 **Typical layout:**
 
@@ -283,7 +283,7 @@ all:
 
 ## XL Topology
 
-An XL topology covers 200+ nodes across three or more data centres, often with a pod structure. At this scale, introduce **per-DC inventory directories** so that each DC can be managed and tested independently.
+An XL topology covers 200+ nodes across three or more data centers, often with a pod structure. At this scale, introduce **per-DC inventory directories** so that each DC can be managed and tested independently.
 
 **Typical layout:**
 
@@ -320,6 +320,25 @@ Ansible merges all specified inventory directories, making groups from each DC v
 
 !!! warning "AVD limitation"
     Each AVD run processes one `fabric_name` group. If you split inventories across DCs, run AVD once per DC using `-i inventory/dc1` etc., or use a single merged inventory with a shared `FABRIC` group that spans all DCs.
+
+**Running playbooks against specific inventories:**
+
+Target a single DC by passing its inventory directory explicitly:
+
+```bash
+ansible-playbook playbooks/build.yml -i inventory/dc1
+```
+
+Alternatively, use a `target_hosts` variable in your playbook's `hosts:` field to select groups at runtime without changing the playbook:
+
+```yaml title="playbooks/build.yml"
+- name: Build fabric configs
+  hosts: "{{ target_hosts | default('FABRIC') }}"
+```
+
+```bash
+ansible-playbook playbooks/build.yml -i inventory/dc1 -e target_hosts=DC1
+```
 
 ## Best Practices
 
