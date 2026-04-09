@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: refs/tags/${{ inputs.tag || github.ref_name }}
+          ref: refs/tags/${{ inputs.tag || github.event.release.tag_name }}
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v6
@@ -33,6 +33,6 @@ jobs:
         working-directory: python-avd
 
       - name: Upload schemas.json.gz to release
-        run: gh release upload ${{ inputs.tag || github.ref_name }} python-avd/pyavd/_schema/schemas.json.gz
+        run: gh release upload ${{ inputs.tag || github.event.release.tag_name }} python-avd/pyavd/_schema/schemas.json.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
