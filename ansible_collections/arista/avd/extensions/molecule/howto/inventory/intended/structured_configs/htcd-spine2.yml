@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 daemon_terminattr:
   cvaddrs:
-  - apiserver.cv-prod-us-central1-b.arista.io:443
+  - apiserver.cv-prod-us-central1-a.arista.io:443
   cvauth:
     method: token-secure
     token_file: /tmp/cv-onboarding-token

@@ -176,7 +176,7 @@ The deployment workflow uses two plays: one to generate configurations, and one 
 4. Reference the token in your playbook using Ansible Vault:
 
 ```yaml title="group_vars/FABRIC/cv_deploy.yml"
-cv_server: www.arista.io
+cv_server: www.cv-prod-euwest-2.arista.io
 cv_token: "{{ vault_cv_token }}" # (1)!
 cv_verify_certs: true # (2)!
 ```

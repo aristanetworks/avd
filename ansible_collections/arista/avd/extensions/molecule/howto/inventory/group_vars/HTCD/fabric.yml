@@ -13,7 +13,7 @@ cv_settings: # (4)!
     enabled: true # (5)!
     clusters:
       - name: cvaas # (6)!
-        region: us-central1-b # (7)!
+        region: us-central1-a # (7)!
   terminattr:
     smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata" # (8)!
     disable_aaa: false # (9)!
