@@ -5,5 +5,5 @@
 #}
 {# eos - ip host #}
 {% for ip_host in ip_hosts | arista.avd.natural_sort(sort_key='hostname', ignore_case=false) %}
-ip host {{ ip_host.hostname }} {{ ip_host.ipv4_address }}
+ip host {{ ip_host.hostname }} {{ ip_host.ipv4_addresses | arista.avd.natural_sort | join(" ") }}
 {% endfor %}

@@ -9,12 +9,14 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>ip_hosts</samp>](## "ip_hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;hostname</samp>](## "ip_hosts.[].hostname") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_address</samp>](## "ip_hosts.[].ipv4_address") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_addresses</samp>](## "ip_hosts.[].ipv4_addresses") | List, items: String | Required |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ip_hosts.[].ipv4_addresses.[]") | String |  |  |  |  |
 
 === "YAML"
 
     ```yaml
     ip_hosts:
       - hostname: <str; required; unique>
-        ipv4_address: <str; required>
+        ipv4_addresses: # >=1 items; required
+          - <str>
     ```

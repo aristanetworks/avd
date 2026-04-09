@@ -16024,13 +16024,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class IpHostsItem(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"hostname": {"type": str}, "ipv4_address": {"type": str}}
+        class Ipv4Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv4Addresses._item_type = str
+
+        _fields: ClassVar[dict] = {"hostname": {"type": str}, "ipv4_addresses": {"type": Ipv4Addresses}}
         hostname: str
-        ipv4_address: str
+        ipv4_addresses: Ipv4Addresses
+        """Subclass of AvdList with `str` items."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, hostname: str | UndefinedType = Undefined, ipv4_address: str | UndefinedType = Undefined) -> None:
+            def __init__(self, *, hostname: str | UndefinedType = Undefined, ipv4_addresses: Ipv4Addresses | UndefinedType = Undefined) -> None:
                 """
                 IpHostsItem.
 
@@ -16039,7 +16045,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     hostname: hostname
-                    ipv4_address: ipv4_address
+                    ipv4_addresses: Subclass of AvdList with `str` items.
 
                 """
 

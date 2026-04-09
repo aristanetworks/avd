@@ -14,6 +14,9 @@ keys:
       keys:
         hostname:
           type: str
-        ipv4_address:
-          type: str
+        ipv4_addresses:
+          type: list
           required: true
+          min_length: 1
+          items:
+            type: str
