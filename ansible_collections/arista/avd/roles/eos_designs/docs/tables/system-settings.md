@@ -131,6 +131,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;aging</samp>](## "general_settings.arp.aging") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout_default</samp>](## "general_settings.arp.aging.timeout_default") | Integer |  |  | Min: 60<br>Max: 65535 | Timeout in seconds. |
     | [<samp>&nbsp;&nbsp;ip_icmp_redirect</samp>](## "general_settings.ip_icmp_redirect") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;dhcp_relay</samp>](## "general_settings.dhcp_relay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;information_option</samp>](## "general_settings.dhcp_relay.information_option") | Boolean |  | `False` |  | Enables the insertion of DHCP Relay Agent Information (Option 82). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tunnel_requests_disabled</samp>](## "general_settings.dhcp_relay.tunnel_requests_disabled") | Boolean |  | `False` |  | Blocks DHCP relay for packets received over VXLAN tunnels.<br>This is a VTEP-specific optimization and will only be configured on VXLAN VTEPs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peerlink_requests_disabled</samp>](## "general_settings.dhcp_relay.mlag_peerlink_requests_disabled") | Boolean |  | `False` |  | Blocks DHCP relay for packets arriving via the MLAG peer-link.<br>This will only be configured on VXLAN VTEPs which are also MLAG devices. |
     | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  | This data model allows to configure the list of hardware counters feature<br>available on Arista platforms.<br><br>The `name` key accepts a list of valid_values which MUST be updated to support<br>new feature as they are released in EOS.<br><br>The available values of the different keys like 'direction' or 'address_type'<br>are feature and hardware dependent and this model DOES NOT validate that the<br>combinations are valid. It is the responsibility of the user of this data model<br>to make sure that the rendered CLI is accepted by the targeted device.<br><br>Examples:<br><br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: ip<br>          direction: out<br>          layer3: true<br>          units_packets: true<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature ip out layer3 units packets<br>    ```<br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: route<br>          address_type: ipv4<br>          vrf: test<br>          prefix: 192.168.0.0/24<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature route ipv4 vrf test 192.168.0.0/24<br>    ```<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "hardware_counters.features.[].name") | String | Required |  | Valid Values:<br>- <code>acl</code><br>- <code>decap-group</code><br>- <code>directflow</code><br>- <code>ecn</code><br>- <code>flow-spec</code><br>- <code>gre tunnel interface</code><br>- <code>ip</code><br>- <code>mpls interface</code><br>- <code>mpls lfib</code><br>- <code>mpls tunnel</code><br>- <code>multicast</code><br>- <code>nexthop</code><br>- <code>pbr</code><br>- <code>pdp</code><br>- <code>policing interface</code><br>- <code>qos</code><br>- <code>qos dual-rate-policer</code><br>- <code>route</code><br>- <code>routed-port</code><br>- <code>segment-security</code><br>- <code>subinterface</code><br>- <code>tapagg</code><br>- <code>traffic-class</code><br>- <code>traffic-policy</code><br>- <code>traffic-policy vlan-interface</code><br>- <code>vlan</code><br>- <code>vlan-interface</code><br>- <code>vni decap</code><br>- <code>vni encap</code><br>- <code>vtep decap</code><br>- <code>vtep encap</code> |  |
@@ -368,6 +372,18 @@
           # Timeout in seconds.
           timeout_default: <int; 60-65535>
       ip_icmp_redirect: <bool>
+      dhcp_relay:
+
+        # Enables the insertion of DHCP Relay Agent Information (Option 82).
+        information_option: <bool; default=False>
+
+        # Blocks DHCP relay for packets received over VXLAN tunnels.
+        # This is a VTEP-specific optimization and will only be configured on VXLAN VTEPs.
+        tunnel_requests_disabled: <bool; default=False>
+
+        # Blocks DHCP relay for packets arriving via the MLAG peer-link.
+        # This will only be configured on VXLAN VTEPs which are also MLAG devices.
+        mlag_peerlink_requests_disabled: <bool; default=False>
     hardware_counters:
 
       # This data model allows to configure the list of hardware counters feature
