@@ -85,6 +85,22 @@ docs/howto/cloudvision_deployment/artifacts/htcd-leaf1a-management.cfg
 --8<--
 ```
 
+### CVaaS Regional URLs
+
+| Region | URL |
+| -------------- | --------------------------------------- |
+| United States 1a | `www.arista.io` |
+| United States 1b | `www.cv-prod-us-central1-b.arista.io` |
+| United States 1c | `www.cv-prod-us-central1-c.arista.io` |
+| Canada | `www.cv-prod-na-northeast1-b.arista.io` |
+| Europe West 2 | `www.cv-prod-euwest-2.arista.io` |
+| Japan | `www.cv-prod-apnortheast-1.arista.io` |
+| Australia | `www.cv-prod-ausoutheast-1.arista.io` |
+| United Kingdom | `www.cv-prod-uk-1.arista.io` |
+
+!!! warning
+    URLs **must** include the `www` prefix. For example, use `www.arista.io`, not `arista.io`.
+
 ### On-Premises CloudVision
 
 For on-premises CloudVision clusters, use `onprem_clusters` instead of `cvaas`:
@@ -105,22 +121,6 @@ cv_settings:
 1. CloudVision server IP address (IP is recommended over FQDN for image transfers)
 2. gRPC port (default: 9910)
 3. Path to the authentication token file on the device
-
-### CVaaS Regional URLs
-
-| Region | URL |
-| -------------- | --------------------------------------- |
-| United States 1a | `www.arista.io` |
-| United States 1b | `www.cv-prod-us-central1-b.arista.io` |
-| United States 1c | `www.cv-prod-us-central1-c.arista.io` |
-| Canada | `www.cv-prod-na-northeast1-b.arista.io` |
-| Europe West 2 | `www.cv-prod-euwest-2.arista.io` |
-| Japan | `www.cv-prod-apnortheast-1.arista.io` |
-| Australia | `www.cv-prod-ausoutheast-1.arista.io` |
-| United Kingdom | `www.cv-prod-uk-1.arista.io` |
-
-!!! warning
-    URLs **must** include the `www` prefix. For example, use `www.arista.io`, not `arista.io`.
 
 ## Deploying with cv_deploy
 
