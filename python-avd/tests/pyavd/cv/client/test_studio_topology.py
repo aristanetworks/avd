@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
-async def test_decommission_devices_success(caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
+async def test_stage_devices_for_decommission_success(caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
     """
     Test successful decommissioning of two actively streaming devices onboarded to I&T studio.
 
@@ -62,15 +62,17 @@ async def test_decommission_devices_success(caplog: pytest.LogCaptureFixture, cv
 
     with caplog.at_level(DEBUG):
         # Initiate decommissioning of two test devices. This triggers backend operations (checks, etc) on CloudVision
-        decommission_devices_response = await cv_client.decommission_devices(workspace_id=workspace.id, device_ids=target_devices)
-        # decommission_devices method returns only failed responses
-        assert len(decommission_devices_response) == 0
+        stage_devices_for_decommission_response = await cv_client.stage_devices_for_decommission(workspace_id=workspace.id, device_ids=target_devices)
+        # stage_devices_for_decommission method returns only failed responses
+        assert len(stage_devices_for_decommission_response) == 0
 
         # Subscribe for decommissining updates. They all must succeed prior to next steps (building Workspace, submitting Workspace)
-        wait_for_decommission_devices_response = await cv_client.wait_for_devices_decommission(workspace_id=workspace.id, device_ids=target_devices)
+        wait_for_stage_devices_for_decommission_response = await cv_client.wait_to_stage_devices_for_decommission(
+            workspace_id=workspace.id, device_ids=target_devices
+        )
 
-    assert len(wait_for_decommission_devices_response) == len(target_devices)
-    for response in wait_for_decommission_devices_response:
+    assert len(wait_for_stage_devices_for_decommission_response) == len(target_devices)
+    for response in wait_for_stage_devices_for_decommission_response:
         assert response.key.device_id in target_devices
         assert response.key.workspace_id == workspace_id
         assert not response.error
@@ -79,7 +81,7 @@ async def test_decommission_devices_success(caplog: pytest.LogCaptureFixture, cv
     assert any(
         re.search(
             re.compile(
-                r"wait_for_devices_decommission: Got decommission update: Decommission\(key=DeviceKey\(device_id=None\), "
+                r"wait_to_stage_devices_for_decommission: Got decommission staging update: Decommission\(key=DeviceKey\(device_id=None\), "
                 r"status=DecommissionStatus.UNSPECIFIED\)"
             ),
             str(record.message),
@@ -91,7 +93,7 @@ async def test_decommission_devices_success(caplog: pytest.LogCaptureFixture, cv
     for target_device in target_devices:
         assert any(
             re.search(
-                re.compile(f"wait_for_devices_decommission: Decommissioning of device {target_device} succeeded"),
+                re.compile(f"wait_to_stage_devices_for_decommission: Staging device {target_device} for decommission succeeded"),
                 str(record.message),
             )
             for record in caplog.records
@@ -100,7 +102,7 @@ async def test_decommission_devices_success(caplog: pytest.LogCaptureFixture, cv
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
-async def test_decommission_devices_wait_for_failure(caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
+async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
     """
     Test unsuccessful decommissioning of four devices where issues are faced when subscribing for decomm staging updates.
 
@@ -145,8 +147,8 @@ async def test_decommission_devices_wait_for_failure(caplog: pytest.LogCaptureFi
     """
     target_devices = ["device_one_id_ok", "device_two_id_failure", "device_three_id_unspecified", "device_four_id_silent"]
     expected_exception_msg = (
-        "No decommission response received for the following devices: {'device_four_id_silent'}. "
-        "Non-success decommission response received for the following devices:.*"
+        "No decommission staging response received for the following devices: {'device_four_id_silent'}. "
+        "Non-success decommission staging response received for the following devices:.*"
         "'device_two_id_failure':.*status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'.*"
         "'device_three_id_unspecified':.*status=DecommissionStatus.UNSPECIFIED, error=''.*"
     )
@@ -158,19 +160,19 @@ async def test_decommission_devices_wait_for_failure(caplog: pytest.LogCaptureFi
 
     with caplog.at_level(DEBUG):
         # Initiate decommissioning of four test devices. This triggers backend operations (checks, etc) on CloudVision
-        decommission_devices_response = await cv_client.decommission_devices(workspace_id=workspace.id, device_ids=target_devices)
-        # decommission_devices method returns only failed responses
-        assert len(decommission_devices_response) == 0
+        stage_devices_for_decommission_response = await cv_client.stage_devices_for_decommission(workspace_id=workspace.id, device_ids=target_devices)
+        # stage_devices_for_decommission method returns only failed responses
+        assert len(stage_devices_for_decommission_response) == 0
 
         with pytest.raises(CVDeviceDecommissionFailed, match=expected_exception_msg):
             # Subscribe for decommissining updates.
-            _ = await cv_client.wait_for_devices_decommission(workspace_id=workspace.id, device_ids=target_devices)
+            _ = await cv_client.wait_to_stage_devices_for_decommission(workspace_id=workspace.id, device_ids=target_devices)
 
     # Assert that initial INITIAL_SYNC_COMPLETE is received and logged
     assert any(
         re.search(
             re.compile(
-                r"wait_for_devices_decommission: Got decommission update: Decommission\(key=DeviceKey\(device_id=None\), "
+                r"wait_to_stage_devices_for_decommission: Got decommission staging update: Decommission\(key=DeviceKey\(device_id=None\), "
                 r"status=DecommissionStatus.UNSPECIFIED\)"
             ),
             str(record.message),
@@ -181,7 +183,7 @@ async def test_decommission_devices_wait_for_failure(caplog: pytest.LogCaptureFi
     # Assert that DecommissionStatus.SUCCESS is received and logged for the first device
     assert any(
         re.search(
-            re.compile("wait_for_devices_decommission: Decommissioning of device device_one_id_ok succeeded"),
+            re.compile("wait_to_stage_devices_for_decommission: Staging device device_one_id_ok for decommission succeeded"),
             str(record.message),
         )
         for record in caplog.records
@@ -191,7 +193,7 @@ async def test_decommission_devices_wait_for_failure(caplog: pytest.LogCaptureFi
     assert any(
         re.search(
             re.compile(
-                "wait_for_devices_decommission: Decommissioning of device device_two_id_failure reached non-success terminal status FAILURE.*"
+                "wait_to_stage_devices_for_decommission: Staging device device_two_id_failure for decommission reached non-success terminal status FAILURE.*"
                 "status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'"
             ),
             str(record.message),
@@ -203,7 +205,7 @@ async def test_decommission_devices_wait_for_failure(caplog: pytest.LogCaptureFi
     assert any(
         re.search(
             re.compile(
-                "wait_for_devices_decommission: Got decommission update:.*"
+                "wait_to_stage_devices_for_decommission: Got decommission staging update:.*"
                 "device_id='device_three_id_unspecified'.*status=DecommissionStatus.UNSPECIFIED, error=''"
             ),
             str(record.message),

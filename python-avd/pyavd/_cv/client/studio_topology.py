@@ -37,14 +37,14 @@ class StudioTopologyMixin(Protocol):
 
     @LimitCvVersion(min_ver="2025.1.0")
     @GRPCRequestHandler(list_field="device_ids", check_bulk_response_errors=True)
-    async def decommission_devices(
+    async def stage_devices_for_decommission(
         self: CVClientProtocol,
         workspace_id: str,
         device_ids: list[str] | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[tuple[DeviceKey, str]]:
         """
-        Decommission devices using arista.studio_topology.v1.DecommissionConfigService.SetSome API.
+        Stage devices for decommission using arista.studio_topology.v1.DecommissionConfigService.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
@@ -52,7 +52,7 @@ class StudioTopologyMixin(Protocol):
             timeout: Timeout in seconds.
 
         Returns:
-            List of (<DeviceKey>, <gRPC error message>) tuples for devices that failed to be decommissioned due to encountered gRPC error.
+            List of (<DeviceKey>, <gRPC error message>) tuples for devices that failed to be staged for decommission due to encountered CloudVision error(s).
         """
         request = DecommissionConfigSetSomeRequest(
             values=[DecommissionConfig(key=DeviceKey(device_id=device_id, workspace_id=workspace_id)) for device_id in device_ids]
@@ -64,14 +64,14 @@ class StudioTopologyMixin(Protocol):
 
     @LimitCvVersion(min_ver="2025.1.0")
     @GRPCRequestHandler()
-    async def wait_for_devices_decommission(
+    async def wait_to_stage_devices_for_decommission(
         self: CVClientProtocol,
         workspace_id: str,
         device_ids: list[str] | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[Decommission]:
         """
-        Monitor decommissioning of devices using arista.studio_topology.v1.DecommissionService.Subscribe API.
+        Wait for staging of the devices for decommissioning to succeed using arista.studio_topology.v1.DecommissionService.Subscribe API.
 
         Block until all Decommission operations reach SUCCESS status, Stream is closed or timed out.
 
@@ -106,7 +106,7 @@ class StudioTopologyMixin(Protocol):
                 latest_per_device_nonsuccess_response.pop(device_id, None)
                 successful_responses.append(response.value)
                 LOGGER.debug(
-                    "wait_for_devices_decommission: Decommissioning of device %s succeeded: %s",
+                    "wait_to_stage_devices_for_decommission: Staging device %s for decommission succeeded: %s",
                     device_id,
                     response.value,
                 )
@@ -116,7 +116,7 @@ class StudioTopologyMixin(Protocol):
                 remaining_device_ids.discard(device_id)
                 latest_per_device_nonsuccess_response[device_id] = response.value
                 LOGGER.debug(
-                    "wait_for_devices_decommission: Decommissioning of device %s reached non-success terminal status %s: %s",
+                    "wait_to_stage_devices_for_decommission: Staging device %s for decommission reached non-success terminal status %s: %s",
                     device_id,
                     current_status,
                     response.value,
@@ -124,7 +124,7 @@ class StudioTopologyMixin(Protocol):
             # Non-terminal status.
             # TODO: Figure out a way to test
             else:
-                LOGGER.debug("wait_for_devices_decommission: Got decommission update: %s", response.value)
+                LOGGER.debug("wait_to_stage_devices_for_decommission: Got decommission staging update: %s", response.value)
                 # Avoid tracking INITIAL_SYNC_COMPLETE update referencing no devices
                 if device_id:
                     latest_per_device_nonsuccess_response[device_id] = response.value
@@ -142,9 +142,9 @@ class StudioTopologyMixin(Protocol):
         if no_response_device_ids or latest_per_device_nonsuccess_response:
             msg_parts = []
             if no_response_device_ids:
-                msg_parts.append(f"No decommission response received for the following devices: {no_response_device_ids}.")
+                msg_parts.append(f"No decommission staging response received for the following devices: {no_response_device_ids}.")
             if latest_per_device_nonsuccess_response:
-                msg_parts.append(f"Non-success decommission response received for the following devices: {latest_per_device_nonsuccess_response}.")
+                msg_parts.append(f"Non-success decommission staging response received for the following devices: {latest_per_device_nonsuccess_response}.")
             raise CVDeviceDecommissionFailed(" ".join(msg_parts))
         # make ruff's RET503 happy
         return successful_responses
