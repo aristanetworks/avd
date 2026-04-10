@@ -111,7 +111,11 @@ def get_structured_config(
 
     # Create a single shared structured config utils instance for all structured config classes.
     structured_config_utils = StructuredConfigUtils(
+<<<<<<< eos_designs_run_once_method_refactoring
         structured_config=structured_config, custom_structured_configs=custom_structured_configs, inputs=inputs, shared_utils=shared_utils
+=======
+        structured_config=structured_config, inputs=inputs, shared_utils=shared_utils, custom_structured_configs=custom_structured_configs
+>>>>>>> devel
     )
 
     for cls in AVD_STRUCTURED_CONFIG_CLASSES:

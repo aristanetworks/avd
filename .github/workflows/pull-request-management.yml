@@ -38,6 +38,10 @@ jobs:
       - galaxy_importer
       - ansible_lint
       - test_pyavd
+      - codespell
+      - j2lint
+      - markdownlint
+      - check_schema_tables_in_docs
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -309,6 +313,8 @@ jobs:
           python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
+        env:
+          ANSIBLE_COLLECTIONS_ON_ANSIBLE_VERSION_MISMATCH: ignore
         run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -415,7 +421,7 @@ jobs:
           - ansibe_version: stable
             pip_installation: "ansible-core<2.21.0"
           - ansibe_version: devel
-            pip_installation: "--user https://github.com/ansible/ansible/archive/devel.tar.gz"
+            pip_installation: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
             skip_test: "--skip-test ansible-doc"
     steps:
       - uses: actions/checkout@v6
@@ -435,7 +441,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and Ansible requirements
         run: |
-          pip install  ${{ matrix.pip_installation }} "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+          pip install "${{ matrix.pip_installation }}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
       - name: Run ansible-test sanity
         working-directory: ansible_collections/arista/avd
         # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
@@ -602,6 +608,68 @@ jobs:
         working-directory: collections
         run: |
           ansible-lint --force-color --strict -v
+
+  # ----------------------------------- #
+  # Codespell
+  # ----------------------------------- #
+  codespell:
+    name: Check for common misspellings in text files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install codespell
+        run: pip install codespell==2.4.2
+      - name: Run codespell
+        run: codespell --config .codespellrc
+
+  # ----------------------------------- #
+  # j2lint
+  # ----------------------------------- #
+  j2lint:
+    name: Check for linting errors on Jinja2 files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install j2lint
+        run: pip install j2lint==1.2.0
+      - name: Run j2lint
+        run: j2lint .
+
+  # ----------------------------------- #
+  # markdownlint
+  # ----------------------------------- #
+  markdownlint:
+    name: Check for linting errors on Markdown files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install markdownlint-cli2
+        run: npm install markdownlint-cli2 --global
+      - name: Run markdownlint-cli2
+        # Exclusions are configured in .markdownlint-cli2.yaml
+        run: markdownlint-cli2 "**/*.md"
+      - name: Check GIT status
+        run: sh .github/check-git-status.sh
+
+  # ----------------------------------- #
+  # Check schema tables in docs
+  # ----------------------------------- #
+  check_schema_tables_in_docs:
+    name: Check for schema tables in documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Check for schema tables in documentation
+        run: python development/find_missing_tables.py @.find-missing-tables-args
 
   # ----------------------------------- #
   # Test of pyavd
