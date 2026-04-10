@@ -190,7 +190,6 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         router_bgp = self.structured_config.router_bgp
         shared_utils = self.shared_utils
 
-        # Only create the underlay peer group if the underlay is BGP or if we reuse the same peer-group from network services.
         bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
         self.set_mlag_peer_group(bgp_peer_group)
         if not shared_utils.underlay_ipv6_numbered:
