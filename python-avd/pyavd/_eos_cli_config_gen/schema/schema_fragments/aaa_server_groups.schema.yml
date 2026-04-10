@@ -33,3 +33,18 @@ keys:
                 description: VRF name.
                 convert_types:
                   - int
+              tls:
+                type: dict
+                description: TLS settings for the RADIUS group server. Only applicable when the parent server group type is 'radius'.
+                keys:
+                  enabled:
+                    type: bool
+                    description: Enable TLS to secure communication with the RADIUS group server.
+                    required: true
+                  port:
+                    type: int
+                    min: 0
+                    max: 65535
+                    convert_types:
+                      - str
+                    description: TCP port used for TLS-secured RADIUS communication. Overrides the default RadSec port (EOS default is 2083).
