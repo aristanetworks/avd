@@ -14,11 +14,8 @@ from typing import TYPE_CHECKING
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
-<<<<<<< eos_designs_run_once_method_refactoring
-from pyavd._utils.format_string import AvdStringFormatter
-=======
 from pyavd._utils import as_path_list_match_from_bgp_asns
->>>>>>> devel
+from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.run_once import RunOnceMethodStateHelper, run_once_method
 
 if TYPE_CHECKING:
@@ -35,15 +32,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
     """
 
     def __init__(
-<<<<<<< eos_designs_run_once_method_refactoring
-        self,
-        structured_config: EosCliConfigGen,
-        custom_structured_configs: StructCfgs,
-        inputs: EosDesigns,
-        shared_utils: SharedUtilsProtocol,
-=======
         self, structured_config: EosCliConfigGen, inputs: EosDesigns, shared_utils: SharedUtilsProtocol, custom_structured_configs: StructCfgs
->>>>>>> devel
     ) -> None:
         """Initialize the StructuredConfigUtils with a ParentInterfacesTracker instance and structured config instance."""
         super().__init__()
