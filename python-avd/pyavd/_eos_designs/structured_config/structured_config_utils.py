@@ -180,7 +180,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
     @run_once_method
     def set_once_mlag_peer_groups(self) -> None:
         """
-        Set router_bgp structured_config covering the MLAG peer_group(s) and associated address_family activations.
+        Set router_bgp structured_config covering the MLAG peer_group and associated address_family activations.
 
         This is called from MLAG in the case of BGP underlay routing protocol.
         """
