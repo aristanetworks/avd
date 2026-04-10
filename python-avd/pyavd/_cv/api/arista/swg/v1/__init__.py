@@ -167,8 +167,6 @@ class EndpointConfig(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class MetaResponse(aristaproto.Message):
-    """ """
-
     time: datetime = aristaproto.message_field(1)
     """
     Time holds the timestamp of the last item included in the metadata calculation.
@@ -190,8 +188,6 @@ class MetaResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigRequest(aristaproto.Message):
-    """ """
-
     key: "SwgKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a EndpointConfig instance to retrieve.
@@ -207,8 +203,6 @@ class EndpointConfigRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigResponse(aristaproto.Message):
-    """ """
-
     value: "EndpointConfig" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -226,12 +220,7 @@ class EndpointConfigResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["SwgKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -241,8 +230,6 @@ class EndpointConfigSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigSomeResponse(aristaproto.Message):
-    """ """
-
     value: "EndpointConfig" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -258,14 +245,10 @@ class EndpointConfigSomeResponse(aristaproto.Message):
     """
 
     time: datetime = aristaproto.message_field(3)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["EndpointConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -282,14 +265,14 @@ class EndpointConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each EndpointConfig at end.
-        * Each EndpointConfig response is fully-specified (all fields set).
-      * start: Returns the state of each EndpointConfig at start, followed by updates until now.
-        * Each EndpointConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each EndpointConfig at start, followed by updates
-        until end.
-        * Each EndpointConfig response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each EndpointConfig at end.
+    * Each EndpointConfig response is fully-specified (all fields set).
+    * start: Returns the state of each EndpointConfig at start, followed by updates until now.
+    * Each EndpointConfig response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each EndpointConfig at start, followed by updates
+    until end.
+    * Each EndpointConfig response at start is fully-specified, but updates until end may
+    be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -297,8 +280,6 @@ class EndpointConfigStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigStreamResponse(aristaproto.Message):
-    """ """
-
     value: "EndpointConfig" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -320,8 +301,6 @@ class EndpointConfigStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["EndpointConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -338,14 +317,14 @@ class EndpointConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each EndpointConfig at end.
-        * Each EndpointConfig response is fully-specified (all fields set).
-      * start: Returns the state of each EndpointConfig at start, followed by updates until now.
-        * Each EndpointConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each EndpointConfig at start, followed by updates
-        until end.
-        * Each EndpointConfig response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each EndpointConfig at end.
+    * Each EndpointConfig response is fully-specified (all fields set).
+    * start: Returns the state of each EndpointConfig at start, followed by updates until now.
+    * Each EndpointConfig response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each EndpointConfig at start, followed by updates
+    until end.
+    * Each EndpointConfig response at start is fully-specified, but updates until end may
+    be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -361,8 +340,6 @@ class EndpointConfigBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["EndpointConfigStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -373,8 +350,6 @@ class EndpointConfigBatchedStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigSetRequest(aristaproto.Message):
-    """ """
-
     value: "EndpointConfig" = aristaproto.message_field(1)
     """
     EndpointConfig carries the value to set into the datastore.
@@ -384,8 +359,6 @@ class EndpointConfigSetRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigSetResponse(aristaproto.Message):
-    """ """
-
     value: "EndpointConfig" = aristaproto.message_field(1)
     """
     Value carries all the values given in the EndpointConfigSetRequest as well
@@ -397,21 +370,19 @@ class EndpointConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    - it is after the time the request was received
+    - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigSetSomeRequest(aristaproto.Message):
-    """ """
-
     values: List["EndpointConfig"] = aristaproto.message_field(1)
     """
     value contains a list of EndpointConfig values to write.
     It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
+    - the maxiumum send size of the client
+    - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -419,21 +390,12 @@ class EndpointConfigSetSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigSetSomeResponse(aristaproto.Message):
-    """ """
-
     key: "SwgKey" = aristaproto.message_field(1)
-    """
-    """
-
     error: str = aristaproto.string_field(2)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigDeleteRequest(aristaproto.Message):
-    """ """
-
     key: "SwgKey" = aristaproto.message_field(1)
     """
     Key indicates which EndpointConfig instance to remove.
@@ -443,8 +405,6 @@ class EndpointConfigDeleteRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigDeleteResponse(aristaproto.Message):
-    """ """
-
     key: "SwgKey" = aristaproto.message_field(1)
     """Key echoes back the key of the deleted EndpointConfig instance."""
 
@@ -453,15 +413,13 @@ class EndpointConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    - it is after the time the request was received
+    - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigDeleteSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["SwgKey"] = aristaproto.message_field(1)
     """key contains a list of EndpointConfig keys to delete"""
 
@@ -473,18 +431,11 @@ class EndpointConfigDeleteSomeResponse(aristaproto.Message):
     """
 
     key: "SwgKey" = aristaproto.message_field(1)
-    """
-    """
-
     error: str = aristaproto.string_field(2)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigDeleteAllRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["EndpointConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a DeleteAll.
@@ -495,8 +446,6 @@ class EndpointConfigDeleteAllRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointConfigDeleteAllResponse(aristaproto.Message):
-    """ """
-
     type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
     """
     This describes the class of delete error.
@@ -517,8 +466,6 @@ class EndpointConfigDeleteAllResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointStatusRequest(aristaproto.Message):
-    """ """
-
     key: "SwgKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a EndpointStatus instance to retrieve.
@@ -534,8 +481,6 @@ class EndpointStatusRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointStatusResponse(aristaproto.Message):
-    """ """
-
     value: "EndpointStatus" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -553,12 +498,7 @@ class EndpointStatusResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointStatusSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["SwgKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -568,8 +508,6 @@ class EndpointStatusSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointStatusSomeResponse(aristaproto.Message):
-    """ """
-
     value: "EndpointStatus" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -585,14 +523,10 @@ class EndpointStatusSomeResponse(aristaproto.Message):
     """
 
     time: datetime = aristaproto.message_field(3)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class EndpointStatusStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["EndpointStatus"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -609,14 +543,14 @@ class EndpointStatusStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each EndpointStatus at end.
-        * Each EndpointStatus response is fully-specified (all fields set).
-      * start: Returns the state of each EndpointStatus at start, followed by updates until now.
-        * Each EndpointStatus response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each EndpointStatus at start, followed by updates
-        until end.
-        * Each EndpointStatus response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each EndpointStatus at end.
+    * Each EndpointStatus response is fully-specified (all fields set).
+    * start: Returns the state of each EndpointStatus at start, followed by updates until now.
+    * Each EndpointStatus response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each EndpointStatus at start, followed by updates
+    until end.
+    * Each EndpointStatus response at start is fully-specified, but updates until end may
+    be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -624,8 +558,6 @@ class EndpointStatusStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointStatusStreamResponse(aristaproto.Message):
-    """ """
-
     value: "EndpointStatus" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -647,8 +579,6 @@ class EndpointStatusStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointStatusBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["EndpointStatus"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -665,14 +595,14 @@ class EndpointStatusBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each EndpointStatus at end.
-        * Each EndpointStatus response is fully-specified (all fields set).
-      * start: Returns the state of each EndpointStatus at start, followed by updates until now.
-        * Each EndpointStatus response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each EndpointStatus at start, followed by updates
-        until end.
-        * Each EndpointStatus response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each EndpointStatus at end.
+    * Each EndpointStatus response is fully-specified (all fields set).
+    * start: Returns the state of each EndpointStatus at start, followed by updates until now.
+    * Each EndpointStatus response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each EndpointStatus at start, followed by updates
+    until end.
+    * Each EndpointStatus response at start is fully-specified, but updates until end may
+    be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -688,8 +618,6 @@ class EndpointStatusBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EndpointStatusBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["EndpointStatusStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -699,8 +627,6 @@ class EndpointStatusBatchedStreamResponse(aristaproto.Message):
 
 
 class EndpointConfigServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         endpoint_config_request: "EndpointConfigRequest",
@@ -709,8 +635,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "EndpointConfigResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.swg.v1.EndpointConfigService/GetOne",
             endpoint_config_request,
@@ -728,8 +652,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointConfigSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/GetSome",
             endpoint_config_some_request,
@@ -748,8 +670,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointConfigStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/GetAll",
             endpoint_config_stream_request,
@@ -768,8 +688,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointConfigStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/Subscribe",
             endpoint_config_stream_request,
@@ -788,8 +706,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.swg.v1.EndpointConfigService/GetMeta",
             endpoint_config_stream_request,
@@ -807,8 +723,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/SubscribeMeta",
             endpoint_config_stream_request,
@@ -827,8 +741,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "EndpointConfigSetResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.swg.v1.EndpointConfigService/Set",
             endpoint_config_set_request,
@@ -846,8 +758,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointConfigSetSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/SetSome",
             endpoint_config_set_some_request,
@@ -866,8 +776,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "EndpointConfigDeleteResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.swg.v1.EndpointConfigService/Delete",
             endpoint_config_delete_request,
@@ -885,8 +793,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointConfigDeleteSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/DeleteSome",
             endpoint_config_delete_some_request,
@@ -905,8 +811,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointConfigDeleteAllResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/DeleteAll",
             endpoint_config_delete_all_request,
@@ -925,8 +829,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointConfigBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/GetAllBatched",
             endpoint_config_batched_stream_request,
@@ -945,8 +847,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointConfigBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointConfigService/SubscribeBatched",
             endpoint_config_batched_stream_request,
@@ -959,8 +859,6 @@ class EndpointConfigServiceStub(aristaproto.ServiceStub):
 
 
 class EndpointStatusServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         endpoint_status_request: "EndpointStatusRequest",
@@ -969,8 +867,6 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "EndpointStatusResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.swg.v1.EndpointStatusService/GetOne",
             endpoint_status_request,
@@ -988,8 +884,6 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointStatusSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/GetSome",
             endpoint_status_some_request,
@@ -1008,8 +902,6 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointStatusStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/GetAll",
             endpoint_status_stream_request,
@@ -1028,8 +920,6 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointStatusStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/Subscribe",
             endpoint_status_stream_request,
@@ -1048,8 +938,6 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.swg.v1.EndpointStatusService/GetMeta",
             endpoint_status_stream_request,
@@ -1067,8 +955,6 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/SubscribeMeta",
             endpoint_status_stream_request,
@@ -1087,8 +973,6 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointStatusBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/GetAllBatched",
             endpoint_status_batched_stream_request,
@@ -1107,8 +991,6 @@ class EndpointStatusServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[EndpointStatusBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.swg.v1.EndpointStatusService/SubscribeBatched",
             endpoint_status_batched_stream_request,
@@ -1126,75 +1008,47 @@ from ... import time as __time__
 
 
 class EndpointConfigServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, endpoint_config_request: "EndpointConfigRequest") -> "EndpointConfigResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, endpoint_config_some_request: "EndpointConfigSomeRequest") -> AsyncIterator[EndpointConfigSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, endpoint_config_stream_request: "EndpointConfigStreamRequest") -> AsyncIterator[EndpointConfigStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, endpoint_config_stream_request: "EndpointConfigStreamRequest") -> AsyncIterator[EndpointConfigStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, endpoint_config_stream_request: "EndpointConfigStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, endpoint_config_stream_request: "EndpointConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set(self, endpoint_config_set_request: "EndpointConfigSetRequest") -> "EndpointConfigSetResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set_some(self, endpoint_config_set_some_request: "EndpointConfigSetSomeRequest") -> AsyncIterator[EndpointConfigSetSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete(self, endpoint_config_delete_request: "EndpointConfigDeleteRequest") -> "EndpointConfigDeleteResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_some(self, endpoint_config_delete_some_request: "EndpointConfigDeleteSomeRequest") -> AsyncIterator[EndpointConfigDeleteSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_all(self, endpoint_config_delete_all_request: "EndpointConfigDeleteAllRequest") -> AsyncIterator[EndpointConfigDeleteAllResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
         self, endpoint_config_batched_stream_request: "EndpointConfigBatchedStreamRequest"
     ) -> AsyncIterator[EndpointConfigBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(
         self, endpoint_config_batched_stream_request: "EndpointConfigBatchedStreamRequest"
     ) -> AsyncIterator[EndpointConfigBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[EndpointConfigRequest, EndpointConfigResponse]") -> None:
@@ -1373,50 +1227,32 @@ class EndpointConfigServiceBase(ServiceBase):
 
 
 class EndpointStatusServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, endpoint_status_request: "EndpointStatusRequest") -> "EndpointStatusResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, endpoint_status_some_request: "EndpointStatusSomeRequest") -> AsyncIterator[EndpointStatusSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, endpoint_status_stream_request: "EndpointStatusStreamRequest") -> AsyncIterator[EndpointStatusStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, endpoint_status_stream_request: "EndpointStatusStreamRequest") -> AsyncIterator[EndpointStatusStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, endpoint_status_stream_request: "EndpointStatusStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, endpoint_status_stream_request: "EndpointStatusStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
         self, endpoint_status_batched_stream_request: "EndpointStatusBatchedStreamRequest"
     ) -> AsyncIterator[EndpointStatusBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(
         self, endpoint_status_batched_stream_request: "EndpointStatusBatchedStreamRequest"
     ) -> AsyncIterator[EndpointStatusBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[EndpointStatusRequest, EndpointStatusResponse]") -> None:

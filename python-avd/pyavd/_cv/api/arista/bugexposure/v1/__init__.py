@@ -152,8 +152,6 @@ class BugExposure(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class MetaResponse(aristaproto.Message):
-    """ """
-
     time: datetime = aristaproto.message_field(1)
     """
     Time holds the timestamp of the last item included in the metadata calculation.
@@ -175,8 +173,6 @@ class MetaResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class BugExposureRequest(aristaproto.Message):
-    """ """
-
     key: "BugExposureKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a BugExposure instance to retrieve.
@@ -192,8 +188,6 @@ class BugExposureRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class BugExposureResponse(aristaproto.Message):
-    """ """
-
     value: "BugExposure" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -211,8 +205,6 @@ class BugExposureResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class BugExposureStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["BugExposure"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -229,14 +221,14 @@ class BugExposureStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each BugExposure at end.
-        * Each BugExposure response is fully-specified (all fields set).
-      * start: Returns the state of each BugExposure at start, followed by updates until now.
-        * Each BugExposure response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each BugExposure at start, followed by updates
-        until end.
-        * Each BugExposure response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each BugExposure at end.
+    * Each BugExposure response is fully-specified (all fields set).
+    * start: Returns the state of each BugExposure at start, followed by updates until now.
+    * Each BugExposure response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each BugExposure at start, followed by updates
+    until end.
+    * Each BugExposure response at start is fully-specified, but updates until end may
+    be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -244,8 +236,6 @@ class BugExposureStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class BugExposureStreamResponse(aristaproto.Message):
-    """ """
-
     value: "BugExposure" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -266,8 +256,6 @@ class BugExposureStreamResponse(aristaproto.Message):
 
 
 class BugExposureServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         bug_exposure_request: "BugExposureRequest",
@@ -276,8 +264,6 @@ class BugExposureServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "BugExposureResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.bugexposure.v1.BugExposureService/GetOne",
             bug_exposure_request,
@@ -295,8 +281,6 @@ class BugExposureServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[BugExposureStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.bugexposure.v1.BugExposureService/GetAll",
             bug_exposure_stream_request,
@@ -315,8 +299,6 @@ class BugExposureServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[BugExposureStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.bugexposure.v1.BugExposureService/Subscribe",
             bug_exposure_stream_request,
@@ -335,8 +317,6 @@ class BugExposureServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.bugexposure.v1.BugExposureService/GetMeta",
             bug_exposure_stream_request,
@@ -354,8 +334,6 @@ class BugExposureServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.bugexposure.v1.BugExposureService/SubscribeMeta",
             bug_exposure_stream_request,
@@ -373,31 +351,19 @@ from ... import time as __time__
 
 
 class BugExposureServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, bug_exposure_request: "BugExposureRequest") -> "BugExposureResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> AsyncIterator[BugExposureStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> AsyncIterator[BugExposureStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, bug_exposure_stream_request: "BugExposureStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[BugExposureRequest, BugExposureResponse]") -> None:

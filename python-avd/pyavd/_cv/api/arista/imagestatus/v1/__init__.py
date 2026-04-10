@@ -787,8 +787,6 @@ class ImageInfos(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class MetaResponse(aristaproto.Message):
-    """ """
-
     time: datetime = aristaproto.message_field(1)
     """
     Time holds the timestamp of the last item included in the metadata calculation.
@@ -810,8 +808,6 @@ class MetaResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class SummaryRequest(aristaproto.Message):
-    """ """
-
     key: "SummaryKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a Summary instance to retrieve.
@@ -827,8 +823,6 @@ class SummaryRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class SummaryResponse(aristaproto.Message):
-    """ """
-
     value: "Summary" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -846,12 +840,7 @@ class SummaryResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class SummarySomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["SummaryKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -861,8 +850,6 @@ class SummarySomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class SummarySomeResponse(aristaproto.Message):
-    """ """
-
     value: "Summary" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -886,8 +873,6 @@ class SummarySomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class SummaryStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["Summary"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -904,21 +889,19 @@ class SummaryStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each Summary at end.
-        * Each Summary response is fully-specified (all fields set).
-      * start: Returns the state of each Summary at start, followed by updates until now.
-        * Each Summary response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Summary at start, followed by updates
-        until end.
-        * Each Summary response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each Summary at end.
+    * Each Summary response is fully-specified (all fields set).
+    * start: Returns the state of each Summary at start, followed by updates until now.
+    * Each Summary response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each Summary at start, followed by updates
+    until end.
+    * Each Summary response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class SummaryStreamResponse(aristaproto.Message):
-    """ """
-
     value: "Summary" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -940,8 +923,6 @@ class SummaryStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class SummaryBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["Summary"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -958,14 +939,14 @@ class SummaryBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each Summary at end.
-        * Each Summary response is fully-specified (all fields set).
-      * start: Returns the state of each Summary at start, followed by updates until now.
-        * Each Summary response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Summary at start, followed by updates
-        until end.
-        * Each Summary response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each Summary at end.
+    * Each Summary response is fully-specified (all fields set).
+    * start: Returns the state of each Summary at start, followed by updates until now.
+    * Each Summary response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each Summary at start, followed by updates
+    until end.
+    * Each Summary response at start is fully-specified, but updates until end may
+    be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -979,8 +960,6 @@ class SummaryBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class SummaryBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["SummaryStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -990,8 +969,6 @@ class SummaryBatchedStreamResponse(aristaproto.Message):
 
 
 class SummaryServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         summary_request: "SummaryRequest",
@@ -1000,8 +977,6 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "SummaryResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.imagestatus.v1.SummaryService/GetOne",
             summary_request,
@@ -1019,8 +994,6 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[SummarySomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/GetSome",
             summary_some_request,
@@ -1039,8 +1012,6 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[SummaryStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/GetAll",
             summary_stream_request,
@@ -1059,8 +1030,6 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[SummaryStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/Subscribe",
             summary_stream_request,
@@ -1079,8 +1048,6 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.imagestatus.v1.SummaryService/GetMeta",
             summary_stream_request,
@@ -1098,8 +1065,6 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/SubscribeMeta",
             summary_stream_request,
@@ -1118,8 +1083,6 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[SummaryBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/GetAllBatched",
             summary_batched_stream_request,
@@ -1138,8 +1101,6 @@ class SummaryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[SummaryBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.imagestatus.v1.SummaryService/SubscribeBatched",
             summary_batched_stream_request,
@@ -1156,46 +1117,28 @@ from ... import time as __time__
 
 
 class SummaryServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, summary_request: "SummaryRequest") -> "SummaryResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, summary_some_request: "SummarySomeRequest") -> AsyncIterator[SummarySomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator[SummaryStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator[SummaryStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, summary_stream_request: "SummaryStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, summary_stream_request: "SummaryStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(self, summary_batched_stream_request: "SummaryBatchedStreamRequest") -> AsyncIterator[SummaryBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(self, summary_batched_stream_request: "SummaryBatchedStreamRequest") -> AsyncIterator[SummaryBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[SummaryRequest, SummaryResponse]") -> None:

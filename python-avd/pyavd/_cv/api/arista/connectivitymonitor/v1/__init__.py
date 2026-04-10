@@ -152,8 +152,6 @@ class ProbeStats(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class MetaResponse(aristaproto.Message):
-    """ """
-
     time: datetime = aristaproto.message_field(1)
     """
     Time holds the timestamp of the last item included in the metadata calculation.
@@ -175,8 +173,6 @@ class MetaResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeRequest(aristaproto.Message):
-    """ """
-
     key: "ProbeKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a Probe instance to retrieve.
@@ -192,8 +188,6 @@ class ProbeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeResponse(aristaproto.Message):
-    """ """
-
     value: "Probe" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -211,12 +205,7 @@ class ProbeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["ProbeKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -226,8 +215,6 @@ class ProbeSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeSomeResponse(aristaproto.Message):
-    """ """
-
     value: "Probe" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -243,14 +230,10 @@ class ProbeSomeResponse(aristaproto.Message):
     """
 
     time: datetime = aristaproto.message_field(3)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class ProbeStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["Probe"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -267,14 +250,14 @@ class ProbeStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each Probe at end.
-        * Each Probe response is fully-specified (all fields set).
-      * start: Returns the state of each Probe at start, followed by updates until now.
-        * Each Probe response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Probe at start, followed by updates
-        until end.
-        * Each Probe response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each Probe at end.
+    * Each Probe response is fully-specified (all fields set).
+    * start: Returns the state of each Probe at start, followed by updates until now.
+    * Each Probe response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each Probe at start, followed by updates
+    until end.
+    * Each Probe response at start is fully-specified, but updates until end may
+    be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -282,8 +265,6 @@ class ProbeStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeStreamResponse(aristaproto.Message):
-    """ """
-
     value: "Probe" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -305,8 +286,6 @@ class ProbeStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["Probe"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -323,14 +302,14 @@ class ProbeBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each Probe at end.
-        * Each Probe response is fully-specified (all fields set).
-      * start: Returns the state of each Probe at start, followed by updates until now.
-        * Each Probe response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Probe at start, followed by updates
-        until end.
-        * Each Probe response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each Probe at end.
+    * Each Probe response is fully-specified (all fields set).
+    * start: Returns the state of each Probe at start, followed by updates until now.
+    * Each Probe response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each Probe at start, followed by updates
+    until end.
+    * Each Probe response at start is fully-specified, but updates until end may
+    be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -346,8 +325,6 @@ class ProbeBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["ProbeStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -358,8 +335,6 @@ class ProbeBatchedStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeStatsRequest(aristaproto.Message):
-    """ """
-
     key: "ProbeStatsKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a ProbeStats instance to retrieve.
@@ -375,8 +350,6 @@ class ProbeStatsRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeStatsResponse(aristaproto.Message):
-    """ """
-
     value: "ProbeStats" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -394,12 +367,7 @@ class ProbeStatsResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeStatsSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["ProbeStatsKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -409,8 +377,6 @@ class ProbeStatsSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeStatsSomeResponse(aristaproto.Message):
-    """ """
-
     value: "ProbeStats" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -426,14 +392,10 @@ class ProbeStatsSomeResponse(aristaproto.Message):
     """
 
     time: datetime = aristaproto.message_field(3)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class ProbeStatsStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["ProbeStats"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -450,14 +412,14 @@ class ProbeStatsStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each ProbeStats at end.
-        * Each ProbeStats response is fully-specified (all fields set).
-      * start: Returns the state of each ProbeStats at start, followed by updates until now.
-        * Each ProbeStats response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ProbeStats at start, followed by updates
-        until end.
-        * Each ProbeStats response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each ProbeStats at end.
+    * Each ProbeStats response is fully-specified (all fields set).
+    * start: Returns the state of each ProbeStats at start, followed by updates until now.
+    * Each ProbeStats response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each ProbeStats at start, followed by updates
+    until end.
+    * Each ProbeStats response at start is fully-specified, but updates until end may
+    be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -465,8 +427,6 @@ class ProbeStatsStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeStatsStreamResponse(aristaproto.Message):
-    """ """
-
     value: "ProbeStats" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -488,8 +448,6 @@ class ProbeStatsStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeStatsBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["ProbeStats"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -506,14 +464,14 @@ class ProbeStatsBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each ProbeStats at end.
-        * Each ProbeStats response is fully-specified (all fields set).
-      * start: Returns the state of each ProbeStats at start, followed by updates until now.
-        * Each ProbeStats response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ProbeStats at start, followed by updates
-        until end.
-        * Each ProbeStats response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each ProbeStats at end.
+    * Each ProbeStats response is fully-specified (all fields set).
+    * start: Returns the state of each ProbeStats at start, followed by updates until now.
+    * Each ProbeStats response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each ProbeStats at start, followed by updates
+    until end.
+    * Each ProbeStats response at start is fully-specified, but updates until end may
+    be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -529,8 +487,6 @@ class ProbeStatsBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ProbeStatsBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["ProbeStatsStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -540,8 +496,6 @@ class ProbeStatsBatchedStreamResponse(aristaproto.Message):
 
 
 class ProbeServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         probe_request: "ProbeRequest",
@@ -550,8 +504,6 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "ProbeResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.connectivitymonitor.v1.ProbeService/GetOne",
             probe_request,
@@ -569,8 +521,6 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ProbeSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/GetSome",
             probe_some_request,
@@ -589,8 +539,6 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ProbeStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/GetAll",
             probe_stream_request,
@@ -609,8 +557,6 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ProbeStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/Subscribe",
             probe_stream_request,
@@ -629,8 +575,6 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.connectivitymonitor.v1.ProbeService/GetMeta",
             probe_stream_request,
@@ -648,8 +592,6 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/SubscribeMeta",
             probe_stream_request,
@@ -668,8 +610,6 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ProbeBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/GetAllBatched",
             probe_batched_stream_request,
@@ -688,8 +628,6 @@ class ProbeServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ProbeBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeService/SubscribeBatched",
             probe_batched_stream_request,
@@ -702,8 +640,6 @@ class ProbeServiceStub(aristaproto.ServiceStub):
 
 
 class ProbeStatsServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         probe_stats_request: "ProbeStatsRequest",
@@ -712,8 +648,6 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "ProbeStatsResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.connectivitymonitor.v1.ProbeStatsService/GetOne",
             probe_stats_request,
@@ -731,8 +665,6 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ProbeStatsSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/GetSome",
             probe_stats_some_request,
@@ -751,8 +683,6 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ProbeStatsStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/GetAll",
             probe_stats_stream_request,
@@ -771,8 +701,6 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ProbeStatsStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/Subscribe",
             probe_stats_stream_request,
@@ -791,8 +719,6 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.connectivitymonitor.v1.ProbeStatsService/GetMeta",
             probe_stats_stream_request,
@@ -810,8 +736,6 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/SubscribeMeta",
             probe_stats_stream_request,
@@ -830,8 +754,6 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ProbeStatsBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/GetAllBatched",
             probe_stats_batched_stream_request,
@@ -850,8 +772,6 @@ class ProbeStatsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ProbeStatsBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.connectivitymonitor.v1.ProbeStatsService/SubscribeBatched",
             probe_stats_batched_stream_request,
@@ -868,46 +788,28 @@ from ... import time as __time__
 
 
 class ProbeServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, probe_request: "ProbeRequest") -> "ProbeResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, probe_some_request: "ProbeSomeRequest") -> AsyncIterator[ProbeSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, probe_stream_request: "ProbeStreamRequest") -> AsyncIterator[ProbeStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, probe_stream_request: "ProbeStreamRequest") -> AsyncIterator[ProbeStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, probe_stream_request: "ProbeStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, probe_stream_request: "ProbeStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(self, probe_batched_stream_request: "ProbeBatchedStreamRequest") -> AsyncIterator[ProbeBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(self, probe_batched_stream_request: "ProbeBatchedStreamRequest") -> AsyncIterator[ProbeBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[ProbeRequest, ProbeResponse]") -> None:
@@ -1022,46 +924,28 @@ class ProbeServiceBase(ServiceBase):
 
 
 class ProbeStatsServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, probe_stats_request: "ProbeStatsRequest") -> "ProbeStatsResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, probe_stats_some_request: "ProbeStatsSomeRequest") -> AsyncIterator[ProbeStatsSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, probe_stats_stream_request: "ProbeStatsStreamRequest") -> AsyncIterator[ProbeStatsStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, probe_stats_stream_request: "ProbeStatsStreamRequest") -> AsyncIterator[ProbeStatsStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, probe_stats_stream_request: "ProbeStatsStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, probe_stats_stream_request: "ProbeStatsStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(self, probe_stats_batched_stream_request: "ProbeStatsBatchedStreamRequest") -> AsyncIterator[ProbeStatsBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(self, probe_stats_batched_stream_request: "ProbeStatsBatchedStreamRequest") -> AsyncIterator[ProbeStatsBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[ProbeStatsRequest, ProbeStatsResponse]") -> None:

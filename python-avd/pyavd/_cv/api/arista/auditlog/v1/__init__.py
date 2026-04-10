@@ -273,8 +273,6 @@ class Category(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class MetaResponse(aristaproto.Message):
-    """ """
-
     time: datetime = aristaproto.message_field(1)
     """
     Time holds the timestamp of the last item included in the metadata calculation.
@@ -296,8 +294,6 @@ class MetaResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AuditlogRequest(aristaproto.Message):
-    """ """
-
     key: "AuditlogKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a Auditlog instance to retrieve.
@@ -313,8 +309,6 @@ class AuditlogRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AuditlogResponse(aristaproto.Message):
-    """ """
-
     value: "Auditlog" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -332,12 +326,7 @@ class AuditlogResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AuditlogSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["AuditlogKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -347,8 +336,6 @@ class AuditlogSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AuditlogSomeResponse(aristaproto.Message):
-    """ """
-
     value: "Auditlog" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -372,8 +359,6 @@ class AuditlogSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AuditlogStreamRequest(aristaproto.Message):
-    """ """
-
     filter: List["Filter"] = aristaproto.message_field(2)
     """
     For each Auditlog in the list, all populated fields are considered ANDed together
@@ -388,21 +373,19 @@ class AuditlogStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each Auditlog at end.
-        * Each Auditlog response is fully-specified (all fields set).
-      * start: Returns the state of each Auditlog at start, followed by updates until now.
-        * Each Auditlog response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Auditlog at start, followed by updates
-        until end.
-        * Each Auditlog response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each Auditlog at end.
+    * Each Auditlog response is fully-specified (all fields set).
+    * start: Returns the state of each Auditlog at start, followed by updates until now.
+    * Each Auditlog response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each Auditlog at start, followed by updates
+    until end.
+    * Each Auditlog response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class AuditlogStreamResponse(aristaproto.Message):
-    """ """
-
     value: "Auditlog" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -423,8 +406,6 @@ class AuditlogStreamResponse(aristaproto.Message):
 
 
 class AuditlogServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         auditlog_request: "AuditlogRequest",
@@ -433,8 +414,6 @@ class AuditlogServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AuditlogResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.auditlog.v1.AuditlogService/GetOne",
             auditlog_request,
@@ -452,8 +431,6 @@ class AuditlogServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[AuditlogSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.auditlog.v1.AuditlogService/GetSome",
             auditlog_some_request,
@@ -472,8 +449,6 @@ class AuditlogServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[AuditlogStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.auditlog.v1.AuditlogService/GetAll",
             auditlog_stream_request,
@@ -492,8 +467,6 @@ class AuditlogServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[AuditlogStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.auditlog.v1.AuditlogService/Subscribe",
             auditlog_stream_request,
@@ -512,8 +485,6 @@ class AuditlogServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.auditlog.v1.AuditlogService/GetMeta",
             auditlog_stream_request,
@@ -531,8 +502,6 @@ class AuditlogServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.auditlog.v1.AuditlogService/SubscribeMeta",
             auditlog_stream_request,
@@ -550,36 +519,22 @@ from ... import time as __time__
 
 
 class AuditlogServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, auditlog_request: "AuditlogRequest") -> "AuditlogResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, auditlog_some_request: "AuditlogSomeRequest") -> AsyncIterator[AuditlogSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, auditlog_stream_request: "AuditlogStreamRequest") -> AsyncIterator[AuditlogStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, auditlog_stream_request: "AuditlogStreamRequest") -> AsyncIterator[AuditlogStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, auditlog_stream_request: "AuditlogStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, auditlog_stream_request: "AuditlogStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[AuditlogRequest, AuditlogResponse]") -> None:

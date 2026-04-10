@@ -17,12 +17,5 @@ import aristaproto
 
 @dataclass(eq=False, repr=False)
 class TimeBounds(aristaproto.Message):
-    """ """
-
     start: datetime = aristaproto.message_field(1)
-    """
-    """
-
     end: datetime = aristaproto.message_field(2)
-    """
-    """

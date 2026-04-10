@@ -494,13 +494,13 @@ class RepositoryConfig(aristaproto.Message):
 
     ```
     {
-     \"value\": {
-       \"key\": {
-         \"name\": \"EOS64-4.30.0.1F.swi\"
-       },
-       \"uri\": \"/support/download/EOS-USA/Active Releases/4.30/EOS-4.30.0.1F/EOS64-4.30.0.1F.swi\",
-       \"rebootRequired\": true
-     },
+    \"value\": {
+    \"key\": {
+    \"name\": \"EOS64-4.30.0.1F.swi\"
+    },
+    \"uri\": \"/support/download/EOS-USA/Active Releases/4.30/EOS-4.30.0.1F/EOS64-4.30.0.1F.swi\",
+    \"rebootRequired\": true
+    },
     }
     ```
 
@@ -509,13 +509,13 @@ class RepositoryConfig(aristaproto.Message):
 
     ```
     {
-     \"value\": {
-       \"key\": {
-         \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
-       },
-       \"uri\": \"/support/download/Extensions/Splunk/AristaAppForSplunk-2.0.1-4.27.swix\",
-       \"rebootRequired\": false
-     },
+    \"value\": {
+    \"key\": {
+    \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
+    },
+    \"uri\": \"/support/download/Extensions/Splunk/AristaAppForSplunk-2.0.1-4.27.swix\",
+    \"rebootRequired\": false
+    },
     }
     ```
 
@@ -533,12 +533,12 @@ class RepositoryConfig(aristaproto.Message):
 
     ```
     {
-     \"value\": {
-       \"key\": {
-         \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
-       },
-       \"rebootRequired\": true
-     },
+    \"value\": {
+    \"key\": {
+    \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
+    },
+    \"rebootRequired\": true
+    },
     }
     ```
 
@@ -549,11 +549,11 @@ class RepositoryConfig(aristaproto.Message):
     CloudVision. For example, a delete request will look like the following:
     ```
     {
-     \"value\": {
-       \"key\": {
-         \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
-       },
-     },
+    \"value\": {
+    \"key\": {
+    \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
+    },
+    },
     }
     ```
     """
@@ -923,8 +923,6 @@ class Assignments(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class MetaResponse(aristaproto.Message):
-    """ """
-
     time: datetime = aristaproto.message_field(1)
     """
     Time holds the timestamp of the last item included in the metadata calculation.
@@ -946,8 +944,6 @@ class MetaResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AssignmentsRequest(aristaproto.Message):
-    """ """
-
     key: "RepositoryKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a Assignments instance to retrieve.
@@ -963,8 +959,6 @@ class AssignmentsRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AssignmentsResponse(aristaproto.Message):
-    """ """
-
     value: "Assignments" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -982,12 +976,7 @@ class AssignmentsResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AssignmentsSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["RepositoryKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -997,8 +986,6 @@ class AssignmentsSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AssignmentsSomeResponse(aristaproto.Message):
-    """ """
-
     value: "Assignments" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1022,8 +1009,6 @@ class AssignmentsSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AssignmentsStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["Assignments"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1040,21 +1025,19 @@ class AssignmentsStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each Assignments at end.
-        * Each Assignments response is fully-specified (all fields set).
-      * start: Returns the state of each Assignments at start, followed by updates until now.
-        * Each Assignments response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Assignments at start, followed by updates
-        until end.
-        * Each Assignments response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each Assignments at end.
+    * Each Assignments response is fully-specified (all fields set).
+    * start: Returns the state of each Assignments at start, followed by updates until now.
+    * Each Assignments response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each Assignments at start, followed by updates
+    until end.
+    * Each Assignments response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class AssignmentsStreamResponse(aristaproto.Message):
-    """ """
-
     value: "Assignments" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -1076,8 +1059,6 @@ class AssignmentsStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AssignmentsBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["Assignments"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1094,14 +1075,14 @@ class AssignmentsBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each Assignments at end.
-        * Each Assignments response is fully-specified (all fields set).
-      * start: Returns the state of each Assignments at start, followed by updates until now.
-        * Each Assignments response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Assignments at start, followed by updates
-        until end.
-        * Each Assignments response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each Assignments at end.
+    * Each Assignments response is fully-specified (all fields set).
+    * start: Returns the state of each Assignments at start, followed by updates until now.
+    * Each Assignments response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each Assignments at start, followed by updates
+    until end.
+    * Each Assignments response at start is fully-specified, but updates until end may
+    be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1115,8 +1096,6 @@ class AssignmentsBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class AssignmentsBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["AssignmentsStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -1127,8 +1106,6 @@ class AssignmentsBatchedStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ReleasesRequest(aristaproto.Message):
-    """ """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -1138,8 +1115,6 @@ class ReleasesRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ReleasesResponse(aristaproto.Message):
-    """ """
-
     value: "Releases" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1157,8 +1132,6 @@ class ReleasesResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ReleasesStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["Releases"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1175,21 +1148,19 @@ class ReleasesStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each Releases at end.
-        * Each Releases response is fully-specified (all fields set).
-      * start: Returns the state of each Releases at start, followed by updates until now.
-        * Each Releases response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Releases at start, followed by updates
-        until end.
-        * Each Releases response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each Releases at end.
+    * Each Releases response is fully-specified (all fields set).
+    * start: Returns the state of each Releases at start, followed by updates until now.
+    * Each Releases response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each Releases at start, followed by updates
+    until end.
+    * Each Releases response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class ReleasesStreamResponse(aristaproto.Message):
-    """ """
-
     value: "Releases" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -1211,8 +1182,6 @@ class ReleasesStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryRequest(aristaproto.Message):
-    """ """
-
     key: "RepositoryKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a Repository instance to retrieve.
@@ -1228,8 +1197,6 @@ class RepositoryRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryResponse(aristaproto.Message):
-    """ """
-
     value: "Repository" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1247,12 +1214,7 @@ class RepositoryResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositorySomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["RepositoryKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -1262,8 +1224,6 @@ class RepositorySomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositorySomeResponse(aristaproto.Message):
-    """ """
-
     value: "Repository" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1287,8 +1247,6 @@ class RepositorySomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["Repository"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1305,21 +1263,19 @@ class RepositoryStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each Repository at end.
-        * Each Repository response is fully-specified (all fields set).
-      * start: Returns the state of each Repository at start, followed by updates until now.
-        * Each Repository response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Repository at start, followed by updates
-        until end.
-        * Each Repository response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each Repository at end.
+    * Each Repository response is fully-specified (all fields set).
+    * start: Returns the state of each Repository at start, followed by updates until now.
+    * Each Repository response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each Repository at start, followed by updates
+    until end.
+    * Each Repository response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class RepositoryStreamResponse(aristaproto.Message):
-    """ """
-
     value: "Repository" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -1341,8 +1297,6 @@ class RepositoryStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["Repository"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1359,14 +1313,14 @@ class RepositoryBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each Repository at end.
-        * Each Repository response is fully-specified (all fields set).
-      * start: Returns the state of each Repository at start, followed by updates until now.
-        * Each Repository response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each Repository at start, followed by updates
-        until end.
-        * Each Repository response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each Repository at end.
+    * Each Repository response is fully-specified (all fields set).
+    * start: Returns the state of each Repository at start, followed by updates until now.
+    * Each Repository response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each Repository at start, followed by updates
+    until end.
+    * Each Repository response at start is fully-specified, but updates until end may
+    be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1380,8 +1334,6 @@ class RepositoryBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["RepositoryStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -1392,8 +1344,6 @@ class RepositoryBatchedStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigRequest(aristaproto.Message):
-    """ """
-
     key: "RepositoryKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a RepositoryConfig instance to retrieve.
@@ -1409,8 +1359,6 @@ class RepositoryConfigRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigResponse(aristaproto.Message):
-    """ """
-
     value: "RepositoryConfig" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1428,12 +1376,7 @@ class RepositoryConfigResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["RepositoryKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -1443,8 +1386,6 @@ class RepositoryConfigSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigSomeResponse(aristaproto.Message):
-    """ """
-
     value: "RepositoryConfig" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1468,8 +1409,6 @@ class RepositoryConfigSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["RepositoryConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1486,21 +1425,19 @@ class RepositoryConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each RepositoryConfig at end.
-        * Each RepositoryConfig response is fully-specified (all fields set).
-      * start: Returns the state of each RepositoryConfig at start, followed by updates until now.
-        * Each RepositoryConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each RepositoryConfig at start, followed by updates
-        until end.
-        * Each RepositoryConfig response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each RepositoryConfig at end.
+    * Each RepositoryConfig response is fully-specified (all fields set).
+    * start: Returns the state of each RepositoryConfig at start, followed by updates until now.
+    * Each RepositoryConfig response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each RepositoryConfig at start, followed by updates
+    until end.
+    * Each RepositoryConfig response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigStreamResponse(aristaproto.Message):
-    """ """
-
     value: "RepositoryConfig" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -1524,8 +1461,6 @@ class RepositoryConfigStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["RepositoryConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1542,14 +1477,14 @@ class RepositoryConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each RepositoryConfig at end.
-        * Each RepositoryConfig response is fully-specified (all fields set).
-      * start: Returns the state of each RepositoryConfig at start, followed by updates until now.
-        * Each RepositoryConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each RepositoryConfig at start, followed by updates
-        until end.
-        * Each RepositoryConfig response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each RepositoryConfig at end.
+    * Each RepositoryConfig response is fully-specified (all fields set).
+    * start: Returns the state of each RepositoryConfig at start, followed by updates until now.
+    * Each RepositoryConfig response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each RepositoryConfig at start, followed by updates
+    until end.
+    * Each RepositoryConfig response at start is fully-specified, but updates until end may
+    be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1563,8 +1498,6 @@ class RepositoryConfigBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["RepositoryConfigStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -1575,8 +1508,6 @@ class RepositoryConfigBatchedStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigSetRequest(aristaproto.Message):
-    """ """
-
     value: "RepositoryConfig" = aristaproto.message_field(1)
     """
     RepositoryConfig carries the value to set into the datastore.
@@ -1586,8 +1517,6 @@ class RepositoryConfigSetRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigSetResponse(aristaproto.Message):
-    """ """
-
     value: "RepositoryConfig" = aristaproto.message_field(1)
     """
     Value carries all the values given in the RepositoryConfigSetRequest as well
@@ -1599,21 +1528,19 @@ class RepositoryConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    - it is after the time the request was received
+    - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigSetSomeRequest(aristaproto.Message):
-    """ """
-
     values: List["RepositoryConfig"] = aristaproto.message_field(1)
     """
     value contains a list of RepositoryConfig values to write.
     It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
+    - the maxiumum send size of the client
+    - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1621,21 +1548,12 @@ class RepositoryConfigSetSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigSetSomeResponse(aristaproto.Message):
-    """ """
-
     key: "RepositoryKey" = aristaproto.message_field(1)
-    """
-    """
-
     error: str = aristaproto.string_field(2)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigDeleteRequest(aristaproto.Message):
-    """ """
-
     key: "RepositoryKey" = aristaproto.message_field(1)
     """
     Key indicates which RepositoryConfig instance to remove.
@@ -1645,8 +1563,6 @@ class RepositoryConfigDeleteRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigDeleteResponse(aristaproto.Message):
-    """ """
-
     key: "RepositoryKey" = aristaproto.message_field(1)
     """Key echoes back the key of the deleted RepositoryConfig instance."""
 
@@ -1655,15 +1571,13 @@ class RepositoryConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    - it is after the time the request was received
+    - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigDeleteSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["RepositoryKey"] = aristaproto.message_field(1)
     """key contains a list of RepositoryConfig keys to delete"""
 
@@ -1675,18 +1589,11 @@ class RepositoryConfigDeleteSomeResponse(aristaproto.Message):
     """
 
     key: "RepositoryKey" = aristaproto.message_field(1)
-    """
-    """
-
     error: str = aristaproto.string_field(2)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigDeleteAllRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["RepositoryConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a DeleteAll.
@@ -1697,8 +1604,6 @@ class RepositoryConfigDeleteAllRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class RepositoryConfigDeleteAllResponse(aristaproto.Message):
-    """ """
-
     type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
     """
     This describes the class of delete error.
@@ -1718,8 +1623,6 @@ class RepositoryConfigDeleteAllResponse(aristaproto.Message):
 
 
 class AssignmentsServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         assignments_request: "AssignmentsRequest",
@@ -1728,8 +1631,6 @@ class AssignmentsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AssignmentsResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.AssignmentsService/GetOne",
             assignments_request,
@@ -1747,8 +1648,6 @@ class AssignmentsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[AssignmentsSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/GetSome",
             assignments_some_request,
@@ -1767,8 +1666,6 @@ class AssignmentsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[AssignmentsStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/GetAll",
             assignments_stream_request,
@@ -1787,8 +1684,6 @@ class AssignmentsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[AssignmentsStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/Subscribe",
             assignments_stream_request,
@@ -1807,8 +1702,6 @@ class AssignmentsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.AssignmentsService/GetMeta",
             assignments_stream_request,
@@ -1826,8 +1719,6 @@ class AssignmentsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/SubscribeMeta",
             assignments_stream_request,
@@ -1846,8 +1737,6 @@ class AssignmentsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[AssignmentsBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/GetAllBatched",
             assignments_batched_stream_request,
@@ -1866,8 +1755,6 @@ class AssignmentsServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[AssignmentsBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.AssignmentsService/SubscribeBatched",
             assignments_batched_stream_request,
@@ -1880,8 +1767,6 @@ class AssignmentsServiceStub(aristaproto.ServiceStub):
 
 
 class ReleasesServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         releases_request: "ReleasesRequest",
@@ -1890,8 +1775,6 @@ class ReleasesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "ReleasesResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.ReleasesService/GetOne",
             releases_request,
@@ -1909,8 +1792,6 @@ class ReleasesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ReleasesStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.ReleasesService/GetAll",
             releases_stream_request,
@@ -1929,8 +1810,6 @@ class ReleasesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ReleasesStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.ReleasesService/Subscribe",
             releases_stream_request,
@@ -1949,8 +1828,6 @@ class ReleasesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.ReleasesService/SubscribeMeta",
             releases_stream_request,
@@ -1963,8 +1840,6 @@ class ReleasesServiceStub(aristaproto.ServiceStub):
 
 
 class RepositoryServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         repository_request: "RepositoryRequest",
@@ -1973,8 +1848,6 @@ class RepositoryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "RepositoryResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.RepositoryService/GetOne",
             repository_request,
@@ -1992,8 +1865,6 @@ class RepositoryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositorySomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryService/GetSome",
             repository_some_request,
@@ -2012,8 +1883,6 @@ class RepositoryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryService/GetAll",
             repository_stream_request,
@@ -2032,8 +1901,6 @@ class RepositoryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryService/Subscribe",
             repository_stream_request,
@@ -2052,8 +1919,6 @@ class RepositoryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.RepositoryService/GetMeta",
             repository_stream_request,
@@ -2071,8 +1936,6 @@ class RepositoryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryService/SubscribeMeta",
             repository_stream_request,
@@ -2091,8 +1954,6 @@ class RepositoryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryService/GetAllBatched",
             repository_batched_stream_request,
@@ -2111,8 +1972,6 @@ class RepositoryServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryService/SubscribeBatched",
             repository_batched_stream_request,
@@ -2125,8 +1984,6 @@ class RepositoryServiceStub(aristaproto.ServiceStub):
 
 
 class RepositoryConfigServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         repository_config_request: "RepositoryConfigRequest",
@@ -2135,8 +1992,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "RepositoryConfigResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.RepositoryConfigService/GetOne",
             repository_config_request,
@@ -2154,8 +2009,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryConfigSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/GetSome",
             repository_config_some_request,
@@ -2174,8 +2027,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryConfigStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/GetAll",
             repository_config_stream_request,
@@ -2194,8 +2045,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryConfigStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/Subscribe",
             repository_config_stream_request,
@@ -2214,8 +2063,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.RepositoryConfigService/GetMeta",
             repository_config_stream_request,
@@ -2233,8 +2080,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/SubscribeMeta",
             repository_config_stream_request,
@@ -2253,8 +2098,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "RepositoryConfigSetResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.RepositoryConfigService/Set",
             repository_config_set_request,
@@ -2272,8 +2115,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryConfigSetSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/SetSome",
             repository_config_set_some_request,
@@ -2292,8 +2133,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "RepositoryConfigDeleteResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.softwaremanagement.v1.RepositoryConfigService/Delete",
             repository_config_delete_request,
@@ -2311,8 +2150,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryConfigDeleteSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/DeleteSome",
             repository_config_delete_some_request,
@@ -2331,8 +2168,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryConfigDeleteAllResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/DeleteAll",
             repository_config_delete_all_request,
@@ -2351,8 +2186,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryConfigBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/GetAllBatched",
             repository_config_batched_stream_request,
@@ -2371,8 +2204,6 @@ class RepositoryConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[RepositoryConfigBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.softwaremanagement.v1.RepositoryConfigService/SubscribeBatched",
             repository_config_batched_stream_request,
@@ -2390,46 +2221,28 @@ from ... import time as __time__
 
 
 class AssignmentsServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, assignments_request: "AssignmentsRequest") -> "AssignmentsResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, assignments_some_request: "AssignmentsSomeRequest") -> AsyncIterator[AssignmentsSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, assignments_stream_request: "AssignmentsStreamRequest") -> AsyncIterator[AssignmentsStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, assignments_stream_request: "AssignmentsStreamRequest") -> AsyncIterator[AssignmentsStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, assignments_stream_request: "AssignmentsStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, assignments_stream_request: "AssignmentsStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(self, assignments_batched_stream_request: "AssignmentsBatchedStreamRequest") -> AsyncIterator[AssignmentsBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(self, assignments_batched_stream_request: "AssignmentsBatchedStreamRequest") -> AsyncIterator[AssignmentsBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[AssignmentsRequest, AssignmentsResponse]") -> None:
@@ -2544,26 +2357,16 @@ class AssignmentsServiceBase(ServiceBase):
 
 
 class ReleasesServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, releases_request: "ReleasesRequest") -> "ReleasesResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, releases_stream_request: "ReleasesStreamRequest") -> AsyncIterator[ReleasesStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, releases_stream_request: "ReleasesStreamRequest") -> AsyncIterator[ReleasesStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, releases_stream_request: "ReleasesStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[ReleasesRequest, ReleasesResponse]") -> None:
@@ -2625,46 +2428,28 @@ class ReleasesServiceBase(ServiceBase):
 
 
 class RepositoryServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, repository_request: "RepositoryRequest") -> "RepositoryResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, repository_some_request: "RepositorySomeRequest") -> AsyncIterator[RepositorySomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, repository_stream_request: "RepositoryStreamRequest") -> AsyncIterator[RepositoryStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, repository_stream_request: "RepositoryStreamRequest") -> AsyncIterator[RepositoryStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, repository_stream_request: "RepositoryStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, repository_stream_request: "RepositoryStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(self, repository_batched_stream_request: "RepositoryBatchedStreamRequest") -> AsyncIterator[RepositoryBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(self, repository_batched_stream_request: "RepositoryBatchedStreamRequest") -> AsyncIterator[RepositoryBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[RepositoryRequest, RepositoryResponse]") -> None:
@@ -2779,77 +2564,49 @@ class RepositoryServiceBase(ServiceBase):
 
 
 class RepositoryConfigServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, repository_config_request: "RepositoryConfigRequest") -> "RepositoryConfigResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, repository_config_some_request: "RepositoryConfigSomeRequest") -> AsyncIterator[RepositoryConfigSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, repository_config_stream_request: "RepositoryConfigStreamRequest") -> AsyncIterator[RepositoryConfigStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, repository_config_stream_request: "RepositoryConfigStreamRequest") -> AsyncIterator[RepositoryConfigStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, repository_config_stream_request: "RepositoryConfigStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, repository_config_stream_request: "RepositoryConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set(self, repository_config_set_request: "RepositoryConfigSetRequest") -> "RepositoryConfigSetResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set_some(self, repository_config_set_some_request: "RepositoryConfigSetSomeRequest") -> AsyncIterator[RepositoryConfigSetSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete(self, repository_config_delete_request: "RepositoryConfigDeleteRequest") -> "RepositoryConfigDeleteResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_some(
         self, repository_config_delete_some_request: "RepositoryConfigDeleteSomeRequest"
     ) -> AsyncIterator[RepositoryConfigDeleteSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_all(self, repository_config_delete_all_request: "RepositoryConfigDeleteAllRequest") -> AsyncIterator[RepositoryConfigDeleteAllResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
         self, repository_config_batched_stream_request: "RepositoryConfigBatchedStreamRequest"
     ) -> AsyncIterator[RepositoryConfigBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(
         self, repository_config_batched_stream_request: "RepositoryConfigBatchedStreamRequest"
     ) -> AsyncIterator[RepositoryConfigBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[RepositoryConfigRequest, RepositoryConfigResponse]") -> None:

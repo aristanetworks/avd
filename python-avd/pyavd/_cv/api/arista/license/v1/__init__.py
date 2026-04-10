@@ -632,20 +632,20 @@ class DeviceData(aristaproto.Message):
     """
 
     serial: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
-    """ serial is the serial number of the device."""
+    """serial is the serial number of the device."""
 
     hostname: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
-    """ hostname is the hostname of the device."""
+    """hostname is the hostname of the device."""
 
     sales_order_number: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
-    """ sales_order_number is the sales order of the device."""
+    """sales_order_number is the sales order of the device."""
 
     model: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
-    """ model is the model name of the device."""
+    """model is the model name of the device."""
 
     platform_classes: "___fmp__.RepeatedString" = aristaproto.message_field(5)
     """
-     platform_classes are the supported license platform classes of the device.
+    platform_classes are the supported license platform classes of the device.
     """
 
     licenses: "RepeatedLicenseInfo" = aristaproto.message_field(6)
@@ -794,8 +794,6 @@ class ApplicableLicenseBundles(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class MetaResponse(aristaproto.Message):
-    """ """
-
     time: datetime = aristaproto.message_field(1)
     """
     Time holds the timestamp of the last item included in the metadata calculation.
@@ -817,8 +815,6 @@ class MetaResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableDevicesRequest(aristaproto.Message):
-    """ """
-
     key: "ApplicableDevicesKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a ApplicableDevices instance to retrieve.
@@ -834,8 +830,6 @@ class ApplicableDevicesRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableDevicesResponse(aristaproto.Message):
-    """ """
-
     value: "ApplicableDevices" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -853,12 +847,7 @@ class ApplicableDevicesResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableDevicesSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["ApplicableDevicesKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -868,8 +857,6 @@ class ApplicableDevicesSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableDevicesSomeResponse(aristaproto.Message):
-    """ """
-
     value: "ApplicableDevices" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -893,8 +880,6 @@ class ApplicableDevicesSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableDevicesStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["ApplicableDevices"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -918,21 +903,19 @@ class ApplicableDevicesStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each ApplicableDevices at end.
-        * Each ApplicableDevices response is fully-specified (all fields set).
-      * start: Returns the state of each ApplicableDevices at start, followed by updates until now.
-        * Each ApplicableDevices response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ApplicableDevices at start, followed by updates
-        until end.
-        * Each ApplicableDevices response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each ApplicableDevices at end.
+    * Each ApplicableDevices response is fully-specified (all fields set).
+    * start: Returns the state of each ApplicableDevices at start, followed by updates until now.
+    * Each ApplicableDevices response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each ApplicableDevices at start, followed by updates
+    until end.
+    * Each ApplicableDevices response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class ApplicableDevicesStreamResponse(aristaproto.Message):
-    """ """
-
     value: "ApplicableDevices" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -956,8 +939,6 @@ class ApplicableDevicesStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableDevicesBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["ApplicableDevices"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -981,14 +962,14 @@ class ApplicableDevicesBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each ApplicableDevices at end.
-        * Each ApplicableDevices response is fully-specified (all fields set).
-      * start: Returns the state of each ApplicableDevices at start, followed by updates until now.
-        * Each ApplicableDevices response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ApplicableDevices at start, followed by updates
-        until end.
-        * Each ApplicableDevices response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each ApplicableDevices at end.
+    * Each ApplicableDevices response is fully-specified (all fields set).
+    * start: Returns the state of each ApplicableDevices at start, followed by updates until now.
+    * Each ApplicableDevices response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each ApplicableDevices at start, followed by updates
+    until end.
+    * Each ApplicableDevices response at start is fully-specified, but updates until end may
+    be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1002,8 +983,6 @@ class ApplicableDevicesBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableDevicesBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["ApplicableDevicesStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -1014,8 +993,6 @@ class ApplicableDevicesBatchedStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableLicenseBundlesRequest(aristaproto.Message):
-    """ """
-
     key: "ApplicableLicenseBundlesKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a ApplicableLicenseBundles instance to retrieve.
@@ -1031,8 +1008,6 @@ class ApplicableLicenseBundlesRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableLicenseBundlesResponse(aristaproto.Message):
-    """ """
-
     value: "ApplicableLicenseBundles" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1050,12 +1025,7 @@ class ApplicableLicenseBundlesResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableLicenseBundlesSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["ApplicableLicenseBundlesKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -1065,8 +1035,6 @@ class ApplicableLicenseBundlesSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableLicenseBundlesSomeResponse(aristaproto.Message):
-    """ """
-
     value: "ApplicableLicenseBundles" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1090,8 +1058,6 @@ class ApplicableLicenseBundlesSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableLicenseBundlesStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["ApplicableLicenseBundles"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1108,21 +1074,19 @@ class ApplicableLicenseBundlesStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each ApplicableLicenseBundles at end.
-        * Each ApplicableLicenseBundles response is fully-specified (all fields set).
-      * start: Returns the state of each ApplicableLicenseBundles at start, followed by updates until now.
-        * Each ApplicableLicenseBundles response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ApplicableLicenseBundles at start, followed by updates
-        until end.
-        * Each ApplicableLicenseBundles response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each ApplicableLicenseBundles at end.
+    * Each ApplicableLicenseBundles response is fully-specified (all fields set).
+    * start: Returns the state of each ApplicableLicenseBundles at start, followed by updates until now.
+    * Each ApplicableLicenseBundles response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each ApplicableLicenseBundles at start, followed by updates
+    until end.
+    * Each ApplicableLicenseBundles response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class ApplicableLicenseBundlesStreamResponse(aristaproto.Message):
-    """ """
-
     value: "ApplicableLicenseBundles" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -1146,8 +1110,6 @@ class ApplicableLicenseBundlesStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableLicenseBundlesBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["ApplicableLicenseBundles"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1164,14 +1126,14 @@ class ApplicableLicenseBundlesBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each ApplicableLicenseBundles at end.
-        * Each ApplicableLicenseBundles response is fully-specified (all fields set).
-      * start: Returns the state of each ApplicableLicenseBundles at start, followed by updates until now.
-        * Each ApplicableLicenseBundles response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each ApplicableLicenseBundles at start, followed by updates
-        until end.
-        * Each ApplicableLicenseBundles response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each ApplicableLicenseBundles at end.
+    * Each ApplicableLicenseBundles response is fully-specified (all fields set).
+    * start: Returns the state of each ApplicableLicenseBundles at start, followed by updates until now.
+    * Each ApplicableLicenseBundles response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each ApplicableLicenseBundles at start, followed by updates
+    until end.
+    * Each ApplicableLicenseBundles response at start is fully-specified, but updates until end may
+    be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1185,8 +1147,6 @@ class ApplicableLicenseBundlesBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class ApplicableLicenseBundlesBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["ApplicableLicenseBundlesStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -1197,8 +1157,6 @@ class ApplicableLicenseBundlesBatchedStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentRequest(aristaproto.Message):
-    """ """
-
     key: "LicenseAssignmentKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a LicenseAssignment instance to retrieve.
@@ -1214,8 +1172,6 @@ class LicenseAssignmentRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseAssignment" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1233,12 +1189,7 @@ class LicenseAssignmentResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["LicenseAssignmentKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -1248,8 +1199,6 @@ class LicenseAssignmentSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentSomeResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseAssignment" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1273,8 +1222,6 @@ class LicenseAssignmentSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["LicenseAssignment"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1291,21 +1238,19 @@ class LicenseAssignmentStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each LicenseAssignment at end.
-        * Each LicenseAssignment response is fully-specified (all fields set).
-      * start: Returns the state of each LicenseAssignment at start, followed by updates until now.
-        * Each LicenseAssignment response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each LicenseAssignment at start, followed by updates
-        until end.
-        * Each LicenseAssignment response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each LicenseAssignment at end.
+    * Each LicenseAssignment response is fully-specified (all fields set).
+    * start: Returns the state of each LicenseAssignment at start, followed by updates until now.
+    * Each LicenseAssignment response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each LicenseAssignment at start, followed by updates
+    until end.
+    * Each LicenseAssignment response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentStreamResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseAssignment" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -1329,8 +1274,6 @@ class LicenseAssignmentStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["LicenseAssignment"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1347,14 +1290,14 @@ class LicenseAssignmentBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each LicenseAssignment at end.
-        * Each LicenseAssignment response is fully-specified (all fields set).
-      * start: Returns the state of each LicenseAssignment at start, followed by updates until now.
-        * Each LicenseAssignment response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each LicenseAssignment at start, followed by updates
-        until end.
-        * Each LicenseAssignment response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each LicenseAssignment at end.
+    * Each LicenseAssignment response is fully-specified (all fields set).
+    * start: Returns the state of each LicenseAssignment at start, followed by updates until now.
+    * Each LicenseAssignment response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each LicenseAssignment at start, followed by updates
+    until end.
+    * Each LicenseAssignment response at start is fully-specified, but updates until end may
+    be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1368,8 +1311,6 @@ class LicenseAssignmentBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["LicenseAssignmentStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -1380,8 +1321,6 @@ class LicenseAssignmentBatchedStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigRequest(aristaproto.Message):
-    """ """
-
     key: "LicenseAssignmentKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a LicenseAssignmentConfig instance to retrieve.
@@ -1397,8 +1336,6 @@ class LicenseAssignmentConfigRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseAssignmentConfig" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1416,12 +1353,7 @@ class LicenseAssignmentConfigResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["LicenseAssignmentKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -1431,8 +1363,6 @@ class LicenseAssignmentConfigSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigSomeResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseAssignmentConfig" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1456,8 +1386,6 @@ class LicenseAssignmentConfigSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["LicenseAssignmentConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1474,21 +1402,19 @@ class LicenseAssignmentConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each LicenseAssignmentConfig at end.
-        * Each LicenseAssignmentConfig response is fully-specified (all fields set).
-      * start: Returns the state of each LicenseAssignmentConfig at start, followed by updates until now.
-        * Each LicenseAssignmentConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each LicenseAssignmentConfig at start, followed by updates
-        until end.
-        * Each LicenseAssignmentConfig response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each LicenseAssignmentConfig at end.
+    * Each LicenseAssignmentConfig response is fully-specified (all fields set).
+    * start: Returns the state of each LicenseAssignmentConfig at start, followed by updates until now.
+    * Each LicenseAssignmentConfig response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each LicenseAssignmentConfig at start, followed by updates
+    until end.
+    * Each LicenseAssignmentConfig response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigStreamResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseAssignmentConfig" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -1512,8 +1438,6 @@ class LicenseAssignmentConfigStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["LicenseAssignmentConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1530,14 +1454,14 @@ class LicenseAssignmentConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each LicenseAssignmentConfig at end.
-        * Each LicenseAssignmentConfig response is fully-specified (all fields set).
-      * start: Returns the state of each LicenseAssignmentConfig at start, followed by updates until now.
-        * Each LicenseAssignmentConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each LicenseAssignmentConfig at start, followed by updates
-        until end.
-        * Each LicenseAssignmentConfig response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each LicenseAssignmentConfig at end.
+    * Each LicenseAssignmentConfig response is fully-specified (all fields set).
+    * start: Returns the state of each LicenseAssignmentConfig at start, followed by updates until now.
+    * Each LicenseAssignmentConfig response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each LicenseAssignmentConfig at start, followed by updates
+    until end.
+    * Each LicenseAssignmentConfig response at start is fully-specified, but updates until end may
+    be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1551,8 +1475,6 @@ class LicenseAssignmentConfigBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["LicenseAssignmentConfigStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -1563,8 +1485,6 @@ class LicenseAssignmentConfigBatchedStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigSetRequest(aristaproto.Message):
-    """ """
-
     value: "LicenseAssignmentConfig" = aristaproto.message_field(1)
     """
     LicenseAssignmentConfig carries the value to set into the datastore.
@@ -1574,8 +1494,6 @@ class LicenseAssignmentConfigSetRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigSetResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseAssignmentConfig" = aristaproto.message_field(1)
     """
     Value carries all the values given in the LicenseAssignmentConfigSetRequest as well
@@ -1587,21 +1505,19 @@ class LicenseAssignmentConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    - it is after the time the request was received
+    - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigSetSomeRequest(aristaproto.Message):
-    """ """
-
     values: List["LicenseAssignmentConfig"] = aristaproto.message_field(1)
     """
     value contains a list of LicenseAssignmentConfig values to write.
     It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
+    - the maxiumum send size of the client
+    - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1609,21 +1525,12 @@ class LicenseAssignmentConfigSetSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigSetSomeResponse(aristaproto.Message):
-    """ """
-
     key: "LicenseAssignmentKey" = aristaproto.message_field(1)
-    """
-    """
-
     error: str = aristaproto.string_field(2)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigDeleteRequest(aristaproto.Message):
-    """ """
-
     key: "LicenseAssignmentKey" = aristaproto.message_field(1)
     """
     Key indicates which LicenseAssignmentConfig instance to remove.
@@ -1633,8 +1540,6 @@ class LicenseAssignmentConfigDeleteRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigDeleteResponse(aristaproto.Message):
-    """ """
-
     key: "LicenseAssignmentKey" = aristaproto.message_field(1)
     """
     Key echoes back the key of the deleted LicenseAssignmentConfig instance.
@@ -1645,15 +1550,13 @@ class LicenseAssignmentConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    - it is after the time the request was received
+    - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigDeleteSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["LicenseAssignmentKey"] = aristaproto.message_field(1)
     """key contains a list of LicenseAssignmentConfig keys to delete"""
 
@@ -1665,18 +1568,11 @@ class LicenseAssignmentConfigDeleteSomeResponse(aristaproto.Message):
     """
 
     key: "LicenseAssignmentKey" = aristaproto.message_field(1)
-    """
-    """
-
     error: str = aristaproto.string_field(2)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigDeleteAllRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["LicenseAssignmentConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a DeleteAll.
@@ -1687,8 +1583,6 @@ class LicenseAssignmentConfigDeleteAllRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseAssignmentConfigDeleteAllResponse(aristaproto.Message):
-    """ """
-
     type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
     """
     This describes the class of delete error.
@@ -1709,8 +1603,6 @@ class LicenseAssignmentConfigDeleteAllResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileRequest(aristaproto.Message):
-    """ """
-
     key: "LicenseFileKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a LicenseFile instance to retrieve.
@@ -1726,8 +1618,6 @@ class LicenseFileRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseFile" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1745,12 +1635,7 @@ class LicenseFileResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["LicenseFileKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -1760,8 +1645,6 @@ class LicenseFileSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileSomeResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseFile" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1785,8 +1668,6 @@ class LicenseFileSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["LicenseFile"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1803,21 +1684,19 @@ class LicenseFileStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each LicenseFile at end.
-        * Each LicenseFile response is fully-specified (all fields set).
-      * start: Returns the state of each LicenseFile at start, followed by updates until now.
-        * Each LicenseFile response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each LicenseFile at start, followed by updates
-        until end.
-        * Each LicenseFile response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each LicenseFile at end.
+    * Each LicenseFile response is fully-specified (all fields set).
+    * start: Returns the state of each LicenseFile at start, followed by updates until now.
+    * Each LicenseFile response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each LicenseFile at start, followed by updates
+    until end.
+    * Each LicenseFile response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseFileStreamResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseFile" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -1839,8 +1718,6 @@ class LicenseFileStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["LicenseFile"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1857,14 +1734,14 @@ class LicenseFileBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each LicenseFile at end.
-        * Each LicenseFile response is fully-specified (all fields set).
-      * start: Returns the state of each LicenseFile at start, followed by updates until now.
-        * Each LicenseFile response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each LicenseFile at start, followed by updates
-        until end.
-        * Each LicenseFile response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each LicenseFile at end.
+    * Each LicenseFile response is fully-specified (all fields set).
+    * start: Returns the state of each LicenseFile at start, followed by updates until now.
+    * Each LicenseFile response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each LicenseFile at start, followed by updates
+    until end.
+    * Each LicenseFile response at start is fully-specified, but updates until end may
+    be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1878,8 +1755,6 @@ class LicenseFileBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["LicenseFileStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -1890,8 +1765,6 @@ class LicenseFileBatchedStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigRequest(aristaproto.Message):
-    """ """
-
     key: "LicenseFileKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a LicenseFileConfig instance to retrieve.
@@ -1907,8 +1780,6 @@ class LicenseFileConfigRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseFileConfig" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1926,12 +1797,7 @@ class LicenseFileConfigResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["LicenseFileKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -1941,8 +1807,6 @@ class LicenseFileConfigSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigSomeResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseFileConfig" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -1966,8 +1830,6 @@ class LicenseFileConfigSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["LicenseFileConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -1984,21 +1846,19 @@ class LicenseFileConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each LicenseFileConfig at end.
-        * Each LicenseFileConfig response is fully-specified (all fields set).
-      * start: Returns the state of each LicenseFileConfig at start, followed by updates until now.
-        * Each LicenseFileConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each LicenseFileConfig at start, followed by updates
-        until end.
-        * Each LicenseFileConfig response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each LicenseFileConfig at end.
+    * Each LicenseFileConfig response is fully-specified (all fields set).
+    * start: Returns the state of each LicenseFileConfig at start, followed by updates until now.
+    * Each LicenseFileConfig response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each LicenseFileConfig at start, followed by updates
+    until end.
+    * Each LicenseFileConfig response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigStreamResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseFileConfig" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -2022,8 +1882,6 @@ class LicenseFileConfigStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["LicenseFileConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -2040,14 +1898,14 @@ class LicenseFileConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each LicenseFileConfig at end.
-        * Each LicenseFileConfig response is fully-specified (all fields set).
-      * start: Returns the state of each LicenseFileConfig at start, followed by updates until now.
-        * Each LicenseFileConfig response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each LicenseFileConfig at start, followed by updates
-        until end.
-        * Each LicenseFileConfig response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each LicenseFileConfig at end.
+    * Each LicenseFileConfig response is fully-specified (all fields set).
+    * start: Returns the state of each LicenseFileConfig at start, followed by updates until now.
+    * Each LicenseFileConfig response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each LicenseFileConfig at start, followed by updates
+    until end.
+    * Each LicenseFileConfig response at start is fully-specified, but updates until end may
+    be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2061,8 +1919,6 @@ class LicenseFileConfigBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["LicenseFileConfigStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -2073,8 +1929,6 @@ class LicenseFileConfigBatchedStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigSetRequest(aristaproto.Message):
-    """ """
-
     value: "LicenseFileConfig" = aristaproto.message_field(1)
     """
     LicenseFileConfig carries the value to set into the datastore.
@@ -2084,8 +1938,6 @@ class LicenseFileConfigSetRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigSetResponse(aristaproto.Message):
-    """ """
-
     value: "LicenseFileConfig" = aristaproto.message_field(1)
     """
     Value carries all the values given in the LicenseFileConfigSetRequest as well
@@ -2097,21 +1949,19 @@ class LicenseFileConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==CreatedAt will include this instance.
+    - it is after the time the request was received
+    - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigSetSomeRequest(aristaproto.Message):
-    """ """
-
     values: List["LicenseFileConfig"] = aristaproto.message_field(1)
     """
     value contains a list of LicenseFileConfig values to write.
     It is possible to provide more values than can fit within either:
-        - the maxiumum send size of the client
-        - the maximum receive size of the server
+    - the maxiumum send size of the client
+    - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -2119,21 +1969,12 @@ class LicenseFileConfigSetSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigSetSomeResponse(aristaproto.Message):
-    """ """
-
     key: "LicenseFileKey" = aristaproto.message_field(1)
-    """
-    """
-
     error: str = aristaproto.string_field(2)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigDeleteRequest(aristaproto.Message):
-    """ """
-
     key: "LicenseFileKey" = aristaproto.message_field(1)
     """
     Key indicates which LicenseFileConfig instance to remove.
@@ -2143,8 +1984,6 @@ class LicenseFileConfigDeleteRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigDeleteResponse(aristaproto.Message):
-    """ """
-
     key: "LicenseFileKey" = aristaproto.message_field(1)
     """Key echoes back the key of the deleted LicenseFileConfig instance."""
 
@@ -2153,15 +1992,13 @@ class LicenseFileConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-       - it is after the time the request was received
-       - a time-ranged query with StartTime==DeletedAt will not include this instance.
+    - it is after the time the request was received
+    - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigDeleteSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["LicenseFileKey"] = aristaproto.message_field(1)
     """key contains a list of LicenseFileConfig keys to delete"""
 
@@ -2173,18 +2010,11 @@ class LicenseFileConfigDeleteSomeResponse(aristaproto.Message):
     """
 
     key: "LicenseFileKey" = aristaproto.message_field(1)
-    """
-    """
-
     error: str = aristaproto.string_field(2)
-    """
-    """
 
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigDeleteAllRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["LicenseFileConfig"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a DeleteAll.
@@ -2195,8 +2025,6 @@ class LicenseFileConfigDeleteAllRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class LicenseFileConfigDeleteAllResponse(aristaproto.Message):
-    """ """
-
     type: "___fmp__.DeleteError" = aristaproto.enum_field(1)
     """
     This describes the class of delete error.
@@ -2217,8 +2045,6 @@ class LicenseFileConfigDeleteAllResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class PurchasedLicenseRequest(aristaproto.Message):
-    """ """
-
     key: "PurchasedLicenseKey" = aristaproto.message_field(1)
     """
     Key uniquely identifies a PurchasedLicense instance to retrieve.
@@ -2234,8 +2060,6 @@ class PurchasedLicenseRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class PurchasedLicenseResponse(aristaproto.Message):
-    """ """
-
     value: "PurchasedLicense" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -2253,12 +2077,7 @@ class PurchasedLicenseResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class PurchasedLicenseSomeRequest(aristaproto.Message):
-    """ """
-
     keys: List["PurchasedLicenseKey"] = aristaproto.message_field(1)
-    """
-    """
-
     time: datetime = aristaproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data.
@@ -2268,8 +2087,6 @@ class PurchasedLicenseSomeRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class PurchasedLicenseSomeResponse(aristaproto.Message):
-    """ """
-
     value: "PurchasedLicense" = aristaproto.message_field(1)
     """
     Value is the value requested.
@@ -2293,8 +2110,6 @@ class PurchasedLicenseSomeResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class PurchasedLicenseStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["PurchasedLicense"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -2311,21 +2126,19 @@ class PurchasedLicenseStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each PurchasedLicense at end.
-        * Each PurchasedLicense response is fully-specified (all fields set).
-      * start: Returns the state of each PurchasedLicense at start, followed by updates until now.
-        * Each PurchasedLicense response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each PurchasedLicense at start, followed by updates
-        until end.
-        * Each PurchasedLicense response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each PurchasedLicense at end.
+    * Each PurchasedLicense response is fully-specified (all fields set).
+    * start: Returns the state of each PurchasedLicense at start, followed by updates until now.
+    * Each PurchasedLicense response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each PurchasedLicense at start, followed by updates
+    until end.
+    * Each PurchasedLicense response at start is fully-specified, but updates until end may
+    be partial.
     """
 
 
 @dataclass(eq=False, repr=False)
 class PurchasedLicenseStreamResponse(aristaproto.Message):
-    """ """
-
     value: "PurchasedLicense" = aristaproto.message_field(1)
     """
     Value is a value deemed relevant to the initiating request.
@@ -2349,8 +2162,6 @@ class PurchasedLicenseStreamResponse(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class PurchasedLicenseBatchedStreamRequest(aristaproto.Message):
-    """ """
-
     partial_eq_filter: List["PurchasedLicense"] = aristaproto.message_field(1)
     """
     PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
@@ -2367,14 +2178,14 @@ class PurchasedLicenseBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-      * end: Returns the state of each PurchasedLicense at end.
-        * Each PurchasedLicense response is fully-specified (all fields set).
-      * start: Returns the state of each PurchasedLicense at start, followed by updates until now.
-        * Each PurchasedLicense response at start is fully-specified, but updates may be partial.
-      * start and end: Returns the state of each PurchasedLicense at start, followed by updates
-        until end.
-        * Each PurchasedLicense response at start is fully-specified, but updates until end may
-          be partial.
+    * end: Returns the state of each PurchasedLicense at end.
+    * Each PurchasedLicense response is fully-specified (all fields set).
+    * start: Returns the state of each PurchasedLicense at start, followed by updates until now.
+    * Each PurchasedLicense response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each PurchasedLicense at start, followed by updates
+    until end.
+    * Each PurchasedLicense response at start is fully-specified, but updates until end may
+    be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2388,8 +2199,6 @@ class PurchasedLicenseBatchedStreamRequest(aristaproto.Message):
 
 @dataclass(eq=False, repr=False)
 class PurchasedLicenseBatchedStreamResponse(aristaproto.Message):
-    """ """
-
     responses: List["PurchasedLicenseStreamResponse"] = aristaproto.message_field(1)
     """
     Values are the values deemed relevant to the initiating request.
@@ -2399,8 +2208,6 @@ class PurchasedLicenseBatchedStreamResponse(aristaproto.Message):
 
 
 class ApplicableDevicesServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         applicable_devices_request: "ApplicableDevicesRequest",
@@ -2409,8 +2216,6 @@ class ApplicableDevicesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "ApplicableDevicesResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.ApplicableDevicesService/GetOne",
             applicable_devices_request,
@@ -2428,8 +2233,6 @@ class ApplicableDevicesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ApplicableDevicesSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableDevicesService/GetSome",
             applicable_devices_some_request,
@@ -2448,8 +2251,6 @@ class ApplicableDevicesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ApplicableDevicesStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableDevicesService/GetAll",
             applicable_devices_stream_request,
@@ -2468,8 +2269,6 @@ class ApplicableDevicesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ApplicableDevicesStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableDevicesService/Subscribe",
             applicable_devices_stream_request,
@@ -2488,8 +2287,6 @@ class ApplicableDevicesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.ApplicableDevicesService/GetMeta",
             applicable_devices_stream_request,
@@ -2507,8 +2304,6 @@ class ApplicableDevicesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableDevicesService/SubscribeMeta",
             applicable_devices_stream_request,
@@ -2527,8 +2322,6 @@ class ApplicableDevicesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ApplicableDevicesBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableDevicesService/GetAllBatched",
             applicable_devices_batched_stream_request,
@@ -2547,8 +2340,6 @@ class ApplicableDevicesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ApplicableDevicesBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableDevicesService/SubscribeBatched",
             applicable_devices_batched_stream_request,
@@ -2561,8 +2352,6 @@ class ApplicableDevicesServiceStub(aristaproto.ServiceStub):
 
 
 class ApplicableLicenseBundlesServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         applicable_license_bundles_request: "ApplicableLicenseBundlesRequest",
@@ -2571,8 +2360,6 @@ class ApplicableLicenseBundlesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "ApplicableLicenseBundlesResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.ApplicableLicenseBundlesService/GetOne",
             applicable_license_bundles_request,
@@ -2590,8 +2377,6 @@ class ApplicableLicenseBundlesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ApplicableLicenseBundlesSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableLicenseBundlesService/GetSome",
             applicable_license_bundles_some_request,
@@ -2610,8 +2395,6 @@ class ApplicableLicenseBundlesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ApplicableLicenseBundlesStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableLicenseBundlesService/GetAll",
             applicable_license_bundles_stream_request,
@@ -2630,8 +2413,6 @@ class ApplicableLicenseBundlesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ApplicableLicenseBundlesStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableLicenseBundlesService/Subscribe",
             applicable_license_bundles_stream_request,
@@ -2650,8 +2431,6 @@ class ApplicableLicenseBundlesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.ApplicableLicenseBundlesService/GetMeta",
             applicable_license_bundles_stream_request,
@@ -2669,8 +2448,6 @@ class ApplicableLicenseBundlesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableLicenseBundlesService/SubscribeMeta",
             applicable_license_bundles_stream_request,
@@ -2689,8 +2466,6 @@ class ApplicableLicenseBundlesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ApplicableLicenseBundlesBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableLicenseBundlesService/GetAllBatched",
             applicable_license_bundles_batched_stream_request,
@@ -2709,8 +2484,6 @@ class ApplicableLicenseBundlesServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[ApplicableLicenseBundlesBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.ApplicableLicenseBundlesService/SubscribeBatched",
             applicable_license_bundles_batched_stream_request,
@@ -2723,8 +2496,6 @@ class ApplicableLicenseBundlesServiceStub(aristaproto.ServiceStub):
 
 
 class LicenseAssignmentServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         license_assignment_request: "LicenseAssignmentRequest",
@@ -2733,8 +2504,6 @@ class LicenseAssignmentServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "LicenseAssignmentResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseAssignmentService/GetOne",
             license_assignment_request,
@@ -2752,8 +2521,6 @@ class LicenseAssignmentServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentService/GetSome",
             license_assignment_some_request,
@@ -2772,8 +2539,6 @@ class LicenseAssignmentServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentService/GetAll",
             license_assignment_stream_request,
@@ -2792,8 +2557,6 @@ class LicenseAssignmentServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentService/Subscribe",
             license_assignment_stream_request,
@@ -2812,8 +2575,6 @@ class LicenseAssignmentServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseAssignmentService/GetMeta",
             license_assignment_stream_request,
@@ -2831,8 +2592,6 @@ class LicenseAssignmentServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentService/SubscribeMeta",
             license_assignment_stream_request,
@@ -2851,8 +2610,6 @@ class LicenseAssignmentServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentService/GetAllBatched",
             license_assignment_batched_stream_request,
@@ -2871,8 +2628,6 @@ class LicenseAssignmentServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentService/SubscribeBatched",
             license_assignment_batched_stream_request,
@@ -2885,8 +2640,6 @@ class LicenseAssignmentServiceStub(aristaproto.ServiceStub):
 
 
 class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         license_assignment_config_request: "LicenseAssignmentConfigRequest",
@@ -2895,8 +2648,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "LicenseAssignmentConfigResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseAssignmentConfigService/GetOne",
             license_assignment_config_request,
@@ -2914,8 +2665,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentConfigSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentConfigService/GetSome",
             license_assignment_config_some_request,
@@ -2934,8 +2683,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentConfigStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentConfigService/GetAll",
             license_assignment_config_stream_request,
@@ -2954,8 +2701,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentConfigStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentConfigService/Subscribe",
             license_assignment_config_stream_request,
@@ -2974,8 +2719,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseAssignmentConfigService/GetMeta",
             license_assignment_config_stream_request,
@@ -2993,8 +2736,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentConfigService/SubscribeMeta",
             license_assignment_config_stream_request,
@@ -3013,8 +2754,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "LicenseAssignmentConfigSetResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseAssignmentConfigService/Set",
             license_assignment_config_set_request,
@@ -3032,8 +2771,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentConfigSetSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentConfigService/SetSome",
             license_assignment_config_set_some_request,
@@ -3052,8 +2789,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "LicenseAssignmentConfigDeleteResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseAssignmentConfigService/Delete",
             license_assignment_config_delete_request,
@@ -3071,8 +2806,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentConfigDeleteSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentConfigService/DeleteSome",
             license_assignment_config_delete_some_request,
@@ -3091,8 +2824,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentConfigDeleteAllResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentConfigService/DeleteAll",
             license_assignment_config_delete_all_request,
@@ -3111,8 +2842,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentConfigBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentConfigService/GetAllBatched",
             license_assignment_config_batched_stream_request,
@@ -3131,8 +2860,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseAssignmentConfigBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseAssignmentConfigService/SubscribeBatched",
             license_assignment_config_batched_stream_request,
@@ -3145,8 +2872,6 @@ class LicenseAssignmentConfigServiceStub(aristaproto.ServiceStub):
 
 
 class LicenseFileServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         license_file_request: "LicenseFileRequest",
@@ -3155,8 +2880,6 @@ class LicenseFileServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "LicenseFileResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseFileService/GetOne",
             license_file_request,
@@ -3174,8 +2897,6 @@ class LicenseFileServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileService/GetSome",
             license_file_some_request,
@@ -3194,8 +2915,6 @@ class LicenseFileServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileService/GetAll",
             license_file_stream_request,
@@ -3214,8 +2933,6 @@ class LicenseFileServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileService/Subscribe",
             license_file_stream_request,
@@ -3234,8 +2951,6 @@ class LicenseFileServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseFileService/GetMeta",
             license_file_stream_request,
@@ -3253,8 +2968,6 @@ class LicenseFileServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileService/SubscribeMeta",
             license_file_stream_request,
@@ -3273,8 +2986,6 @@ class LicenseFileServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileService/GetAllBatched",
             license_file_batched_stream_request,
@@ -3293,8 +3004,6 @@ class LicenseFileServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileService/SubscribeBatched",
             license_file_batched_stream_request,
@@ -3307,8 +3016,6 @@ class LicenseFileServiceStub(aristaproto.ServiceStub):
 
 
 class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         license_file_config_request: "LicenseFileConfigRequest",
@@ -3317,8 +3024,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "LicenseFileConfigResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseFileConfigService/GetOne",
             license_file_config_request,
@@ -3336,8 +3041,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileConfigSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileConfigService/GetSome",
             license_file_config_some_request,
@@ -3356,8 +3059,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileConfigStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileConfigService/GetAll",
             license_file_config_stream_request,
@@ -3376,8 +3077,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileConfigStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileConfigService/Subscribe",
             license_file_config_stream_request,
@@ -3396,8 +3095,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseFileConfigService/GetMeta",
             license_file_config_stream_request,
@@ -3415,8 +3112,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileConfigService/SubscribeMeta",
             license_file_config_stream_request,
@@ -3435,8 +3130,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "LicenseFileConfigSetResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseFileConfigService/Set",
             license_file_config_set_request,
@@ -3454,8 +3147,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileConfigSetSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileConfigService/SetSome",
             license_file_config_set_some_request,
@@ -3474,8 +3165,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "LicenseFileConfigDeleteResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.LicenseFileConfigService/Delete",
             license_file_config_delete_request,
@@ -3493,8 +3182,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileConfigDeleteSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileConfigService/DeleteSome",
             license_file_config_delete_some_request,
@@ -3513,8 +3200,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileConfigDeleteAllResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileConfigService/DeleteAll",
             license_file_config_delete_all_request,
@@ -3533,8 +3218,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileConfigBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileConfigService/GetAllBatched",
             license_file_config_batched_stream_request,
@@ -3553,8 +3236,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[LicenseFileConfigBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.LicenseFileConfigService/SubscribeBatched",
             license_file_config_batched_stream_request,
@@ -3567,8 +3248,6 @@ class LicenseFileConfigServiceStub(aristaproto.ServiceStub):
 
 
 class PurchasedLicenseServiceStub(aristaproto.ServiceStub):
-    """ """
-
     async def get_one(
         self,
         purchased_license_request: "PurchasedLicenseRequest",
@@ -3577,8 +3256,6 @@ class PurchasedLicenseServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "PurchasedLicenseResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.PurchasedLicenseService/GetOne",
             purchased_license_request,
@@ -3596,8 +3273,6 @@ class PurchasedLicenseServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[PurchasedLicenseSomeResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.PurchasedLicenseService/GetSome",
             purchased_license_some_request,
@@ -3616,8 +3291,6 @@ class PurchasedLicenseServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[PurchasedLicenseStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.PurchasedLicenseService/GetAll",
             purchased_license_stream_request,
@@ -3636,8 +3309,6 @@ class PurchasedLicenseServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[PurchasedLicenseStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.PurchasedLicenseService/Subscribe",
             purchased_license_stream_request,
@@ -3656,8 +3327,6 @@ class PurchasedLicenseServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "MetaResponse":
-        """ """
-
         return await self._unary_unary(
             "/arista.license.v1.PurchasedLicenseService/GetMeta",
             purchased_license_stream_request,
@@ -3675,8 +3344,6 @@ class PurchasedLicenseServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[MetaResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.PurchasedLicenseService/SubscribeMeta",
             purchased_license_stream_request,
@@ -3695,8 +3362,6 @@ class PurchasedLicenseServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[PurchasedLicenseBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.PurchasedLicenseService/GetAllBatched",
             purchased_license_batched_stream_request,
@@ -3715,8 +3380,6 @@ class PurchasedLicenseServiceStub(aristaproto.ServiceStub):
         deadline: Optional["Deadline"] = None,
         metadata: Optional["MetadataLike"] = None,
     ) -> "AsyncIterator[PurchasedLicenseBatchedStreamResponse]":
-        """ """
-
         async for response in self._unary_stream(
             "/arista.license.v1.PurchasedLicenseService/SubscribeBatched",
             purchased_license_batched_stream_request,
@@ -3734,50 +3397,32 @@ from ... import time as __time__
 
 
 class ApplicableDevicesServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, applicable_devices_request: "ApplicableDevicesRequest") -> "ApplicableDevicesResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, applicable_devices_some_request: "ApplicableDevicesSomeRequest") -> AsyncIterator[ApplicableDevicesSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, applicable_devices_stream_request: "ApplicableDevicesStreamRequest") -> AsyncIterator[ApplicableDevicesStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, applicable_devices_stream_request: "ApplicableDevicesStreamRequest") -> AsyncIterator[ApplicableDevicesStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, applicable_devices_stream_request: "ApplicableDevicesStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, applicable_devices_stream_request: "ApplicableDevicesStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
         self, applicable_devices_batched_stream_request: "ApplicableDevicesBatchedStreamRequest"
     ) -> AsyncIterator[ApplicableDevicesBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(
         self, applicable_devices_batched_stream_request: "ApplicableDevicesBatchedStreamRequest"
     ) -> AsyncIterator[ApplicableDevicesBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[ApplicableDevicesRequest, ApplicableDevicesResponse]") -> None:
@@ -3896,56 +3541,38 @@ class ApplicableDevicesServiceBase(ServiceBase):
 
 
 class ApplicableLicenseBundlesServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, applicable_license_bundles_request: "ApplicableLicenseBundlesRequest") -> "ApplicableLicenseBundlesResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(
         self, applicable_license_bundles_some_request: "ApplicableLicenseBundlesSomeRequest"
     ) -> AsyncIterator[ApplicableLicenseBundlesSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(
         self, applicable_license_bundles_stream_request: "ApplicableLicenseBundlesStreamRequest"
     ) -> AsyncIterator[ApplicableLicenseBundlesStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(
         self, applicable_license_bundles_stream_request: "ApplicableLicenseBundlesStreamRequest"
     ) -> AsyncIterator[ApplicableLicenseBundlesStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, applicable_license_bundles_stream_request: "ApplicableLicenseBundlesStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, applicable_license_bundles_stream_request: "ApplicableLicenseBundlesStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
         self, applicable_license_bundles_batched_stream_request: "ApplicableLicenseBundlesBatchedStreamRequest"
     ) -> AsyncIterator[ApplicableLicenseBundlesBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(
         self, applicable_license_bundles_batched_stream_request: "ApplicableLicenseBundlesBatchedStreamRequest"
     ) -> AsyncIterator[ApplicableLicenseBundlesBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[ApplicableLicenseBundlesRequest, ApplicableLicenseBundlesResponse]") -> None:
@@ -4064,50 +3691,32 @@ class ApplicableLicenseBundlesServiceBase(ServiceBase):
 
 
 class LicenseAssignmentServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, license_assignment_request: "LicenseAssignmentRequest") -> "LicenseAssignmentResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, license_assignment_some_request: "LicenseAssignmentSomeRequest") -> AsyncIterator[LicenseAssignmentSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, license_assignment_stream_request: "LicenseAssignmentStreamRequest") -> AsyncIterator[LicenseAssignmentStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, license_assignment_stream_request: "LicenseAssignmentStreamRequest") -> AsyncIterator[LicenseAssignmentStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, license_assignment_stream_request: "LicenseAssignmentStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, license_assignment_stream_request: "LicenseAssignmentStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
         self, license_assignment_batched_stream_request: "LicenseAssignmentBatchedStreamRequest"
     ) -> AsyncIterator[LicenseAssignmentBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(
         self, license_assignment_batched_stream_request: "LicenseAssignmentBatchedStreamRequest"
     ) -> AsyncIterator[LicenseAssignmentBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[LicenseAssignmentRequest, LicenseAssignmentResponse]") -> None:
@@ -4226,87 +3835,59 @@ class LicenseAssignmentServiceBase(ServiceBase):
 
 
 class LicenseAssignmentConfigServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, license_assignment_config_request: "LicenseAssignmentConfigRequest") -> "LicenseAssignmentConfigResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(
         self, license_assignment_config_some_request: "LicenseAssignmentConfigSomeRequest"
     ) -> AsyncIterator[LicenseAssignmentConfigSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(
         self, license_assignment_config_stream_request: "LicenseAssignmentConfigStreamRequest"
     ) -> AsyncIterator[LicenseAssignmentConfigStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(
         self, license_assignment_config_stream_request: "LicenseAssignmentConfigStreamRequest"
     ) -> AsyncIterator[LicenseAssignmentConfigStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, license_assignment_config_stream_request: "LicenseAssignmentConfigStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, license_assignment_config_stream_request: "LicenseAssignmentConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set(self, license_assignment_config_set_request: "LicenseAssignmentConfigSetRequest") -> "LicenseAssignmentConfigSetResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set_some(
         self, license_assignment_config_set_some_request: "LicenseAssignmentConfigSetSomeRequest"
     ) -> AsyncIterator[LicenseAssignmentConfigSetSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete(self, license_assignment_config_delete_request: "LicenseAssignmentConfigDeleteRequest") -> "LicenseAssignmentConfigDeleteResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_some(
         self, license_assignment_config_delete_some_request: "LicenseAssignmentConfigDeleteSomeRequest"
     ) -> AsyncIterator[LicenseAssignmentConfigDeleteSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_all(
         self, license_assignment_config_delete_all_request: "LicenseAssignmentConfigDeleteAllRequest"
     ) -> AsyncIterator[LicenseAssignmentConfigDeleteAllResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
         self, license_assignment_config_batched_stream_request: "LicenseAssignmentConfigBatchedStreamRequest"
     ) -> AsyncIterator[LicenseAssignmentConfigBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(
         self, license_assignment_config_batched_stream_request: "LicenseAssignmentConfigBatchedStreamRequest"
     ) -> AsyncIterator[LicenseAssignmentConfigBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[LicenseAssignmentConfigRequest, LicenseAssignmentConfigResponse]") -> None:
@@ -4493,48 +4074,30 @@ class LicenseAssignmentConfigServiceBase(ServiceBase):
 
 
 class LicenseFileServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, license_file_request: "LicenseFileRequest") -> "LicenseFileResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, license_file_some_request: "LicenseFileSomeRequest") -> AsyncIterator[LicenseFileSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, license_file_stream_request: "LicenseFileStreamRequest") -> AsyncIterator[LicenseFileStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, license_file_stream_request: "LicenseFileStreamRequest") -> AsyncIterator[LicenseFileStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, license_file_stream_request: "LicenseFileStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, license_file_stream_request: "LicenseFileStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(self, license_file_batched_stream_request: "LicenseFileBatchedStreamRequest") -> AsyncIterator[LicenseFileBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(
         self, license_file_batched_stream_request: "LicenseFileBatchedStreamRequest"
     ) -> AsyncIterator[LicenseFileBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[LicenseFileRequest, LicenseFileResponse]") -> None:
@@ -4649,79 +4212,51 @@ class LicenseFileServiceBase(ServiceBase):
 
 
 class LicenseFileConfigServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, license_file_config_request: "LicenseFileConfigRequest") -> "LicenseFileConfigResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, license_file_config_some_request: "LicenseFileConfigSomeRequest") -> AsyncIterator[LicenseFileConfigSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, license_file_config_stream_request: "LicenseFileConfigStreamRequest") -> AsyncIterator[LicenseFileConfigStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, license_file_config_stream_request: "LicenseFileConfigStreamRequest") -> AsyncIterator[LicenseFileConfigStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, license_file_config_stream_request: "LicenseFileConfigStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, license_file_config_stream_request: "LicenseFileConfigStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set(self, license_file_config_set_request: "LicenseFileConfigSetRequest") -> "LicenseFileConfigSetResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def set_some(self, license_file_config_set_some_request: "LicenseFileConfigSetSomeRequest") -> AsyncIterator[LicenseFileConfigSetSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete(self, license_file_config_delete_request: "LicenseFileConfigDeleteRequest") -> "LicenseFileConfigDeleteResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_some(
         self, license_file_config_delete_some_request: "LicenseFileConfigDeleteSomeRequest"
     ) -> AsyncIterator[LicenseFileConfigDeleteSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def delete_all(
         self, license_file_config_delete_all_request: "LicenseFileConfigDeleteAllRequest"
     ) -> AsyncIterator[LicenseFileConfigDeleteAllResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
         self, license_file_config_batched_stream_request: "LicenseFileConfigBatchedStreamRequest"
     ) -> AsyncIterator[LicenseFileConfigBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(
         self, license_file_config_batched_stream_request: "LicenseFileConfigBatchedStreamRequest"
     ) -> AsyncIterator[LicenseFileConfigBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[LicenseFileConfigRequest, LicenseFileConfigResponse]") -> None:
@@ -4904,50 +4439,32 @@ class LicenseFileConfigServiceBase(ServiceBase):
 
 
 class PurchasedLicenseServiceBase(ServiceBase):
-    """ """
-
     async def get_one(self, purchased_license_request: "PurchasedLicenseRequest") -> "PurchasedLicenseResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_some(self, purchased_license_some_request: "PurchasedLicenseSomeRequest") -> AsyncIterator[PurchasedLicenseSomeResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all(self, purchased_license_stream_request: "PurchasedLicenseStreamRequest") -> AsyncIterator[PurchasedLicenseStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe(self, purchased_license_stream_request: "PurchasedLicenseStreamRequest") -> AsyncIterator[PurchasedLicenseStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_meta(self, purchased_license_stream_request: "PurchasedLicenseStreamRequest") -> "MetaResponse":
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_meta(self, purchased_license_stream_request: "PurchasedLicenseStreamRequest") -> AsyncIterator[MetaResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def get_all_batched(
         self, purchased_license_batched_stream_request: "PurchasedLicenseBatchedStreamRequest"
     ) -> AsyncIterator[PurchasedLicenseBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def subscribe_batched(
         self, purchased_license_batched_stream_request: "PurchasedLicenseBatchedStreamRequest"
     ) -> AsyncIterator[PurchasedLicenseBatchedStreamResponse]:
-        """ """
-
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
     async def __rpc_get_one(self, stream: "grpclib.server.Stream[PurchasedLicenseRequest, PurchasedLicenseResponse]") -> None:

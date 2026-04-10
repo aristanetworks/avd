@@ -13,12 +13,7 @@ import aristaproto
 
 
 class Operation(aristaproto.Enum):
-    """ """
-
     UNSPECIFIED = 0
-    """
-    """
-
     INITIAL = 10
     """
     INITIAL indicates the associated notification is that of the
