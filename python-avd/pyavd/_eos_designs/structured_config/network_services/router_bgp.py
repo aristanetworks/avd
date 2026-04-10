@@ -268,7 +268,7 @@ class RouterBgpMixin(Protocol):
 
     @run_once_method
     def _set_once_mlag_peer_groups_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
-        """Set router_bgp structured_config covering the MLAG peer_group(s) in case there are VRFs with iBGP peerings."""
+        """Set router_bgp structured_config covering the MLAG peer_group(s) in case there are VRFs with iBGP peerings using a separate peer-group."""
         bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
         self.structured_config_utils.set_mlag_peer_group(bgp_peer_group)
         self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(
