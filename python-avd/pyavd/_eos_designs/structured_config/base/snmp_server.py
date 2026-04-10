@@ -233,7 +233,10 @@ class SnmpServerMixin(Protocol):
                 vrfs.add(host_vrf)
 
                 if source_interface:
-                    self.structured_config.snmp_server.local_interfaces.append_new(name=source_interface, vrf=host_vrf if host_vrf != "default" else None)
+                    if host_vrf == "default":
+                        self.structured_config.snmp_server.local_interfaces_per_vrf.local_interface = source_interface
+                    else:
+                        self.structured_config.snmp_server.local_interfaces_per_vrf.vrfs.append_new(name=host_vrf, local_interface=source_interface)
 
             if not vrfs:
                 # If no VRFs are defined
@@ -273,9 +276,15 @@ class SnmpServerMixin(Protocol):
             vrfs.append_new(name=vrf_name, enable=vrf.enable)
 
             if vrf.ipv4_acl is not None:
-                self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_acl, vrf=vrf_name if vrf_name != "default" else None)
+                if vrf_name == "default":
+                    self.structured_config.snmp_server.ipv4_acls_per_vrf.access_list = vrf.ipv4_acl
+                else:
+                    self.structured_config.snmp_server.ipv4_acls_per_vrf.vrfs.append_new(name=vrf_name, access_list=vrf.ipv4_acl)
 
             if vrf.ipv6_acl is not None:
-                self.structured_config.snmp_server.ipv6_acls.append_new(name=vrf.ipv6_acl, vrf=vrf_name if vrf_name != "default" else None)
+                if vrf_name == "default":
+                    self.structured_config.snmp_server.ipv6_acls_per_vrf.access_list = vrf.ipv6_acl
+                else:
+                    self.structured_config.snmp_server.ipv6_acls_per_vrf.vrfs.append_new(name=vrf_name, access_list=vrf.ipv6_acl)
 
         self.structured_config.snmp_server.vrfs = vrfs._natural_sorted()
