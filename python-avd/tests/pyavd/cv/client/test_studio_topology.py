@@ -4,12 +4,12 @@
 from __future__ import annotations
 
 import re
-from logging import DEBUG
+from logging import DEBUG, ERROR
 from typing import TYPE_CHECKING
 
 import pytest
 
-from pyavd._cv.client.exceptions import CVDeviceDecommissionFailed
+from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVDeviceDecommissionFailed
 from pyavd._cv.workflows.create_workspace_on_cv import create_workspace_on_cv
 from pyavd._cv.workflows.models import CVWorkspace
 
@@ -21,10 +21,7 @@ if TYPE_CHECKING:
 @pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
 async def test_stage_devices_for_decommission_success(caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
     """
-    Test successful decommissioning of two actively streaming devices onboarded to I&T studio.
-
-    This test only covers initiation of the decommission operations and awaiting for decommission status to be SUCCESS for both devices.
-    This test does not cover following steps iof the decommissioning (building and submitting Workspace).
+    Test successful staging of two devices (actively streaming devices, onboarded to I&T studio) for decommissionning.
 
     Exact test steps:
     -   description: Fetch Workspace status
@@ -98,6 +95,59 @@ async def test_stage_devices_for_decommission_success(caplog: pytest.LogCaptureF
             )
             for record in caplog.records
         )
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
+async def test_stage_devices_for_decommission_failure(caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
+    """
+    Test failed staging of a single device (inactive Recorder node) for decommissioning.
+
+    Exact test steps:
+    -   description: Fetch Workspace status
+        request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'), time=None)'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/a996cf0f4bc694971e5d4069f481faaba80f68b2.json'
+
+    -   description: Create Workspace
+        request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+            display_name='MOCKED_WS_NAME', description='MOCKED_WS_DESCRIPTION'))'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/ce73310ec5154d57ac888fc8f93d69893962d804.json'
+
+    -   description: Await until Workspace reaches PENDING state
+        request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
+
+    -   description: Initiate decommissioning of one inactive Recorder node device which has already been successfully staged for decomm in the same Workspace.
+        request: 'DecommissionConfigSetSomeRequest(values=[DecommissionConfig(key=DeviceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', "
+            "device_id='87b21e181f36dd527521a21794ee8e231d591541'))])'
+        targeted_file: 'arista.studio_topology.v1.DecommissionConfigService/SetSome/www.cv-prod-us-central1-c.arista.io/"
+            "604bfd44e7e8a3b397200d3c8bd6139810d295c1.json'
+    """
+    target_devices = ["87b21e181f36dd527521a21794ee8e231d591541"]
+    expected_exception_msg = (
+        r"1 server-side error\(s\) was returned from the 'stage_devices_for_decommission' bulk API call. "
+        "Please check logs for the failed items and error messages."
+    )
+
+    # create new workspace
+    workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+    workspace = CVWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION")
+    await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
+
+    with caplog.at_level(ERROR), pytest.raises(CVClientBulkAPIError, match=expected_exception_msg):
+        _ = await cv_client.stage_devices_for_decommission(workspace_id=workspace.id, device_ids=target_devices)
+
+    # Assert that error message is logged
+    assert any(
+        re.search(
+            re.compile(
+                r"stage_devices_for_decommission: API Call failed 'rpc error: code = InvalidArgument desc = notification 0: empty' for "
+                r"'DeviceKey\(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', device_id='87b21e181f36dd527521a21794ee8e231d591541'\)'"
+            ),
+            str(record.message),
+        )
+        for record in caplog.records
+    )
 
 
 @pytest.mark.asyncio
