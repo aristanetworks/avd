@@ -32,24 +32,27 @@ snmp_server:
         name: SNMP-MGMT
       view: VW-READ
     - name: SNMP-COMMUNITY-3
-  local_interfaces:
-    - name: Management1
-      vrf: MGMT
-    - name: Loopback0
-    - name: Loopback12
-      vrf: Tenant_A_APP_Zone
-    - name: Ethernet1
-      vrf: AAA
-    - name: Ethernet2
-      vrf: abc
-  ipv4_acls:
-    - name: SNMP-MGMT
-      vrf: MGMT
-    - name: onur
-  ipv6_acls:
-    - name: SNMP-MGMT
-      vrf: MGMT
-    - name: onur_v6
+  local_interfaces_per_vrf:
+    local_interface: Loopback0
+    vrfs:
+      - name: MGMT
+        local_interface: Management1
+      - name: Tenant_A_APP_Zone
+        local_interface: Loopback12
+      - name: AAA
+        local_interface: Ethernet1
+      - name: abc
+        local_interface: Ethernet2
+  ipv4_acls_per_vrf:
+    access_list: onur
+    vrfs:
+      - name: MGMT
+        access_list: SNMP-MGMT
+  ipv6_acls_per_vrf:
+    access_list: onur_v6
+    vrfs:
+      - name: MGMT
+        access_list: SNMP-MGMT
   views:
     - name: VW-WRITE
       mib_family_name: iso

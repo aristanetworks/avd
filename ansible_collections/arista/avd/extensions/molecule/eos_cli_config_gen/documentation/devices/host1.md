@@ -2480,20 +2480,20 @@ mcs client
 
 | IP | ACL | VRF |
 | -- | --- | --- |
-| IPv4 | SNMP-MGMT | MGMT |
 | IPv4 | onur | default |
-| IPv6 | SNMP-MGMT | MGMT |
+| IPv4 | SNMP-MGMT | MGMT |
 | IPv6 | onur_v6 | default |
+| IPv6 | SNMP-MGMT | MGMT |
 
 #### SNMP Local Interfaces
 
 | Local Interface | VRF |
 | --------------- | --- |
-| Management1 | MGMT |
 | Loopback0 | default |
-| Loopback12 | Tenant_A_APP_Zone |
 | Ethernet1 | AAA |
 | Ethernet2 | abc |
+| Management1 | MGMT |
+| Loopback12 | Tenant_A_APP_Zone |
 
 #### SNMP VRF Status
 
@@ -2555,10 +2555,10 @@ mcs client
 
 ```eos
 !
-snmp-server ipv4 access-list SNMP-MGMT vrf MGMT
 snmp-server ipv4 access-list onur
-snmp-server ipv6 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv4 access-list SNMP-MGMT vrf MGMT
 snmp-server ipv6 access-list onur_v6
+snmp-server ipv6 access-list SNMP-MGMT vrf MGMT
 snmp-server engineID local 424242424242424242
 snmp-server contact DC1_OPS
 snmp-server location DC1
