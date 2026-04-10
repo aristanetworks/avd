@@ -271,7 +271,7 @@ class RouterBgpMixin(Protocol):
         """Set router_bgp structured_config covering the MLAG peer_group(s) in case there are VRFs with iBGP peerings."""
         bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
         self.structured_config_utils.set_mlag_peer_group(bgp_peer_group)
-        self.structured_config.address_family_ipv4.peer_groups.append(
+        self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(
             self.shared_utils.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.overlay_mlag_rfc5549)
         )
 

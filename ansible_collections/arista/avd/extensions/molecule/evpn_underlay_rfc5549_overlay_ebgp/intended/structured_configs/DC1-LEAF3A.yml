@@ -211,15 +211,6 @@ router_bgp:
     send_community: all
     maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
-  - name: MLAG_VRFS_PEER
-    metadata:
-      type: ipv4
-    remote_as: '65106'
-    description: DC1-LEAF3B
-    next_hop_self: true
-    send_community: all
-    maximum_routes: 256000
-    route_map_in: RM-MLAG-PEER-IN
   - name: UNDERLAY_PEERS
     metadata:
       type: ipv4
@@ -235,6 +226,15 @@ router_bgp:
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
+  - name: MLAG_VRFS_PEER
+    metadata:
+      type: ipv4
+    remote_as: '65106'
+    description: DC1-LEAF3B
+    next_hop_self: true
+    send_community: all
+    maximum_routes: 256000
+    route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 2001:1::5
     peer_group: EVPN-OVERLAY-PEERS
@@ -352,8 +352,6 @@ router_bgp:
         address_family_ipv6:
           enabled: true
           originate: true
-    - name: MLAG_VRFS_PEER
-      activate: true
     - name: UNDERLAY_PEERS
       activate: true
       next_hop:
@@ -362,6 +360,8 @@ router_bgp:
           originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
+    - name: MLAG_VRFS_PEER
+      activate: true
   address_family_ipv6:
     peer_groups:
     - name: MLAG_PEER
