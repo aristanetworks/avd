@@ -89,3 +89,7 @@ class CVClientBulkAPIError(CVClientException):
 
 class CVGRPCError(CVClientException):
     """GRPC call failed."""
+
+
+class CVDeviceDecommissionFailed(CVClientException):
+    """Device Decommission failed."""
