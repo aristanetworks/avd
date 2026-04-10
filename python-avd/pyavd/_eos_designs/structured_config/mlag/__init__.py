@@ -262,7 +262,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             return
 
         # MLAG Peer group
-        self.structured_config_utils.set_once_mlag_peer_groups()
+        self.structured_config_utils.set_once_peer_group_mlag_ipv4_underlay_peer()
 
         vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)
         interface_name = f"Vlan{vlan}"

@@ -178,7 +178,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         self.structured_config.route_maps.append(route_map)
 
     @run_once_method
-    def set_once_mlag_peer_groups(self) -> None:
+    def set_once_peer_group_mlag_ipv4_underlay_peer(self) -> None:
         """
         Set router_bgp structured_config covering the MLAG peer_group and associated address_family activations.
 
@@ -187,17 +187,14 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         - Network services in the case of iBGP MLAG peering for VRFs
 
         """
-        router_bgp = self.structured_config.router_bgp
-        shared_utils = self.shared_utils
-
         bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
         self.set_mlag_peer_group(bgp_peer_group)
-        if not shared_utils.underlay_ipv6_numbered:
-            router_bgp.address_family_ipv4.peer_groups.append(
-                shared_utils.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549)
+        if not self.shared_utils.underlay_ipv6_numbered:
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(
+                self.shared_utils.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549)
             )
-        if shared_utils.underlay_ipv6:
-            router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
+        if self.shared_utils.underlay_ipv6:
+            self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
 
     def set_mlag_peer_group(self, bgp_peer_group: EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer) -> None:
         """Set structured_config for one MLAG peer_group."""
