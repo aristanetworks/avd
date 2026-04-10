@@ -55,7 +55,8 @@ async def test_decommission_devices_success(caplog: pytest.LogCaptureFixture, cv
     """
     target_devices = ["1207F35678E44BD8E7C7EC8BB18DDB8C", "D60EC473E29C51A45C50D84B9D89F756"]
     # create new workspace
-    workspace = CVWorkspace(id="ws-cbf7c7ea-a57c-481d-b96b-97c12856395e", name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION")
+    workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+    workspace = CVWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION")
     await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
 
     with caplog.at_level(DEBUG):
@@ -65,7 +66,13 @@ async def test_decommission_devices_success(caplog: pytest.LogCaptureFixture, cv
         assert len(decommission_devices_response) == 0
 
         # Subscribe for decommissining updates. They all must succeed prior to next steps (building Workspace, submitting Workspace)
-        assert (await cv_client.wait_for_devices_decommission(workspace_id=workspace.id, device_ids=target_devices)) is None
+        wait_for_decommission_devices_response = await cv_client.wait_for_devices_decommission(workspace_id=workspace.id, device_ids=target_devices)
+
+    assert len(wait_for_decommission_devices_response) == len(target_devices)
+    for response in wait_for_decommission_devices_response:
+        assert response.key.device_id in target_devices
+        assert response.key.workspace_id == workspace_id
+        assert not response.error
 
     # Assert that initial INITIAL_SYNC_COMPLETE is received and logged
     assert any(

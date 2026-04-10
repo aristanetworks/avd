@@ -69,16 +69,19 @@ class StudioTopologyMixin(Protocol):
         workspace_id: str,
         device_ids: list[str] | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> None:
+    ) -> list[Decommission]:
         """
         Monitor decommissioning of devices using arista.studio_topology.v1.DecommissionService.Subscribe API.
 
-        Block until all Decommission operations reach a SUCCESS status, Stream is closed or timed out.
+        Block until all Decommission operations reach SUCCESS status, Stream is closed or timed out.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
             device_ids: List of Device IDs / serial_numbers to decommission.
             timeout: Timeout in seconds.
+
+        Returns:
+            List of Decommission objects for all devices.
 
         Raises:
             CVDeviceDecommissioningFailed: If the stream closed before all devices reached a SUCCESS status or errors are faced.
@@ -93,6 +96,7 @@ class StudioTopologyMixin(Protocol):
         remaining_device_ids = set(device_ids)
         # Tracks per-device latest non-success responses
         latest_per_device_nonsuccess_response: dict[str, Decommission] = {}
+        successful_responses: list[Decommission] = []
 
         async for response in responses:
             device_id = response.value.key.device_id
@@ -100,12 +104,14 @@ class StudioTopologyMixin(Protocol):
             if current_status == DecommissionStatus.SUCCESS:
                 remaining_device_ids.discard(device_id)
                 latest_per_device_nonsuccess_response.pop(device_id, None)
+                successful_responses.append(response.value)
                 LOGGER.debug(
                     "wait_for_devices_decommission: Decommissioning of device %s succeeded: %s",
                     device_id,
                     response.value,
                 )
             # Other terminal status
+            # TODO: Figure out a way to test
             elif current_status != DecommissionStatus.UNSPECIFIED:
                 remaining_device_ids.discard(device_id)
                 latest_per_device_nonsuccess_response[device_id] = response.value
@@ -116,6 +122,7 @@ class StudioTopologyMixin(Protocol):
                     response.value,
                 )
             # Non-terminal status.
+            # TODO: Figure out a way to test
             else:
                 LOGGER.debug("wait_for_devices_decommission: Got decommission update: %s", response.value)
                 # Avoid tracking INITIAL_SYNC_COMPLETE update referencing no devices
@@ -124,7 +131,7 @@ class StudioTopologyMixin(Protocol):
 
             # Return as soon as all devices got SUCCESS responses
             if not remaining_device_ids and not latest_per_device_nonsuccess_response:
-                return
+                return successful_responses
 
             # Break async loop if we got terminal responses for all devices and some of them are just not successful.
             if not remaining_device_ids:
@@ -139,3 +146,5 @@ class StudioTopologyMixin(Protocol):
             if latest_per_device_nonsuccess_response:
                 msg_parts.append(f"Non-success decommission response received for the following devices: {latest_per_device_nonsuccess_response}.")
             raise CVDeviceDecommissionFailed(" ".join(msg_parts))
+        # make ruff's RET503 happy
+        return successful_responses
