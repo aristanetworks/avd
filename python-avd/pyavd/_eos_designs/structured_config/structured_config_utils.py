@@ -185,7 +185,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         This is called from:
         - MLAG in the case of BGP underlay routing protocol.
         - Network services in the case of iBGP MLAG peering for VRFs
-        
+
         """
         router_bgp = self.structured_config.router_bgp
         shared_utils = self.shared_utils
