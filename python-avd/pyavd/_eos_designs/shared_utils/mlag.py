@@ -7,7 +7,6 @@ from functools import cached_property
 from re import findall
 from typing import TYPE_CHECKING, Protocol, cast
 
-from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
@@ -16,7 +15,6 @@ if TYPE_CHECKING:
     from typing import Literal
 
     from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
-    from pyavd._eos_designs.schema import EosDesigns
 
     from . import SharedUtilsProtocol
 
@@ -232,17 +230,6 @@ class MlagMixin(Protocol):
         if self.use_separate_peer_group_for_mlag_vrfs:
             return self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer.name
         return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
-
-    def get_mlag_peer_group_address_familiy_ipv4(
-        self: SharedUtilsProtocol,
-        bgp_peer_group: EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer,
-        rfc5549: bool,
-    ) -> EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem:
-        """Return structured_config for activation of one MLAG peer_group under address-family IPv4."""
-        address_family_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(name=bgp_peer_group.name, activate=True)
-        if rfc5549:
-            address_family_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
-        return address_family_peer_group
 
     @cached_property
     def underlay_multicast_pim_mlag_enabled(self: SharedUtilsProtocol) -> bool:
