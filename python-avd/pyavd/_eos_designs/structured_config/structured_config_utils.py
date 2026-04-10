@@ -69,28 +69,19 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         Set router_bgp structured_config covering the MLAG peer_group(s) and associated address_family activations.
 
         This is called from MLAG in the case of BGP underlay routing protocol.
-        In the case of another underlay routing protocol, it may be called from network_services instead in case there are VRFs with iBGP peerings.
         """
         router_bgp = self.structured_config.router_bgp
         shared_utils = self.shared_utils
 
         # Only create the underlay peer group if the underlay is BGP or if we reuse the same peer-group from network services.
-        if shared_utils.underlay_bgp or not shared_utils.use_separate_peer_group_for_mlag_vrfs:
-            bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
-            self.set_mlag_peer_group(bgp_peer_group)
-            if not shared_utils.underlay_ipv6_numbered:
-                router_bgp.address_family_ipv4.peer_groups.append(
-                    shared_utils.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549)
-                )
-            if shared_utils.underlay_ipv6:
-                router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
-
-        if shared_utils.use_separate_peer_group_for_mlag_vrfs:
-            bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
-            self.set_mlag_peer_group(bgp_peer_group)
+        bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
+        self.set_mlag_peer_group(bgp_peer_group)
+        if not shared_utils.underlay_ipv6_numbered:
             router_bgp.address_family_ipv4.peer_groups.append(
-                shared_utils.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.overlay_mlag_rfc5549)
+                shared_utils.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549)
             )
+        if shared_utils.underlay_ipv6:
+            router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
 
     def set_mlag_peer_group(self, bgp_peer_group: EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer) -> None:
         """Set structured_config for one MLAG peer_group."""

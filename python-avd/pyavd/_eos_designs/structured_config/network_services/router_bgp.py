@@ -12,6 +12,7 @@ from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict
+from pyavd._utils.run_once import run_once_method
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -28,9 +29,6 @@ class RouterBgpMixin(Protocol):
 
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
-
-    need_mlag_peer_group: bool = False
-    """Flag set during configuration of BGP VRFs if they have MLAG enabled. Used later to decide if we need to configure the MLAG peer group or not."""
 
     @structured_config_contributor
     def router_bgp(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
@@ -56,11 +54,6 @@ class RouterBgpMixin(Protocol):
         self._router_bgp_vlan_aware_bundles(tenant_svis_l2vlans_dict)
         self._router_bgp_redistribute_routes()
         self._router_bgp_vpws()
-
-        # Configure MLAG iBGP peer-group if needed. The function updates structured config directly.
-        # Catches cases where underlay is not BGP but we still need MLAG iBGP peering.
-        if not self.shared_utils.underlay_bgp and self.need_mlag_peer_group:
-            self.structured_config_utils.set_once_mlag_peer_groups()
 
     def _router_bgp_peer_groups(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -212,7 +205,10 @@ class RouterBgpMixin(Protocol):
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                     self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
-                    self.need_mlag_peer_group = True
+                    if self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
+                        self._set_once_mlag_peer_groups_vrfs()
+                    else:
+                        self.structured_config_utils.set_once_mlag_peer_groups()
 
                 for bgp_peer in vrf.bgp_peers:
                     peer_ip = bgp_peer.ip_address
@@ -269,6 +265,15 @@ class RouterBgpMixin(Protocol):
                     bgp_vrf.name = vrf.name
                     maybe_existing_vrf = self.structured_config.router_bgp.vrfs.obtain(vrf.name)
                     maybe_existing_vrf._combine(bgp_vrf)
+
+    @run_once_method
+    def _set_once_mlag_peer_groups_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+        """Set router_bgp structured_config covering the MLAG peer_group(s) in case there are VRFs with iBGP peerings."""
+        bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
+        self.structured_config_utils.set_mlag_peer_group(bgp_peer_group)
+        self.structured_config.address_family_ipv4.peer_groups.append(
+            self.shared_utils.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.overlay_mlag_rfc5549)
+        )
 
     def _update_router_bgp_vrf_evpn_rd_rt_rewrite_evpn_af_cfg(
         self: AvdStructuredConfigNetworkServicesProtocol,

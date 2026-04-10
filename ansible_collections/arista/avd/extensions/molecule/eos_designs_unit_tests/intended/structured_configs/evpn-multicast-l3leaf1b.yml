@@ -328,15 +328,6 @@ router_bgp:
     send_community: all
     maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
-  - name: MLAG-IPv4-VRFS-PEER
-    metadata:
-      type: ipv4
-    remote_as: '65101'
-    description: evpn-multicast-l3leaf1a
-    next_hop_self: true
-    send_community: all
-    maximum_routes: 256000
-    route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
@@ -350,6 +341,15 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
+  - name: MLAG-IPv4-VRFS-PEER
+    metadata:
+      type: ipv4
+    remote_as: '65101'
+    description: evpn-multicast-l3leaf1a
+    next_hop_self: true
+    send_community: all
+    maximum_routes: 256000
+    route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 10.255.251.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -587,12 +587,12 @@ router_bgp:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
-    - name: MLAG-IPv4-VRFS-PEER
-      activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
+    - name: MLAG-IPv4-VRFS-PEER
+      activate: true
   vrfs:
   - name: MULTICAST_DISABLED_310_311
     rd: 192.168.255.4:13
