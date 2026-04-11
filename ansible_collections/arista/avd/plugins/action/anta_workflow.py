@@ -495,7 +495,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
 
     if (total_devices_unreachable := len(devices_unreachable_at_setup)) > 0:
         device_list_str = ", ".join(sorted(devices_unreachable_at_setup))
-        LOGGER.warning("%d device(s) found unreachable after connection attempts: %s", total_devices_unreachable, device_list_str)
+        LOGGER.warning("%d device(s) unreachable during structured configurations verification: %s", total_devices_unreachable, device_list_str)
 
     catalog = AntaCatalog.merge_catalogs(catalogs)
 
