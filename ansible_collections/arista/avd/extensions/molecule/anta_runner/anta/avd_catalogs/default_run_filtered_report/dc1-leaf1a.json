@@ -233,6 +233,13 @@
             "description": "dc2-leaf3a.arista.com",
             "vrf": "default",
             "repeat": 1
+          },
+          {
+            "destination": "10.255.128.19",
+            "source": "10.255.0.3",
+            "description": "dc2-leaf4a.arista.com",
+            "vrf": "default",
+            "repeat": 1
           }
         ]
       }
@@ -837,11 +844,19 @@
             "vrf": "default"
           },
           {
+            "prefix": "10.255.128.19/32",
+            "vrf": "default"
+          },
+          {
             "prefix": "10.255.129.13/32",
             "vrf": "default"
           },
           {
             "prefix": "10.255.129.15/32",
+            "vrf": "default"
+          },
+          {
+            "prefix": "10.255.129.19/32",
             "vrf": "default"
           }
         ]
