@@ -37,6 +37,7 @@ ip access-list {{ acl.name }}
 {%                     set acl_entry.string = acl_entry.string ~ ' vlan' %}
 {%                     if (acle.inner_vlan_number is arista.avd.defined) and (acle.inner_vlan_mask is arista.avd.defined) %}
 {%                         set acl_entry.string = acl_entry.string ~ ' ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask ~ ' inner ' ~ acle.inner_vlan_number ~ ' ' ~ acle.inner_vlan_mask %}
+{#                     TODO: AVD 7.0.0 Remove the elif and else block (lines 41-45) once "vlan_inner" key is removed and update the logic for inner vlans #}
 {%                     elif acle.vlan_inner is arista.avd.defined(true) %}
 {%                         set acl_entry.string = acl_entry.string ~ ' inner ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask %}
 {%                     else %}
