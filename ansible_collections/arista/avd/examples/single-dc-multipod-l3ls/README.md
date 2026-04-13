@@ -83,7 +83,7 @@ With the topology, the following YAML files are used in group_vars:
 - POD1/pod1.yml
 - POD2/pod2.yml
 - EVPN_SERVICES/evpn_services.yml
-- ENDPOINT_CONNECT/endpoints.yml
+- CONNECTED_ENDPOINTS/endpoints.yml
 
 The fabric_variables.yml file contains parameters that would apply to the entire fabric, such as `evpn_vlan_aware_bundles: true`.
 
