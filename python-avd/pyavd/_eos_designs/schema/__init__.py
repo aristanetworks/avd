@@ -19447,12 +19447,78 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"interface_defaults": {"type": InterfaceDefaults}, "arp": {"type": Arp}, "ip_icmp_redirect": {"type": bool}}
+        class DhcpRelay(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "information_option": {"type": bool, "default": False},
+                "tunnel_requests_disabled": {"type": bool, "default": False},
+                "mlag_peerlink_requests_disabled": {"type": bool, "default": False},
+            }
+            information_option: bool
+            """
+            Enables the insertion of DHCP Relay Agent Information (Option 82).
+
+            Default value: `False`
+            """
+            tunnel_requests_disabled: bool
+            """
+            Blocks DHCP relay for packets received over VXLAN tunnels.
+            This is a VTEP-specific optimization and
+            will only be configured on VXLAN VTEPs.
+
+            Default value: `False`
+            """
+            mlag_peerlink_requests_disabled: bool
+            """
+            Blocks DHCP relay for packets arriving via the MLAG peer-link.
+            This will only be configured on VXLAN
+            VTEPs which are also MLAG devices.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    information_option: bool | UndefinedType = Undefined,
+                    tunnel_requests_disabled: bool | UndefinedType = Undefined,
+                    mlag_peerlink_requests_disabled: bool | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DhcpRelay.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        information_option: Enables the insertion of DHCP Relay Agent Information (Option 82).
+                        tunnel_requests_disabled:
+                           Blocks DHCP relay for packets received over VXLAN tunnels.
+                           This is a VTEP-specific optimization and
+                           will only be configured on VXLAN VTEPs.
+                        mlag_peerlink_requests_disabled:
+                           Blocks DHCP relay for packets arriving via the MLAG peer-link.
+                           This will only be configured on VXLAN
+                           VTEPs which are also MLAG devices.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "interface_defaults": {"type": InterfaceDefaults},
+            "arp": {"type": Arp},
+            "ip_icmp_redirect": {"type": bool},
+            "dhcp_relay": {"type": DhcpRelay},
+        }
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
         arp: Arp
         """Subclass of AvdModel."""
         ip_icmp_redirect: bool | None
+        dhcp_relay: DhcpRelay
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -19462,6 +19528,7 @@ class EosDesigns(EosDesignsRootModel):
                 interface_defaults: InterfaceDefaults | UndefinedType = Undefined,
                 arp: Arp | UndefinedType = Undefined,
                 ip_icmp_redirect: bool | None | UndefinedType = Undefined,
+                dhcp_relay: DhcpRelay | UndefinedType = Undefined,
             ) -> None:
                 """
                 GeneralSettings.
@@ -19473,6 +19540,7 @@ class EosDesigns(EosDesignsRootModel):
                     interface_defaults: Subclass of AvdModel.
                     arp: Subclass of AvdModel.
                     ip_icmp_redirect: ip_icmp_redirect
+                    dhcp_relay: Subclass of AvdModel.
 
                 """
 
@@ -23365,6 +23433,30 @@ class EosDesigns(EosDesignsRootModel):
                     enable_https: enable_https
                     default_services: default_services
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
+    class ManagementSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"console": {"type": EosCliConfigGen.ManagementConsole}, "banners": {"type": EosCliConfigGen.Banners}}
+        console: EosCliConfigGen.ManagementConsole
+        banners: EosCliConfigGen.Banners
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self, *, console: EosCliConfigGen.ManagementConsole | UndefinedType = Undefined, banners: EosCliConfigGen.Banners | UndefinedType = Undefined
+            ) -> None:
+                """
+                ManagementSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    console: console
+                    banners: banners
 
                 """
 
@@ -90256,6 +90348,7 @@ class EosDesigns(EosDesignsRootModel):
         "logging_settings": {"type": LoggingSettings},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
+        "management_settings": {"type": ManagementSettings},
         "mgmt_destination_networks": {"type": MgmtDestinationNetworks},
         "mgmt_gateway": {"type": str},
         "mgmt_interface": {"type": str, "default": "Management1"},
@@ -91882,6 +91975,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    management_settings: ManagementSettings
+    """Subclass of AvdModel."""
     mgmt_destination_networks: MgmtDestinationNetworks
     """
     List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
@@ -92994,6 +93089,7 @@ class EosDesigns(EosDesignsRootModel):
             logging_settings: LoggingSettings | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
+            management_settings: ManagementSettings | UndefinedType = Undefined,
             mgmt_destination_networks: MgmtDestinationNetworks | UndefinedType = Undefined,
             mgmt_gateway: str | None | UndefinedType = Undefined,
             mgmt_interface: str | UndefinedType = Undefined,
@@ -93849,6 +93945,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                management_settings: Subclass of AvdModel.
                 mgmt_destination_networks:
                    List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
                    Replaces the default route.
