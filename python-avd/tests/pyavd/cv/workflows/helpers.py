@@ -2,6 +2,8 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+from uuid import uuid5
+
 from aristaproto import _DateTime
 
 from pyavd._cv.api.arista.changecontrol.v1 import Change, ChangeControl, ChangeControlStatus, Flag
@@ -16,7 +18,7 @@ from pyavd._cv.api.arista.tag.v2 import (
     TagKey,
 )
 from pyavd._cv.api.fmp import RepeatedString
-from pyavd._cv.workflows.models import CVManifest
+from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AVD_NAMESPACE
 
 DEFAULT_TIMESTAMP = _DateTime.fromisoformat("2025-10-03T00:00:00")
 
@@ -153,4 +155,4 @@ def get_interface_tag_assignments_cv_state() -> list[TagAssignment]:
 
 def generate_id(key: str) -> str:
     """Helper to consistently generate expected IDs for tests."""
-    return CVManifest._generate_deterministic_id(key)
+    return f"{AVD_ENTITY_PREFIX}{uuid5(AVD_NAMESPACE, key)}"

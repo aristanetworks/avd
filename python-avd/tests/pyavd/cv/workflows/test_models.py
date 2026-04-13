@@ -10,9 +10,16 @@ import pytest
 from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
 from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVManifestError
-from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVManifest
-
-from .helpers import generate_id
+from pyavd._cv.workflows.models import (
+    AvdConfiglet,
+    AvdConfigletRef,
+    AvdContainer,
+    AvdManifest,
+    CVConfigletID,
+    CVContainer,
+    CVContainerID,
+    CVManifest,
+)
 
 # === Test Fixtures ===
 
@@ -30,7 +37,7 @@ def complex_avd_manifest() -> AvdManifest:
         name="LEAF_GROUP_A",
         tag_query="rack:1a AND role:leaf",
         description="Leaves in Rack 1A",
-        configlets=("configlet_leaf",),
+        configlets=(AvdConfigletRef(name="configlet_leaf"),),
     )
     container_leaf_1b = AvdContainer(
         name="LEAF_GROUP_B",
@@ -42,7 +49,7 @@ def complex_avd_manifest() -> AvdManifest:
         name="RACK_1",
         tag_query="rack:1",
         description="All devices in Rack 1",
-        configlets=("configlet_global",),
+        configlets=(AvdConfigletRef(name="configlet_global"),),
         sub_containers=(container_leaf_1a, container_leaf_1b),
     )
     container_rack2 = AvdContainer(
@@ -79,7 +86,7 @@ class TestCVManifestGeneration:
         cv_cfg = configlet_map["configlet_leaf"]
         assert cv_cfg.name == "configlet_leaf"
         assert str(cv_cfg.file) == "path/to/leaf.cfg"
-        assert cv_cfg.id == generate_id("configlet_leaf")
+        assert cv_cfg.id == CVConfigletID("configlet_leaf")
 
         # Verify root container properties (CVContainer).
         assert "RACK_1" in container_map
@@ -91,7 +98,7 @@ class TestCVManifestGeneration:
         assert root1.match_policy == "match_all"  # Default value
 
         # Check expected child IDs in root container.
-        expected_child_ids = {generate_id("RACK_1/LEAF_GROUP_A"), generate_id("RACK_1/LEAF_GROUP_B")}
+        expected_child_ids = {CVContainerID(("RACK_1", "LEAF_GROUP_A")), CVContainerID(("RACK_1", "LEAF_GROUP_B"))}
         assert set(root1.child_ids) == expected_child_ids
 
         # Check expected configlet IDs in root container.
@@ -102,7 +109,7 @@ class TestCVManifestGeneration:
         assert "LEAF_GROUP_A" in container_map
         leaf1a = container_map["LEAF_GROUP_A"]
         assert leaf1a.is_root is False
-        assert leaf1a.id == generate_id("RACK_1/LEAF_GROUP_A")
+        assert leaf1a.id == CVContainerID(("RACK_1", "LEAF_GROUP_A"))
         assert len(leaf1a.child_ids) == 0
         assert leaf1a.configlet_ids == (configlet_map["configlet_leaf"].id,)
 
@@ -141,7 +148,7 @@ class TestCVManifestGeneration:
 
     def test_invalid_configlet_reference_error(self) -> None:
         """Tests that an error is raised when a container references a non-existent configlet."""
-        container = AvdContainer(name="C1", tag_query="q1", configlets=("missing_configlet",))
+        container = AvdContainer(name="C1", tag_query="q1", configlets=(AvdConfigletRef(name="missing_configlet"),))
         avd_manifest = AvdManifest(configlets=(), containers=(container,))
 
         with pytest.raises(CVManifestError, match=r"Configlet 'missing_configlet' is assigned to a container but is not found in the input definition."):
@@ -178,16 +185,6 @@ class TestCVManifestGeneration:
         assert len(cv_manifest.configlets) == 0
         assert len(cv_manifest.containers) == 0
 
-    def test_deterministic_id_generation(self) -> None:
-        """Ensures the ID generation function is deterministic and consistent."""
-        id1 = CVManifest._generate_deterministic_id("my_key")
-        id2 = CVManifest._generate_deterministic_id("my_key")
-        id3 = CVManifest._generate_deterministic_id("another_key")
-
-        assert id1 == id2
-        assert id1 != id3
-        assert id1.startswith(AVD_ENTITY_PREFIX)
-
 
 class TestCVContainerMatching:
     @pytest.fixture
@@ -196,13 +193,17 @@ class TestCVContainerMatching:
         # Setup data to create one container instance.
         avd_cfg = AvdConfiglet(name="test_cfg", file=Path("test.cfg"))
         avd_container = AvdContainer(
-            name="TEST_CONTAINER", description="Test Description", tag_query="app:test", match_policy="match_all", configlets=("test_cfg",)
+            name="TEST_CONTAINER",
+            description="Test Description",
+            tag_query="app:test",
+            match_policy="match_all",
+            configlets=(AvdConfigletRef(name="test_cfg"),),
         )
 
         # Manually create dependent objects for CVContainer constructor.
         # In a real scenario, we'd run CVManifest.from_avd_manifest, but here we can isolate CVContainer.
-        configlet_id = generate_id(avd_cfg.name)
-        container_id = generate_id(avd_container.name)
+        configlet_id = CVConfigletID(avd_cfg.name)
+        container_id = CVContainerID((avd_container.name,))
 
         return CVContainer(
             avd_container=avd_container,
@@ -216,12 +217,12 @@ class TestCVContainerMatching:
         """Tests successful match between local CVContainer and remote ConfigletAssignment."""
         # Create an API object that perfectly matches test_cv_container.
         api_assignment = ConfigletAssignment(
-            key=ConfigletAssignmentKey(configlet_assignment_id=test_cv_container.id),
+            key=ConfigletAssignmentKey(configlet_assignment_id=test_cv_container.id.value),
             display_name=test_cv_container.name,
             description=test_cv_container.description,
-            configlet_ids=RepeatedString(values=list(test_cv_container.configlet_ids)),
+            configlet_ids=RepeatedString(values=[c.value for c in test_cv_container.configlet_ids]),
             query=test_cv_container.tag_query,
-            child_assignment_ids=RepeatedString(values=list(test_cv_container.child_ids)),
+            child_assignment_ids=RepeatedString(values=[c.value for c in test_cv_container.child_ids]),
             match_policy=MatchPolicy.MATCH_ALL,
         )
 
@@ -243,12 +244,12 @@ class TestCVContainerMatching:
         """Tests mismatch detection for each field individually."""
         # Create a mock remote object that perfectly matches test_cv_container.
         mock_assignment = ConfigletAssignment(
-            key=ConfigletAssignmentKey(configlet_assignment_id=test_cv_container.id),
+            key=ConfigletAssignmentKey(configlet_assignment_id=test_cv_container.id.value),
             display_name=test_cv_container.name,
             description=test_cv_container.description,
-            configlet_ids=RepeatedString(values=list(test_cv_container.configlet_ids)),
+            configlet_ids=RepeatedString(values=[c.value for c in test_cv_container.configlet_ids]),
             query=test_cv_container.tag_query,
-            child_assignment_ids=RepeatedString(values=list(test_cv_container.child_ids)),
+            child_assignment_ids=RepeatedString(values=[c.value for c in test_cv_container.child_ids]),
             match_policy=MatchPolicy.MATCH_ALL,
         )
 
@@ -278,13 +279,13 @@ class TestCVContainerMatching:
         avd_container = AvdContainer(name="NO_DESC_CONTAINER", tag_query="q1", description=None)
         cv_container = CVContainer(
             avd_container=avd_container,
-            id=generate_id(avd_container.name),
+            id=CVContainerID((avd_container.name,)),
             is_root=True,
         )
 
         # Create mock assignment with description="".
         mock_assignment = ConfigletAssignment(
-            key=ConfigletAssignmentKey(configlet_assignment_id=cv_container.id),
+            key=ConfigletAssignmentKey(configlet_assignment_id=cv_container.id.value),
             display_name=cv_container.name,
             description="",  # Remote side has empty string
             configlet_ids=RepeatedString(values=[]),
@@ -351,14 +352,14 @@ class TestAvdContainerFromDict:
         assert container.name == "Root"
         assert container.description == "Root container"
         assert container.match_policy == "match_first"
-        assert container.configlets == ("cfg1", "cfg2")
+        assert container.configlets == (AvdConfigletRef(name="cfg1"), AvdConfigletRef(name="cfg2"))
         assert len(container.sub_containers) == 1
 
         child = container.sub_containers[0]
         assert isinstance(child, AvdContainer)
         assert child.name == "Child1"
         assert child.tag_query == "rack:1"
-        assert child.configlets == ("cfg_child",)
+        assert child.configlets == (AvdConfigletRef(name="cfg_child"),)
 
     @pytest.mark.parametrize(
         ("invalid_data", "match_str"),

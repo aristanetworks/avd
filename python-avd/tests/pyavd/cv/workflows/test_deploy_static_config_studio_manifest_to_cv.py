@@ -8,7 +8,7 @@ import pytest
 
 from pyavd._cv.api.arista.configlet.v1 import Configlet, ConfigletKey
 from pyavd._cv.workflows.deploy_static_config_studio_manifest_to_cv import deploy_static_config_studio_manifest_to_cv
-from pyavd._cv.workflows.models import AvdConfiglet, AvdContainer, AvdManifest, CVWorkspace, DeployToCvResult
+from pyavd._cv.workflows.models import AvdConfiglet, AvdConfigletRef, AvdContainer, AvdManifest, CVWorkspace, DeployToCvResult
 
 from .helpers import create_grpc_container, generate_id
 
@@ -23,9 +23,14 @@ def avd_initial_manifest() -> AvdManifest:
     bgp_configlet = AvdConfiglet(name="BGP", file=Path("bgp.cfg"))
 
     leafs_container = AvdContainer(
-        name="LEAFS", tag_query="topology_hint_type:leaf", description="Leafs container", configlets=(vxlan_configlet.name, mlag_configlet.name)
+        name="LEAFS",
+        tag_query="topology_hint_type:leaf",
+        description="Leafs container",
+        configlets=(AvdConfigletRef(name=vxlan_configlet.name), AvdConfigletRef(name=mlag_configlet.name)),
     )
-    spines_container = AvdContainer(name="SPINES", tag_query="topology_hint_type:spine", description="Spines container", configlets=(bgp_configlet.name,))
+    spines_container = AvdContainer(
+        name="SPINES", tag_query="topology_hint_type:spine", description="Spines container", configlets=(AvdConfigletRef(name=bgp_configlet.name),)
+    )
     global_container = AvdContainer(name="GLOBAL", tag_query="device:*", description="Global container", sub_containers=(leafs_container, spines_container))
 
     return AvdManifest(configlets=(vxlan_configlet, mlag_configlet, bgp_configlet), containers=(global_container,))
@@ -191,11 +196,11 @@ class TestDeployStaticConfigStudio:
             name="CNT_LEAF1",
             tag_query="device:LEAF1",
             description="LEAF1 container - UPDATED",  # Modified description
-            configlets=(cfl1.name,),
+            configlets=(AvdConfigletRef(name=cfl1.name),),
         )
-        cnt_leaf2 = AvdContainer(name="CNT_LEAF2", tag_query="device:LEAF2", description="LEAF2 container", configlets=(cfl2.name,))
+        cnt_leaf2 = AvdContainer(name="CNT_LEAF2", tag_query="device:LEAF2", description="LEAF2 container", configlets=(AvdConfigletRef(name=cfl2.name),))
         root_container = AvdContainer(name="ROOT", tag_query="device:*", description="Root container", sub_containers=(cnt_leaf1, cnt_leaf2))
-        spine_root_container = AvdContainer(name="SPINE_ROOT", tag_query="role:SPINE", configlets=(cfs1.name,))  # New root container
+        spine_root_container = AvdContainer(name="SPINE_ROOT", tag_query="role:SPINE", configlets=(AvdConfigletRef(name=cfs1.name),))  # New root container
 
         updated_manifest = AvdManifest(configlets=(cfl1, cfl2, cfs1), containers=(root_container, spine_root_container))
 
@@ -299,7 +304,7 @@ class TestDeployStaticConfigStudio:
 
         # New desired state from AVD: ROOT with only CNT_LEAF1, CNT_LEAF2 is removed from the manifest.
         cfl1 = AvdConfiglet(name="CF_LEAF1", file=Path("/path/to/cfl1.cfg"))
-        cnt_leaf1 = AvdContainer(name="CNT_LEAF1", tag_query="device:LEAF1", description="LEAF1 container", configlets=(cfl1.name,))
+        cnt_leaf1 = AvdContainer(name="CNT_LEAF1", tag_query="device:LEAF1", description="LEAF1 container", configlets=(AvdConfigletRef(name=cfl1.name),))
         root_container = AvdContainer(name="ROOT", tag_query="device:*", description="Root container", sub_containers=(cnt_leaf1,))
 
         updated_manifest = AvdManifest(configlets=(cfl1,), containers=(root_container,))

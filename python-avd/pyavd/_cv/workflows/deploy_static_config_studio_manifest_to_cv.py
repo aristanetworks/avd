@@ -61,7 +61,7 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
 
     containers_to_push: list[CVContainer] = []
     for desired_container in cv_manifest.containers:
-        existing_container = existing_containers_by_id.get(desired_container.id)
+        existing_container = existing_containers_by_id.get(desired_container.id.value)
 
         # Container is new or has changed, so it needs to be pushed.
         if not existing_container or not desired_container.matches_configlet_assignment(existing_container):
@@ -79,7 +79,7 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No container creations or updates are needed.")
 
     # Delete unused AVD-managed containers.
-    desired_container_ids = {container.id for container in cv_manifest.containers}
+    desired_container_ids = {container.id.value for container in cv_manifest.containers}
     containers_to_delete = {
         container_id: cast("str", container.display_name)
         for container_id, container in existing_containers_by_id.items()
@@ -110,7 +110,7 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
 
     # Delete unused AVD-managed configlets.
     existing_configlets = await cv_client.get_configlets(workspace_id=workspace_id)
-    desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
+    desired_configlet_ids = {configlet.id.value for configlet in cv_manifest.configlets}
     configlets_to_delete = {
         configlet_id: cast("str", configlet.display_name)
         for configlet in existing_configlets
@@ -146,7 +146,7 @@ async def _sync_studio_roots(cv_manifest: CVManifest, deployment_result: DeployT
     )
 
     # Calculate which desired roots are missing.
-    desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
+    desired_root_ids = [container.id.value for container in cv_manifest.containers if container.is_root]
     desired_root_ids_set = set(desired_root_ids)
     existing_root_ids_set = set(existing_root_ids)
     missing_ids = desired_root_ids_set - existing_root_ids_set
