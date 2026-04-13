@@ -449,14 +449,14 @@ class ConfigletStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Configlet at end.
-    * Each Configlet response is fully-specified (all fields set).
-    * start: Returns the state of each Configlet at start, followed by updates until now.
-    * Each Configlet response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Configlet at start, followed by updates
-    until end.
-    * Each Configlet response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Configlet at end.
+        * Each Configlet response is fully-specified (all fields set).
+      * start: Returns the state of each Configlet at start, followed by updates until now.
+        * Each Configlet response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Configlet at start, followed by updates
+        until end.
+        * Each Configlet response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -506,14 +506,14 @@ class ConfigletBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Configlet at end.
-    * Each Configlet response is fully-specified (all fields set).
-    * start: Returns the state of each Configlet at start, followed by updates until now.
-    * Each Configlet response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Configlet at start, followed by updates
-    until end.
-    * Each Configlet response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Configlet at end.
+        * Each Configlet response is fully-specified (all fields set).
+      * start: Returns the state of each Configlet at start, followed by updates until now.
+        * Each Configlet response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Configlet at start, followed by updates
+        until end.
+        * Each Configlet response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -618,14 +618,14 @@ class ConfigletAssignmentStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ConfigletAssignment at end.
-    * Each ConfigletAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each ConfigletAssignment at start, followed by updates until now.
-    * Each ConfigletAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ConfigletAssignment at start, followed by updates
-    until end.
-    * Each ConfigletAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ConfigletAssignment at end.
+        * Each ConfigletAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigletAssignment at start, followed by updates until now.
+        * Each ConfigletAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigletAssignment at start, followed by updates
+        until end.
+        * Each ConfigletAssignment response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -670,14 +670,14 @@ class ConfigletAssignmentBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ConfigletAssignment at end.
-    * Each ConfigletAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each ConfigletAssignment at start, followed by updates until now.
-    * Each ConfigletAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ConfigletAssignment at start, followed by updates
-    until end.
-    * Each ConfigletAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ConfigletAssignment at end.
+        * Each ConfigletAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigletAssignment at start, followed by updates until now.
+        * Each ConfigletAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigletAssignment at start, followed by updates
+        until end.
+        * Each ConfigletAssignment response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -782,14 +782,14 @@ class ConfigletAssignmentConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ConfigletAssignmentConfig at end.
-    * Each ConfigletAssignmentConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ConfigletAssignmentConfig at start, followed by updates until now.
-    * Each ConfigletAssignmentConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ConfigletAssignmentConfig at start, followed by updates
-    until end.
-    * Each ConfigletAssignmentConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ConfigletAssignmentConfig at end.
+        * Each ConfigletAssignmentConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigletAssignmentConfig at start, followed by updates until now.
+        * Each ConfigletAssignmentConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigletAssignmentConfig at start, followed by updates
+        until end.
+        * Each ConfigletAssignmentConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -834,14 +834,14 @@ class ConfigletAssignmentConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ConfigletAssignmentConfig at end.
-    * Each ConfigletAssignmentConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ConfigletAssignmentConfig at start, followed by updates until now.
-    * Each ConfigletAssignmentConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ConfigletAssignmentConfig at start, followed by updates
-    until end.
-    * Each ConfigletAssignmentConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ConfigletAssignmentConfig at end.
+        * Each ConfigletAssignmentConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigletAssignmentConfig at start, followed by updates until now.
+        * Each ConfigletAssignmentConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigletAssignmentConfig at start, followed by updates
+        until end.
+        * Each ConfigletAssignmentConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -885,8 +885,8 @@ class ConfigletAssignmentConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -896,8 +896,8 @@ class ConfigletAssignmentConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of ConfigletAssignmentConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -930,8 +930,8 @@ class ConfigletAssignmentConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1071,14 +1071,14 @@ class ConfigletConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ConfigletConfig at end.
-    * Each ConfigletConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ConfigletConfig at start, followed by updates until now.
-    * Each ConfigletConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ConfigletConfig at start, followed by updates
-    until end.
-    * Each ConfigletConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ConfigletConfig at end.
+        * Each ConfigletConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigletConfig at start, followed by updates until now.
+        * Each ConfigletConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigletConfig at start, followed by updates
+        until end.
+        * Each ConfigletConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1130,14 +1130,14 @@ class ConfigletConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ConfigletConfig at end.
-    * Each ConfigletConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ConfigletConfig at start, followed by updates until now.
-    * Each ConfigletConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ConfigletConfig at start, followed by updates
-    until end.
-    * Each ConfigletConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ConfigletConfig at end.
+        * Each ConfigletConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigletConfig at start, followed by updates until now.
+        * Each ConfigletConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigletConfig at start, followed by updates
+        until end.
+        * Each ConfigletConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1181,8 +1181,8 @@ class ConfigletConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1192,8 +1192,8 @@ class ConfigletConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of ConfigletConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1224,8 +1224,8 @@ class ConfigletConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 

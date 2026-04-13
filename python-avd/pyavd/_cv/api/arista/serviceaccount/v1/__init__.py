@@ -389,14 +389,14 @@ class AccountStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Account at end.
-    * Each Account response is fully-specified (all fields set).
-    * start: Returns the state of each Account at start, followed by updates until now.
-    * Each Account response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Account at start, followed by updates
-    until end.
-    * Each Account response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Account at end.
+        * Each Account response is fully-specified (all fields set).
+      * start: Returns the state of each Account at start, followed by updates until now.
+        * Each Account response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Account at start, followed by updates
+        until end.
+        * Each Account response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -504,14 +504,14 @@ class AccountConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AccountConfig at end.
-    * Each AccountConfig response is fully-specified (all fields set).
-    * start: Returns the state of each AccountConfig at start, followed by updates until now.
-    * Each AccountConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AccountConfig at start, followed by updates
-    until end.
-    * Each AccountConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AccountConfig at end.
+        * Each AccountConfig response is fully-specified (all fields set).
+      * start: Returns the state of each AccountConfig at start, followed by updates until now.
+        * Each AccountConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AccountConfig at start, followed by updates
+        until end.
+        * Each AccountConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -558,8 +558,8 @@ class AccountConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -569,8 +569,8 @@ class AccountConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of AccountConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -601,8 +601,8 @@ class AccountConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -733,14 +733,14 @@ class TokenStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Token at end.
-    * Each Token response is fully-specified (all fields set).
-    * start: Returns the state of each Token at start, followed by updates until now.
-    * Each Token response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Token at start, followed by updates
-    until end.
-    * Each Token response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Token at end.
+        * Each Token response is fully-specified (all fields set).
+      * start: Returns the state of each Token at start, followed by updates until now.
+        * Each Token response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Token at start, followed by updates
+        until end.
+        * Each Token response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -848,14 +848,14 @@ class TokenConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each TokenConfig at end.
-    * Each TokenConfig response is fully-specified (all fields set).
-    * start: Returns the state of each TokenConfig at start, followed by updates until now.
-    * Each TokenConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each TokenConfig at start, followed by updates
-    until end.
-    * Each TokenConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each TokenConfig at end.
+        * Each TokenConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TokenConfig at start, followed by updates until now.
+        * Each TokenConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TokenConfig at start, followed by updates
+        until end.
+        * Each TokenConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -902,8 +902,8 @@ class TokenConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -913,8 +913,8 @@ class TokenConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of TokenConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -945,8 +945,8 @@ class TokenConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1038,14 +1038,14 @@ class TokenSelfRefreshConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each TokenSelfRefreshConfig at end.
-    * Each TokenSelfRefreshConfig response is fully-specified (all fields set).
-    * start: Returns the state of each TokenSelfRefreshConfig at start, followed by updates until now.
-    * Each TokenSelfRefreshConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each TokenSelfRefreshConfig at start, followed by updates
-    until end.
-    * Each TokenSelfRefreshConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each TokenSelfRefreshConfig at end.
+        * Each TokenSelfRefreshConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TokenSelfRefreshConfig at start, followed by updates until now.
+        * Each TokenSelfRefreshConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TokenSelfRefreshConfig at start, followed by updates
+        until end.
+        * Each TokenSelfRefreshConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1094,8 +1094,8 @@ class TokenSelfRefreshConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 

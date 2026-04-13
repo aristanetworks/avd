@@ -1148,8 +1148,8 @@ class SyslogSettings(aristaproto.Message):
     """
     per_device allows message to optionally be sent per device,
     if an event concerns two devices the behaviour is changed based on this option:
-    true: two messages are sent, one for each device
-    false: a single message is sent
+      true: two messages are sent, one for each device
+      false: a single message is sent
     """
 
     use_tls: Optional[bool] = aristaproto.message_field(7, wraps=aristaproto.TYPE_BOOL)
@@ -2308,14 +2308,14 @@ class AlertStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Alert at end.
-    * Each Alert response is fully-specified (all fields set).
-    * start: Returns the state of each Alert at start, followed by updates until now.
-    * Each Alert response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Alert at start, followed by updates
-    until end.
-    * Each Alert response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Alert at end.
+        * Each Alert response is fully-specified (all fields set).
+      * start: Returns the state of each Alert at start, followed by updates until now.
+        * Each Alert response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Alert at start, followed by updates
+        until end.
+        * Each Alert response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2375,14 +2375,14 @@ class AlertConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AlertConfig at end.
-    * Each AlertConfig response is fully-specified (all fields set).
-    * start: Returns the state of each AlertConfig at start, followed by updates until now.
-    * Each AlertConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AlertConfig at start, followed by updates
-    until end.
-    * Each AlertConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AlertConfig at end.
+        * Each AlertConfig response is fully-specified (all fields set).
+      * start: Returns the state of each AlertConfig at start, followed by updates until now.
+        * Each AlertConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AlertConfig at start, followed by updates
+        until end.
+        * Each AlertConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2429,8 +2429,8 @@ class AlertConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -2508,14 +2508,14 @@ class DefaultTemplateStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DefaultTemplate at end.
-    * Each DefaultTemplate response is fully-specified (all fields set).
-    * start: Returns the state of each DefaultTemplate at start, followed by updates until now.
-    * Each DefaultTemplate response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DefaultTemplate at start, followed by updates
-    until end.
-    * Each DefaultTemplate response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DefaultTemplate at end.
+        * Each DefaultTemplate response is fully-specified (all fields set).
+      * start: Returns the state of each DefaultTemplate at start, followed by updates until now.
+        * Each DefaultTemplate response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DefaultTemplate at start, followed by updates
+        until end.
+        * Each DefaultTemplate response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2551,14 +2551,14 @@ class DefaultTemplateBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DefaultTemplate at end.
-    * Each DefaultTemplate response is fully-specified (all fields set).
-    * start: Returns the state of each DefaultTemplate at start, followed by updates until now.
-    * Each DefaultTemplate response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DefaultTemplate at start, followed by updates
-    until end.
-    * Each DefaultTemplate response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DefaultTemplate at end.
+        * Each DefaultTemplate response is fully-specified (all fields set).
+      * start: Returns the state of each DefaultTemplate at start, followed by updates until now.
+        * Each DefaultTemplate response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DefaultTemplate at start, followed by updates
+        until end.
+        * Each DefaultTemplate response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2670,14 +2670,14 @@ class SenderStatusStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SenderStatus at end.
-    * Each SenderStatus response is fully-specified (all fields set).
-    * start: Returns the state of each SenderStatus at start, followed by updates until now.
-    * Each SenderStatus response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SenderStatus at start, followed by updates
-    until end.
-    * Each SenderStatus response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SenderStatus at end.
+        * Each SenderStatus response is fully-specified (all fields set).
+      * start: Returns the state of each SenderStatus at start, followed by updates until now.
+        * Each SenderStatus response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SenderStatus at start, followed by updates
+        until end.
+        * Each SenderStatus response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2727,14 +2727,14 @@ class SenderStatusBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SenderStatus at end.
-    * Each SenderStatus response is fully-specified (all fields set).
-    * start: Returns the state of each SenderStatus at start, followed by updates until now.
-    * Each SenderStatus response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SenderStatus at start, followed by updates
-    until end.
-    * Each SenderStatus response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SenderStatus at end.
+        * Each SenderStatus response is fully-specified (all fields set).
+      * start: Returns the state of each SenderStatus at start, followed by updates until now.
+        * Each SenderStatus response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SenderStatus at start, followed by updates
+        until end.
+        * Each SenderStatus response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2830,14 +2830,14 @@ class TemplateConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each TemplateConfig at end.
-    * Each TemplateConfig response is fully-specified (all fields set).
-    * start: Returns the state of each TemplateConfig at start, followed by updates until now.
-    * Each TemplateConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each TemplateConfig at start, followed by updates
-    until end.
-    * Each TemplateConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each TemplateConfig at end.
+        * Each TemplateConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TemplateConfig at start, followed by updates until now.
+        * Each TemplateConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TemplateConfig at start, followed by updates
+        until end.
+        * Each TemplateConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2871,14 +2871,14 @@ class TemplateConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each TemplateConfig at end.
-    * Each TemplateConfig response is fully-specified (all fields set).
-    * start: Returns the state of each TemplateConfig at start, followed by updates until now.
-    * Each TemplateConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each TemplateConfig at start, followed by updates
-    until end.
-    * Each TemplateConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each TemplateConfig at end.
+        * Each TemplateConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TemplateConfig at start, followed by updates until now.
+        * Each TemplateConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TemplateConfig at start, followed by updates
+        until end.
+        * Each TemplateConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2922,8 +2922,8 @@ class TemplateConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -2933,8 +2933,8 @@ class TemplateConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of TemplateConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -2965,8 +2965,8 @@ class TemplateConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 

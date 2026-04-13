@@ -723,14 +723,14 @@ class InputsKey(aristaproto.Message):
     Collection and resolver members can be referenced in two ways:
 
     1. Index-based: Using an integer string index.
-    E.g., for a collection A with three members, the path to the
-    second member would be `[\"A\", \"1\"]`.
+       E.g., for a collection A with three members, the path to the
+       second member would be `[\"A\", \"1\"]`.
 
     2. Key-based: Using bracket notation to specify
-    key-value pairs for keyed collections:
-    `[\"collectionName\", \"[keyName=keyValue]\", ...]`
-    E.g., for a collection of NTP servers keyed by IP address:
-    `[\"ntpServers\", \"[ip=10.10.10.10]\", \"vrf\"]`
+       key-value pairs for keyed collections:
+       `[\"collectionName\", \"[keyName=keyValue]\", ...]`
+       E.g., for a collection of NTP servers keyed by IP address:
+       `[\"ntpServers\", \"[ip=10.10.10.10]\", \"vrf\"]`
 
     For resolver fields with tag queries, bracket notation is supported
     with the mandatory \"inputs\" keyword:
@@ -776,34 +776,34 @@ class InputsConfig(aristaproto.Message):
 
     inputs: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
     """
-    inputs is the value of the input field at the path as a
-    JSON string. It can be the value for a simple or complex
-    input field.
+     inputs is the value of the input field at the path as a
+     JSON string. It can be the value for a simple or complex
+     input field.
 
-    Simple types (booleans, integers, floats, strings) map to
-    their JSON equivalents.
+     Simple types (booleans, integers, floats, strings) map to
+     their JSON equivalents.
 
-    Complex types map to either arrays or objects:
+     Complex types map to either arrays or objects:
 
-    * The group field type maps to a JSON object, where keys
-    are group members.
+     * The group field type maps to a JSON object, where keys
+       are group members.
 
-    * The collection field type maps to a JSON array.
+     * The collection field type maps to a JSON array.
 
-    * The resolver field type maps to a JSON array, where each
-    element is an object of the form:
-    ```
-    {
-    \"tags\":   { \"query\": <query> },
-    \"inputs\": <input>
-    }
-    ```
-    Above, `<input>` is the value of the base field of the resolver.
-    E.g., if the base field is a group with one string member `\"A\"`,
-    the resolver inputs would be specified as:
-    ```
-    \"inputs\": { \"A\": <value> }
-    ```
+     * The resolver field type maps to a JSON array, where each
+       element is an object of the form:
+       ```
+       {
+    	\"tags\":   { \"query\": <query> },
+    	\"inputs\": <input>
+       }
+       ```
+       Above, `<input>` is the value of the base field of the resolver.
+       E.g., if the base field is a group with one string member `\"A\"`,
+       the resolver inputs would be specified as:
+       ```
+       \"inputs\": { \"A\": <value> }
+       ```
     """
 
 
@@ -893,8 +893,8 @@ class IntegerInputFieldProps(aristaproto.Message):
     E.g,
     ```
     [
-    { \"fieldId\": \"vlanFieldID\" },
-    { \"fieldId\": \"vniFieldID\" }
+      { \"fieldId\": \"vlanFieldID\" },
+      { \"fieldId\": \"vniFieldID\" }
     ]
     ```
     Here, the possible values for the integers identified by
@@ -931,8 +931,8 @@ class FloatInputFieldProps(aristaproto.Message):
 
     E.g,
     [
-    `{ fieldId: floatField1ID }`,
-    `{ fieldId: floatField2ID }`
+      `{ fieldId: floatField1ID }`,
+      `{ fieldId: floatField2ID }`
     ]
     Here, the possible values for the floats identified by
     `floatField1ID` and `floatField2ID` are used as the
@@ -969,8 +969,8 @@ class StringInputFieldProps(aristaproto.Message):
     E.g,
     ```
     [
-    { \"fieldId\": \"deviceFieldID\" },
-    { \"fieldId\": \"ipFieldID\" }
+      { \"fieldId\": \"deviceFieldID\" },
+      { \"fieldId\": \"ipFieldID\" }
     ]
     ```
     Here, the possible values for the strings identified by
@@ -1510,14 +1510,14 @@ class AssignedTagsStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AssignedTags at end.
-    * Each AssignedTags response is fully-specified (all fields set).
-    * start: Returns the state of each AssignedTags at start, followed by updates until now.
-    * Each AssignedTags response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AssignedTags at start, followed by updates
-    until end.
-    * Each AssignedTags response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AssignedTags at end.
+        * Each AssignedTags response is fully-specified (all fields set).
+      * start: Returns the state of each AssignedTags at start, followed by updates until now.
+        * Each AssignedTags response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AssignedTags at start, followed by updates
+        until end.
+        * Each AssignedTags response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1560,14 +1560,14 @@ class AssignedTagsBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AssignedTags at end.
-    * Each AssignedTags response is fully-specified (all fields set).
-    * start: Returns the state of each AssignedTags at start, followed by updates until now.
-    * Each AssignedTags response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AssignedTags at start, followed by updates
-    until end.
-    * Each AssignedTags response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AssignedTags at end.
+        * Each AssignedTags response is fully-specified (all fields set).
+      * start: Returns the state of each AssignedTags at start, followed by updates until now.
+        * Each AssignedTags response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AssignedTags at start, followed by updates
+        until end.
+        * Each AssignedTags response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1672,14 +1672,14 @@ class AssignedTagsConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AssignedTagsConfig at end.
-    * Each AssignedTagsConfig response is fully-specified (all fields set).
-    * start: Returns the state of each AssignedTagsConfig at start, followed by updates until now.
-    * Each AssignedTagsConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AssignedTagsConfig at start, followed by updates
-    until end.
-    * Each AssignedTagsConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AssignedTagsConfig at end.
+        * Each AssignedTagsConfig response is fully-specified (all fields set).
+      * start: Returns the state of each AssignedTagsConfig at start, followed by updates until now.
+        * Each AssignedTagsConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AssignedTagsConfig at start, followed by updates
+        until end.
+        * Each AssignedTagsConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1724,14 +1724,14 @@ class AssignedTagsConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AssignedTagsConfig at end.
-    * Each AssignedTagsConfig response is fully-specified (all fields set).
-    * start: Returns the state of each AssignedTagsConfig at start, followed by updates until now.
-    * Each AssignedTagsConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AssignedTagsConfig at start, followed by updates
-    until end.
-    * Each AssignedTagsConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AssignedTagsConfig at end.
+        * Each AssignedTagsConfig response is fully-specified (all fields set).
+      * start: Returns the state of each AssignedTagsConfig at start, followed by updates until now.
+        * Each AssignedTagsConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AssignedTagsConfig at start, followed by updates
+        until end.
+        * Each AssignedTagsConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1775,8 +1775,8 @@ class AssignedTagsConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1786,8 +1786,8 @@ class AssignedTagsConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of AssignedTagsConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1818,8 +1818,8 @@ class AssignedTagsConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1952,14 +1952,14 @@ class AutofillActionStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AutofillAction at end.
-    * Each AutofillAction response is fully-specified (all fields set).
-    * start: Returns the state of each AutofillAction at start, followed by updates until now.
-    * Each AutofillAction response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AutofillAction at start, followed by updates
-    until end.
-    * Each AutofillAction response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AutofillAction at end.
+        * Each AutofillAction response is fully-specified (all fields set).
+      * start: Returns the state of each AutofillAction at start, followed by updates until now.
+        * Each AutofillAction response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AutofillAction at start, followed by updates
+        until end.
+        * Each AutofillAction response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2002,14 +2002,14 @@ class AutofillActionBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AutofillAction at end.
-    * Each AutofillAction response is fully-specified (all fields set).
-    * start: Returns the state of each AutofillAction at start, followed by updates until now.
-    * Each AutofillAction response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AutofillAction at start, followed by updates
-    until end.
-    * Each AutofillAction response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AutofillAction at end.
+        * Each AutofillAction response is fully-specified (all fields set).
+      * start: Returns the state of each AutofillAction at start, followed by updates until now.
+        * Each AutofillAction response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AutofillAction at start, followed by updates
+        until end.
+        * Each AutofillAction response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2114,14 +2114,14 @@ class AutofillActionConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AutofillActionConfig at end.
-    * Each AutofillActionConfig response is fully-specified (all fields set).
-    * start: Returns the state of each AutofillActionConfig at start, followed by updates until now.
-    * Each AutofillActionConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AutofillActionConfig at start, followed by updates
-    until end.
-    * Each AutofillActionConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AutofillActionConfig at end.
+        * Each AutofillActionConfig response is fully-specified (all fields set).
+      * start: Returns the state of each AutofillActionConfig at start, followed by updates until now.
+        * Each AutofillActionConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AutofillActionConfig at start, followed by updates
+        until end.
+        * Each AutofillActionConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2166,14 +2166,14 @@ class AutofillActionConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AutofillActionConfig at end.
-    * Each AutofillActionConfig response is fully-specified (all fields set).
-    * start: Returns the state of each AutofillActionConfig at start, followed by updates until now.
-    * Each AutofillActionConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AutofillActionConfig at start, followed by updates
-    until end.
-    * Each AutofillActionConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AutofillActionConfig at end.
+        * Each AutofillActionConfig response is fully-specified (all fields set).
+      * start: Returns the state of each AutofillActionConfig at start, followed by updates until now.
+        * Each AutofillActionConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AutofillActionConfig at start, followed by updates
+        until end.
+        * Each AutofillActionConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2217,8 +2217,8 @@ class AutofillActionConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -2228,8 +2228,8 @@ class AutofillActionConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of AutofillActionConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -2262,8 +2262,8 @@ class AutofillActionConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -2396,14 +2396,14 @@ class InputsStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Inputs at end.
-    * Each Inputs response is fully-specified (all fields set).
-    * start: Returns the state of each Inputs at start, followed by updates until now.
-    * Each Inputs response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Inputs at start, followed by updates
-    until end.
-    * Each Inputs response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Inputs at end.
+        * Each Inputs response is fully-specified (all fields set).
+      * start: Returns the state of each Inputs at start, followed by updates until now.
+        * Each Inputs response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Inputs at start, followed by updates
+        until end.
+        * Each Inputs response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2446,14 +2446,14 @@ class InputsBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Inputs at end.
-    * Each Inputs response is fully-specified (all fields set).
-    * start: Returns the state of each Inputs at start, followed by updates until now.
-    * Each Inputs response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Inputs at start, followed by updates
-    until end.
-    * Each Inputs response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Inputs at end.
+        * Each Inputs response is fully-specified (all fields set).
+      * start: Returns the state of each Inputs at start, followed by updates until now.
+        * Each Inputs response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Inputs at start, followed by updates
+        until end.
+        * Each Inputs response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2558,14 +2558,14 @@ class InputsConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each InputsConfig at end.
-    * Each InputsConfig response is fully-specified (all fields set).
-    * start: Returns the state of each InputsConfig at start, followed by updates until now.
-    * Each InputsConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each InputsConfig at start, followed by updates
-    until end.
-    * Each InputsConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each InputsConfig at end.
+        * Each InputsConfig response is fully-specified (all fields set).
+      * start: Returns the state of each InputsConfig at start, followed by updates until now.
+        * Each InputsConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each InputsConfig at start, followed by updates
+        until end.
+        * Each InputsConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2608,14 +2608,14 @@ class InputsConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each InputsConfig at end.
-    * Each InputsConfig response is fully-specified (all fields set).
-    * start: Returns the state of each InputsConfig at start, followed by updates until now.
-    * Each InputsConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each InputsConfig at start, followed by updates
-    until end.
-    * Each InputsConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each InputsConfig at end.
+        * Each InputsConfig response is fully-specified (all fields set).
+      * start: Returns the state of each InputsConfig at start, followed by updates until now.
+        * Each InputsConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each InputsConfig at start, followed by updates
+        until end.
+        * Each InputsConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2659,8 +2659,8 @@ class InputsConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -2670,8 +2670,8 @@ class InputsConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of InputsConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -2702,8 +2702,8 @@ class InputsConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -2834,14 +2834,14 @@ class SecretInputStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SecretInput at end.
-    * Each SecretInput response is fully-specified (all fields set).
-    * start: Returns the state of each SecretInput at start, followed by updates until now.
-    * Each SecretInput response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SecretInput at start, followed by updates
-    until end.
-    * Each SecretInput response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SecretInput at end.
+        * Each SecretInput response is fully-specified (all fields set).
+      * start: Returns the state of each SecretInput at start, followed by updates until now.
+        * Each SecretInput response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecretInput at start, followed by updates
+        until end.
+        * Each SecretInput response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2884,14 +2884,14 @@ class SecretInputBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SecretInput at end.
-    * Each SecretInput response is fully-specified (all fields set).
-    * start: Returns the state of each SecretInput at start, followed by updates until now.
-    * Each SecretInput response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SecretInput at start, followed by updates
-    until end.
-    * Each SecretInput response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SecretInput at end.
+        * Each SecretInput response is fully-specified (all fields set).
+      * start: Returns the state of each SecretInput at start, followed by updates until now.
+        * Each SecretInput response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecretInput at start, followed by updates
+        until end.
+        * Each SecretInput response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2996,14 +2996,14 @@ class StudioStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Studio at end.
-    * Each Studio response is fully-specified (all fields set).
-    * start: Returns the state of each Studio at start, followed by updates until now.
-    * Each Studio response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Studio at start, followed by updates
-    until end.
-    * Each Studio response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Studio at end.
+        * Each Studio response is fully-specified (all fields set).
+      * start: Returns the state of each Studio at start, followed by updates until now.
+        * Each Studio response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Studio at start, followed by updates
+        until end.
+        * Each Studio response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -3046,14 +3046,14 @@ class StudioBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Studio at end.
-    * Each Studio response is fully-specified (all fields set).
-    * start: Returns the state of each Studio at start, followed by updates until now.
-    * Each Studio response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Studio at start, followed by updates
-    until end.
-    * Each Studio response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Studio at end.
+        * Each Studio response is fully-specified (all fields set).
+      * start: Returns the state of each Studio at start, followed by updates until now.
+        * Each Studio response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Studio at start, followed by updates
+        until end.
+        * Each Studio response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -3158,14 +3158,14 @@ class StudioConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each StudioConfig at end.
-    * Each StudioConfig response is fully-specified (all fields set).
-    * start: Returns the state of each StudioConfig at start, followed by updates until now.
-    * Each StudioConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each StudioConfig at start, followed by updates
-    until end.
-    * Each StudioConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each StudioConfig at end.
+        * Each StudioConfig response is fully-specified (all fields set).
+      * start: Returns the state of each StudioConfig at start, followed by updates until now.
+        * Each StudioConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each StudioConfig at start, followed by updates
+        until end.
+        * Each StudioConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -3208,14 +3208,14 @@ class StudioConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each StudioConfig at end.
-    * Each StudioConfig response is fully-specified (all fields set).
-    * start: Returns the state of each StudioConfig at start, followed by updates until now.
-    * Each StudioConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each StudioConfig at start, followed by updates
-    until end.
-    * Each StudioConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each StudioConfig at end.
+        * Each StudioConfig response is fully-specified (all fields set).
+      * start: Returns the state of each StudioConfig at start, followed by updates until now.
+        * Each StudioConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each StudioConfig at start, followed by updates
+        until end.
+        * Each StudioConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -3259,8 +3259,8 @@ class StudioConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -3270,8 +3270,8 @@ class StudioConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of StudioConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -3302,8 +3302,8 @@ class StudioConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -3434,14 +3434,14 @@ class StudioSummaryStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each StudioSummary at end.
-    * Each StudioSummary response is fully-specified (all fields set).
-    * start: Returns the state of each StudioSummary at start, followed by updates until now.
-    * Each StudioSummary response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each StudioSummary at start, followed by updates
-    until end.
-    * Each StudioSummary response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each StudioSummary at end.
+        * Each StudioSummary response is fully-specified (all fields set).
+      * start: Returns the state of each StudioSummary at start, followed by updates until now.
+        * Each StudioSummary response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each StudioSummary at start, followed by updates
+        until end.
+        * Each StudioSummary response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -3484,14 +3484,14 @@ class StudioSummaryBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each StudioSummary at end.
-    * Each StudioSummary response is fully-specified (all fields set).
-    * start: Returns the state of each StudioSummary at start, followed by updates until now.
-    * Each StudioSummary response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each StudioSummary at start, followed by updates
-    until end.
-    * Each StudioSummary response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each StudioSummary at end.
+        * Each StudioSummary response is fully-specified (all fields set).
+      * start: Returns the state of each StudioSummary at start, followed by updates until now.
+        * Each StudioSummary response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each StudioSummary at start, followed by updates
+        until end.
+        * Each StudioSummary response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)

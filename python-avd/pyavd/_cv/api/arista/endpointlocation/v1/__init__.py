@@ -742,14 +742,14 @@ class EndpointLocationStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each EndpointLocation at end.
-    * Each EndpointLocation response is fully-specified (all fields set).
-    * start: Returns the state of each EndpointLocation at start, followed by updates until now.
-    * Each EndpointLocation response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each EndpointLocation at start, followed by updates
-    until end.
-    * Each EndpointLocation response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each EndpointLocation at end.
+        * Each EndpointLocation response is fully-specified (all fields set).
+      * start: Returns the state of each EndpointLocation at start, followed by updates until now.
+        * Each EndpointLocation response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each EndpointLocation at start, followed by updates
+        until end.
+        * Each EndpointLocation response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -794,14 +794,14 @@ class EndpointLocationBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each EndpointLocation at end.
-    * Each EndpointLocation response is fully-specified (all fields set).
-    * start: Returns the state of each EndpointLocation at start, followed by updates until now.
-    * Each EndpointLocation response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each EndpointLocation at start, followed by updates
-    until end.
-    * Each EndpointLocation response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each EndpointLocation at end.
+        * Each EndpointLocation response is fully-specified (all fields set).
+      * start: Returns the state of each EndpointLocation at start, followed by updates until now.
+        * Each EndpointLocation response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each EndpointLocation at start, followed by updates
+        until end.
+        * Each EndpointLocation response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)

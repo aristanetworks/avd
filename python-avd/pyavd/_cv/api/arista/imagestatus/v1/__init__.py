@@ -667,10 +667,10 @@ class ImageSummary(aristaproto.Message):
 
     digest: Optional[str] = aristaproto.message_field(13, wraps=aristaproto.TYPE_STRING)
     """
-    digest is the digest of the image summary. It can use SHA-256 hash
-    algorithm for example. It is computed by stringifying the
+     digest is the digest of the image summary. It can use SHA-256 hash
+     algorithm for example. It is computed by stringifying the
     software_image_diff, terminattr_diff and extensions_diff and computing the
-    hash.
+     hash.
     """
 
 
@@ -889,14 +889,14 @@ class SummaryStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Summary at end.
-    * Each Summary response is fully-specified (all fields set).
-    * start: Returns the state of each Summary at start, followed by updates until now.
-    * Each Summary response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Summary at start, followed by updates
-    until end.
-    * Each Summary response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Summary at end.
+        * Each Summary response is fully-specified (all fields set).
+      * start: Returns the state of each Summary at start, followed by updates until now.
+        * Each Summary response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Summary at start, followed by updates
+        until end.
+        * Each Summary response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -939,14 +939,14 @@ class SummaryBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Summary at end.
-    * Each Summary response is fully-specified (all fields set).
-    * start: Returns the state of each Summary at start, followed by updates until now.
-    * Each Summary response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Summary at start, followed by updates
-    until end.
-    * Each Summary response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Summary at end.
+        * Each Summary response is fully-specified (all fields set).
+      * start: Returns the state of each Summary at start, followed by updates until now.
+        * Each Summary response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Summary at start, followed by updates
+        until end.
+        * Each Summary response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)

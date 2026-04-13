@@ -287,14 +287,14 @@ class TagAssignmentKey(aristaproto.Message):
 
     element_type: "ElementType" = aristaproto.enum_field(2)
     """
-    element_type is the element type of a tag. What should
-    be set per element type:
+     element_type is the element type of a tag. What should
+     be set per element type:
 
-    ELEMENT_TYPE_DEVICE: device_id
-    ELEMENT_TYPE_INTERFACE: device_id, interface_id
-    ELEMENT_TYPE_VIRTUAL:
-    primary_entity_id -> application_id
-    secondary_entity_id -> service_id
+     ELEMENT_TYPE_DEVICE: device_id
+     ELEMENT_TYPE_INTERFACE: device_id, interface_id
+     ELEMENT_TYPE_VIRTUAL:
+    		primary_entity_id -> application_id
+    		secondary_entity_id -> service_id
     """
 
     label: Optional[str] = aristaproto.message_field(3, wraps=aristaproto.TYPE_STRING)
@@ -396,15 +396,15 @@ class ElementSearchFilter(aristaproto.Message):
     tag assignment conditions. For example:
 
     - \"Campus:SF\"
-    Match any device that has the \"Campus:SF\" tag assigned to it.
-    I.e., match any device in the SF campus.
+        Match any device that has the \"Campus:SF\" tag assigned to it.
+        I.e., match any device in the SF campus.
     - \"Campus:*\"
-    Match any device that has any \"Campus:\" tag assigned to it.
-    I.e., match any device in any campus.
+        Match any device that has any \"Campus:\" tag assigned to it.
+        I.e., match any device in any campus.
     - \"Campus:SF AND Role:Spine\"
-    Match any device that has the \"Campus:SF\" and \"Role:Spine\"
-    tag assigned to it.
-    I.e., match any spine device in the SF campus.
+        Match any device that has the \"Campus:SF\" and \"Role:Spine\"
+        tag assigned to it.
+        I.e., match any spine device in the SF campus.
 
     TODO: Link to grammar file.
     """
@@ -445,18 +445,18 @@ class ElementKey(aristaproto.Message):
     this ID is based on type and sub_type:
 
     type: DEVICE
-    sub_type: DEVICE
-    id: <serial_number>
-    sub_type: VDS, WORKLOAD_SERVER, VM
-    id: <uuid>
+      sub_type: DEVICE
+        id: <serial_number>
+      sub_type: VDS, WORKLOAD_SERVER, VM
+        id: <uuid>
     type: INTERFACE
-    sub_type: DEVICE
-    id: <serial_number>
-    sub_type: VDS, WORKLOAD_SERVER, VM
-    id: <uuid>
+      sub_type: DEVICE
+        id: <serial_number>
+      sub_type: VDS, WORKLOAD_SERVER, VM
+        id: <uuid>
     type: VIRTUAL
-    sub_type: APPLICATION
-    id: <application_id>
+      sub_type: APPLICATION
+        id: <application_id>
     """
 
     secondary_id: Optional[str] = aristaproto.message_field(4, wraps=aristaproto.TYPE_STRING)
@@ -465,15 +465,15 @@ class ElementKey(aristaproto.Message):
     this ID is based on type and sub_type:
 
     type: DEVICE
-    N/A
+      N/A
     type: INTERFACE
-    sub_type: DEVICE
-    id: <interface_name>
-    sub_type: VDS, WORKLOAD_SERVER, VM
-    id: <interface_name>
+      sub_type: DEVICE
+        id: <interface_name>
+      sub_type: VDS, WORKLOAD_SERVER, VM
+        id: <interface_name>
     type: VIRTUAL
-    sub_type: APPLICATION
-    id: <service_id>
+      sub_type: APPLICATION
+        id: <service_id>
     """
 
 
@@ -599,14 +599,14 @@ class ElementStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Element at end.
-    * Each Element response is fully-specified (all fields set).
-    * start: Returns the state of each Element at start, followed by updates until now.
-    * Each Element response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Element at start, followed by updates
-    until end.
-    * Each Element response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Element at end.
+        * Each Element response is fully-specified (all fields set).
+      * start: Returns the state of each Element at start, followed by updates until now.
+        * Each Element response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Element at start, followed by updates
+        until end.
+        * Each Element response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -658,14 +658,14 @@ class ElementBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Element at end.
-    * Each Element response is fully-specified (all fields set).
-    * start: Returns the state of each Element at start, followed by updates until now.
-    * Each Element response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Element at start, followed by updates
-    until end.
-    * Each Element response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Element at end.
+        * Each Element response is fully-specified (all fields set).
+      * start: Returns the state of each Element at start, followed by updates until now.
+        * Each Element response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Element at start, followed by updates
+        until end.
+        * Each Element response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -772,14 +772,14 @@ class TagStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Tag at end.
-    * Each Tag response is fully-specified (all fields set).
-    * start: Returns the state of each Tag at start, followed by updates until now.
-    * Each Tag response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Tag at start, followed by updates
-    until end.
-    * Each Tag response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Tag at end.
+        * Each Tag response is fully-specified (all fields set).
+      * start: Returns the state of each Tag at start, followed by updates until now.
+        * Each Tag response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Tag at start, followed by updates
+        until end.
+        * Each Tag response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -824,14 +824,14 @@ class TagBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Tag at end.
-    * Each Tag response is fully-specified (all fields set).
-    * start: Returns the state of each Tag at start, followed by updates until now.
-    * Each Tag response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Tag at start, followed by updates
-    until end.
-    * Each Tag response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Tag at end.
+        * Each Tag response is fully-specified (all fields set).
+      * start: Returns the state of each Tag at start, followed by updates until now.
+        * Each Tag response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Tag at start, followed by updates
+        until end.
+        * Each Tag response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -938,14 +938,14 @@ class TagAssignmentStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each TagAssignment at end.
-    * Each TagAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each TagAssignment at start, followed by updates until now.
-    * Each TagAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each TagAssignment at start, followed by updates
-    until end.
-    * Each TagAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each TagAssignment at end.
+        * Each TagAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each TagAssignment at start, followed by updates until now.
+        * Each TagAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TagAssignment at start, followed by updates
+        until end.
+        * Each TagAssignment response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -990,14 +990,14 @@ class TagAssignmentBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each TagAssignment at end.
-    * Each TagAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each TagAssignment at start, followed by updates until now.
-    * Each TagAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each TagAssignment at start, followed by updates
-    until end.
-    * Each TagAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each TagAssignment at end.
+        * Each TagAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each TagAssignment at start, followed by updates until now.
+        * Each TagAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TagAssignment at start, followed by updates
+        until end.
+        * Each TagAssignment response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -1104,14 +1104,14 @@ class TagAssignmentConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each TagAssignmentConfig at end.
-    * Each TagAssignmentConfig response is fully-specified (all fields set).
-    * start: Returns the state of each TagAssignmentConfig at start, followed by updates until now.
-    * Each TagAssignmentConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each TagAssignmentConfig at start, followed by updates
-    until end.
-    * Each TagAssignmentConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each TagAssignmentConfig at end.
+        * Each TagAssignmentConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TagAssignmentConfig at start, followed by updates until now.
+        * Each TagAssignmentConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TagAssignmentConfig at start, followed by updates
+        until end.
+        * Each TagAssignmentConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -1158,14 +1158,14 @@ class TagAssignmentConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each TagAssignmentConfig at end.
-    * Each TagAssignmentConfig response is fully-specified (all fields set).
-    * start: Returns the state of each TagAssignmentConfig at start, followed by updates until now.
-    * Each TagAssignmentConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each TagAssignmentConfig at start, followed by updates
-    until end.
-    * Each TagAssignmentConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each TagAssignmentConfig at end.
+        * Each TagAssignmentConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TagAssignmentConfig at start, followed by updates until now.
+        * Each TagAssignmentConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TagAssignmentConfig at start, followed by updates
+        until end.
+        * Each TagAssignmentConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -1211,8 +1211,8 @@ class TagAssignmentConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1222,8 +1222,8 @@ class TagAssignmentConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of TagAssignmentConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1254,8 +1254,8 @@ class TagAssignmentConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1388,14 +1388,14 @@ class TagConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each TagConfig at end.
-    * Each TagConfig response is fully-specified (all fields set).
-    * start: Returns the state of each TagConfig at start, followed by updates until now.
-    * Each TagConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each TagConfig at start, followed by updates
-    until end.
-    * Each TagConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each TagConfig at end.
+        * Each TagConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TagConfig at start, followed by updates until now.
+        * Each TagConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TagConfig at start, followed by updates
+        until end.
+        * Each TagConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -1440,14 +1440,14 @@ class TagConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each TagConfig at end.
-    * Each TagConfig response is fully-specified (all fields set).
-    * start: Returns the state of each TagConfig at start, followed by updates until now.
-    * Each TagConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each TagConfig at start, followed by updates
-    until end.
-    * Each TagConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each TagConfig at end.
+        * Each TagConfig response is fully-specified (all fields set).
+      * start: Returns the state of each TagConfig at start, followed by updates until now.
+        * Each TagConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each TagConfig at start, followed by updates
+        until end.
+        * Each TagConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -1493,8 +1493,8 @@ class TagConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1504,8 +1504,8 @@ class TagConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of TagConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1536,8 +1536,8 @@ class TagConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 

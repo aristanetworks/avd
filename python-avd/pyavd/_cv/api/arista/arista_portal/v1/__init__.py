@@ -91,7 +91,7 @@ class ApiTokenConfig(aristaproto.Message):
 
     ```
     Set(APITokenConfig{
-    Token: \"f7f898e3860f618301c01f2de1ao1482\"
+       Token: \"f7f898e3860f618301c01f2de1ao1482\"
     })
     ```
 
@@ -181,7 +181,7 @@ class ApiProxyConfig(aristaproto.Message):
 
     ```
     Set(APIProxyConfig{
-    Url: “http://10.0.0.0:0”
+       Url: “http://10.0.0.0:0”
     })
     ```
 
@@ -312,14 +312,14 @@ class ApiProxyStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each APIProxy at end.
-    * Each APIProxy response is fully-specified (all fields set).
-    * start: Returns the state of each APIProxy at start, followed by updates until now.
-    * Each APIProxy response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each APIProxy at start, followed by updates
-    until end.
-    * Each APIProxy response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each APIProxy at end.
+        * Each APIProxy response is fully-specified (all fields set).
+      * start: Returns the state of each APIProxy at start, followed by updates until now.
+        * Each APIProxy response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each APIProxy at start, followed by updates
+        until end.
+        * Each APIProxy response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -388,14 +388,14 @@ class ApiProxyConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each APIProxyConfig at end.
-    * Each APIProxyConfig response is fully-specified (all fields set).
-    * start: Returns the state of each APIProxyConfig at start, followed by updates until now.
-    * Each APIProxyConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each APIProxyConfig at start, followed by updates
-    until end.
-    * Each APIProxyConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each APIProxyConfig at end.
+        * Each APIProxyConfig response is fully-specified (all fields set).
+      * start: Returns the state of each APIProxyConfig at start, followed by updates until now.
+        * Each APIProxyConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each APIProxyConfig at start, followed by updates
+        until end.
+        * Each APIProxyConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -442,8 +442,8 @@ class ApiProxyConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -459,8 +459,8 @@ class ApiProxyConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -508,14 +508,14 @@ class ApiTokenStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each APIToken at end.
-    * Each APIToken response is fully-specified (all fields set).
-    * start: Returns the state of each APIToken at start, followed by updates until now.
-    * Each APIToken response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each APIToken at start, followed by updates
-    until end.
-    * Each APIToken response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each APIToken at end.
+        * Each APIToken response is fully-specified (all fields set).
+      * start: Returns the state of each APIToken at start, followed by updates until now.
+        * Each APIToken response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each APIToken at start, followed by updates
+        until end.
+        * Each APIToken response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -584,14 +584,14 @@ class ApiTokenConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each APITokenConfig at end.
-    * Each APITokenConfig response is fully-specified (all fields set).
-    * start: Returns the state of each APITokenConfig at start, followed by updates until now.
-    * Each APITokenConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each APITokenConfig at start, followed by updates
-    until end.
-    * Each APITokenConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each APITokenConfig at end.
+        * Each APITokenConfig response is fully-specified (all fields set).
+      * start: Returns the state of each APITokenConfig at start, followed by updates until now.
+        * Each APITokenConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each APITokenConfig at start, followed by updates
+        until end.
+        * Each APITokenConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -638,8 +638,8 @@ class ApiTokenConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -655,8 +655,8 @@ class ApiTokenConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 

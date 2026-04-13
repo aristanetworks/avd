@@ -429,14 +429,14 @@ class DashboardStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Dashboard at end.
-    * Each Dashboard response is fully-specified (all fields set).
-    * start: Returns the state of each Dashboard at start, followed by updates until now.
-    * Each Dashboard response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Dashboard at start, followed by updates
-    until end.
-    * Each Dashboard response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Dashboard at end.
+        * Each Dashboard response is fully-specified (all fields set).
+      * start: Returns the state of each Dashboard at start, followed by updates until now.
+        * Each Dashboard response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Dashboard at start, followed by updates
+        until end.
+        * Each Dashboard response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -486,14 +486,14 @@ class DashboardBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Dashboard at end.
-    * Each Dashboard response is fully-specified (all fields set).
-    * start: Returns the state of each Dashboard at start, followed by updates until now.
-    * Each Dashboard response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Dashboard at start, followed by updates
-    until end.
-    * Each Dashboard response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Dashboard at end.
+        * Each Dashboard response is fully-specified (all fields set).
+      * start: Returns the state of each Dashboard at start, followed by updates until now.
+        * Each Dashboard response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Dashboard at start, followed by updates
+        until end.
+        * Each Dashboard response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -598,14 +598,14 @@ class DashboardConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DashboardConfig at end.
-    * Each DashboardConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DashboardConfig at start, followed by updates until now.
-    * Each DashboardConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DashboardConfig at start, followed by updates
-    until end.
-    * Each DashboardConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DashboardConfig at end.
+        * Each DashboardConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DashboardConfig at start, followed by updates until now.
+        * Each DashboardConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DashboardConfig at start, followed by updates
+        until end.
+        * Each DashboardConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -650,14 +650,14 @@ class DashboardConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DashboardConfig at end.
-    * Each DashboardConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DashboardConfig at start, followed by updates until now.
-    * Each DashboardConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DashboardConfig at start, followed by updates
-    until end.
-    * Each DashboardConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DashboardConfig at end.
+        * Each DashboardConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DashboardConfig at start, followed by updates until now.
+        * Each DashboardConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DashboardConfig at start, followed by updates
+        until end.
+        * Each DashboardConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -701,8 +701,8 @@ class DashboardConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -712,8 +712,8 @@ class DashboardConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of DashboardConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -744,8 +744,8 @@ class DashboardConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -839,14 +839,14 @@ class GlobalDashboardConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each GlobalDashboardConfig at end.
-    * Each GlobalDashboardConfig response is fully-specified (all fields set).
-    * start: Returns the state of each GlobalDashboardConfig at start, followed by updates until now.
-    * Each GlobalDashboardConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each GlobalDashboardConfig at start, followed by updates
-    until end.
-    * Each GlobalDashboardConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each GlobalDashboardConfig at end.
+        * Each GlobalDashboardConfig response is fully-specified (all fields set).
+      * start: Returns the state of each GlobalDashboardConfig at start, followed by updates until now.
+        * Each GlobalDashboardConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each GlobalDashboardConfig at start, followed by updates
+        until end.
+        * Each GlobalDashboardConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -895,8 +895,8 @@ class GlobalDashboardConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 

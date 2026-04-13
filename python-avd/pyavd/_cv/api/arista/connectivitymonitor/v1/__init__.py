@@ -250,14 +250,14 @@ class ProbeStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Probe at end.
-    * Each Probe response is fully-specified (all fields set).
-    * start: Returns the state of each Probe at start, followed by updates until now.
-    * Each Probe response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Probe at start, followed by updates
-    until end.
-    * Each Probe response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Probe at end.
+        * Each Probe response is fully-specified (all fields set).
+      * start: Returns the state of each Probe at start, followed by updates until now.
+        * Each Probe response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Probe at start, followed by updates
+        until end.
+        * Each Probe response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -302,14 +302,14 @@ class ProbeBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Probe at end.
-    * Each Probe response is fully-specified (all fields set).
-    * start: Returns the state of each Probe at start, followed by updates until now.
-    * Each Probe response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Probe at start, followed by updates
-    until end.
-    * Each Probe response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Probe at end.
+        * Each Probe response is fully-specified (all fields set).
+      * start: Returns the state of each Probe at start, followed by updates until now.
+        * Each Probe response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Probe at start, followed by updates
+        until end.
+        * Each Probe response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -412,14 +412,14 @@ class ProbeStatsStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ProbeStats at end.
-    * Each ProbeStats response is fully-specified (all fields set).
-    * start: Returns the state of each ProbeStats at start, followed by updates until now.
-    * Each ProbeStats response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ProbeStats at start, followed by updates
-    until end.
-    * Each ProbeStats response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ProbeStats at end.
+        * Each ProbeStats response is fully-specified (all fields set).
+      * start: Returns the state of each ProbeStats at start, followed by updates until now.
+        * Each ProbeStats response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ProbeStats at start, followed by updates
+        until end.
+        * Each ProbeStats response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -464,14 +464,14 @@ class ProbeStatsBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ProbeStats at end.
-    * Each ProbeStats response is fully-specified (all fields set).
-    * start: Returns the state of each ProbeStats at start, followed by updates until now.
-    * Each ProbeStats response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ProbeStats at start, followed by updates
-    until end.
-    * Each ProbeStats response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ProbeStats at end.
+        * Each ProbeStats response is fully-specified (all fields set).
+      * start: Returns the state of each ProbeStats at start, followed by updates until now.
+        * Each ProbeStats response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ProbeStats at start, followed by updates
+        until end.
+        * Each ProbeStats response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """

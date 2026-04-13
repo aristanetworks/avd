@@ -291,13 +291,13 @@ class StageConfigMap(aristaproto.Message):
 
     ```
     {
-    \"root\": { name: \"root\", rows: [[\"1-2\"], [\"3\"]] },
-    \"1-2\":  { name: \"stages 1-2\", rows: [[\"1\"], [\"2\"]] },
-    \"1\":    { name: \"stage 1\", rows: [[\"1a\", \"1b\"]] },
-    \"1a\":   { name: \"stage 1a\", action: { name: \"task\", args: { \"TaskID\": \"101\" } },
-    \"1b\":   { name: \"stage 1b\", action: { name: \"task\", args: { \"TaskID\": \"102\" } },
-    \"2\":    { name: \"stage 2\", action: { name: \"task\", args: { \"TaskID\": \"103\" } },
-    \"3\":    { name: \"stage 3\", action: { name: \"task\", args: { \"TaskID\": \"104\" } }
+        \"root\": { name: \"root\", rows: [[\"1-2\"], [\"3\"]] },
+        \"1-2\":  { name: \"stages 1-2\", rows: [[\"1\"], [\"2\"]] },
+        \"1\":    { name: \"stage 1\", rows: [[\"1a\", \"1b\"]] },
+        \"1a\":   { name: \"stage 1a\", action: { name: \"task\", args: { \"TaskID\": \"101\" } },
+        \"1b\":   { name: \"stage 1b\", action: { name: \"task\", args: { \"TaskID\": \"102\" } },
+        \"2\":    { name: \"stage 2\", action: { name: \"task\", args: { \"TaskID\": \"103\" } },
+        \"3\":    { name: \"stage 3\", action: { name: \"task\", args: { \"TaskID\": \"104\" } }
     }
     ```
 
@@ -886,14 +886,14 @@ class ApproveConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ApproveConfig at end.
-    * Each ApproveConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ApproveConfig at start, followed by updates until now.
-    * Each ApproveConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ApproveConfig at start, followed by updates
-    until end.
-    * Each ApproveConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ApproveConfig at end.
+        * Each ApproveConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ApproveConfig at start, followed by updates until now.
+        * Each ApproveConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ApproveConfig at start, followed by updates
+        until end.
+        * Each ApproveConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -938,14 +938,14 @@ class ApproveConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ApproveConfig at end.
-    * Each ApproveConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ApproveConfig at start, followed by updates until now.
-    * Each ApproveConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ApproveConfig at start, followed by updates
-    until end.
-    * Each ApproveConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ApproveConfig at end.
+        * Each ApproveConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ApproveConfig at start, followed by updates until now.
+        * Each ApproveConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ApproveConfig at start, followed by updates
+        until end.
+        * Each ApproveConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -991,8 +991,8 @@ class ApproveConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1002,8 +1002,8 @@ class ApproveConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of ApproveConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1034,8 +1034,8 @@ class ApproveConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1169,14 +1169,14 @@ class ChangeControlStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ChangeControl at end.
-    * Each ChangeControl response is fully-specified (all fields set).
-    * start: Returns the state of each ChangeControl at start, followed by updates until now.
-    * Each ChangeControl response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ChangeControl at start, followed by updates
-    until end.
-    * Each ChangeControl response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ChangeControl at end.
+        * Each ChangeControl response is fully-specified (all fields set).
+      * start: Returns the state of each ChangeControl at start, followed by updates until now.
+        * Each ChangeControl response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ChangeControl at start, followed by updates
+        until end.
+        * Each ChangeControl response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -1228,14 +1228,14 @@ class ChangeControlBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ChangeControl at end.
-    * Each ChangeControl response is fully-specified (all fields set).
-    * start: Returns the state of each ChangeControl at start, followed by updates until now.
-    * Each ChangeControl response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ChangeControl at start, followed by updates
-    until end.
-    * Each ChangeControl response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ChangeControl at end.
+        * Each ChangeControl response is fully-specified (all fields set).
+      * start: Returns the state of each ChangeControl at start, followed by updates until now.
+        * Each ChangeControl response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ChangeControl at start, followed by updates
+        until end.
+        * Each ChangeControl response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -1338,14 +1338,14 @@ class ChangeControlConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ChangeControlConfig at end.
-    * Each ChangeControlConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ChangeControlConfig at start, followed by updates until now.
-    * Each ChangeControlConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ChangeControlConfig at start, followed by updates
-    until end.
-    * Each ChangeControlConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ChangeControlConfig at end.
+        * Each ChangeControlConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ChangeControlConfig at start, followed by updates until now.
+        * Each ChangeControlConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ChangeControlConfig at start, followed by updates
+        until end.
+        * Each ChangeControlConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -1392,14 +1392,14 @@ class ChangeControlConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ChangeControlConfig at end.
-    * Each ChangeControlConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ChangeControlConfig at start, followed by updates until now.
-    * Each ChangeControlConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ChangeControlConfig at start, followed by updates
-    until end.
-    * Each ChangeControlConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ChangeControlConfig at end.
+        * Each ChangeControlConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ChangeControlConfig at start, followed by updates until now.
+        * Each ChangeControlConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ChangeControlConfig at start, followed by updates
+        until end.
+        * Each ChangeControlConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -1445,8 +1445,8 @@ class ChangeControlConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1456,8 +1456,8 @@ class ChangeControlConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of ChangeControlConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1488,8 +1488,8 @@ class ChangeControlConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 

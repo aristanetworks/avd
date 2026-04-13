@@ -549,14 +549,14 @@ class ActionStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Action at end.
-    * Each Action response is fully-specified (all fields set).
-    * start: Returns the state of each Action at start, followed by updates until now.
-    * Each Action response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Action at start, followed by updates
-    until end.
-    * Each Action response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Action at end.
+        * Each Action response is fully-specified (all fields set).
+      * start: Returns the state of each Action at start, followed by updates until now.
+        * Each Action response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Action at start, followed by updates
+        until end.
+        * Each Action response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -662,14 +662,14 @@ class ActionArgConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ActionArgConfig at end.
-    * Each ActionArgConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ActionArgConfig at start, followed by updates until now.
-    * Each ActionArgConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ActionArgConfig at start, followed by updates
-    until end.
-    * Each ActionArgConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ActionArgConfig at end.
+        * Each ActionArgConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ActionArgConfig at start, followed by updates until now.
+        * Each ActionArgConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ActionArgConfig at start, followed by updates
+        until end.
+        * Each ActionArgConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -720,8 +720,8 @@ class ActionArgConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -731,8 +731,8 @@ class ActionArgConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of ActionArgConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -763,8 +763,8 @@ class ActionArgConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -893,14 +893,14 @@ class ActionConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ActionConfig at end.
-    * Each ActionConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ActionConfig at start, followed by updates until now.
-    * Each ActionConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ActionConfig at start, followed by updates
-    until end.
-    * Each ActionConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ActionConfig at end.
+        * Each ActionConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ActionConfig at start, followed by updates until now.
+        * Each ActionConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ActionConfig at start, followed by updates
+        until end.
+        * Each ActionConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -949,8 +949,8 @@ class ActionConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -960,8 +960,8 @@ class ActionConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of ActionConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -992,8 +992,8 @@ class ActionConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1120,14 +1120,14 @@ class ActionRunStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ActionRun at end.
-    * Each ActionRun response is fully-specified (all fields set).
-    * start: Returns the state of each ActionRun at start, followed by updates until now.
-    * Each ActionRun response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ActionRun at start, followed by updates
-    until end.
-    * Each ActionRun response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ActionRun at end.
+        * Each ActionRun response is fully-specified (all fields set).
+      * start: Returns the state of each ActionRun at start, followed by updates until now.
+        * Each ActionRun response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ActionRun at start, followed by updates
+        until end.
+        * Each ActionRun response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -1233,14 +1233,14 @@ class ActionRunConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ActionRunConfig at end.
-    * Each ActionRunConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ActionRunConfig at start, followed by updates until now.
-    * Each ActionRunConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ActionRunConfig at start, followed by updates
-    until end.
-    * Each ActionRunConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ActionRunConfig at end.
+        * Each ActionRunConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ActionRunConfig at start, followed by updates until now.
+        * Each ActionRunConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ActionRunConfig at start, followed by updates
+        until end.
+        * Each ActionRunConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -1291,8 +1291,8 @@ class ActionRunConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1302,8 +1302,8 @@ class ActionRunConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of ActionRunConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1334,8 +1334,8 @@ class ActionRunConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 

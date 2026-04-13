@@ -478,82 +478,82 @@ class Repository(aristaproto.Message):
 @dataclass(eq=False, repr=False)
 class RepositoryConfig(aristaproto.Message):
     """
-    RepositoryConfig objects are used to add, delete, and update images or extensions in
-    CloudVision.
+     RepositoryConfig objects are used to add, delete, and update images or extensions in
+     CloudVision.
 
-    The `Set` method is used to add and modify software stored in CloudVision.
-    The `Delete` method is used to remove software.
+     The `Set` method is used to add and modify software stored in CloudVision.
+     The `Delete` method is used to remove software.
 
-    Adding Software to CloudVision:
+     Adding Software to CloudVision:
 
-    When a `Set` is made, the software identified by the URI will be downloaded from Arista's
-    Software Download site and stored in CloudVision. The status of the software will be reflected
-    by a corresponding `Repository` entry identified by the same `RepositoryKey`.
+     When a `Set` is made, the software identified by the URI will be downloaded from Arista's
+     Software Download site and stored in CloudVision. The status of the software will be reflected
+     by a corresponding `Repository` entry identified by the same `RepositoryKey`.
 
-    Here is an example where a .swi EOS image is added to CloudVision:
+     Here is an example where a .swi EOS image is added to CloudVision:
 
-    ```
+     ```
     {
-    \"value\": {
-    \"key\": {
-    \"name\": \"EOS64-4.30.0.1F.swi\"
-    },
-    \"uri\": \"/support/download/EOS-USA/Active Releases/4.30/EOS-4.30.0.1F/EOS64-4.30.0.1F.swi\",
-    \"rebootRequired\": true
-    },
+      \"value\": {
+        \"key\": {
+          \"name\": \"EOS64-4.30.0.1F.swi\"
+        },
+        \"uri\": \"/support/download/EOS-USA/Active Releases/4.30/EOS-4.30.0.1F/EOS64-4.30.0.1F.swi\",
+        \"rebootRequired\": true
+      },
     }
-    ```
+     ```
 
-    The following is an example of a configuration that will add the
-    _AristaAppForSplunk-2.0.1-4.27.swix_ extension to CloudVision:
+     The following is an example of a configuration that will add the
+     _AristaAppForSplunk-2.0.1-4.27.swix_ extension to CloudVision:
 
-    ```
+     ```
     {
-    \"value\": {
-    \"key\": {
-    \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
-    },
-    \"uri\": \"/support/download/Extensions/Splunk/AristaAppForSplunk-2.0.1-4.27.swix\",
-    \"rebootRequired\": false
-    },
+      \"value\": {
+        \"key\": {
+          \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
+        },
+        \"uri\": \"/support/download/Extensions/Splunk/AristaAppForSplunk-2.0.1-4.27.swix\",
+        \"rebootRequired\": false
+      },
     }
-    ```
+     ```
 
-    Updating Existing Software:
+     Updating Existing Software:
 
-    `Repository` metadata objects can be _updated_ by using the config `Set` method and
-    specifying the field or fields to be modified. Currently, `reboot_required` is the only field
-    that can be modified after software has been added to CloudVision. All other fields must match
-    the existing configuration, or can be omitted.
+     `Repository` metadata objects can be _updated_ by using the config `Set` method and
+     specifying the field or fields to be modified. Currently, `reboot_required` is the only field
+     that can be modified after software has been added to CloudVision. All other fields must match
+     the existing configuration, or can be omitted.
 
-    NOTE: The `reboot_required` field must be `true` for .swi images.
+     NOTE: The `reboot_required` field must be `true` for .swi images.
 
-    In this example, we update the `reboot_required` field changing it from `false` to `true`
-    while leaving out the uri field:
+     In this example, we update the `reboot_required` field changing it from `false` to `true`
+     while leaving out the uri field:
 
-    ```
+     ```
     {
-    \"value\": {
-    \"key\": {
-    \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
-    },
-    \"rebootRequired\": true
-    },
+      \"value\": {
+        \"key\": {
+          \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
+        },
+        \"rebootRequired\": true
+      },
     }
-    ```
+     ```
 
-    Deleting Software:
+     Deleting Software:
 
-    `Repository` objects can be deleted using the `RepositoryConfig` `Delete` method.
-    A `Delete` request will specify the `key` which uniquely identifies the image or extension in
-    CloudVision. For example, a delete request will look like the following:
-    ```
-    {
-    \"value\": {
-    \"key\": {
-    \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
-    },
-    },
+     `Repository` objects can be deleted using the `RepositoryConfig` `Delete` method.
+     A `Delete` request will specify the `key` which uniquely identifies the image or extension in
+     CloudVision. For example, a delete request will look like the following:
+     ```
+     {
+      \"value\": {
+        \"key\": {
+          \"name\": \"AristaAppForSplunk-2.0.1-4.27.swix\"
+        },
+      },
     }
     ```
     """
@@ -1025,14 +1025,14 @@ class AssignmentsStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Assignments at end.
-    * Each Assignments response is fully-specified (all fields set).
-    * start: Returns the state of each Assignments at start, followed by updates until now.
-    * Each Assignments response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Assignments at start, followed by updates
-    until end.
-    * Each Assignments response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Assignments at end.
+        * Each Assignments response is fully-specified (all fields set).
+      * start: Returns the state of each Assignments at start, followed by updates until now.
+        * Each Assignments response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Assignments at start, followed by updates
+        until end.
+        * Each Assignments response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1075,14 +1075,14 @@ class AssignmentsBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Assignments at end.
-    * Each Assignments response is fully-specified (all fields set).
-    * start: Returns the state of each Assignments at start, followed by updates until now.
-    * Each Assignments response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Assignments at start, followed by updates
-    until end.
-    * Each Assignments response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Assignments at end.
+        * Each Assignments response is fully-specified (all fields set).
+      * start: Returns the state of each Assignments at start, followed by updates until now.
+        * Each Assignments response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Assignments at start, followed by updates
+        until end.
+        * Each Assignments response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1148,14 +1148,14 @@ class ReleasesStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Releases at end.
-    * Each Releases response is fully-specified (all fields set).
-    * start: Returns the state of each Releases at start, followed by updates until now.
-    * Each Releases response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Releases at start, followed by updates
-    until end.
-    * Each Releases response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Releases at end.
+        * Each Releases response is fully-specified (all fields set).
+      * start: Returns the state of each Releases at start, followed by updates until now.
+        * Each Releases response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Releases at start, followed by updates
+        until end.
+        * Each Releases response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1263,14 +1263,14 @@ class RepositoryStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Repository at end.
-    * Each Repository response is fully-specified (all fields set).
-    * start: Returns the state of each Repository at start, followed by updates until now.
-    * Each Repository response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Repository at start, followed by updates
-    until end.
-    * Each Repository response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Repository at end.
+        * Each Repository response is fully-specified (all fields set).
+      * start: Returns the state of each Repository at start, followed by updates until now.
+        * Each Repository response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Repository at start, followed by updates
+        until end.
+        * Each Repository response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1313,14 +1313,14 @@ class RepositoryBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Repository at end.
-    * Each Repository response is fully-specified (all fields set).
-    * start: Returns the state of each Repository at start, followed by updates until now.
-    * Each Repository response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Repository at start, followed by updates
-    until end.
-    * Each Repository response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Repository at end.
+        * Each Repository response is fully-specified (all fields set).
+      * start: Returns the state of each Repository at start, followed by updates until now.
+        * Each Repository response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Repository at start, followed by updates
+        until end.
+        * Each Repository response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1425,14 +1425,14 @@ class RepositoryConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each RepositoryConfig at end.
-    * Each RepositoryConfig response is fully-specified (all fields set).
-    * start: Returns the state of each RepositoryConfig at start, followed by updates until now.
-    * Each RepositoryConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each RepositoryConfig at start, followed by updates
-    until end.
-    * Each RepositoryConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each RepositoryConfig at end.
+        * Each RepositoryConfig response is fully-specified (all fields set).
+      * start: Returns the state of each RepositoryConfig at start, followed by updates until now.
+        * Each RepositoryConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each RepositoryConfig at start, followed by updates
+        until end.
+        * Each RepositoryConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1477,14 +1477,14 @@ class RepositoryConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each RepositoryConfig at end.
-    * Each RepositoryConfig response is fully-specified (all fields set).
-    * start: Returns the state of each RepositoryConfig at start, followed by updates until now.
-    * Each RepositoryConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each RepositoryConfig at start, followed by updates
-    until end.
-    * Each RepositoryConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each RepositoryConfig at end.
+        * Each RepositoryConfig response is fully-specified (all fields set).
+      * start: Returns the state of each RepositoryConfig at start, followed by updates until now.
+        * Each RepositoryConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each RepositoryConfig at start, followed by updates
+        until end.
+        * Each RepositoryConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1528,8 +1528,8 @@ class RepositoryConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1539,8 +1539,8 @@ class RepositoryConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of RepositoryConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1571,8 +1571,8 @@ class RepositoryConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 

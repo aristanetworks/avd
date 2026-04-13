@@ -373,14 +373,14 @@ class OAuthConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each OAuthConfig at end.
-    * Each OAuthConfig response is fully-specified (all fields set).
-    * start: Returns the state of each OAuthConfig at start, followed by updates until now.
-    * Each OAuthConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each OAuthConfig at start, followed by updates
-    until end.
-    * Each OAuthConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each OAuthConfig at end.
+        * Each OAuthConfig response is fully-specified (all fields set).
+      * start: Returns the state of each OAuthConfig at start, followed by updates until now.
+        * Each OAuthConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each OAuthConfig at start, followed by updates
+        until end.
+        * Each OAuthConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -425,14 +425,14 @@ class OAuthConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each OAuthConfig at end.
-    * Each OAuthConfig response is fully-specified (all fields set).
-    * start: Returns the state of each OAuthConfig at start, followed by updates until now.
-    * Each OAuthConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each OAuthConfig at start, followed by updates
-    until end.
-    * Each OAuthConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each OAuthConfig at end.
+        * Each OAuthConfig response is fully-specified (all fields set).
+      * start: Returns the state of each OAuthConfig at start, followed by updates until now.
+        * Each OAuthConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each OAuthConfig at start, followed by updates
+        until end.
+        * Each OAuthConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -478,8 +478,8 @@ class OAuthConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -489,8 +489,8 @@ class OAuthConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of OAuthConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -521,8 +521,8 @@ class OAuthConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -649,14 +649,14 @@ class SamlConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SAMLConfig at end.
-    * Each SAMLConfig response is fully-specified (all fields set).
-    * start: Returns the state of each SAMLConfig at start, followed by updates until now.
-    * Each SAMLConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SAMLConfig at start, followed by updates
-    until end.
-    * Each SAMLConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SAMLConfig at end.
+        * Each SAMLConfig response is fully-specified (all fields set).
+      * start: Returns the state of each SAMLConfig at start, followed by updates until now.
+        * Each SAMLConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SAMLConfig at start, followed by updates
+        until end.
+        * Each SAMLConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -701,14 +701,14 @@ class SamlConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SAMLConfig at end.
-    * Each SAMLConfig response is fully-specified (all fields set).
-    * start: Returns the state of each SAMLConfig at start, followed by updates until now.
-    * Each SAMLConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SAMLConfig at start, followed by updates
-    until end.
-    * Each SAMLConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SAMLConfig at end.
+        * Each SAMLConfig response is fully-specified (all fields set).
+      * start: Returns the state of each SAMLConfig at start, followed by updates until now.
+        * Each SAMLConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SAMLConfig at start, followed by updates
+        until end.
+        * Each SAMLConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -754,8 +754,8 @@ class SamlConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -765,8 +765,8 @@ class SamlConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of SAMLConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -797,8 +797,8 @@ class SamlConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 

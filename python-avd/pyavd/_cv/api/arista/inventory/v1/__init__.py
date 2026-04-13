@@ -271,12 +271,12 @@ class DeviceOnboardingConfig(aristaproto.Message):
     The request flow works as follows:
 
     1. Set on DeviceOnboardingConfig sends an onboarding request with a UUID
-    that the user is responsible for generating.
+       that the user is responsible for generating.
     2. Once the server receives the request, it validates and records it.
     3. Then, the server processes it, initiating the onboarding procedure and
-    tracking the status of the onboarding attempt.
+       tracking the status of the onboarding attempt.
     4. The user may do a GetOne or Subscribe on DeviceOnboarding using the same
-    UUID to see the status of the request.
+       UUID to see the status of the request.
     """
 
     key: "UuidKey" = aristaproto.message_field(1)
@@ -348,12 +348,12 @@ class DeviceDecommissioningConfig(aristaproto.Message):
     The request flow works as follows:
 
     1. Set on DeviceDecommissioningConfig sends a decommissioning request with
-    a UUID that the user is responsible for generating.
+       a UUID that the user is responsible for generating.
     2. Once the server receives the request, it validates and records it.
     3. Then, the server processes it, initiating the decommissioning procedure
-    and tracking the status of the decommissioning attempt.
+       and tracking the status of the decommissioning attempt.
     4. The user may do a GetOne or Subscribe on DeviceDecommissioning using the
-    same UUID to see the status of the request.
+       same UUID to see the status of the request.
 
     NOTE: this operation does not remove references to the decommissioned device from
     Studios and Tags. See `DecommissionConfig` in `arista.studio_topology.v1`.
@@ -597,14 +597,14 @@ class DeviceStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Device at end.
-    * Each Device response is fully-specified (all fields set).
-    * start: Returns the state of each Device at start, followed by updates until now.
-    * Each Device response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Device at start, followed by updates
-    until end.
-    * Each Device response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Device at end.
+        * Each Device response is fully-specified (all fields set).
+      * start: Returns the state of each Device at start, followed by updates until now.
+        * Each Device response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Device at start, followed by updates
+        until end.
+        * Each Device response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -647,14 +647,14 @@ class DeviceBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Device at end.
-    * Each Device response is fully-specified (all fields set).
-    * start: Returns the state of each Device at start, followed by updates until now.
-    * Each Device response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Device at start, followed by updates
-    until end.
-    * Each Device response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Device at end.
+        * Each Device response is fully-specified (all fields set).
+      * start: Returns the state of each Device at start, followed by updates until now.
+        * Each Device response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Device at start, followed by updates
+        until end.
+        * Each Device response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -759,14 +759,14 @@ class DeviceDecommissioningStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceDecommissioning at end.
-    * Each DeviceDecommissioning response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceDecommissioning at start, followed by updates until now.
-    * Each DeviceDecommissioning response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceDecommissioning at start, followed by updates
-    until end.
-    * Each DeviceDecommissioning response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceDecommissioning at end.
+        * Each DeviceDecommissioning response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceDecommissioning at start, followed by updates until now.
+        * Each DeviceDecommissioning response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceDecommissioning at start, followed by updates
+        until end.
+        * Each DeviceDecommissioning response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -811,14 +811,14 @@ class DeviceDecommissioningBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceDecommissioning at end.
-    * Each DeviceDecommissioning response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceDecommissioning at start, followed by updates until now.
-    * Each DeviceDecommissioning response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceDecommissioning at start, followed by updates
-    until end.
-    * Each DeviceDecommissioning response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceDecommissioning at end.
+        * Each DeviceDecommissioning response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceDecommissioning at start, followed by updates until now.
+        * Each DeviceDecommissioning response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceDecommissioning at start, followed by updates
+        until end.
+        * Each DeviceDecommissioning response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -923,14 +923,14 @@ class DeviceDecommissioningConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceDecommissioningConfig at end.
-    * Each DeviceDecommissioningConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceDecommissioningConfig at start, followed by updates until now.
-    * Each DeviceDecommissioningConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceDecommissioningConfig at start, followed by updates
-    until end.
-    * Each DeviceDecommissioningConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceDecommissioningConfig at end.
+        * Each DeviceDecommissioningConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceDecommissioningConfig at start, followed by updates until now.
+        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceDecommissioningConfig at start, followed by updates
+        until end.
+        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -975,14 +975,14 @@ class DeviceDecommissioningConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceDecommissioningConfig at end.
-    * Each DeviceDecommissioningConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceDecommissioningConfig at start, followed by updates until now.
-    * Each DeviceDecommissioningConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceDecommissioningConfig at start, followed by updates
-    until end.
-    * Each DeviceDecommissioningConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceDecommissioningConfig at end.
+        * Each DeviceDecommissioningConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceDecommissioningConfig at start, followed by updates until now.
+        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceDecommissioningConfig at start, followed by updates
+        until end.
+        * Each DeviceDecommissioningConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1026,8 +1026,8 @@ class DeviceDecommissioningConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1037,8 +1037,8 @@ class DeviceDecommissioningConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of DeviceDecommissioningConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1071,8 +1071,8 @@ class DeviceDecommissioningConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1205,14 +1205,14 @@ class DeviceOnboardingStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceOnboarding at end.
-    * Each DeviceOnboarding response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceOnboarding at start, followed by updates until now.
-    * Each DeviceOnboarding response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceOnboarding at start, followed by updates
-    until end.
-    * Each DeviceOnboarding response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceOnboarding at end.
+        * Each DeviceOnboarding response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceOnboarding at start, followed by updates until now.
+        * Each DeviceOnboarding response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceOnboarding at start, followed by updates
+        until end.
+        * Each DeviceOnboarding response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1257,14 +1257,14 @@ class DeviceOnboardingBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceOnboarding at end.
-    * Each DeviceOnboarding response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceOnboarding at start, followed by updates until now.
-    * Each DeviceOnboarding response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceOnboarding at start, followed by updates
-    until end.
-    * Each DeviceOnboarding response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceOnboarding at end.
+        * Each DeviceOnboarding response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceOnboarding at start, followed by updates until now.
+        * Each DeviceOnboarding response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceOnboarding at start, followed by updates
+        until end.
+        * Each DeviceOnboarding response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1369,14 +1369,14 @@ class DeviceOnboardingConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceOnboardingConfig at end.
-    * Each DeviceOnboardingConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceOnboardingConfig at start, followed by updates until now.
-    * Each DeviceOnboardingConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceOnboardingConfig at start, followed by updates
-    until end.
-    * Each DeviceOnboardingConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceOnboardingConfig at end.
+        * Each DeviceOnboardingConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceOnboardingConfig at start, followed by updates until now.
+        * Each DeviceOnboardingConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceOnboardingConfig at start, followed by updates
+        until end.
+        * Each DeviceOnboardingConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1421,14 +1421,14 @@ class DeviceOnboardingConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceOnboardingConfig at end.
-    * Each DeviceOnboardingConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceOnboardingConfig at start, followed by updates until now.
-    * Each DeviceOnboardingConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceOnboardingConfig at start, followed by updates
-    until end.
-    * Each DeviceOnboardingConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceOnboardingConfig at end.
+        * Each DeviceOnboardingConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceOnboardingConfig at start, followed by updates until now.
+        * Each DeviceOnboardingConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceOnboardingConfig at start, followed by updates
+        until end.
+        * Each DeviceOnboardingConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1472,8 +1472,8 @@ class DeviceOnboardingConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1483,8 +1483,8 @@ class DeviceOnboardingConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of DeviceOnboardingConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1517,8 +1517,8 @@ class DeviceOnboardingConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1651,14 +1651,14 @@ class ProvisionedDeviceStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ProvisionedDevice at end.
-    * Each ProvisionedDevice response is fully-specified (all fields set).
-    * start: Returns the state of each ProvisionedDevice at start, followed by updates until now.
-    * Each ProvisionedDevice response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ProvisionedDevice at start, followed by updates
-    until end.
-    * Each ProvisionedDevice response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ProvisionedDevice at end.
+        * Each ProvisionedDevice response is fully-specified (all fields set).
+      * start: Returns the state of each ProvisionedDevice at start, followed by updates until now.
+        * Each ProvisionedDevice response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ProvisionedDevice at start, followed by updates
+        until end.
+        * Each ProvisionedDevice response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1703,14 +1703,14 @@ class ProvisionedDeviceBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ProvisionedDevice at end.
-    * Each ProvisionedDevice response is fully-specified (all fields set).
-    * start: Returns the state of each ProvisionedDevice at start, followed by updates until now.
-    * Each ProvisionedDevice response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ProvisionedDevice at start, followed by updates
-    until end.
-    * Each ProvisionedDevice response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ProvisionedDevice at end.
+        * Each ProvisionedDevice response is fully-specified (all fields set).
+      * start: Returns the state of each ProvisionedDevice at start, followed by updates until now.
+        * Each ProvisionedDevice response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ProvisionedDevice at start, followed by updates
+        until end.
+        * Each ProvisionedDevice response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)

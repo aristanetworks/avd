@@ -806,14 +806,14 @@ class DecommissionStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Decommission at end.
-    * Each Decommission response is fully-specified (all fields set).
-    * start: Returns the state of each Decommission at start, followed by updates until now.
-    * Each Decommission response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Decommission at start, followed by updates
-    until end.
-    * Each Decommission response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Decommission at end.
+        * Each Decommission response is fully-specified (all fields set).
+      * start: Returns the state of each Decommission at start, followed by updates until now.
+        * Each Decommission response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Decommission at start, followed by updates
+        until end.
+        * Each Decommission response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -856,14 +856,14 @@ class DecommissionBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Decommission at end.
-    * Each Decommission response is fully-specified (all fields set).
-    * start: Returns the state of each Decommission at start, followed by updates until now.
-    * Each Decommission response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Decommission at start, followed by updates
-    until end.
-    * Each Decommission response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Decommission at end.
+        * Each Decommission response is fully-specified (all fields set).
+      * start: Returns the state of each Decommission at start, followed by updates until now.
+        * Each Decommission response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Decommission at start, followed by updates
+        until end.
+        * Each Decommission response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -968,14 +968,14 @@ class DecommissionConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DecommissionConfig at end.
-    * Each DecommissionConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DecommissionConfig at start, followed by updates until now.
-    * Each DecommissionConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DecommissionConfig at start, followed by updates
-    until end.
-    * Each DecommissionConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DecommissionConfig at end.
+        * Each DecommissionConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DecommissionConfig at start, followed by updates until now.
+        * Each DecommissionConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DecommissionConfig at start, followed by updates
+        until end.
+        * Each DecommissionConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1020,14 +1020,14 @@ class DecommissionConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DecommissionConfig at end.
-    * Each DecommissionConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DecommissionConfig at start, followed by updates until now.
-    * Each DecommissionConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DecommissionConfig at start, followed by updates
-    until end.
-    * Each DecommissionConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DecommissionConfig at end.
+        * Each DecommissionConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DecommissionConfig at start, followed by updates until now.
+        * Each DecommissionConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DecommissionConfig at start, followed by updates
+        until end.
+        * Each DecommissionConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1071,8 +1071,8 @@ class DecommissionConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1082,8 +1082,8 @@ class DecommissionConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of DecommissionConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1114,8 +1114,8 @@ class DecommissionConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1248,14 +1248,14 @@ class DeviceInputConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceInputConfig at end.
-    * Each DeviceInputConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceInputConfig at start, followed by updates until now.
-    * Each DeviceInputConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceInputConfig at start, followed by updates
-    until end.
-    * Each DeviceInputConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceInputConfig at end.
+        * Each DeviceInputConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceInputConfig at start, followed by updates until now.
+        * Each DeviceInputConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceInputConfig at start, followed by updates
+        until end.
+        * Each DeviceInputConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1300,14 +1300,14 @@ class DeviceInputConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceInputConfig at end.
-    * Each DeviceInputConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceInputConfig at start, followed by updates until now.
-    * Each DeviceInputConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceInputConfig at start, followed by updates
-    until end.
-    * Each DeviceInputConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceInputConfig at end.
+        * Each DeviceInputConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceInputConfig at start, followed by updates until now.
+        * Each DeviceInputConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceInputConfig at start, followed by updates
+        until end.
+        * Each DeviceInputConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1351,8 +1351,8 @@ class DeviceInputConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1362,8 +1362,8 @@ class DeviceInputConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of DeviceInputConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1394,8 +1394,8 @@ class DeviceInputConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1528,14 +1528,14 @@ class DeviceStateStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceState at end.
-    * Each DeviceState response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceState at start, followed by updates until now.
-    * Each DeviceState response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceState at start, followed by updates
-    until end.
-    * Each DeviceState response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceState at end.
+        * Each DeviceState response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceState at start, followed by updates until now.
+        * Each DeviceState response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceState at start, followed by updates
+        until end.
+        * Each DeviceState response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1578,14 +1578,14 @@ class DeviceStateBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceState at end.
-    * Each DeviceState response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceState at start, followed by updates until now.
-    * Each DeviceState response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceState at start, followed by updates
-    until end.
-    * Each DeviceState response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceState at end.
+        * Each DeviceState response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceState at start, followed by updates until now.
+        * Each DeviceState response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceState at start, followed by updates
+        until end.
+        * Each DeviceState response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1690,14 +1690,14 @@ class InterfaceInputConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each InterfaceInputConfig at end.
-    * Each InterfaceInputConfig response is fully-specified (all fields set).
-    * start: Returns the state of each InterfaceInputConfig at start, followed by updates until now.
-    * Each InterfaceInputConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each InterfaceInputConfig at start, followed by updates
-    until end.
-    * Each InterfaceInputConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each InterfaceInputConfig at end.
+        * Each InterfaceInputConfig response is fully-specified (all fields set).
+      * start: Returns the state of each InterfaceInputConfig at start, followed by updates until now.
+        * Each InterfaceInputConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each InterfaceInputConfig at start, followed by updates
+        until end.
+        * Each InterfaceInputConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1742,14 +1742,14 @@ class InterfaceInputConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each InterfaceInputConfig at end.
-    * Each InterfaceInputConfig response is fully-specified (all fields set).
-    * start: Returns the state of each InterfaceInputConfig at start, followed by updates until now.
-    * Each InterfaceInputConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each InterfaceInputConfig at start, followed by updates
-    until end.
-    * Each InterfaceInputConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each InterfaceInputConfig at end.
+        * Each InterfaceInputConfig response is fully-specified (all fields set).
+      * start: Returns the state of each InterfaceInputConfig at start, followed by updates until now.
+        * Each InterfaceInputConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each InterfaceInputConfig at start, followed by updates
+        until end.
+        * Each InterfaceInputConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1793,8 +1793,8 @@ class InterfaceInputConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1804,8 +1804,8 @@ class InterfaceInputConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of InterfaceInputConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1838,8 +1838,8 @@ class InterfaceInputConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1972,14 +1972,14 @@ class ReplaceStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Replace at end.
-    * Each Replace response is fully-specified (all fields set).
-    * start: Returns the state of each Replace at start, followed by updates until now.
-    * Each Replace response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Replace at start, followed by updates
-    until end.
-    * Each Replace response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Replace at end.
+        * Each Replace response is fully-specified (all fields set).
+      * start: Returns the state of each Replace at start, followed by updates until now.
+        * Each Replace response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Replace at start, followed by updates
+        until end.
+        * Each Replace response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2022,14 +2022,14 @@ class ReplaceBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Replace at end.
-    * Each Replace response is fully-specified (all fields set).
-    * start: Returns the state of each Replace at start, followed by updates until now.
-    * Each Replace response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Replace at start, followed by updates
-    until end.
-    * Each Replace response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Replace at end.
+        * Each Replace response is fully-specified (all fields set).
+      * start: Returns the state of each Replace at start, followed by updates until now.
+        * Each Replace response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Replace at start, followed by updates
+        until end.
+        * Each Replace response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2134,14 +2134,14 @@ class ReplaceConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ReplaceConfig at end.
-    * Each ReplaceConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ReplaceConfig at start, followed by updates until now.
-    * Each ReplaceConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ReplaceConfig at start, followed by updates
-    until end.
-    * Each ReplaceConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ReplaceConfig at end.
+        * Each ReplaceConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ReplaceConfig at start, followed by updates until now.
+        * Each ReplaceConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ReplaceConfig at start, followed by updates
+        until end.
+        * Each ReplaceConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2184,14 +2184,14 @@ class ReplaceConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ReplaceConfig at end.
-    * Each ReplaceConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ReplaceConfig at start, followed by updates until now.
-    * Each ReplaceConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ReplaceConfig at start, followed by updates
-    until end.
-    * Each ReplaceConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ReplaceConfig at end.
+        * Each ReplaceConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ReplaceConfig at start, followed by updates until now.
+        * Each ReplaceConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ReplaceConfig at start, followed by updates
+        until end.
+        * Each ReplaceConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2235,8 +2235,8 @@ class ReplaceConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -2246,8 +2246,8 @@ class ReplaceConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of ReplaceConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -2278,8 +2278,8 @@ class ReplaceConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -2410,14 +2410,14 @@ class RevertConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each RevertConfig at end.
-    * Each RevertConfig response is fully-specified (all fields set).
-    * start: Returns the state of each RevertConfig at start, followed by updates until now.
-    * Each RevertConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each RevertConfig at start, followed by updates
-    until end.
-    * Each RevertConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each RevertConfig at end.
+        * Each RevertConfig response is fully-specified (all fields set).
+      * start: Returns the state of each RevertConfig at start, followed by updates until now.
+        * Each RevertConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each RevertConfig at start, followed by updates
+        until end.
+        * Each RevertConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2460,14 +2460,14 @@ class RevertConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each RevertConfig at end.
-    * Each RevertConfig response is fully-specified (all fields set).
-    * start: Returns the state of each RevertConfig at start, followed by updates until now.
-    * Each RevertConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each RevertConfig at start, followed by updates
-    until end.
-    * Each RevertConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each RevertConfig at end.
+        * Each RevertConfig response is fully-specified (all fields set).
+      * start: Returns the state of each RevertConfig at start, followed by updates until now.
+        * Each RevertConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each RevertConfig at start, followed by updates
+        until end.
+        * Each RevertConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2511,8 +2511,8 @@ class RevertConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -2522,8 +2522,8 @@ class RevertConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of RevertConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -2554,8 +2554,8 @@ class RevertConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -2686,14 +2686,14 @@ class UpdateStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Update at end.
-    * Each Update response is fully-specified (all fields set).
-    * start: Returns the state of each Update at start, followed by updates until now.
-    * Each Update response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Update at start, followed by updates
-    until end.
-    * Each Update response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Update at end.
+        * Each Update response is fully-specified (all fields set).
+      * start: Returns the state of each Update at start, followed by updates until now.
+        * Each Update response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Update at start, followed by updates
+        until end.
+        * Each Update response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2736,14 +2736,14 @@ class UpdateBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Update at end.
-    * Each Update response is fully-specified (all fields set).
-    * start: Returns the state of each Update at start, followed by updates until now.
-    * Each Update response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Update at start, followed by updates
-    until end.
-    * Each Update response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Update at end.
+        * Each Update response is fully-specified (all fields set).
+      * start: Returns the state of each Update at start, followed by updates until now.
+        * Each Update response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Update at start, followed by updates
+        until end.
+        * Each Update response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2848,14 +2848,14 @@ class UpdateConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each UpdateConfig at end.
-    * Each UpdateConfig response is fully-specified (all fields set).
-    * start: Returns the state of each UpdateConfig at start, followed by updates until now.
-    * Each UpdateConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each UpdateConfig at start, followed by updates
-    until end.
-    * Each UpdateConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each UpdateConfig at end.
+        * Each UpdateConfig response is fully-specified (all fields set).
+      * start: Returns the state of each UpdateConfig at start, followed by updates until now.
+        * Each UpdateConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each UpdateConfig at start, followed by updates
+        until end.
+        * Each UpdateConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2898,14 +2898,14 @@ class UpdateConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each UpdateConfig at end.
-    * Each UpdateConfig response is fully-specified (all fields set).
-    * start: Returns the state of each UpdateConfig at start, followed by updates until now.
-    * Each UpdateConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each UpdateConfig at start, followed by updates
-    until end.
-    * Each UpdateConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each UpdateConfig at end.
+        * Each UpdateConfig response is fully-specified (all fields set).
+      * start: Returns the state of each UpdateConfig at start, followed by updates until now.
+        * Each UpdateConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each UpdateConfig at start, followed by updates
+        until end.
+        * Each UpdateConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2949,8 +2949,8 @@ class UpdateConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -2960,8 +2960,8 @@ class UpdateConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of UpdateConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -2992,8 +2992,8 @@ class UpdateConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -3124,14 +3124,14 @@ class UpdateSyncConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each UpdateSyncConfig at end.
-    * Each UpdateSyncConfig response is fully-specified (all fields set).
-    * start: Returns the state of each UpdateSyncConfig at start, followed by updates until now.
-    * Each UpdateSyncConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each UpdateSyncConfig at start, followed by updates
-    until end.
-    * Each UpdateSyncConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each UpdateSyncConfig at end.
+        * Each UpdateSyncConfig response is fully-specified (all fields set).
+      * start: Returns the state of each UpdateSyncConfig at start, followed by updates until now.
+        * Each UpdateSyncConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each UpdateSyncConfig at start, followed by updates
+        until end.
+        * Each UpdateSyncConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -3176,14 +3176,14 @@ class UpdateSyncConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each UpdateSyncConfig at end.
-    * Each UpdateSyncConfig response is fully-specified (all fields set).
-    * start: Returns the state of each UpdateSyncConfig at start, followed by updates until now.
-    * Each UpdateSyncConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each UpdateSyncConfig at start, followed by updates
-    until end.
-    * Each UpdateSyncConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each UpdateSyncConfig at end.
+        * Each UpdateSyncConfig response is fully-specified (all fields set).
+      * start: Returns the state of each UpdateSyncConfig at start, followed by updates until now.
+        * Each UpdateSyncConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each UpdateSyncConfig at start, followed by updates
+        until end.
+        * Each UpdateSyncConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -3227,8 +3227,8 @@ class UpdateSyncConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -3238,8 +3238,8 @@ class UpdateSyncConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of UpdateSyncConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -3270,8 +3270,8 @@ class UpdateSyncConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 

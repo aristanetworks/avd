@@ -262,7 +262,7 @@ class EventNoteConfig(aristaproto.Message):
     EventNoteConfig configures a note
 
     NOTE: note is required when used as an argument
-    to Set.
+          to Set.
     """
 
     note: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
@@ -286,7 +286,7 @@ class EventKey(aristaproto.Message):
     EventKey uniquely identifies an event
 
     NOTE: All fields are required when used as an argument
-    to GetOne, Set or Delete.
+          to GetOne, Set or Delete.
     """
 
     key: Optional[str] = aristaproto.message_field(1, wraps=aristaproto.TYPE_STRING)
@@ -310,7 +310,7 @@ class EventNotesConfig(aristaproto.Message):
     EventNotesConfig configures the notes of an event
 
     NOTE: notes is required when used as an argument
-    to Set.
+          to Set.
     """
 
     notes: Dict[int, "EventNoteConfig"] = aristaproto.map_field(1, aristaproto.TYPE_INT64, aristaproto.TYPE_MESSAGE)
@@ -323,7 +323,7 @@ class EventAnnotationConfig(aristaproto.Message):
     EventAnnotationConfig configures an event annotation
 
     NOTE: Either 1) key and ack or 2) key and notes or 3) key and read are
-    required when used as an argument to Set.
+          required when used as an argument to Set.
     """
 
     key: "EventKey" = aristaproto.message_field(1)
@@ -429,8 +429,8 @@ class UserEventCreationConfig(aristaproto.Message):
     UserEventCreationConfig is the basis for the manual creation of new events.
 
     NOTE: Set is the only valid operation.
-    Objects are immediately deleted upon event creation.
-    All fields are required to create a well-formed event.
+          Objects are immediately deleted upon event creation.
+          All fields are required to create a well-formed event.
     """
 
     key: "UserEventCreationKey" = aristaproto.message_field(1)
@@ -565,14 +565,14 @@ class EventStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Event at end.
-    * Each Event response is fully-specified (all fields set).
-    * start: Returns the state of each Event at start, followed by updates until now.
-    * Each Event response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Event at start, followed by updates
-    until end.
-    * Each Event response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Event at end.
+        * Each Event response is fully-specified (all fields set).
+      * start: Returns the state of each Event at start, followed by updates until now.
+        * Each Event response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Event at start, followed by updates
+        until end.
+        * Each Event response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -678,14 +678,14 @@ class EventAnnotationConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each EventAnnotationConfig at end.
-    * Each EventAnnotationConfig response is fully-specified (all fields set).
-    * start: Returns the state of each EventAnnotationConfig at start, followed by updates until now.
-    * Each EventAnnotationConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each EventAnnotationConfig at start, followed by updates
-    until end.
-    * Each EventAnnotationConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each EventAnnotationConfig at end.
+        * Each EventAnnotationConfig response is fully-specified (all fields set).
+      * start: Returns the state of each EventAnnotationConfig at start, followed by updates until now.
+        * Each EventAnnotationConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each EventAnnotationConfig at start, followed by updates
+        until end.
+        * Each EventAnnotationConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -736,8 +736,8 @@ class EventAnnotationConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -747,8 +747,8 @@ class EventAnnotationConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of EventAnnotationConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -781,8 +781,8 @@ class EventAnnotationConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -911,14 +911,14 @@ class UserEventCreationConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each UserEventCreationConfig at end.
-    * Each UserEventCreationConfig response is fully-specified (all fields set).
-    * start: Returns the state of each UserEventCreationConfig at start, followed by updates until now.
-    * Each UserEventCreationConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each UserEventCreationConfig at start, followed by updates
-    until end.
-    * Each UserEventCreationConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each UserEventCreationConfig at end.
+        * Each UserEventCreationConfig response is fully-specified (all fields set).
+      * start: Returns the state of each UserEventCreationConfig at start, followed by updates until now.
+        * Each UserEventCreationConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each UserEventCreationConfig at start, followed by updates
+        until end.
+        * Each UserEventCreationConfig response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -969,8 +969,8 @@ class UserEventCreationConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -980,8 +980,8 @@ class UserEventCreationConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of UserEventCreationConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1014,8 +1014,8 @@ class UserEventCreationConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 

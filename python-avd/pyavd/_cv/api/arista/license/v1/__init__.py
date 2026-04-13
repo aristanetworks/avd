@@ -903,14 +903,14 @@ class ApplicableDevicesStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ApplicableDevices at end.
-    * Each ApplicableDevices response is fully-specified (all fields set).
-    * start: Returns the state of each ApplicableDevices at start, followed by updates until now.
-    * Each ApplicableDevices response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ApplicableDevices at start, followed by updates
-    until end.
-    * Each ApplicableDevices response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ApplicableDevices at end.
+        * Each ApplicableDevices response is fully-specified (all fields set).
+      * start: Returns the state of each ApplicableDevices at start, followed by updates until now.
+        * Each ApplicableDevices response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ApplicableDevices at start, followed by updates
+        until end.
+        * Each ApplicableDevices response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -962,14 +962,14 @@ class ApplicableDevicesBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ApplicableDevices at end.
-    * Each ApplicableDevices response is fully-specified (all fields set).
-    * start: Returns the state of each ApplicableDevices at start, followed by updates until now.
-    * Each ApplicableDevices response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ApplicableDevices at start, followed by updates
-    until end.
-    * Each ApplicableDevices response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ApplicableDevices at end.
+        * Each ApplicableDevices response is fully-specified (all fields set).
+      * start: Returns the state of each ApplicableDevices at start, followed by updates until now.
+        * Each ApplicableDevices response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ApplicableDevices at start, followed by updates
+        until end.
+        * Each ApplicableDevices response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1074,14 +1074,14 @@ class ApplicableLicenseBundlesStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ApplicableLicenseBundles at end.
-    * Each ApplicableLicenseBundles response is fully-specified (all fields set).
-    * start: Returns the state of each ApplicableLicenseBundles at start, followed by updates until now.
-    * Each ApplicableLicenseBundles response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ApplicableLicenseBundles at start, followed by updates
-    until end.
-    * Each ApplicableLicenseBundles response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ApplicableLicenseBundles at end.
+        * Each ApplicableLicenseBundles response is fully-specified (all fields set).
+      * start: Returns the state of each ApplicableLicenseBundles at start, followed by updates until now.
+        * Each ApplicableLicenseBundles response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ApplicableLicenseBundles at start, followed by updates
+        until end.
+        * Each ApplicableLicenseBundles response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1126,14 +1126,14 @@ class ApplicableLicenseBundlesBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ApplicableLicenseBundles at end.
-    * Each ApplicableLicenseBundles response is fully-specified (all fields set).
-    * start: Returns the state of each ApplicableLicenseBundles at start, followed by updates until now.
-    * Each ApplicableLicenseBundles response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ApplicableLicenseBundles at start, followed by updates
-    until end.
-    * Each ApplicableLicenseBundles response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ApplicableLicenseBundles at end.
+        * Each ApplicableLicenseBundles response is fully-specified (all fields set).
+      * start: Returns the state of each ApplicableLicenseBundles at start, followed by updates until now.
+        * Each ApplicableLicenseBundles response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ApplicableLicenseBundles at start, followed by updates
+        until end.
+        * Each ApplicableLicenseBundles response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1238,14 +1238,14 @@ class LicenseAssignmentStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseAssignment at end.
-    * Each LicenseAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseAssignment at start, followed by updates until now.
-    * Each LicenseAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseAssignment at start, followed by updates
-    until end.
-    * Each LicenseAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseAssignment at end.
+        * Each LicenseAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseAssignment at start, followed by updates until now.
+        * Each LicenseAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseAssignment at start, followed by updates
+        until end.
+        * Each LicenseAssignment response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1290,14 +1290,14 @@ class LicenseAssignmentBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseAssignment at end.
-    * Each LicenseAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseAssignment at start, followed by updates until now.
-    * Each LicenseAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseAssignment at start, followed by updates
-    until end.
-    * Each LicenseAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseAssignment at end.
+        * Each LicenseAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseAssignment at start, followed by updates until now.
+        * Each LicenseAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseAssignment at start, followed by updates
+        until end.
+        * Each LicenseAssignment response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1402,14 +1402,14 @@ class LicenseAssignmentConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseAssignmentConfig at end.
-    * Each LicenseAssignmentConfig response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseAssignmentConfig at start, followed by updates until now.
-    * Each LicenseAssignmentConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseAssignmentConfig at start, followed by updates
-    until end.
-    * Each LicenseAssignmentConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseAssignmentConfig at end.
+        * Each LicenseAssignmentConfig response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseAssignmentConfig at start, followed by updates until now.
+        * Each LicenseAssignmentConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseAssignmentConfig at start, followed by updates
+        until end.
+        * Each LicenseAssignmentConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1454,14 +1454,14 @@ class LicenseAssignmentConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseAssignmentConfig at end.
-    * Each LicenseAssignmentConfig response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseAssignmentConfig at start, followed by updates until now.
-    * Each LicenseAssignmentConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseAssignmentConfig at start, followed by updates
-    until end.
-    * Each LicenseAssignmentConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseAssignmentConfig at end.
+        * Each LicenseAssignmentConfig response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseAssignmentConfig at start, followed by updates until now.
+        * Each LicenseAssignmentConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseAssignmentConfig at start, followed by updates
+        until end.
+        * Each LicenseAssignmentConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1505,8 +1505,8 @@ class LicenseAssignmentConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1516,8 +1516,8 @@ class LicenseAssignmentConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of LicenseAssignmentConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1550,8 +1550,8 @@ class LicenseAssignmentConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1684,14 +1684,14 @@ class LicenseFileStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseFile at end.
-    * Each LicenseFile response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseFile at start, followed by updates until now.
-    * Each LicenseFile response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseFile at start, followed by updates
-    until end.
-    * Each LicenseFile response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseFile at end.
+        * Each LicenseFile response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseFile at start, followed by updates until now.
+        * Each LicenseFile response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseFile at start, followed by updates
+        until end.
+        * Each LicenseFile response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1734,14 +1734,14 @@ class LicenseFileBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseFile at end.
-    * Each LicenseFile response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseFile at start, followed by updates until now.
-    * Each LicenseFile response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseFile at start, followed by updates
-    until end.
-    * Each LicenseFile response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseFile at end.
+        * Each LicenseFile response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseFile at start, followed by updates until now.
+        * Each LicenseFile response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseFile at start, followed by updates
+        until end.
+        * Each LicenseFile response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1846,14 +1846,14 @@ class LicenseFileConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseFileConfig at end.
-    * Each LicenseFileConfig response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseFileConfig at start, followed by updates until now.
-    * Each LicenseFileConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseFileConfig at start, followed by updates
-    until end.
-    * Each LicenseFileConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseFileConfig at end.
+        * Each LicenseFileConfig response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseFileConfig at start, followed by updates until now.
+        * Each LicenseFileConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseFileConfig at start, followed by updates
+        until end.
+        * Each LicenseFileConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1898,14 +1898,14 @@ class LicenseFileConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseFileConfig at end.
-    * Each LicenseFileConfig response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseFileConfig at start, followed by updates until now.
-    * Each LicenseFileConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseFileConfig at start, followed by updates
-    until end.
-    * Each LicenseFileConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseFileConfig at end.
+        * Each LicenseFileConfig response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseFileConfig at start, followed by updates until now.
+        * Each LicenseFileConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseFileConfig at start, followed by updates
+        until end.
+        * Each LicenseFileConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1949,8 +1949,8 @@ class LicenseFileConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1960,8 +1960,8 @@ class LicenseFileConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of LicenseFileConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1992,8 +1992,8 @@ class LicenseFileConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -2126,14 +2126,14 @@ class PurchasedLicenseStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each PurchasedLicense at end.
-    * Each PurchasedLicense response is fully-specified (all fields set).
-    * start: Returns the state of each PurchasedLicense at start, followed by updates until now.
-    * Each PurchasedLicense response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each PurchasedLicense at start, followed by updates
-    until end.
-    * Each PurchasedLicense response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each PurchasedLicense at end.
+        * Each PurchasedLicense response is fully-specified (all fields set).
+      * start: Returns the state of each PurchasedLicense at start, followed by updates until now.
+        * Each PurchasedLicense response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each PurchasedLicense at start, followed by updates
+        until end.
+        * Each PurchasedLicense response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2178,14 +2178,14 @@ class PurchasedLicenseBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each PurchasedLicense at end.
-    * Each PurchasedLicense response is fully-specified (all fields set).
-    * start: Returns the state of each PurchasedLicense at start, followed by updates until now.
-    * Each PurchasedLicense response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each PurchasedLicense at start, followed by updates
-    until end.
-    * Each PurchasedLicense response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each PurchasedLicense at end.
+        * Each PurchasedLicense response is fully-specified (all fields set).
+      * start: Returns the state of each PurchasedLicense at start, followed by updates until now.
+        * Each PurchasedLicense response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each PurchasedLicense at start, followed by updates
+        until end.
+        * Each PurchasedLicense response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)

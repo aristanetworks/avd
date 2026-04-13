@@ -323,28 +323,28 @@ class DeviceTenantAssignment(aristaproto.Message):
     id. Example : get list of devices assigned to a tenant
     ```
     Request :
-    {
-    \"partial_eq_filter\": [
-    {
-    \"tenant_id\" : \"Tenant1\"
-    }
-    ]
-    }
+     {
+       \"partial_eq_filter\": [
+          {
+              \"tenant_id\" : \"Tenant1\"
+          }
+       ]
+     }
     Response :
-    {
-    \"key\" : {
-    \"device_id\": \"JPA22270020\"
-    },
-    \"model_name\": \"DCS-7500\",
-    ...
-    },
-    {
-    \"key\" : {
-    \"device_id\": \"JPA22270022\"
-    },
-    \"model_name\": \"DCS-7130\",
-    ...
-    }
+     {
+       \"key\" : {
+         \"device_id\": \"JPA22270020\"
+       },
+       \"model_name\": \"DCS-7500\",
+       ...
+     },
+     {
+       \"key\" : {
+         \"device_id\": \"JPA22270022\"
+       },
+       \"model_name\": \"DCS-7130\",
+       ...
+     }
     ```
     """
 
@@ -418,28 +418,28 @@ class LicenseTenantAssignment(aristaproto.Message):
     id. Example : get list of licenses assigned to a tenant
     ```
     Request :
-    {
-    \"partial_eq_filter\": [
-    {
-    \"tenant_id\" : \"Tenant1\"
-    }
-    ]
-    }
+     {
+       \"partial_eq_filter\": [
+          {
+              \"tenant_id\" : \"Tenant1\"
+          }
+       ]
+     }
     Response :
-    {
-    \"key\" : {
-    \"license_uuid\": \"19898989\"
-    },
-    \"sku\": \"LIC-FIX-4-MACSEC\",
-    ...
-    },
-    {
-    \"key\" : {
-    \"license_uuid\": \"29898989\"
-    },
-    \"sku\": \"LIC-FIX-4-MACSEC\",
-    ...
-    }
+     {
+       \"key\" : {
+         \"license_uuid\": \"19898989\"
+       },
+       \"sku\": \"LIC-FIX-4-MACSEC\",
+       ...
+     },
+     {
+       \"key\" : {
+         \"license_uuid\": \"29898989\"
+       },
+       \"sku\": \"LIC-FIX-4-MACSEC\",
+       ...
+     }
     ```
     """
 
@@ -579,23 +579,23 @@ class AllowedTenants(aristaproto.Message):
     permission to view or move.
     ```
     Request :
-    {
-    \"key\" : {
-    \"tenant_id\": \"tenant_1\"
-    }
-    }
+     {
+       \"key\" : {
+         \"tenant_id\": \"tenant_1\"
+       }
+     }
     Response:
     {
-    \"access_type\": \"ACCESS_TYPE_READ_WRITE\",
-    \"customer_info\": {
-    \"customer_id\": 1234,
-    \"customer_name\": \"customer_id1\",
-    \"allowed_tenant_ids\": [
-    \"tenant_1\",
-    \"tenant_2\",
-    \"tenant_3\"
-    ]
-    }
+        \"access_type\": \"ACCESS_TYPE_READ_WRITE\",
+        \"customer_info\": {
+              \"customer_id\": 1234,
+              \"customer_name\": \"customer_id1\",
+              \"allowed_tenant_ids\": [
+                \"tenant_1\",
+                \"tenant_2\",
+                \"tenant_3\"
+              ]
+        }
     }
     ```
     """
@@ -719,14 +719,14 @@ class AllowedTenantsStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AllowedTenants at end.
-    * Each AllowedTenants response is fully-specified (all fields set).
-    * start: Returns the state of each AllowedTenants at start, followed by updates until now.
-    * Each AllowedTenants response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AllowedTenants at start, followed by updates
-    until end.
-    * Each AllowedTenants response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AllowedTenants at end.
+        * Each AllowedTenants response is fully-specified (all fields set).
+      * start: Returns the state of each AllowedTenants at start, followed by updates until now.
+        * Each AllowedTenants response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AllowedTenants at start, followed by updates
+        until end.
+        * Each AllowedTenants response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -769,14 +769,14 @@ class AllowedTenantsBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each AllowedTenants at end.
-    * Each AllowedTenants response is fully-specified (all fields set).
-    * start: Returns the state of each AllowedTenants at start, followed by updates until now.
-    * Each AllowedTenants response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each AllowedTenants at start, followed by updates
-    until end.
-    * Each AllowedTenants response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each AllowedTenants at end.
+        * Each AllowedTenants response is fully-specified (all fields set).
+      * start: Returns the state of each AllowedTenants at start, followed by updates until now.
+        * Each AllowedTenants response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each AllowedTenants at start, followed by updates
+        until end.
+        * Each AllowedTenants response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -881,14 +881,14 @@ class DeviceTenantAssignConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceTenantAssignConfig at end.
-    * Each DeviceTenantAssignConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceTenantAssignConfig at start, followed by updates until now.
-    * Each DeviceTenantAssignConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceTenantAssignConfig at start, followed by updates
-    until end.
-    * Each DeviceTenantAssignConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceTenantAssignConfig at end.
+        * Each DeviceTenantAssignConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceTenantAssignConfig at start, followed by updates until now.
+        * Each DeviceTenantAssignConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceTenantAssignConfig at start, followed by updates
+        until end.
+        * Each DeviceTenantAssignConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -933,14 +933,14 @@ class DeviceTenantAssignConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceTenantAssignConfig at end.
-    * Each DeviceTenantAssignConfig response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceTenantAssignConfig at start, followed by updates until now.
-    * Each DeviceTenantAssignConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceTenantAssignConfig at start, followed by updates
-    until end.
-    * Each DeviceTenantAssignConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceTenantAssignConfig at end.
+        * Each DeviceTenantAssignConfig response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceTenantAssignConfig at start, followed by updates until now.
+        * Each DeviceTenantAssignConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceTenantAssignConfig at start, followed by updates
+        until end.
+        * Each DeviceTenantAssignConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -984,8 +984,8 @@ class DeviceTenantAssignConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -995,8 +995,8 @@ class DeviceTenantAssignConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of DeviceTenantAssignConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1029,8 +1029,8 @@ class DeviceTenantAssignConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1163,14 +1163,14 @@ class DeviceTenantAssignmentStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceTenantAssignment at end.
-    * Each DeviceTenantAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
-    * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
-    until end.
-    * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceTenantAssignment at end.
+        * Each DeviceTenantAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
+        until end.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1215,14 +1215,14 @@ class DeviceTenantAssignmentBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceTenantAssignment at end.
-    * Each DeviceTenantAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
-    * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
-    until end.
-    * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceTenantAssignment at end.
+        * Each DeviceTenantAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
+        until end.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1252,9 +1252,9 @@ class DeviceTenantAssignmentPageRequest(aristaproto.Message):
     page_length: int = aristaproto.uint64_field(2)
     """
     Page_length is the size of the page. Combined with page, this will return:
-    start = (page * page_length)
-    end = start + page_length
-    return sorted_table[start..end]
+       start = (page * page_length)
+       end = start + page_length
+       return sorted_table[start..end]
     Page length should be consistent across requests for the same client-context
     """
 
@@ -1280,14 +1280,14 @@ class DeviceTenantAssignmentPageRequest(aristaproto.Message):
 
     For GetPage, the fields start and end can be used as follows:
 
-    * end: Returns the state of each DeviceTenantAssignment at end.
-    * Each DeviceTenantAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
-    * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
-    until end.
-    * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each DeviceTenantAssignment at end.
+        * Each DeviceTenantAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each DeviceTenantAssignment at start, followed by updates until now.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each DeviceTenantAssignment at start, followed by updates
+        until end.
+        * Each DeviceTenantAssignment response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1374,14 +1374,14 @@ class LicenseTenantAssignConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseTenantAssignConfig at end.
-    * Each LicenseTenantAssignConfig response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseTenantAssignConfig at start, followed by updates until now.
-    * Each LicenseTenantAssignConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseTenantAssignConfig at start, followed by updates
-    until end.
-    * Each LicenseTenantAssignConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseTenantAssignConfig at end.
+        * Each LicenseTenantAssignConfig response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseTenantAssignConfig at start, followed by updates until now.
+        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseTenantAssignConfig at start, followed by updates
+        until end.
+        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1426,14 +1426,14 @@ class LicenseTenantAssignConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseTenantAssignConfig at end.
-    * Each LicenseTenantAssignConfig response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseTenantAssignConfig at start, followed by updates until now.
-    * Each LicenseTenantAssignConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseTenantAssignConfig at start, followed by updates
-    until end.
-    * Each LicenseTenantAssignConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseTenantAssignConfig at end.
+        * Each LicenseTenantAssignConfig response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseTenantAssignConfig at start, followed by updates until now.
+        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseTenantAssignConfig at start, followed by updates
+        until end.
+        * Each LicenseTenantAssignConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1477,8 +1477,8 @@ class LicenseTenantAssignConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -1488,8 +1488,8 @@ class LicenseTenantAssignConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of LicenseTenantAssignConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -1522,8 +1522,8 @@ class LicenseTenantAssignConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -1656,14 +1656,14 @@ class LicenseTenantAssignmentStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseTenantAssignment at end.
-    * Each LicenseTenantAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseTenantAssignment at start, followed by updates until now.
-    * Each LicenseTenantAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseTenantAssignment at start, followed by updates
-    until end.
-    * Each LicenseTenantAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseTenantAssignment at end.
+        * Each LicenseTenantAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseTenantAssignment at start, followed by updates until now.
+        * Each LicenseTenantAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseTenantAssignment at start, followed by updates
+        until end.
+        * Each LicenseTenantAssignment response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1708,14 +1708,14 @@ class LicenseTenantAssignmentBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseTenantAssignment at end.
-    * Each LicenseTenantAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseTenantAssignment at start, followed by updates until now.
-    * Each LicenseTenantAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseTenantAssignment at start, followed by updates
-    until end.
-    * Each LicenseTenantAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseTenantAssignment at end.
+        * Each LicenseTenantAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseTenantAssignment at start, followed by updates until now.
+        * Each LicenseTenantAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseTenantAssignment at start, followed by updates
+        until end.
+        * Each LicenseTenantAssignment response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1745,9 +1745,9 @@ class LicenseTenantAssignmentPageRequest(aristaproto.Message):
     page_length: int = aristaproto.uint64_field(2)
     """
     Page_length is the size of the page. Combined with page, this will return:
-    start = (page * page_length)
-    end = start + page_length
-    return sorted_table[start..end]
+       start = (page * page_length)
+       end = start + page_length
+       return sorted_table[start..end]
     Page length should be consistent across requests for the same client-context
     """
 
@@ -1773,14 +1773,14 @@ class LicenseTenantAssignmentPageRequest(aristaproto.Message):
 
     For GetPage, the fields start and end can be used as follows:
 
-    * end: Returns the state of each LicenseTenantAssignment at end.
-    * Each LicenseTenantAssignment response is fully-specified (all fields set).
-    * start: Returns the state of each LicenseTenantAssignment at start, followed by updates until now.
-    * Each LicenseTenantAssignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each LicenseTenantAssignment at start, followed by updates
-    until end.
-    * Each LicenseTenantAssignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each LicenseTenantAssignment at end.
+        * Each LicenseTenantAssignment response is fully-specified (all fields set).
+      * start: Returns the state of each LicenseTenantAssignment at start, followed by updates until now.
+        * Each LicenseTenantAssignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each LicenseTenantAssignment at start, followed by updates
+        until end.
+        * Each LicenseTenantAssignment response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1874,14 +1874,14 @@ class SalesOrderStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SalesOrder at end.
-    * Each SalesOrder response is fully-specified (all fields set).
-    * start: Returns the state of each SalesOrder at start, followed by updates until now.
-    * Each SalesOrder response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SalesOrder at start, followed by updates
-    until end.
-    * Each SalesOrder response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SalesOrder at end.
+        * Each SalesOrder response is fully-specified (all fields set).
+      * start: Returns the state of each SalesOrder at start, followed by updates until now.
+        * Each SalesOrder response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SalesOrder at start, followed by updates
+        until end.
+        * Each SalesOrder response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1931,14 +1931,14 @@ class SalesOrderBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SalesOrder at end.
-    * Each SalesOrder response is fully-specified (all fields set).
-    * start: Returns the state of each SalesOrder at start, followed by updates until now.
-    * Each SalesOrder response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SalesOrder at start, followed by updates
-    until end.
-    * Each SalesOrder response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SalesOrder at end.
+        * Each SalesOrder response is fully-specified (all fields set).
+      * start: Returns the state of each SalesOrder at start, followed by updates until now.
+        * Each SalesOrder response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SalesOrder at start, followed by updates
+        until end.
+        * Each SalesOrder response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)

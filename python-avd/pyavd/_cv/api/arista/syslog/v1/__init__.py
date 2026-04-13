@@ -336,14 +336,14 @@ class ExportStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Export at end.
-    * Each Export response is fully-specified (all fields set).
-    * start: Returns the state of each Export at start, followed by updates until now.
-    * Each Export response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Export at start, followed by updates
-    until end.
-    * Each Export response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Export at end.
+        * Each Export response is fully-specified (all fields set).
+      * start: Returns the state of each Export at start, followed by updates until now.
+        * Each Export response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Export at start, followed by updates
+        until end.
+        * Each Export response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -451,14 +451,14 @@ class ExportConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ExportConfig at end.
-    * Each ExportConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ExportConfig at start, followed by updates until now.
-    * Each ExportConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ExportConfig at start, followed by updates
-    until end.
-    * Each ExportConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ExportConfig at end.
+        * Each ExportConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ExportConfig at start, followed by updates until now.
+        * Each ExportConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ExportConfig at start, followed by updates
+        until end.
+        * Each ExportConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -505,8 +505,8 @@ class ExportConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -516,8 +516,8 @@ class ExportConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of ExportConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -548,8 +548,8 @@ class ExportConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -641,14 +641,14 @@ class ExportFormatConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ExportFormatConfig at end.
-    * Each ExportFormatConfig response is fully-specified (all fields set).
-    * start: Returns the state of each ExportFormatConfig at start, followed by updates until now.
-    * Each ExportFormatConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ExportFormatConfig at start, followed by updates
-    until end.
-    * Each ExportFormatConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ExportFormatConfig at end.
+        * Each ExportFormatConfig response is fully-specified (all fields set).
+      * start: Returns the state of each ExportFormatConfig at start, followed by updates until now.
+        * Each ExportFormatConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ExportFormatConfig at start, followed by updates
+        until end.
+        * Each ExportFormatConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -697,8 +697,8 @@ class ExportFormatConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 

@@ -337,12 +337,12 @@ class ConfigSource(aristaproto.Message):
 
     source_id: Optional[str] = aristaproto.message_field(2, wraps=aristaproto.TYPE_STRING)
     """
-    source_id identifier to distinguish between multiple instances of the source type
-    source_id is :
-    configlet name for CONFIG_SOURCE_TYPE_NETWORK_PROVISIONING_CONFIGLET
-    studio id for CONFIG_SOURCE_TYPE_STUDIO
-    configlet id for CONFIG_SOURCE_TYPE_STUDIO_STATIC
-    FixtureInstance id for CONFIG_SOURCE_TYPE_HIERARCHY
+     source_id identifier to distinguish between multiple instances of the source type
+     source_id is :
+    	configlet name for CONFIG_SOURCE_TYPE_NETWORK_PROVISIONING_CONFIGLET
+    	studio id for CONFIG_SOURCE_TYPE_STUDIO
+    	configlet id for CONFIG_SOURCE_TYPE_STUDIO_STATIC
+    	FixtureInstance id for CONFIG_SOURCE_TYPE_HIERARCHY
     """
 
 
@@ -682,14 +682,14 @@ class ConfigDiffStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ConfigDiff at end.
-    * Each ConfigDiff response is fully-specified (all fields set).
-    * start: Returns the state of each ConfigDiff at start, followed by updates until now.
-    * Each ConfigDiff response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ConfigDiff at start, followed by updates
-    until end.
-    * Each ConfigDiff response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ConfigDiff at end.
+        * Each ConfigDiff response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigDiff at start, followed by updates until now.
+        * Each ConfigDiff response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigDiff at start, followed by updates
+        until end.
+        * Each ConfigDiff response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -732,14 +732,14 @@ class ConfigDiffBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each ConfigDiff at end.
-    * Each ConfigDiff response is fully-specified (all fields set).
-    * start: Returns the state of each ConfigDiff at start, followed by updates until now.
-    * Each ConfigDiff response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each ConfigDiff at start, followed by updates
-    until end.
-    * Each ConfigDiff response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each ConfigDiff at end.
+        * Each ConfigDiff response is fully-specified (all fields set).
+      * start: Returns the state of each ConfigDiff at start, followed by updates until now.
+        * Each ConfigDiff response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each ConfigDiff at start, followed by updates
+        until end.
+        * Each ConfigDiff response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -844,14 +844,14 @@ class ConfigurationStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Configuration at end.
-    * Each Configuration response is fully-specified (all fields set).
-    * start: Returns the state of each Configuration at start, followed by updates until now.
-    * Each Configuration response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Configuration at start, followed by updates
-    until end.
-    * Each Configuration response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Configuration at end.
+        * Each Configuration response is fully-specified (all fields set).
+      * start: Returns the state of each Configuration at start, followed by updates until now.
+        * Each Configuration response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Configuration at start, followed by updates
+        until end.
+        * Each Configuration response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -894,14 +894,14 @@ class ConfigurationBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Configuration at end.
-    * Each Configuration response is fully-specified (all fields set).
-    * start: Returns the state of each Configuration at start, followed by updates until now.
-    * Each Configuration response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Configuration at start, followed by updates
-    until end.
-    * Each Configuration response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Configuration at end.
+        * Each Configuration response is fully-specified (all fields set).
+      * start: Returns the state of each Configuration at start, followed by updates until now.
+        * Each Configuration response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Configuration at start, followed by updates
+        until end.
+        * Each Configuration response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1006,14 +1006,14 @@ class SecurityProfileStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SecurityProfile at end.
-    * Each SecurityProfile response is fully-specified (all fields set).
-    * start: Returns the state of each SecurityProfile at start, followed by updates until now.
-    * Each SecurityProfile response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SecurityProfile at start, followed by updates
-    until end.
-    * Each SecurityProfile response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SecurityProfile at end.
+        * Each SecurityProfile response is fully-specified (all fields set).
+      * start: Returns the state of each SecurityProfile at start, followed by updates until now.
+        * Each SecurityProfile response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecurityProfile at start, followed by updates
+        until end.
+        * Each SecurityProfile response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1058,14 +1058,14 @@ class SecurityProfileBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SecurityProfile at end.
-    * Each SecurityProfile response is fully-specified (all fields set).
-    * start: Returns the state of each SecurityProfile at start, followed by updates until now.
-    * Each SecurityProfile response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SecurityProfile at start, followed by updates
-    until end.
-    * Each SecurityProfile response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SecurityProfile at end.
+        * Each SecurityProfile response is fully-specified (all fields set).
+      * start: Returns the state of each SecurityProfile at start, followed by updates until now.
+        * Each SecurityProfile response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecurityProfile at start, followed by updates
+        until end.
+        * Each SecurityProfile response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1170,14 +1170,14 @@ class SecurityProfileDiffStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SecurityProfileDiff at end.
-    * Each SecurityProfileDiff response is fully-specified (all fields set).
-    * start: Returns the state of each SecurityProfileDiff at start, followed by updates until now.
-    * Each SecurityProfileDiff response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SecurityProfileDiff at start, followed by updates
-    until end.
-    * Each SecurityProfileDiff response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SecurityProfileDiff at end.
+        * Each SecurityProfileDiff response is fully-specified (all fields set).
+      * start: Returns the state of each SecurityProfileDiff at start, followed by updates until now.
+        * Each SecurityProfileDiff response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecurityProfileDiff at start, followed by updates
+        until end.
+        * Each SecurityProfileDiff response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1222,14 +1222,14 @@ class SecurityProfileDiffBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SecurityProfileDiff at end.
-    * Each SecurityProfileDiff response is fully-specified (all fields set).
-    * start: Returns the state of each SecurityProfileDiff at start, followed by updates until now.
-    * Each SecurityProfileDiff response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SecurityProfileDiff at start, followed by updates
-    until end.
-    * Each SecurityProfileDiff response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SecurityProfileDiff at end.
+        * Each SecurityProfileDiff response is fully-specified (all fields set).
+      * start: Returns the state of each SecurityProfileDiff at start, followed by updates until now.
+        * Each SecurityProfileDiff response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecurityProfileDiff at start, followed by updates
+        until end.
+        * Each SecurityProfileDiff response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1334,14 +1334,14 @@ class SecurityProfileDiffSummaryStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SecurityProfileDiffSummary at end.
-    * Each SecurityProfileDiffSummary response is fully-specified (all fields set).
-    * start: Returns the state of each SecurityProfileDiffSummary at start, followed by updates until now.
-    * Each SecurityProfileDiffSummary response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SecurityProfileDiffSummary at start, followed by updates
-    until end.
-    * Each SecurityProfileDiffSummary response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SecurityProfileDiffSummary at end.
+        * Each SecurityProfileDiffSummary response is fully-specified (all fields set).
+      * start: Returns the state of each SecurityProfileDiffSummary at start, followed by updates until now.
+        * Each SecurityProfileDiffSummary response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecurityProfileDiffSummary at start, followed by updates
+        until end.
+        * Each SecurityProfileDiffSummary response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1386,14 +1386,14 @@ class SecurityProfileDiffSummaryBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each SecurityProfileDiffSummary at end.
-    * Each SecurityProfileDiffSummary response is fully-specified (all fields set).
-    * start: Returns the state of each SecurityProfileDiffSummary at start, followed by updates until now.
-    * Each SecurityProfileDiffSummary response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each SecurityProfileDiffSummary at start, followed by updates
-    until end.
-    * Each SecurityProfileDiffSummary response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each SecurityProfileDiffSummary at end.
+        * Each SecurityProfileDiffSummary response is fully-specified (all fields set).
+      * start: Returns the state of each SecurityProfileDiffSummary at start, followed by updates until now.
+        * Each SecurityProfileDiffSummary response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each SecurityProfileDiffSummary at start, followed by updates
+        until end.
+        * Each SecurityProfileDiffSummary response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1498,14 +1498,14 @@ class SummaryStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Summary at end.
-    * Each Summary response is fully-specified (all fields set).
-    * start: Returns the state of each Summary at start, followed by updates until now.
-    * Each Summary response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Summary at start, followed by updates
-    until end.
-    * Each Summary response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Summary at end.
+        * Each Summary response is fully-specified (all fields set).
+      * start: Returns the state of each Summary at start, followed by updates until now.
+        * Each Summary response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Summary at start, followed by updates
+        until end.
+        * Each Summary response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1548,14 +1548,14 @@ class SummaryBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Summary at end.
-    * Each Summary response is fully-specified (all fields set).
-    * start: Returns the state of each Summary at start, followed by updates until now.
-    * Each Summary response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Summary at start, followed by updates
-    until end.
-    * Each Summary response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Summary at end.
+        * Each Summary response is fully-specified (all fields set).
+      * start: Returns the state of each Summary at start, followed by updates until now.
+        * Each Summary response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Summary at start, followed by updates
+        until end.
+        * Each Summary response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)

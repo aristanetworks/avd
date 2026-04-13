@@ -1376,9 +1376,9 @@ class DiffEntry(aristaproto.Message):
     MOVE represents relocating a single element while preserving
     the relative order of all others. Detected using LCS.
     Example:
-    workspace_a: users = [\"u1\",\"u2\",\"u3\"]
-    workspace_b: users = [\"u2\",\"u1\",\"u3\"]
-    DiffEntry for \"u2\": path = [\"1\"], op = MOVE, index_b = 0
+      workspace_a: users = [\"u1\",\"u2\",\"u3\"]
+      workspace_b: users = [\"u2\",\"u1\",\"u3\"]
+      DiffEntry for \"u2\": path = [\"1\"], op = MOVE, index_b = 0
     """
 
     key_path: "___fmp__.RepeatedString" = aristaproto.message_field(6)
@@ -1391,9 +1391,9 @@ class DiffEntry(aristaproto.Message):
     - value: the element’s identifier
 
     Example:
-    users = [\{\"id\":\"u1\",\"name\":\"Alice\"\}]
-    key_path = [\"users\", \"[id=u1]\", \"name\"]
-    path     = [\"users\", \"0\", \"name\"]
+      users = [\{\"id\":\"u1\",\"name\":\"Alice\"\}]
+      key_path = [\"users\", \"[id=u1]\", \"name\"]
+      path     = [\"users\", \"0\", \"name\"]
     """
 
 
@@ -1620,14 +1620,14 @@ class StudioGeneratedConfigurationStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each StudioGeneratedConfiguration at end.
-    * Each StudioGeneratedConfiguration response is fully-specified (all fields set).
-    * start: Returns the state of each StudioGeneratedConfiguration at start, followed by updates until now.
-    * Each StudioGeneratedConfiguration response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each StudioGeneratedConfiguration at start, followed by updates
-    until end.
-    * Each StudioGeneratedConfiguration response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each StudioGeneratedConfiguration at end.
+        * Each StudioGeneratedConfiguration response is fully-specified (all fields set).
+      * start: Returns the state of each StudioGeneratedConfiguration at start, followed by updates until now.
+        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each StudioGeneratedConfiguration at start, followed by updates
+        until end.
+        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1672,14 +1672,14 @@ class StudioGeneratedConfigurationBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each StudioGeneratedConfiguration at end.
-    * Each StudioGeneratedConfiguration response is fully-specified (all fields set).
-    * start: Returns the state of each StudioGeneratedConfiguration at start, followed by updates until now.
-    * Each StudioGeneratedConfiguration response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each StudioGeneratedConfiguration at start, followed by updates
-    until end.
-    * Each StudioGeneratedConfiguration response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each StudioGeneratedConfiguration at end.
+        * Each StudioGeneratedConfiguration response is fully-specified (all fields set).
+      * start: Returns the state of each StudioGeneratedConfiguration at start, followed by updates until now.
+        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each StudioGeneratedConfiguration at start, followed by updates
+        until end.
+        * Each StudioGeneratedConfiguration response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1784,14 +1784,14 @@ class WorkspaceStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Workspace at end.
-    * Each Workspace response is fully-specified (all fields set).
-    * start: Returns the state of each Workspace at start, followed by updates until now.
-    * Each Workspace response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Workspace at start, followed by updates
-    until end.
-    * Each Workspace response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Workspace at end.
+        * Each Workspace response is fully-specified (all fields set).
+      * start: Returns the state of each Workspace at start, followed by updates until now.
+        * Each Workspace response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Workspace at start, followed by updates
+        until end.
+        * Each Workspace response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1834,14 +1834,14 @@ class WorkspaceBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Workspace at end.
-    * Each Workspace response is fully-specified (all fields set).
-    * start: Returns the state of each Workspace at start, followed by updates until now.
-    * Each Workspace response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Workspace at start, followed by updates
-    until end.
-    * Each Workspace response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Workspace at end.
+        * Each Workspace response is fully-specified (all fields set).
+      * start: Returns the state of each Workspace at start, followed by updates until now.
+        * Each Workspace response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Workspace at start, followed by updates
+        until end.
+        * Each Workspace response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -1946,14 +1946,14 @@ class WorkspaceBuildStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each WorkspaceBuild at end.
-    * Each WorkspaceBuild response is fully-specified (all fields set).
-    * start: Returns the state of each WorkspaceBuild at start, followed by updates until now.
-    * Each WorkspaceBuild response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each WorkspaceBuild at start, followed by updates
-    until end.
-    * Each WorkspaceBuild response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each WorkspaceBuild at end.
+        * Each WorkspaceBuild response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceBuild at start, followed by updates until now.
+        * Each WorkspaceBuild response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceBuild at start, followed by updates
+        until end.
+        * Each WorkspaceBuild response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -1996,14 +1996,14 @@ class WorkspaceBuildBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each WorkspaceBuild at end.
-    * Each WorkspaceBuild response is fully-specified (all fields set).
-    * start: Returns the state of each WorkspaceBuild at start, followed by updates until now.
-    * Each WorkspaceBuild response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each WorkspaceBuild at start, followed by updates
-    until end.
-    * Each WorkspaceBuild response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each WorkspaceBuild at end.
+        * Each WorkspaceBuild response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceBuild at start, followed by updates until now.
+        * Each WorkspaceBuild response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceBuild at start, followed by updates
+        until end.
+        * Each WorkspaceBuild response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2108,14 +2108,14 @@ class WorkspaceBuildDetailsStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each WorkspaceBuildDetails at end.
-    * Each WorkspaceBuildDetails response is fully-specified (all fields set).
-    * start: Returns the state of each WorkspaceBuildDetails at start, followed by updates until now.
-    * Each WorkspaceBuildDetails response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each WorkspaceBuildDetails at start, followed by updates
-    until end.
-    * Each WorkspaceBuildDetails response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each WorkspaceBuildDetails at end.
+        * Each WorkspaceBuildDetails response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceBuildDetails at start, followed by updates until now.
+        * Each WorkspaceBuildDetails response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceBuildDetails at start, followed by updates
+        until end.
+        * Each WorkspaceBuildDetails response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2160,14 +2160,14 @@ class WorkspaceBuildDetailsBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each WorkspaceBuildDetails at end.
-    * Each WorkspaceBuildDetails response is fully-specified (all fields set).
-    * start: Returns the state of each WorkspaceBuildDetails at start, followed by updates until now.
-    * Each WorkspaceBuildDetails response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each WorkspaceBuildDetails at start, followed by updates
-    until end.
-    * Each WorkspaceBuildDetails response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each WorkspaceBuildDetails at end.
+        * Each WorkspaceBuildDetails response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceBuildDetails at start, followed by updates until now.
+        * Each WorkspaceBuildDetails response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceBuildDetails at start, followed by updates
+        until end.
+        * Each WorkspaceBuildDetails response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2272,14 +2272,14 @@ class WorkspaceConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each WorkspaceConfig at end.
-    * Each WorkspaceConfig response is fully-specified (all fields set).
-    * start: Returns the state of each WorkspaceConfig at start, followed by updates until now.
-    * Each WorkspaceConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each WorkspaceConfig at start, followed by updates
-    until end.
-    * Each WorkspaceConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each WorkspaceConfig at end.
+        * Each WorkspaceConfig response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceConfig at start, followed by updates until now.
+        * Each WorkspaceConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceConfig at start, followed by updates
+        until end.
+        * Each WorkspaceConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2324,14 +2324,14 @@ class WorkspaceConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each WorkspaceConfig at end.
-    * Each WorkspaceConfig response is fully-specified (all fields set).
-    * start: Returns the state of each WorkspaceConfig at start, followed by updates until now.
-    * Each WorkspaceConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each WorkspaceConfig at start, followed by updates
-    until end.
-    * Each WorkspaceConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each WorkspaceConfig at end.
+        * Each WorkspaceConfig response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceConfig at start, followed by updates until now.
+        * Each WorkspaceConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceConfig at start, followed by updates
+        until end.
+        * Each WorkspaceConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2375,8 +2375,8 @@ class WorkspaceConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -2386,8 +2386,8 @@ class WorkspaceConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of WorkspaceConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -2418,8 +2418,8 @@ class WorkspaceConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 
@@ -2552,14 +2552,14 @@ class WorkspaceDiffsStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each WorkspaceDiffs at end.
-    * Each WorkspaceDiffs response is fully-specified (all fields set).
-    * start: Returns the state of each WorkspaceDiffs at start, followed by updates until now.
-    * Each WorkspaceDiffs response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each WorkspaceDiffs at start, followed by updates
-    until end.
-    * Each WorkspaceDiffs response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each WorkspaceDiffs at end.
+        * Each WorkspaceDiffs response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceDiffs at start, followed by updates until now.
+        * Each WorkspaceDiffs response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceDiffs at start, followed by updates
+        until end.
+        * Each WorkspaceDiffs response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2602,14 +2602,14 @@ class WorkspaceDiffsBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each WorkspaceDiffs at end.
-    * Each WorkspaceDiffs response is fully-specified (all fields set).
-    * start: Returns the state of each WorkspaceDiffs at start, followed by updates until now.
-    * Each WorkspaceDiffs response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each WorkspaceDiffs at start, followed by updates
-    until end.
-    * Each WorkspaceDiffs response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each WorkspaceDiffs at end.
+        * Each WorkspaceDiffs response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceDiffs at start, followed by updates until now.
+        * Each WorkspaceDiffs response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceDiffs at start, followed by updates
+        until end.
+        * Each WorkspaceDiffs response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2714,14 +2714,14 @@ class WorkspaceSyncConfigStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each WorkspaceSyncConfig at end.
-    * Each WorkspaceSyncConfig response is fully-specified (all fields set).
-    * start: Returns the state of each WorkspaceSyncConfig at start, followed by updates until now.
-    * Each WorkspaceSyncConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each WorkspaceSyncConfig at start, followed by updates
-    until end.
-    * Each WorkspaceSyncConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each WorkspaceSyncConfig at end.
+        * Each WorkspaceSyncConfig response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceSyncConfig at start, followed by updates until now.
+        * Each WorkspaceSyncConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceSyncConfig at start, followed by updates
+        until end.
+        * Each WorkspaceSyncConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
 
@@ -2766,14 +2766,14 @@ class WorkspaceSyncConfigBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each WorkspaceSyncConfig at end.
-    * Each WorkspaceSyncConfig response is fully-specified (all fields set).
-    * start: Returns the state of each WorkspaceSyncConfig at start, followed by updates until now.
-    * Each WorkspaceSyncConfig response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each WorkspaceSyncConfig at start, followed by updates
-    until end.
-    * Each WorkspaceSyncConfig response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each WorkspaceSyncConfig at end.
+        * Each WorkspaceSyncConfig response is fully-specified (all fields set).
+      * start: Returns the state of each WorkspaceSyncConfig at start, followed by updates until now.
+        * Each WorkspaceSyncConfig response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each WorkspaceSyncConfig at start, followed by updates
+        until end.
+        * Each WorkspaceSyncConfig response at start is fully-specified, but updates until end may
+          be partial.
     """
 
     max_messages: Optional[int] = aristaproto.message_field(4, wraps=aristaproto.TYPE_UINT32)
@@ -2817,8 +2817,8 @@ class WorkspaceSyncConfigSetResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     creation. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==CreatedAt will include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==CreatedAt will include this instance.
     """
 
 
@@ -2828,8 +2828,8 @@ class WorkspaceSyncConfigSetSomeRequest(aristaproto.Message):
     """
     value contains a list of WorkspaceSyncConfig values to write.
     It is possible to provide more values than can fit within either:
-    - the maxiumum send size of the client
-    - the maximum receive size of the server
+        - the maxiumum send size of the client
+        - the maximum receive size of the server
     If this error occurs you must reduce the number of values sent.
     See gRPC \"maximum message size\" documentation for more information.
     """
@@ -2860,8 +2860,8 @@ class WorkspaceSyncConfigDeleteResponse(aristaproto.Message):
     Time indicates the (UTC) timestamp at which the system recognizes the
     deletion. The only guarantees made about this timestamp are:
 
-    - it is after the time the request was received
-    - a time-ranged query with StartTime==DeletedAt will not include this instance.
+       - it is after the time the request was received
+       - a time-ranged query with StartTime==DeletedAt will not include this instance.
     """
 
 

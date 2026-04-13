@@ -190,14 +190,14 @@ class AssignmentStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Assignment at end.
-    * Each Assignment response is fully-specified (all fields set).
-    * start: Returns the state of each Assignment at start, followed by updates until now.
-    * Each Assignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Assignment at start, followed by updates
-    until end.
-    * Each Assignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Assignment at end.
+        * Each Assignment response is fully-specified (all fields set).
+      * start: Returns the state of each Assignment at start, followed by updates until now.
+        * Each Assignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Assignment at start, followed by updates
+        until end.
+        * Each Assignment response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
@@ -242,14 +242,14 @@ class AssignmentBatchedStreamRequest(aristaproto.Message):
 
     For GetAll, the fields start and end can be used as follows:
 
-    * end: Returns the state of each Assignment at end.
-    * Each Assignment response is fully-specified (all fields set).
-    * start: Returns the state of each Assignment at start, followed by updates until now.
-    * Each Assignment response at start is fully-specified, but updates may be partial.
-    * start and end: Returns the state of each Assignment at start, followed by updates
-    until end.
-    * Each Assignment response at start is fully-specified, but updates until end may
-    be partial.
+      * end: Returns the state of each Assignment at end.
+        * Each Assignment response is fully-specified (all fields set).
+      * start: Returns the state of each Assignment at start, followed by updates until now.
+        * Each Assignment response at start is fully-specified, but updates may be partial.
+      * start and end: Returns the state of each Assignment at start, followed by updates
+        until end.
+        * Each Assignment response at start is fully-specified, but updates until end may
+          be partial.
 
     This field is not allowed in the Subscribe RPC.
     """
