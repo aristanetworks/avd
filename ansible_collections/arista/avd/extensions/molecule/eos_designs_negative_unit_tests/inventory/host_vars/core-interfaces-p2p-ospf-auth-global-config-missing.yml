@@ -27,5 +27,5 @@ core_interfaces:
       use_underlay_ospf_authentication: true
 
 expected_error_message: >-
-  'use_underlay_ospf_authentication' is set to true for core_interfaces.p2p_links (nodes: core-interfaces-p2p-ospf-auth-global-config-missing, peer1)
-  but 'underlay_ospf_authentication.enabled' is set to false.
+  'use_underlay_ospf_authentication' is set to true for core_interfaces.p2p_links[0] but 'underlay_ospf_authentication.enabled' is false.
+  Enable 'underlay_ospf_authentication.enabled'.

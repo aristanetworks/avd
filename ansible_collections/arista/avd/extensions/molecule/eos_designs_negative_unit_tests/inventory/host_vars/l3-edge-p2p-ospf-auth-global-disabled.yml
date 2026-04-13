@@ -1,5 +1,5 @@
 ---
-# Testing core_interfaces.p2p_links.[].use_underlay_ospf_authentication: true
+# Testing l3_edge.p2p_links.[].use_underlay_ospf_authentication: true
 # when underlay_ospf_authentication.enabled is explicitly false.
 
 # Fabric node type keys
@@ -22,17 +22,17 @@ core_router:
   defaults:
     loopback_ipv4_pool: 10.0.0.0/24
   nodes:
-    - name: core-interfaces-p2p-ospf-auth-global-disabled
+    - name: l3-edge-p2p-ospf-auth-global-disabled
       id: 1
 
-core_interfaces:
+l3_edge:
   p2p_links:
-    - nodes: [core-interfaces-p2p-ospf-auth-global-disabled, peer1]
+    - nodes: [l3-edge-p2p-ospf-auth-global-disabled, peer1]
       id: 1
       interfaces: [Ethernet1, Ethernet1]
       include_in_underlay_protocol: true
       use_underlay_ospf_authentication: true
 
 expected_error_message: >-
-  'use_underlay_ospf_authentication' is set to true for core_interfaces.p2p_links (nodes: core-interfaces-p2p-ospf-auth-global-disabled, peer1)
-  but 'underlay_ospf_authentication.enabled' is set to false.
+  'use_underlay_ospf_authentication' is set to true for l3_edge.p2p_links[0] but 'underlay_ospf_authentication.enabled' is false.
+  Enable 'underlay_ospf_authentication.enabled'.
