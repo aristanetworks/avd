@@ -129,7 +129,7 @@ The final group variables file provides an example of connecting two servers acr
 
 ```yaml title="ENDPOINT_CONNECT/endpoints.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/group_vars/ENDPOINT_CONNECT/endpoints.yml
+ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/group_vars/CONNECTED_ENDPOINTS/endpoints.yml
 --8<--
 ```
 
