@@ -472,8 +472,8 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
             structured_config = STRUCTURED_CONFIGS[device]
             # Validate eAPI reachability iterating structured configurations before processing. If the endpoint is unreachable,
             # abort catalog generation and omit the device from the final inventory to prevent downstream execution failures.
-            eapi_conifgs = structured_config.get("management_api_http", {})
-            if not eapi_conifgs.get("enable_vrfs"):
+            eapi_config = structured_config.get("management_api_http", {})
+            if not (eapi_config.get("enable_https") or eapi_config.get("enable_http")):
                 devices_unreachable_at_setup.append(device)
                 continue
 
