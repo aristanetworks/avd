@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "aaa_server_groups.[].servers.[].vrf") | String |  |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls</samp>](## "aaa_server_groups.[].servers.[].tls") | Dictionary |  |  |  | TLS settings for the RADIUS group server. Only applicable when the parent server group type is 'radius'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "aaa_server_groups.[].servers.[].tls.enabled") | Boolean | Required |  |  | Enable TLS to secure communication with the RADIUS group server. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "aaa_server_groups.[].servers.[].tls.port") | Integer |  |  | Min: 0<br>Max: 65535 | TCP port used for TLS-secured RADIUS communication. Overrides the default RadSec port (EOS default is 2083). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "aaa_server_groups.[].servers.[].tls.port") | Integer |  |  | Min: 1<br>Max: 65535 | TCP port used for TLS-secured RADIUS communication. Overrides the default RadSec port (EOS default is 2083). |
 
 === "YAML"
 
@@ -40,5 +40,5 @@
               enabled: <bool; required>
 
               # TCP port used for TLS-secured RADIUS communication. Overrides the default RadSec port (EOS default is 2083).
-              port: <int; 0-65535>
+              port: <int; 1-65535>
     ```

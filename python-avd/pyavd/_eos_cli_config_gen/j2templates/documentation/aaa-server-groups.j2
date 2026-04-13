@@ -17,12 +17,11 @@
 {%             if aaa_server_group.servers is arista.avd.defined %}
 {%                 for server in aaa_server_group.servers %}
 {%                     set vrf = server.vrf | arista.avd.default('default') %}
+{%                     set tls = "-" %}
+{%                     set tls_port = "-" %}
 {%                     if aaa_server_group.type is arista.avd.defined("radius") and server.tls is arista.avd.defined %}
 {%                         set tls = server.tls.enabled %}
 {%                         set tls_port = server.tls.port | arista.avd.default("-") %}
-{%                     else %}
-{%                         set tls = "-" %}
-{%                         set tls_port = "-" %}
 {%                     endif %}
 | {{ aaa_server_group.name }} | {{ aaa_server_group.type }} | {{ vrf }} | {{ server.server }} | {{ tls }} | {{ tls_port }} |
 {%                 endfor %}
