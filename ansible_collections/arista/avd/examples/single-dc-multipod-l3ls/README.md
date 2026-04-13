@@ -127,7 +127,7 @@ The leaf configurations, EVPN services, and endpoints sections aren't affected b
 
 The final group variables file provides an example of connecting two servers across a leaf pair.
 
-```yaml title="ENDPOINT_CONNECT/endpoints.yml"
+```yaml title="CONNECTED_ENDPOINTS/endpoints.yml"
 --8<--
 ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/group_vars/CONNECTED_ENDPOINTS/endpoints.yml
 --8<--
