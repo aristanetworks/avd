@@ -143,15 +143,23 @@ class MonitorSessionsMixin(Protocol):
                     for node_index, node_name in enumerate(l3_interface.nodes):
                         if node_name != self.shared_utils.hostname:
                             continue
+                        interface_name = l3_interface.interfaces[node_index]
+                        context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
                         for monitor_session in l3_interface.monitor_sessions:
+                            if "." in interface_name and monitor_session.source_settings.direction != "rx":
+                                msg = (
+                                    f"Only 'direction: rx' supported on sub-interfaces for monitor session. "
+                                    f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
+                                    f"on interface '{interface_name}' under {context}."
+                                )
+                                raise AristaAvdInvalidInputsError(msg)
+
                             # We merge using the adapter datamodel to catch conflicts in direction.
                             per_interface_monitor_session = monitor_session._deepcopy()._cast_as(
                                 EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem
                             )
-                            per_interface_monitor_session._internal_data.interface = l3_interface.interfaces[node_index]
-                            per_interface_monitor_session._internal_data.context = (
-                                f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
-                            )
+                            per_interface_monitor_session._internal_data.interface = interface_name
+                            per_interface_monitor_session._internal_data.context = context
 
                             monitor_session_configs.append(per_interface_monitor_session)
 
