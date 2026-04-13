@@ -108,6 +108,20 @@ $defs:
         type: str
         convert_types:
           - int
+      ipv6_acl_in:
+        description: |-
+          Name of the IPv6 access-list to be assigned in the ingress direction.
+          The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        type: str
+        convert_types:
+          - int
+      ipv6_acl_out:
+        description: |-
+          Name of the IPv6 access-list to be assigned in the egress direction.
+          The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        type: str
+        convert_types:
+          - int
       ip_helpers:
         type: list
         primary_key: ip_helper
