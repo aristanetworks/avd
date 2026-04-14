@@ -17,6 +17,8 @@ from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from . import SharedUtilsProtocol
 
 
@@ -318,38 +320,17 @@ class MiscMixin(Protocol):
             )
         return route_map
 
-    def update_l3_generic_interface_bgp_objects(
+    def _get_l3_generic_interface_bgp_description(
         self: SharedUtilsProtocol,
         interface: (
             EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
             | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
         ),
-        neighbors: EosCliConfigGen.RouterBgp.Neighbors,
-        prefix_lists: EosCliConfigGen.PrefixLists,
-        route_maps: EosCliConfigGen.RouteMaps,
-    ) -> None:
-        if isinstance(interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem):
-            schema_key = "l3_interfaces"
-            description_function = self.interface_descriptions.underlay_ethernet_interface
-            peer_interface = interface.peer_interface
-        else:
-            schema_key = "l3_port_channels"
-            description_function = self.interface_descriptions.underlay_port_channel_interface
-            peer_interface = interface.peer_port_channel
-
-        context = f"{schema_key}[{interface.name}]"
-
-        if not (interface.peer_ip and interface.bgp):
-            return
-
-        is_wan_interface = bool(interface.wan_carrier)
-
-        if is_wan_interface and not interface.bgp.ipv4_prefix_list_in:
-            # TODO: Use source here when available.
-            msg = f"BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for '{context}'."
-            raise AristaAvdInvalidInputsError(msg)
-
-        description = (
+        peer_interface: str | None,
+        description_function: Callable[[InterfaceDescriptionData], str | None],
+    ) -> str | None:
+        """Returns the BGP neighbor description for an L3 interface or L3 Port-Channel."""
+        return (
             interface.description
             or description_function(
                 InterfaceDescriptionData(
@@ -363,6 +344,29 @@ class MiscMixin(Protocol):
             )
             or None
         )
+
+    def _update_l3_generic_interface_ipv4_bgp(
+        self: SharedUtilsProtocol,
+        interface: (
+            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
+            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
+        ),
+        description: str | None,
+        context: str,
+        neighbors: EosCliConfigGen.RouterBgp.Neighbors,
+        prefix_lists: EosCliConfigGen.PrefixLists,
+        route_maps: EosCliConfigGen.RouteMaps,
+    ) -> None:
+        """Creates an IPv4 BGP neighbor entry for an L3 interface or L3 Port-Channel if peer_ip and bgp are configured."""
+        if not (interface.peer_ip and interface.bgp):
+            return
+
+        is_wan_interface = bool(interface.wan_carrier)
+
+        if is_wan_interface and not interface.bgp.ipv4_prefix_list_in:
+            # TODO: Use source here when available.
+            msg = f"BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for '{context}'."
+            raise AristaAvdInvalidInputsError(msg)
 
         neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
             ip_address=interface.peer_ip,
@@ -386,19 +390,67 @@ class MiscMixin(Protocol):
 
         neighbors.append(neighbor)
 
+    def _update_l3_interface_ipv6_bgp(
+        self: SharedUtilsProtocol,
+        interface: EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem,
+        description: str | None,
+        ipv6_neighbors: EosCliConfigGen.RouterBgp.Neighbors,
+    ) -> None:
+        """Creates an IPv6 BGP neighbor entry for an L3 interface if peer_ipv6_address and bgp are configured."""
+        if not (interface.peer_ipv6_address and interface.bgp):
+            return
+
+        neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
+            ip_address=interface.peer_ipv6_address,
+            remote_as=interface.bgp.peer_as,
+            description=description,
+        )
+        ipv6_neighbors.append(neighbor)
+
+    def update_l3_generic_interface_bgp_objects(
+        self: SharedUtilsProtocol,
+        interface: (
+            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
+            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
+        ),
+        neighbors: EosCliConfigGen.RouterBgp.Neighbors,
+        prefix_lists: EosCliConfigGen.PrefixLists,
+        route_maps: EosCliConfigGen.RouteMaps,
+        ipv6_neighbors: EosCliConfigGen.RouterBgp.Neighbors,
+    ) -> None:
+        if isinstance(interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem):
+            schema_key = "l3_interfaces"
+            description_function = self.interface_descriptions.underlay_ethernet_interface
+            peer_interface = interface.peer_interface
+        else:
+            schema_key = "l3_port_channels"
+            description_function = self.interface_descriptions.underlay_port_channel_interface
+            peer_interface = interface.peer_port_channel
+
+        context = f"{schema_key}[{interface.name}]"
+        description = self._get_l3_generic_interface_bgp_description(interface, peer_interface, description_function)
+
+        self._update_l3_generic_interface_ipv4_bgp(interface, description, context, neighbors, prefix_lists, route_maps)
+
+        if isinstance(interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem):
+            self._update_l3_interface_ipv6_bgp(interface, description, ipv6_neighbors)
+
     @cached_property
-    def l3_bgp_objects(self: SharedUtilsProtocol) -> tuple[EosCliConfigGen.RouterBgp.Neighbors, EosCliConfigGen.PrefixLists, EosCliConfigGen.RouteMaps]:
+    def l3_bgp_objects(
+        self: SharedUtilsProtocol,
+    ) -> tuple[EosCliConfigGen.RouterBgp.Neighbors, EosCliConfigGen.PrefixLists, EosCliConfigGen.RouteMaps, EosCliConfigGen.RouterBgp.Neighbors]:
         """Generates the EosCliConfigGen Router BGP Neighbors and their associated PrefixListsItem and RouteMapsItem."""
         neighbors = EosCliConfigGen.RouterBgp.Neighbors()
         prefix_lists = EosCliConfigGen.PrefixLists()
         route_maps = EosCliConfigGen.RouteMaps()
+        ipv6_neighbors = EosCliConfigGen.RouterBgp.Neighbors()
 
         for interface in self.l3_interfaces:
-            self.update_l3_generic_interface_bgp_objects(interface, neighbors, prefix_lists, route_maps)
+            self.update_l3_generic_interface_bgp_objects(interface, neighbors, prefix_lists, route_maps, ipv6_neighbors)
         for interface in self.node_config.l3_port_channels:
-            self.update_l3_generic_interface_bgp_objects(interface, neighbors, prefix_lists, route_maps)
+            self.update_l3_generic_interface_bgp_objects(interface, neighbors, prefix_lists, route_maps, ipv6_neighbors)
 
-        return neighbors, prefix_lists, route_maps
+        return neighbors, prefix_lists, route_maps, ipv6_neighbors
 
     @property
     def l3_bgp_neighbors(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.Neighbors:
@@ -411,6 +463,10 @@ class MiscMixin(Protocol):
     @property
     def l3_bgp_route_maps(self: SharedUtilsProtocol) -> EosCliConfigGen.RouteMaps:
         return self.l3_bgp_objects[2]
+
+    @property
+    def l3_bgp_ipv6_neighbors(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.Neighbors:
+        return self.l3_bgp_objects[3]
 
     @cached_property
     def is_sfe_interface_profile_supported(self: SharedUtilsProtocol) -> bool:
