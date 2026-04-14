@@ -154,6 +154,23 @@ options:
         description: Force submit the workspace even if some devices are not actively streaming to CloudVision.
         type: bool
         default: false
+      build_warnings:
+        description: Configuration for Workspace build warnings handling.
+        type: dict
+        suboptions:
+          enabled:
+            description: Fetch and expose Workspace build warnings.
+            type: bool
+            default: true
+          suppress_patterns:
+            description: Arbitrary list of regex patterns used with fullmatch to suppress EOS CLI warnings.
+            type: list
+            elements: str
+            default: []
+          suppress_portfast:
+            description: Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports.
+            type: bool
+            default: false
   change_control:
     description: CloudVision Change Control to create for the deployment.
     type: dict
@@ -193,6 +210,25 @@ options:
       For large inventories this can affect performance, so it is disabled by default.
     type: bool
     default: false
+  preview_features:
+    description: |-
+      Enable preview features of the plugin.
+      Preview features may change or be removed without notice.
+    type: dict
+    suboptions:
+      read_from_validated_inputs:
+        description: |-
+          When enabled, structured configurations are loaded from validated JSON files in `tmp_dir` instead of `structured_config_dir`.
+          This requires the `arista.avd.validate_inputs` plugin to run first in the same playbook to generate the validated files.
+        type: bool
+        default: false
+  tmp_dir:
+    description: |-
+      Path to the AVD temporary directory containing validated input files.
+      Must be the same path as used for the `arista.avd.validate_inputs` plugin.
+      Required when `preview_features.read_from_validated_inputs` is `true`.
+    type: str
+    required: false
 notes:
   - |-
     When interacting with CVaaS the regional URL where the tenant is deployed should be used, e.g:
@@ -255,6 +291,10 @@ EXAMPLES = r"""
         #   id: <uuid or similar>
           requested_state: submitted
           force: true
+          build_warnings:
+            # enabled: true
+            suppress_patterns: [".*/32 IPv4 address is not configured on the interface.*"]
+            # suppress_portfast: false
         change_control:
         #   name:
         #   description:

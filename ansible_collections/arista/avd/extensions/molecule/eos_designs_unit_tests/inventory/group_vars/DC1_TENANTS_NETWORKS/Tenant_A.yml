@@ -67,7 +67,7 @@ tenant_a:
         aggregate_addresses:
           - prefix: 10.1.1.0/8
             advertise_only: true
-            nodes: [DC1-LEAF1.*$]
+            nodes: [dc1-leaf1.*$]
           - prefix: 10.2.1.0/8
             nodes: [dc1-leaf1a]
           - prefix: 10.12.1.0/8
@@ -258,7 +258,7 @@ tenant_a:
           - ip_address: fd5a:fe45:8831:06c5::b
             remote_as: 12345
             # Add peers to devices matching the regex.
-            nodes: ["DC1-BL1[AB]$", 'DC1-BL2[AB]']
+            nodes: ["dc1-bl1[ab]$", 'dc1-bl2[ab]']
         svis:
           - id: 150
             name: Tenant_A_WAN_Zone_1

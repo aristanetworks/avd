@@ -9381,6 +9381,12 @@ ASN Notation: asdot
 | 198.51.100.1 | True | - | - | RCF_TEST() | RCF_TEST_OUT() | - | - |
 | 198.51.100.2 | False | RM_IN_TEST | RM_OUT_TEST | - | - | PEER_TAG_IN_IPV4_LABELED | PEER_TAG_DISCARD_OUT_IPV4_LABELED |
 
+##### BGP LU RIB
+
+| RIB | Enabled | Route-map |
+| --- | ------- | --------- |
+| IP | True | RM-rib1 |
+
 #### Router BGP IPv4 SR-TE Address Family
 
 ##### IPv4 SR-TE Neighbors
@@ -9555,6 +9561,7 @@ ASN Notation: asdot
 !
 router bgp 65101
    bgp asn notation asdot
+   bgp labeled-unicast rib ip route-map RM-rib1
    router-id 192.168.255.3
    update wait-for-convergence
    update wait-install
@@ -10203,6 +10210,7 @@ router bgp 65101
       neighbor baz additional-paths receive
       neighbor baz prefix-list PL-BAR-v6-IN in
       neighbor baz prefix-list PL-BAR-v6-OUT out
+      neighbor baz default-originate route-map RM-FOO always
       neighbor baz additional-paths send ecmp limit 20
       no neighbor FOOBAR activate
       neighbor IPV6-UNDERLAY activate

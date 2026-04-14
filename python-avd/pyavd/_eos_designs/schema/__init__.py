@@ -6057,7 +6057,11 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "port": {"type": int, "default": 9910}}
                 name: str
-                """Server FQDN or IP address."""
+                """
+                Server IP address or FQDN.
+                Note: It is currently recommended to use IP address because of
+                limitations with Image transfers from CloudVision.
+                """
                 port: int
                 """Default value: `9910`"""
 
@@ -6071,7 +6075,10 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: Server FQDN or IP address.
+                            name:
+                               Server IP address or FQDN.
+                               Note: It is currently recommended to use IP address because of
+                               limitations with Image transfers from CloudVision.
                             port: port
 
                         """
@@ -7438,15 +7445,36 @@ class EosDesigns(EosDesignsRootModel):
             class EvpnL3(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": False},
+                    "inter_domain": {"type": bool, "default": True},
+                    "mode": {"type": str, "default": "next-hop-self"},
+                }
                 enabled: bool
                 """Default value: `False`"""
                 inter_domain: bool
                 """Default value: `True`"""
+                mode: Mode
+                """
+                Defines the rewriting mode for EVPN L3 inter-domain routing.
+                - next-hop-self: (default) Forward EVPN
+                IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                - rd-rt-rewrite: Re-export
+                local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
+
+                Default value: `"next-hop-self"`
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        inter_domain: bool | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         EvpnL3.
 
@@ -7456,6 +7484,12 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             enabled: enabled
                             inter_domain: inter_domain
+                            mode:
+                               Defines the rewriting mode for EVPN L3 inter-domain routing.
+                               - next-hop-self: (default) Forward EVPN
+                               IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                               - rd-rt-rewrite: Re-export
+                               local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
 
                         """
 
@@ -12559,15 +12593,36 @@ class EosDesigns(EosDesignsRootModel):
             class EvpnL3(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": False},
+                    "inter_domain": {"type": bool, "default": True},
+                    "mode": {"type": str, "default": "next-hop-self"},
+                }
                 enabled: bool
                 """Default value: `False`"""
                 inter_domain: bool
                 """Default value: `True`"""
+                mode: Mode
+                """
+                Defines the rewriting mode for EVPN L3 inter-domain routing.
+                - next-hop-self: (default) Forward EVPN
+                IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                - rd-rt-rewrite: Re-export
+                local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
+
+                Default value: `"next-hop-self"`
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        inter_domain: bool | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         EvpnL3.
 
@@ -12577,6 +12632,12 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             enabled: enabled
                             inter_domain: inter_domain
+                            mode:
+                               Defines the rewriting mode for EVPN L3 inter-domain routing.
+                               - next-hop-self: (default) Forward EVPN
+                               IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                               - rd-rt-rewrite: Re-export
+                               local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
 
                         """
 
@@ -19386,12 +19447,78 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"interface_defaults": {"type": InterfaceDefaults}, "arp": {"type": Arp}, "ip_icmp_redirect": {"type": bool}}
+        class DhcpRelay(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "information_option": {"type": bool, "default": False},
+                "tunnel_requests_disabled": {"type": bool, "default": False},
+                "mlag_peerlink_requests_disabled": {"type": bool, "default": False},
+            }
+            information_option: bool
+            """
+            Enables the insertion of DHCP Relay Agent Information (Option 82).
+
+            Default value: `False`
+            """
+            tunnel_requests_disabled: bool
+            """
+            Blocks DHCP relay for packets received over VXLAN tunnels.
+            This is a VTEP-specific optimization and
+            will only be configured on VXLAN VTEPs.
+
+            Default value: `False`
+            """
+            mlag_peerlink_requests_disabled: bool
+            """
+            Blocks DHCP relay for packets arriving via the MLAG peer-link.
+            This will only be configured on VXLAN
+            VTEPs which are also MLAG devices.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    information_option: bool | UndefinedType = Undefined,
+                    tunnel_requests_disabled: bool | UndefinedType = Undefined,
+                    mlag_peerlink_requests_disabled: bool | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DhcpRelay.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        information_option: Enables the insertion of DHCP Relay Agent Information (Option 82).
+                        tunnel_requests_disabled:
+                           Blocks DHCP relay for packets received over VXLAN tunnels.
+                           This is a VTEP-specific optimization and
+                           will only be configured on VXLAN VTEPs.
+                        mlag_peerlink_requests_disabled:
+                           Blocks DHCP relay for packets arriving via the MLAG peer-link.
+                           This will only be configured on VXLAN
+                           VTEPs which are also MLAG devices.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "interface_defaults": {"type": InterfaceDefaults},
+            "arp": {"type": Arp},
+            "ip_icmp_redirect": {"type": bool},
+            "dhcp_relay": {"type": DhcpRelay},
+        }
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
         arp: Arp
         """Subclass of AvdModel."""
         ip_icmp_redirect: bool | None
+        dhcp_relay: DhcpRelay
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -19401,6 +19528,7 @@ class EosDesigns(EosDesignsRootModel):
                 interface_defaults: InterfaceDefaults | UndefinedType = Undefined,
                 arp: Arp | UndefinedType = Undefined,
                 ip_icmp_redirect: bool | None | UndefinedType = Undefined,
+                dhcp_relay: DhcpRelay | UndefinedType = Undefined,
             ) -> None:
                 """
                 GeneralSettings.
@@ -19412,6 +19540,7 @@ class EosDesigns(EosDesignsRootModel):
                     interface_defaults: Subclass of AvdModel.
                     arp: Subclass of AvdModel.
                     ip_icmp_redirect: ip_icmp_redirect
+                    dhcp_relay: Subclass of AvdModel.
 
                 """
 
@@ -23294,6 +23423,30 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class ManagementSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"console": {"type": EosCliConfigGen.ManagementConsole}, "banners": {"type": EosCliConfigGen.Banners}}
+        console: EosCliConfigGen.ManagementConsole
+        banners: EosCliConfigGen.Banners
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self, *, console: EosCliConfigGen.ManagementConsole | UndefinedType = Undefined, banners: EosCliConfigGen.Banners | UndefinedType = Undefined
+            ) -> None:
+                """
+                ManagementSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    console: console
+                    banners: banners
+
+                """
+
     class MgmtDestinationNetworks(AvdList[str]):
         """Subclass of AvdList with `str` items."""
 
@@ -26878,6 +27031,7 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
+                "evpn_gateway_rd_rt_rewrite": {"type": bool, "default": False},
                 "hardware_counters": {"type": bool, "default": True},
                 "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
@@ -26987,6 +27141,14 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            evpn_gateway_rd_rt_rewrite: bool
+            """
+            Support for EVPN gateway RD/RT rewrite mode.
+            An error will be raised if the feature is enabled and
+            this is false.
+
+            Default value: `False`
+            """
             hardware_counters: bool
             """
             Support for enabling counters using programmable hardware counter resources.
@@ -27078,6 +27240,7 @@ class EosDesigns(EosDesignsRootModel):
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
+                    evpn_gateway_rd_rt_rewrite: bool | UndefinedType = Undefined,
                     hardware_counters: bool | UndefinedType = Undefined,
                     hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
@@ -27148,6 +27311,10 @@ class EosDesigns(EosDesignsRootModel):
                            Support for all-active EVPN gateway redundancy.
                            An error will be raised if the feature is enabled
                            and this is false.
+                        evpn_gateway_rd_rt_rewrite:
+                           Support for EVPN gateway RD/RT rewrite mode.
+                           An error will be raised if the feature is enabled and
+                           this is false.
                         hardware_counters:
                            Support for enabling counters using programmable hardware counter resources.
                            Setting this key to
@@ -27635,6 +27802,7 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
+                "evpn_gateway_rd_rt_rewrite": {"type": bool, "default": False},
                 "hardware_counters": {"type": bool, "default": True},
                 "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
@@ -27744,6 +27912,14 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            evpn_gateway_rd_rt_rewrite: bool
+            """
+            Support for EVPN gateway RD/RT rewrite mode.
+            An error will be raised if the feature is enabled and
+            this is false.
+
+            Default value: `False`
+            """
             hardware_counters: bool
             """
             Support for enabling counters using programmable hardware counter resources.
@@ -27835,6 +28011,7 @@ class EosDesigns(EosDesignsRootModel):
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
+                    evpn_gateway_rd_rt_rewrite: bool | UndefinedType = Undefined,
                     hardware_counters: bool | UndefinedType = Undefined,
                     hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
@@ -27905,6 +28082,10 @@ class EosDesigns(EosDesignsRootModel):
                            Support for all-active EVPN gateway redundancy.
                            An error will be raised if the feature is enabled
                            and this is false.
+                        evpn_gateway_rd_rt_rewrite:
+                           Support for EVPN gateway RD/RT rewrite mode.
+                           An error will be raised if the feature is enabled and
+                           this is false.
                         hardware_counters:
                            Support for enabling counters using programmable hardware counter resources.
                            Setting this key to
@@ -32065,6 +32246,7 @@ class EosDesigns(EosDesignsRootModel):
                 "rd_override": {"type": str},
                 "trunk_groups": {"type": TrunkGroups},
                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
                 "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                 "igmp_snooping": {"type": IgmpSnooping},
@@ -32224,6 +32406,12 @@ class EosDesigns(EosDesignsRootModel):
             Subclass
             of AvdModel.
             """
+            evpn_redistribute_router_mac_system: bool
+            """
+            Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+            Default value: `False`
+            """
             vxlan_flood_multicast: VxlanFloodMulticast
             """Subclass of AvdModel."""
             evpn_l3_multicast: EvpnL3Multicast
@@ -32311,6 +32499,7 @@ class EosDesigns(EosDesignsRootModel):
                     rd_override: str | None | UndefinedType = Undefined,
                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                    evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                     vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                     igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -32438,6 +32627,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass
                            of AvdModel.
+                        evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                         vxlan_flood_multicast: Subclass of AvdModel.
                         evpn_l3_multicast:
                            Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -33159,6 +33349,7 @@ class EosDesigns(EosDesignsRootModel):
             "rd_override": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
             "evpn_l2_multicast": {"type": EvpnL2Multicast},
+            "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
             "evpn_l3_multicast": {"type": EvpnL3Multicast},
             "igmp_snooping": {"type": IgmpSnooping},
@@ -33334,6 +33525,12 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
+        evpn_redistribute_router_mac_system: bool
+        """
+        Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+        Default value: `False`
+        """
         vxlan_flood_multicast: VxlanFloodMulticast
         """Subclass of AvdModel."""
         evpn_l3_multicast: EvpnL3Multicast
@@ -33423,6 +33620,7 @@ class EosDesigns(EosDesignsRootModel):
                 rd_override: str | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                 igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -33562,6 +33760,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
+                    evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                     vxlan_flood_multicast: Subclass of AvdModel.
                     evpn_l3_multicast:
                        Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -34064,6 +34263,7 @@ class EosDesigns(EosDesignsRootModel):
             "hardware": {"type": Hardware},
             "logging": {"type": Logging},
             "exclude_as_extra_fabric_validation_target": {"type": bool, "default": False},
+            "interfaces": {"type": EosCliConfigGen.Metadata.Interfaces},
         }
         name: str
         parent_profile: str | None
@@ -34091,6 +34291,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        interfaces: EosCliConfigGen.Metadata.Interfaces
+        """Interface validation settings."""
 
         if TYPE_CHECKING:
 
@@ -34102,6 +34304,7 @@ class EosDesigns(EosDesignsRootModel):
                 hardware: Hardware | UndefinedType = Undefined,
                 logging: Logging | UndefinedType = Undefined,
                 exclude_as_extra_fabric_validation_target: bool | UndefinedType = Undefined,
+                interfaces: EosCliConfigGen.Metadata.Interfaces | UndefinedType = Undefined,
             ) -> None:
                 """
                 ValidationProfilesItem.
@@ -34127,6 +34330,7 @@ class EosDesigns(EosDesignsRootModel):
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
                        fabric validation tests performed by the `anta_runner` role.
+                    interfaces: Interface validation settings.
 
                 """
 
@@ -36623,15 +36827,36 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Forward EVPN
+                            IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                            - rd-rt-rewrite: Re-export
+                            local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -36641,6 +36866,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Forward EVPN
+                                           IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                                           - rd-rt-rewrite: Re-export
+                                           local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
 
                                     """
 
@@ -41721,15 +41952,36 @@ class EosDesigns(EosDesignsRootModel):
                             class EvpnL3(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                                Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool, "default": False},
+                                    "inter_domain": {"type": bool, "default": True},
+                                    "mode": {"type": str, "default": "next-hop-self"},
+                                }
                                 enabled: bool
                                 """Default value: `False`"""
                                 inter_domain: bool
                                 """Default value: `True`"""
+                                mode: Mode
+                                """
+                                Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                - next-hop-self: (default) Forward EVPN
+                                IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                                - rd-rt-rewrite: Re-export
+                                local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
+
+                                Default value: `"next-hop-self"`
+                                """
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        inter_domain: bool | UndefinedType = Undefined,
+                                        mode: Mode | UndefinedType = Undefined,
+                                    ) -> None:
                                         """
                                         EvpnL3.
 
@@ -41739,6 +41991,12 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             enabled: enabled
                                             inter_domain: inter_domain
+                                            mode:
+                                               Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                               - next-hop-self: (default) Forward EVPN
+                                               IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                                               - rd-rt-rewrite: Re-export
+                                               local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
 
                                         """
 
@@ -46782,15 +47040,36 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Forward EVPN
+                            IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                            - rd-rt-rewrite: Re-export
+                            local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -46800,6 +47079,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Forward EVPN
+                                           IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                                           - rd-rt-rewrite: Re-export
+                                           local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
 
                                     """
 
@@ -51906,15 +52191,36 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Forward EVPN
+                            IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                            - rd-rt-rewrite: Re-export
+                            local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -51924,6 +52230,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Forward EVPN
+                                           IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                                           - rd-rt-rewrite: Re-export
+                                           local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
 
                                     """
 
@@ -62620,6 +62932,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "rd_override": {"type": str},
                                 "trunk_groups": {"type": TrunkGroups},
                                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                                "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
                                 "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                                 "igmp_snooping": {"type": IgmpSnooping},
@@ -62789,6 +63102,12 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass
                             of AvdModel.
                             """
+                            evpn_redistribute_router_mac_system: bool
+                            """
+                            Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+                            Default value: `False`
+                            """
                             vxlan_flood_multicast: VxlanFloodMulticast
                             """Subclass of AvdModel."""
                             evpn_l3_multicast: EvpnL3Multicast
@@ -62877,6 +63196,7 @@ class EosDesigns(EosDesignsRootModel):
                                     rd_override: str | None | UndefinedType = Undefined,
                                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                                    evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                                     vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                                     igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -63010,6 +63330,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass
                                            of AvdModel.
+                                        evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                                         vxlan_flood_multicast: Subclass of AvdModel.
                                         evpn_l3_multicast:
                                            Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -63743,6 +64064,7 @@ class EosDesigns(EosDesignsRootModel):
                             "rd_override": {"type": str},
                             "trunk_groups": {"type": TrunkGroups},
                             "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                            "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
                             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                             "evpn_l3_multicast": {"type": EvpnL3Multicast},
                             "igmp_snooping": {"type": IgmpSnooping},
@@ -63942,6 +64264,12 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass
                         of AvdModel.
                         """
+                        evpn_redistribute_router_mac_system: bool
+                        """
+                        Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+                        Default value: `False`
+                        """
                         vxlan_flood_multicast: VxlanFloodMulticast
                         """Subclass of AvdModel."""
                         evpn_l3_multicast: EvpnL3Multicast
@@ -64034,6 +64362,7 @@ class EosDesigns(EosDesignsRootModel):
                                 rd_override: str | None | UndefinedType = Undefined,
                                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                                evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                                 igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -64189,6 +64518,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass
                                        of AvdModel.
+                                    evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                                     vxlan_flood_multicast: Subclass of AvdModel.
                                     evpn_l3_multicast:
                                        Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -67392,6 +67722,8 @@ class EosDesigns(EosDesignsRootModel):
                         "rt_override": {"type": str},
                         "rt_import": {"type": bool, "default": True},
                         "rt_export": {"type": bool, "default": True},
+                        "rt_import_evpn_remote": {"type": bool, "default": True},
+                        "rt_export_evpn_remote": {"type": bool, "default": True},
                         "evpn_vlan_bundle": {"type": str},
                         "mlag_ibgp_peering_ipv4_pool": {"type": str},
                         "mlag_ibgp_peering_ipv6_pool": {"type": str},
@@ -67495,6 +67827,28 @@ class EosDesigns(EosDesignsRootModel):
                     only to the automatically generated route targets
                     and does not affect any entries defined under
                     `additional_route_targets`.
+
+                    Default value: `True`
+                    """
+                    rt_import_evpn_remote: bool
+                    """
+                    Enable or disable route target import for the VRF for EVPN remote.
+                    Only considered when
+                    `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                    This setting
+                    applies only to the automatically generated route targets and does not affect any entries defined
+                    under `additional_route_targets`.
+
+                    Default value: `True`
+                    """
+                    rt_export_evpn_remote: bool
+                    """
+                    Enable or disable route target export for the VRF for EVPN remote.
+                    Only considered when
+                    `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                    This setting
+                    applies only to the automatically generated route targets and does not affect any entries defined
+                    under `additional_route_targets`.
 
                     Default value: `True`
                     """
@@ -67732,6 +68086,8 @@ class EosDesigns(EosDesignsRootModel):
                             rt_override: str | None | UndefinedType = Undefined,
                             rt_import: bool | UndefinedType = Undefined,
                             rt_export: bool | UndefinedType = Undefined,
+                            rt_import_evpn_remote: bool | UndefinedType = Undefined,
+                            rt_export_evpn_remote: bool | UndefinedType = Undefined,
                             evpn_vlan_bundle: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv6_pool: str | None | UndefinedType = Undefined,
@@ -67823,6 +68179,20 @@ class EosDesigns(EosDesignsRootModel):
                                    only to the automatically generated route targets
                                    and does not affect any entries defined under
                                    `additional_route_targets`.
+                                rt_import_evpn_remote:
+                                   Enable or disable route target import for the VRF for EVPN remote.
+                                   Only considered when
+                                   `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                                   This setting
+                                   applies only to the automatically generated route targets and does not affect any entries defined
+                                   under `additional_route_targets`.
+                                rt_export_evpn_remote:
+                                   Enable or disable route target export for the VRF for EVPN remote.
+                                   Only considered when
+                                   `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                                   This setting
+                                   applies only to the automatically generated route targets and does not affect any entries defined
+                                   under `additional_route_targets`.
                                 evpn_vlan_bundle:
                                    Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
                                    This setting overrides "evpn_vlan_bundle" set at the Tenant level.
@@ -69953,15 +70323,36 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Forward EVPN
+                            IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                            - rd-rt-rewrite: Re-export
+                            local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -69971,6 +70362,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Forward EVPN
+                                           IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                                           - rd-rt-rewrite: Re-export
+                                           local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
 
                                     """
 
@@ -75051,15 +75448,36 @@ class EosDesigns(EosDesignsRootModel):
                             class EvpnL3(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                                Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool, "default": False},
+                                    "inter_domain": {"type": bool, "default": True},
+                                    "mode": {"type": str, "default": "next-hop-self"},
+                                }
                                 enabled: bool
                                 """Default value: `False`"""
                                 inter_domain: bool
                                 """Default value: `True`"""
+                                mode: Mode
+                                """
+                                Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                - next-hop-self: (default) Forward EVPN
+                                IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                                - rd-rt-rewrite: Re-export
+                                local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
+
+                                Default value: `"next-hop-self"`
+                                """
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        inter_domain: bool | UndefinedType = Undefined,
+                                        mode: Mode | UndefinedType = Undefined,
+                                    ) -> None:
                                         """
                                         EvpnL3.
 
@@ -75069,6 +75487,12 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             enabled: enabled
                                             inter_domain: inter_domain
+                                            mode:
+                                               Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                               - next-hop-self: (default) Forward EVPN
+                                               IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                                               - rd-rt-rewrite: Re-export
+                                               local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
 
                                         """
 
@@ -80112,15 +80536,36 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Forward EVPN
+                            IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                            - rd-rt-rewrite: Re-export
+                            local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -80130,6 +80575,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Forward EVPN
+                                           IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                                           - rd-rt-rewrite: Re-export
+                                           local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
 
                                     """
 
@@ -85236,15 +85687,36 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Forward EVPN
+                            IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                            - rd-rt-rewrite: Re-export
+                            local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -85254,6 +85726,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Forward EVPN
+                                           IP-Prefix routes by only replacing the next-hop to the gateway itself.
+                                           - rd-rt-rewrite: Re-export
+                                           local EVPN IP-Prefix routes with the RD and export RTs of the remote domain and vice versa.
 
                                     """
 
@@ -89893,6 +90371,7 @@ class EosDesigns(EosDesignsRootModel):
         "logging_settings": {"type": LoggingSettings},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
+        "management_settings": {"type": ManagementSettings},
         "mgmt_destination_networks": {"type": MgmtDestinationNetworks},
         "mgmt_gateway": {"type": str},
         "mgmt_interface": {"type": str, "default": "Management1"},
@@ -90188,7 +90667,12 @@ class EosDesigns(EosDesignsRootModel):
                         "platforms": ["7280R3"],
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"evpn_gateway_all_active_multihoming": True, "per_interface_l2_mtu": False, "private_vlan": False},
+                        "feature_support": {
+                            "evpn_gateway_all_active_multihoming": True,
+                            "evpn_gateway_rd_rt_rewrite": True,
+                            "per_interface_l2_mtu": False,
+                            "private_vlan": False,
+                        },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
@@ -90241,7 +90725,12 @@ class EosDesigns(EosDesignsRootModel):
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False},
+                        "feature_support": {
+                            "per_interface_l2_mtu": False,
+                            "evpn_gateway_all_active_multihoming": True,
+                            "evpn_gateway_rd_rt_rewrite": True,
+                            "private_vlan": False,
+                        },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
@@ -90249,7 +90738,12 @@ class EosDesigns(EosDesignsRootModel):
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False},
+                        "feature_support": {
+                            "per_interface_l2_mtu": False,
+                            "evpn_gateway_all_active_multihoming": True,
+                            "evpn_gateway_rd_rt_rewrite": True,
+                            "private_vlan": False,
+                        },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
@@ -90293,6 +90787,7 @@ class EosDesigns(EosDesignsRootModel):
                             "per_interface_l2_mtu": False,
                             "per_interface_l2_mru": False,
                             "evpn_gateway_all_active_multihoming": True,
+                            "evpn_gateway_rd_rt_rewrite": True,
                             "sflow_subinterfaces": False,
                             "hardware_validation": False,
                         },
@@ -90310,6 +90805,7 @@ class EosDesigns(EosDesignsRootModel):
                             "per_interface_l2_mtu": False,
                             "per_interface_l2_mru": False,
                             "evpn_gateway_all_active_multihoming": True,
+                            "evpn_gateway_rd_rt_rewrite": True,
                             "sflow_subinterfaces": False,
                             "hardware_validation": False,
                         },
@@ -91502,6 +91998,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    management_settings: ManagementSettings
+    """Subclass of AvdModel."""
     mgmt_destination_networks: MgmtDestinationNetworks
     """
     List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
@@ -91986,7 +92484,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "sflow_subinterfaces": False, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "sflow_subinterfaces": False, "hardware_validation": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "evpn_gateway_rd_rt_rewrite": True, "sflow_subinterfaces": False, "hardware_validation": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
@@ -92614,6 +93112,7 @@ class EosDesigns(EosDesignsRootModel):
             logging_settings: LoggingSettings | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
+            management_settings: ManagementSettings | UndefinedType = Undefined,
             mgmt_destination_networks: MgmtDestinationNetworks | UndefinedType = Undefined,
             mgmt_gateway: str | None | UndefinedType = Undefined,
             mgmt_interface: str | UndefinedType = Undefined,
@@ -93469,6 +93968,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                management_settings: Subclass of AvdModel.
                 mgmt_destination_networks:
                    List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
                    Replaces the default route.

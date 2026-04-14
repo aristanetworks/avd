@@ -24,5 +24,8 @@
         state: absent
       with_items:
         - connected_endpoints/artifacts
+        - fabric_topology/artifacts
+        - ip_addressing/artifacts
+        - ipv6_numbered/artifacts
         - network_services/artifacts
         - node_types/artifacts

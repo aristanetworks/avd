@@ -2457,9 +2457,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {"login": {"type": str}, "motd": {"type": str}}
         login: str | None
-        """Multiline string ending with EOF on the last line."""
+        """Legal notification or security warning displayed to all users before authentication."""
         motd: str | None
-        """Multiline string ending with EOF on the last line."""
+        """Informational or operational message displayed to authorized users after a successful login."""
 
         if TYPE_CHECKING:
 
@@ -2471,8 +2471,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    login: Multiline string ending with EOF on the last line.
-                    motd: Multiline string ending with EOF on the last line.
+                    login: Legal notification or security warning displayed to all users before authentication.
+                    motd: Informational or operational message displayed to authorized users after a successful login.
 
                 """
 
@@ -26248,6 +26248,59 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Interfaces(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Errdisable(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"only_avd_interfaces": {"type": bool, "default": False}}
+                only_avd_interfaces: bool
+                """
+                Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+
+                Default value: `False`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, only_avd_interfaces: bool | UndefinedType = Undefined) -> None:
+                        """
+                        Errdisable.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            only_avd_interfaces: Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+
+                        """
+
+            _fields: ClassVar[dict] = {"errdisable": {"type": Errdisable}}
+            errdisable: Errdisable
+            """
+            Settings for the VerifyInterfaceErrDisabled test.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, errdisable: Errdisable | UndefinedType = Undefined) -> None:
+                    """
+                    Interfaces.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        errdisable:
+                           Settings for the VerifyInterfaceErrDisabled test.
+
+                           Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "is_deployed": {"type": bool},
             "platform": {"type": str},
@@ -26263,6 +26316,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "digital_twin": {"type": DigitalTwin},
             "validate_no_errors_period": {"type": int},
             "exclude_as_extra_fabric_validation_target": {"type": bool},
+            "interfaces": {"type": Interfaces},
         }
         is_deployed: bool | None
         """Key only used for documentation or validation purposes."""
@@ -26318,6 +26372,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Exclude this node from being used as a destination target from other fabric devices in the extra
         fabric validation tests performed by the `anta_runner` role.
         """
+        interfaces: Interfaces
+        """
+        Interface validation settings.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -26338,6 +26398,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validate_no_errors_period: int | None | UndefinedType = Undefined,
                 exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
+                interfaces: Interfaces | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -26386,6 +26447,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
                        fabric validation tests performed by the `anta_runner` role.
+                    interfaces:
+                       Interface validation settings.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -40733,12 +40798,113 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class LabeledUnicast(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Rib(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Ip(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Install LU routes into IP RIB."""
+                        route_map: str | None
+                        """Route-map applied to IP RIB."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Ip.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Install LU routes into IP RIB.
+                                    route_map: Route-map applied to IP RIB.
+
+                                """
+
+                    class Tunnel(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool
+                        """Install LU routes into Tunnel RIB."""
+                        route_map: str | None
+                        """Route-map applied to tunnel RIB."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Tunnel.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Install LU routes into Tunnel RIB.
+                                    route_map: Route-map applied to tunnel RIB.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"ip": {"type": Ip}, "tunnel": {"type": Tunnel}}
+                    ip: Ip
+                    """Subclass of AvdModel."""
+                    tunnel: Tunnel
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, ip: Ip | UndefinedType = Undefined, tunnel: Tunnel | UndefinedType = Undefined) -> None:
+                            """
+                            Rib.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                ip: Subclass of AvdModel.
+                                tunnel: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"rib": {"type": Rib}}
+                rib: Rib
+                """
+                Configure LU RIB behavior for ip and/or tunnel.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, rib: Rib | UndefinedType = Undefined) -> None:
+                        """
+                        LabeledUnicast.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            rib:
+                               Configure LU RIB behavior for ip and/or tunnel.
+
+                               Subclass of AvdModel.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "default": {"type": Default},
                 "route_reflector_preserve_attributes": {"type": RouteReflectorPreserveAttributes},
                 "bestpath": {"type": Bestpath},
                 "additional_paths": {"type": AdditionalPaths},
                 "redistribute_internal": {"type": bool},
+                "labeled_unicast": {"type": LabeledUnicast},
             }
             default: Default
             """Subclass of AvdModel."""
@@ -40750,6 +40916,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             redistribute_internal: bool | None
             """Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true."""
+            labeled_unicast: LabeledUnicast
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -40761,6 +40929,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bestpath: Bestpath | UndefinedType = Undefined,
                     additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     redistribute_internal: bool | None | UndefinedType = Undefined,
+                    labeled_unicast: LabeledUnicast | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Bgp.
@@ -40774,6 +40943,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bestpath: Subclass of AvdModel.
                         additional_paths: Subclass of AvdModel.
                         redistribute_internal: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
+                        labeled_unicast: Subclass of AvdModel.
 
                     """
 
@@ -48287,6 +48457,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class DefaultOriginate(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"always": {"type": bool}, "route_map": {"type": str}}
+                    always: bool | None
+                    """Always advertise a default route to this peer."""
+                    route_map: str | None
+                    """Route-map name."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, always: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            DefaultOriginate.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                always: Always advertise a default route to this peer.
+                                route_map: Route-map name.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "activate": {"type": bool},
@@ -48299,6 +48493,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "prefix_list_in": {"type": str},
                     "prefix_list_out": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
+                    "default_originate": {"type": DefaultOriginate},
                 }
                 name: str
                 """Peer-group name."""
@@ -48327,6 +48522,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Outbound prefix-list name."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
+                default_originate: DefaultOriginate
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -48344,6 +48541,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         prefix_list_in: str | None | UndefinedType = Undefined,
                         prefix_list_out: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
+                        default_originate: DefaultOriginate | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -48367,6 +48565,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             prefix_list_in: Inbound prefix-list name.
                             prefix_list_out: Outbound prefix-list name.
                             additional_paths: Subclass of AvdModel.
+                            default_originate: Subclass of AvdModel.
 
                         """
 

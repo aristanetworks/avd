@@ -912,10 +912,12 @@ keys:
     keys:
       login:
         type: str
-        description: Multiline string ending with EOF on the last line.
+        description: Legal notification or security warning displayed to all users
+          before authentication.
       motd:
         type: str
-        description: Multiline string ending with EOF on the last line.
+        description: Informational or operational message displayed to authorized
+          users after a successful login.
   bgp_groups:
     type: list
     primary_key: name
@@ -10052,6 +10054,19 @@ keys:
           `anta_runner` role.
 
           '
+      interfaces:
+        type: dict
+        description: Interface validation settings.
+        keys:
+          errdisable:
+            type: dict
+            description: Settings for the VerifyInterfaceErrDisabled test.
+            keys:
+              only_avd_interfaces:
+                type: bool
+                description: Only validate interfaces defined in the AVD structured
+                  configuration for errdisabled state.
+                default: false
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -15562,6 +15577,33 @@ keys:
             type: bool
             description: Allow redistribution of iBGP routes into an Interior Gateway
               Protocol (IGP). EOS default is true.
+          labeled_unicast:
+            type: dict
+            keys:
+              rib:
+                type: dict
+                description: Configure LU RIB behavior for ip and/or tunnel.
+                keys:
+                  ip:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into IP RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to IP RIB.
+                  tunnel:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into Tunnel RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to tunnel RIB.
       listen_ranges:
         type: list
         description: 'Improved "listen_ranges" data model to support multiple listen
@@ -18180,6 +18222,15 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                default_originate:
+                  type: dict
+                  keys:
+                    always:
+                      type: bool
+                      description: Always advertise a default route to this peer.
+                    route_map:
+                      type: str
+                      description: Route-map name.
           neighbors:
             type: list
             primary_key: ip_address

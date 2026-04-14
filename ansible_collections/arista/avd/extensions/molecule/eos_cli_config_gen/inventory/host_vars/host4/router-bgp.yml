@@ -8,6 +8,11 @@ router_bgp:
   bgp:
     additional_paths:
       send: ecmp
+    labeled_unicast:
+      rib:
+        tunnel:
+          enabled: true
+          route_map: RM-rib3
   address_family_ipv4:
     bgp:
       additional_paths:
