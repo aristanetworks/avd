@@ -16021,6 +16021,41 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpHostsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Ipv4Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv4Addresses._item_type = str
+
+        _fields: ClassVar[dict] = {"hostname": {"type": str}, "ipv4_addresses": {"type": Ipv4Addresses}}
+        hostname: str
+        ipv4_addresses: Ipv4Addresses
+        """Subclass of AvdList with `str` items."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, hostname: str | UndefinedType = Undefined, ipv4_addresses: Ipv4Addresses | UndefinedType = Undefined) -> None:
+                """
+                IpHostsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    hostname: hostname
+                    ipv4_addresses: Subclass of AvdList with `str` items.
+
+                """
+
+    class IpHosts(AvdIndexedList[str, IpHostsItem]):
+        """Subclass of AvdIndexedList with `IpHostsItem` items. Primary key is `hostname` (`str`)."""
+
+        _primary_key: ClassVar[str] = "hostname"
+
+    IpHosts._item_type = IpHostsItem
+
     class IpHttpClient(AvdModel):
         """Subclass of AvdModel."""
 
@@ -59639,12 +59674,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "enabled": {"type": bool},
                 "maximum_paths": {"type": int},
                 "bfd_all_interfaces": {"type": bool},
+                "multi_topology": {"type": bool},
                 "fast_reroute_ti_lfa": {"type": FastRerouteTiLfa},
             }
             enabled: bool
             maximum_paths: int | None
             bfd_all_interfaces: bool | None
             """Enable BFD on all interfaces."""
+            multi_topology: bool | None
+            """
+            Enable IS-IS multi-topology for the IPv6 address family.
+            Required for forming IPv6 adjacencies on
+            IS-IS interfaces that do not have an IPv4 address.
+            """
             fast_reroute_ti_lfa: FastRerouteTiLfa
             """Subclass of AvdModel."""
 
@@ -59656,6 +59698,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enabled: bool | UndefinedType = Undefined,
                     maximum_paths: int | None | UndefinedType = Undefined,
                     bfd_all_interfaces: bool | None | UndefinedType = Undefined,
+                    multi_topology: bool | None | UndefinedType = Undefined,
                     fast_reroute_ti_lfa: FastRerouteTiLfa | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -59668,6 +59711,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         enabled: enabled
                         maximum_paths: maximum_paths
                         bfd_all_interfaces: Enable BFD on all interfaces.
+                        multi_topology:
+                           Enable IS-IS multi-topology for the IPv6 address family.
+                           Required for forming IPv6 adjacencies on
+                           IS-IS interfaces that do not have an IPv4 address.
                         fast_reroute_ti_lfa: Subclass of AvdModel.
 
                     """
@@ -66482,6 +66529,96 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class TrafficPolicies(AvdModel):
         """Subclass of AvdModel."""
 
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Cpu(AvdModel):
+                """Subclass of AvdModel."""
+
+                class TrafficPolicy(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"name": {"type": str}, "enforcement_management": {"type": bool}}
+                    name: str
+                    """
+                    Traffic-policy name.
+                    Currently this is always configured with "fallback traffic-policy none".
+                    """
+                    enforcement_management: bool | None
+                    """Enforce CPU traffic-policy on management ports."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, name: str | UndefinedType = Undefined, enforcement_management: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            TrafficPolicy.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                name:
+                                   Traffic-policy name.
+                                   Currently this is always configured with "fallback traffic-policy none".
+                                enforcement_management: Enforce CPU traffic-policy on management ports.
+
+                            """
+
+                _fields: ClassVar[dict] = {"traffic_policy": {"type": TrafficPolicy}}
+                traffic_policy: TrafficPolicy
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, traffic_policy: TrafficPolicy | UndefinedType = Undefined) -> None:
+                        """
+                        Cpu.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            traffic_policy: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "cpu": {"type": Cpu}, "traffic_policy_input_physical": {"type": str}}
+            name: str
+            """VRF name."""
+            cpu: Cpu
+            """Subclass of AvdModel."""
+            traffic_policy_input_physical: str | None
+            """Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    cpu: Cpu | UndefinedType = Undefined,
+                    traffic_policy_input_physical: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF name.
+                        cpu: Subclass of AvdModel.
+                        traffic_policy_input_physical: Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
         class Options(AvdModel):
             """Subclass of AvdModel."""
 
@@ -67403,7 +67540,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Policies._item_type = PoliciesItem
 
-        _fields: ClassVar[dict] = {"options": {"type": Options}, "field_sets": {"type": FieldSets}, "policies": {"type": Policies}}
+        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}, "options": {"type": Options}, "field_sets": {"type": FieldSets}, "policies": {"type": Policies}}
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         options: Options
         """Subclass of AvdModel."""
         field_sets: FieldSets
@@ -67416,6 +67555,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
+                vrfs: Vrfs | UndefinedType = Undefined,
                 options: Options | UndefinedType = Undefined,
                 field_sets: FieldSets | UndefinedType = Undefined,
                 policies: Policies | UndefinedType = Undefined,
@@ -67427,6 +67567,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     options: Subclass of AvdModel.
                     field_sets: Subclass of AvdModel.
                     policies: Subclass of AvdIndexedList with `PoliciesItem` items. Primary key is `name` (`str`).
@@ -71967,6 +72108,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_extcommunity_lists_regexp": {"type": IpExtcommunityListsRegexp},
         "ip_ftp_client": {"type": IpFtpClient},
         "ip_hardware": {"type": IpHardware},
+        "ip_hosts": {"type": IpHosts},
         "ip_http_client": {"type": IpHttpClient},
         "ip_icmp_redirect": {"type": bool},
         "ip_igmp_snooping": {"type": IpIgmpSnooping},
@@ -72369,6 +72511,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     ip_hardware: IpHardware
     """Subclass of AvdModel."""
+    ip_hosts: IpHosts
+    """Subclass of AvdIndexedList with `IpHostsItem` items. Primary key is `hostname` (`str`)."""
     ip_http_client: IpHttpClient
     """Subclass of AvdModel."""
     ip_icmp_redirect: bool | None
@@ -72809,6 +72953,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_extcommunity_lists_regexp: IpExtcommunityListsRegexp | UndefinedType = Undefined,
             ip_ftp_client: IpFtpClient | UndefinedType = Undefined,
             ip_hardware: IpHardware | UndefinedType = Undefined,
+            ip_hosts: IpHosts | UndefinedType = Undefined,
             ip_http_client: IpHttpClient | UndefinedType = Undefined,
             ip_icmp_redirect: bool | None | UndefinedType = Undefined,
             ip_igmp_snooping: IpIgmpSnooping | UndefinedType = Undefined,
@@ -73127,6 +73272,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    (`str`).
                 ip_ftp_client: Subclass of AvdModel.
                 ip_hardware: Subclass of AvdModel.
+                ip_hosts: Subclass of AvdIndexedList with `IpHostsItem` items. Primary key is `hostname` (`str`).
                 ip_http_client: Subclass of AvdModel.
                 ip_icmp_redirect: ip_icmp_redirect
                 ip_igmp_snooping: Subclass of AvdModel.
