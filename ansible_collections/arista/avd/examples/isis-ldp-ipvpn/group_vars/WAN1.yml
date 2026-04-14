@@ -67,7 +67,7 @@ rr:
     platform: cEOSLab
     spanning_tree_mode: none
     loopback_ipv4_pool: 10.255.2.0/27
-    mpls_route_reflectors: [ rr1, rr2 ] # (1)!
+    mpls_route_reflectors: [rr1, rr2] # (1)!
     isis_system_id_prefix: '0000.0002'
   node_groups:
     - group: WAN1_RR1-2
@@ -95,11 +95,11 @@ core_interfaces:
       isis_authentication_mode: md5
       isis_authentication_key: $1c$sTNAlR6rKSw=
   p2p_links: # (4)!
-    - nodes: [ pe1, p1 ] # (5)!
+    - nodes: [pe1, p1] # (5)!
       id: 1 # (6)!
-      interfaces: [ Ethernet1, Ethernet1 ]
+      interfaces: [Ethernet1, Ethernet1]
       profile: core_profile # (7)!
-    - nodes: [ pe1, p2 ]
+    - nodes: [pe1, p2]
       id: 2
       interfaces: [Ethernet2, Ethernet2]
       profile: core_profile
