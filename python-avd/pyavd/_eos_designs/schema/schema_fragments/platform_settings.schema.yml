@@ -66,6 +66,7 @@ keys:
           sflow_subinterfaces: false
           subinterface_mtu: false
           per_interface_l2_mru: false
+          subinterface_monitor_session: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -150,6 +151,7 @@ keys:
         feature_support:
           queue_monitor_length_notify: false
           subinterface_mtu: false
+          subinterface_monitor_session: false
           per_interface_l2_mru: false
           hardware_counter_features:
             acl: false
@@ -191,6 +193,7 @@ keys:
         tcam_profile: vxlan-routing
         feature_support:
           subinterface_mtu: false
+          subinterface_monitor_session: false
           per_interface_l2_mtu: false
           private_vlan: false
         digital_twin:
@@ -206,6 +209,7 @@ keys:
           evpn_gateway_rd_rt_rewrite: true
           per_interface_l2_mtu: false
           private_vlan: false
+          subinterface_monitor_session: false
         digital_twin:
           platform: vEOS-lab
       - platforms:
@@ -213,6 +217,7 @@ keys:
         feature_support:
           queue_monitor_length_notify: false
           subinterface_mtu: false
+          subinterface_monitor_session: false
           per_interface_l2_mru: false
           hardware_counter_features:
             acl: false
@@ -255,6 +260,7 @@ keys:
         tcam_profile: vxlan-routing
         feature_support:
           subinterface_mtu: false
+          subinterface_monitor_session: false
           per_interface_l2_mtu: false
           private_vlan: false
         digital_twin:
@@ -271,6 +277,7 @@ keys:
           evpn_gateway_all_active_multihoming: true
           evpn_gateway_rd_rt_rewrite: true
           private_vlan: false
+          subinterface_monitor_session: false
         digital_twin:
           platform: vEOS-lab
       - platforms:
@@ -285,6 +292,7 @@ keys:
           evpn_gateway_all_active_multihoming: true
           evpn_gateway_rd_rt_rewrite: true
           private_vlan: false
+          subinterface_monitor_session: false
         digital_twin:
           platform: vEOS-lab
       - platforms:
@@ -313,6 +321,7 @@ keys:
           subinterface_mtu: false
           per_interface_l2_mru: false
           sflow_subinterfaces: false
+          subinterface_monitor_session: false
         digital_twin:
           platform: vEOS-lab
       - platforms:
@@ -345,6 +354,7 @@ keys:
           evpn_gateway_rd_rt_rewrite: true
           sflow_subinterfaces: false
           hardware_validation: false
+          subinterface_monitor_session: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -367,6 +377,7 @@ keys:
           evpn_gateway_rd_rt_rewrite: true
           sflow_subinterfaces: false
           hardware_validation: false
+          subinterface_monitor_session: false
         management_interface: Management1
         reload_delay:
           mlag: 300
@@ -382,6 +393,7 @@ keys:
           queue_monitor_length_notify: false
           sflow: false
           hardware_validation: false
+          subinterface_monitor_session: false
         p2p_uplinks_mtu: 9194
         digital_twin:
           act_node_type: cloudeos
@@ -394,6 +406,7 @@ keys:
           interface_storm_control: false
           queue_monitor_length_notify: false
           subinterface_mtu: false
+          subinterface_monitor_session: false
           per_interface_l2_mru: false
           platform_sfe_interface_profile:
             supported: true
@@ -412,6 +425,7 @@ keys:
           interface_storm_control: false
           queue_monitor_length_notify: false
           subinterface_mtu: false
+          subinterface_monitor_session: false
           per_interface_l2_mru: false
           platform_sfe_interface_profile:
             supported: true
@@ -431,6 +445,7 @@ keys:
           poe: true
           per_interface_l2_mru: false
           sflow: false
+          subinterface_monitor_session: false
         management_interface: Management1
         p2p_uplinks_mtu: 9194
         digital_twin:
