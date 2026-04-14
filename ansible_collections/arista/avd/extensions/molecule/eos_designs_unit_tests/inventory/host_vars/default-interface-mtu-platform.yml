@@ -12,7 +12,7 @@ l3leaf:
 default_interface_mtu: 8765 # This will not be used since platform settings takes precedence.
 
 platform_settings:
-  - platforms: [ default ]
+  - platforms: [default]
     default_interface_mtu: 1234
 
 tenants:

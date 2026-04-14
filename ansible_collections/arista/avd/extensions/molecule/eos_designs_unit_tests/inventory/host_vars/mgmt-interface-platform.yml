@@ -8,4 +8,4 @@ l2leaf:
       mgmt_ip: 1.1.1.2
       id: 105
       filter:
-        deny_vrfs: [ MULTI_TENANT_VRF_TEST ]
+        deny_vrfs: [MULTI_TENANT_VRF_TEST]
