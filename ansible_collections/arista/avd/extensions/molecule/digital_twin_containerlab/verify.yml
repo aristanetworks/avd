@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: DIGITAL_TWIN_CONTAINERLAB
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Assert Containerlab topology file exists
+      delegate_to: 127.0.0.1
+      ansible.builtin.stat:
+        path: "{{ root_dir }}/digital_twin/documentation/fabric/topology.clab.yml"
+      register: containerlab_topology_file
+      run_once: true
+
+    - name: Read generated Containerlab topology file
+      delegate_to: 127.0.0.1
+      ansible.builtin.slurp:
+        path: "{{ root_dir }}/digital_twin/documentation/fabric/topology.clab.yml"
+      register: containerlab_topology_content
+      run_once: true
+
+    - name: Validate generated Containerlab topology artifact
+      ansible.builtin.assert:
+        that:
+          - "containerlab_topology_file.stat.exists"
+          - "(containerlab_topology_content.content | b64decode) == 'prefix: avd-dt\\n'"
+      run_once: true

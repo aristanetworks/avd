@@ -1,0 +1,20 @@
+---
+fabric_name: DIGITAL_TWIN_CONTAINERLAB
+
+management_eapi:
+  enabled: true
+
+eos_designs_documentation:
+  enable: false
+  topology_csv: false
+  p2p_links_csv: false
+
+digital_twin:
+  environment: containerlab
+  fabric: {}
+
+l2leaf:
+  nodes:
+    - name: containerlab-single-switch-fabric-1
+      id: 1
+      mgmt_ip: 192.0.2.1/32

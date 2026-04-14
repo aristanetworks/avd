@@ -12,6 +12,7 @@ from pyavd.api.fabric_documentation import (
     ActLinkSettings,
     ActNodeSettings,
     ActNodeTypeSettings,
+    ContainerlabDigitalTwin,
     FabricDocumentation,
 )
 
@@ -147,7 +148,7 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
     return csv_content.read()
 
 
-def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin | None:
+def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin | ContainerlabDigitalTwin | None:
     digital_twin_env = next(
         (
             environment
@@ -159,8 +160,15 @@ def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> A
     match digital_twin_env:
         case "act":
             return _get_digital_twin_act(fabric_documentation_facts)
+        case "containerlab":
+            return _get_digital_twin_containerlab()
         case _:
             return None
+
+
+def _get_digital_twin_containerlab() -> ContainerlabDigitalTwin:
+    """Return the minimal Containerlab Digital Twin payload."""
+    return ContainerlabDigitalTwin(prefix="avd-dt")
 
 
 def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin:
