@@ -7,32 +7,38 @@ underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
 
 # Global 802.1X settings
-dot1x_settings: # (1)!
-  enabled: true # (2)!
-  authentication: # (3)!
+# --8<-- [start:dot1x_full]
+# --8<-- [start:dot1x_minimal]
+dot1x_settings:
+  enabled: true
+# --8<-- [end:dot1x_minimal]
+  authentication: # (1)!
     radius_groups:
       - DOT1X-RADIUS
-  accounting: # (4)!
+  accounting: # (2)!
     mode: start-stop
     radius_groups:
       - DOT1X-RADIUS
-  dynamic_authorization: # (5)!
+  dynamic_authorization: # (3)!
     enabled: true
-  mac_based_authentication: # (6)!
+  mac_based_authentication: # (4)!
     username_format:
       delimiter: colon
       letter_case: lowercase
-  bypass_bpdu: true # (7)!
-  bypass_lldp: true # (8)!
+  bypass_bpdu: true # (5)!
+  bypass_lldp: true # (6)!
 
 # RADIUS server configuration
-aaa_settings: # (9)!
+# --8<-- [start:aaa_minimal]
+aaa_settings:
   radius:
     servers:
-      - host: radius.example.com # (10)!
-        groups:
-          - DOT1X-RADIUS # (11)!
+      - host: radius.example.com
         cleartext_key: my-radius-secret
+# --8<-- [end:aaa_minimal]
+        groups: # (7)!
+          - DOT1X-RADIUS
+# --8<-- [end:dot1x_full]
 
 # Port profiles for dot1x
 port_profiles: # (1)!
