@@ -4,15 +4,15 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# Inventory Organisation
+# Inventory Organization
 
 ## Introduction
 
-**Inventory Organisation** defines how Ansible inventory files and `group_vars` are structured on disk. As your fabric grows from a lab topology to a production multi-DC network, the right structure prevents variables from becoming hard to find, hard to reuse, and hard to maintain.
+**Inventory Organization** defines how Ansible inventory files and `group_vars` are structured on disk. As your fabric grows from a lab topology to a production multi-DC network, the right structure prevents variables from becoming hard to find, hard to reuse, and hard to maintain.
 
 This guide covers four topology scales — **Small**, **Medium**, **Large**, and **XL** — and explains when to split variables across files, when to introduce subdirectory hierarchies, and how each scale maps to a concrete file layout.
 
-### When to Think About Inventory Organisation
+### When to Think About Inventory Organization
 
 - When adding a second data center to an existing single-DC fabric
 - When a single `group_vars/all.yml` file has grown beyond a few hundred lines
@@ -21,7 +21,7 @@ This guide covers four topology scales — **Small**, **Medium**, **Large**, and
 
 ## Concepts
 
-**inventory**: The set of Ansible files that define which devices exist and how they are grouped. For AVD, this includes `hosts.yml` and the `group_vars/` directory.
+**inventory**: The set of Ansible files that define which devices exist and how they are grouped.
 
 **group_vars**: A directory where Ansible automatically loads YAML files named after inventory groups. AVD reads these to build per-device structured configurations.
 
@@ -201,7 +201,7 @@ With this layout, AVD generates a complete spine configuration without any per-d
 
 ```cli title="Spine P2P interfaces and loopback"
 --8<--
-docs/howto/inventory_organisation/artifacts/htio-spine1-p2p.cfg
+docs/howto/inventory_organization/artifacts/htio-spine1-p2p.cfg
 --8<--
 ```
 
@@ -209,7 +209,7 @@ Each leaf connection is automatically described and addressed from the `uplink_i
 
 ```cli title="MLAG configuration on htio-leaf1a"
 --8<--
-docs/howto/inventory_organisation/artifacts/htio-leaf1a-mlag.cfg
+docs/howto/inventory_organization/artifacts/htio-leaf1a-mlag.cfg
 --8<--
 ```
 
@@ -288,35 +288,41 @@ An XL topology covers 200+ nodes across three or more data centers, often with a
 **Typical layout:**
 
 ```text
-inventory/
-├── global/
-│   └── group_vars/
-│       └── all.yml               # Global defaults shared across all DCs
-├── dc1/
-│   ├── hosts.yml                 # DC1 devices only
-│   └── group_vars/
-│       ├── DC1/
-│       │   ├── fabric.yml
-│       │   └── default_interfaces.yml
-│       ├── DC1_POD1_SPINES/
-│       │   └── spines.yml
-│       └── DC1_POD1_LEAFS/
-│           └── l3_leafs.yml
-├── dc2/
-│   ├── hosts.yml
-│   └── group_vars/
-│       └── ...
+├── global_vars/
+│   └── global.yml                # Global defaults shared across all DCs
+├── inventory/
+│   ├── dc1/
+│   │   ├── hosts.yml             # DC1 devices only
+│   │   └── group_vars/
+│   │       ├── DC1/
+│   │       │   ├── fabric.yml
+│   │       │   └── default_interfaces.yml
+│   │       ├── DC1_POD1_SPINES/
+│   │       │   └── spines.yml
+│   │       └── DC1_POD1_LEAFS/
+│   │           └── l3_leafs.yml
+│   └── dc2/
+│       ├── hosts.yml
+│       └── group_vars/
+│           └── ...
+├── ansible.cfg
 └── site.yml                      # Top-level playbook referencing all DC inventories
 ```
 
-**Ansible inventory merging for XL:**
+**Ansible configuration for XL:**
+
+The `arista.avd.global_vars` plugin loads variables from a shared directory with lower precedence than `group_vars` or `host_vars`, so DC-level overrides always win. Enable it in `ansible.cfg`:
 
 ```ini title="ansible.cfg"
 [defaults]
-inventory = inventory/global,inventory/dc1,inventory/dc2
+inventory = inventory/dc1,inventory/dc2
+vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+
+[vars_global_vars]
+paths = ../global_vars
 ```
 
-Ansible merges all specified inventory directories, making groups from each DC visible in a single run while keeping the files physically separated per DC.
+Ansible merges all specified inventory directories, making groups from each DC visible in a single run while keeping the files physically separated per DC. The `global_vars` plugin injects shared defaults before group and host variables are applied.
 
 !!! warning "AVD limitation"
     Each AVD run processes one `fabric_name` group. If you split inventories across DCs, run AVD once per DC using `-i inventory/dc1` etc., or use a single merged inventory with a shared `FABRIC` group that spans all DCs.
@@ -337,7 +343,7 @@ Alternatively, use a `target_hosts` variable in your playbook's `hosts:` field t
 ```
 
 ```bash
-ansible-playbook playbooks/build.yml -i inventory/dc1 -e target_hosts=DC1
+ansible-playbook playbooks/build.yml -e target_hosts=DC1
 ```
 
 ## Best Practices
