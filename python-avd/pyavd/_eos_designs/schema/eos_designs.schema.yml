@@ -14284,6 +14284,11 @@ $defs:
 
               but it is required to support forwarding of TTL=1 multicast traffic
               within the VLAN.'
+      evpn_redistribute_router_mac_system:
+        type: bool
+        default: false
+        description: Configure 'redistribute router-mac system' under BGP for this
+          L3 VLAN.
       vxlan_flood_multicast:
         documentation_options:
           table: network-services-multicast-settings

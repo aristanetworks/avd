@@ -32246,6 +32246,7 @@ class EosDesigns(EosDesignsRootModel):
                 "rd_override": {"type": str},
                 "trunk_groups": {"type": TrunkGroups},
                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
                 "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                 "igmp_snooping": {"type": IgmpSnooping},
@@ -32405,6 +32406,12 @@ class EosDesigns(EosDesignsRootModel):
             Subclass
             of AvdModel.
             """
+            evpn_redistribute_router_mac_system: bool
+            """
+            Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+            Default value: `False`
+            """
             vxlan_flood_multicast: VxlanFloodMulticast
             """Subclass of AvdModel."""
             evpn_l3_multicast: EvpnL3Multicast
@@ -32492,6 +32499,7 @@ class EosDesigns(EosDesignsRootModel):
                     rd_override: str | None | UndefinedType = Undefined,
                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                    evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                     vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                     igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -32619,6 +32627,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass
                            of AvdModel.
+                        evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                         vxlan_flood_multicast: Subclass of AvdModel.
                         evpn_l3_multicast:
                            Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -33340,6 +33349,7 @@ class EosDesigns(EosDesignsRootModel):
             "rd_override": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
             "evpn_l2_multicast": {"type": EvpnL2Multicast},
+            "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
             "evpn_l3_multicast": {"type": EvpnL3Multicast},
             "igmp_snooping": {"type": IgmpSnooping},
@@ -33515,6 +33525,12 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
+        evpn_redistribute_router_mac_system: bool
+        """
+        Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+        Default value: `False`
+        """
         vxlan_flood_multicast: VxlanFloodMulticast
         """Subclass of AvdModel."""
         evpn_l3_multicast: EvpnL3Multicast
@@ -33604,6 +33620,7 @@ class EosDesigns(EosDesignsRootModel):
                 rd_override: str | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                 igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -33743,6 +33760,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
+                    evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                     vxlan_flood_multicast: Subclass of AvdModel.
                     evpn_l3_multicast:
                        Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -62914,6 +62932,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "rd_override": {"type": str},
                                 "trunk_groups": {"type": TrunkGroups},
                                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                                "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
                                 "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                                 "igmp_snooping": {"type": IgmpSnooping},
@@ -63083,6 +63102,12 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass
                             of AvdModel.
                             """
+                            evpn_redistribute_router_mac_system: bool
+                            """
+                            Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+                            Default value: `False`
+                            """
                             vxlan_flood_multicast: VxlanFloodMulticast
                             """Subclass of AvdModel."""
                             evpn_l3_multicast: EvpnL3Multicast
@@ -63171,6 +63196,7 @@ class EosDesigns(EosDesignsRootModel):
                                     rd_override: str | None | UndefinedType = Undefined,
                                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                                    evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                                     vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                                     igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -63304,6 +63330,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass
                                            of AvdModel.
+                                        evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                                         vxlan_flood_multicast: Subclass of AvdModel.
                                         evpn_l3_multicast:
                                            Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -64037,6 +64064,7 @@ class EosDesigns(EosDesignsRootModel):
                             "rd_override": {"type": str},
                             "trunk_groups": {"type": TrunkGroups},
                             "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                            "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
                             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                             "evpn_l3_multicast": {"type": EvpnL3Multicast},
                             "igmp_snooping": {"type": IgmpSnooping},
@@ -64236,6 +64264,12 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass
                         of AvdModel.
                         """
+                        evpn_redistribute_router_mac_system: bool
+                        """
+                        Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+                        Default value: `False`
+                        """
                         vxlan_flood_multicast: VxlanFloodMulticast
                         """Subclass of AvdModel."""
                         evpn_l3_multicast: EvpnL3Multicast
@@ -64328,6 +64362,7 @@ class EosDesigns(EosDesignsRootModel):
                                 rd_override: str | None | UndefinedType = Undefined,
                                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                                evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                                 igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -64483,6 +64518,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass
                                        of AvdModel.
+                                    evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                                     vxlan_flood_multicast: Subclass of AvdModel.
                                     evpn_l3_multicast:
                                        Explicitly enable or disable evpn_l3_multicast to override setting of
