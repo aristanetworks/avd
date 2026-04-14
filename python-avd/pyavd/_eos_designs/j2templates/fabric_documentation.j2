@@ -95,10 +95,10 @@
 
 ### ISIS Segment Routing Node-SID Allocation
 
-| POD | Node | Type | Node SID IPv4 Index |
-| --- | ---- | ---- | ------------------- |
+| POD | Node | Type | Node SID IPv4 Index | Node SID IPv6 Index |
+| --- | ---- | ---- | ------------------- | ------------------- |
 {%     for fabric_switch in fabric_switches | selectattr("isis_sr_enabled", "arista.avd.defined") %}
-| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.type }} | {{ fabric_switch.node_sid_ipv4_index | arista.avd.default("-") }} |
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.type }} | {{ fabric_switch.isis_node_sid_ipv4_index | arista.avd.default("-") }} | {{ fabric_switch.isis_node_sid_ipv6_index | arista.avd.default("-") }} |
 {%     endfor %}
 {% endif %}
 {% if has_mpls_overlay %}
