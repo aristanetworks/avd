@@ -508,11 +508,24 @@ class FilteredTenantsMixin(Protocol):
         """
         ip_helpers = svi.ip_helpers or vrf.ip_helpers
         if ip_helpers:
-            for svi_ip_helper in ip_helpers:
+            for helper_idx, svi_ip_helper in enumerate(ip_helpers):
+                source_vrf = svi_ip_helper.source_vrf
+                source_interface = svi_ip_helper.source_interface
+                # If VRF is set then compute the value of VRF as per input.
+                vrf_source_interface = self.get_source_interface(source_vrf, None) if source_vrf else None
+                if source_interface and vrf_source_interface and (source_interface != vrf_source_interface):
+                    msg = (
+                        f"Incorrect source_interface is set for 'tenant[name={tenant.name}].vrfs[name={vrf.name}].ip_helpers[{helper_idx}]"
+                        f" or 'tenant[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}].ip_helpers[{helper_idx}]'"
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+                source_vrf = (
+                    self.get_vrf(svi_ip_helper.source_vrf, context=f"{vrf.name}.source_vrf or {vrf.name}.svis[{svi.name}].source_vrf") if source_vrf else None
+                )
                 config.ip_helpers.append_new(
                     ip_helper=svi_ip_helper.ip_helper,
-                    source_interface=svi_ip_helper.source_interface,
-                    vrf=svi_ip_helper.source_vrf,
+                    source_interface=source_interface,
+                    vrf=source_vrf,
                 )
 
         if svi.ospf.enabled:

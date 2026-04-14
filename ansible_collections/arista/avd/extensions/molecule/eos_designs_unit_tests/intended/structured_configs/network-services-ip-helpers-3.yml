@@ -1,0 +1,52 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: network-services-ip-helpers-3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.0.255.11/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan11
+  description: SVI2
+  shutdown: true
+  vrf: IP_HELPERS3
+  ip_helpers:
+  - ip_helper: 1.1.1.4
+    source_interface: vlan100
+    vrf: INBANDMGMT
+  metadata:
+    tenants:
+    - TEST2
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: SVI2
+  metadata:
+    tenants:
+    - TEST2
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: IP_HELPERS3
+  ip_routing: true
+  metadata:
+    tenants:
+    - TEST2

@@ -1,0 +1,67 @@
+---
+type: l3spine
+
+l3spine:
+  defaults:
+    bgp_as: 65001
+    spanning_tree_mode: none
+    loopback_ipv4_pool: 192.0.255.0/24
+    uplink_ipv4_pool: 10.255.1.0/24
+    mlag_interfaces: [Ethernet10]
+    mlag_peer_ipv4_pool: "10.10.10.0/24"
+    mlag_peer_l3_ipv4_pool: "10.10.20.0/24"
+  node_groups:
+    - group: GROUP1
+      filter:
+        tenants: ["TEST1"]
+        always_include_vrfs_in_tenants: ["TEST1"]
+      nodes:
+        - name: network-services-ip-helpers-1
+          id: 1
+          mgmt_ip: 10.1.1.1/24
+        - name: network-services-ip-helpers-2
+          id: 2
+          mgmt_ip: 10.1.1.2/24
+    - group: GROUP2
+      filter:
+        tenants: ["TEST2"]
+        always_include_vrfs_in_tenants: ["TEST2"]
+      nodes:
+        - name: network-services-ip-helpers-3
+          id: 11
+          inband_mgmt_vlan: 102
+          inband_mgmt_interface: vlan100
+          inband_mgmt_vrf: INBANDMGMT
+          inband_mgmt_subnet: 192.168.102.0/24
+
+tenants:
+  - name: TEST1
+    vrfs:
+      - name: IP_HELPERS1
+        vrf_id: 100
+        ip_helpers:
+          - ip_helper: 1.1.1.1
+            source_interface: lo100
+            source_vrf: MGMT
+        svis:
+          - id: 10
+            name: SVI1
+            ip_helpers:
+              - ip_helper: 1.1.1.1
+                source_interface: Management1
+                source_vrf: use_mgmt_interface_vrf
+              - ip_helper: 1.1.1.2
+                source_interface: Management1
+                source_vrf: use_default_mgmt_method_vrf
+
+  - name: TEST2
+    vrfs:
+      - name: IP_HELPERS3
+        vrf_id: 102
+        svis:
+          - id: 11
+            name: SVI2
+            ip_helpers:
+              - ip_helper: 1.1.1.4
+                source_interface: vlan100
+                source_vrf: use_inband_mgmt_vrf
