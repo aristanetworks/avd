@@ -464,17 +464,15 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
     extra_fabric_validation = get(PLUGIN_ARGS, "avd_catalogs.extra_fabric_validation")
     output_dir = get(PLUGIN_ARGS, "avd_catalogs.output_dir")
     avd_catalogs_filters = get(PLUGIN_ARGS, "avd_catalogs.filters", default=[])
-    devices_unreachable_at_setup = []
 
     for device in devices:
         # We generate the device's AVD catalog only if structured configs are loaded
         if STRUCTURED_CONFIGS is not None and FABRIC_DATA is not None:
             structured_config = STRUCTURED_CONFIGS[device]
-            # Validate eAPI reachability iterating structured configurations before processing. If the endpoint is unreachable,
-            # abort catalog generation and omit the device from the final inventory to prevent downstream execution failures.
+            # Skip the device if eAPI is not enabled on the device.
             eapi_config = structured_config.get("management_api_http", {})
             if not (eapi_config.get("enable_https") or eapi_config.get("enable_http")):
-                devices_unreachable_at_setup.append(device)
+                LOGGER.warning("<%s> Device eAPI is not enabled in the structured configuration - Skipping all tests", device)
                 continue
 
             settings = AVDCatalogGenerationSettings(
@@ -492,10 +490,6 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
 
         anta_device = build_anta_device(device)
         inventory.add_device(anta_device)
-
-    if (total_devices_unreachable := len(devices_unreachable_at_setup)) > 0:
-        device_list_str = ", ".join(sorted(devices_unreachable_at_setup))
-        LOGGER.warning("%d device(s) unreachable during structured configurations verification: %s", total_devices_unreachable, device_list_str)
 
     catalog = AntaCatalog.merge_catalogs(catalogs)
 

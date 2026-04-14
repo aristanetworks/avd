@@ -8,7 +8,7 @@ l3leaf:
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 10.255.129.0/27
     uplink_switches: [dc2-spine1, dc2-spine2]
-    uplink_ipv4_pool: 10.255.255.64/26,10.255.255.128/26
+    uplink_ipv4_pool: 10.255.255.64/26
     mlag_peer_ipv4_pool: 10.255.129.64/27
     mlag_peer_l3_ipv4_pool: 10.255.129.96/27
     virtual_router_mac_address: 00:1c:73:00:00:99
@@ -75,13 +75,3 @@ l3leaf:
           uplink_switch_interfaces:
             - Ethernet6
             - Ethernet6
-
-    - group: DC2_L3_LEAF4
-      bgp_as: 65204
-      nodes:
-        - name: dc2-leaf4a.arista.com
-          id: 17
-          mgmt_ip: 172.16.1.120/24
-          uplink_switch_interfaces:
-            - Ethernet7
-            - Ethernet7
