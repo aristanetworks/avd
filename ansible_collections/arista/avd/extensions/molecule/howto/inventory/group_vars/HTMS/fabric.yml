@@ -30,7 +30,7 @@ aaa_settings:  # (8)!
     - name: admin
       privilege: 15
       role: network-admin
-      no_password: true
+      sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
     - name: arista
       privilege: 15
       role: network-admin

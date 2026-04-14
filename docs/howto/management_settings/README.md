@@ -50,7 +50,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 5. DNS servers applied to all devices, sourced from the management VRF.
 6. NTP server list. All devices sync to these servers.
 7. `use_mgmt_interface_vrf` automatically uses the VRF defined by `mgmt_interface_vrf` — no need to hardcode the VRF name in two places.
-8. Local user accounts for emergency access. Always define at least one user with no password or a known password.
+8. Local user accounts for emergency access. Always define at least one user with a strong, known password.
 
 ### Generated Configuration
 
@@ -112,7 +112,7 @@ l3leaf:
 
 3. **Always define a local fallback user**: In production, primary authentication may rely on AAA servers. A local user with emergency access prevents lockouts if those servers become unreachable.
 
-4. **Assign management IPs per node, not per group**: Because each device needs a unique IP, `mgmt_ip` belongs in the node definition, not in group defaults.
+4. **Define `mgmt_ip` for each node**: Every device requires a unique management IP. Set `mgmt_ip` in the node definition inside your group_vars.
 
 5. **Keep the management VRF name consistent**: Use the same VRF name (`MGMT`) across all management-related variables. AVD uses `mgmt_interface_vrf` to automatically set the VRF on the management interface, DNS lookups, and NTP source.
 
