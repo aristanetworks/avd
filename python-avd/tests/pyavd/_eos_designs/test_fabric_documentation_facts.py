@@ -290,4 +290,3 @@ class TestFabricDocumentationFactsEdgeCases:
         overlay_nodes = fabric_facts.mpls_overlay_nodes
         if overlay_nodes:
             assert overlay_nodes[0]["router_id"] == "-", "None router_id should be rendered as '-'"
-
