@@ -141,7 +141,7 @@
           vars:
             expected:
               - configlets:
-                  - TEST-MANIFEST-ACCESS-LISTS
+                  - name: TEST-MANIFEST-ACCESS-LISTS
                 description: Child container for AVD manifest deployment
                 match_policy: match_all
                 name: AVD-MANIFEST-CHILD
@@ -154,7 +154,7 @@
                 name: AVD-MANIFEST-ROOT
                 sub_containers:
                   - configlets:
-                      - TEST-MANIFEST-ACCESS-LISTS
+                      - name: TEST-MANIFEST-ACCESS-LISTS
                     description: Child container for AVD manifest deployment
                     match_policy: match_all
                     name: AVD-MANIFEST-CHILD
