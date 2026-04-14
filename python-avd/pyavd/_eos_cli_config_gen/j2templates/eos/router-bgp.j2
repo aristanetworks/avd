@@ -2054,7 +2054,7 @@ router bgp {{ router_bgp.as }}
 {%             if neighbor.prefix_list_out is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} prefix-list {{ neighbor.prefix_list_out }} out
 {%             endif %}
-{%             if neighbor.default_originate is arista.avd.defined %}
+{%             if neighbor.default_originate.enabled is arista.avd.defined(true) %}
 {%                 set neighbor_default_originate_cli = "neighbor " ~ neighbor.ip_address ~ " default-originate" %}
 {%                 if neighbor.default_originate.route_map is arista.avd.defined %}
 {%                     set neighbor_default_originate_cli = neighbor_default_originate_cli ~ " route-map " ~ neighbor.default_originate.route_map %}
