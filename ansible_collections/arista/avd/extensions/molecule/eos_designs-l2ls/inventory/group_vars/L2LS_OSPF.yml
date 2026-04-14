@@ -17,7 +17,7 @@ tenants:
         static_routes: # Testing creation of static route in default VRF including redistribute static under the underlay protocol
           - prefix: 10.0.0.0/8
             next_hop: 10.1.100.100
-            nodes: [ OSPF-SPINE2 ]
+            nodes: [OSPF-SPINE2]
 
 network_ports:
   - switches:
@@ -31,8 +31,8 @@ network_ports:
 core_interfaces:
   p2p_links:
     - subnet: 192.168.253.0/31
-      nodes: [ OSPF-SPINE1, DUMMY-CORE ]
-      interfaces: [ Ethernet5, Ethernet1/1 ]
+      nodes: [OSPF-SPINE1, DUMMY-CORE]
+      interfaces: [Ethernet5, Ethernet1/1]
     - subnet: 192.168.253.2/31
-      nodes: [ OSPF-SPINE2, DUMMY-CORE ]
-      interfaces: [ Ethernet5, Ethernet1/2 ]
+      nodes: [OSPF-SPINE2, DUMMY-CORE]
+      interfaces: [Ethernet5, Ethernet1/2]

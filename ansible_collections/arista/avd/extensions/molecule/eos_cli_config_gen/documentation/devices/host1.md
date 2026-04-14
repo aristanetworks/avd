@@ -8850,6 +8850,7 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | Settings | Value |
 | -------- | ----- |
 | IPv6 Address-family Enabled | True |
+| Multi-topology Enabled | True |
 | TI-LFA Mode | node-protection |
 | TI-LFA Level | level-1 |
 | TI-LFA SRLG Enabled | True |
@@ -8904,6 +8905,7 @@ router isis EVPN_UNDERLAY
       fast-reroute ti-lfa srlg strict
    !
    address-family ipv6 unicast
+      multi-topology
       fast-reroute ti-lfa mode node-protection level-1
       fast-reroute ti-lfa srlg strict
    !
@@ -8911,8 +8913,6 @@ router isis EVPN_UNDERLAY
       no shutdown
       prefix-segment 155.2.1.1/32 index 211
       prefix-segment 2001:cafe:155::/64 index 6211
-   address-family ipv6 unicast
-     multi-topology
    traffic-engineering
      no shutdown
      is-type level-2
