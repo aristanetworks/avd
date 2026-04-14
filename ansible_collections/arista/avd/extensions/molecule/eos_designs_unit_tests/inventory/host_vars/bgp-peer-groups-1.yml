@@ -1,0 +1,2 @@
+avd_design_future:
+  remove_peer_group_mlag_ipv4_vrfs_peer: true

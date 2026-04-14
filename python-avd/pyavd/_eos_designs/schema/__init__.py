@@ -921,6 +921,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
+            "remove_peer_group_mlag_ipv4_vrfs_peer": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -941,6 +942,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        remove_peer_group_mlag_ipv4_vrfs_peer: bool
+        """
+        Remove the `mlag_ipv4_vrfs_peer` BGP peer group from the generated configuration.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -950,6 +957,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
+                remove_peer_group_mlag_ipv4_vrfs_peer: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -963,6 +971,7 @@ class EosDesigns(EosDesignsRootModel):
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
                        default instead of always deactivating it.
                     raise_for_port_channels_without_members: Raise an error if an L3 Port-Channel is configured without any member interfaces.
+                    remove_peer_group_mlag_ipv4_vrfs_peer: Remove the `mlag_ipv4_vrfs_peer` BGP peer group from the generated configuration.
 
                 """
 

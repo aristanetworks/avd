@@ -161,7 +161,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         self.structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
 
     @run_once_method
-    def set_once_route_map_mlag_peer_in(self) -> None:
+    def set_once_route_map_mlag_peer_in(self: StructuredConfigUtils) -> None:
         """
         Set route-map RM-MLAG-PEER-IN.
 
@@ -178,7 +178,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         self.structured_config.route_maps.append(route_map)
 
     @run_once_method
-    def set_once_peer_group_mlag_ipv4_underlay_peer(self) -> None:
+    def set_once_peer_group_mlag_ipv4_underlay_peer(self: StructuredConfigUtils) -> None:
         """
         Set router_bgp structured_config covering the MLAG peer_group and associated address_family activations.
 
@@ -198,7 +198,18 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         if self.shared_utils.underlay_ipv6:
             self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
 
-    def set_mlag_peer_group(self, bgp_peer_group: EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer) -> None:
+    @run_once_method
+    def set_once_peer_group_mlag_ipv4_vrfs_peer(self: StructuredConfigUtils) -> None:
+        """Set router_bgp structured_config covering the MLAG peer_group(s) in case there are VRFs with iBGP peerings using a separate peer-group."""
+        bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
+        self.set_mlag_peer_group(bgp_peer_group)
+        address_family_ipv4_peer_groups = self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
+        if self.inputs.overlay_mlag_rfc5549:
+            address_family_ipv4_peer_groups.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+
+    def set_mlag_peer_group(
+        self: StructuredConfigUtils, bgp_peer_group: EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer
+    ) -> None:
         """Set structured_config for one MLAG peer_group."""
         router_bgp = self.structured_config.router_bgp
         peer_group_name = bgp_peer_group.name

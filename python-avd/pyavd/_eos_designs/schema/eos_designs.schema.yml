@@ -341,6 +341,11 @@ keys:
         description: Raise an error if an L3 Port-Channel is configured without any
           member interfaces.
         default: false
+      remove_peer_group_mlag_ipv4_vrfs_peer:
+        type: bool
+        description: Remove the `mlag_ipv4_vrfs_peer` BGP peer group from the generated
+          configuration.
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings

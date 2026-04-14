@@ -12,7 +12,6 @@ from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict
-from pyavd._utils.run_once import run_once_method
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -206,7 +205,7 @@ class RouterBgpMixin(Protocol):
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                     self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
                     if self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
-                        self._set_once_mlag_peer_groups_vrfs()
+                        self.structured_config_utils.set_once_peer_group_mlag_ipv4_vrfs_peer()
                     else:
                         self.structured_config_utils.set_once_peer_group_mlag_ipv4_underlay_peer()
 
@@ -265,15 +264,6 @@ class RouterBgpMixin(Protocol):
                     bgp_vrf.name = vrf.name
                     maybe_existing_vrf = self.structured_config.router_bgp.vrfs.obtain(vrf.name)
                     maybe_existing_vrf._combine(bgp_vrf)
-
-    @run_once_method
-    def _set_once_mlag_peer_groups_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
-        """Set router_bgp structured_config covering the MLAG peer_group(s) in case there are VRFs with iBGP peerings using a separate peer-group."""
-        bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
-        self.structured_config_utils.set_mlag_peer_group(bgp_peer_group)
-        address_family_ipv4_peer_groups = self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
-        if self.inputs.overlay_mlag_rfc5549:
-            address_family_ipv4_peer_groups.next_hop.address_family_ipv6._update(enabled=True, originate=True)
 
     def _update_router_bgp_vrf_evpn_rd_rt_rewrite_evpn_af_cfg(
         self: AvdStructuredConfigNetworkServicesProtocol,
