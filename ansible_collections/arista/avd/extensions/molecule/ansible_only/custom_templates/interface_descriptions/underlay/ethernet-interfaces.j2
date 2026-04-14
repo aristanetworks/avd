@@ -3,11 +3,11 @@
 {{ link.main_interface_wan_carrier }}
 {%- endif -%}
 {%- if link.type is arista.avd.defined('underlay_p2p') -%}
-{{ description_prefix }}_P2P_LINK_TO_{{ link.peer | upper }}_{{ link.peer_interface }}
+{{ description_prefix }}_{{ link.interface }}_P2P_LINK_TO_{{ link.peer | upper }}_{{ link.peer_interface }}
 {%- elif link.type is arista.avd.defined('underlay_l2') -%}
-{{ description_prefix }}_{{ link.peer | upper }}_{{ link.peer_interface }}
+{{ description_prefix }}_{{ link.interface }}_{{ link.peer | upper }}_{{ link.peer_interface }}
 {%- elif link.type is arista.avd.defined('l3_edge') -%}
-{{ description_prefix }}_L3_EDGE_{{ link.peer | upper }}_{{ link.peer_interface }}
+{{ description_prefix }}_{{ link.interface }}_L3_EDGE_{{ link.peer | upper }}_{{ link.peer_interface }}
 {%- elif link.type is arista.avd.defined('core_interfaces') -%}
-{{ description_prefix }}_CORE_INTERFACES_{{ link.peer | upper }}_{{ link.peer_interface }}
+{{ description_prefix }}_{{ link.interface }}_CORE_INTERFACES_{{ link.peer | upper }}_{{ link.peer_interface }}
 {%- endif -%}
