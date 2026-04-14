@@ -1,0 +1,31 @@
+---
+type: l3spine
+
+l3spine:
+  defaults:
+    bgp_as: 65001
+    loopback_ipv4_pool: 192.0.255.0/24
+    uplink_ipv4_pool: 10.255.1.0/24
+  nodes:
+    - name: incorrect-source-interface-ip-helpers
+      id: 1
+      filter:
+        tenants: ["TEST1"]
+      mgmt_ip: 10.1.1.1/24
+
+tenants:
+  - name: TEST1
+    vrfs:
+      - name: IP_HELPERS1
+        vrf_id: 100
+        svis:
+          - id: 10
+            name: SVI1
+            ip_helpers:
+              - ip_helper: 1.1.1.1
+                source_interface: Lo1
+                source_vrf: use_mgmt_interface_vrf
+
+expected_error_message: >-
+  Incorrect source_interface is set for 'tenant[name=TEST1].vrfs[name=IP_HELPERS1].ip_helpers[0]'
+  or 'tenant[name=TEST1].vrfs[name=IP_HELPERS1].svis[id=10].ip_helpers[0]'.
