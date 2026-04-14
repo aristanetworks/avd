@@ -5,7 +5,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: TEST_CUSTOM_PREFIX_Ethernet3_MLAG_PEER_custom-templates-l3leaf1b_Ethernet3
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_custom-templates-l3leaf1b_Ethernet3
   shutdown: false
   channel_group:
     id: 3
@@ -15,7 +15,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: mlag_peer
 - name: Ethernet4
-  description: TEST_CUSTOM_PREFIX_Ethernet4_MLAG_PEER_custom-templates-l3leaf1b_Ethernet4
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_custom-templates-l3leaf1b_Ethernet4
   shutdown: false
   channel_group:
     id: 3
