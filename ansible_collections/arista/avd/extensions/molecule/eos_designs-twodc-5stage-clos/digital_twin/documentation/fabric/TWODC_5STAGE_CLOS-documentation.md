@@ -277,15 +277,15 @@
 | DC1-POD1-LEAF1A | l3leaf | 172.16.20.1 | EVPN-OVERLAY-PEERS | 65201 | DC2-RS1_Loopback0 |
 | DC1-POD1-LEAF1A | l3leaf | 172.16.200.1 | EVPN-OVERLAY-PEERS | 65200 | DC2-SUPER-SPINE1_Loopback0 |
 | DC1-POD1-LEAF1A | l3leaf | 172.16.110.5 | EVPN-OVERLAY-PEERS | 65112.100 | DC1-POD1-LEAF2B_Loopback0 |
-| DC1-POD1-LEAF1A | l3leaf | 172.16.110.4 | EVPN-OVERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Loopback0 |
-| DC1-POD1-LEAF1B | l3leaf | 172.17.110.12 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Ethernet13 |
-| DC1-POD1-LEAF1B | l3leaf | 172.17.110.14 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1-POD1-LEAF2B_Ethernet13 |
-| DC1-POD1-LEAF2B | l3leaf | 172.20.110.2 | MLAG-IPv4-UNDERLAY-PEER | - | DC1.POD1.LEAF2A_Vlan4094 |
+| DC1-POD1-LEAF1A | l3leaf | 172.16.110.6 | EVPN-OVERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Loopback0 |
+| DC1-POD1-LEAF1B | l3leaf | 172.17.110.4 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Ethernet13 |
+| DC1-POD1-LEAF1B | l3leaf | 172.17.110.6 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1-POD1-LEAF2B_Ethernet13 |
+| DC1-POD1-LEAF2B | l3leaf | 172.20.110.6 | MLAG-IPv4-UNDERLAY-PEER | - | DC1.POD1.LEAF2A_Vlan4094 |
 | DC1-POD1-LEAF2B | l3leaf | 172.17.110.16 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE1_Ethernet5 |
 | DC1-POD1-LEAF2B | l3leaf | 172.17.110.18 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE2_Ethernet5 |
 | DC1-POD1-LEAF2B | l3leaf | 172.17.110.20 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE1_Ethernet8 |
 | DC1-POD1-LEAF2B | l3leaf | 172.17.110.22 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE2_Ethernet8 |
-| DC1-POD1-LEAF2B | l3leaf | 172.17.110.15 | IPv4-UNDERLAY-PEERS | 65111.100 | DC1-POD1-LEAF1B_Ethernet2 |
+| DC1-POD1-LEAF2B | l3leaf | 172.17.110.7 | IPv4-UNDERLAY-PEERS | 65111.100 | DC1-POD1-LEAF1B_Ethernet2 |
 | DC1-POD1-LEAF2B | l3leaf | 172.16.110.3 | EVPN-OVERLAY-PEERS | 65111.100 | DC1-POD1-LEAF1A_Loopback0 |
 | DC1-POD1-LEAF2B | l3leaf | 172.16.110.1 | EVPN-OVERLAY-PEERS | 65110.100 | DC1-POD1-SPINE1_Loopback0 |
 | DC1-POD1-LEAF2B | l3leaf | 172.16.10.1 | EVPN-OVERLAY-PEERS | 65101 | DC1-RS1_Loopback0 |
@@ -294,23 +294,23 @@
 | DC1-POD1-SPINE1 | spine | 172.16.11.0 | IPv4-UNDERLAY-PEERS | 65100 | DC1-SUPER-SPINE1_Ethernet1 |
 | DC1-POD1-SPINE1 | spine | 172.16.11.64 | IPv4-UNDERLAY-PEERS | 65100 | DC1-SUPER-SPINE2_Ethernet1 |
 | DC1-POD1-SPINE1 | spine | 172.17.110.1 | IPv4-UNDERLAY-PEERS | 65111.100 | DC1-POD1-LEAF1A_Ethernet1 |
-| DC1-POD1-SPINE1 | spine | 172.17.110.9 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Ethernet1 |
+| DC1-POD1-SPINE1 | spine | 172.17.110.25 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Ethernet1 |
 | DC1-POD1-SPINE1 | spine | 172.17.110.17 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1-POD1-LEAF2B_Ethernet1 |
 | DC1-POD1-SPINE1 | spine | 172.17.10.3 | IPv4-UNDERLAY-PEERS | 65101 | DC1-RS1_Ethernet2 |
-| DC1-POD1-SPINE1 | spine | 172.17.110.13 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Ethernet11 |
+| DC1-POD1-SPINE1 | spine | 172.17.110.29 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Ethernet11 |
 | DC1-POD1-SPINE1 | spine | 172.17.110.21 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1-POD1-LEAF2B_Ethernet11 |
 | DC1-POD1-SPINE1 | spine | 172.16.210.3 | EVPN-OVERLAY-PEERS | 65211 | DC2-POD1-LEAF1A_Loopback0 |
 | DC1-POD1-SPINE1 | spine | 172.16.210.1 | EVPN-OVERLAY-PEERS | 65210 | DC2-POD1-SPINE1_Loopback0 |
 | DC1-POD1-SPINE1 | spine | 172.16.20.1 | EVPN-OVERLAY-PEERS | 65201 | DC2-RS1_Loopback0 |
 | DC1-POD1-SPINE1 | spine | 172.16.200.1 | EVPN-OVERLAY-PEERS | 65200 | DC2-SUPER-SPINE1_Loopback0 |
 | DC1-POD1-SPINE1 | spine | 172.16.110.5 | EVPN-OVERLAY-PEERS | 65112.100 | DC1-POD1-LEAF2B_Loopback0 |
-| DC1-POD1-SPINE1 | spine | 172.16.110.4 | EVPN-OVERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Loopback0 |
+| DC1-POD1-SPINE1 | spine | 172.16.110.6 | EVPN-OVERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Loopback0 |
 | DC1-POD1-SPINE2 | spine | 172.16.11.2 | IPv4-UNDERLAY-PEERS | 65100 | DC1-SUPER-SPINE1_Ethernet2 |
 | DC1-POD1-SPINE2 | spine | 172.16.11.66 | IPv4-UNDERLAY-PEERS | 65100 | DC1-SUPER-SPINE2_Ethernet2 |
 | DC1-POD1-SPINE2 | spine | 172.17.110.3 | IPv4-UNDERLAY-PEERS | 65111.100 | DC1-POD1-LEAF1A_Ethernet2 |
-| DC1-POD1-SPINE2 | spine | 172.17.110.11 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Ethernet2 |
+| DC1-POD1-SPINE2 | spine | 172.17.110.27 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Ethernet2 |
 | DC1-POD1-SPINE2 | spine | 172.17.110.19 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1-POD1-LEAF2B_Ethernet2 |
-| DC1-POD1-SPINE2 | spine | 172.17.110.15 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Ethernet12 |
+| DC1-POD1-SPINE2 | spine | 172.17.110.31 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1.POD1.LEAF2A_Ethernet12 |
 | DC1-POD1-SPINE2 | spine | 172.17.110.23 | IPv4-UNDERLAY-PEERS | 65112.100 | DC1-POD1-LEAF2B_Ethernet12 |
 | DC1-POD2-LEAF1A | l3leaf | 172.17.120.0 | IPv4-UNDERLAY-PEERS | 65120 | DC1-POD2-SPINE1_Ethernet3 |
 | DC1-POD2-LEAF1A | l3leaf | 172.17.120.2 | IPv4-UNDERLAY-PEERS | 65120 | DC1-POD2-SPINE2_Ethernet3 |
@@ -336,7 +336,7 @@
 | DC1-RS1 | overlay-controller | 172.16.20.1 | EVPN-OVERLAY-PEERS | 65201 | DC2-RS1_Loopback0 |
 | DC1-RS1 | overlay-controller | 172.16.200.1 | EVPN-OVERLAY-PEERS | 65200 | DC2-SUPER-SPINE1_Loopback0 |
 | DC1-RS1 | overlay-controller | 172.16.110.5 | EVPN-OVERLAY-PEERS | 4267180132 | DC1-POD1-LEAF2B_Loopback0 |
-| DC1-RS1 | overlay-controller | 172.16.110.4 | EVPN-OVERLAY-PEERS | 4267180132 | DC1.POD1.LEAF2A_Loopback0 |
+| DC1-RS1 | overlay-controller | 172.16.110.6 | EVPN-OVERLAY-PEERS | 4267180132 | DC1.POD1.LEAF2A_Loopback0 |
 | DC1-RS2 | overlay-controller | 172.17.10.8 | IPv4-UNDERLAY-PEERS | 65100 | DC1-SUPER-SPINE2_Ethernet5 |
 | DC1-RS2 | overlay-controller | 172.17.10.10 | IPv4-UNDERLAY-PEERS | 65120 | DC1-POD2-SPINE1_Ethernet4 |
 | DC1-RS2 | overlay-controller | 172.17.10.12 | IPv4-UNDERLAY-PEERS | 65121 | DC1-POD2-LEAF1A_Ethernet3 |
@@ -356,12 +356,12 @@
 | DC1-SUPER-SPINE2 | super-spine | 172.16.12.67 | IPv4-UNDERLAY-PEERS | 65120 | DC1-POD2-SPINE2_Ethernet2 |
 | DC1-SUPER-SPINE2 | super-spine | 172.17.10.9 | IPv4-UNDERLAY-PEERS | 65102 | DC1-RS2_Ethernet1 |
 | DC1-SUPER-SPINE2 | super-spine | 11.1.2.3 | IPv4-UNDERLAY-PEERS | 65200 | DC2-SUPER-SPINE2 |
-| DC1.POD1.LEAF2A | l3leaf | 172.20.110.3 | MLAG-IPv4-UNDERLAY-PEER | - | DC1-POD1-LEAF2B_Vlan4094 |
-| DC1.POD1.LEAF2A | l3leaf | 172.17.110.8 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE1_Ethernet4 |
-| DC1.POD1.LEAF2A | l3leaf | 172.17.110.10 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE2_Ethernet4 |
-| DC1.POD1.LEAF2A | l3leaf | 172.17.110.12 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE1_Ethernet7 |
-| DC1.POD1.LEAF2A | l3leaf | 172.17.110.14 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE2_Ethernet7 |
-| DC1.POD1.LEAF2A | l3leaf | 172.17.110.13 | IPv4-UNDERLAY-PEERS | 65111.100 | DC1-POD1-LEAF1B_Ethernet1 |
+| DC1.POD1.LEAF2A | l3leaf | 172.20.110.7 | MLAG-IPv4-UNDERLAY-PEER | - | DC1-POD1-LEAF2B_Vlan4094 |
+| DC1.POD1.LEAF2A | l3leaf | 172.17.110.24 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE1_Ethernet4 |
+| DC1.POD1.LEAF2A | l3leaf | 172.17.110.26 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE2_Ethernet4 |
+| DC1.POD1.LEAF2A | l3leaf | 172.17.110.28 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE1_Ethernet7 |
+| DC1.POD1.LEAF2A | l3leaf | 172.17.110.30 | IPv4-UNDERLAY-PEERS | 65110.100 | DC1-POD1-SPINE2_Ethernet7 |
+| DC1.POD1.LEAF2A | l3leaf | 172.17.110.5 | IPv4-UNDERLAY-PEERS | 65111.100 | DC1-POD1-LEAF1B_Ethernet1 |
 | DC1.POD1.LEAF2A | l3leaf | 172.16.110.3 | EVPN-OVERLAY-PEERS | 65111.100 | DC1-POD1-LEAF1A_Loopback0 |
 | DC1.POD1.LEAF2A | l3leaf | 172.16.110.1 | EVPN-OVERLAY-PEERS | 65110.100 | DC1-POD1-SPINE1_Loopback0 |
 | DC1.POD1.LEAF2A | l3leaf | 172.16.10.1 | EVPN-OVERLAY-PEERS | 65101 | DC1-RS1_Loopback0 |
@@ -420,10 +420,10 @@
 
 | Node | Type | VRF | Router ID | Redistribute |
 | ---- | ---- | --- | --------- | ------------ |
-| DC1-POD1-LEAF1B | l3leaf | Common_VRF | 172.16.110.6 | connected |
-| DC1-POD1-LEAF1B | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.110.6 | connected |
-| DC1-POD1-LEAF1B | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.110.6 | connected |
-| DC1-POD1-LEAF1B | l3leaf | vrf_with_loopbacks_from_pod_pools | 172.16.110.6 | connected |
+| DC1-POD1-LEAF1B | l3leaf | Common_VRF | 172.16.110.4 | connected |
+| DC1-POD1-LEAF1B | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.110.4 | connected |
+| DC1-POD1-LEAF1B | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.110.4 | connected |
+| DC1-POD1-LEAF1B | l3leaf | vrf_with_loopbacks_from_pod_pools | 172.16.110.4 | connected |
 | DC1-POD1-LEAF2B | l3leaf | Common_VRF | 172.16.110.5 | connected |
 | DC1-POD1-LEAF2B | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.110.5 | connected |
 | DC1-POD1-LEAF2B | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.110.5 | connected |
@@ -432,10 +432,10 @@
 | DC1-POD2-LEAF1A | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.120.3 | connected |
 | DC1-POD2-LEAF1A | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.120.3 | connected |
 | DC1-POD2-LEAF1A | l3leaf | vrf_with_loopbacks_from_pod_pools | 172.16.120.3 | connected |
-| DC1.POD1.LEAF2A | l3leaf | Common_VRF | 172.16.110.4 | connected |
-| DC1.POD1.LEAF2A | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.110.4 | connected |
-| DC1.POD1.LEAF2A | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.110.4 | connected |
-| DC1.POD1.LEAF2A | l3leaf | vrf_with_loopbacks_from_pod_pools | 172.16.110.4 | connected |
+| DC1.POD1.LEAF2A | l3leaf | Common_VRF | 172.16.110.6 | connected |
+| DC1.POD1.LEAF2A | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.110.6 | connected |
+| DC1.POD1.LEAF2A | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.110.6 | connected |
+| DC1.POD1.LEAF2A | l3leaf | vrf_with_loopbacks_from_pod_pools | 172.16.110.6 | connected |
 | DC2-POD1-LEAF1A | l3leaf | Common_VRF | 172.16.210.3 | connected |
 | DC2-POD1-LEAF1A | l3leaf | vrf_with_loopbacks_dc1_pod1_only | 172.16.210.3 | connected |
 | DC2-POD1-LEAF1A | l3leaf | vrf_with_loopbacks_from_overlapping_pool | 172.16.210.3 | connected |
