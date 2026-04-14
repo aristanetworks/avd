@@ -364,8 +364,6 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 2. DC2 spines use BGP AS 65200 — a different range from DC1.
 3. Higher `id` offsets the loopback allocation to avoid collision with DC1.
 
-**Generated configuration**
-
 AVD produces separate BGP configurations per DC. DC1's spine peers with AS 65101 (DC1 leafs), while DC2's spine peers with AS 65201 (DC2 leafs):
 
 === "DC1 Spine"
