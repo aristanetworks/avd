@@ -398,6 +398,9 @@ router_bgp:
     ebgp_multihop: 15
     send_community: all
     maximum_routes: 0
+  - name: Tenant_C_BGP_PEER_GROUP_RESTRICTED
+    remote_as: '666'
+    description: Tenant C peer group
   neighbors:
   - ip_address: 172.31.254.160
     peer_group: UNDERLAY-PEERS
@@ -605,6 +608,8 @@ router_bgp:
       remote_as: '12345'
       send_community: all
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+    - ip_address: fd5a:fe45:8831:06c5::b
+      remote_as: '12345'
     redistribute:
       connected:
         enabled: true
@@ -626,6 +631,8 @@ router_bgp:
         activate: true
         prefix_list_in: PL-TEST-IN-AF6
         prefix_list_out: PL-TEST-OUT-AF6
+      - ip_address: fd5a:fe45:8831:06c5::b
+        activate: true
   - name: Tenant_B_OP_Zone
     rd: 192.168.254.14:20
     route_targets:

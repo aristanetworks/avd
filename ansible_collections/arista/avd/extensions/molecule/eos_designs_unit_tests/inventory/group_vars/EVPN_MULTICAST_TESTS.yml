@@ -175,6 +175,7 @@ tenants:
             # vrfs.svis.evpn_l2_multicast.enabled: true with igmp_snooping.fast_leave: true
             evpn_l2_multicast:
               enabled: true
+            evpn_redistribute_router_mac_system: true
             # To test vxlan_flood_multicast disabled at l2vlans but enabled at tenant
             vxlan_flood_multicast:
               enabled: false
@@ -185,6 +186,7 @@ tenants:
             tags: ["test_l3"]
             enabled: true
             ip_address_virtual: 10.0.2.1/24
+            evpn_redistribute_router_mac_system: false
             evpn_l2_multicast:
               enabled: true
             # To test vxlan_flood_multicast disabled at l2vlans but enabled at tenant with underlay_multicast_group

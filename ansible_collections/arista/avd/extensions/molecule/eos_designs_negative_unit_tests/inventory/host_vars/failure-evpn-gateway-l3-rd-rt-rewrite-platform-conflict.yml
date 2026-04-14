@@ -1,0 +1,37 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 169.254.102.0/24
+    vtep_loopback_ipv4_pool: 169.253.103.0/24
+    virtual_router_mac_address: 00:1c:73:00:00:99
+  nodes:
+    - name: failure-evpn-gateway-l3-rd-rt-rewrite-platform-conflict
+      id: 1
+      platform: 7050X3
+      mlag: false
+      bgp_as: 65233
+      mgmt_ip: 192.168.0.204/24
+      evpn_gateway:
+        evpn_l3:
+          enabled: true
+          mode: rd-rt-rewrite
+        remote_peers:
+          - hostname: DCI_TEST
+            ip_address: 192.168.100.10
+            bgp_as: 65002
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF10
+        vrf_vni: 10
+        svis:
+          - id: 11
+            name: VRF10_VLAN11
+            enabled: true
+            ip_address_virtual: 10.10.11.1/24
+
+expected_error_message: >-
+  The EVPN gateway RD/RT rewrite mode is not supported by this platform, refer to platform_settings.feature_support.

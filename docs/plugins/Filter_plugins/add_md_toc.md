@@ -41,14 +41,14 @@ The below requirements are needed on the host that executes this module.
 ```yaml
 ---
 tasks:
-- name: Generate fabric documentation
-  run_once: true
-  delegate_to: localhost
-  check_mode: false
-  copy:
-    content: "{{ lookup('template','documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
-    dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
-    mode: "0o664"
+  - name: Generate fabric documentation
+    run_once: true
+    delegate_to: localhost
+    check_mode: false
+    copy:
+      content: "{{ lookup('template','documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
+      dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
+      mode: "0o664"
 ```
 
 ## Return Values

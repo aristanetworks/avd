@@ -7,7 +7,7 @@ ethernet_interfaces:
 - name: Ethernet4
   description: P2P_rr1_Ethernet4
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.3.15/31
   isis_enable: CORE
   isis_metric: 50
@@ -33,7 +33,7 @@ ethernet_interfaces:
 - name: Ethernet3
   description: P2P_p2_Ethernet3
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.3.16/31
   isis_enable: CORE
   isis_metric: 50
@@ -59,7 +59,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_p4_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.3.18/31
   isis_enable: CORE
   isis_metric: 50
