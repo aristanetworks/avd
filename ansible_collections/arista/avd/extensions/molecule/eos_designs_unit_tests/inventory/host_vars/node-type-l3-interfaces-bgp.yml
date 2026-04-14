@@ -29,3 +29,12 @@ l3spine:
           bgp:
             peer_as: 65042
             ipv4_prefix_list_in: ALLOW-DEFAULT
+        - # IPv6 BGP peering
+          name: Ethernet44
+          ipv6_addresses:
+            - 2001:db8::1/64
+          peer: PEER-IPV6
+          peer_interface: Ethernet1
+          peer_ipv6_address: 2001:db8::2
+          bgp:
+            peer_as: 65044
