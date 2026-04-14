@@ -237,8 +237,8 @@ class MiscMixin(Protocol):
                 msg = f"{err_context}.destination"
                 raise AristaAvdMissingVariableError(msg)
 
-            entry.source = self._get_ipv4_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
-            entry.destination = self._get_ipv4_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
+            entry.source = self._get_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
+            entry.destination = self._get_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
             if entry.source != org_ipv4_acl.entries[index].source or entry.destination != org_ipv4_acl.entries[index].destination:
                 changed = True
 
@@ -277,8 +277,8 @@ class MiscMixin(Protocol):
                 msg = f"{err_context}.destination"
                 raise AristaAvdMissingVariableError(msg)
 
-            entry.source = self._get_ipv4_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
-            entry.destination = self._get_ipv4_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
+            entry.source = self._get_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
+            entry.destination = self._get_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
             if entry.source != org_ipv6_acl.entries[index].source or entry.destination != org_ipv6_acl.entries[index].destination:
                 changed = True
 
@@ -287,7 +287,7 @@ class MiscMixin(Protocol):
         return ipv6_acl
 
     @staticmethod
-    def _get_ipv4_acl_field_with_substitution(field_value: str, replacements: dict[str, str | None], field_context: str, interface_name: str) -> str:
+    def _get_acl_field_with_substitution(field_value: str, replacements: dict[str, str | None], field_context: str, interface_name: str) -> str:
         """
         Checks one field if the value can be substituted.
 

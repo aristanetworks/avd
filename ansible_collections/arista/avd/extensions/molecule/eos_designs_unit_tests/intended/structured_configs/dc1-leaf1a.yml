@@ -160,14 +160,15 @@ ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 ipv6_access_lists:
 - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Vlan132
   entries:
+  - remark: This remark entry will be skipped and does not require source and destination.
   - protocol: ipv6
-    source: any
-    destination: 2001:db8:132::1
+    source: 2001:db8:132::1
+    destination: any
     sequence: 10
     action: deny
   - protocol: ipv6
     source: any
-    destination: any
+    destination: 2001:db8:132::1
     action: permit
 - name: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
   entries:

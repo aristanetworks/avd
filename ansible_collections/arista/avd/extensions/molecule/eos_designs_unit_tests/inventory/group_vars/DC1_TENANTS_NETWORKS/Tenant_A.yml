@@ -440,19 +440,22 @@ ipv4_acls:
         destination: any
 
 ipv6_acls:
-  # ACL with interface_ip substitution - used on SVI to verify name gets _<interface> appended.
+  # ACL with remark + source and destination interface_ip substitution.
+  # Covers: remark skipping, source substitution, destination substitution, name suffix appended.
   - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
     entries:
+      - remark: This remark entry will be skipped and does not require source and destination.
       - sequence: 10
         action: deny
         protocol: ipv6
-        source: any
-        destination: interface_ip
+        source: interface_ip
+        destination: any
       - action: permit
         protocol: ipv6
         source: any
-        destination: any
+        destination: interface_ip
   # ACL with static entries - no substitution, name is not modified.
+  # Covers: static ACL path where changed=False and name stays unchanged.
   - name: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
     entries:
       - action: permit
