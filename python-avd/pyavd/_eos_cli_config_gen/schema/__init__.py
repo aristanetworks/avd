@@ -1080,15 +1080,53 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class ServersItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"server": {"type": str}, "vrf": {"type": str}}
+            class Tls(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "port": {"type": int}}
+                enabled: bool
+                """Enable TLS to secure communication with the RADIUS group server."""
+                port: int | None
+                """
+                TCP port used for TLS-secured RADIUS communication. Overrides the default RadSec port (EOS default
+                is 2083).
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Tls.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable TLS to secure communication with the RADIUS group server.
+                            port:
+                               TCP port used for TLS-secured RADIUS communication. Overrides the default RadSec port (EOS default
+                               is 2083).
+
+                        """
+
+            _fields: ClassVar[dict] = {"server": {"type": str}, "vrf": {"type": str}, "tls": {"type": Tls}}
             server: str
             """Hostname or IP address."""
             vrf: str | None
             """VRF name."""
+            tls: Tls
+            """
+            TLS settings for the RADIUS group server. Only applicable when the parent server group type is
+            'radius'.
+
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, server: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, server: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined, tls: Tls | UndefinedType = Undefined
+                ) -> None:
                     """
                     ServersItem.
 
@@ -1098,6 +1136,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         server: Hostname or IP address.
                         vrf: VRF name.
+                        tls:
+                           TLS settings for the RADIUS group server. Only applicable when the parent server group type is
+                           'radius'.
+
+                           Subclass of AvdModel.
 
                     """
 
