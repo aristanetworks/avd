@@ -31643,18 +31643,19 @@ class EosDesigns(EosDesignsRootModel):
                 VRF to originate DHCP relay packets to DHCP server.
                 The value will be interpreted according to these
                 rules:
-                - `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with
-                `mgmt_interface_vrf`.
-                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
-                for the device.
-                - `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with
-                `inband_mgmt_vrf`.
-                  An error will be raised if inband management is not configured for the device.
-                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two
-                options above depending on the value of `default_mgmt_method`.
-                - Any other string will be used
-                directly as the VRF name.
-                - If not set, EOS uses the VRF on the SVI.
+                - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                  An
+                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                -
+                `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                  An error will be
+                raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will
+                configure the source VRF for one of the two options above depending on the value of
+                `default_mgmt_method`.
+                - Any other string will be used directly as the source VRF name.
+                - If not
+                set, EOS uses the VRF on the SVI.
                 """
 
                 if TYPE_CHECKING:
@@ -31679,18 +31680,19 @@ class EosDesigns(EosDesignsRootModel):
                                VRF to originate DHCP relay packets to DHCP server.
                                The value will be interpreted according to these
                                rules:
-                               - `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with
-                               `mgmt_interface_vrf`.
-                                 An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
-                               for the device.
-                               - `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with
-                               `inband_mgmt_vrf`.
-                                 An error will be raised if inband management is not configured for the device.
-                               - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two
-                               options above depending on the value of `default_mgmt_method`.
-                               - Any other string will be used
-                               directly as the VRF name.
-                               - If not set, EOS uses the VRF on the SVI.
+                               - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                 An
+                               error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                               -
+                               `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                 An error will be
+                               raised if inband management is not configured for the device.
+                               - `use_default_mgmt_method_vrf` will
+                               configure the source VRF for one of the two options above depending on the value of
+                               `default_mgmt_method`.
+                               - Any other string will be used directly as the source VRF name.
+                               - If not
+                               set, EOS uses the VRF on the SVI.
 
                         """
 
@@ -32766,18 +32768,19 @@ class EosDesigns(EosDesignsRootModel):
             VRF to originate DHCP relay packets to DHCP server.
             The value will be interpreted according to these
             rules:
-            - `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with
-            `mgmt_interface_vrf`.
-              An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
-            for the device.
-            - `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with
-            `inband_mgmt_vrf`.
-              An error will be raised if inband management is not configured for the device.
-            - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two
-            options above depending on the value of `default_mgmt_method`.
-            - Any other string will be used
-            directly as the VRF name.
-            - If not set, EOS uses the VRF on the SVI.
+            - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+              An
+            error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            -
+            `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+              An error will be
+            raised if inband management is not configured for the device.
+            - `use_default_mgmt_method_vrf` will
+            configure the source VRF for one of the two options above depending on the value of
+            `default_mgmt_method`.
+            - Any other string will be used directly as the source VRF name.
+            - If not
+            set, EOS uses the VRF on the SVI.
             """
 
             if TYPE_CHECKING:
@@ -32802,18 +32805,19 @@ class EosDesigns(EosDesignsRootModel):
                            VRF to originate DHCP relay packets to DHCP server.
                            The value will be interpreted according to these
                            rules:
-                           - `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with
-                           `mgmt_interface_vrf`.
-                             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
-                           for the device.
-                           - `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with
-                           `inband_mgmt_vrf`.
-                             An error will be raised if inband management is not configured for the device.
-                           - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two
-                           options above depending on the value of `default_mgmt_method`.
-                           - Any other string will be used
-                           directly as the VRF name.
-                           - If not set, EOS uses the VRF on the SVI.
+                           - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                             An
+                           error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                           -
+                           `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                             An error will be
+                           raised if inband management is not configured for the device.
+                           - `use_default_mgmt_method_vrf` will
+                           configure the source VRF for one of the two options above depending on the value of
+                           `default_mgmt_method`.
+                           - Any other string will be used directly as the source VRF name.
+                           - If not
+                           set, EOS uses the VRF on the SVI.
 
                     """
 
@@ -62394,18 +62398,19 @@ class EosDesigns(EosDesignsRootModel):
                                 VRF to originate DHCP relay packets to DHCP server.
                                 The value will be interpreted according to these
                                 rules:
-                                - `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with
-                                `mgmt_interface_vrf`.
-                                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
-                                for the device.
-                                - `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with
-                                `inband_mgmt_vrf`.
-                                  An error will be raised if inband management is not configured for the device.
-                                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two
-                                options above depending on the value of `default_mgmt_method`.
-                                - Any other string will be used
-                                directly as the VRF name.
-                                - If not set, EOS uses the VRF on the SVI.
+                                - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                  An
+                                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                -
+                                `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                  An error will be
+                                raised if inband management is not configured for the device.
+                                - `use_default_mgmt_method_vrf` will
+                                configure the source VRF for one of the two options above depending on the value of
+                                `default_mgmt_method`.
+                                - Any other string will be used directly as the source VRF name.
+                                - If not
+                                set, EOS uses the VRF on the SVI.
                                 """
 
                                 if TYPE_CHECKING:
@@ -62430,18 +62435,19 @@ class EosDesigns(EosDesignsRootModel):
                                                VRF to originate DHCP relay packets to DHCP server.
                                                The value will be interpreted according to these
                                                rules:
-                                               - `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with
-                                               `mgmt_interface_vrf`.
-                                                 An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
-                                               for the device.
-                                               - `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with
-                                               `inband_mgmt_vrf`.
-                                                 An error will be raised if inband management is not configured for the device.
-                                               - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two
-                                               options above depending on the value of `default_mgmt_method`.
-                                               - Any other string will be used
-                                               directly as the VRF name.
-                                               - If not set, EOS uses the VRF on the SVI.
+                                               - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                                 An
+                                               error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                               -
+                                               `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                                 An error will be
+                                               raised if inband management is not configured for the device.
+                                               - `use_default_mgmt_method_vrf` will
+                                               configure the source VRF for one of the two options above depending on the value of
+                                               `default_mgmt_method`.
+                                               - Any other string will be used directly as the source VRF name.
+                                               - If not
+                                               set, EOS uses the VRF on the SVI.
 
                                         """
 
@@ -63550,18 +63556,19 @@ class EosDesigns(EosDesignsRootModel):
                             VRF to originate DHCP relay packets to DHCP server.
                             The value will be interpreted according to these
                             rules:
-                            - `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with
-                            `mgmt_interface_vrf`.
-                              An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
-                            for the device.
-                            - `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with
-                            `inband_mgmt_vrf`.
-                              An error will be raised if inband management is not configured for the device.
-                            - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two
-                            options above depending on the value of `default_mgmt_method`.
-                            - Any other string will be used
-                            directly as the VRF name.
-                            - If not set, EOS uses the VRF on the SVI.
+                            - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                              An
+                            error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                            -
+                            `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                              An error will be
+                            raised if inband management is not configured for the device.
+                            - `use_default_mgmt_method_vrf` will
+                            configure the source VRF for one of the two options above depending on the value of
+                            `default_mgmt_method`.
+                            - Any other string will be used directly as the source VRF name.
+                            - If not
+                            set, EOS uses the VRF on the SVI.
                             """
 
                             if TYPE_CHECKING:
@@ -63586,18 +63593,19 @@ class EosDesigns(EosDesignsRootModel):
                                            VRF to originate DHCP relay packets to DHCP server.
                                            The value will be interpreted according to these
                                            rules:
-                                           - `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with
-                                           `mgmt_interface_vrf`.
-                                             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
-                                           for the device.
-                                           - `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with
-                                           `inband_mgmt_vrf`.
-                                             An error will be raised if inband management is not configured for the device.
-                                           - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two
-                                           options above depending on the value of `default_mgmt_method`.
-                                           - Any other string will be used
-                                           directly as the VRF name.
-                                           - If not set, EOS uses the VRF on the SVI.
+                                           - `use_mgmt_interface_vrf` will configure the `mgmt_interface_vrf` as the source VRF.
+                                             An
+                                           error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                                           -
+                                           `use_inband_mgmt_vrf` will configure the `inband_mgmt_vrf` as the source VRF.
+                                             An error will be
+                                           raised if inband management is not configured for the device.
+                                           - `use_default_mgmt_method_vrf` will
+                                           configure the source VRF for one of the two options above depending on the value of
+                                           `default_mgmt_method`.
+                                           - Any other string will be used directly as the source VRF name.
+                                           - If not
+                                           set, EOS uses the VRF on the SVI.
 
                                     """
 
