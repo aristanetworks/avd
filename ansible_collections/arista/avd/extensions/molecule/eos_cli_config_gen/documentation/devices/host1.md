@@ -13648,6 +13648,15 @@ mac security
 
 ### Traffic Policies information
 
+#### Traffic Policies VRF Interfaces
+
+| VRF | CPU Traffic Policy | Management Ports | Physical Interfaces Traffic Policy |
+| --- | ------------------ | ---------------- | ---------------------------------- |
+| VRF1 | TP1 | True | TP1 |
+| VRF2 | TP2 | - | TP2 |
+| VRF3 | TP3 | - | - |
+| VRF4 | - | - | TP4 |
+
 #### IPv4 Field Sets
 
 | Field Set Name | IPv4 Prefixes | Excluded Prefixes |
@@ -13729,6 +13738,21 @@ Counters: test
 ```eos
 !
 traffic-policies
+   vrf VRF1
+      cpu traffic-policy TP1 fallback traffic-policy none
+         enforcement management
+      traffic-policy input TP1 physical
+   !
+   vrf VRF2
+      cpu traffic-policy TP2 fallback traffic-policy none
+      traffic-policy input TP2 physical
+   !
+   vrf VRF3
+      cpu traffic-policy TP3 fallback traffic-policy none
+   !
+   vrf VRF4
+      traffic-policy input TP4 physical
+   !
    field-set l4-port SERVICE-DEMO
       10,20,80,440-450
    !

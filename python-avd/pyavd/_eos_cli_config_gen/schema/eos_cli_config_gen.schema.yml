@@ -24408,6 +24408,42 @@ keys:
   traffic_policies:
     type: dict
     keys:
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+              convert_types:
+              - int
+            cpu:
+              type: dict
+              keys:
+                traffic_policy:
+                  type: dict
+                  required: true
+                  keys:
+                    name:
+                      type: str
+                      convert_types:
+                      - int
+                      required: true
+                      description: 'Traffic-policy name.
+
+                        Currently this is always configured with "fallback traffic-policy
+                        none".'
+                    enforcement_management:
+                      type: bool
+                      description: Enforce CPU traffic-policy on management ports.
+            traffic_policy_input_physical:
+              type: str
+              convert_types:
+              - int
+              description: Name of the Traffic Policy applied to traffic arriving
+                on physical interfaces within VRF.
       options:
         type: dict
         keys:

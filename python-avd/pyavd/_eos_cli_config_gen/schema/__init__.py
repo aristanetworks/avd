@@ -66517,6 +66517,96 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class TrafficPolicies(AvdModel):
         """Subclass of AvdModel."""
 
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Cpu(AvdModel):
+                """Subclass of AvdModel."""
+
+                class TrafficPolicy(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"name": {"type": str}, "enforcement_management": {"type": bool}}
+                    name: str
+                    """
+                    Traffic-policy name.
+                    Currently this is always configured with "fallback traffic-policy none".
+                    """
+                    enforcement_management: bool | None
+                    """Enforce CPU traffic-policy on management ports."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, name: str | UndefinedType = Undefined, enforcement_management: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            TrafficPolicy.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                name:
+                                   Traffic-policy name.
+                                   Currently this is always configured with "fallback traffic-policy none".
+                                enforcement_management: Enforce CPU traffic-policy on management ports.
+
+                            """
+
+                _fields: ClassVar[dict] = {"traffic_policy": {"type": TrafficPolicy}}
+                traffic_policy: TrafficPolicy
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, traffic_policy: TrafficPolicy | UndefinedType = Undefined) -> None:
+                        """
+                        Cpu.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            traffic_policy: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "cpu": {"type": Cpu}, "traffic_policy_input_physical": {"type": str}}
+            name: str
+            """VRF name."""
+            cpu: Cpu
+            """Subclass of AvdModel."""
+            traffic_policy_input_physical: str | None
+            """Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    cpu: Cpu | UndefinedType = Undefined,
+                    traffic_policy_input_physical: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF name.
+                        cpu: Subclass of AvdModel.
+                        traffic_policy_input_physical: Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
         class Options(AvdModel):
             """Subclass of AvdModel."""
 
@@ -67438,7 +67528,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Policies._item_type = PoliciesItem
 
-        _fields: ClassVar[dict] = {"options": {"type": Options}, "field_sets": {"type": FieldSets}, "policies": {"type": Policies}}
+        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}, "options": {"type": Options}, "field_sets": {"type": FieldSets}, "policies": {"type": Policies}}
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         options: Options
         """Subclass of AvdModel."""
         field_sets: FieldSets
@@ -67451,6 +67543,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
+                vrfs: Vrfs | UndefinedType = Undefined,
                 options: Options | UndefinedType = Undefined,
                 field_sets: FieldSets | UndefinedType = Undefined,
                 policies: Policies | UndefinedType = Undefined,
@@ -67462,6 +67555,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     options: Subclass of AvdModel.
                     field_sets: Subclass of AvdModel.
                     policies: Subclass of AvdIndexedList with `PoliciesItem` items. Primary key is `name` (`str`).
