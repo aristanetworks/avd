@@ -88,12 +88,16 @@ class FabricDocumentationFacts(AvdFacts):
                     # MPLS/SP fields
                     "mpls_router_id": get(structured_config, "mpls.ldp.router_id"),
                     "mpls_ldp_enabled": get(structured_config, "mpls.ldp.shutdown") is False if get(structured_config, "mpls.ldp") else None,
-                    "bgp_as": get(structured_config, "router_bgp.as"),
-                    "router_id": get(structured_config, "router_bgp.router_id"),
+                    "bgp_as": self.avd_facts[hostname].bgp_as,
+                    "router_id": self.avd_facts[hostname].router_id,
                     "isis_sr_enabled": get(structured_config, "router_isis.segment_routing_mpls.enabled"),
-                    "node_sid_ipv4_index": get(
+                    "isis_node_sid_ipv4_index": get(
                         get_item(get(structured_config, "loopback_interfaces", default=[]), "name", "Loopback0", default={}),
                         "node_segment.ipv4_index",
+                    ),
+                    "isis_node_sid_ipv6_index": get(
+                        get_item(get(structured_config, "loopback_interfaces", default=[]), "name", "Loopback0", default={}),
+                        "node_segment.ipv6_index",
                     ),
                 }
                 for hostname, structured_config in self.structured_configs.items()
@@ -135,8 +139,8 @@ class FabricDocumentationFacts(AvdFacts):
                     {
                         "node": hostname,
                         "type": self.avd_facts[hostname].type,
-                        "bgp_as": get(router_bgp, "as", default="-"),
-                        "router_id": get(router_bgp, "router_id", default="-"),
+                        "bgp_as": self.avd_facts[hostname].bgp_as or "-",
+                        "router_id": self.avd_facts[hostname].router_id or "-",
                         "address_families": ", ".join(address_families),
                     }
                 )
@@ -159,9 +163,9 @@ class FabricDocumentationFacts(AvdFacts):
                         {
                             "node": hostname,
                             "type": self.avd_facts[hostname].type,
-                            "bgp_as": get(router_bgp, "as", default="-"),
-                            "router_id": get(router_bgp, "router_id", default="-"),
-                            "cluster_id": get(router_bgp, "bgp.cluster_id", default="-"),
+                            "bgp_as": self.avd_facts[hostname].bgp_as or "-",
+                            "router_id": self.avd_facts[hostname].router_id or "-",
+                            "cluster_id": get(router_bgp, "bgp_cluster_id", default="-"),
                         }
                     )
                     break
