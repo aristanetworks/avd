@@ -515,8 +515,8 @@ class FilteredTenantsMixin(Protocol):
                 vrf_source_interface = self.get_source_interface(source_vrf, None) if source_vrf else None
                 if source_interface and vrf_source_interface and (source_interface != vrf_source_interface):
                     msg = (
-                        f"Incorrect source_interface is set for 'tenant[name={tenant.name}].vrfs[name={vrf.name}].ip_helpers[{helper_idx}]'"
-                        f" or 'tenant[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}].ip_helpers[{helper_idx}]'."
+                        f"Incorrect source_interface is set for 'tenants[name={tenant.name}].vrfs[name={vrf.name}].ip_helpers[{helper_idx}]'"
+                        f" or 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}].ip_helpers[{helper_idx}]'."
                     )
                     raise AristaAvdInvalidInputsError(msg)
                 source_vrf = (
