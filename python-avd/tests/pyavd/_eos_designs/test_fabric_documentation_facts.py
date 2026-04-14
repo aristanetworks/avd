@@ -114,7 +114,7 @@ class TestFabricDocumentationFacts:
         }
 
     @pytest.fixture
-    def fabric_doc_facts(self, mock_avd_facts, mock_structured_configs) -> FabricDocumentationFacts:
+    def fabric_doc_facts(self, mock_avd_facts: dict[str, EosDesignsFacts], mock_structured_configs: dict[str, dict]) -> FabricDocumentationFacts:
         """Create FabricDocumentationFacts instance for testing."""
         return FabricDocumentationFacts(
             avd_facts=mock_avd_facts,
@@ -124,7 +124,7 @@ class TestFabricDocumentationFacts:
             toc=True,
         )
 
-    def test_fabric_switches_uses_avd_facts_bgp_as(self, fabric_doc_facts):
+    def test_fabric_switches_uses_avd_facts_bgp_as(self, fabric_doc_facts: FabricDocumentationFacts) -> None:
         """Test that fabric_switches uses avd_facts.bgp_as instead of structured_config."""
         fabric_switches = fabric_doc_facts.fabric_switches
 
@@ -135,7 +135,7 @@ class TestFabricDocumentationFacts:
         host2_switch = next(s for s in fabric_switches if s["node"] == "host2")
         assert host2_switch["bgp_as"] == "65000", "Should use avd_facts[hostname].bgp_as"
 
-    def test_fabric_switches_uses_avd_facts_router_id(self, fabric_doc_facts):
+    def test_fabric_switches_uses_avd_facts_router_id(self, fabric_doc_facts: FabricDocumentationFacts) -> None:
         """Test that fabric_switches uses avd_facts.router_id instead of structured_config."""
         fabric_switches = fabric_doc_facts.fabric_switches
 
@@ -146,7 +146,7 @@ class TestFabricDocumentationFacts:
         host2_switch = next(s for s in fabric_switches if s["node"] == "host2")
         assert host2_switch["router_id"] == "10.255.0.2", "Should use avd_facts[hostname].router_id"
 
-    def test_fabric_switches_has_isis_node_sid_ipv6_index(self, fabric_doc_facts):
+    def test_fabric_switches_has_isis_node_sid_ipv6_index(self, fabric_doc_facts: FabricDocumentationFacts) -> None:
         """Test that fabric_switches includes isis_node_sid_ipv6_index field."""
         fabric_switches = fabric_doc_facts.fabric_switches
 
@@ -158,7 +158,7 @@ class TestFabricDocumentationFacts:
         host2_switch = next(s for s in fabric_switches if s["node"] == "host2")
         assert host2_switch["isis_node_sid_ipv6_index"] == 102, "Should extract IPv6 node-SID index from loopback"
 
-    def test_fabric_switches_has_isis_node_sid_ipv4_index(self, fabric_doc_facts):
+    def test_fabric_switches_has_isis_node_sid_ipv4_index(self, fabric_doc_facts: FabricDocumentationFacts) -> None:
         """Test that fabric_switches includes isis_node_sid_ipv4_index field (renamed from node_sid_ipv4_index)."""
         fabric_switches = fabric_doc_facts.fabric_switches
 
@@ -168,7 +168,7 @@ class TestFabricDocumentationFacts:
         assert "node_sid_ipv4_index" not in host1_switch, "Should NOT include old node_sid_ipv4_index field"
         assert host1_switch["isis_node_sid_ipv4_index"] == 1, "Should extract IPv4 node-SID index from loopback"
 
-    def test_mpls_overlay_nodes_uses_avd_facts(self, fabric_doc_facts):
+    def test_mpls_overlay_nodes_uses_avd_facts(self, fabric_doc_facts: FabricDocumentationFacts) -> None:
         """Test that mpls_overlay_nodes uses avd_facts for bgp_as and router_id."""
         overlay_nodes = fabric_doc_facts.mpls_overlay_nodes
 
@@ -184,7 +184,7 @@ class TestFabricDocumentationFacts:
         assert host2_node["bgp_as"] == "65000", "Should use avd_facts[hostname].bgp_as"
         assert host2_node["router_id"] == "10.255.0.2", "Should use avd_facts[hostname].router_id"
 
-    def test_mpls_route_reflectors_uses_avd_facts(self, fabric_doc_facts):
+    def test_mpls_route_reflectors_uses_avd_facts(self, fabric_doc_facts: FabricDocumentationFacts) -> None:
         """Test that mpls_route_reflectors uses avd_facts for bgp_as and router_id."""
         rr_nodes = fabric_doc_facts.mpls_route_reflectors
 
@@ -197,7 +197,7 @@ class TestFabricDocumentationFacts:
         assert host2_rr["router_id"] == "10.255.0.2", "Should use avd_facts[hostname].router_id"
         assert host2_rr["cluster_id"] == "10.255.0.2", "Should use bgp_cluster_id (not bgp.cluster_id)"
 
-    def test_mpls_route_reflectors_correct_cluster_id_field(self, fabric_doc_facts):
+    def test_mpls_route_reflectors_correct_cluster_id_field(self, fabric_doc_facts: FabricDocumentationFacts) -> None:
         """Test that mpls_route_reflectors uses correct field path for cluster_id (bgp_cluster_id not bgp.cluster_id)."""
         rr_nodes = fabric_doc_facts.mpls_route_reflectors
 
@@ -207,19 +207,19 @@ class TestFabricDocumentationFacts:
         assert host2_rr["cluster_id"] == "10.255.0.2", "Should correctly read from bgp_cluster_id field"
         assert host2_rr["cluster_id"] != "-", "Should NOT be default value if bgp_cluster_id is configured"
 
-    def test_has_isis_sr_property(self, fabric_doc_facts):
+    def test_has_isis_sr_property(self, fabric_doc_facts: FabricDocumentationFacts) -> None:
         """Test that has_isis_sr correctly identifies ISIS SR configuration."""
         assert fabric_doc_facts.has_isis_sr is True, "Should detect ISIS SR is enabled on fabric switches"
 
-    def test_has_mpls_property(self, fabric_doc_facts):
+    def test_has_mpls_property(self, fabric_doc_facts: FabricDocumentationFacts) -> None:
         """Test that has_mpls correctly identifies MPLS/LDP configuration."""
         assert fabric_doc_facts.has_mpls is True, "Should detect MPLS/LDP is enabled on fabric switches"
 
-    def test_has_mpls_overlay_property(self, fabric_doc_facts):
+    def test_has_mpls_overlay_property(self, fabric_doc_facts: FabricDocumentationFacts) -> None:
         """Test that has_mpls_overlay correctly identifies MPLS overlay configuration."""
         assert fabric_doc_facts.has_mpls_overlay is True, "Should detect MPLS overlay BGP is configured"
 
-    def test_has_mpls_route_reflectors_property(self, fabric_doc_facts):
+    def test_has_mpls_route_reflectors_property(self, fabric_doc_facts: FabricDocumentationFacts) -> None:
         """Test that has_mpls_route_reflectors correctly identifies MPLS route reflectors."""
         assert fabric_doc_facts.has_mpls_route_reflectors is True, "Should detect MPLS route reflectors are configured"
 
@@ -227,7 +227,7 @@ class TestFabricDocumentationFacts:
 class TestFabricDocumentationFactsEdgeCases:
     """Test edge cases and None handling."""
 
-    def test_avd_facts_bgp_as_none_handling(self):
+    def test_avd_facts_bgp_as_none_handling(self) -> None:
         """Test that None bgp_as from avd_facts is handled with 'or' operator."""
         mock_facts = MagicMock()
         mock_facts.type = "l3leaf"
@@ -259,7 +259,7 @@ class TestFabricDocumentationFactsEdgeCases:
         if overlay_nodes:
             assert overlay_nodes[0]["bgp_as"] == "-", "None bgp_as should be rendered as '-'"
 
-    def test_avd_facts_router_id_none_handling(self):
+    def test_avd_facts_router_id_none_handling(self) -> None:
         """Test that None router_id from avd_facts is handled with 'or' operator."""
         mock_facts = MagicMock()
         mock_facts.type = "l3leaf"
