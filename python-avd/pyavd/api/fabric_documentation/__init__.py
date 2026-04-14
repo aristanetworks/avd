@@ -39,6 +39,13 @@ class ACTDigitalTwin:
     links: tuple[ActLinkSettings, ...] | None = None
 
 
+@dataclass(frozen=True)
+class ContainerlabDigitalTwin:
+    """Containerlab Digital Twin fabric documentation dataclass."""
+
+    prefix: str = "avd-dt"
+
+
 class FabricDocumentation:
     """
     Object containing the requested documentation.
@@ -53,4 +60,4 @@ class FabricDocumentation:
     fabric_documentation: str = ""
     topology_csv: str = ""
     p2p_links_csv: str = ""
-    digital_twin: ACTDigitalTwin | None = None
+    digital_twin: ACTDigitalTwin | ContainerlabDigitalTwin | None = None

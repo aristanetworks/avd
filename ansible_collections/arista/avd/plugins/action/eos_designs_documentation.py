@@ -128,6 +128,7 @@ class ActionModule(ActionBase):
             content = strip_empties_from_dict(
                 {str(key).replace("_", "-"): list(value) if isinstance(value, tuple) else value for key, value in asdict(output.digital_twin).items()}
             )
+            # TODO: Revisit filename selection for Containerlab, since digital_twin_file currently follows the ACT-oriented role input.
             changed = write_file(
                 content=yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130),
                 filename=validated_args["digital_twin_file"],

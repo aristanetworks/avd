@@ -17036,7 +17036,7 @@ class EosDesigns(EosDesignsRootModel):
     class DigitalTwin(AvdModel):
         """Subclass of AvdModel."""
 
-        Environment: TypeAlias = Literal["act"]
+        Environment: TypeAlias = Literal["act", "containerlab"]
 
         class Fabric(AvdModel):
             """Subclass of AvdModel."""

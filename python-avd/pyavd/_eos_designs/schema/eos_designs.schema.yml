@@ -2015,6 +2015,7 @@ keys:
         description: Targeted Digital Twin environment.
         valid_values:
         - act
+        - containerlab
         default: act
       fabric:
         type: dict
