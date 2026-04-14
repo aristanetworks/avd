@@ -24,14 +24,23 @@ options:
       - Must be the same across all plugins.
     required: true
     type: str
+  device_list:
+    description:
+      - Optional list of hostnames to process. If not provided, fallback to all hosts in the current play.
+      - For `eos_config` and `cv_deploy` schemas, only these hosts will be validated.
+      - For `avd_design`, these hosts must be a subset of the `fabric_name` group and the entire group will be processed.
+    required: false
+    type: list
+    elements: str
   schema_name:
     description:
       - The AVD schema to validate against.
       - If set to `avd_design`, the plugin will validate the inputs for the entire fabric (requiring `fabric_name` to be set).
-      - If set to `eos_config`, the plugin will validate the inputs for the devices in the current play.
+      - If set to `eos_config` or `cv_deploy`, the plugin will validate the inputs for the devices in the `device_list` if provided,
+        otherwise all hosts in the current play.
     type: str
     default: "avd_design"
-    choices: ["avd_design", "eos_config"]
+    choices: ["avd_design", "eos_config", "cv_deploy"]
   input_dir:
     description:
       - Optional path to a directory containing input files to validate directly.
@@ -46,6 +55,19 @@ options:
     type: str
     default: "json"
     choices: ["yml", "yaml", "json"]
+  read_from_input_dir:
+    description:
+      - If `true`, the templating phase is skipped and input files are read directly from `input_dir`.
+      - If `false`, the plugin resolves Ansible hostvars and writes templated data before validation.
+      - Requires `input_dir` to be set when `true`.
+    type: bool
+    default: false
+  fail_on_missing_input_files:
+    description:
+      - If `true`, the task will fail if any device input files are missing.
+      - If `false`, devices with missing input files will be skipped with an informational log message.
+    type: bool
+    default: true
   fail_on_validation_errors:
     description:
       - If `true`, the task will fail if any validation errors are detected.
@@ -116,4 +138,21 @@ EXAMPLES = r"""
   # [defaults]
   # vault_identity_list = dev@.vault_dev, prod@.vault_prod
   # The 'prod' vault identity will be used to encrypt temporary files.
+
+- name: Validate cv_deploy inputs from structured config files
+  arista.avd.validate_inputs:
+    tmp_dir: "intended/tmp_cv_deploy"
+    schema_name: cv_deploy
+    input_dir: "{{ inventory_dir }}/intended/structured_configs"
+    input_suffix: "yml"
+    read_from_input_dir: true
+    fail_on_missing_input_files: false
+    fail_on_validation_errors: true
+
+- name: Validate cv_deploy inputs from Ansible hostvars
+  arista.avd.validate_inputs:
+    tmp_dir: "intended/tmp_cv_deploy"
+    schema_name: cv_deploy
+    read_from_input_dir: false
+    fail_on_validation_errors: true
 """

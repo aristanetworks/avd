@@ -79,6 +79,17 @@ ethernet_interfaces:
     peer: dc1-leaf1c
     peer_interface: Ethernet2
     peer_type: l2leaf
+- name: Ethernet18
+  description: P2P_dc1-wan3_Ethernet2
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.255.253.10/31
+  metadata:
+    peer: dc1-wan3
+    peer_interface: Ethernet2
+    peer_type: wan_router
+  switchport:
+    enabled: false
 - name: Ethernet5
   description: SERVER_dc1-leaf1-server1_PCI2
   shutdown: false
@@ -257,6 +268,9 @@ metadata:
     min_line_cards: 0
     transceiver_manufacturers:
     - Third-party vendor
+  interfaces:
+    errdisable:
+      only_avd_interfaces: true
 mlag_configuration:
   domain_id: DC1_L3_LEAF1
   local_interface: Vlan4094
@@ -410,6 +424,12 @@ router_bgp:
     metadata:
       peer: dc1-wan2
     description: dc1-wan2_Ethernet2
+  - ip_address: 10.255.253.11
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65101'
+    metadata:
+      peer: dc1-wan3
+    description: dc1-wan3_Ethernet2
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'

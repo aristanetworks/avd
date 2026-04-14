@@ -58,7 +58,6 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 1. `fabric_name` must be defined and match group name covering all devices in scope of the fabric.
 2. Underlay routing protocol - eBGP is common for EVPN/VXLAN fabrics
 3. Overlay routing protocol for EVPN peering
-4. MTU for point-to-point uplinks (1500 for virtual, 9214 for physical)
 
 ### Default Interfaces
 

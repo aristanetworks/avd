@@ -3,6 +3,10 @@ tenants:
   - name: TENANT_A
     mac_vrf_id_base: 10000
     pseudowire_rt_base: 1000
+    vpws:
+      mpls_control_word: true
+      mtu: 1500
+      label_flow: true
     point_to_point_services:
       # Port-based vpws service
       - name: TEN_A_site1_site2_eline_port_based
@@ -54,6 +58,9 @@ tenants:
   - name: TENANT_B
     pseudowire_rt_base: 2000
     mac_vrf_id_base: 20000
+    vpws:
+      mpls_control_word: false
+      label_flow: false
     point_to_point_services:
       - name: TEN_B_site3_site5_eline_vlan_based
         type: vpws-pseudowire
@@ -195,3 +202,22 @@ tenants:
               - SITE2-LER1
             password: "OajzUG59/YF0NkgvOQyRnQ=="
             remote_as: "65202"
+  # TENANT_C: covers the case where pseudowire_rt_base and point_to_point_services are not defined.
+  - name: TENANT_C
+    vpws:
+      mpls_control_word: true
+      mtu: 1500
+      label_flow: true
+    mac_vrf_id_base: 10000
+    l2vlans:
+      - id: 110
+        name: TENANT_C_L2_SERVICE
+        tags:
+          - site1-2
+          - site5
+      - id: 210
+        name: TENANT_C_L2_SERVICE
+        rt_override: 123456
+        tags:
+          - site1-2
+          - site5

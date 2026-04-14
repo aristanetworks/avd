@@ -50,6 +50,11 @@ router_bgp:
       receive: true
       send: ecmp
       send_limit: 30
+    labeled_unicast:
+      rib:
+        ip:
+          enabled: true
+          route_map: RM-rib1
   listen_ranges:
       # should render
     - prefix: 10.10.10.0/24
@@ -713,6 +718,9 @@ router_bgp:
           send: ecmp
           send_limit: 20
           prefix_list: PL2
+        default_originate:
+          route_map: RM-FOO
+          always: true
       - name: FOOBAR
         activate: false
     neighbors:

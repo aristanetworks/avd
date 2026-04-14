@@ -17,7 +17,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_dc1-leaf1a_Ethernet1
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ipv6_addresses:
   - 2001:db8:2::1/64
   metadata:
@@ -29,7 +29,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_dc1-leaf1b_Ethernet1
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ipv6_addresses:
   - 2001:db8:2:2::1/64
   metadata:
@@ -41,7 +41,7 @@ ethernet_interfaces:
 - name: Ethernet3
   description: P2P_dc1-leaf2a_Ethernet1
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ipv6_addresses:
   - 2001:db8:2:4::1/64
   metadata:
@@ -53,7 +53,7 @@ ethernet_interfaces:
 - name: Ethernet4
   description: P2P_dc1-leaf2b_Ethernet1
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ipv6_addresses:
   - 2001:db8:2:6::1/64
   metadata:
