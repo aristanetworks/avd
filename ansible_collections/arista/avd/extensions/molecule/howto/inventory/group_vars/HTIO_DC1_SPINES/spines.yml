@@ -1,0 +1,16 @@
+---
+# Inventory Organization How-To Guide — XL DC1 Spines
+# DC1-specific spine definitions with their own BGP AS and loopback pool.
+
+# --8<-- [start:dc1_spines]
+spine:
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.255.10.0/27 # (1)!
+    bgp_as: 65100 # (2)!
+
+  nodes:
+    - name: htio-dc1-spine1
+      id: 1
+      mgmt_ip: 172.16.5.11/24
+# --8<-- [end:dc1_spines]

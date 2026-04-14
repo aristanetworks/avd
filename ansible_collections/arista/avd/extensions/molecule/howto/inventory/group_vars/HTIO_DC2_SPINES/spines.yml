@@ -1,0 +1,16 @@
+---
+# Inventory Organization How-To Guide — XL DC2 Spines
+# DC2 uses a different BGP AS range and offset loopback IDs to avoid collision with DC1.
+
+# --8<-- [start:dc2_spines]
+spine:
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.255.10.0/27 # (1)!
+    bgp_as: 65200 # (2)!
+
+  nodes:
+    - name: htio-dc2-spine1
+      id: 11 # (3)!
+      mgmt_ip: 172.16.5.21/24
+# --8<-- [end:dc2_spines]

@@ -327,6 +327,63 @@ Ansible merges all specified inventory directories, making groups from each DC v
 !!! warning "AVD limitation"
     Each AVD run processes one `fabric_name` group. If you split inventories across DCs, run AVD once per DC using `-i inventory/dc1` etc., or use a single merged inventory with a shared `FABRIC` group that spans all DCs.
 
+**Example `hosts.yml` with multi-DC groups:**
+
+```yaml title="hosts.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/hosts.yml:htio_xl
+--8<--
+```
+
+**Shared fabric settings** — in an XL deployment, these variables would live in a `global_vars/` directory loaded by the plugin. They apply to all DCs equally:
+
+```yaml title="global_vars/global.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIO_XL/fabric.yml:global
+--8<--
+```
+
+Each DC defines its own spine and leaf nodes with separate BGP AS ranges and IP pools. DC1 uses AS 65100/65101, DC2 uses AS 65200/65201:
+
+```yaml title="inventory/dc1/group_vars/DC1_SPINES/spines.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIO_DC1_SPINES/spines.yml:dc1_spines
+--8<--
+```
+
+1. Shared loopback pool — DC1 and DC2 draw from the same block but use different `id` offsets to avoid collision.
+2. DC1 spines use BGP AS 65100.
+
+```yaml title="inventory/dc2/group_vars/DC2_SPINES/spines.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIO_DC2_SPINES/spines.yml:dc2_spines
+--8<--
+```
+
+1. Same loopback pool as DC1, but `id: 11` ensures no overlap.
+2. DC2 spines use BGP AS 65200 — a different range from DC1.
+3. Higher `id` offsets the loopback allocation to avoid collision with DC1.
+
+**Generated configuration**
+
+AVD produces separate BGP configurations per DC. DC1's spine peers with AS 65101 (DC1 leafs), while DC2's spine peers with AS 65201 (DC2 leafs):
+
+=== "DC1 Spine"
+
+    ```cli title="htio-dc1-spine1"
+    --8<--
+    docs/howto/inventory_organization/artifacts/htio-dc1-spine1-bgp.cfg
+    --8<--
+    ```
+
+=== "DC2 Spine"
+
+    ```cli title="htio-dc2-spine1"
+    --8<--
+    docs/howto/inventory_organization/artifacts/htio-dc2-spine1-bgp.cfg
+    --8<--
+    ```
+
 **Running playbooks against specific inventories:**
 
 Target a single DC by passing its inventory directory explicitly:

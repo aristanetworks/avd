@@ -158,3 +158,16 @@ artifacts:
       - header: "mlag configuration"
     artifact: "htio-leaf1a-mlag.cfg"
     output_dir: "inventory_organization/artifacts/"
+
+  # Inventory Organization (XL) artifacts
+  - file: inventory/intended/configs/htio-dc1-spine1.cfg
+    sections:
+      - header: "router bgp 65100"
+    artifact: "htio-dc1-spine1-bgp.cfg"
+    output_dir: "inventory_organization/artifacts/"
+
+  - file: inventory/intended/configs/htio-dc2-spine1.cfg
+    sections:
+      - header: "router bgp 65200"
+    artifact: "htio-dc2-spine1-bgp.cfg"
+    output_dir: "inventory_organization/artifacts/"

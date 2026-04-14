@@ -1,0 +1,25 @@
+---
+# Inventory Organization How-To Guide — XL DC1 Leafs
+
+# --8<-- [start:dc1_leafs]
+l3leaf:
+  defaults:
+    platform: cEOSLab
+    loopback_ipv4_pool: 10.255.10.0/27
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.255.11.0/27
+    uplink_switches: [htio-dc1-spine1]
+    uplink_ipv4_pool: 10.255.255.192/26
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  node_groups:
+    - group: HTIO_DC1_LEAF1
+      bgp_as: 65101 # (1)!
+      nodes:
+        - name: htio-dc1-leaf1
+          id: 1
+          mgmt_ip: 172.16.5.101/24
+          uplink_switch_interfaces: [Ethernet1]
+# --8<-- [end:dc1_leafs]

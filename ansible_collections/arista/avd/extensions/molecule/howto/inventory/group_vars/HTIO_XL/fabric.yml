@@ -1,0 +1,29 @@
+---
+# Inventory Organization How-To Guide — XL Topology
+# Shared fabric settings applied to all DCs via parent group inheritance.
+# In an XL deployment, these would live in a global_vars directory
+# loaded by the arista.avd.global_vars plugin.
+
+# --8<-- [start:global]
+fabric_name: FABRIC
+
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp
+
+default_interfaces:
+  - types: [spine]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+    downlink_interfaces: [Ethernet1-8]
+  - types: [l3leaf]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+
+default_node_types:
+  - match_hostnames:
+      - ".*-spine.*"
+    node_type: spine
+  - match_hostnames:
+      - ".*-leaf.*"
+    node_type: l3leaf
+# --8<-- [end:global]
