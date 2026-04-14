@@ -39,6 +39,7 @@ tenants:
     vrfs:
       - name: IP_HELPERS1
         vrf_id: 100
+        # This input is ignored as svis[].ip_helper is the priority.
         ip_helpers:
           - ip_helper: 1.1.1.1
             source_interface: lo100
