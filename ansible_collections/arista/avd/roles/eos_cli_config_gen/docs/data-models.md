@@ -480,12 +480,6 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/dns-domain.m
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/domain-list.md
 --8<--
 
-### IP Host
-
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-hosts.md
---8<--
-
 ### Hostname
 
 --8<--
@@ -496,6 +490,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/hostname.md
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-domain-lookup.md
+--8<--
+
+### IP Host
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-hosts.md
 --8<--
 
 ### IP HTTP client
