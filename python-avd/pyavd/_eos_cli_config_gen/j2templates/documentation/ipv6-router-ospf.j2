@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -88,7 +88,7 @@
 {%                     do source_protocols.append(('ospfv3 match nssa external', 'enabled', process_id.redistribute.ospfv3.match_nssa_external.route_map | arista.avd.default('-'))) %}
 {%                 endif %}
 {%                 for source_protocol in source_protocols %}
-| {{ process_id.id }} | {{ process_id.vrf | arista.avd.default ('-') }} |{{ source_protocol[0] }} | {{ source_protocol[1] }} | {{ source_protocol[2] }} |
+| {{ process_id.id }} | {{ process_id.vrf | arista.avd.default ('-') }} | {{ source_protocol[0] }} | {{ source_protocol[1] }} | {{ source_protocol[2] }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}

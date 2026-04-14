@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -114,9 +114,24 @@ class MiscMixin(Protocol):
 
     @cached_property
     def uplink_interfaces(self: SharedUtilsProtocol) -> list[str]:
-        return range_expand(
-            self.node_config.uplink_interfaces or self.cv_topology_config.uplink_interfaces or self.default_interfaces.uplink_interfaces,
-        )
+        if uplink_interface_candidates := range_expand(self.node_config.uplink_interfaces or self.cv_topology_config.uplink_interfaces):
+            if len(uplink_interface_candidates) != len(self.uplink_switches):
+                msg = (
+                    f"Length of 'uplink_interfaces': {len(uplink_interface_candidates)} does not match the length of 'uplink_switches':"
+                    f" {len(self.uplink_switches)}"
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+            return uplink_interface_candidates
+
+        uplink_interface_candidates = range_expand(self.default_interfaces.uplink_interfaces)
+        if len(uplink_interface_candidates) < len(self.uplink_switches):
+            msg = (
+                f"Length of 'default_interfaces.uplink_interfaces': {len(uplink_interface_candidates)} is less than the length of 'uplink_switches': "
+                f"{len(self.uplink_switches)}."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+
+        return uplink_interface_candidates[: len(self.uplink_switches)]
 
     @cached_property
     def uplink_switch_interfaces(self: SharedUtilsProtocol) -> list[str]:

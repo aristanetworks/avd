@@ -514,7 +514,9 @@ vrfs:
   ip_routing: false
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenants:
+    - TenantA
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-edge-no-ipsec-for-wan-path-group_VTEP

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -7,19 +7,43 @@
 {% if traffic_policies is arista.avd.defined %}
 !
 traffic-policies
+{%     set ns = namespace(first=true) %}
+{%     for vrf in traffic_policies.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if vrf.cpu is arista.avd.defined or vrf.traffic_policy_input_physical is arista.avd.defined %}
+{%             if not ns.first %}
+   !
+{%             endif %}
+{%             set ns.first = false %}
+   vrf {{ vrf.name }}
+{%             if vrf.cpu is arista.avd.defined %}
+      cpu traffic-policy {{ vrf.cpu.traffic_policy.name }} fallback traffic-policy none
+{%                 if vrf.cpu.traffic_policy.enforcement_management is arista.avd.defined(true) %}
+         enforcement management
+{%                 endif %}
+{%             endif %}
+{%             if vrf.traffic_policy_input_physical is arista.avd.defined %}
+      traffic-policy input {{ vrf.traffic_policy_input_physical }} physical
+{%             endif %}
+{%         endif %}
+{%     endfor %}
 {# FIELD SET #}
 {#     -- L4 PORT MANAGEMENT -- #}
-{%     for field_set_port in traffic_policies.field_sets.ports | arista.avd.natural_sort('name') %}
+{%     for field_set_port in traffic_policies.field_sets.ports | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if not ns.first %}
+   !
+{%         endif %}
+{%         set ns.first = false %}
    field-set l4-port {{ field_set_port.name }}
 {%         if field_set_port.port_range is arista.avd.defined %}
       {{ field_set_port.port_range }}
 {%         endif %}
-{%         if not loop.last %}
-   !
-{%         endif %}
 {%     endfor %}
 {#     -- IPv4 PREFIX MANAGEMENT -- #}
-{%     for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.natural_sort('name') %}
+{%     for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if not ns.first %}
+   !
+{%         endif %}
+{%         set ns.first = false %}
    field-set ipv4 prefix {{ field_set_ipv4.name }}
 {%         if field_set_ipv4.prefixes is arista.avd.defined %}
       {{ field_set_ipv4.prefixes | arista.avd.natural_sort | join(' ') }}
@@ -27,12 +51,13 @@ traffic-policies
 {%         if field_set_ipv4.except is arista.avd.defined %}
       except {{ field_set_ipv4.except | arista.avd.natural_sort | join(' ') }}
 {%         endif %}
-{%         if not loop.last %}
-   !
-{%         endif %}
 {%     endfor %}
 {#     -- IPv6 PREFIX MANAGEMENT -- #}
-{%     for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.natural_sort('name') %}
+{%     for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if not ns.first %}
+   !
+{%         endif %}
+{%         set ns.first = false %}
    field-set ipv6 prefix {{ field_set_ipv6.name }}
 {%         if field_set_ipv6.prefixes is arista.avd.defined %}
       {{ field_set_ipv6.prefixes | arista.avd.natural_sort | join(' ') }}
@@ -40,20 +65,22 @@ traffic-policies
 {%         if field_set_ipv6.except is arista.avd.defined %}
       except {{ field_set_ipv6.except | arista.avd.natural_sort | join(' ') }}
 {%         endif %}
-{%         if not loop.last %}
-   !
-{%         endif %}
 {%     endfor %}
 {# Global options #}
 {%     if traffic_policies.options.counter_per_interface is arista.avd.defined(true) %}
    counter interface per-interface ingress
+{%         set ns.first = false %}
 {%     endif %}
 {%     if traffic_policies.options.counter_interface_poll_interval is arista.avd.defined %}
    counter interface poll interval {{ traffic_policies.options.counter_interface_poll_interval }} seconds
+{%         set ns.first = false %}
 {%     endif %}
 {# TRAFFIC POLICIES #}
-{%     for policy in traffic_policies.policies | arista.avd.natural_sort('name') %}
+{%     for policy in traffic_policies.policies | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if not ns.first %}
    !
+{%         endif %}
+{%         set ns.first = false %}
    traffic-policy {{ policy.name }}
 {# COUNTER SECTION #}
 {%         if policy.counters is arista.avd.defined %}
@@ -143,6 +170,16 @@ traffic-policies
 {#                 -- TTL MANAGEMENT -- #}
 {%                 if match.ttl is arista.avd.defined %}
          ttl {{ match.ttl }}
+{%                 endif %}
+{%                 if match.packet_type.vxlan is arista.avd.defined or match.packet_type.multicast is arista.avd.defined(true) %}
+         !
+         packet type
+{%                     if match.packet_type.multicast is arista.avd.defined(true) %}
+            multicast
+{%                     endif %}
+{%                     if match.packet_type.vxlan is arista.avd.defined %}
+            vxlan {{ match.packet_type.vxlan }}
+{%                     endif %}
 {%                 endif %}
 {#       -- ACTIONS SECTION -- #}
 {%                 if match.actions.count is arista.avd.defined or match.actions.traffic_class is arista.avd.defined or match.actions.dscp is arista.avd.defined or match.actions.drop is arista.avd.defined(true) or match.actions.redirect is arista.avd.defined %}

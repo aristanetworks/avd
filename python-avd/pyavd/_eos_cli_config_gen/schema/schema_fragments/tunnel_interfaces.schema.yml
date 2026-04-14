@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -45,6 +45,26 @@ keys:
           type: str
           format: ipv6_cidr
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: |-
+              IPv6 address with prefix length.
+              This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
+        ipv6_address_auto_config:
+          type: bool
+          description: |-
+            Use SLAAC to automatically configure the IPv6 address.
+            This option is mutually exclusive with `ipv6_addresses`.
+        ipv6_nd:
+          type: dict
+          $ref: "eos_cli_config_gen#/$defs/ipv6_nd"
         access_group_in:
           description: IPv4 ACL Name for ingress.
           type: str

@@ -30,7 +30,6 @@ bgp_peer_groups:
     listen_range_prefixes:
       - 192.168.142.0/24
       - 192.168.143.0/24
-
 wan_stun_dtls_profile_name: profileA
 
 wan_ipsec_profiles:
@@ -50,7 +49,6 @@ wan_router:
   node_groups:
     - group: Site511
       uplink_type: p2p-vrfs
-      uplink_interfaces: [Ethernet52]
       cv_pathfinder_region: AVD_Land_East
       cv_pathfinder_site: Site511
       wan_ha:
@@ -58,7 +56,6 @@ wan_router:
       nodes:
         - name: ipv4-acls-internet-exit-access-lists
           id: 2
-          uplink_switch_interfaces: [Ethernet2]
           l3_interfaces:
             - name: Ethernet3
               wan_carrier: ATT
@@ -68,10 +65,6 @@ wan_router:
               dhcp_ip: 10.0.0.145
               cv_pathfinder_internet_exit:
                 policies:
-                  - name: ZSCALER-EXIT-POLICY-1
-                    tunnel_interface_numbers: 100-102
-                  - name: ZSCALER-EXIT-POLICY-2
-                    tunnel_interface_numbers: 110-112
                   - name: DIRECT-EXIT-POLICY-1
                   - name: DIRECT-EXIT-POLICY-2
 
@@ -118,6 +111,9 @@ cv_pathfinder_internet_exit_policies:
   - name: DIRECT-EXIT-POLICY-1
     fallback_to_system_default: false
     type: direct
+  - name: DIRECT-EXIT-POLICY-2
+    fallback_to_system_default: false
+    type: direct
 
 ipv4_acls:
   - name: ACL-NAT-IE-DIRECT
@@ -127,6 +123,5 @@ ipv4_acls:
         protocol: ip
         source: interface_ip
         destination: any
-
 expected_error_message: >-
   ipv4_acls[name=ACL-NAT-IE-DIRECT] field substitution is not supported for internet exit access lists

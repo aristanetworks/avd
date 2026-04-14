@@ -7,7 +7,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_dc1-leaf1a_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.2/31
   metadata:
     peer: dc1-leaf1a
@@ -18,7 +18,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_dc1-leaf1b_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.6/31
   metadata:
     peer: dc1-leaf1b
@@ -29,7 +29,7 @@ ethernet_interfaces:
 - name: Ethernet3
   description: P2P_dc1-leaf2a_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.10/31
   metadata:
     peer: dc1-leaf2a
@@ -40,7 +40,7 @@ ethernet_interfaces:
 - name: Ethernet4
   description: P2P_dc1-leaf2b_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.14/31
   metadata:
     peer: dc1-leaf2b
@@ -78,8 +78,10 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOSLab
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -111,7 +113,7 @@ router_bgp:
       type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

@@ -1,0 +1,90 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet19
+  description: SERVER_OLD_SW-1/8_Endpoint_port4
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port4
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+- name: Ethernet20
+  description: connected-endpoints-no-network-services_vlans="all->alias of EOS's default/implicit '1-4094'"
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port5
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+- name: Ethernet21
+  description: connected-endpoints-no-network-services_vlans="defined_vlans->none"
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port6
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+- name: Ethernet22
+  description: connected-endpoints-no-network-services_vlans="100,200"
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port7
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100,200
+- name: Ethernet23
+  description: connected-endpoints-no-network-services_vlans="none"
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port8
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+hostname: connected-endpoints-no-network-services
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

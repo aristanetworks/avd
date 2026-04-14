@@ -10,6 +10,9 @@ l2leaf:
 
 dns_settings:
   domain: testfabric.local
+  domain_list:
+    - avd.lab
+    - other.net
   servers:
     - ip_address: 10.10.10.1
       priority: 1

@@ -186,11 +186,12 @@ ethernet_interfaces:
 hostname: inband-mgmt-mlag-b
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 1.1.1.1
-  vrf: default
-- ip_address: 8.8.8.8
-  vrf: default
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 1.1.1.1
+    - ip_address: 8.8.8.8
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -262,10 +263,14 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 101
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

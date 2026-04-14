@@ -6,3 +6,7 @@ daemons:
   - name: random
     exec: "/usr/bin/random"
     enabled: false
+  # Test for sort with ignore_case: false
+  - name: ZZZ
+    exec: "/usr/bin/random"
+    enabled: false

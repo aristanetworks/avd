@@ -5,8 +5,23 @@ l2leaf:
       mgmt_ip: 192.168.0.2/24
       inband_mgmt_vrf: INBAND_MGMT_VRF
       inband_mgmt_ip: 172.17.0.2/24
+      uplink_interfaces: ['Ethernet1']
+      uplink_switches: ['dns-settings-1']
+      uplink_switch_interfaces:
+        - Ethernet5
 
 default_mgmt_method: inband
+
+dns_settings:
+  domain: testfabric.local
+  servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+
+ntp_settings:
+  server_vrf: default
+  servers:
+    - name: 10.10.10.1
 
 cv_settings:
   cvaas:
@@ -48,3 +63,17 @@ cv_settings:
     disable_aaa: true
     ingestexclude: this_is_ingest_excluded
     smashexcludes: this_is_smash_excluded
+# Test for export sflow setting vrf to cloudvision
+sflow_settings:
+  export_to_cloudvision:
+    enabled: true
+    vrf: use_default_mgmt_method_vrf
+fabric_sflow:
+  l3_edge: true
+
+l3_edge:
+  p2p_links:
+    - nodes: [cv-settings, dns-settings-1]
+      interfaces: [Ethernet12, Ethernet12]
+      include_in_underlay_protocol: false
+      sflow: true

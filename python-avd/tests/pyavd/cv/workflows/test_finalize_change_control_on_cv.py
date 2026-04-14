@@ -1,7 +1,7 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from unittest.mock import AsyncMock, MagicMock, call
+from unittest.mock import MagicMock, call
 
 import pytest
 
@@ -11,19 +11,6 @@ from pyavd._cv.workflows.finalize_change_control_on_cv import finalize_change_co
 from pyavd._cv.workflows.models import CVChangeControl
 
 from .helpers import DEFAULT_TIMESTAMP, create_grpc_change_control
-
-
-@pytest.fixture
-def mock_cv_client() -> MagicMock:
-    """Fixture to provide a mocked CVClient instance with AsyncMocks."""
-    client = MagicMock()
-    # Patch all required async methods with AsyncMock
-    client.get_change_control = AsyncMock()
-    client.set_change_control = AsyncMock()
-    client.approve_change_control = AsyncMock()
-    client.start_change_control = AsyncMock()
-    client.wait_for_change_control_state = AsyncMock()
-    return client
 
 
 @pytest.mark.asyncio

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -6,6 +6,7 @@ from collections import ChainMap
 from typing import Any, Protocol
 
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import get_ip_from_pool
 
 from .utils import UtilsMixin
@@ -403,7 +404,10 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         Used for "vtep_diagnostic.loopback".
         """
-        offset = self.shared_utils.id + self.shared_utils.node_config.loopback_ipv4_offset
+        if (switch_id := self.shared_utils.id) is None:
+            msg = f"'id' is not set on '{self.shared_utils.hostname}' to get IP address for a vrf loopback interface"
+            raise AristaAvdInvalidInputsError(msg)
+        offset = switch_id + self.shared_utils.node_config.loopback_ipv4_offset
         return get_ip_from_pool(pool, 32, offset, 0)
 
     def vrf_loopback_ipv6(self, pool: str) -> str:
@@ -414,7 +418,10 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         Used for "vtep_diagnostic.loopback".
         """
-        offset = self.shared_utils.id + self.shared_utils.node_config.loopback_ipv6_offset
+        if (switch_id := self.shared_utils.id) is None:
+            msg = f"'id' is not set on '{self.shared_utils.hostname}' to get IPv6 address for a vrf loopback interface"
+            raise AristaAvdInvalidInputsError(msg)
+        offset = switch_id + self.shared_utils.node_config.loopback_ipv6_offset
         return get_ip_from_pool(pool, 128, offset, 0)
 
     def evpn_underlay_l3_multicast_group(

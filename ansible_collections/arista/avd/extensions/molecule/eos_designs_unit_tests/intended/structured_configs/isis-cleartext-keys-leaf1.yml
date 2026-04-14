@@ -25,7 +25,7 @@ ethernet_interfaces:
     peer_interface: Ethernet6
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_MLAG-ISIS-SPINE_Ethernet32
+  description: P2P_mlag-isis-spine_Ethernet32
   shutdown: false
   mtu: 9214
   ip_address: 10.10.100.7/31
@@ -39,7 +39,7 @@ ethernet_interfaces:
       key: m89QJMCtp4LRQGQz7SJF/Q==
       mode: md5
   metadata:
-    peer: MLAG-ISIS-SPINE
+    peer: mlag-isis-spine
     peer_interface: Ethernet32
     peer_type: spine
   switchport:
@@ -138,8 +138,8 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: MLAG-ISIS-SPINE
-    description: MLAG-ISIS-SPINE_Loopback0
+      peer: mlag-isis-spine
+    description: mlag-isis-spine_Loopback0
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -186,7 +186,9 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

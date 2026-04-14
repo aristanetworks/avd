@@ -1,0 +1,15 @@
+# Minimum config to only test the specific feature.
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    filter:
+      deny_vrfs: [ MULTI_TENANT_VRF_TEST ]
+  nodes:
+    - name: evpn-services-l2-only-false
+      id: 101
+      bgp_as: 101
+      evpn_services_l2_only: false
+      mgmt_ip: 192.168.0.101/24

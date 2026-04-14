@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -20,7 +20,7 @@
 #### 802.1X Global
 
 | System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
-| ------------------- | -------------------- | ----------------------| -------------------------- |
+| ------------------- | -------------------- | --------------------- | -------------------------- |
 {%         set system_auth_control = dot1x.system_auth_control | arista.avd.default('-') %}
 {%         set protocol_lldp_bypass = dot1x.protocol_lldp_bypass | arista.avd.default('-') %}
 {%         set dynamic_authorization = dot1x.dynamic_authorization | arista.avd.default('-') %}
@@ -141,6 +141,19 @@
 {%                 for profile in dot1x.supplicant.profiles | arista.avd.natural_sort("name") %}
 | {{ profile.name }} | {{ profile.eap_method | arista.avd.default("-") }} | {{ profile.identity | arista.avd.default("-") }} | {{ profile.ssl_profile | arista.avd.default("-") }} |
 {%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%         if dot1x.eapol is arista.avd.defined %}
+
+#### 802.1X EAPOL
+
+| Attribute | Value |
+| --------- | ----- |
+{%             if dot1x.eapol.vlan_change_logoff_disabled is arista.avd.defined %}
+| VLAN Change Logoff Disabled | {{ dot1x.eapol.vlan_change_logoff_disabled }} |
+{%             endif %}
+{%             if dot1x.eapol.unresponsive_action_traffic_allow_vlan is arista.avd.defined %}
+| Unresponsive Action Traffic Allow VLAN | {{ dot1x.eapol.unresponsive_action_traffic_allow_vlan }} |
 {%             endif %}
 {%         endif %}
 {%     endif %}

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -10,8 +10,8 @@
     | [<samp>lacp</samp>](## "lacp") | Dictionary |  |  |  | Set Link Aggregation Control Protocol (LACP) parameters. |
     | [<samp>&nbsp;&nbsp;port_id</samp>](## "lacp.port_id") | Dictionary |  |  |  | LACP port-ID range configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;range</samp>](## "lacp.port_id.range") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin</samp>](## "lacp.port_id.range.begin") | Integer |  |  |  | Minimum LACP port-ID range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end</samp>](## "lacp.port_id.range.end") | Integer |  |  |  | Maximum LACP port-ID range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin</samp>](## "lacp.port_id.range.begin") | Integer | Required |  |  | Minimum LACP port-ID range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end</samp>](## "lacp.port_id.range.end") | Integer | Required |  |  | Maximum LACP port-ID range. |
     | [<samp>&nbsp;&nbsp;rate_limit</samp>](## "lacp.rate_limit") | Dictionary |  |  |  | Set LACPDU rate limit options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "lacp.rate_limit.default") | Boolean |  |  |  | Enable LACPDU rate limiting by default on all ports. |
     | [<samp>&nbsp;&nbsp;system_priority</samp>](## "lacp.system_priority") | Integer |  |  | Min: 0<br>Max: 65535 | Set local system LACP priority. |
@@ -27,10 +27,10 @@
         range:
 
           # Minimum LACP port-ID range.
-          begin: <int>
+          begin: <int; required>
 
           # Maximum LACP port-ID range.
-          end: <int>
+          end: <int; required>
 
       # Set LACPDU rate limit options.
       rate_limit:

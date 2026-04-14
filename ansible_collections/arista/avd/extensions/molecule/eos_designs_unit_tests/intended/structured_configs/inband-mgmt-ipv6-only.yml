@@ -36,11 +36,12 @@ ethernet_interfaces:
 hostname: inband-mgmt-ipv6-only
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 1.1.1.1
-  vrf: default
-- ip_address: 8.8.8.8
-  vrf: default
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 1.1.1.1
+    - ip_address: 8.8.8.8
 ipv6_static_routes:
 - prefix: ::/0
   next_hop: 2a00:106::1
@@ -72,7 +73,8 @@ vlan_interfaces:
   description: Inband Management
   shutdown: false
   ipv6_enable: true
-  ipv6_address: 2a00:106::9/64
+  ipv6_addresses:
+  - 2a00:106::9/64
   mtu: 1500
   metadata:
     type: inband_mgmt
@@ -84,7 +86,9 @@ vlan_internal_order:
 vlans:
 - id: 106
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

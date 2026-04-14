@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -101,8 +101,7 @@ class FilteredTenantsMixin(Protocol):
                 continue
 
             merged_l2vlan = self.get_merged_l2vlan_config(l2vlan)
-            if tenant.evpn_vlan_bundle:
-                merged_l2vlan.evpn_vlan_bundle = merged_l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
+            merged_l2vlan.evpn_vlan_bundle = default(merged_l2vlan.evpn_vlan_bundle, tenant.evpn_vlan_bundle)
 
             filtered_l2vlans.append(merged_l2vlan)
 
@@ -173,7 +172,7 @@ class FilteredTenantsMixin(Protocol):
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
     ) -> bool:
         """
-        Check if vlan is in accepted_vlans list.
+        Check if vlan is in accepted_vlans set.
 
         If filter.only_vlans_in_use is True also check if vlan id or trunk group is assigned to connected endpoint.
         """
@@ -193,7 +192,7 @@ class FilteredTenantsMixin(Protocol):
         return bool(self.inputs.enable_trunk_groups and vlan.trunk_groups and endpoint_trunk_groups.intersection(vlan.trunk_groups))
 
     @cached_property
-    def accepted_vlans(self: SharedUtilsProtocol) -> list[int]:
+    def accepted_vlans(self: SharedUtilsProtocol) -> set[int]:
         """
         The 'vlans' switch fact is a string representing a vlan range (ex. "1-200").
 
@@ -202,9 +201,9 @@ class FilteredTenantsMixin(Protocol):
         """
         switch_vlans = self.switch_facts.vlans
         if not switch_vlans:
-            return []
+            return set()
         switch_vlans_list = range_expand(switch_vlans)
-        accepted_vlans = [int(vlan) for vlan in switch_vlans_list]
+        accepted_vlans = {int(vlan) for vlan in switch_vlans_list}
         if self.uplink_type != "port-channel":
             return accepted_vlans
 
@@ -212,10 +211,8 @@ class FilteredTenantsMixin(Protocol):
         uplink_switches = [uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.all_fabric_devices]
         for uplink_switch in uplink_switches:
             uplink_switch_facts = self.get_peer_facts(uplink_switch, required=True)
-            uplink_switch_vlans = uplink_switch_facts.vlans
-            uplink_switch_vlans_list = range_expand(uplink_switch_vlans)
-            uplink_switch_vlans_list = [int(vlan) for vlan in uplink_switch_vlans_list]
-            accepted_vlans = [vlan for vlan in accepted_vlans if vlan in uplink_switch_vlans_list]
+            uplink_switch_vlans_set = {int(vlan) for vlan in range_expand(uplink_switch_facts.vlans)}
+            accepted_vlans = accepted_vlans.intersection(uplink_switch_vlans_set)
 
         return accepted_vlans
 
@@ -267,7 +264,8 @@ class FilteredTenantsMixin(Protocol):
             vrf.bgp_peers = vrf.bgp_peers._filtered(lambda bgp_peer: self.match_regexes(bgp_peer.nodes, self.hostname))._natural_sorted(sort_key="ip_address")
             vrf.static_routes = vrf.static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.ipv6_static_routes = vrf.ipv6_static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
-            vrf.svis = self.filtered_svis(vrf)
+            vrf.static_arp_entries = vrf.static_arp_entries._filtered(lambda entry: not entry.nodes or self.hostname in entry.nodes)
+            vrf.svis = self.filtered_svis(vrf, tenant)
             vrf.l3_interfaces = self.filtered_l3_interfaces(vrf)
             vrf.l3_port_channels = self.filtered_l3_port_channels(vrf)
             vrf.loopbacks = vrf.loopbacks._filtered(lambda loopback: loopback.node == self.hostname)
@@ -307,16 +305,10 @@ class FilteredTenantsMixin(Protocol):
                                 vrf._internal_data.evpn_l3_multicast_evpn_peg_transit = evpn_peg.transit
                                 break
 
-            vrf.additional_route_targets = vrf.additional_route_targets._filtered(
-                lambda rt: bool((not rt.nodes or self.hostname in rt.nodes) and rt.address_family and rt.route_target and rt.type in ["import", "export"])
-            )
+            vrf.additional_route_targets = vrf.additional_route_targets._filtered(lambda rt: bool(not rt.nodes or self.hostname in rt.nodes))
 
             if vrf.svis or vrf.l3_interfaces or vrf.loopbacks or vrf.l3_port_channels or self.is_forced_vrf(vrf, tenant.name):
                 filtered_vrfs.append(vrf)
-
-            if tenant_evpn_vlan_bundle := tenant.evpn_vlan_bundle:
-                for svi in vrf.svis:
-                    svi.evpn_vlan_bundle = svi.evpn_vlan_bundle or tenant_evpn_vlan_bundle
 
         return filtered_vrfs
 
@@ -367,7 +359,9 @@ class FilteredTenantsMixin(Protocol):
         return merged_svi
 
     def filtered_svis(
-        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
+        self: SharedUtilsProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis:
         """
         Return sorted and filtered svi list from given tenant vrf.
@@ -389,6 +383,8 @@ class FilteredTenantsMixin(Protocol):
             # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
             if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
                 continue
+
+            merged_svi.evpn_vlan_bundle = default(merged_svi.evpn_vlan_bundle, vrf.evpn_vlan_bundle, tenant.evpn_vlan_bundle)
 
             filtered_svis.append(merged_svi)
 

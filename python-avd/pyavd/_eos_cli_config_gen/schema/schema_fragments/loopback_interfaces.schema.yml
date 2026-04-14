@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -37,6 +37,23 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: |-
+              IPv6 address with prefix length.
+              This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
+        ipv6_address_auto_config:
+          type: bool
+          description: |-
+            Use SLAAC to automatically configure the IPv6 address.
+            This option is mutually exclusive with `ipv6_addresses`.
         ip_proxy_arp:
           type: bool
         ospf_area:

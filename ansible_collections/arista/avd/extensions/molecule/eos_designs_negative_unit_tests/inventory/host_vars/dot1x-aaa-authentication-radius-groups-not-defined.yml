@@ -1,0 +1,16 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: dot1x-aaa-authentication-radius-groups-not-defined
+      mgmt_ip: 192.168.0.2/24
+
+dot1x_settings:
+  enabled: true
+  authentication:
+    radius_groups: [agni-server-group, backup-agni-server-group]
+
+expected_error_message: >-
+  The RADIUS authentication server group(s) 'agni-server-group, backup-agni-server-group'
+  are not defined on any server under 'aaa_settings.radius.servers'.

@@ -3,6 +3,11 @@
 
 # local users
 aaa_settings:
+  # AAA Authorization
+  authorization:
+    exec:
+      default: local
+
   local_users:
     # Username with no password configured
     - name: admin
@@ -15,11 +20,6 @@ aaa_settings:
       privilege: 15
       role: network-admin
       sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
-
-# AAA Authorization
-custom_structured_configuration_aaa_authorization:
-  exec:
-    default: local
 
 # OOB Management network default gateway.
 mgmt_gateway: 172.16.100.1

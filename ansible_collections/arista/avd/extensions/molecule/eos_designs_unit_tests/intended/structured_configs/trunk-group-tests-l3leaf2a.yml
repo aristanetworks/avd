@@ -135,21 +135,8 @@ router_bgp:
     description: trunk-group-tests-l3leaf2b
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   neighbors:
   - ip_address: 10.255.247.5
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -163,7 +150,8 @@ router_bgp:
   vlans:
   - id: 200
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.11:10200
     route_targets:
       both:
@@ -172,25 +160,18 @@ router_bgp:
     - learned
   - id: 210
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.11:10210
     route_targets:
       both:
       - 10210:10210
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: TG_200
     rd: 192.168.250.11:200
@@ -240,7 +221,8 @@ vlan_interfaces:
   vrf: TG_200
   ip_address_virtual: 10.2.0.1/24
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
     tags:
     - TRUNK_GROUP_TESTS_L3LEAF1
     - TRUNK_GROUP_TESTS_L2LEAF1
@@ -251,7 +233,8 @@ vlan_interfaces:
   ip_address: 10.255.247.4/31
   mtu: 9214
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -263,39 +246,51 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 200
   name: svi200_with_trunk_groups
   trunk_groups:
-  - trunk-group-tests-l2leaf4
   - MLAG
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
-  tenant: TRUNK_GROUP_TESTS
-- id: 210
-  name: l2vlan210_with_trunk_groups
-  trunk_groups:
   - trunk-group-tests-l2leaf4
-  - MLAG
-  - TG_200
-  - TG_NOT_MATCHING_ANY_SERVERS
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 3199
   name: MLAG_L3_VRF_TG_200
   trunk_groups:
   - MLAG
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
+- id: 210
+  name: l2vlan210_with_trunk_groups
+  trunk_groups:
+  - MLAG
+  - TG_200
+  - TG_NOT_MATCHING_ANY_SERVERS
+  - trunk-group-tests-l2leaf4
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TG_200
   ip_routing: true
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
 vxlan_interface:
   vxlan1:
     description: trunk-group-tests-l3leaf2a_VTEP

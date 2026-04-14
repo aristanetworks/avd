@@ -17,3 +17,8 @@ bgp_groups:
     vrf: red
   - name: without-neighbors-key
     vrf: red
+  # Test for sort with ignore_case: false
+  - name: ZZZ
+    neighbors:
+      - peer-group-baz
+      - ZZZ

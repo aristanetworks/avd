@@ -193,10 +193,6 @@ l3leaf:
     vtep_loopback_ipv4_pool: 10.10.20.0/24
     mlag_interfaces:
       - Ethernet3
-    uplink_interfaces:
-      - Ethernet1
-    uplink_switch_interfaces:
-      - Ethernet2
     mlag_peer_ipv4_pool: 10.10.30.0/24
     mlag_peer_l3_ipv4_pool: 10.10.40.0/24
     uplink_ipv4_pool: 10.10.50.0/24
@@ -208,60 +204,80 @@ l3leaf:
   node_groups:
     - group: group_1
       nodes:
-        - name: HARDWARE_FEATURES_VEOS_LAB
+        - name: hardware-features-veos-lab
           id: 1
           platform: vEOS-lab
-        - name: HARDWARE_FEATURES_CEOS_LAB
+        - name: hardware-features-ceos-lab
           id: 2
           platform: cEOSLab
     - group: group_2
       nodes:
-        - name: HARDWARE_FEATURES_CLOUDEOS
+        - name: hardware-features-cloudeos
           id: 3
           platform: cloudEOS
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet2
           uplink_switches:
-            - HARDWARE_FEATURES_VEOS_LAB
-        - name: HARDWARE_FEATURES_720XP
+            - hardware-features-veos-lab
+        - name: hardware-features-720xp
           id: 4
           # Supports PoE
           platform: 720XP
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet2
           uplink_switches:
-            - HARDWARE_FEATURES_CEOS_LAB
+            - hardware-features-ceos-lab
     - group: group_3
       nodes:
-        - name: HARDWARE_FEATURES_7280R
+        - name: hardware-features-7280r
           id: 5
           # Supports queue-monitor length notifying
           platform: 7280R
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet2
           uplink_switches:
-            - HARDWARE_FEATURES_CLOUDEOS
-        - name: HARDWARE_FEATURES_CUSTOM_PLATFORM
+            - hardware-features-cloudeos
+        - name: hardware-features-custom-platform
           id: 6
           platform: customplatform
           uplink_type: port-channel
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet2
           uplink_switches:
-            - HARDWARE_FEATURES_CLOUDEOS_2
+            - hardware-features-cloudeos-2
     - group: group_4
       nodes:
         # Testing PTP on CloudEOS over PO uplink and downlink
-        - name: HARDWARE_FEATURES_CLOUDEOS_2
+        - name: hardware-features-cloudeos-2
           id: 7
           platform: cloudEOS
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet2
           uplink_type: port-channel
           uplink_switches:
-            - HARDWARE_FEATURES_7280R
+            - hardware-features-7280r
     - group: group_5
       nodes:
         # Testing platform_settings.feature_support.sflow_subinterfaces
-        - name: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+        - name: hardware-feature-sflow-subinterface-1
           id: 8
           platform: customplatform
           uplink_switches:
-            - HARDWARE_FEATURES_VEOS_LAB
+            - hardware-features-veos-lab
           uplink_interfaces:
-            - Ethernet1.1
+            - Ethernet10
           uplink_switch_interfaces:
-            - Ethernet2.2
+            - Ethernet10
 
 # Test `queue-monitor`
 queue_monitor_length:
@@ -282,12 +298,12 @@ servers:
           - Ethernet7
           - Ethernet7.7
         switches:
-          - HARDWARE_FEATURES_VEOS_LAB
-          - HARDWARE_FEATURES_CEOS_LAB
-          - HARDWARE_FEATURES_CLOUDEOS
-          - HARDWARE_FEATURES_720XP
-          - HARDWARE_FEATURES_7280R
-          - HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+          - hardware-features-veos-lab
+          - hardware-features-ceos-lab
+          - hardware-features-cloudeos
+          - hardware-features-720xp
+          - hardware-features-7280r
+          - hardware-feature-sflow-subinterface-1
         endpoint_ports:
           - ETH1_NO_POE
           - ETH2_NO_POE
@@ -309,7 +325,7 @@ servers:
       - switch_ports:
           - Ethernet8
         switches:
-          - HARDWARE_FEATURES_VEOS_LAB
+          - hardware-features-veos-lab
         l2_mtu: 2001
         l2_mru: 2002
         port_channel:
@@ -319,7 +335,7 @@ servers:
       - switch_ports:
           - Ethernet8
         switches:
-          - HARDWARE_FEATURES_CEOS_LAB
+          - hardware-features-ceos-lab
         l2_mtu: 2001
         l2_mru: 2002
         port_channel:
@@ -329,7 +345,7 @@ servers:
       - switch_ports:
           - Ethernet8
         switches:
-          - HARDWARE_FEATURES_CLOUDEOS
+          - hardware-features-cloudeos
         l2_mtu: 2001
         l2_mru: 2002
         port_channel:
@@ -339,7 +355,7 @@ servers:
       - switch_ports:
           - Ethernet8
         switches:
-          - HARDWARE_FEATURES_720XP
+          - hardware-features-720xp
         l2_mtu: 2001
         l2_mru: 2002
         port_channel:
@@ -349,7 +365,7 @@ servers:
       - switch_ports:
           - Ethernet8
         switches:
-          - HARDWARE_FEATURES_7280R
+          - hardware-features-7280r
         l2_mtu: 2001
         l2_mru: 2002
         port_channel:
@@ -365,11 +381,11 @@ servers:
           - Ethernet6
           - Ethernet6
         switches:
-          - HARDWARE_FEATURES_VEOS_LAB
-          - HARDWARE_FEATURES_CEOS_LAB
-          - HARDWARE_FEATURES_CLOUDEOS
-          - HARDWARE_FEATURES_720XP
-          - HARDWARE_FEATURES_7280R
+          - hardware-features-veos-lab
+          - hardware-features-ceos-lab
+          - hardware-features-cloudeos
+          - hardware-features-720xp
+          - hardware-features-7280r
         endpoint_ports:
           - ETH11_NO_STORM_CONTROL
           - ETH12_NO_STORM_CONTROL
@@ -402,22 +418,22 @@ tenants:
               - 10.10.40.5/24
               - 10.10.40.6/24
             nodes:
-              - HARDWARE_FEATURES_VEOS_LAB
-              - HARDWARE_FEATURES_CEOS_LAB
-              - HARDWARE_FEATURES_CLOUDEOS
-              - HARDWARE_FEATURES_720XP
-              - HARDWARE_FEATURES_7280R
-              - HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+              - hardware-features-veos-lab
+              - hardware-features-ceos-lab
+              - hardware-features-cloudeos
+              - hardware-features-720xp
+              - hardware-features-7280r
+              - hardware-feature-sflow-subinterface-1
         bgp_peers:
           - ip_address: 10.10.40.100
             remote_as: 65002
             nodes:
-              - HARDWARE_FEATURES_VEOS_LAB
-              - HARDWARE_FEATURES_CEOS_LAB
-              - HARDWARE_FEATURES_CLOUDEOS
-              - HARDWARE_FEATURES_720XP
-              - HARDWARE_FEATURES_7280R
-              - HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+              - hardware-features-veos-lab
+              - hardware-features-ceos-lab
+              - hardware-features-cloudeos
+              - hardware-features-720xp
+              - hardware-features-7280r
+              - hardware-feature-sflow-subinterface-1
 
 # Test `hardware speed-group`
 platform_speed_groups:
@@ -527,8 +543,8 @@ l3_edge:
       ipv4_pool: 10.10.60.0/24
   p2p_links:
     - nodes:
-        - HARDWARE_FEATURES_VEOS_LAB
-        - HARDWARE_FEATURES_CEOS_LAB
+        - hardware-features-veos-lab
+        - hardware-features-ceos-lab
       id: 1
       interfaces:
         - Ethernet9
@@ -539,8 +555,8 @@ l3_edge:
         - 65100
       sflow: true
     - nodes:
-        - HARDWARE_FEATURES_CLOUDEOS
-        - HARDWARE_FEATURES_720XP
+        - hardware-features-cloudeos
+        - hardware-features-720xp
       id: 1
       interfaces:
         - Ethernet9
@@ -551,8 +567,8 @@ l3_edge:
         - 65100
       sflow: true
     - nodes:
-        - HARDWARE_FEATURES_7280R
-        - HARDWARE_FEATURES_CUSTOM_PLATFORM
+        - hardware-features-7280r
+        - hardware-features-custom-platform
       id: 1
       interfaces:
         - Ethernet9
@@ -563,8 +579,8 @@ l3_edge:
         - 65100
       sflow: true
     - nodes:
-        - HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
-        - HARDWARE_FEATURES_CUSTOM_PLATFORM
+        - hardware-feature-sflow-subinterface-1
+        - hardware-features-custom-platform
       id: 3
       interfaces:
         - Ethernet9.9
@@ -597,14 +613,14 @@ sflow_settings:
 
 core_interfaces:
   p2p_links:
-    - nodes: [HARDWARE_FEATURES_VEOS_LAB, HARDWARE_FEATURES_CLOUDEOS]
+    - nodes: [hardware-features-veos-lab, hardware-features-cloudeos]
       interfaces: [Ethernet4, Ethernet4]
       as: ["65000", "65001"]
       ip: ["10.10.30.0/31", "10.10.30.1/31"]
       # Test PTP
       ptp:
         enabled: true
-    - nodes: [HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1, HARDWARE_FEATURES_CLOUDEOS]
+    - nodes: [hardware-feature-sflow-subinterface-1, hardware-features-cloudeos]
       interfaces: [Ethernet4.4, Ethernet4.4]
       as: ["65000", "65001"]
       ip: ["10.10.30.40/31", "10.10.30.41/31"]

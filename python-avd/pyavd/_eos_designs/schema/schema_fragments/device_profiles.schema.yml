@@ -1,0 +1,37 @@
+# Copyright (c) 2025-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  device_profiles:
+    type: list
+    primary_key: name
+    description:
+      PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    documentation_options:
+      table: devices
+    items:
+      $ref: "eos_designs#/$defs/node_type/keys/defaults"
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Profile Name
+        parent_profile:
+          type: str
+          description: |-
+            Inherit settings from a parent profile defined under `device_profiles`.
+            Max two levels of profile inheritance: device -> profile -> parent_profile
+        type:
+          type: str
+          description: |-
+            Set the type of the device as defined under `node_type_keys`.
+            This takes precedence over the global `type` key.
+        mlag_group:
+          type: str
+          description: |-
+            Name of MLAG group. Exactly two devices must share the same mlag_group.
+            The group is used for creating MLAG Pairs, for port-channel descriptions on peers and for MLAG domain-id (unless mlag_domain_id is set).

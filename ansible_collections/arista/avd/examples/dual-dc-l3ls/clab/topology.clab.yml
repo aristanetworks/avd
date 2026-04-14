@@ -1,0 +1,147 @@
+---
+name: Dual Data Center - L3LS
+prefix: ""
+
+mgmt:
+    network: custom_mgmt
+    ipv4-subnet: 172.16.1.0/24
+
+topology:
+    kinds:
+        arista_ceos:
+            enforce-startup-config: true
+            image: arista/ceos:latest
+            binds:
+                - interface_mapping.json:/mnt/flash/EosIntfMapping.json:ro
+    defaults:
+        kind: arista_ceos
+    nodes:
+        # dc1
+        dc1-spine1:
+            mgmt-ipv4: 172.16.1.11
+            startup-config: init-configs/dc1-spine1.cfg
+        dc1-spine2:
+            mgmt-ipv4: 172.16.1.12
+            startup-config: init-configs/dc1-spine2.cfg
+        dc1-leaf1a:
+            mgmt-ipv4: 172.16.1.101
+            startup-config: init-configs/dc1-leaf1a.cfg
+        dc1-leaf1b:
+            mgmt-ipv4: 172.16.1.102
+            startup-config: init-configs/dc1-leaf1b.cfg
+        dc1-leaf2a:
+            mgmt-ipv4: 172.16.1.103
+            startup-config: init-configs/dc1-leaf2a.cfg
+        dc1-leaf2b:
+            mgmt-ipv4: 172.16.1.104
+            startup-config: init-configs/dc1-leaf2b.cfg
+        dc1-leaf1c:
+            mgmt-ipv4: 172.16.1.151
+            startup-config: init-configs/dc1-leaf1c.cfg
+        dc1-leaf2c:
+            mgmt-ipv4: 172.16.1.152
+            startup-config: init-configs/dc1-leaf2c.cfg
+        dc1-leaf1-server1:
+            mgmt-ipv4: 172.16.1.181
+            startup-config: init-configs/dc1-leaf1-server1.cfg
+        dc1-leaf2-server1:
+            mgmt-ipv4: 172.16.1.182
+            startup-config: init-configs/dc1-leaf2-server1.cfg
+        # dc2
+        dc2-spine1:
+            mgmt-ipv4: 172.16.1.21
+            startup-config: init-configs/dc2-spine1.cfg
+        dc2-spine2:
+            mgmt-ipv4: 172.16.1.22
+            startup-config: init-configs/dc2-spine2.cfg
+        dc2-leaf1a:
+            mgmt-ipv4: 172.16.1.111
+            startup-config: init-configs/dc2-leaf1a.cfg
+        dc2-leaf1b:
+            mgmt-ipv4: 172.16.1.112
+            startup-config: init-configs/dc2-leaf1b.cfg
+        dc2-leaf2a:
+            mgmt-ipv4: 172.16.1.113
+            startup-config: init-configs/dc2-leaf2a.cfg
+        dc2-leaf2b:
+            mgmt-ipv4: 172.16.1.114
+            startup-config: init-configs/dc2-leaf2b.cfg
+        dc2-leaf1c:
+            mgmt-ipv4: 172.16.1.161
+            startup-config: init-configs/dc2-leaf1c.cfg
+        dc2-leaf2c:
+            mgmt-ipv4: 172.16.1.162
+            startup-config: init-configs/dc2-leaf2c.cfg
+        dc2-leaf1-server1:
+            mgmt-ipv4: 172.16.1.191
+            startup-config: init-configs/dc2-leaf1-server1.cfg
+        dc2-leaf2-server1:
+            mgmt-ipv4: 172.16.1.192
+            startup-config: init-configs/dc2-leaf2-server1.cfg
+
+    links:
+        # dc1
+        # spines to a/b leafs
+        - endpoints: ["dc1-spine1:eth1", "dc1-leaf1a:eth1"]
+        - endpoints: ["dc1-spine1:eth2", "dc1-leaf1b:eth1"]
+        - endpoints: ["dc1-spine1:eth3", "dc1-leaf2a:eth1"]
+        - endpoints: ["dc1-spine1:eth4", "dc1-leaf2b:eth1"]
+        - endpoints: ["dc1-spine2:eth1", "dc1-leaf1a:eth2"]
+        - endpoints: ["dc1-spine2:eth2", "dc1-leaf1b:eth2"]
+        - endpoints: ["dc1-spine2:eth3", "dc1-leaf2a:eth2"]
+        - endpoints: ["dc1-spine2:eth4", "dc1-leaf2b:eth2"]
+        # leaf a/b peer-links
+        - endpoints: ["dc1-leaf1a:eth3", "dc1-leaf1b:eth3"]
+        - endpoints: ["dc1-leaf1a:eth4", "dc1-leaf1b:eth4"]
+        - endpoints: ["dc1-leaf2a:eth3", "dc1-leaf2b:eth3"]
+        - endpoints: ["dc1-leaf2a:eth4", "dc1-leaf2b:eth4"]
+        # leaf a/b to c
+        - endpoints: ["dc1-leaf1a:eth8", "dc1-leaf1c:eth1"]
+        - endpoints: ["dc1-leaf1b:eth8", "dc1-leaf1c:eth2"]
+        - endpoints: ["dc1-leaf2a:eth8", "dc1-leaf2c:eth1"]
+        - endpoints: ["dc1-leaf2b:eth8", "dc1-leaf2c:eth2"]
+        # hosts
+        # host are using cEOS-lab image for 3 reasons
+        # - to avoid pulling another image
+        # - to support all kind of weird connections we may need for AVD examples
+        # - simplify host config
+        - endpoints: ["dc1-leaf1a:eth5", "dc1-leaf1-server1:eth1"]
+        - endpoints: ["dc1-leaf1b:eth5", "dc1-leaf1-server1:eth2"]
+        - endpoints: ["dc1-leaf2a:eth5", "dc1-leaf2-server1:eth1"]
+        - endpoints: ["dc1-leaf2b:eth5", "dc1-leaf2-server1:eth2"]
+        - endpoints: ["dc1-leaf1c:eth5", "dc1-leaf1-server1:eth3"]
+        - endpoints: ["dc1-leaf2c:eth5", "dc1-leaf2-server1:eth3"]
+        # dc2
+        # spines to a/b leafs
+        - endpoints: ["dc2-spine1:eth1", "dc2-leaf1a:eth1"]
+        - endpoints: ["dc2-spine1:eth2", "dc2-leaf1b:eth1"]
+        - endpoints: ["dc2-spine1:eth3", "dc2-leaf2a:eth1"]
+        - endpoints: ["dc2-spine1:eth4", "dc2-leaf2b:eth1"]
+        - endpoints: ["dc2-spine2:eth1", "dc2-leaf1a:eth2"]
+        - endpoints: ["dc2-spine2:eth2", "dc2-leaf1b:eth2"]
+        - endpoints: ["dc2-spine2:eth3", "dc2-leaf2a:eth2"]
+        - endpoints: ["dc2-spine2:eth4", "dc2-leaf2b:eth2"]
+        # leaf a/b peer-links
+        - endpoints: ["dc2-leaf1a:eth3", "dc2-leaf1b:eth3"]
+        - endpoints: ["dc2-leaf1a:eth4", "dc2-leaf1b:eth4"]
+        - endpoints: ["dc2-leaf2a:eth3", "dc2-leaf2b:eth3"]
+        - endpoints: ["dc2-leaf2a:eth4", "dc2-leaf2b:eth4"]
+        # leaf a/b to c
+        - endpoints: ["dc2-leaf1a:eth8", "dc2-leaf1c:eth1"]
+        - endpoints: ["dc2-leaf1b:eth8", "dc2-leaf1c:eth2"]
+        - endpoints: ["dc2-leaf2a:eth8", "dc2-leaf2c:eth1"]
+        - endpoints: ["dc2-leaf2b:eth8", "dc2-leaf2c:eth2"]
+        # hosts
+        # host are using cEOS-lab image for 3 reasons
+        # - to avoid pulling another image
+        # - to support all kind of weird connections we may need for AVD examples
+        # - simplify host config
+        - endpoints: ["dc2-leaf1a:eth5", "dc2-leaf1-server1:eth1"]
+        - endpoints: ["dc2-leaf1b:eth5", "dc2-leaf1-server1:eth2"]
+        - endpoints: ["dc2-leaf2a:eth5", "dc2-leaf2-server1:eth1"]
+        - endpoints: ["dc2-leaf2b:eth5", "dc2-leaf2-server1:eth2"]
+        - endpoints: ["dc2-leaf1c:eth5", "dc2-leaf1-server1:eth3"]
+        - endpoints: ["dc2-leaf2c:eth5", "dc2-leaf2-server1:eth3"]
+        # DCI links
+        - endpoints: ["dc1-leaf2a:eth6", "dc2-leaf2a:eth6"]
+        - endpoints: ["dc1-leaf2b:eth6", "dc2-leaf2b:eth6"]

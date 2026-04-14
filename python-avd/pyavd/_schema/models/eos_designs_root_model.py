@@ -1,16 +1,13 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import warnings
 from collections import ChainMap
 from collections.abc import Iterator, Mapping
 from typing import TYPE_CHECKING, TypeVar
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdModelDeprecationWarning
-from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS
 from pyavd._schema.store import create_store
 from pyavd._schema.utils import get_instance_with_defaults
 from pyavd._utils import get_all
@@ -57,24 +54,7 @@ class EosDesignsRootModel(AvdModel):
         if load_custom_structured_config:
             root_data["_custom_structured_configurations"] = cls._CustomStructuredConfigurations(cls._get_csc_items(data))
 
-        eos_designs_root = super()._from_dict(ChainMap(root_data, data))
-
-        if eos_cli_config_gen_keys := eos_designs_root._skipped_keys.intersection(EOS_CLI_CONFIG_GEN_INPUT_KEYS):
-            # TODO: revisit once logging is present.
-            quoted_keys = ", ".join([f"'{key}'" for key in eos_cli_config_gen_keys])
-            warnings.warn(
-                (
-                    "The direct usage of `eos_cli_config_gen` keys when running `eos_designs` is deprecated and will be disabled by default "
-                    "in AVD 6.0.0. Prioritize using the `eos_designs` models if they address your use case, as new models are frequently added. "
-                    "Alternatively, use the custom structured configuration feature of `eos_designs`."
-                    f"The following keys have been detected in your inputs: {quoted_keys}."
-                    "Read https://avd.arista.com/stable/docs/warn-eos-cli-config-keys-usage-in-eos-designs.html for more information."
-                ),
-                AristaAvdModelDeprecationWarning,
-                stacklevel=2,
-            )
-
-        return eos_designs_root
+        return super()._from_dict(ChainMap(root_data, data))
 
     @classmethod
     def _get_csc_items(cls, data: Mapping) -> Iterator[EosDesigns._CustomStructuredConfigurationsItem]:

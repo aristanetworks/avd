@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -23,7 +23,7 @@ $defs:
           $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         ip_pool:
           type: str
-          description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.
+          description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will be taken from the pool per P2P link.
         subnet:
           type: str
           description: IPv4 address/Mask. Subnet used on this P2P link.
@@ -39,6 +39,17 @@ $defs:
           type: bool
           default: false
           description: Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).
+        ipv6_prefix:
+          type: str
+          description: IPv6 address/Mask. Prefix used on this P2P link.
+        ipv6:
+          type: list
+          description: Specific IPv6 addresses used on this P2P link.
+          min_length: 2
+          max_length: 2
+          items:
+            type: str
+            description: Node IPv6 address/Mask.
         nodes:
           type: list
           description: Nodes where this link should be configured.
@@ -89,7 +100,9 @@ $defs:
         include_in_underlay_protocol:
           type: bool
           default: true
-          description: Add this interface to underlay routing protocol.
+          description: |-
+            Add this interface to the underlay routing protocols.
+            This is currently not supported when IPv6 addresses are used.
         isis_hello_padding:
           type: bool
           default: true

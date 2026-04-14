@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -11,30 +11,28 @@ management api gnmi
 {%     if management_api_gnmi.transport is arista.avd.defined %}
 {%         if management_api_gnmi.transport.grpc is arista.avd.defined %}
 {%             set first_line = False %}
-{%             for transport in management_api_gnmi.transport.grpc | arista.avd.natural_sort("name") %}
+{%             for transport in management_api_gnmi.transport.grpc | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%                 if not loop.first %}
    !
 {%                 endif %}
-{%                 if transport.name is arista.avd.defined %}
    transport grpc {{ transport.name }}
-{%                     if transport.ssl_profile is arista.avd.defined %}
+{%                 if transport.ssl_profile is arista.avd.defined %}
       ssl profile {{ transport.ssl_profile }}
-{%                     endif %}
-{%                     if transport.port is arista.avd.defined %}
+{%                 endif %}
+{%                 if transport.port is arista.avd.defined %}
       port {{ transport.port }}
-{%                     endif %}
-{%                     if transport.vrf is arista.avd.defined %}
+{%                 endif %}
+{%                 if transport.vrf is arista.avd.defined %}
       vrf {{ transport.vrf }}
-{%                     endif %}
-{%                     if transport.ip_access_group is arista.avd.defined %}
+{%                 endif %}
+{%                 if transport.ip_access_group is arista.avd.defined %}
       ip access-group {{ transport.ip_access_group }}
-{%                     endif %}
-{%                     if transport.authorization_requests is arista.avd.defined(true) %}
+{%                 endif %}
+{%                 if transport.authorization_requests is arista.avd.defined(true) %}
       authorization requests
-{%                     endif %}
-{%                     if transport.notification_timestamp is arista.avd.defined %}
+{%                 endif %}
+{%                 if transport.notification_timestamp is arista.avd.defined %}
       notification timestamp {{ transport.notification_timestamp }}
-{%                     endif %}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
@@ -42,7 +40,7 @@ management api gnmi
 {%             if not first_line == True %}
    !
 {%             endif %}
-{%             for transport in management_api_gnmi.transport.grpc_tunnels | arista.avd.natural_sort("name") %}
+{%             for transport in management_api_gnmi.transport.grpc_tunnels | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%                 if not loop.first %}
    !
 {%                 endif %}

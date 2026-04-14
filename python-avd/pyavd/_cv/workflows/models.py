@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -133,6 +133,49 @@ class CVPathfinderMetadata:
 
 
 @dataclass
+class CVWorkspaceBuildConfigValidationError:
+    error_msg: str | None = None
+    """EOS-returned error message."""
+    line_num: int | None = None
+    """Line number of the violating configuration line within the configlet."""
+    configlet_name: str | None = None
+    """Name of the configlet which raised validation error."""
+
+
+@dataclass
+class CVWorkspaceBuildConfigValidationWarning:
+    warning_msg: str | None = None
+    """EOS-returned warning message."""
+    line_num: int | None = None
+    """Line number of the violating configuration line within the configlet."""
+    configlet_name: str | None = None
+    """Name of the configlet which returned validation warning."""
+
+
+@dataclass
+class CVWorkspaceBuildConfigValidationResult:
+    errors: list[CVWorkspaceBuildConfigValidationError] = field(default_factory=list)
+    warnings: list[CVWorkspaceBuildConfigValidationWarning] = field(default_factory=list)
+
+
+@dataclass
+class CVWorkspaceDeviceBuildResult:
+    device: CVDevice
+    config_validation: CVWorkspaceBuildConfigValidationResult
+    """Configuration validation results."""
+
+
+@dataclass
+class CVWorkspaceBuildWarningsConfig:
+    enabled: bool = True
+    """Fetch and expose Workspace build warnings."""
+    suppress_patterns: list[str] = field(default_factory=list)
+    """Arbitrary list of the EOS CLI warning string patterns to suppress."""
+    suppress_portfast: bool = False
+    """Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports."""
+
+
+@dataclass
 class CVWorkspace:
     name: str = field(default_factory=lambda: f"AVD {datetime.now()}")
     description: str | None = None
@@ -155,6 +198,12 @@ class CVWorkspace:
     """The final state of the Workspace. Do not set this manually."""
     change_control_id: str | None = None
     """Do not set this manually."""
+    build_id: str | None = None
+    """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt. Do not set this manually."""
+    build_warnings: CVWorkspaceBuildWarningsConfig = field(default_factory=CVWorkspaceBuildWarningsConfig)
+    """Configuration settings to control fetching and exposing Workspace build warnings."""
+    device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
+    """Details of per-device Workspace build results. Do not set this manually."""
 
 
 @dataclass
@@ -187,7 +236,7 @@ class DeployToCvResult:
     skipped_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
     skipped_cv_pathfinder_metadata: list[CVPathfinderMetadata] = field(default_factory=list)
     removed_configs: list[str] = field(default_factory=list)
-    removed_static_config_root_containers: list[str] = field(default_factory=list)
+    removed_static_config_containers: list[str] = field(default_factory=list)
     removed_static_config_configlets: list[str] = field(default_factory=list)
     removed_device_tags: list[CVDeviceTag] = field(default_factory=list)
     removed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
@@ -257,13 +306,13 @@ class AvdConfiglet:
     """
 
     name: str
-    file: Path
+    file: str
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> AvdConfiglet:
         """Build an AvdConfiglet instance from an input dictionary."""
         try:
-            return cls(name=data["name"], file=Path(data["file"]).resolve())
+            return cls(name=data["name"], file=str(Path(data["file"]).resolve()))
         except (KeyError, TypeError) as e:
             msg = f"Invalid configlet definition: {data}. Error: {e}"
             raise ValueError(msg) from e
@@ -416,13 +465,13 @@ class CVConfiglet:
         return self.avd_configlet.name
 
     @property
-    def file(self) -> Path:
+    def file(self) -> str:
         return self.avd_configlet.file
 
     @property
     def api_tuple(self) -> tuple[str, str, str, str]:
         """Return a tuple representation of the configlet compatible with the CVClient APIs."""
-        return (self.id, self.name, self.description, str(self.file))
+        return (self.id, self.name, self.description, self.file)
 
 
 @dataclass(frozen=True)

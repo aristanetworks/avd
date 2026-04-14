@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -62,6 +62,9 @@ keys:
             - str
           description: |
             "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
+        loop_protection:
+          type: bool
+          description: Enable/disable loop protection.
         arp_gratuitous_accept:
           type: bool
           description: Accept gratuitous ARP.
@@ -155,16 +158,20 @@ keys:
                 description: Group name.
               direction:
                 type: str
+                required: true
                 valid_values: ["upstream", "downstream"]
         link_tracking:
           type: dict
           keys:
             direction:
               type: str
+              required: true
               valid_values: ["upstream", "downstream"]
             groups:
               type: list
               description: Link state group(s) an interface belongs to.
+              required: true
+              min_length: 1
               items:
                 type: str
                 description: Group names.
@@ -412,16 +419,50 @@ keys:
           type: bool
         ipv6_address:
           type: str
+          description: |-
+            IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: |-
+              IPv6 address with prefix length.
+              This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
+        ipv6_address_auto_config:
+          type: bool
+          description: |-
+            Use SLAAC to automatically configure the IPv6 address.
+            This option is mutually exclusive with `ipv6_addresses`.
         ipv6_address_link_local:
           type: str
           description: Link local IPv6 address/mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -439,15 +480,18 @@ keys:
                 description: Infinite or lifetime in seconds.
               no_autoconfig_flag:
                 type: bool
+        ipv6_nd:
+          type: dict
+          $ref: "eos_cli_config_gen#/$defs/ipv6_nd"
         ipv6_dhcp_relay_destinations:
           type: list
-          primary_key: address
           items:
             type: dict
             keys:
               address:
                 type: str
                 description: DHCP server's IPv6 address.
+                required: true
               vrf:
                 type: str
                 convert_types:
@@ -526,7 +570,16 @@ keys:
           valid_values: ["none", "simple", "message-digest"]
         ospf_authentication_key:
           type: str
-          description: Encrypted password - only type 7 supported.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+            - int
+          description: Authentication key type.
+          default: "7"
+          valid_values:
+            - "7"
+            - "8a"
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -542,7 +595,16 @@ keys:
                 valid_values: ["md5", "sha1", "sha256", "sha384", "sha512"]
               key:
                 type: str
-                description: Encrypted password - only type 7 supported.
+                description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                  - int
+                description: Authentication key type.
+                default: "7"
+                valid_values:
+                  - "7"
+                  - "8a"
         pim:
           type: dict
           keys:
@@ -1080,6 +1142,9 @@ keys:
         spanning_tree_portfast:
           type: str
           valid_values: ["edge", "network"]
+        spanning_tree_link_type:
+          type: str
+          valid_values: ["shared", "point-to-point"]
         vmtracer:
           type: bool
         priority_flow_control:
@@ -1246,6 +1311,25 @@ keys:
                     max: 8
                     convert_types:
                       - str
+            power:
+              type: dict
+              keys:
+                ignore:
+                  type: bool
+                  description: Ignore advertised transceiver power consumption.
+            transmitter:
+              type: dict
+              keys:
+                signal_power:
+                  type: str
+                  description: Optical signal power between < -30 and 10 > (dBm).
+                  convert_types:
+                    - int
+                    - float
+                disabled:
+                  type: bool
+                  description: Disable the optical transmitter.
+
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -1336,6 +1420,17 @@ keys:
             port_profile:
               type: str
               description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: |-
+                Controls LLDP topology validation performed by the `anta_runner` role.
+                - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+                and the peer interface is not administratively shutdown.
+                - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+                - `false`: Disables validation for the interface.
         sflow:
           type: dict
           keys:
@@ -1467,6 +1562,7 @@ keys:
                             description: Indicate the units to be used for the threshold values.
                           min:
                             type: int
+                            required: true
                             min: 1
                             max: 256000000
                             convert_types:
@@ -1639,12 +1735,6 @@ keys:
                       - "0"
                       - "7"
                       - "8a"
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
         switchport:
           type: dict
           description: This should not be combined with `ethernet_interfaces[].type = switched/routed`.
@@ -2040,11 +2130,11 @@ keys:
                   keys:
                     source:
                       type: str
-                      pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
+                      pattern: "([0-9a-f]{2}:){5}[0-9a-f]{2}"
                       description: MAC address for the source.
                     destination:
                       type: str
-                      pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
+                      pattern: "([0-9a-f]{2}:){5}[0-9a-f]{2}"
                       description: MAC address for the destination.
                 encapsulation:
                   type: dict
@@ -2398,6 +2488,10 @@ keys:
             remove_in_version: 6.0.0
             new_key: switchport.vlan_translations
           type: list
+        monitor_link_flap_profiles:
+          type: list
+          items:
+            type: str
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration.

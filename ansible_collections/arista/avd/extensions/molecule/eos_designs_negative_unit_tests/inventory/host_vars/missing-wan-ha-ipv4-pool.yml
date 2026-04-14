@@ -49,8 +49,6 @@ wan_router:
     bgp_as: 65000
   node_groups:
     - group: Site511
-      uplink_type: p2p-vrfs
-      uplink_interfaces: [Ethernet52]
       cv_pathfinder_region: AVD_Land_East
       cv_pathfinder_site: Site511
       wan_ha:
@@ -59,7 +57,6 @@ wan_router:
       nodes:
         - name: missing-wan-ha-ipv4-pool
           id: 2
-          uplink_switch_interfaces: [Ethernet1, Ethernet2]
           l3_interfaces:
             - name: Ethernet3
               wan_carrier: ATT

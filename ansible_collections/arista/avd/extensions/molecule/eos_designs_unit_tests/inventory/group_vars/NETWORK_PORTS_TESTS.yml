@@ -32,6 +32,7 @@ network_ports:
       - Ethernet1-2
     profile: pc
     endpoint: PCs
+    spanning_tree_link_type: shared
 
   - switches:
       - network-ports-tests-2$
@@ -221,6 +222,79 @@ network_ports:
       - Ethernet25
     description: Add all vlans
     vlans: 1-4094
+
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet26
+    description: PO trunk with all VLANs explicitly allowed
+    mode: trunk
+    vlans: all
+    port_channel:
+      channel_id: 226
+      mode: "active"
+      description: network-ports-tests_vlans="all-> alias of EOS's default/implicit '1-4094'"
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet27
+    description: PO trunk with all defined VLANs explicitly allowed
+    mode: trunk
+    vlans: defined_vlans
+    port_channel:
+      channel_id: 227
+      mode: "active"
+      description: network-ports-tests_vlans="defined_vlans->100,200,300,400"
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet28
+    description: network-ports-tests_vlans="100,300"
+    mode: trunk
+    vlans: 100,300
+    port_channel:
+      channel_id: 228
+      mode: "active"
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet29
+    description: PO trunk with all VLANs explicitly disallowed
+    mode: trunk
+    vlans: none
+    port_channel:
+      channel_id: 229
+      mode: "active"
+      description: network-ports-tests_vlans="none"
+
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet30
+    description: network-ports-tests_vlans="all" is an alias of EOS's default/implicit "1-4094".""
+    mode: trunk
+    vlans: all
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet31
+    description: network-ports-tests_vlans="defined_vlans"
+    mode: trunk
+    vlans: defined_vlans
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet32
+    description: network-ports-tests_vlans="100,300"
+    mode: trunk
+    vlans: 100,300
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet33
+    description: network-ports-tests_vlans="none"
+    mode: trunk
+    vlans: none
 
   - switches:
       - network-ports-tests.2

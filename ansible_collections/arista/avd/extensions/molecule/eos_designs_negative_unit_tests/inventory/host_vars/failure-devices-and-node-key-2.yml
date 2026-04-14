@@ -1,0 +1,18 @@
+---
+fabric_name: FABRIC_FAILURE_DEVICES_AND_NODE_KEY_2
+
+type: l2leaf
+
+# Testing just assigning the profile is enough to trigger this.
+device_profile: test
+
+device_profiles:
+  - name: test
+
+l2leaf:
+  nodes:
+    - name: failure-devices-and-node-key-2
+
+expected_error_message: >-
+  Found the device 'failure-devices-and-node-key-2' under 'l2leaf' but it also has 'device_profile' set.
+  Those two models are mutually exclusive one of them must be removed for this device.

@@ -2,3 +2,5 @@
 ## AAA Authorization
 aaa_authorization:
   config_commands: false
+  commands:
+    all_default: group TACACS

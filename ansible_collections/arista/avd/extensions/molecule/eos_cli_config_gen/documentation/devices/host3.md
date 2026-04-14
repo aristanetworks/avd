@@ -14,9 +14,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -123,6 +123,28 @@ cvx
       vtep mac-learning control-plane
 ```
 
+## Authentication
+
+### AAA Accounting
+
+#### AAA Accounting Summary
+
+| Type | Commands | Record type | Groups | Logging |
+| ---- | -------- | ----------- | ------ | ------- |
+| Commands - Console | all | none | - | - |
+| Commands - Console | 0 | none | - | - |
+| Commands - Default | all | none | - | - |
+| Commands - Default | 0 | none | - | - |
+
+#### AAA Accounting Device Configuration
+
+```eos
+aaa accounting commands all console none
+aaa accounting commands 0 console none
+aaa accounting commands all default none
+aaa accounting commands 0 default none
+```
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -147,7 +169,7 @@ daemon TerminAttr
 #### Logging Servers and Features Summary
 
 | Type | Level |
-| -----| ----- |
+| ---- | ----- |
 | Synchronous | critical |
 
 | Format Type | Setting |
@@ -157,12 +179,26 @@ daemon TerminAttr
 | Sequence-numbers | false |
 | RFC5424 | False |
 
+| VRF | Source Interface |
+| --- | ---------------- |
+| - | Ethernet1 |
+| check_source_interface_table_created | Ethernet1 |
+
+| VRF | Hosts | Ports | Protocol | SSL-profile |
+| --- | ----- | ----- | -------- | ----------- |
+| check_source_interface_table_created | 1.2.3.4 | Default | UDP | - |
+| check_source_interface_table_created | 2001:db8::1:2:3:4 | Default | UDP | - |
+
 #### Logging Servers and Features Device Configuration
 
 ```eos
 !
 logging synchronous level critical
+logging vrf check_source_interface_table_created host 1.2.3.4
+logging vrf check_source_interface_table_created host 2001:db8::1:2:3:4
 logging format timestamp traditional year timezone
+logging local-interface Ethernet1
+logging vrf check_source_interface_table_created source-interface Ethernet1
 ```
 
 ### MCS Client Summary
@@ -237,7 +273,7 @@ spanning-tree mst configuration
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
 | SPF Interval | 250 seconds |
-| SPF Interval Wait Time| 30 milliseconds |
+| SPF Interval Wait Time | 30 milliseconds |
 
 #### ISIS Interfaces Summary
 
@@ -249,7 +285,6 @@ spanning-tree mst configuration
 ```eos
 !
 router isis EVPN_UNDERLAY
-   set-overload-bit
    set-overload-bit on-startup 55
    spf-interval 250 30
    authentication mode shared-secret profile test1 algorithm md5 rx-disabled
@@ -277,6 +312,12 @@ ASN Notation: asplain
 | graceful-restart-helper long-lived |
 | bgp additional-paths send limit 5 |
 
+#### Route Distinguisher
+
+| Address Families | Range |
+| ---------------- | ----- |
+| l3-vrf | - |
+
 #### Router BGP EVPN Address Family
 
 #### Router BGP IPv4 Labeled Unicast
@@ -286,6 +327,13 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 
+##### BGP LU RIB
+
+| RIB | Enabled | Route-map |
+| --- | ------- | --------- |
+| IP | True | RM-rib2 |
+| Tunnel | True | RM-rib3 |
+
 #### Router BGP Path-Selection Address Family
 
 #### Router BGP Device Configuration
@@ -293,6 +341,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65101.0001
+   bgp labeled-unicast rib ip route-map RM-rib2 tunnel route-map RM-rib3
    router-id 192.168.255.3
    graceful-restart-helper long-lived
    no bgp default ipv4-unicast
@@ -303,6 +352,9 @@ router bgp 65101.0001
    bgp additional-paths send limit 5
    redistribute ospf include leaked route-map RM-OSPF-TO-BGP
    redistribute static
+   !
+   route-distinguisher
+      assignment auto address-family l3-vrf
    !
    address-family evpn
       bgp additional-paths send ecmp limit 10
@@ -373,7 +425,7 @@ mpls rsvp
 
 #### IP Router Multicast Summary
 
-- Multipathing via ECMP.
+- Multipathing operates via ECMP.
 
 #### Router Multicast Device Configuration
 
@@ -382,6 +434,39 @@ mpls rsvp
 router multicast
    ipv4
       multipath deterministic
+```
+
+## IPv6 DHCP Relay
+
+### IPv6 DHCP Relay Summary
+
+DhcpRelay Agent is in always-on mode.
+
+Forwarding requests with additional IPv6 addresses in the "giaddr" field is allowed.
+
+Add Option 79 - Link Layer Address Option.
+
+Add RemoteID option 37 in format MAC address, hostname and interface name.
+
+### IPv6 DHCP Relay Device Configuration
+
+```eos
+!
+ipv6 dhcp relay always-on
+ipv6 dhcp relay all-subnets default
+ipv6 dhcp relay option link-layer address
+ipv6 dhcp relay option remote-id format %m:%h:%p
+```
+
+## Errdisable
+
+### Errdisable Summary
+
+Errdisable recovery timer interval: 300 seconds
+
+```eos
+!
+errdisable recovery interval 300
 ```
 
 ### Traffic Policies information

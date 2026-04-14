@@ -21,8 +21,9 @@ l3leaf:
 
 tenants:
   - name: TENANT1
-    igmp_snooping_querier:
-      enabled: true
+    igmp_snooping:
+      querier:
+        enabled: true
     mac_vrf_vni_base: 10000
     vrfs:
       - name: VRF1
@@ -35,8 +36,9 @@ tenants:
 
   - name: DUPLICATE_TENANT1
     # Conflicting IGMP snooping setting on tenant so an error will be raised.
-    igmp_snooping_querier:
-      enabled: false
+    igmp_snooping:
+      querier:
+        enabled: false
     mac_vrf_vni_base: 10000
     vrfs:
       - name: VRF1

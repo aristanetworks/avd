@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -12,7 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "daemon_terminattr.cvaddrs.[]") | String |  |  |  | Server address in the format `<ip/fqdn>:<port>`. |
     | [<samp>&nbsp;&nbsp;clusters</samp>](## "daemon_terminattr.clusters") | List, items: Dictionary |  |  |  | Multiple CloudVision clusters.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "daemon_terminattr.clusters.[].name") | String | Required, Unique |  |  | Cluster Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvaddrs</samp>](## "daemon_terminattr.clusters.[].cvaddrs") | List, items: String |  |  |  | Streaming address(es) for CloudVision cluster.<br>- TCP 9910 is used for CV on-prem<br>- TCP 443 is used for CV as a Service<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvaddrs</samp>](## "daemon_terminattr.clusters.[].cvaddrs") | List, items: String | Required |  | Min Length: 1 | Streaming address(es) for CloudVision cluster.<br>- TCP 9910 is used for CV on-prem<br>- TCP 443 is used for CV as a Service<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "daemon_terminattr.clusters.[].cvaddrs.[]") | String |  |  |  | Server address in the format `<ip/fqdn>:<port>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cvauth</samp>](## "daemon_terminattr.clusters.[].cvauth") | Dictionary |  |  |  | Authentication scheme used to connect to CloudVision.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method</samp>](## "daemon_terminattr.clusters.[].cvauth.method") | String |  |  | Valid Values:<br>- <code>token</code><br>- <code>token-secure</code><br>- <code>key</code><br>- <code>certs</code> |  |
@@ -51,6 +51,7 @@
     | [<samp>&nbsp;&nbsp;sflow</samp>](## "daemon_terminattr.sflow") | Boolean |  |  |  | Enable sFlow provider (TerminAttr default is true).<br> |
     | [<samp>&nbsp;&nbsp;sflowaddr</samp>](## "daemon_terminattr.sflowaddr") | String |  |  |  | ECO sFlow Collector address to listen on to receive sFlow packets (TerminAttr default "127.0.0.1:6343").<br> |
     | [<samp>&nbsp;&nbsp;cvconfig</samp>](## "daemon_terminattr.cvconfig") | Boolean |  |  |  | Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).<br> |
+    | [<samp>&nbsp;&nbsp;cv_loss_timeout</samp>](## "daemon_terminattr.cv_loss_timeout") | Integer |  |  |  | Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to CloudVision after a configuration change.<br>The recommended timeout is five minutes. |
 
 === "YAML"
 
@@ -80,7 +81,7 @@
           # Streaming address(es) for CloudVision cluster.
           # - TCP 9910 is used for CV on-prem
           # - TCP 443 is used for CV as a Service
-          cvaddrs:
+          cvaddrs: # >=1 items; required
 
               # Server address in the format `<ip/fqdn>:<port>`.
             - <str>
@@ -205,4 +206,8 @@
 
       # Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
       cvconfig: <bool>
+
+      # Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to CloudVision after a configuration change.
+      # The recommended timeout is five minutes.
+      cv_loss_timeout: <int>
     ```

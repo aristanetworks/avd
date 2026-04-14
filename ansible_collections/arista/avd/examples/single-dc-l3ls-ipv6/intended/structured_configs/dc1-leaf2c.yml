@@ -54,18 +54,20 @@ ip_domain_lookup:
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.1.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.1.1
 local_users:
 - name: admin
   privilege: 15
   role: network-admin
   no_password: true
-- name: ansible
+- name: arista
   privilege: 15
   role: network-admin
-  sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -80,8 +82,10 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOSLab
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management1
@@ -118,28 +122,44 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VRF10_VLAN11
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 12
   name: VRF10_VLAN12
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 21
   name: VRF11_VLAN21
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 22
   name: VRF11_VLAN22
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 31
   name: VRF12_VLAN31
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 32
   name: VRF12_VLAN32
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3401
   name: L2_VLAN3401
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3402
   name: L2_VLAN3402
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false

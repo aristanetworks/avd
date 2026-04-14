@@ -10,6 +10,7 @@ name: Build base container
       - .github/workflows/container_build_template.yml
       - .github/workflows/container_build_base.yml
   workflow_dispatch:
+    # TODO: not fixing in my PR but it seems this property is not valid.
     branches:
       - devel
 
@@ -20,7 +21,7 @@ jobs:
     strategy:
       matrix:
         container_name: [base]
-        python_version: ["3.10", "3.11", "3.12", "3.13"]
+        python_version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
         include:
           - python_version: "3.11"
             container_tags: latest

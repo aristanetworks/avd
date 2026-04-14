@@ -1,0 +1,82 @@
+---
+type: wan_router
+wan_mode: cv-pathfinder
+
+cv_pathfinder_regions:
+  - name: AVD_Land_East
+    id: 43
+    description: AVD Region
+    sites:
+      - name: Site511
+        id: 511
+        location: Miami
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.142.0/24
+      - 192.168.143.0/24
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+    uplink_ipv4_pool: 172.17.0.0/16
+    bgp_as: 65000
+  node_groups:
+    - group: Site511
+      cv_pathfinder_region: AVD_Land_East
+      cv_pathfinder_site: Site511
+      wan_ha:
+        enabled: false
+      nodes:
+        - name: missing-cv-pathfinder-internet-exit-policy-configured-under-l3-interface
+          id: 2
+          l3_interfaces:
+            - name: Ethernet3
+              wan_carrier: ATT
+              wan_circuit_id: 404
+              ip_address: dhcp
+              peer_ip: 172.31.0.1
+              dhcp_ip: 10.0.0.145
+              cv_pathfinder_internet_exit:
+                policies:
+                  # This policy is not configured and will raise
+                  - name: DIRECT-EXIT-POLICY-1
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: ATT
+    path_group: INET
+    trusted: true
+
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      policy: DEFAULT-AVT-POLICY
+      wan_vni: 1
+  policies:
+    - name: DEFAULT-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET, Equinix]
+        internet_exit:
+          policy: DIRECT-EXIT-POLICY-1
+# This is commented out so it will raise.
+# cv_pathfinder_internet_exit_policies:
+#   - name: DIRECT-EXIT-POLICY-1
+#     fallback_to_system_default: false
+#     type: direct
+
+expected_error_message: >-
+  The Internet Exit policy 'DIRECT-EXIT-POLICY-1' configured under node l3_interface 'Ethernet3' is not defined under 'cv_pathfinder_internet_exit_policies'.

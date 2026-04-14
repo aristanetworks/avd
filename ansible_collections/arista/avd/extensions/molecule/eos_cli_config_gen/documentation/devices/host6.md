@@ -21,9 +21,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -48,7 +48,7 @@ interface Management1
 #### SNMP Hosts Configuration
 
 | Host | VRF | Community | Username | Authentication level | SNMP Version |
-| ---- |---- | --------- | -------- | -------------------- | ------------ |
+| ---- | --- | --------- | -------- | -------------------- | ------------ |
 | 10.6.75.121 | MGMT | SNMP-COMMUNITY-1 | - | - | 1 |
 | 10.6.75.121 | MGMT | SNMP-COMMUNITY-2 | - | - | 2c |
 

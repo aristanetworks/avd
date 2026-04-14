@@ -1,5 +1,4 @@
 ---
-
 # Testing reverting to <5.0.0 description since 'inband-mgmt-subnet' exposes the uppercase peer hostname on a port-channel.
 underlay_l2_ethernet_description: "{peer!u}_{peer_interface}"
 underlay_l2_port_channel_description: "{peer_node_group_or_uppercase_peer}_Po{peer_port_channel_id}"
@@ -16,17 +15,16 @@ default_node_types:
     node_type: l2leaf
 
 default_interfaces:
-  - types: [ spine ]
-    platforms: [ default ]
-    downlink_interfaces: [ Ethernet1-10 ]
-  - types: [ l3leaf, l2leaf ]
-    platforms: [ default ]
-    uplink_interfaces: [ Ethernet1-10 ]
-    mlag_interfaces: [ Ethernet11-20 ]
-    downlink_interfaces: [ Ethernet21-30 ]
+  - types: [spine]
+    platforms: [default]
+    downlink_interfaces: [Ethernet1-10]
+  - types: [l3leaf, l2leaf]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-10]
+    mlag_interfaces: [Ethernet11-20]
+    downlink_interfaces: [Ethernet21-30]
     # Test for setting mlag interfaces speed via default_interfaces
     mlag_interfaces_speed: forced 100gfull
-
 default_mgmt_method: inband
 
 cv_settings:
@@ -181,6 +179,7 @@ tenants:
       - name: INBANDMGMT
         vrf_id: 1
         svis:
+          # TODO: Inband mgmt need a refactoring for now we on purpose choose this
           - id: 103
             name: Inband management vlan
             vxlan: false

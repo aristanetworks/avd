@@ -21,17 +21,17 @@ tenants:
     l2vlans:
       - id: 10
         name: storage_prod
-        tags: ['storageProd']
+        tags: [storageProd]
     vrfs:
       # Testing default vrf with loopbacks, this will not generate config for virtual_source_nat_vrfs
       - name: default
         vrf_vni: 789654
         loopbacks:
-          - loopback: 1
+          - loopback: 42
             node: tenant-default-vrf-with-loopbacks
             ip_address: 192.168.1.1/32
         svis:
           - id: 1008
             name: SVI_1
             enabled: true
-            tags: ['sit']
+            tags: [sit]

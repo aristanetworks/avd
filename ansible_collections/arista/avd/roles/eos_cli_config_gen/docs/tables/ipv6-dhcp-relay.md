@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -12,7 +12,7 @@
     | [<samp>&nbsp;&nbsp;all_subnets</samp>](## "ipv6_dhcp_relay.all_subnets") | Boolean |  |  |  | Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field. |
     | [<samp>&nbsp;&nbsp;option</samp>](## "ipv6_dhcp_relay.option") | Dictionary |  |  |  | Insert DHCP Option. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_layer_address</samp>](## "ipv6_dhcp_relay.option.link_layer_address") | Boolean |  |  |  | Add Option 79 (Link Layer Address Option). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;remote_id_format</samp>](## "ipv6_dhcp_relay.option.remote_id_format") | String |  |  | Valid Values:<br>- <code>%m:%i</code><br>- <code>%m:%p</code> | Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface name (`%m:%p`). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;remote_id_format</samp>](## "ipv6_dhcp_relay.option.remote_id_format") | String |  |  | Valid Values:<br>- <code>%m:%h:%p</code><br>- <code>%m:%i</code><br>- <code>%m:%p</code> | Add RemoteID option 37 in format<br>- MAC address, hostname and interface name (`%m:%h:%p`)<br>- MAC address and interface ID (`%m:%i`)<br>- MAC address and interface name (`%m:%p`) |
 
 === "YAML"
 
@@ -31,6 +31,9 @@
         # Add Option 79 (Link Layer Address Option).
         link_layer_address: <bool>
 
-        # Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface name (`%m:%p`).
-        remote_id_format: <str; "%m:%i" | "%m:%p">
+        # Add RemoteID option 37 in format
+        # - MAC address, hostname and interface name (`%m:%h:%p`)
+        # - MAC address and interface ID (`%m:%i`)
+        # - MAC address and interface name (`%m:%p`)
+        remote_id_format: <str; "%m:%h:%p" | "%m:%i" | "%m:%p">
     ```

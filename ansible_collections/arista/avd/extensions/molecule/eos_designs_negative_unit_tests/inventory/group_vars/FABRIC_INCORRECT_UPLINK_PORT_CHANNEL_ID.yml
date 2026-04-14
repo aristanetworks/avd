@@ -36,13 +36,13 @@ l2leaf:
           id: 9
           mgmt_ip: 192.168.200.113/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [Ethernet7, Ethernet7]
+          uplink_switch_interfaces: [Ethernet7]
         - name: incorrect-uplink-port-channel-id-l2leaf1b
           id: 10
           mgmt_ip: 192.168.200.114/24
           uplink_switch_port_channel_id: 100
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [Ethernet8, Ethernet8]
+          uplink_switch_interfaces: [Ethernet8]
 
 expected_error_message: >-
   'uplink_switch_port_channel_id' is set to 100 and is not matching 7 set on MLAG peer.

@@ -1,8 +1,9 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from .append_if_not_duplicate import append_if_not_duplicate
 from .as_path_list_match_from_bgp_asns import as_path_list_match_from_bgp_asns
+from .avd_templar import AVDTemplar
 from .batch import batch
 from .compare_dicts import compare_dicts
 from .default import default
@@ -27,6 +28,7 @@ from .undefined import Undefined, UndefinedType
 from .unique import unique
 
 __all__ = [
+    "AVDTemplar",
     "AvdStringFormatter",
     "Undefined",
     "UndefinedType",

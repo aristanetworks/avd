@@ -29,6 +29,7 @@
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
+  - [AS Path Lists](#as-path-lists)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -48,9 +49,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -119,7 +120,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -144,8 +145,8 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_DC1-SUPER-SPINE2_Ethernet5 | - | 172.17.10.9/31 | default | - | False | - | - |
 | Ethernet2 | P2P_DC1-POD2-SPINE1_Ethernet4 | - | 172.17.10.11/31 | default | - | False | - | - |
 | Ethernet3 | P2P_DC1-POD2-LEAF1A_Ethernet3 | - | 172.17.10.13/31 | default | - | False | - | - |
@@ -188,8 +189,8 @@ interface Ethernet3
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
@@ -291,7 +292,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -334,7 +335,7 @@ router bgp 65102
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.16.20.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.20.1 remote-as 65201
    neighbor 172.16.20.1 description DC2-RS1_Loopback0
@@ -429,28 +430,28 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65200 | - | - | - |
+| 10 | deny | as-path AS65200 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65201
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65201 | - | - | - |
+| 10 | deny | as-path AS65201 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65210
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65210 | - | - | - |
+| 10 | deny | as-path AS65210 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65211
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65211 | - | - | - |
+| 10 | deny | as-path AS65211 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 #### Route-maps Device Configuration
@@ -461,24 +462,45 @@ route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-EVPN-FILTER-AS65200 deny 10
-   match as 65200
+   match as-path AS65200
 !
 route-map RM-EVPN-FILTER-AS65200 permit 20
 !
 route-map RM-EVPN-FILTER-AS65201 deny 10
-   match as 65201
+   match as-path AS65201
 !
 route-map RM-EVPN-FILTER-AS65201 permit 20
 !
 route-map RM-EVPN-FILTER-AS65210 deny 10
-   match as 65210
+   match as-path AS65210
 !
 route-map RM-EVPN-FILTER-AS65210 permit 20
 !
 route-map RM-EVPN-FILTER-AS65211 deny 10
-   match as 65211
+   match as-path AS65211
 !
 route-map RM-EVPN-FILTER-AS65211 permit 20
+```
+
+### AS Path Lists
+
+#### AS Path Lists Summary
+
+| List Name | Type | Match | Origin |
+| --------- | ---- | ----- | ------ |
+| AS65200 | permit | `_65200_` | any |
+| AS65201 | permit | `_65201_` | any |
+| AS65210 | permit | `_65210_` | any |
+| AS65211 | permit | `_65211_` | any |
+
+#### AS Path Lists Device Configuration
+
+```eos
+!
+ip as-path access-list AS65200 permit _65200_ any
+ip as-path access-list AS65201 permit _65201_ any
+ip as-path access-list AS65210 permit _65210_ any
+ip as-path access-list AS65211 permit _65211_ any
 ```
 
 ## VRF Instances

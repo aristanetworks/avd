@@ -50,6 +50,11 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: true
+  ip_address: 10.255.0.3/32
 management_api_http:
   enable_https: true
   https_ssl_profile: eAPI_SSL_Profile
@@ -60,6 +65,8 @@ metadata:
   platform: vEOS-lab
   dc_name: DC1
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC1_L3_LEAF1_Port-Channel8
@@ -92,6 +99,33 @@ vlan_interfaces:
   mtu: 1500
   metadata:
     type: inband_mgmt
+- name: Vlan100
+  description: SVI100_INBAND_MGMT
+  shutdown: true
+  vrf: MGMT_BACKUP
+  ip_address: 10.100.100.1/24
+  metadata:
+    type: inband_mgmt
+- name: Vlan101
+  description: SVI101_INBAND_MGMT
+  shutdown: false
+  vrf: MGMT_BACKUP
+  metadata:
+    type: inband_mgmt
+- name: Vlan102
+  description: SVI102_INBAND_MGMT
+  shutdown: false
+  vrf: MGMT_BACKUP
+  ip_address: dhcp
+  metadata:
+    type: inband_mgmt
+- name: Vlan103
+  description: SVI103_INBAND_MGMT_DEFAULT_VRF
+  shutdown: false
+  vrf: default
+  ip_address: 10.103.103.1/24
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -100,25 +134,51 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VRF10_VLAN11
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 12
   name: VRF10_VLAN12
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 21
   name: VRF11_VLAN21
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 22
   name: VRF11_VLAN22
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3401
   name: L2_VLAN3401
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3402
   name: L2_VLAN3402
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 4085
   name: L2LEAF_INBAND_MGMT
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: dc1-leaf1c_VTEP
+    vxlan:
+      source_interface: Loopback0
+      udp_port: 4789
+      vlans:
+      - id: 11
+        vni: 10011
+      vrfs:
+      - name: VRF10
+        vni: 10

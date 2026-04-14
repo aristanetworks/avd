@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -193,6 +193,11 @@ $defs:
               By default `redistribute igmp` is only configured when `evpn_l2_multicast` is True and `evpn_l3_multicast` for the VRF is False.
               Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,
               but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.
+      evpn_redistribute_router_mac_system:
+        type: bool
+        default: false
+        description: |-
+          Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
       vxlan_flood_multicast:
         documentation_options:
           table: network-services-multicast-settings
@@ -216,24 +221,73 @@ $defs:
         keys:
           enabled:
             type: bool
+      igmp_snooping:
+        type: dict
+        documentation_options:
+          table: network-services-multicast-settings
+        keys:
+          enabled:
+            type: bool
+            description: Enable or disable IGMP snooping (Enabled by default on EOS).
+          querier:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                description: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+              source_address:
+                type: str
+                description: |-
+                  The value of `source_address` will be interpreted according to these rules:
+                  - `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                  - 'diagnostic_loopback' will configure the VRF Diagnostic Loopback address.
+                  - `main_router_id` will configure the Loopback0 IP address.
+                  - An IPv4 address will be used directly as the source address.
+                  Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.
+              version:
+                type: int
+                description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                convert_types:
+                  - str
+                valid_values:
+                  - 1
+                  - 2
+                  - 3
+          fast_leave:
+            type: bool
+            description: Enable IGMP snooping fast-leave feature.
       igmp_snooping_enabled:
         documentation_options:
           table: network-services-multicast-settings
         type: bool
         description: Enable or disable IGMP snooping (Enabled by default on EOS).
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: igmp_snooping.enabled
       igmp_snooping_querier:
         documentation_options:
           table: network-services-multicast-settings
         type: dict
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: igmp_snooping.querier
         keys:
           enabled:
             type: bool
             description: Will be enabled automatically if evpn_l2_multicast is enabled.
           source_address:
             type: str
-            description: |
-              IPv4_address
-              If not set, IP address of "Loopback0" will be used.
+            description: |-
+              The value of `source_address` will be interpreted according to these rules:
+              - `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+              - 'diagnostic_loopback' will configure the VRF Diagnostic Loopback address.
+              - `main_router_id` will configure the Loopback0 IP address.
+              - An IPv4 address will be used directly as the source address.
+              Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.
           version:
             type: int
             description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -356,13 +410,13 @@ $defs:
         type: dict
         relaxed_validation: true
         description: |
-          Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+          Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
         documentation_options:
           hide_keys: true
         $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items"
       evpn_l2_multi_domain:
         type: bool
-        description: |
+        description: |-
           Explicitly extend SVI to remote EVPN domains.
           Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
-          Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+          Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant.

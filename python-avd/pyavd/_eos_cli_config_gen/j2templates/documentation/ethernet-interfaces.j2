@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -119,7 +119,7 @@
 ##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- |------------ | ---------------------- | ---------------------- |
+| --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
 {%         for ethernet_interface in flexencap_interfaces %}
 {%             set description = ethernet_interface.description | arista.avd.default("-") %}
 {%             set vlan_id = ethernet_interface.vlan_id | arista.avd.default('-') %}
@@ -155,7 +155,7 @@
 ##### Private VLAN
 
 | Interface | PVLAN Mapping | Secondary Trunk |
-| --------- | ------------- | ----------------|
+| --------- | ------------- | --------------- |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%             set row_pvlan_mapping = ethernet_interface.switchport.pvlan_mapping | arista.avd.default('-') %}
 {%             set row_trunk_private_vlan_secondary = ethernet_interface.switchport.trunk.private_vlan_secondary | arista.avd.default('-') %}
@@ -228,8 +228,8 @@
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override | Application Override |
-| --------- | --------------------- | -------------- | -------------------- |
+| Interface | Transceiver Frequency | Media Override | Application Override | Power Ignore | Transmitter Signal-Power | Transmitter Disabled |
+| --------- | --------------------- | -------------- | -------------------- | ------------ | ------------------------ | -------------------- |
 {%         for transceiver_setting in transceiver_settings | arista.avd.natural_sort('name') %}
 {%             set interface = transceiver_setting.name %}
 {%             if transceiver_setting.transceiver.frequency is arista.avd.defined %}
@@ -255,7 +255,14 @@
 {%                 do applications.append("-") %}
 {%             endif %}
 {%             set m_override = transceiver_setting.transceiver.media.override | arista.avd.default('-') %}
-| {{ interface }} | {{ frequency }} | {{ m_override }} | {{ applications | join("</br>") }} |
+{%             set power_ignore = transceiver_setting.transceiver.power.ignore | arista.avd.default('-') %}
+{%             if transceiver_setting.transceiver.transmitter.signal_power is arista.avd.defined %}
+{%                 set transmitter_sp = "%.2f" | format(transceiver_setting.transceiver.transmitter.signal_power | float) %}
+{%             else %}
+{%                 set transmitter_sp = '-' %}
+{%             endif %}
+{%             set transmitter_disabled = transceiver_setting.transceiver.transmitter.disabled | arista.avd.default('-') %}
+| {{ interface }} | {{ frequency }} | {{ m_override }} | {{ applications | join("</br>") }} | {{ power_ignore }} | {{ transmitter_sp }} | {{ transmitter_disabled }} |
 {%         endfor %}
 {%     endif %}
 {# Link Tracking Groups #}
@@ -342,28 +349,24 @@
 {%         endfor %}
 {%     endif %}
 {# IPv4 #}
-{%     set ethernet_interface_ipv4 = namespace() %}
-{%     set ethernet_interface_ipv4.configured = false %}
+{%     set ethernet_interfaces_ipv4 = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%         if ethernet_interface.ip_address is arista.avd.defined %}
-{%             set ethernet_interface_ipv4.configured = true %}
-{%             break %}
+{%             do ethernet_interfaces_ipv4.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     set port_channel_interface_ipv4 = namespace() %}
-{%     set port_channel_interface_ipv4.configured = false %}
+{%     set port_channel_interfaces_ipv4 = [] %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.ip_address is arista.avd.defined %}
-{%             set port_channel_interface_ipv4.configured = true %}
-{%             break %}
+{%             do port_channel_interfaces_ipv4.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     if ethernet_interface_ipv4.configured == true or port_channel_interface_ipv4.configured == true %}
+{%     if ethernet_interfaces_ipv4 | length > 0 or port_channel_interfaces_ipv4 | length > 0 %}
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
@@ -395,7 +398,7 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if port_channel_interface_ipv4.configured == true %}
+{%     if port_channel_interfaces_ipv4 | length > 0 %}
 
 *Inherited from Port-Channel Interface
 {%     endif %}
@@ -403,64 +406,134 @@
 {%     set ip_nat_interfaces = ethernet_interfaces %}
 {%     include 'documentation/interfaces-ip-nat.j2' %}
 {# IPv6 #}
-{%     set ethernet_interface_ipv6 = namespace() %}
-{%     set ethernet_interface_ipv6.configured = false %}
+{%     set ethernet_interfaces_ipv6 = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.ipv6_address is arista.avd.defined or ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
-{%             set ethernet_interface_ipv6.configured = true %}
-{%             break %}
+{%         if ethernet_interface.ipv6_addresses is arista.avd.defined or ethernet_interface.ipv6_address is arista.avd.defined
+            or ethernet_interface.ipv6_enable is arista.avd.defined(true) or ethernet_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%             do ethernet_interfaces_ipv6.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     set port_channel_interface_ipv6 = namespace() %}
-{%     set port_channel_interface_ipv6.configured = false %}
+{%     set port_channel_interfaces_ipv6 = [] %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%         if port_channel_interface.ipv6_address is arista.avd.defined or port_channel_interface.ipv6_enable is arista.avd.defined(true) %}
-{%             set port_channel_interface_ipv6.configured = true %}
-{%             break %}
+{%         if port_channel_interface.ipv6_addresses is arista.avd.defined or port_channel_interface.ipv6_address is arista.avd.defined
+            or port_channel_interface.ipv6_enable is arista.avd.defined(true) or port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%             do port_channel_interfaces_ipv6.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     if ethernet_interface_ipv6.configured == true or port_channel_interface_ipv6.configured == true %}
+{%     if ethernet_interfaces_ipv6 | length > 0 or port_channel_interfaces_ipv6 | length > 0 %}
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
 {%                 set port_channel_interface = port_channel_interfaces | arista.avd.default([]) |
                                                                           selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
                                                                           first %}
-{%                 if port_channel_interface.ipv6_address is arista.avd.defined or port_channel_interface.ipv6_enable is arista.avd.defined(true) %}
+{%                 if port_channel_interface.ipv6_addresses is arista.avd.defined or port_channel_interface.ipv6_address is arista.avd.defined
+                    or port_channel_interface.ipv6_enable is arista.avd.defined(true) or port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
 {%                     set description = ethernet_interface.description | arista.avd.default("-") %}
 {%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
-{%                     set ipv6_address = port_channel_interface.ipv6_address | arista.avd.default("-") %}
+{%                     if port_channel_interface.ipv6_addresses is arista.avd.defined %}
+{%                         set ipv6_address = port_channel_interface.ipv6_addresses | arista.avd.natural_sort | join(', ') %}
+{%                     elif port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%                         set ipv6_address = "auto-config" %}
+{%                     elif port_channel_interface.ipv6_address is arista.avd.defined %}
+{%                         set ipv6_address = port_channel_interface.ipv6_address %}
+{%                     else %}
+{%                         set ipv6_address = "-" %}
+{%                     endif %}
 {%                     set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
 {%                     set mtu = port_channel_interface.mtu | arista.avd.default("-") %}
 {%                     set shutdown = port_channel_interface.shutdown | arista.avd.default("-") %}
-{%                     set nd_ra_disabled = port_channel_interface.ipv6_nd_ra_disabled | arista.avd.default("-") %}
-{%                     set managed_config_flag = port_channel_interface.ipv6_nd_managed_config_flag | arista.avd.default("-") %}
+{%                     set nd_ra_disabled = port_channel_interface.ipv6_nd.ra_disabled | arista.avd.default(port_channel_interface.ipv6_nd_ra_disabled) | arista.avd.default("-") %}
+{%                     set managed_config_flag = port_channel_interface.ipv6_nd.managed_config_flag | arista.avd.default(port_channel_interface.ipv6_nd_managed_config_flag) | arista.avd.default("-") %}
+{%                     set other_config_flag = port_channel_interface.ipv6_nd.other_config_flag | arista.avd.default("-") %}
+{%                     set nd_ra_rx_accept = [] %}
+{%                     if port_channel_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
+{%                         do nd_ra_rx_accept.append("default-route") %}
+{%                     endif %}
+{%                     if port_channel_interface.ipv6_nd.ra.rx_accept.route_preference is arista.avd.defined(true) %}
+{%                         do nd_ra_rx_accept.append("route-preference") %}
+{%                     endif %}
+{%                     if nd_ra_rx_accept %}
+{%                         set nd_ra_rx_accept = nd_ra_rx_accept | join(", ") %}
+{%                     else %}
+{%                         set nd_ra_rx_accept = "-" %}
+{%                     endif %}
+{%                     set nd_cache_settings = [] %}
+{%                     if port_channel_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
+{%                         do nd_cache_settings.append("capacity: " ~ port_channel_interface.ipv6_nd.cache.dynamic_capacity) %}
+{%                     endif %}
+{%                     if port_channel_interface.ipv6_nd.cache.expire is arista.avd.defined %}
+{%                         do nd_cache_settings.append("expire: " ~ port_channel_interface.ipv6_nd.cache.expire) %}
+{%                     endif %}
+{%                     if port_channel_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
+{%                         do nd_cache_settings.append("refresh-always") %}
+{%                     endif %}
+{%                     if nd_cache_settings %}
+{%                         set nd_cache = nd_cache_settings | join(", ") %}
+{%                     else %}
+{%                         set nd_cache = "-" %}
+{%                     endif %}
 {%                     set ipv6_acl_in = port_channel_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                     set ipv6_acl_out = port_channel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ nd_ra_disabled }} | *{{ managed_config_flag }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} |
+| {{ ethernet_interface.name }} | {{ description }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ nd_ra_disabled }} | *{{ nd_ra_rx_accept }} | *{{ managed_config_flag }} | *{{ other_config_flag }} | *{{ nd_cache }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} |
 {%                 endif %}
 {%             else %}
-{%                 if ethernet_interface.ipv6_address is arista.avd.defined or ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
+{%                 if ethernet_interface.ipv6_addresses is arista.avd.defined or ethernet_interface.ipv6_address is arista.avd.defined
+                    or ethernet_interface.ipv6_enable is arista.avd.defined(true) or ethernet_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
 {%                     set description = ethernet_interface.description | arista.avd.default("-") %}
-{%                     set ipv6_address = ethernet_interface.ipv6_address | arista.avd.default("-") %}
+{%                     if ethernet_interface.ipv6_addresses is arista.avd.defined %}
+{%                         set ipv6_address = ethernet_interface.ipv6_addresses | arista.avd.natural_sort | join(', ') %}
+{%                     elif ethernet_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%                         set ipv6_address = "auto-config" %}
+{%                     elif ethernet_interface.ipv6_address is arista.avd.defined %}
+{%                         set ipv6_address = ethernet_interface.ipv6_address %}
+{%                     else %}
+{%                         set ipv6_address = "-" %}
+{%                     endif %}
 {%                     set vrf = ethernet_interface.vrf | arista.avd.default("default") %}
 {%                     set mtu = ethernet_interface.mtu | arista.avd.default("-") %}
 {%                     set shutdown = ethernet_interface.shutdown | arista.avd.default("-") %}
-{%                     set nd_ra_disabled = ethernet_interface.ipv6_nd_ra_disabled | arista.avd.default("-") %}
-{%                     set managed_config_flag = ethernet_interface.ipv6_nd_managed_config_flag | arista.avd.default("-") %}
+{%                     set ipv6_nd_ra_disabled = ethernet_interface.ipv6_nd.ra.disabled | arista.avd.default(ethernet_interface.ipv6_nd_ra_disabled, "-") %}
+{%                     set nd_ra_rx_accept = [] %}
+{%                     if ethernet_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
+{%                         do nd_ra_rx_accept.append("default-route") %}
+{%                     endif %}
+{%                     if ethernet_interface.ipv6_nd.ra.rx_accept.route_preference is arista.avd.defined(true) %}
+{%                         do nd_ra_rx_accept.append("route-preference") %}
+{%                     endif %}
+{%                     if nd_ra_rx_accept == [] %}
+{%                         do nd_ra_rx_accept.append("-") %}
+{%                     endif %}
+{%                     set managed_config_flag = ethernet_interface.ipv6_nd.managed_config_flag | arista.avd.default(ethernet_interface.ipv6_nd_managed_config_flag, "-") %}
+{%                     set other_config_flag = ethernet_interface.ipv6_nd.other_config_flag | arista.avd.default("-") %}
+{%                     set nd_cache_settings = [] %}
+{%                     if ethernet_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
+{%                         do nd_cache_settings.append("capacity: " ~ ethernet_interface.ipv6_nd.cache.dynamic_capacity) %}
+{%                     endif %}
+{%                     if ethernet_interface.ipv6_nd.cache.expire is arista.avd.defined %}
+{%                         do nd_cache_settings.append("expire: " ~ ethernet_interface.ipv6_nd.cache.expire) %}
+{%                     endif %}
+{%                     if ethernet_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
+{%                         do nd_cache_settings.append("refresh-always") %}
+{%                     endif %}
+{%                     if nd_cache_settings %}
+{%                         set nd_cache = nd_cache_settings | join(", ") %}
+{%                     else %}
+{%                         set nd_cache = "-" %}
+{%                     endif %}
 {%                     set ipv6_acl_in = ethernet_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                     set ipv6_acl_out = ethernet_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ nd_ra_disabled }} | {{ managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+| {{ ethernet_interface.name }} | {{ description }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ nd_ra_rx_accept | join(", ") }} | {{ managed_config_flag }} | {{ other_config_flag }} | {{ nd_cache }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if port_channel_interface_ipv6.configured == true %}
+{%     if port_channel_interfaces_ipv6 | length > 0 %}
 
 *Inherited from Port-Channel Interface
 {%     endif %}
@@ -507,7 +580,7 @@
 ##### VRRP Details
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
 {%         for ethernet_interface in ethernet_interfaces_vrrp_details | arista.avd.natural_sort('name') %}
 {%             for vrid in ethernet_interface.vrrp_ids | arista.avd.natural_sort('id') %}
 {%                 set row_id = vrid.id %}
@@ -538,6 +611,9 @@
 {%                 endif %}
 {%                 if vrid.ipv4.secondary_addresses is arista.avd.defined %}
 {%                     do row_ipv4_virtual_ips.extend(vrid.ipv4.secondary_addresses) %}
+{%                 endif %}
+{%                 if row_ipv4_virtual_ips | length == 0 %}
+{%                     set row_ipv4_virtual_ips = ["-"] %}
 {%                 endif %}
 {%                 set row_ipv4_version = vrid.ipv4.version | arista.avd.default('2') %}
 {%                 set row_ipv6_virtual_ips = vrid.ipv6.addresses | arista.avd.default('-') | join(', ') %}
@@ -717,8 +793,8 @@
 | Interface | PFC | Priority | Drop/No_drop |
 {%         for priority_intf in priority_intfs %}
 {%             if priority_intf.priority_flow_control.priorities is arista.avd.defined %}
-{%                 for priority_block in priority_intf.priority_flow_control.priorities | arista.avd.natural_sort %}
-{%                     set priority = priority_block.priority | arista.avd.default("-") %}
+{%                 for priority_block in priority_intf.priority_flow_control.priorities | arista.avd.natural_sort(sort_key="priority") %}
+{%                     set priority = priority_block.priority %}
 {%                     set drop_no_drop = priority_block.no_drop | arista.avd.default("-") %}
 | {{ priority_intf.name }} | {{ priority_intf.priority_flow_control.enabled }} | {{ priority }} | {{ drop_no_drop }} |
 {%                 endfor %}
@@ -754,7 +830,7 @@
 #### Traffic Engineering
 
 | Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
-| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
+| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ----- |
 {%         for te_interface in te_interfaces %}
 {%             set admin_groups = te_interface.traffic_engineering.administrative_groups | arista.avd.default (["-"]) | join(",") %}
 {%             set te_enabled = te_interface.traffic_engineering.enabled | arista.avd.default("-") %}
@@ -777,6 +853,22 @@
 {%                 set te_min_del = "-" %}
 {%             endif %}
 | {{ te_interface.name }} | {{ te_enabled }} | {{ admin_groups }} | {{ te_metric }} | {{ te_bandwidth }} | {{ te_min_del }} | {{ te_srlgs | join(",") }} |
+{%         endfor %}
+{%     endif %}
+{%     set monitor_link_flaps = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.monitor_link_flap_profiles is arista.avd.defined %}
+{%             do monitor_link_flaps.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if monitor_link_flaps | length > 0 %}
+
+#### Monitor - Link Flap Profiles
+
+| Interface | Link Flap Profiles |
+| --------- | ------------------ |
+{%         for monitored_interface in monitor_link_flaps %}
+| {{ monitored_interface.name }} | {{ monitored_interface.monitor_link_flap_profiles | arista.avd.natural_sort | join(' ') }} |
 {%         endfor %}
 {%     endif %}
 

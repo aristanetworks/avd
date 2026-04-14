@@ -1,0 +1,88 @@
+---
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - ".*spine"
+  - node_type: l3leaf
+    match_hostnames:
+      - ".*leaf.*"
+
+default_interfaces:
+  - types: [ spine ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-2 ]
+    downlink_interfaces: [ Ethernet1-8 ]
+  - types: [ l3leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-2 ]
+    mlag_interfaces: [ Ethernet11-12 ]
+    downlink_interfaces: [ Ethernet8 ]
+
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+
+spine:
+  defaults:
+    id: 10
+    platform: vEOS-lab
+    router_id_pool: 10.255.0.0/24
+    loopback_ipv6_pool: 2001:DB8:0::/48
+    bgp_as: 65100
+
+  nodes:
+    - name: ipv6-numbered-vtep-loopback0-spine
+      id: 1
+      mgmt_ip: 192.168.1.35/24
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    router_id_pool: 10.255.1.0/24
+    loopback_ipv6_pool: 2001:DB8:1::/48
+    # Testing Loopback0 as vtep loopback.
+    vtep_loopback: Loopback0
+    uplink_switches: ['ipv6-numbered-vtep-loopback0-spine']
+    uplink_ipv6_pool: 2001:DB8:2::/48
+    mlag_peer_address_family: ipv6
+    mlag_peer_ipv6_pool: 2001:DB8:3::/48
+    mlag_peer_l3_ipv6_pool: 2001:DB8:4::/48
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  node_groups:
+    - group: DC1_L3_LEAF1
+      bgp_as: 65101
+      nodes:
+        - name: ipv6-numbered-vtep-loopback0-leaf1a
+          id: 1
+          mgmt_ip: 172.16.1.31/24
+          uplink_switch_interfaces:
+            - Ethernet1
+        - name: ipv6-numbered-vtep-loopback0-leaf1b
+          id: 2
+          mgmt_ip: 172.16.1.32/24
+          uplink_switch_interfaces:
+            - Ethernet2
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF10
+        vrf_vni: 10
+        vtep_diagnostic:
+          loopback: 10
+          loopback_ip_range: 10.255.10.0/27
+        svis:
+          - id: 11
+            name: VRF10_VLAN11
+            enabled: true
+            ip_address_virtual: 10.10.11.1/24
+          - id: 12
+            name: VRF10_VLAN12
+            enabled: true
+            ip_address_virtual: 10.10.12.1/24

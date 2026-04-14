@@ -26,6 +26,7 @@
   - [Router BFD](#router-bfd)
 - [Filters](#filters)
   - [Route-maps](#route-maps)
+  - [AS Path Lists](#as-path-lists)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -87,7 +88,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -112,15 +113,15 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_DC1-SUPER-SPINE1_Ethernet1 | - | 172.16.11.1/31 | default | - | False | - | - |
 | Ethernet2 | P2P_DC1-SUPER-SPINE2_Ethernet1 | - | 172.16.11.65/31 | default | - | False | - | - |
 | Ethernet3 | P2P_DC1-POD1-LEAF1A_Ethernet1 | - | 172.17.110.0/31 | default | - | False | - | - |
-| Ethernet4 | P2P_DC1.POD1.LEAF2A_Ethernet1 | - | 172.17.110.8/31 | default | - | False | - | - |
+| Ethernet4 | P2P_DC1.POD1.LEAF2A_Ethernet1 | - | 172.17.110.24/31 | default | - | False | - | - |
 | Ethernet5 | P2P_DC1-POD1-LEAF2B_Ethernet1 | - | 172.17.110.16/31 | default | - | False | - | - |
 | Ethernet6 | P2P_DC1-RS1_Ethernet2 | - | 172.17.10.2/31 | default | - | False | - | - |
-| Ethernet7 | P2P_DC1.POD1.LEAF2A_Ethernet11 | - | 172.17.110.12/31 | default | - | False | - | - |
+| Ethernet7 | P2P_DC1.POD1.LEAF2A_Ethernet11 | - | 172.17.110.28/31 | default | - | False | - | - |
 | Ethernet8 | P2P_DC1-POD1-LEAF2B_Ethernet11 | - | 172.17.110.20/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -158,7 +159,7 @@ interface Ethernet4
    description P2P_DC1.POD1.LEAF2A_Ethernet1
    no shutdown
    no switchport
-   ip address 172.17.110.8/31
+   ip address 172.17.110.24/31
    mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
@@ -183,7 +184,7 @@ interface Ethernet7
    description P2P_DC1.POD1.LEAF2A_Ethernet11
    no shutdown
    no switchport
-   ip address 172.17.110.12/31
+   ip address 172.17.110.28/31
    mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
@@ -210,8 +211,8 @@ interface Ethernet8
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
@@ -313,7 +314,7 @@ ASN Notation: asdot
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -322,17 +323,17 @@ ASN Notation: asdot
 | 172.16.11.0 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.16.11.64 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.16.20.1 | 65201 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 172.16.110.4 | 65112.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.110.5 | 65112.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 172.16.110.6 | 65112.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.200.1 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.210.1 | 65210 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.210.3 | 65211 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.17.10.3 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | True | - | - | - | - |
 | 172.17.110.1 | 65111.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.17.110.9 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.17.110.13 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.17.110.17 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.17.110.21 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.25 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.29 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -364,7 +365,7 @@ router bgp 65110.100
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.16.11.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.0 remote-as 65100
    neighbor 172.16.11.0 description DC1-SUPER-SPINE1_Ethernet1
@@ -375,12 +376,12 @@ router bgp 65110.100
    neighbor 172.16.20.1 remote-as 65201
    neighbor 172.16.20.1 description DC2-RS1_Loopback0
    neighbor 172.16.20.1 route-map RM-EVPN-FILTER-AS65201 out
-   neighbor 172.16.110.4 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.4 remote-as 65112.100
-   neighbor 172.16.110.4 description DC1.POD1.LEAF2A_Loopback0
    neighbor 172.16.110.5 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.5 remote-as 65112.100
    neighbor 172.16.110.5 description DC1-POD1-LEAF2B_Loopback0
+   neighbor 172.16.110.6 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.110.6 remote-as 65112.100
+   neighbor 172.16.110.6 description DC1.POD1.LEAF2A_Loopback0
    neighbor 172.16.200.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.200.1 remote-as 65200
    neighbor 172.16.200.1 description DC2-SUPER-SPINE1_Loopback0
@@ -400,18 +401,18 @@ router bgp 65110.100
    neighbor 172.17.110.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.1 remote-as 65111.100
    neighbor 172.17.110.1 description DC1-POD1-LEAF1A_Ethernet1
-   neighbor 172.17.110.9 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.9 remote-as 65112.100
-   neighbor 172.17.110.9 description DC1.POD1.LEAF2A_Ethernet1
-   neighbor 172.17.110.13 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.13 remote-as 65112.100
-   neighbor 172.17.110.13 description DC1.POD1.LEAF2A_Ethernet11
    neighbor 172.17.110.17 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.17 remote-as 65112.100
    neighbor 172.17.110.17 description DC1-POD1-LEAF2B_Ethernet1
    neighbor 172.17.110.21 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.21 remote-as 65112.100
    neighbor 172.17.110.21 description DC1-POD1-LEAF2B_Ethernet11
+   neighbor 172.17.110.25 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.25 remote-as 65112.100
+   neighbor 172.17.110.25 description DC1.POD1.LEAF2A_Ethernet1
+   neighbor 172.17.110.29 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.29 remote-as 65112.100
+   neighbor 172.17.110.29 description DC1.POD1.LEAF2A_Ethernet11
    redistribute connected
    !
    address-family evpn
@@ -454,28 +455,28 @@ router bfd
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65200 | - | - | - |
+| 10 | deny | as-path AS65200 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65201
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65201 | - | - | - |
+| 10 | deny | as-path AS65201 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65210
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65210 | - | - | - |
+| 10 | deny | as-path AS65210 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65211
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65211 | - | - | - |
+| 10 | deny | as-path AS65211 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 #### Route-maps Device Configuration
@@ -483,24 +484,45 @@ router bfd
 ```eos
 !
 route-map RM-EVPN-FILTER-AS65200 deny 10
-   match as 65200
+   match as-path AS65200
 !
 route-map RM-EVPN-FILTER-AS65200 permit 20
 !
 route-map RM-EVPN-FILTER-AS65201 deny 10
-   match as 65201
+   match as-path AS65201
 !
 route-map RM-EVPN-FILTER-AS65201 permit 20
 !
 route-map RM-EVPN-FILTER-AS65210 deny 10
-   match as 65210
+   match as-path AS65210
 !
 route-map RM-EVPN-FILTER-AS65210 permit 20
 !
 route-map RM-EVPN-FILTER-AS65211 deny 10
-   match as 65211
+   match as-path AS65211
 !
 route-map RM-EVPN-FILTER-AS65211 permit 20
+```
+
+### AS Path Lists
+
+#### AS Path Lists Summary
+
+| List Name | Type | Match | Origin |
+| --------- | ---- | ----- | ------ |
+| AS65200 | permit | `_65200_` | any |
+| AS65201 | permit | `_65201_` | any |
+| AS65210 | permit | `_65210_` | any |
+| AS65211 | permit | `_65211_` | any |
+
+#### AS Path Lists Device Configuration
+
+```eos
+!
+ip as-path access-list AS65200 permit _65200_ any
+ip as-path access-list AS65201 permit _65201_ any
+ip as-path access-list AS65210 permit _65210_ any
+ip as-path access-list AS65211 permit _65211_ any
 ```
 
 ## VRF Instances

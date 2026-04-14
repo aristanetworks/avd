@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -18,6 +18,10 @@ class CVResourceNotFound(CVClientException):
 
 class CVResourceInvalidState(CVClientException):
     """Invalid state for CloudVision Resource."""
+
+
+class CVWorkspaceFailed(CVClientException):
+    """CloudVision Workspace failed."""
 
 
 class CVWorkspaceBuildTimeout(CVClientException):
@@ -63,3 +67,25 @@ class CVGRPCStatusUnavailable(CVClientException):
 
 class CVManifestError(CVClientException):
     """Error while creating a CVManifest instance from a user AvdManifest."""
+
+
+class CVClientBulkAPIError(CVClientException):
+    """Bulk API call failed due to server-side error(s). See logging for details."""
+
+    cv_client_method_name: str
+    """Name of the CVClient method that failed."""
+    number_of_errors: int
+    """Number of returned errors."""
+
+    def __init__(self, cv_client_method_name: str, number_of_errors: int) -> None:
+        self.cv_client_method_name = cv_client_method_name
+        self.number_of_errors = number_of_errors
+        msg = (
+            f"{number_of_errors} server-side error(s) was returned from the '{self.cv_client_method_name}' bulk API call. "
+            "Please check logs for the failed items and error messages."
+        )
+        super().__init__(msg)
+
+
+class CVGRPCError(CVClientException):
+    """GRPC call failed."""

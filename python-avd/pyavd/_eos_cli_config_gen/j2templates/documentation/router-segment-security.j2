@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -41,7 +41,7 @@ MSS-G is disabled.
 ##### Segment {{ segment.name }} Definitions
 
 | Interface | Match-List Name | Covered Prefix-List Name | Address Family |
-| --------- |---------------- | ------------------------ | -------------- |
+| --------- | --------------- | ------------------------ | -------------- |
 {%                 if segment.definition.interfaces is arista.avd.defined %}
 {%                     for interface in segment.definition.interfaces | arista.avd.natural_sort %}
 | {{ interface }} | - | - | - |

@@ -11,7 +11,11 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
+  - [RADIUS Server](#radius-server)
+  - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
+  - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
+  - [AAA Accounting](#aaa-accounting)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -54,9 +58,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -131,9 +135,9 @@ ntp server vrf MGMT time.google.com prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -176,6 +180,50 @@ username arista privilege 15 role network-admin secret sha512 <removed>
 
 Enable password has been disabled
 
+### RADIUS Server
+
+#### RADIUS Server Hosts
+
+| VRF | RADIUS Servers | TLS | TLS Port | SSL Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ---- | ----------- | ------- | ---------- |
+| MGMT | agni.arista.com | - | - | - | - | - |
+
+#### RADIUS Server Device Configuration
+
+```eos
+!
+radius-server host agni.arista.com vrf MGMT key 7 <removed>
+```
+
+### IP RADIUS Source Interfaces
+
+#### IP RADIUS Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+| MGMT | Management0 |
+
+#### IP RADIUS Source Interfaces Device Configuration
+
+```eos
+!
+ip radius vrf MGMT source-interface Management0
+```
+
+### AAA Authentication
+
+#### AAA Authentication Summary
+
+| Type | Sub-type | User Stores |
+| ---- | -------- | ---------- |
+
+#### AAA Authentication Device Configuration
+
+```eos
+aaa authentication dot1x default group radius
+!
+```
+
 ### AAA Authorization
 
 #### AAA Authorization Summary
@@ -191,6 +239,20 @@ Authorization for configuration commands is disabled.
 ```eos
 aaa authorization exec default local
 !
+```
+
+### AAA Accounting
+
+#### AAA Accounting Summary
+
+| Type | Commands | Record type | Groups | Logging |
+| ---- | -------- | ----------- | ------ | ------- |
+| Dot1x - Default | - | start-stop | radius(multicast) | False |
+
+#### AAA Accounting Device Configuration
+
+```eos
+aaa accounting dot1x default start-stop group radius
 ```
 
 ## Spanning Tree
@@ -218,7 +280,7 @@ spanning-tree mst 0 priority 16384
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -6778,7 +6840,7 @@ interface Ethernet7/48
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel11 | L2_SPINES_Port-Channel491 | trunk | 10,210,220,230 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -6797,15 +6859,15 @@ interface Port-Channel11
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan10 |  default  |  10.10.10.8/24  |  -  |  -  |  -  |  -  |
+| Vlan10 | default | 10.10.10.8/24 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -6859,8 +6921,8 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 172.16.100.1 | - | 1 | - | - | - |
 | default | 0.0.0.0/0 | 10.10.10.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 172.16.100.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
@@ -6888,6 +6950,12 @@ ip route vrf MGMT 0.0.0.0/0 172.16.100.1
 ## 802.1X Port Security
 
 ### 802.1X Summary
+
+#### 802.1X Global
+
+| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
+| ------------------- | -------------------- | --------------------- | -------------------------- |
+| True | True | True | - |
 
 #### 802.1X Interfaces
 
@@ -7133,6 +7201,16 @@ ip route vrf MGMT 0.0.0.0/0 172.16.100.1
 | Ethernet7/46 | authenticator | - | auto | - | True | allow vlan 230 | multi-host | True | - |
 | Ethernet7/47 | authenticator | - | auto | - | True | allow vlan 230 | multi-host | True | - |
 | Ethernet7/48 | authenticator | - | auto | - | True | allow vlan 230 | multi-host | True | - |
+
+#### Dot1x Configuration
+
+```eos
+!
+dot1x system-auth-control
+dot1x protocol lldp bypass
+dot1x protocol bpdu bypass
+dot1x dynamic-authorization
+```
 
 ## Power Over Ethernet (PoE)
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -19,6 +19,3 @@ keys:
             - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the local interface.
             - `use_default_mgmt_method_interface` will configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value of `default_mgmt_method`.
             - Any other string will be used directly as the local interface.
-      local_users:
-        $ref: eos_cli_config_gen#/keys/local_users
-        type: list

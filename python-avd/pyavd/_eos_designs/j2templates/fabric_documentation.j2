@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -33,7 +33,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 {% for topology_link in topology_links %}
 | {{ topology_link.type }} | {{ topology_link.node }} | {{ topology_link.node_interface }} | {{ topology_link.peer_type }} | {{ topology_link.peer }} | {{ topology_link.peer_interface }} |
 {% endfor %}

@@ -1,4 +1,5 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+---
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -19,8 +20,8 @@ keys:
       as_notation:
         display_name: ASN Notation
         type: str
-        description: 'BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>".
-          This flag indicates which mode is preferred - asplain is the default.'
+        description: 'BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>". This flag indicates which mode is preferred -
+          asplain is the default.'
         valid_values:
           - asdot
           - asplain
@@ -143,6 +144,49 @@ keys:
               - str
             min: 1
             max: 600
+      route_distinguisher:
+        type: dict
+        keys:
+          assignment_auto:
+            type: dict
+            description: Automatic Route Distinguisher (auto RD) feature.
+            keys:
+              range:
+                type: dict
+                description: |-
+                  Range for the 2-byte assigned number field of RD.
+                  The range is inclusive of start and end values.
+                keys:
+                  start:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: Start of range. EOS default is 4096.
+                  end:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: |-
+                        End of range. Must be greater than or equal to `start`.
+                        EOS default is 65535.
+              address_families:
+                type: list
+                min_length: 1
+                description: |-
+                  Address families for which to enable automatic RD assignment.
+                  Each address family has its own range allocation.
+                items:
+                  type: str
+                  valid_values: ["l2-evpn", "l3-vrf"]
+                  description: |-
+                    l2-evpn: L2 EVPN VXLAN, VPWS, VLAN-aware-bundle, VNI-aware-bundle.
+                    l3-vrf: L3 EVPN and MPLS VPN.
       updates:
         type: dict
         keys:
@@ -193,6 +237,33 @@ keys:
           redistribute_internal:
             type: bool
             description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
+          labeled_unicast:
+            type: dict
+            keys:
+              rib:
+                type: dict
+                description: Configure LU RIB behavior for ip and/or tunnel.
+                keys:
+                  ip:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into IP RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to IP RIB.
+                  tunnel:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into Tunnel RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to tunnel RIB.
       listen_ranges:
         type: list
         description: |
@@ -347,6 +418,14 @@ keys:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+                - "7"
+                - "8a"
+              convert_types:
+                - int
+              default: "7"
             passive:
               type: bool
             default_originate:
@@ -537,12 +616,24 @@ keys:
                 peer:
                   type: str
                   description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
+                  default: true
+                  description: Used for validation by the `anta_runner` role.
             description:
               type: str
             route_reflector_client:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+                - "7"
+                - "8a"
+              convert_types:
+                - int
+              default: "7"
             passive:
               type: bool
             shutdown:
@@ -778,6 +869,10 @@ keys:
                 peer:
                   type: str
                   description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
+                  default: true
+                  description: Used for validation by the `anta_runner` role.
             peer_group:
               type: str
               default: Peer-group name
@@ -807,6 +902,12 @@ keys:
             match_map:
               type: str
               description: Route-map name.
+            attribute:
+              type: dict
+              keys:
+                rcf:
+                  type: str
+                  description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
       redistribute:
         type: dict
         description: Redistribute routes in to BGP.
@@ -1041,9 +1142,11 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this bundle is defined. Key only used for documentation or validation purposes.
+                  items:
+                    type: str
                 description:
                   type: str
                   description: Key only used for documentation or validation purposes.
@@ -1141,9 +1244,11 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                  items:
+                    type: str
             rd:
               description: Route distinguisher.
               type: str
@@ -1554,6 +1659,11 @@ keys:
                   type: str
                 route_map:
                   description: Route-map name.
+                  type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                   type: str
           bgp:
             type: dict
@@ -2256,6 +2366,11 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                  type: str
           next_hops:
             type: list
             primary_key: ip_address
@@ -2581,6 +2696,11 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                  type: str
           bgp:
             type: dict
             keys:
@@ -2643,6 +2763,15 @@ keys:
                     prefix_list:
                       type: str
                       description: Apply the configurations only to the routes matching the prefix list.
+                default_originate:
+                  type: dict
+                  keys:
+                    always:
+                      type: bool
+                      description: Always advertise a default route to this peer.
+                    route_map:
+                      type: str
+                      description: Route-map name.
           neighbors:
             type: list
             primary_key: ip_address
@@ -3573,6 +3702,19 @@ keys:
             rd:
               type: str
               description: Route distinguisher.
+            rd_evpn_domain:
+              type: dict
+              keys:
+                domain:
+                  type: str
+                  valid_values:
+                    - "remote"
+                    - "all"
+                  required: true
+                rd:
+                  type: str
+                  description: Route distinguisher.
+                  required: true
             evpn_multicast:
               type: bool
             evpn_multicast_address_family:
@@ -3686,6 +3828,36 @@ keys:
                           RCF function name with parenthesis for filtering VRF routes. Also requires `rcf` to be set.
                           Example: MyFunction(myarg).
                           Only applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`.
+                import_evpn_domains:
+                  type: list
+                  description: List of EVPN domains from which to import routes.
+                  primary_key: route_target
+                  items:
+                    type: dict
+                    keys:
+                      route_target:
+                        type: str
+                      domain:
+                        type: str
+                        required: true
+                        valid_values:
+                          - "remote"
+                          - "all"
+                export_evpn_domains:
+                  type: list
+                  description: List of EVPN domains to which local routes should be exported.
+                  primary_key: route_target
+                  items:
+                    type: dict
+                    keys:
+                      route_target:
+                        type: str
+                      domain:
+                        type: str
+                        required: true
+                        valid_values:
+                          - "remote"
+                          - "all"
             router_id:
               description: in IP address format A.B.C.D.
               type: str
@@ -3800,6 +3972,14 @@ keys:
                       - int
                   password:
                     type: str
+                  password_type:
+                    type: str
+                    valid_values:
+                      - "7"
+                      - "8a"
+                    convert_types:
+                      - int
+                    default: "7"
                   passive:
                     type: bool
                   remove_private_as:
@@ -3952,6 +4132,13 @@ keys:
                   additional_paths:
                     type: dict
                     $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        default: false
+                        description: Used for validation by the `anta_runner` role.
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -3976,6 +4163,13 @@ keys:
                     description: Peer-filter name.
                   description:
                     type: str
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        default: false
+                        description: Used for validation by the `anta_runner` role.
             redistribute:
               type: dict
               description: Redistribute routes in to BGP.
@@ -4217,6 +4411,12 @@ keys:
                     type: str
                   match_map:
                     type: str
+                  attribute:
+                    type: dict
+                    keys:
+                      rcf:
+                        type: str
+                        description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
             address_family_ipv4:
               type: dict
               keys:
@@ -4313,6 +4513,11 @@ keys:
                         type: str
                         description: IPv4 prefix "A.B.C.D/E".
                       route_map:
+                        type: str
+                      rcf:
+                        description: |-
+                          RCF name with parenthesis. Example "NETWORK-RCF()".
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                         type: str
                 redistribute:
                   type: dict
@@ -4628,6 +4833,11 @@ keys:
                         type: str
                         description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                       route_map:
+                        type: str
+                      rcf:
+                        description: |-
+                          RCF name with parenthesis. Example "NETWORK-RCF()".
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                         type: str
                 redistribute:
                   type: dict

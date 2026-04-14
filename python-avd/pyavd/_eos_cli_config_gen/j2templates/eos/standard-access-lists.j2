@@ -1,18 +1,55 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - standard access lists #}
-{% for standard_access_list in standard_access_lists | arista.avd.natural_sort('name') %}
+{% for standard_access_list in standard_access_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 ip access-list standard {{ standard_access_list.name }}
 {%     if standard_access_list.counters_per_entry is arista.avd.defined(true) %}
    counters per-entry
 {%     endif %}
-{%     for sequence in standard_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
-{%         if sequence.action is arista.avd.defined %}
+{%     if standard_access_list.entries is arista.avd.defined %}
+{%         for entry in standard_access_list.entries %}
+{%             set entry_cli = "" %}
+{%             if entry.sequence is arista.avd.defined %}
+{%                 set entry_cli = entry.sequence %}
+{%             endif %}
+{%             if entry.remark is arista.avd.defined %}
+{%                 set entry_cli = entry_cli ~ " remark " ~ entry.remark %}
+   {{ entry_cli | trim }}
+{%                 continue %}
+{%             endif %}
+{%             if entry.action is arista.avd.defined and entry.source is arista.avd.defined %}
+{%                 set entry_cli = entry_cli ~ " " ~ entry.action %}
+{%                 if (entry.vlan is arista.avd.defined and entry.vlan_mask is arista.avd.defined) or (entry.inner_vlan is arista.avd.defined and entry.inner_vlan_mask is arista.avd.defined) %}
+{%                     set entry_cli = entry_cli ~ " vlan" %}
+{%                     if entry.vlan is arista.avd.defined and entry.vlan_mask is arista.avd.defined %}
+{%                         set entry_cli = entry_cli ~ " " ~ entry.vlan ~ " " ~ entry.vlan_mask %}
+{%                     endif %}
+{%                     if entry.inner_vlan is arista.avd.defined and entry.inner_vlan_mask is arista.avd.defined %}
+{%                         set entry_cli = entry_cli ~ " inner " ~ entry.inner_vlan ~ " " ~ entry.inner_vlan_mask %}
+{%                     endif %}
+{%                 endif %}
+{%                 if '/' not in entry.source and entry.source != "any" %}
+{%                     set entry_cli = entry_cli ~ " host" %}
+{%                 endif %}
+{%                 set entry_cli = entry_cli ~ " " ~ entry.source %}
+{%                 if entry.mirror_session is arista.avd.defined %}
+{%                     set entry_cli = entry_cli ~ " mirror session " ~ entry.mirror_session %}
+{%                 endif %}
+{%                 if entry.log is arista.avd.defined(true) %}
+{%                     set entry_cli = entry_cli ~ " log" %}
+{%                 endif %}
+   {{ entry_cli | trim }}
+{%             endif %}
+{%         endfor %}
+{%     elif standard_access_list.sequence_numbers is arista.avd.defined %}
+{%         for sequence in standard_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%             if sequence.action is arista.avd.defined %}
    {{ sequence.sequence }} {{ sequence.action }}
-{%         endif %}
-{%     endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {% endfor %}

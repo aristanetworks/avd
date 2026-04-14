@@ -71,9 +71,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -132,9 +132,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -261,7 +261,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -396,9 +396,9 @@ vlan 4094
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_DC1-SPINE6_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Ethernet1 | P2P_DC1-SPINE6_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -429,7 +429,7 @@ interface Ethernet6
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_DC1-LEAF4B_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -458,8 +458,8 @@ interface Port-Channel5
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | 2001:1::e/128 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback100 | DIAG_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | - |
@@ -490,8 +490,8 @@ interface Loopback100
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan2 | MLAG_L3_VRF_Tenant_C_OP_Zone | Tenant_C_OP_Zone | 1500 | False |
 | Vlan110 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone | - | False |
 | Vlan111 | Tenant_A_OP_Zone_2 | Tenant_A_OP_Zone | - | False |
@@ -517,26 +517,26 @@ interface Loopback100
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan2 |  Tenant_C_OP_Zone  |  -  |  -  |  -  |  -  |  -  |
-| Vlan110 |  Tenant_A_OP_Zone  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |
-| Vlan111 |  Tenant_A_OP_Zone  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |
-| Vlan120 |  Tenant_A_WEB_Zone  |  -  |  10.1.20.1/24  |  -  |  -  |  -  |
-| Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |
-| Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |
-| Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |
-| Vlan140 |  Tenant_A_DB_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |
-| Vlan141 |  Tenant_A_DB_Zone  |  -  |  10.1.41.1/24  |  -  |  -  |  -  |
-| Vlan210 |  Tenant_B_OP_Zone  |  -  |  10.2.10.1/24  |  -  |  -  |  -  |
-| Vlan211 |  Tenant_B_OP_Zone  |  -  |  10.2.11.1/24  |  -  |  -  |  -  |
-| Vlan310 |  Tenant_C_OP_Zone  |  -  |  10.3.10.1/24  |  -  |  -  |  -  |
-| Vlan311 |  Tenant_C_OP_Zone  |  -  |  10.3.11.1/24  |  -  |  -  |  -  |
-| Vlan3009 |  Tenant_A_OP_Zone  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3010 |  Tenant_A_WEB_Zone  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3011 |  Tenant_A_APP_Zone  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3012 |  Tenant_A_DB_Zone  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3019 |  Tenant_B_OP_Zone  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.18/31  |  -  |  -  |  -  |  -  |
+| Vlan2 | Tenant_C_OP_Zone | - | - | - | - | - |
+| Vlan110 | Tenant_A_OP_Zone | - | 10.1.10.1/24 | - | - | - |
+| Vlan111 | Tenant_A_OP_Zone | - | 10.1.11.1/24 | - | - | - |
+| Vlan120 | Tenant_A_WEB_Zone | - | 10.1.20.1/24 | - | - | - |
+| Vlan121 | Tenant_A_WEB_Zone | - | 10.1.10.254/24 | - | - | - |
+| Vlan130 | Tenant_A_APP_Zone | - | 10.1.30.1/24 | - | - | - |
+| Vlan131 | Tenant_A_APP_Zone | - | 10.1.31.1/24 | - | - | - |
+| Vlan140 | Tenant_A_DB_Zone | - | 10.1.40.1/24 | - | - | - |
+| Vlan141 | Tenant_A_DB_Zone | - | 10.1.41.1/24 | - | - | - |
+| Vlan210 | Tenant_B_OP_Zone | - | 10.2.10.1/24 | - | - | - |
+| Vlan211 | Tenant_B_OP_Zone | - | 10.2.11.1/24 | - | - | - |
+| Vlan310 | Tenant_C_OP_Zone | - | 10.3.10.1/24 | - | - | - |
+| Vlan311 | Tenant_C_OP_Zone | - | 10.3.11.1/24 | - | - | - |
+| Vlan3009 | Tenant_A_OP_Zone | - | - | - | - | - |
+| Vlan3010 | Tenant_A_WEB_Zone | - | - | - | - | - |
+| Vlan3011 | Tenant_A_APP_Zone | - | - | - | - | - |
+| Vlan3012 | Tenant_A_DB_Zone | - | - | - | - | - |
+| Vlan3019 | Tenant_B_OP_Zone | - | - | - | - | - |
+| Vlan4093 | default | - | - | - | - | - |
+| Vlan4094 | default | 10.255.252.18/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -878,7 +878,7 @@ ASN Notation: asplain
 | Remote AS | 65107 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### MLAG_VRFS_PEER
 
@@ -888,7 +888,7 @@ ASN Notation: asplain
 | Remote AS | 65107 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### UNDERLAY_PEERS
 
@@ -896,7 +896,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -979,18 +979,18 @@ router bgp 65107
    neighbor MLAG_PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG_PEER password 7 <removed>
    neighbor MLAG_PEER send-community
-   neighbor MLAG_PEER maximum-routes 12000
+   neighbor MLAG_PEER maximum-routes 256000
    neighbor MLAG_VRFS_PEER peer group
    neighbor MLAG_VRFS_PEER remote-as 65107
    neighbor MLAG_VRFS_PEER next-hop-self
    neighbor MLAG_VRFS_PEER description DC1-LEAF4B
    neighbor MLAG_VRFS_PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG_VRFS_PEER send-community
-   neighbor MLAG_VRFS_PEER maximum-routes 12000
+   neighbor MLAG_VRFS_PEER maximum-routes 256000
    neighbor UNDERLAY_PEERS peer group
    neighbor UNDERLAY_PEERS password 7 <removed>
    neighbor UNDERLAY_PEERS send-community
-   neighbor UNDERLAY_PEERS maximum-routes 12000
+   neighbor UNDERLAY_PEERS maximum-routes 256000
    neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.6 remote-as 65001
    neighbor 192.168.255.6 description DC1-SPINE6_Loopback0
@@ -1204,6 +1204,13 @@ ipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
 | 30 | permit | ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6 | - | - | - |
 
+##### RM-CONN-2-BGP-VRFS
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | ip address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
+| 20 | permit | - | - | - | - |
+
 ##### RM-MLAG-PEER-IN
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
@@ -1219,6 +1226,11 @@ route-map RM-CONN-2-BGP permit 10
 !
 route-map RM-CONN-2-BGP permit 30
    match ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
+!
+route-map RM-CONN-2-BGP-VRFS deny 10
+   match ip address prefix-list PL-MLAG-PEER-VRFS
+!
+route-map RM-CONN-2-BGP-VRFS permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing

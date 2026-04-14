@@ -367,7 +367,7 @@
       register: test_dotted_results
 
     # WS asserts
-    - name: Get workspace information
+    - name: Get workspace information for dotted hostname
       delegate_to: localhost
       run_once: true
       no_log: true
@@ -385,7 +385,7 @@
         - "avd-ci-s1-leaf1"
       register: dotted_result
 
-    - name: Set configlets facts
+    - name: Set configlets facts for dotted hostname
       run_once: true
       no_log: true
       vars:
@@ -394,7 +394,7 @@
         dotted_response_configlet: "{{ response_configlet | default({}) | combine({item.0.json.value.body | trim: item.1}) }}"
       loop: "{{ dotted_result.results | zip(configs) | list }}"
 
-    - name: Check configlets
+    - name: Check configlets for dotted hostname
       ansible.builtin.assert:
         that:
           - item.key  == lookup('file', item.value)

@@ -108,12 +108,6 @@ ethernet_interfaces:
   ip_address: 10.0.1.8/31
   metadata:
     peer_type: l3_interface
-- name: Ethernet18
-  shutdown: false
-  metadata:
-    peer_type: l3_interface
-  switchport:
-    enabled: false
 - name: Ethernet14
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth0
   shutdown: false
@@ -190,6 +184,12 @@ ethernet_interfaces:
     peer_type: network_port
     peer_key: network_ports
     port_profile: campus_eggress
+- name: Ethernet18
+  shutdown: false
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 hostname: BGP-SPINE1
 ip_igmp_snooping:
   globally_enabled: true
@@ -494,13 +494,13 @@ router_bgp:
     description: BGP-SPINE2
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   neighbors:
   - ip_address: 192.168.254.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -562,25 +562,29 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.1.1/24
   metadata:
-    tenant: L2LS_BGP
+    tenants:
+    - L2LS_BGP
 - name: Vlan100
   description: SVI_100
   shutdown: false
   ip_address_virtual: 10.1.100.1/24
   metadata:
-    tenant: L2LS_BGP
+    tenants:
+    - L2LS_BGP
 - name: Vlan200
   description: SVI_200
   shutdown: false
   ip_address_virtual: 10.1.200.1/24
   metadata:
-    tenant: L2LS_BGP
+    tenants:
+    - L2LS_BGP
 - name: Vlan220
   description: SVI_220
   shutdown: false
   ip_address_virtual: 10.1.220.1/24
   metadata:
-    tenant: L2LS_BGP
+    tenants:
+    - L2LS_BGP
 - name: Vlan3100
   description: MLAG_L3_VRF_New_VRF
   shutdown: false
@@ -588,7 +592,8 @@ vlan_interfaces:
   ip_address: 192.168.254.0/31
   mtu: 9214
   metadata:
-    tenant: L2LS_BGP
+    tenants:
+    - L2LS_BGP
     type: underlay_peering
 - name: Vlan4092
   description: Inband Management
@@ -610,30 +615,46 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 1
   name: SVI_1
-  tenant: L2LS_BGP
+  metadata:
+    tenants:
+    - L2LS_BGP
 - id: 100
   name: SVI_100
-  tenant: L2LS_BGP
+  metadata:
+    tenants:
+    - L2LS_BGP
 - id: 200
   name: SVI_200
-  tenant: L2LS_BGP
+  metadata:
+    tenants:
+    - L2LS_BGP
 - id: 220
   name: SVI_220
-  tenant: L2LS_BGP
+  metadata:
+    tenants:
+    - L2LS_BGP
 - id: 3100
   name: MLAG_L3_VRF_New_VRF
   trunk_groups:
   - MLAG
-  tenant: L2LS_BGP
+  metadata:
+    tenants:
+    - L2LS_BGP
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: New_VRF
   ip_routing: true
-  tenant: L2LS_BGP
+  metadata:
+    tenants:
+    - L2LS_BGP

@@ -1,0 +1,35 @@
+type: l3leaf
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    bgp_as: 65101
+  nodes:
+    - name: validation-profiles
+      id: 1
+      mgmt_ip: 192.168.200.105/24
+      validation_profile: profile1
+
+validation_profiles:
+  - name: profile1
+    parent_profile: profile2
+    hardware:
+      min_power_supplies: 2
+      transceiver_manufacturers:
+        - Third-party vendor profile1
+  - name: profile2
+    hardware:
+      min_fans: 4
+      min_power_supplies: 4
+      min_supervisors: 2
+      min_line_cards: 10
+      min_fabric_cards: 5
+      transceiver_manufacturers:
+        - Third-party vendor profile2
+    exclude_as_extra_fabric_validation_target: true
+    logging:
+      validate_no_errors_period: 2
+    interfaces:
+      errdisable:
+        only_avd_interfaces: true

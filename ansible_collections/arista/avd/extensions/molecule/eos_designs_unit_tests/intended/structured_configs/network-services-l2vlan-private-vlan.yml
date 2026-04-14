@@ -49,20 +49,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -70,7 +56,8 @@ router_bgp:
   vlans:
   - id: 10
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.109:10010
     route_targets:
       both:
@@ -79,7 +66,8 @@ router_bgp:
     - learned
   - id: 100
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.109:10100
     route_targets:
       both:
@@ -88,7 +76,8 @@ router_bgp:
     - learned
   - id: 90
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.109:10090
     route_targets:
       both:
@@ -97,23 +86,14 @@ router_bgp:
     - learned
   - id: 2
     metadata:
-      tenant: TENANT2
+      tenants:
+      - TENANT2
     rd: 192.168.255.109:10003
     route_targets:
       both:
       - 10003:10003
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: TEST_VRF
     rd: 192.168.255.109:789654
@@ -139,7 +119,8 @@ vlan_interfaces:
   vrf: TEST_VRF
   ip_address_virtual: 10.1.40.1/24
   metadata:
-    tenant: TENANT2
+    tenants:
+    - TENANT2
 vlan_internal_order:
   allocation: ascending
   range:
@@ -148,28 +129,38 @@ vlan_internal_order:
 vlans:
 - id: 10
   name: primary1
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 90
   name: secondary_isolated
   private_vlan:
     type: isolated
     primary_vlan: 2
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 100
   name: secondary_community
   private_vlan:
     type: community
     primary_vlan: 10
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 2
   name: primary2
-  tenant: TENANT2
+  metadata:
+    tenants:
+    - TENANT2
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST_VRF
   ip_routing: true
-  tenant: TENANT2
+  metadata:
+    tenants:
+    - TENANT2
 vxlan_interface:
   vxlan1:
     description: network-services-l2vlan-private-vlan_VTEP

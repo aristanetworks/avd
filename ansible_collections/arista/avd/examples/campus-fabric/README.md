@@ -3,7 +3,7 @@
 title: Campus Fabric
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -121,16 +121,16 @@ leaf:
     inband_mgmt_vlan: 10
 ```
 
-Details on this feature can be found [here](../../roles/eos_designs/docs/input-variables.md#node-type-inband-management).
+Details on this feature can be found [here](../../roles/eos_designs/docs/data-models.md#node-type-inband-management).
 
-| Node   | Management0     | Vlan10    |
-| ------ | --------------- | --------- |
-| SPINE1 | 172.16.100.101 | 10.10.10.2  |
-| SPINE2 | 172.16.100.102 | 10.10.10.3  |
-| LEAF1A | 172.16.100.103 | 10.10.10.6  |
-| LEAF1B | 172.16.100.104 | 10.10.10.7  |
-| LEAF2A | 172.16.100.105 | 10.10.10.8  |
-| LEAF3A | 172.16.100.106 | 10.10.10.9  |
+| Node | Management0 | Vlan10 |
+| ---- | ----------- | ------ |
+| SPINE1 | 172.16.100.101 | 10.10.10.2 |
+| SPINE2 | 172.16.100.102 | 10.10.10.3 |
+| LEAF1A | 172.16.100.103 | 10.10.10.6 |
+| LEAF1B | 172.16.100.104 | 10.10.10.7 |
+| LEAF2A | 172.16.100.105 | 10.10.10.8 |
+| LEAF3A | 172.16.100.106 | 10.10.10.9 |
 | LEAF3B | 172.16.100.107 | 10.10.10.10 |
 | LEAF3C | 172.16.100.108 | 10.10.10.11 |
 | LEAF3D | 172.16.100.109 | 10.10.10.12 |
@@ -243,7 +243,7 @@ AVD provides a way to standardize and reuse port profiles through a compact data
 
 ![Figure: 3](images/dot1x_ports.svg)
 
-The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and an `expand_range` filter to cover a range of ports. For details, see the documentation for [`port_profiles`](../../roles/eos_designs/docs/input-variables.md#port-profiles-settings) and [`network_ports`](../../roles/eos_designs/docs/input-variables.md#network-ports-settings).
+The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and an `expand_range` filter to cover a range of ports. For details, see the documentation for [`port_profiles`](../../roles/eos_designs/docs/data-models.md#port-profiles-settings) and [`network_ports`](../../roles/eos_designs/docs/data-models.md#network-ports-settings).
 
 ## WAN/Core Edge
 
@@ -270,7 +270,7 @@ core_interfaces:
 
 ### The Playbooks
 
-Now that we have defined all of our Ansible variables (AVD inputs), it is time to generate some configurations. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: `eos_designs` and `eos_cli_config_gen`, which do all the heavy lifting. Combining these two roles produces recommended configurations that follow Arista Design Guides.
+Now that we have defined all of our input variables according to AVD Design data models, it is time to generate some configurations. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: `eos_designs` and `eos_cli_config_gen`, which do all the heavy lifting. Combining these two roles produces recommended configurations that follow Arista Design Guides.
 
 === "build.yml"
 

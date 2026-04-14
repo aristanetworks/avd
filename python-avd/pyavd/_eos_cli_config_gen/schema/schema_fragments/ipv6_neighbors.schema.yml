@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -29,7 +29,7 @@ keys:
               type: str
               required: true
               description: MAC address of neighbor like 'aa:af:12:34:bc:bf'
-              pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
+              pattern: "([0-9a-f]{2}:){5}[0-9a-f]{2}"
       persistent:
         type: dict
         keys:

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -43,8 +43,10 @@ keys:
             keys:
               username:
                 type: str
+                required: true
               password:
                 type: str
+                required: true
                 description: Encrypted password using the `password_type`.
               password_type:
                 type: str

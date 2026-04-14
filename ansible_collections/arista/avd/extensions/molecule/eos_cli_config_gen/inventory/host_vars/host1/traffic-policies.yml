@@ -1,5 +1,25 @@
 ---
 traffic_policies:
+  vrfs:
+    - name: VRF1
+      cpu:
+        traffic_policy:
+          name: TP1
+          enforcement_management: true
+      traffic_policy_input_physical: TP1
+    - name: VRF4
+      traffic_policy_input_physical: TP4
+    # VRF5 should not generate any config
+    - name: VRF5
+    - name: VRF2
+      cpu:
+        traffic_policy:
+          name: TP2
+      traffic_policy_input_physical: TP2
+    - name: VRF3
+      cpu:
+        traffic_policy:
+          name: TP3
   options:
     counter_per_interface: true
     counter_interface_poll_interval: 10
@@ -8,6 +28,8 @@ traffic_policies:
       - name: SERVICE-DEMO
         port_range: "10,20,80,440-450"
       - name: SERVICE-DEMO2
+      - name: service-demo3
+        port_range: "20-25"
     ipv4:
       - name: DEMO-02
         prefixes:
@@ -23,6 +45,10 @@ traffic_policies:
           - 10.2.2.2/32
       - name: DEMO-03
   policies:
+    - name: policy1
+      default_actions:
+        ipv4:
+          drop: true
     - name: BLUE-C1-POLICY
       default_actions:
         ipv4:
@@ -47,6 +73,9 @@ traffic_policies:
               flags:
                 - established
           ttl: "10, 20-30"
+          packet_type:
+            vxlan: decap
+            multicast: true
           actions:
             traffic_class: 5
             redirect:
@@ -65,6 +94,9 @@ traffic_policies:
               flags:
                 - established
             - protocol: icmp
+          packet_type:
+            vxlan: decap exclude
+            multicast: false
           actions:
             # The count won't be active since it is not defined under counters
             count: DEMO-TRAFFIC

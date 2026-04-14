@@ -122,20 +122,20 @@ flow_tracking:
       ipv6: true
       threshold_minimum: 1332
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER-3
+      record_export:
         on_inactive_timeout: 50000
         on_interval: 300331
-      name: FLOW-TRACKER-3
       exporters:
       - name: ayush_exporter
         collectors:
         - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 40000
-    - record_export:
+    - name: FLOW-TRACKER-4
+      record_export:
         on_inactive_timeout: 50020
         on_interval: 300321
-      name: FLOW-TRACKER-4
       exporters:
       - name: ayush_exporter
         collectors:
@@ -169,6 +169,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: FLOW_TRACKING_TESTS
+  validate_hardware:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -201,7 +203,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -242,7 +244,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: FLOW_TRACKING
+      tenants:
+      - FLOW_TRACKING
     rd: 10.254.1.2:10011
     route_targets:
       both:
@@ -293,7 +296,8 @@ vlan_interfaces:
   vrf: VRF1
   ip_address: 172.17.11.1/24
   metadata:
-    tenant: FLOW_TRACKING
+    tenants:
+    - FLOW_TRACKING
 vlan_internal_order:
   allocation: ascending
   range:
@@ -302,13 +306,17 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: FLOW_TRACKING
+  metadata:
+    tenants:
+    - FLOW_TRACKING
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: FLOW_TRACKING
+  metadata:
+    tenants:
+    - FLOW_TRACKING
 vxlan_interface:
   vxlan1:
     description: flow-tracking-tests-leaf2_VTEP

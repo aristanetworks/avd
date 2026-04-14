@@ -59,9 +59,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -78,9 +78,9 @@ interface Management1
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -131,7 +131,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -149,6 +149,8 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 10 | TENANT_A_L2_SERVICE | - |
 | 20 | TENANT_A_L2_SERVICE | - |
+| 110 | TENANT_C_L2_SERVICE | - |
+| 210 | TENANT_C_L2_SERVICE | - |
 | 2020 | TENANT_B_INSIDE_FW | - |
 
 ### VLANs Device Configuration
@@ -160,6 +162,12 @@ vlan 10
 !
 vlan 20
    name TENANT_A_L2_SERVICE
+!
+vlan 110
+   name TENANT_C_L2_SERVICE
+!
+vlan 210
+   name TENANT_C_L2_SERVICE
 !
 vlan 2020
    name TENANT_B_INSIDE_FW
@@ -186,18 +194,18 @@ vlan 2020
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_SITE1-LSR2_Ethernet1 | - | 100.64.48.2/31 | default | 9214 | False | - | - |
 | Ethernet2 | P2P_SITE1-LER1_Ethernet2 | - | 100.64.48.5/31 | default | 9178 | False | - | - |
 | Ethernet5.100 | TENANT_B_SITE_3 | - | 192.168.48.0/31 | TENANT_B_WAN | - | False | - | - |
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_SITE1-LSR2_Ethernet1 | - | - | default | 9214 | False | - | - | - | - |
-| Ethernet2 | P2P_SITE1-LER1_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Ethernet1 | P2P_SITE1-LSR2_Ethernet1 | - | - | default | 9214 | False | - | - | - | - | - | - | - |
+| Ethernet2 | P2P_SITE1-LER1_Ethernet2 | - | - | default | 9178 | False | - | - | - | - | - | - | - |
 
 ##### ISIS
 
@@ -284,12 +292,12 @@ interface Ethernet8
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 
 ##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
 | Port-Channel3.1000 | - | - | dot1q | - | 1000 | - | - | client | - | - | - | - |
 | Port-Channel3.1001 | - | - | dot1q | - | 1001 | - | - | client | - | - | - | - |
 | Port-Channel3.1002 | - | - | dot1q | - | 1002 | - | - | client | - | - | - | - |
@@ -409,8 +417,8 @@ interface Port-Channel8.333
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::6/128 |
 
 ##### ISIS
@@ -439,15 +447,15 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan2020 | TENANT_B_INSIDE_FW | TENANT_B_INTRA | - | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan2020 |  TENANT_B_INTRA  |  -  |  -  |  -  |  -  |  -  |
+| Vlan2020 | TENANT_B_INTRA | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -689,12 +697,14 @@ ASN Notation: asplain
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
 | 10 | 100.70.0.6:10010 | 65000:10010 | - | - | learned |
 | 20 | 100.70.0.6:123456 | 65000:123456 | - | - | learned |
+| 110 | 100.70.0.6:10110 | 65000:10110 | - | - | learned |
+| 210 | 100.70.0.6:123456 | 65000:123456 | - | - | learned |
 | 2020 | 100.70.0.6:22020 | 65000:22020 | - | - | learned |
 
 #### Router BGP VPWS Instances
 
 | Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
-| -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
+| -------- | ------------------- | ----------------- | ----------------- | ---------- | --- | ---------- | -------- | --------- |
 | TENANT_B | 100.70.0.6:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1000 | 31000 | 51000 |
 | TENANT_B | 100.70.0.6:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1001 | 31001 | 51001 |
 | TENANT_B | 100.70.0.6:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1002 | 31002 | 51002 |
@@ -740,6 +750,16 @@ router bgp 65000
       redistribute learned
    !
    vlan 20
+      rd 100.70.0.6:123456
+      route-target both 65000:123456
+      redistribute learned
+   !
+   vlan 110
+      rd 100.70.0.6:10110
+      route-target both 65000:10110
+      redistribute learned
+   !
+   vlan 210
       rd 100.70.0.6:123456
       route-target both 65000:123456
       redistribute learned
@@ -884,22 +904,27 @@ mpls ldp
 patch panel
    patch TEN_B_site3_site5_eline_vlan_based_1000
       connector 1 interface Port-Channel3.1000
+      !
       connector 2 pseudowire bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1000
    !
    patch TEN_B_site3_site5_eline_vlan_based_1001
       connector 1 interface Port-Channel3.1001
+      !
       connector 2 pseudowire bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1001
    !
    patch TEN_B_site3_site5_eline_vlan_based_1002
       connector 1 interface Port-Channel3.1002
+      !
       connector 2 pseudowire bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1002
    !
    patch TEN_B_site3_site5_eline_vlan_based_1003
       connector 1 interface Port-Channel3.1003
+      !
       connector 2 pseudowire bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1003
    !
    patch TEN_B_site3_site5_eline_vlan_based_1004
       connector 1 interface Port-Channel3.1004
+      !
       connector 2 pseudowire bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1004
    !
 ```

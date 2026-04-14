@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import logging
@@ -30,18 +30,8 @@ class AnsibleDisplayHandler(logging.Handler):
         self.display = Display()
 
     def emit(self, record: logging.LogRecord) -> None:
-        """
-        Process a log record and delegate it to the appropriate Ansible display method.
-
-        Check for a 'color' attribute in the record to allow for explicit color overrides.
-        """
+        """Process a log record and delegate it to the appropriate Ansible display method."""
         message = self.format(record)
-
-        color = getattr(record, "color", None)
-        if color:
-            # If a color is explicitly provided, use it
-            self.display.display(message, color=color)
-            return
 
         # If no color is specified, map log levels to display methods
         if record.levelno >= logging.ERROR:

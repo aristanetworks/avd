@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -58,8 +58,11 @@ class RouterIsisMixin(Protocol):
         if self.shared_utils.overlay_routing_protocol == "none":
             self.structured_config.router_isis.redistribute_routes.append_new(source_protocol="connected")
 
+        # ISIS advertise passive-only - only set if true (default is false)
+        if self.inputs.isis_advertise_passive_only is True:
+            self.structured_config.router_isis.advertise.passive_only = True
+
         if self.shared_utils.underlay_sr is True:
-            self.structured_config.router_isis.advertise.passive_only = self.inputs.isis_advertise_passive_only
             # TODO: - enabling IPv6 only in SR cases as per existing behavior
             # but this could probably be taken out
             if self.shared_utils.underlay_ipv6 is True:

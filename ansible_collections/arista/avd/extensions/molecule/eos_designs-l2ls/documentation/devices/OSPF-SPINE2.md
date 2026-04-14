@@ -51,9 +51,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -70,9 +70,9 @@ interface Management1
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -143,7 +143,7 @@ no spanning-tree vlan-id 4094
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -197,8 +197,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet5 | P2P_DUMMY-CORE_Ethernet1/2 | - | 192.168.253.2/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -242,7 +242,7 @@ interface Ethernet5
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_OSPF-LEAF1_Port-Channel1 | trunk | 100,4092 | - | - | - | - | 1 | - |
 | Port-Channel2 | L2_OSPF-LEAF2_Port-Channel1 | trunk | 100,4092 | - | - | - | - | 2 | - |
 | Port-Channel3 | MLAG_OSPF-SPINE1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
@@ -287,8 +287,8 @@ interface Port-Channel3
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
@@ -306,8 +306,8 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan100 | SVI_100 | default | - | False |
 | Vlan4092 | Inband Management | default | 1500 | False |
 | Vlan4094 | MLAG | default | 9214 | False |
@@ -316,9 +316,15 @@ interface Loopback0
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan100 |  default  |  -  |  10.0.100.1/24  |  -  |  -  |  -  |
-| Vlan4092 |  default  |  172.23.254.3/24  |  -  |  172.23.254.1  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.254.1/31  |  -  |  -  |  -  |  -  |
+| Vlan100 | default | - | 10.0.100.1/24 | - | - | - |
+| Vlan4092 | default | 172.23.254.3/24 | - | 172.23.254.1 | - | - |
+| Vlan4094 | default | 192.168.254.1/31 | - | - | - | - |
+
+##### OSPF
+
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
+| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
+| Vlan4094 | True | 0.0.0.0 | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -402,8 +408,8 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 172.31.0.1 | - | 1 | - | - | - |
 | default | 10.0.0.0/8 | 10.1.100.100 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 172.31.0.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
@@ -419,7 +425,7 @@ ip route vrf MGMT 0.0.0.0/0 172.31.0.1
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.168.255.2 | enabled | Vlan4094 <br> Ethernet5 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
+| 100 | 192.168.255.2 | enabled | Vlan4094<br>Ethernet5 | disabled | 12000 | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Router Redistribution
 

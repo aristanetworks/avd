@@ -3,7 +3,7 @@
 title: arista.avd.hide_passwords
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -23,8 +23,8 @@ Replace the input data by &#34;&lt;removed&gt;&#34; if the hide_passwords parame
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>_input</samp> | raw | True | None |  | Value to replace. |
-| <samp>hide_passwords</samp> | bool | True | None |  | Flag to indicate whether or not the string should be replaced. |
+| <samp>_input</samp> | raw | True | None | - | Value to replace. |
+| <samp>hide_passwords</samp> | bool | True | None | - | Flag to indicate whether or not the string should be replaced. |
 
 ## Examples
 

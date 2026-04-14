@@ -52,11 +52,6 @@ router_bgp:
     bestpath:
       d_path: true
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -74,6 +69,12 @@ router_bgp:
     send_community: all
     maximum_routes: 111
   neighbors:
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: dc1-spine1
+    description: dc1-spine1_Loopback0
   - ip_address: 10.90.90.90
     peer_group: IPVPN-GATEWAY-PEERS
     remote_as: '4266328964'
@@ -94,7 +95,8 @@ router_bgp:
   vlans:
   - id: 10
     metadata:
-      tenant: mytenant
+      tenants:
+      - mytenant
     rd: 10.10.0.1:10010
     route_targets:
       both:
@@ -108,8 +110,6 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
     - name: IPVPN-GATEWAY-PEERS
@@ -146,7 +146,8 @@ vlan_interfaces:
   vrf: testvrf
   ip_address_virtual: 10.10.10.10/24
   metadata:
-    tenant: mytenant
+    tenants:
+    - mytenant
 vlan_internal_order:
   allocation: ascending
   range:
@@ -155,13 +156,17 @@ vlan_internal_order:
 vlans:
 - id: 10
   name: TEST_SVI_VLAN_10
-  tenant: mytenant
+  metadata:
+    tenants:
+    - mytenant
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: testvrf
   ip_routing: true
-  tenant: mytenant
+  metadata:
+    tenants:
+    - mytenant
 vxlan_interface:
   vxlan1:
     description: evpn-to-ipvpn-gateway_VTEP

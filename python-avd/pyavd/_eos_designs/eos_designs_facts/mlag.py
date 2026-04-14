@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -7,7 +7,9 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import remove_cached_property_type
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import EosDesignsFactsGeneratorProtocol
@@ -24,9 +26,28 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
     @remove_cached_property_type
     @cached_property
     def mlag_peer(self: EosDesignsFactsGeneratorProtocol) -> str | None:
-        """Exposed in avd_switch_facts."""
-        if self.shared_utils.mlag:
-            return self.shared_utils.mlag_peer
+        """
+        Set this device as mlag_peer in the facts of the mlag_peer.
+
+        Also verifies that exactly two devices are part of the same mlag_group.
+        """
+        if not self.shared_utils.mlag:
+            return None
+
+        if self.shared_utils.node_group_is_primary_and_peer_hostname:
+            return self.shared_utils.node_group_is_primary_and_peer_hostname[1]
+
+        if self.shared_utils.device_config and (mlag_group := self.shared_utils.device_config.mlag_group):
+            mlag_group_members = self._mlag_groups[mlag_group]
+            if (length := len(mlag_group_members)) != 2:
+                msg = (
+                    f"When trying to establish the MLAG pair, we found {length} members {natural_sort(mlag_group_members)} "
+                    f"of the 'mlag_group: \"{mlag_group}\"'. There should be exactly two members of the group to form an MLAG pair."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+            return next(iter(mlag_group_members.difference([self.shared_utils.hostname])))
+
         return None
 
     @remove_cached_property_type

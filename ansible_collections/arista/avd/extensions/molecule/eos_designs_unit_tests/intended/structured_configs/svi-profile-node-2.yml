@@ -1,0 +1,456 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: svi-profile-node-2
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans:
+  - id: 210
+    enabled: true
+  - id: 211
+    enabled: true
+  - id: 212
+    enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.1/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.1/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65002'
+  router_id: 192.168.255.1
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlan_aware_bundles:
+  - name: svi_profile_tests_vrf
+    rd: 192.168.255.1:1
+    route_targets:
+      both:
+      - '1:1'
+    redistribute_routes:
+    - learned
+    vlan: 110-115,120-121,210-212,410-412,510-512
+  vrfs:
+  - name: svi_profile_tests_vrf
+    rd: 192.168.255.1:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+    router_id: 192.168.255.1
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        enabled: true
+router_ospf:
+  process_ids:
+  - id: 1
+    vrf: svi_profile_tests_vrf
+    passive_interface_default: true
+    router_id: 192.168.255.1
+    no_passive_interfaces:
+    - Vlan510
+    - Vlan511
+    - Vlan512
+    max_lsa: 15000
+    redistribute:
+      bgp:
+        enabled: true
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 10.0.0.1
+- vrf: svi_profile_tests_vrf
+  prefix: 10.4.10.0/24
+  interface: Vlan410
+  name: VARP
+- vrf: svi_profile_tests_vrf
+  prefix: 10.4.11.0/24
+  interface: Vlan411
+  name: VARP
+- vrf: svi_profile_tests_vrf
+  prefix: 10.4.12.0/24
+  interface: Vlan412
+  name: VARP
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan110
+  description: set from structured_config on svi.nodes[inventory_hostname].structured_config
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.1.10.1/24
+  mtu: 1000
+  no_autostate: true
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan111
+  description: set from structured_config on svi_profile.nodes[inventory_hostname].structured_config
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.1.11.1/24
+  mtu: 1000
+  no_autostate: true
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan112
+  description: set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.1.12.1/24
+  mtu: 1200
+  no_autostate: true
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan113
+  description: set from svi.structured_config
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.1.13.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan114
+  description: set from structured_config on svi_profile.structured_config
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.1.14.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan115
+  description: set from structured_config on svi_parent_profile.structured_config
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.1.15.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan120
+  description: set from svi_profile struct_config_on_multiple_svis
+  shutdown: true
+  vrf: svi_profile_tests_vrf
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan121
+  description: set from svi_profile struct_config_on_multiple_svis
+  shutdown: true
+  vrf: svi_profile_tests_vrf
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan210
+  description: igmp_snooping_enabled_210
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.2.10.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan211
+  description: igmp_snooping_enabled_211
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.2.11.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan212
+  description: igmp_snooping_enabled_212
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.2.12.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan310
+  description: vxlan_disabled_310
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.3.10.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan311
+  description: vxlan_disabled_311
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.3.11.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan312
+  description: vxlan_disabled_312
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.3.12.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan410
+  description: static_routes_410
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address: 11.4.10.2/24
+  ip_virtual_router_addresses:
+  - 10.4.10.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan411
+  description: static_routes_411
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address: 11.4.11.2/24
+  ip_virtual_router_addresses:
+  - 10.4.11.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan412
+  description: static_routes_412
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address: 11.4.12.2/24
+  ip_virtual_router_addresses:
+  - 10.4.12.1/24
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan510
+  description: ospf_enabled_510
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.5.10.1/24
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan511
+  description: ospf_enabled_511
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.5.11.1/24
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
+  metadata:
+    tenants:
+    - svi_profile_tests
+- name: Vlan512
+  description: ospf_enabled_512
+  shutdown: false
+  vrf: svi_profile_tests_vrf
+  ip_address_virtual: 10.5.12.1/24
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
+  metadata:
+    tenants:
+    - svi_profile_tests
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 110
+  name: svi_profile_tests_110_description
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 111
+  name: svi_profile_tests_111_description
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 112
+  name: svi_profile_tests_112_description
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 113
+  name: svi_profile_tests_113_description
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 114
+  name: svi_profile_tests_114_description
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 115
+  name: svi_profile_tests_115_description
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 120
+  name: svi_profile_tests_120_description
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 121
+  name: svi_profile_tests_121_description
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 210
+  name: igmp_snooping_enabled_210
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 211
+  name: igmp_snooping_enabled_211
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 212
+  name: igmp_snooping_enabled_212
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 310
+  name: vxlan_disabled_310
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 311
+  name: vxlan_disabled_311
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 312
+  name: vxlan_disabled_312
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 410
+  name: static_routes_410
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 411
+  name: static_routes_411
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 412
+  name: static_routes_412
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 510
+  name: ospf_enabled_510
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 511
+  name: ospf_enabled_511
+  metadata:
+    tenants:
+    - svi_profile_tests
+- id: 512
+  name: ospf_enabled_512
+  metadata:
+    tenants:
+    - svi_profile_tests
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: svi_profile_tests_vrf
+  ip_routing: true
+  metadata:
+    tenants:
+    - svi_profile_tests
+vxlan_interface:
+  vxlan1:
+    description: svi-profile-node-2_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 110
+        vni: 10110
+      - id: 111
+        vni: 10111
+      - id: 112
+        vni: 10112
+      - id: 113
+        vni: 10113
+      - id: 114
+        vni: 10114
+      - id: 115
+        vni: 10115
+      - id: 120
+        vni: 10120
+      - id: 121
+        vni: 10121
+      - id: 210
+        vni: 10210
+      - id: 211
+        vni: 10211
+      - id: 212
+        vni: 10212
+      - id: 410
+        vni: 10410
+      - id: 411
+        vni: 10411
+      - id: 412
+        vni: 10412
+      - id: 510
+        vni: 10510
+      - id: 511
+        vni: 10511
+      - id: 512
+        vni: 10512
+      vrfs:
+      - name: svi_profile_tests_vrf
+        vni: 1

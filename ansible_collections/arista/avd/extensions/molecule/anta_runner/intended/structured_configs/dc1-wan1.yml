@@ -399,7 +399,7 @@ router_bgp:
       type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     allowas_in:
       enabled: true
       times: 1
@@ -623,10 +623,12 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: dc1-wan1_VTEP
+    description: dc1-leaf1c_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789
+      encapsulations:
+        ipv6: true
       vrfs:
       - name: default
         vni: 1

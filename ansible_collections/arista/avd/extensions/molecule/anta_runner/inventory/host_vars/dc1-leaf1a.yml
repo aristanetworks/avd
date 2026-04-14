@@ -32,6 +32,12 @@ custom_structured_configuration_router_path_selection:
 custom_structured_configuration_router_adaptive_virtual_topology:
   topology_role: edge
 
+# Custom vxlan structured_config to test the vxlan interface is admin down
+custom_structured_configuration_vxlan_interface:
+  vxlan1:
+    vxlan:
+      shutdown: true
+
 # Custom inputs for the hardware tests
 accepted_xcvr_manufacturers:
   - "Arastra, Inc."
@@ -45,3 +51,11 @@ accepted_pwr_supply_states:
 accepted_fan_states:
   - "ok"
   - "Not Present"
+
+custom_structured_configuration_dps_interfaces:
+  - name: Dps1
+    description: Interface for testing errordisable test
+
+custom_structured_configuration_tunnel_interfaces:
+  - name: Tunnel1
+    description: Interface for testing errordisable test

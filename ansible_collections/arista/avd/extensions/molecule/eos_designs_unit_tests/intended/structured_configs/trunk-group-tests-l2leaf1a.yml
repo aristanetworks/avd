@@ -125,7 +125,9 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 100
   name: svi100_with_trunk_groups
   trunk_groups:
@@ -133,7 +135,9 @@ vlans:
   - TG_100
   - TG_NOT_MATCHING_ANY_SERVERS
   - UPLINK
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 200
   name: svi200_with_trunk_groups
   trunk_groups:
@@ -141,7 +145,9 @@ vlans:
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
   - UPLINK
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 300
   name: svi300_with_trunk_groups
   trunk_groups:
@@ -149,13 +155,17 @@ vlans:
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
   - UPLINK
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 398
   name: svi398_without_trunk_groups
   trunk_groups:
   - MLAG
   - UPLINK
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 110
   name: l2vlan110_with_trunk_groups
   trunk_groups:
@@ -163,7 +173,9 @@ vlans:
   - TG_100
   - TG_NOT_MATCHING_ANY_SERVERS
   - UPLINK
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 210
   name: l2vlan210_with_trunk_groups
   trunk_groups:
@@ -171,7 +183,9 @@ vlans:
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
   - UPLINK
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 310
   name: l2vlan310_with_trunk_groups
   trunk_groups:
@@ -179,13 +193,17 @@ vlans:
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
   - UPLINK
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 399
   name: l2vlan399_without_trunk_groups
   trunk_groups:
   - MLAG
   - UPLINK
-  tenant: TRUNK_GROUP_TESTS
+  metadata:
+    tenants:
+    - TRUNK_GROUP_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false

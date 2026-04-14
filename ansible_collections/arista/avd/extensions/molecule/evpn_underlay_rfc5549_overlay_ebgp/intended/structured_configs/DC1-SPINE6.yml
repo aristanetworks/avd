@@ -37,11 +37,12 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: DC1-SPINE6
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
 ip_routing_ipv6_interfaces: true
 ipv6_prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY-V6
@@ -63,7 +64,8 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.6/32
-  ipv6_address: 2001:1::6/128
+  ipv6_addresses:
+  - 2001:1::6/128
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -127,7 +129,7 @@ router_bgp:
       type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

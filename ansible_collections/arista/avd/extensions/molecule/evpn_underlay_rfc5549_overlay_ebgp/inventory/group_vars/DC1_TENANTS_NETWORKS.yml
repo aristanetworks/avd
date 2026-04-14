@@ -15,7 +15,8 @@ svi_profiles:
   - profile: WITH_DHCP_AND_SNOOPING
     enabled: true
     ip_address_virtual: 10.1.11.254/24
-    igmp_snooping_enabled: false
+    igmp_snooping:
+      enabled: false
     ip_helpers:
       - ip_helper: 1.1.1.1
         source_interface: lo100
@@ -168,6 +169,8 @@ tenants:
         vrf_vni: 30
         enable_mlag_ibgp_peering_vrfs: true
         mlag_ibgp_peering_vlan: 2
+        # Test to validate the BGP peers under non default vrf
+        validate_bgp_peers: true
         svis:
           - id: 310
             name: Tenant_C_OP_Zone_1

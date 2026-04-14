@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.structured_config.constants import INTERNET_EXIT_ZSCALER_NAT_PROFILE_NAME
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -43,6 +44,6 @@ class TunnelInterfacesMixin(Protocol):
             ipsec_profile=ipsec_profile,
         )
 
-        tunnel_interface.nat_profile = self.INTERNET_EXIT_ZSCALER_NAT_PROFILE_NAME
+        tunnel_interface.nat_profile = INTERNET_EXIT_ZSCALER_NAT_PROFILE_NAME
 
         self.structured_config.tunnel_interfaces.append(tunnel_interface)

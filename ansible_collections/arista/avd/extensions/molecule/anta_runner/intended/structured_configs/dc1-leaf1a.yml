@@ -2,6 +2,9 @@ aaa_root:
   disabled: true
 config_end: true
 dns_domain: dc1.local
+dps_interfaces:
+- name: Dps1
+  description: Interface for testing errordisable test
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -79,6 +82,17 @@ ethernet_interfaces:
     peer: dc1-leaf1c
     peer_interface: Ethernet1
     peer_type: l2leaf
+- name: Ethernet18
+  description: P2P_dc1-wan3_Ethernet1
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.255.253.8/31
+  metadata:
+    peer: dc1-wan3
+    peer_interface: Ethernet1
+    peer_type: wan_router
+  switchport:
+    enabled: false
 - name: Ethernet5
   description: SERVER_dc1-leaf1-server1_PCI1
   shutdown: false
@@ -90,7 +104,7 @@ ethernet_interfaces:
     peer_interface: PCI1
     peer_type: server
     peer_key: servers
-  validate_state: false
+    validate_state: false
 - name: Ethernet31
   description: WORKSTATION_dc1-leaf1-workstation1_e1
   shutdown: false
@@ -114,7 +128,7 @@ ethernet_interfaces:
     peer_type: workstation
     peer_key: workstations
     port_profile: Workstations
-  validate_state: false
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -129,7 +143,7 @@ ethernet_interfaces:
     peer_type: workstation
     peer_key: workstations
     port_profile: Workstations
-  validate_state: false
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -144,7 +158,7 @@ ethernet_interfaces:
     peer_type: workstation
     peer_key: workstations
     port_profile: Workstations_NoLLDP
-  validate_lldp: false
+    validate_lldp: false
   switchport:
     enabled: true
     mode: access
@@ -197,9 +211,19 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab_with_storm_control
+  platform: custom_hardware_test_platform
   dc_name: DC1
   fabric_name: FABRIC
+  validate_hardware:
+    min_power_supplies: 2
+    min_fans: 4
+    min_supervisors: 0
+    min_line_cards: 0
+    transceiver_manufacturers:
+    - Third-party vendor
+  interfaces:
+    errdisable:
+      only_avd_interfaces: true
 mlag_configuration:
   domain_id: DC1_L3_LEAF1
   local_interface: Vlan4094
@@ -235,13 +259,14 @@ port_channel_interfaces:
   shutdown: false
   mlag: 5
   spanning_tree_portfast: edge
+  metadata:
+    validate_state: false
   switchport:
     enabled: true
     mode: trunk
     trunk:
       allowed_vlan: 11-12,21-22
       native_vlan: 4092
-  validate_state: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -307,14 +332,14 @@ router_bgp:
     next_hop_self: true
     password: 4b21pAdCvWeAqpcKDFMdWw==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -354,6 +379,12 @@ router_bgp:
     metadata:
       peer: dc1-wan2
     description: dc1-wan2_Ethernet1
+  - ip_address: 10.255.253.9
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65101'
+    metadata:
+      peer: dc1-wan3
+    description: dc1-wan3_Ethernet1
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
@@ -381,7 +412,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.0.3:10011
     route_targets:
       both:
@@ -390,7 +422,8 @@ router_bgp:
     - learned
   - id: 12
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.0.3:10012
     route_targets:
       both:
@@ -399,7 +432,8 @@ router_bgp:
     - learned
   - id: 21
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.0.3:10021
     route_targets:
       both:
@@ -408,7 +442,8 @@ router_bgp:
     - learned
   - id: 22
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.0.3:10022
     route_targets:
       both:
@@ -417,7 +452,8 @@ router_bgp:
     - learned
   - id: 3401
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.0.3:13401
     route_targets:
       both:
@@ -426,7 +462,8 @@ router_bgp:
     - learned
   - id: 3402
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.0.3:13402
     route_targets:
       both:
@@ -508,6 +545,9 @@ static_routes:
   prefix: 0.0.0.0/0
   next_hop: 172.16.1.1
 transceiver_qsfp_default_mode_4x10: true
+tunnel_interfaces:
+- name: Tunnel1
+  description: Interface for testing errordisable test
 virtual_source_nat_vrfs:
 - name: VRF10
   ip_address: 10.255.10.3
@@ -531,14 +571,16 @@ vlan_interfaces:
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3009
   description: MLAG_L3_VRF_VRF10
   shutdown: false
@@ -546,7 +588,8 @@ vlan_interfaces:
   ip_address: 10.255.1.96/31
   mtu: 1500
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
     type: underlay_peering
 - name: Vlan21
   description: VRF11_VLAN21
@@ -554,14 +597,16 @@ vlan_interfaces:
   vrf: VRF11
   ip_address_virtual: 10.10.21.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3010
   description: MLAG_L3_VRF_VRF11
   shutdown: false
@@ -569,7 +614,8 @@ vlan_interfaces:
   ip_address: 10.255.1.96/31
   mtu: 1500
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
     type: underlay_peering
 - name: Vlan4085
   description: Inband Management
@@ -591,57 +637,84 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 11
   name: VRF10_VLAN11
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 12
   name: VRF10_VLAN12
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3009
   name: MLAG_L3_VRF_VRF10
   trunk_groups:
   - MLAG
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 21
   name: VRF11_VLAN21
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 22
   name: VRF11_VLAN22
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3010
   name: MLAG_L3_VRF_VRF11
   trunk_groups:
   - MLAG
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3401
   name: L2_VLAN3401
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3402
   name: L2_VLAN3402
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 4085
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - name: VRF11
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: dc1-leaf1a_VTEP
     vxlan:
       source_interface: Loopback1
+      shutdown: true
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:

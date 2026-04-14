@@ -7,3 +7,7 @@ ptp_settings:
   forward_v1: true
   # Test overriding domain
   domain: 111
+  # Test free_running enabled
+  free_running:
+    enabled: true
+    source_clock_hardware: true

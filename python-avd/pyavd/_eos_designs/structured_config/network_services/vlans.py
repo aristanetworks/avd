@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -41,7 +41,7 @@ class VlansMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 for svi in vrf.svis:
-                    self.structured_config.vlans.append(self._get_vlan_config(svi, tenant), ignore_fields=("tenant",))
+                    self.structured_config.vlans.append(self._get_vlan_config(svi, tenant), ignore_fields=("metadata",))
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
@@ -52,9 +52,15 @@ class VlansMixin(Protocol):
                     id=vlan_id,
                     name=AvdStringFormatter().format(self.inputs.mlag_peer_l3_vrf_vlan_name, mlag_peer=self.shared_utils.mlag_peer, vlan=vlan_id, vrf=vrf.name),
                     trunk_groups=EosCliConfigGen.VlansItem.TrunkGroups([self.inputs.trunk_groups.mlag_l3.name]),
-                    tenant=tenant.name,
                 )
-                self.structured_config.vlans.append(vlan, ignore_fields=("tenant",))
+                vlan.metadata.tenants.append(tenant.name)
+                self.structured_config.vlans.append(vlan, ignore_fields=("metadata",))
+
+                # If the VLAN already existed (shared VRF across multiple tenants),
+                # append this tenant to the existing item's metadata.
+                existing_vlan = self.structured_config.vlans.obtain(vlan_id)
+                if tenant.name not in existing_vlan.metadata.tenants:
+                    existing_vlan.metadata.tenants.append(tenant.name)
 
             # L2 Vlans per Tenant
             for l2vlan in tenant.l2vlans:
@@ -71,7 +77,7 @@ class VlansMixin(Protocol):
                     all_primary_vlans.add(l2vlan.private_vlan.primary_vlan)
                     vlan.private_vlan._update(type=l2vlan.private_vlan.type, primary_vlan=l2vlan.private_vlan.primary_vlan)
 
-                self.structured_config.vlans.append(vlan, ignore_fields=("tenant",))
+                self.structured_config.vlans.append(vlan, ignore_fields=("metadata",))
 
         # Check that all referenced primary vlans exist
         if not all_primary_vlans.issubset(self.structured_config.vlans.keys()):
@@ -96,8 +102,8 @@ class VlansMixin(Protocol):
         vlans_vlan = EosCliConfigGen.VlansItem(
             id=vlan.id,
             name=vlan.name,
-            tenant=tenant.name,
         )
+        vlans_vlan.metadata.tenants.append(tenant.name)
         if vlan.address_locking.ipv4:
             if self.inputs.address_locking_settings.dhcp_servers_ipv4 or self.inputs.address_locking_settings.locked_address.ipv4_enforcement_disabled:
                 vlans_vlan.address_locking.address_family.ipv4 = vlan.address_locking.ipv4
@@ -117,13 +123,16 @@ class VlansMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg)
         if self.inputs.enable_trunk_groups:
-            trunk_groups = vlan.trunk_groups
+            trunk_groups = set(vlan.trunk_groups)
             if self.shared_utils.only_local_vlan_trunk_groups:
-                trunk_groups = list(self._local_endpoint_trunk_groups.intersection(trunk_groups))
+                trunk_groups = self._local_endpoint_trunk_groups.intersection(trunk_groups)
             if self.shared_utils.mlag:
-                trunk_groups.append(self.inputs.trunk_groups.mlag.name)
+                trunk_groups.add(self.inputs.trunk_groups.mlag.name)
             if self.shared_utils.uplink_type == "port-channel":
-                trunk_groups.append(self.inputs.trunk_groups.uplink.name)
+                trunk_groups.add(self.inputs.trunk_groups.uplink.name)
+            # Add trunk groups required for underlay
+            if vlans_vlan.id in self.shared_utils.underlay_vlan_trunk_groups:
+                trunk_groups.update(self.shared_utils.underlay_vlan_trunk_groups[vlans_vlan.id])
             vlans_vlan.trunk_groups.extend(natural_sort(trunk_groups))
 
         return vlans_vlan

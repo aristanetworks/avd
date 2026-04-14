@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -33,7 +33,7 @@
 ### Static MAC Address Entries
 
 | MAC Address | VLAN | DROP Traffic | Interface | Eligibility Forwarding |
-|-------------|------|--------------|-----------|------------------------|
+| ----------- | ---- | ------------ | --------- | ---------------------- |
 {%         for static_entry in mac_address_table.static_entries | sort(attribute='mac_address') | arista.avd.natural_sort('vlan') %}
 | {{ static_entry.mac_address }} | {{ static_entry.vlan }} | {{ static_entry.drop | arista.avd.default("-") }} | {{ static_entry.interface | arista.avd.default("-") }} | {{ static_entry.eligibility_forwarding | arista.avd.default("-") }} |
 {%         endfor %}

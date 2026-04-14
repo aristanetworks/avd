@@ -1,0 +1,8 @@
+---
+fabric_name: FABRIC_MISSING_DEVICES_TYPE
+
+devices:
+  - name: missing-devices-type
+
+expected_error_message: >-
+  No device type found. Either set 'type' or 'default_node_types'.

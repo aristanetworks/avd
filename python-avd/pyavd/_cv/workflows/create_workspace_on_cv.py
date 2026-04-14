@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -33,4 +33,6 @@ async def create_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) ->
             raise CVResourceInvalidState(msg)
     except CVResourceNotFound:
         await cv_client.create_workspace(workspace_id=workspace.id, display_name=workspace.name, description=workspace.description)
+        # Wait for the Workspace to be ready before continuing with any subsequent operations that depend on it.
+        await cv_client.wait_for_workspace_state(workspace_id=workspace.id, state="pending")
         workspace.state = "pending"

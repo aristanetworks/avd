@@ -14,6 +14,17 @@ ethernet_interfaces:
     peer: bgp-peer-groups-1
     peer_interface: Ethernet3
     peer_type: mlag_peer
+- name: Ethernet1
+  description: P2P_bgp-peer-groups-3_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.252.207/31
+  metadata:
+    peer: bgp-peer-groups-3
+    peer_interface: Ethernet2
+    peer_type: pe
+  switchport:
+    enabled: false
 hostname: bgp-peer-groups-2
 ip_igmp_snooping:
   globally_enabled: true
@@ -23,10 +34,6 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.112/32
-- name: Loopback1
-  description: VXLAN_TUNNEL_SOURCE
-  shutdown: false
-  ip_address: 192.168.254.111/32
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -52,8 +59,6 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.255.0/24 eq 32
-  - sequence: 20
-    action: permit 192.168.254.0/24 eq 32
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -93,7 +98,7 @@ router_bgp:
     bfd: true
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 12002
     route_map_in: RM-MLAG-PEER-IN
   - name: MLAG-IPv4-VRFS-PEER
     metadata:
@@ -102,15 +107,16 @@ router_bgp:
     description: Description for mlag_ipv4_vrfs_peer via structured_config
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 12003
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     description: Description for ipv4_underlay_peers via structured_config
     bfd: true
+    password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 12001
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -121,26 +127,28 @@ router_bgp:
     bfd: false
     send_community: all
     maximum_routes: 0
-  - name: RR-OVERLAY-PEERS
-    metadata:
-      type: mpls
-    remote_as: '65001'
-    description: Description for rr_overlay_peers via structured_config
-    update_source: Loopback0
-    bfd: false
-    send_community: all
-    maximum_routes: 0
   neighbors:
   - ip_address: 192.168.253.204
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
       peer: bgp-peer-groups-1
     description: bgp-peer-groups-1_Vlan4094
+  - ip_address: 192.168.252.206
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: bgp-peer-groups-3
+    description: bgp-peer-groups-3_Ethernet2
   - ip_address: 192.168.255.111
     peer_group: EVPN-OVERLAY-PEERS
     metadata:
       peer: bgp-peer-groups-1
     description: bgp-peer-groups-1_Loopback0
+  - ip_address: 192.168.255.114
+    peer_group: EVPN-OVERLAY-PEERS
+    metadata:
+      peer: bgp-peer-groups-3
+    description: bgp-peer-groups-3_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -156,14 +164,6 @@ router_bgp:
     - name: MLAG-IPv4-VRFS-PEER
       activate: true
     - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
-    - name: RR-OVERLAY-PEERS
-      activate: false
-  address_family_vpn_ipv4:
-    peer_groups:
-    - name: RR-OVERLAY-PEERS
       activate: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
@@ -190,7 +190,9 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -198,6 +200,6 @@ vxlan_interface:
   vxlan1:
     description: bgp-peer-groups-2_VTEP
     vxlan:
-      source_interface: Loopback1
+      source_interface: Loopback0
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id

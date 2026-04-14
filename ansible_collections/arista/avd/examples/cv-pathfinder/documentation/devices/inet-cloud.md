@@ -53,9 +53,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -139,9 +139,9 @@ ntp server vrf MGMT 0.pool.ntp.org prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -213,13 +213,13 @@ aaa authorization exec default local
 
 #### VRF default DHCP Server
 
-##### Subnets
+##### IPv4 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 100.64.10.0/24 | 10 NET | - | 100.64.10.1 | - | 100.64.10.2-100.64.10.2 |
-| 100.64.11.0/24 | 11 NET | - | 100.64.11.1 | - | 100.64.11.2-100.64.11.2 |
-| 100.64.30.0/24 | 30 NET | - | 100.64.30.1 | - | 100.64.30.2-100.64.30.2 |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ | ------------------------------ | ---------------------------- | ---------------------------- |
+| 100.64.10.0/24 | 10 NET | - | 100.64.10.1 | - | 100.64.10.2-100.64.10.2 | - | - | - |
+| 100.64.11.0/24 | 11 NET | - | 100.64.11.1 | - | 100.64.11.2-100.64.11.2 | - | - | - |
+| 100.64.30.0/24 | 30 NET | - | 100.64.30.1 | - | 100.64.30.2-100.64.30.2 | - | - | - |
 
 ### DHCP Server Configuration
 
@@ -292,7 +292,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -317,8 +317,8 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | pf1-Ethernet2 | - | 100.64.100.1/24 | default | - | False | - | - |
 | Ethernet2 | pf2-Ethernet2 | - | 100.64.200.1/24 | default | - | False | - | - |
 | Ethernet5 | site1-wan1-Ethernet4 | - | 100.64.10.1/24 | default | - | False | - | - |
@@ -388,7 +388,7 @@ interface Ethernet10
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 
 ##### IPv4
 
@@ -420,8 +420,8 @@ interface Port-Channel8
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
@@ -501,21 +501,11 @@ ASN Notation: asplain
 | no bgp default ipv4-unicast |
 | maximum-paths 4 |
 
-#### Router BGP Peer Groups
-
-##### IPv4-UNDERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Send community | all |
-| Maximum routes | 12000 |
-
 #### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 100.64.21.2 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 100.64.21.2 | 65000 | default | - | all | - | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
 
@@ -525,16 +515,13 @@ router bgp 65666
    router-id 172.31.255.23
    no bgp default ipv4-unicast
    maximum-paths 4
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 100.64.21.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 100.64.21.2 remote-as 65000
    neighbor 100.64.21.2 default-originate always
+   neighbor 100.64.21.2 send-community
    redistribute connected
    !
    address-family ipv4
-      neighbor IPv4-UNDERLAY-PEERS activate
+      neighbor 100.64.21.2 activate
 ```
 
 ## VRF Instances

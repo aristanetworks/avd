@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -12,7 +12,7 @@
 
 | Type | Commands | Record type | Groups | Logging |
 | ---- | -------- | ----------- | ------ | ------- |
-{%     if aaa_accounting.exec.console.type == "none" %}
+{%     if aaa_accounting.exec.console.type is arista.avd.defined("none") %}
 | Exec - Console | - | none | - | - |
 {%     elif aaa_accounting.exec.console.methods is arista.avd.defined %}
 {%         set methods_list = [] %}
@@ -52,7 +52,7 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if aaa_accounting.exec.default.type == "none" %}
+{%     if aaa_accounting.exec.default.type is arista.avd.defined("none") %}
 | Exec - Default | - | none | - | - |
 {%     elif aaa_accounting.exec.default.methods is arista.avd.defined %}
 {%         set methods_list = [] %}
@@ -69,7 +69,7 @@
 {%         endif %}
 | Exec - Default | - | {{ aaa_accounting.exec.default.type }} | {{ ", ".join(methods_list) }} | {{ logging_namespace.method_logging }} |
 {%     endif %}
-{%     if aaa_accounting.system.default.type == "none" %}
+{%     if aaa_accounting.system.default.type is arista.avd.defined("none") %}
 | System - Default | - | none | - | - |
 {%     elif aaa_accounting.system.default.methods is arista.avd.defined %}
 {%         set methods_list = [] %}
@@ -86,7 +86,7 @@
 {%         endif %}
 | System - Default | - | {{ aaa_accounting.system.default.type }} | {{ ", ".join(methods_list) }} | {{ logging_namespace.method_logging }} |
 {%     endif %}
-{%     if aaa_accounting.dot1x.default.type == "none" %}
+{%     if aaa_accounting.dot1x.default.type is arista.avd.defined("none") %}
 | Dot1x - Default | - | none | - | - |
 {%     elif aaa_accounting.dot1x.default.methods is arista.avd.defined %}
 {%         set methods_list = [] %}

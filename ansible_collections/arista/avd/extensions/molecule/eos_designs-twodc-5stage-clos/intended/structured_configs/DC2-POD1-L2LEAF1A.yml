@@ -24,7 +24,6 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  no_password: true
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -79,7 +78,9 @@ vlan_internal_order:
 vlans:
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

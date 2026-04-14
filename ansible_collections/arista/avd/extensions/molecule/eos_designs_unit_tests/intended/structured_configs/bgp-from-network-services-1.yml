@@ -14,13 +14,6 @@ ethernet_interfaces:
     peer: bgp-from-network-services-2
     peer_interface: Ethernet10
     peer_type: mlag_peer
-- name: Ethernet47
-  shutdown: false
-  ip_address: 10.10.1.1/30
-  metadata:
-    peer_type: l3_interface
-  switchport:
-    enabled: false
 hostname: bgp-from-network-services-1
 ip_igmp_snooping:
   globally_enabled: true
@@ -63,13 +56,6 @@ prefix_lists:
   - sequence: 10
     action: permit 10.10.20.0/31
 route_maps:
-- name: RM-MLAG-PEER-IN
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    set:
-    - origin incomplete
 - name: RM-CONN-2-BGP-VRFS
   sequence_numbers:
   - sequence: 10
@@ -78,6 +64,13 @@ route_maps:
     - ip address prefix-list PL-MLAG-PEER-VRFS
   - sequence: 20
     type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    set:
+    - origin incomplete
 router_bgp:
   as: '65001'
   router_id: 192.0.255.1
@@ -93,6 +86,10 @@ router_bgp:
     remote_as: '65991'
     bfd: true
     next_hop_self: true
+  - name: VALIDATE_BGP_PEERS
+    remote_as: '65991'
+    bfd: true
+    next_hop_self: true
   - name: MLAG-IPv4-UNDERLAY-PEER
     metadata:
       type: ipv4
@@ -100,14 +97,18 @@ router_bgp:
     description: bgp-from-network-services-2
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 10.10.20.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    metadata:
+      validate_state: false
     description: bgp-from-network-services-2_Vlan3099
   - ip_address: 10.10.1.2
     peer_group: MYPEERGROUP
+    metadata:
+      validate_state: false
   redistribute:
     connected:
       enabled: true
@@ -119,14 +120,35 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.1.2
       activate: true
+  vrfs:
+  - name: validate_bgp_peers
+    router_id: 192.0.255.1
+    timers: 42 42
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: 10.10.20.1
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: bgp-from-network-services-2_Vlan3100
+      metadata:
+        validate_state: true
+    - ip_address: 10.10.2.2
+      peer_group: VALIDATE_BGP_PEERS
+      metadata:
+        validate_state: true
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.10.2.2
+        activate: true
+    eos_cli: '! Comment for bgp'
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
   no_spanning_tree_vlan: 4093-4094
-static_routes:
-- vrf: default
-  prefix: 0.0.0.0
-  next_hop: 10.10.1.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4094
@@ -142,7 +164,18 @@ vlan_interfaces:
   ip_address: 10.10.20.0/31
   mtu: 9214
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST1
+    type: underlay_peering
+- name: Vlan3100
+  description: MLAG_L3_VRF_validate_bgp_peers
+  shutdown: false
+  vrf: validate_bgp_peers
+  ip_address: 10.10.20.0/31
+  mtu: 9214
+  metadata:
+    tenants:
+    - TEST1
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -154,12 +187,28 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 3099
   name: MLAG_L3_VRF_default
   trunk_groups:
   - MLAG
-  tenant: TEST
+  metadata:
+    tenants:
+    - TEST1
+- id: 3100
+  name: MLAG_L3_VRF_validate_bgp_peers
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - TEST1
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: validate_bgp_peers
+  ip_routing: true
+  metadata:
+    tenants:
+    - TEST1

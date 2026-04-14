@@ -1,0 +1,24 @@
+type: l3leaf
+
+mgmt_gateway: 192.168.200.1
+
+underlay_multicast_pim_sm: true
+evpn_multicast: true
+
+tenants:
+  # Test the deprecated key evpn_l2_multicast.fast_leave: true when evpn_l2_multicast.enabled: true/false
+  - name: Tenant_F
+    mac_vrf_vni_base: 10000
+    evpn_l2_multicast:
+      enabled: true
+      fast_leave: true
+      underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
+    l2vlans:
+      - id: 251
+        name: "MULTICAST_DISABLED_251"
+        tags: ["test_l2"]
+        evpn_l2_multicast:
+          enabled: false
+      - id: 252
+        name: "MULTICAST_ENABLED_252"
+        tags: ["test_l2"]

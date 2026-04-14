@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -41,6 +41,8 @@ class EthernetInterfacesMixin(Protocol):
                         list_merge=self.custom_structured_configs.list_merge_strategy,
                     )
 
+                self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
+
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # Port-Channel members
@@ -63,6 +65,8 @@ class EthernetInterfacesMixin(Protocol):
                         p2p_link.ethernet_structured_config,
                         list_merge=self.custom_structured_configs.list_merge_strategy,
                     )
+
+                self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
 
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 

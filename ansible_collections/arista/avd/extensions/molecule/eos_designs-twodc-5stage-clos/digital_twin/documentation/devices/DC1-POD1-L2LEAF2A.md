@@ -51,9 +51,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -157,7 +157,7 @@ spanning-tree mst 0 priority 8192
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -277,7 +277,7 @@ interface Ethernet4
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_RACK2_MLAG_Port-Channel3 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_DC1-POD1-L2LEAF2B_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 
@@ -307,8 +307,8 @@ interface Port-Channel3
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
 | Vlan4094 | MLAG | default | - | False |
 
@@ -316,8 +316,8 @@ interface Port-Channel3
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan4085 |  default  |  172.21.110.5/24  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  172.20.110.2/31  |  -  |  -  |  -  |  -  |
+| Vlan4085 | default | 172.21.110.5/24 | - | - | - | - |
+| Vlan4094 | default | 172.20.110.2/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -376,8 +376,8 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 192.168.1.254 | - | 1 | - | - | - |
 | default | 0.0.0.0/0 | 172.21.110.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 192.168.1.254 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 

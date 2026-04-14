@@ -1,0 +1,26 @@
+---
+type: l3spine
+l3spine:
+  nodes:
+    - name: duplication-checks-across-models
+      id: 1
+      loopback_ipv4_pool: 192.168.100.0/24
+
+l3_edge:
+  p2p_links:
+    - ip: [10.10.10.0/31, 10.10.10.1/31]
+      nodes: [duplication-checks-across-models, somethingelse]
+      interfaces: [Ethernet1, Ethernet1]
+
+servers:
+  - name: Myserver
+    adapters:
+      - switches: [duplication-checks-across-models]
+        switch_ports: [Ethernet1]
+        vlans: 100
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for EthernetInterfaces.
+  {'name': 'Ethernet1', 'description': 'SERVER_Myserver', 'shutdown': False, 'metadata': {'peer': 'Myserver', 'peer_type': 'server', 'peer_key': 'servers'},
+  'switchport': {'enabled': True}} conflicts with
+  {'name': 'Ethernet1', 'description': 'P2P_somethingelse_Ethernet1', 'shutdown': False, 'mtu': 9214, 'ip_address': '10.10.10.0/31',
+  'metadata': {'peer': 'somethingelse', 'peer_interface': 'Ethernet1', 'peer_type': 'other'}, 'switchport': {'enabled': False}}.

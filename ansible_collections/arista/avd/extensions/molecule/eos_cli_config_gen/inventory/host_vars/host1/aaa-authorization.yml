@@ -18,6 +18,3 @@ aaa_authorization:
         default: "group tacacs+ local"
       - level: "5"
         default: "group radius"
-      # To handle the not define cases
-      - level: "6"
-      - default: "group radius"

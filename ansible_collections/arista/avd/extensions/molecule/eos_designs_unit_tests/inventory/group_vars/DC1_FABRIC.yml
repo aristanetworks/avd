@@ -48,21 +48,21 @@ spine:
     bgp_defaults:
       - distance bgp 20 200 200
   nodes:
-    - name: DC1-SPINE1
+    - name: dc1-spine1
       id: 1
       mgmt_ip: 192.168.200.101/24
       mac_address: '0c:1d:c0:1d:62:01'
-    - name: DC1-SPINE2
+    - name: dc1-spine2
       platform: 7500R
       id: 2
       mgmt_ip: 192.168.200.102/24
       mac_address: '0c:1d:c0:1d:62:01'
-    - name: DC1-SPINE3
+    - name: dc1-spine3
       platform: 7800R3
       id: 3
       mgmt_ip: 192.168.200.103/24
       mac_address: '0c:1d:c0:1d:62:01'
-    - name: DC1-SPINE4
+    - name: dc1-spine4
       platform: 7280R3
       id: 4
       mgmt_ip: 192.168.200.104/24
@@ -83,7 +83,7 @@ l3leaf:
     vtep_loopback_ipv4_pool: 192.168.254.0-192.168.254.127, 192.168.254.128/26, 192.168.254.192-192.168.254.200
     # Commented out for automatic uplink allocation
     # uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
-    uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE3', 'DC1-SPINE4']
+    uplink_switches: ['dc1-spine1', 'dc1-spine2', 'dc1-spine3', 'dc1-spine4']
     max_uplink_switches: 8
       # Testing multiple pools and ranges to represent 172.31.254.0/23
     uplink_ipv4_pool: 172.31.254.0/30, 172.31.254.4-172.31.254.127, 172.31.254.128/25, 172.31.255.0/24
@@ -104,6 +104,7 @@ l3leaf:
     filter:
       tenants: [ Tenant_A, Tenant_B, Tenant_C, Tenant_D ]
       tags: [ opzone, web, app, db, vmotion, nfs, v6wan, v6opzone ]
+      deny_vrfs: [ MULTI_TENANT_VRF_TEST ]
     # Testing multiple pools and ranges to represent 10.255.251.0/24
     mlag_peer_l3_ipv4_pool: 10.255.251.0/29, 10.255.251.8-10.255.251.127, 10.255.251.128/25
     # Testing multiple pools and ranges to represent 10.255.252.0/24
@@ -114,8 +115,9 @@ l3leaf:
       filter:
         tenants: [ all ]
         tags: [ web, app, erp2, v6wan ]
+        deny_vrfs: [ MULTI_TENANT_VRF_TEST ]
       nodes:
-        - name: DC1-LEAF1A
+        - name: dc1-leaf1a
           id: 1
           rack: "rackA"
           mgmt_ip: 192.168.200.105/24
@@ -130,20 +132,39 @@ l3leaf:
       rack: "rackD"
       mlag: false
       # Test for multiple parallel uplinks
-      uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2', 'DC1-SPINE1', 'DC1-SPINE3', 'DC1-SPINE4', 'DC1-SPINE4', 'DC1-SPINE3']
+      uplink_switches: ['dc1-spine1', 'dc1-spine2', 'dc1-spine2', 'dc1-spine1', 'dc1-spine3', 'dc1-spine4', 'dc1-spine4', 'dc1-spine3']
       nodes:
-        - name: DC1-LEAF2A
+        - name: dc1-leaf2a
           id: 2
           rack: "rackC"
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
           ptp:
             enabled: false
+            # Test free_running should not render when ptp is not enabled
+            free_running:
+              enabled: true
+          link_tracking:
+            enabled: true
+            groups:
+              - name: l2leaf-server01
+                recovery_delay: 301
+              - name: l2leaf-server02
+                recovery_delay: 300
+            # test without downlinks.group, this will take the first link tracking group from above list
+            downlinks:
+              enabled: true
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
-        - name: DC1-LEAF2B
+        - name: dc1-leaf2b
           id: 3
           mgmt_ip: 192.168.200.107/24
+          link_tracking:
+            enabled: true
+            # test 'downlinks.enabled: true' without link_tracking.groups and downlinks.group
+            # this will take the default link tracking group i.e. LT_GROUP1
+            downlinks:
+              enabled: true
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet3, Ethernet3, Ethernet3, Ethernet3 ]
     - group: DC1_SVC3
@@ -153,15 +174,27 @@ l3leaf:
       mlag_domain_id: custom_mlag_domain_id
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-        tags: [ opzone, web, app, db, vmotion, nfs, wan, erp3 ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan, erp3, svc3only ]
+        deny_vrfs: []
       nodes:
-        - name: DC1-SVC3A
+        - name: dc1-svc3a
           id: 4
           mgmt_ip: 192.168.200.108/24
           mac_address: '0c:1d:c0:1d:62:01'
+          link_tracking:
+            enabled: true
+            groups:
+              - name: link-tracking-group01
+                recovery_delay: 350
+              - name: link-tracking-group02
+                recovery_delay: 500
+            # testing downlinks with group defined, this will take the defined link tracking group
+            downlinks:
+              enabled: true
+              group: link-tracking-group02
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet4, Ethernet4 ]
-        - name: DC1-SVC3B
+        - name: dc1-svc3b
           id: 5
           mgmt_ip: 192.168.200.109/24
           # Commented out for automatic downlink allocation on spine
@@ -185,7 +218,7 @@ l3leaf:
               source_interface: Management0
       # NB - uplink_switch_interfaces Ethernet19-21 are used by MH_LEAF1A, 1B and 2A.
       nodes:
-        - name: DC1-BL1A
+        - name: dc1-bl1a
           id: 6
           bgp_as: 65104
           mgmt_ip: 192.168.200.110/24
@@ -193,9 +226,9 @@ l3leaf:
           uplink_switch_interfaces: [ Ethernet22, Ethernet22, Ethernet22, Ethernet22 ]
           evpn_gateway:
             remote_peers:
-              - hostname: DC1-BL2A
+              - hostname: dc1-bl2a
                 # Testing below that the override is working
-              - hostname: DC1-BL2B
+              - hostname: dc1-bl2b
                 ip_address: 192.168.42.42  # Should be 192.168.255.17
                 bgp_as: 65042  # Should be 65107
             evpn_l2:
@@ -203,7 +236,7 @@ l3leaf:
             evpn_l3:
               enabled: true
               inter_domain: true
-        - name: DC1-BL1B
+        - name: dc1-bl1b
           id: 7
           bgp_as: 65105
           mgmt_ip: 192.168.200.111/24
@@ -244,14 +277,14 @@ l3leaf:
         tags: [ wan ]
         always_include_vrfs_in_tenants: [ 'Tenant_B' ]
       nodes:
-        - name: DC1-BL2A
+        - name: dc1-bl2a
           platform: 7280R2
           id: 8
           bgp_as: 65106
           mgmt_ip: 192.168.200.117/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet24, Ethernet24, Ethernet24, Ethernet24 ]
-        - name: DC1-BL2B
+        - name: dc1-bl2b
           platform: 7280R3
           id: 9
           bgp_as: 65107
@@ -266,14 +299,14 @@ l3leaf:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
       nodes:
-        - name: DC1-CL1A
+        - name: dc1-cl1a
           platform: 7368X4
           id: 10
           bgp_as: 65108
           mgmt_ip: 192.168.200.119/24
           uplink_switch_interfaces: [ Ethernet26, Ethernet26, Ethernet26, Ethernet26 ]
           mlag_ibgp_origin_incomplete: false
-        - name: DC1-CL1B
+        - name: dc1-cl1b
           platform: 7300X3
           id: 11
           bgp_as: 65109
@@ -285,13 +318,13 @@ l3leaf:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
       nodes:
-        - name: DC1_UNDEPLOYED_LEAF1A
+        - name: dc1-undeployed-leaf1a
           id: 13
           bgp_as: 65110
           uplink_switch_interface_speed: 100g-2
           mgmt_ip: 192.168.200.121/24
           uplink_switch_interfaces: [ Ethernet28, Ethernet28, Ethernet28, Ethernet28 ]
-        - name: DC1_UNDEPLOYED_LEAF1B
+        - name: dc1-undeployed-leaf1b
           id: 14
           bgp_as: 65111
           mgmt_ip: 192.168.200.122/24
@@ -300,7 +333,7 @@ l3leaf:
 l2leaf:
   defaults:
     platform: vEOS-LAB
-    uplink_switches: [ DC1-SVC3A, DC1-SVC3B ]
+    uplink_switches: [ dc1-svc3a, dc1-svc3b ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     mlag: true
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
@@ -314,14 +347,14 @@ l2leaf:
     - group: DC1_L2LEAF1
       mlag_interfaces_speed: forced 40gfull
       uplink_interface_speed: forced 10000full
-      uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+      uplink_switches: [ dc1-leaf2a, dc1-leaf2b ]
       short_esi: 0808:0707:0606
       filter:
         tenants: [ Tenant_A ]
         tags: [ opzone, web, app ]
       uplink_mtu: 1499
       nodes:
-        - name: DC1-L2LEAF1A
+        - name: dc1-l2leaf1a
           id: 8
           mgmt_ip: 192.168.200.112/24
           mac_address: '0c:1d:c0:1d:62:01'
@@ -329,7 +362,7 @@ l2leaf:
           uplink_mtu: 1498
           ptp:
             enabled: true
-        - name: DC1-L2LEAF1B
+        - name: dc1-l2leaf1b
           id: 11
           mgmt_ip: 192.168.200.115/24
           mac_address: '0c:1d:c0:1d:62:02'
@@ -340,38 +373,41 @@ l2leaf:
       uplink_switch_interface_speed: 100g-2
       uplink_switch_port_channel_id: 1007 # Test uplink_switch_port_channel_id on mlag l2leaf
       uplink_port_channel_id: 1001 # Test uplink_port_channel_id on mlag l2leaf
+      filter:
+        always_include_vrfs_in_tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan, erp3 ]
       nodes:
-        - name: DC1-L2LEAF2A
+        - name: dc1-l2leaf2a
           id: 9
           mgmt_ip: 192.168.200.113/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet7, Ethernet7 ]
-        - name: DC1-L2LEAF2B
+        - name: dc1-l2leaf2b
           id: 10
           mgmt_ip: 192.168.200.114/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet8, Ethernet8 ]
     - group: DC1_L2LEAF3
-      uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+      uplink_switches: [ dc1-leaf2a, dc1-leaf2b ]
       short_esi: 0606:0707:0808
       filter:
         tenants: [ Tenant_A ]
         tags: [ opzone, web, app ]
       nodes:
-        - name: DC1-L2LEAF3A
+        - name: dc1-l2leaf3a
           # Testing no id for an L2 Leaf when not needed
           # id: 12
           mgmt_ip: 192.168.200.116/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet9, Ethernet9 ]
     - group: DC1_L2LEAF4
-      uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+      uplink_switches: [ dc1-leaf2a, dc1-leaf2b ]
       short_esi: auto # Test Auto ESI
       filter:
         tenants: [ Tenant_A ]
         tags: [ opzone, web, app ]
       nodes:
-        - name: DC1-L2LEAF4A
+        - name: dc1-l2leaf4a
           id: 13
           mgmt_ip: 192.168.200.119/24
           uplink_switch_interfaces: [ Ethernet13, Ethernet13 ]
@@ -379,47 +415,50 @@ l2leaf:
           uplink_port_channel_id: 1001 # Test uplink_port_channel_id on non-mlag l2leaf
     # This pair to demo Auto ESI and automatic uplinks for l2leaf
     - group: DC1_L2LEAF5
-      uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+      uplink_switches: [ dc1-leaf2a, dc1-leaf2b ]
       short_esi: auto # Test Auto ESI to MLAG pair
       filter:
         tenants: [ Tenant_A ]
         tags: [ opzone, web, app ]
       nodes:
         # Testing with l2 leaf in MLAG with dotted hostnames
-        - name: DC1.L2LEAF5A
+        - name: dc1.l2leaf5a
           id: 14
           mgmt_ip: 192.168.200.120/24
-        - name: DC1.L2LEAF5B
+        - name: dc1.l2leaf5b
           id: 15
           mgmt_ip: 192.168.200.121/24
     # Example for issue 4124
     - group: DC1_L2LEAF6
       short_esi: auto # Test Auto ESI to MLAG pair
       nodes:
-        - name: DC1.L2LEAF6A
+        - name: dc1.l2leaf6a
           id: 16
           mgmt_ip: 192.168.200.122/24
-          uplink_switches: [ DC1-LEAF2A ]
+          uplink_interfaces: [ Ethernet1 ]
+          uplink_switches: [ dc1-leaf2a ]
           uplink_switch_interfaces: [ Ethernet30 ]
-        - name: DC1.L2LEAF6B
+        - name: dc1.l2leaf6b
           id: 17
           mgmt_ip: 192.168.200.123/24
-          uplink_switches: [ DC1-LEAF2B ]
+          uplink_interfaces: [ Ethernet1 ]
+          uplink_switches: [ dc1-leaf2b ]
           uplink_switch_interfaces: [ Ethernet31 ]
       # Node to test structured configs for underlay_l2 uplinks.
     - group: DC1_L2LEAF7
       nodes:
-        - name: DC1.L2LEAF7A
+        - name: dc1.l2leaf7a
           id: 18
           mgmt_ip: 192.168.200.124/24
-          uplink_switches: [ DC1-LEAF2A ]
+          uplink_interfaces: [ Ethernet1 ]
+          uplink_switches: [ dc1-leaf2a ]
           uplink_switch_interfaces: [ Ethernet32 ]
           # Structured config applied to uplink port-channel.
           uplink_switch_port_channel_structured_config:
-            description: description through uplink_switch_port_channel_structured_config(DC1.L2LEAF7A)
+            description: description through uplink_switch_port_channel_structured_config(dc1.l2leaf7a)
           # Structured_config applied to member interfaces of uplink port-channel.
           uplink_switch_ethernet_structured_config:
-            description: description through uplink_switch_ethernet_structured_config(DC1.L2LEAF7A)
+            description: description through uplink_switch_ethernet_structured_config(dc1.l2leaf7a)
 
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500

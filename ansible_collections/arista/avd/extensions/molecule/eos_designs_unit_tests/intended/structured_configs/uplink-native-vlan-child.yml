@@ -43,7 +43,9 @@ vlans:
   state: suspend
 - id: 100
   name: NETWORK_SERVICES_VLAN
-  tenant: test
+  metadata:
+    tenants:
+    - test
 vrfs:
 - name: MGMT
   ip_routing: false

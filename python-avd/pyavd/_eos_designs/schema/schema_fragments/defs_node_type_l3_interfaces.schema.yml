@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -16,7 +16,7 @@ $defs:
           type: str
           description: |-
             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-            For a subinterface, the parent physical interface is automatically created.
+            For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
           pattern: "Ethernet[\\d/]+(\\.[\\d]+)?"
         description:
           type: str

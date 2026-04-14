@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -7,6 +7,22 @@
 {% if router_general is arista.avd.defined %}
 !
 router general
+{%     if router_general.control_functions is arista.avd.defined %}
+   control-functions
+{%         for code_unit in router_general.control_functions.code_units | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%             if code_unit.content is arista.avd.defined %}
+{%                 set content = code_unit.content %}
+{%                 if not content.rstrip().endswith('\nEOF') %}
+{%                     set content = content.rstrip() + "\nEOF" %}
+{%                 endif %}
+      code unit {{ code_unit.name }}
+         {{ content | indent(width=9, first=False) }}
+{%             endif %}
+{%         endfor %}
+   !
+{#    EOS issue #}
+   exit
+{%     endif %}
 {%     set delimiter = false %}
 {%     if router_general.router_id.ipv4 is arista.avd.defined %}
    router-id ipv4 {{ router_general.router_id.ipv4 }}
@@ -20,6 +36,9 @@ router general
    software forwarding hardware offload mtu {{ router_general.software_forwarding_hardware_offload_mtu }}
 {%         set delimiter = true %}
 {%     endif %}
+{%     if delimiter is arista.avd.defined(true) and router_general.nexthop_fast_failover is arista.avd.defined(true) %}
+   !
+{%     endif %}
 {%     if router_general.nexthop_fast_failover is arista.avd.defined(true) %}
    hardware next-hop fast-failover
 {%         set delimiter = true %}
@@ -27,43 +46,29 @@ router general
 {%     if delimiter is arista.avd.defined(true) and router_general.vrfs is arista.avd.defined %}
    !
 {%     endif %}
-{%     for vrf in router_general.vrfs | arista.avd.natural_sort('name') %}
+{%     for vrf in router_general.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    vrf {{ vrf.name }}
 {%         if vrf.software_forwarding_hardware_offload_mtu is arista.avd.defined %}
       software forwarding hardware offload mtu {{ vrf.software_forwarding_hardware_offload_mtu }}
 {%         endif %}
-{%         for leak_route in vrf.leak_routes | arista.avd.natural_sort %}
-{%             if leak_route.source_vrf is arista.avd.defined %}
-{%                 if leak_route.subscribe_policy is arista.avd.defined %}
+{%         for leak_route in vrf.leak_routes | arista.avd.natural_sort(sort_key='source_vrf', ignore_case=false) %}
+{%             if leak_route.subscribe_policy is arista.avd.defined %}
       leak routes source-vrf {{ leak_route.source_vrf }} subscribe-policy {{ leak_route.subscribe_policy }}
-{%                 elif leak_route.subscribe_rcf is arista.avd.defined %}
+{%             elif leak_route.subscribe_rcf is arista.avd.defined %}
       leak routes source-vrf {{ leak_route.source_vrf }} subscribe rcf {{ leak_route.subscribe_rcf }}
-{%                 endif %}
 {%             endif %}
 {%         endfor %}
-{%         for dynamic_prefix_list in vrf.routes.dynamic_prefix_lists | arista.avd.natural_sort('name') %}
+{%         for dynamic_prefix_list in vrf.routes.dynamic_prefix_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%             if dynamic_prefix_list.name is arista.avd.defined %}
       routes dynamic prefix-list {{ dynamic_prefix_list.name }}
 {%             endif %}
 {%         endfor %}
 {#    EOS issue #}
       exit
+{%         if router_general.vrfs | length > 1 %}
    !
+{%         endif %}
 {%     endfor %}
-{%     if router_general.control_functions is arista.avd.defined %}
-   control-functions
-{%         for code_unit in router_general.control_functions.code_units | arista.avd.natural_sort('name') %}
-{%             if code_unit.content is arista.avd.defined %}
-{%                 set content = code_unit.content %}
-{%                 if not content.rstrip().endswith('\nEOF') %}
-{%                     set content = content.rstrip() + "\nEOF" %}
-{%                 endif %}
-      code unit {{ code_unit.name }}
-         {{ content | indent(width=9, first=False) }}
-{%             endif %}
-{%         endfor %}
-   !
-{%     endif %}
 {#    EOS issue #}
    exit
 {% endif %}

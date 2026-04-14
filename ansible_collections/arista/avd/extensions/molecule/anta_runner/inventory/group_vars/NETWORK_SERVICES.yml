@@ -31,6 +31,28 @@ tenants:
             name: VRF11_VLAN22
             enabled: true
             ip_address_virtual: 10.10.22.1/24
+      - name: VRFBGP
+        vrf_vni: 50
+        validate_bgp_peers: true
+        l3_interfaces:
+          - interfaces:
+              - Ethernet10
+              - Ethernet10
+            ip_addresses:
+              - 172.16.50.2/24
+              - 172.16.51.2/24
+            nodes:
+              - dc2-leaf2a
+              - dc2-leaf2b
+        bgp_peers:
+          - ip_address: 172.16.50.254
+            remote_as: 65500
+            nodes:
+              - dc2-leaf2a
+          - ip_address: 172.16.51.254
+            remote_as: 65500
+            nodes:
+              - dc2-leaf2b
 
     l2vlans:
       - id: 3401

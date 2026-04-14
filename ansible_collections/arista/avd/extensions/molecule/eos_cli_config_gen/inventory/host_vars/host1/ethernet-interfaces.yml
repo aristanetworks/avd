@@ -224,6 +224,7 @@ ethernet_interfaces:
     address_locking:
       ipv4: true
       ipv6: true
+    loop_protection: true
 
   - name: Ethernet3
     metadata:
@@ -239,19 +240,21 @@ ethernet_interfaces:
       - name: EVPN_MH_ES2
         direction: downstream
     ipv6_enable: true
-    ipv6_address: 2002:ABDC::1/64
-    ipv6_nd_prefixes:
-      - ipv6_prefix: 2345:ABCD:3FE0::1/96
-        valid_lifetime: infinite
-        preferred_lifetime: 50
-        no_autoconfig_flag: true
-      - ipv6_prefix: 2345:ABCD:3FE0::2/96
-        valid_lifetime: 50
-        preferred_lifetime: infinite
-        no_autoconfig_flag: false
-      - ipv6_prefix: 2345:ABCD:3FE0::3/96
-        valid_lifetime: 100000
-        no_autoconfig_flag: true
+    ipv6_addresses:
+      - 2002:ABDC::1/64
+    ipv6_nd:
+      prefixes:
+        - ipv6_prefix: 2345:ABCD:3FE0::1/96
+          valid_lifetime: infinite
+          preferred_lifetime: 50
+          no_autoconfig_flag: true
+        - ipv6_prefix: 2345:ABCD:3FE0::2/96
+          valid_lifetime: 50
+          preferred_lifetime: infinite
+          no_autoconfig_flag: false
+        - ipv6_prefix: 2345:ABCD:3FE0::3/96
+          valid_lifetime: 100000
+          no_autoconfig_flag: true
     priority_flow_control:
       enabled: false
     spanning_tree_guard: root
@@ -306,10 +309,15 @@ ethernet_interfaces:
     shutdown: true
     mtu: 9100
     ipv6_enable: true
-    ipv6_address: 2020::2020/64
+    ipv6_address_auto_config: true
     ipv6_address_link_local: FE80:FEA::AB65/64
-    ipv6_nd_ra_disabled: true
-    ipv6_nd_managed_config_flag: true
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
     ipv6_access_group_in: IPv6_ACL_IN
     ipv6_access_group_out: IPv6_ACL_OUT
     snmp_trap_link_change: true
@@ -356,6 +364,10 @@ ethernet_interfaces:
       - id: 1
         hash_algorithm: sha512
         key: "asfddja23452"
+      - id: 2
+        hash_algorithm: sha512
+        key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
+        key_type: "8a"
     pim:
       ipv4:
         dr_priority: 200
@@ -441,6 +453,9 @@ ethernet_interfaces:
       address_family:
         ipv4: false
         ipv6: true
+    # test for ospf_authentication_key_type: "8a"
+    ospf_authentication_key: $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3pw18KYQ==$DOOM0l9uU4TrQt2kyA7XCKtjUA==
+    ospf_authentication_key_type: "8a"
 
   - name: Ethernet7
     description: Molecule L2
@@ -467,6 +482,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: true
     spanning_tree_bpduguard: true
     spanning_tree_portfast: edge
+    spanning_tree_link_type: shared
     vmtracer: true
     storm_control:
       all:
@@ -529,7 +545,8 @@ ethernet_interfaces:
       vlan: 101
     ip_address: 172.31.128.1/31
     ipv6_enable: true
-    ipv6_address: 2002:ABDC::1/64
+    ipv6_addresses:
+      - 2002:ABDC::1/64
     # Test isis auth both md5
     isis_authentication:
       both:
@@ -1243,14 +1260,30 @@ ethernet_interfaces:
     switchport:
       enabled: false
     shutdown: false
-    ipv6_address: a0::1/64
+    ipv6_addresses:
+      - a0::1/64
     ipv6_dhcp_relay_destinations:
       - address: a0::2
         link_address: a0::3
+      - address: a0::1
+        link_address: a0::3
+        vrf: default
       - address: a0::4
         link_address: a0::5
         vrf: TEST
         local_interface: Loopback55
+      - address: a0::2
+        link_address: a0::5
+        vrf: TEST
+        local_interface: Loopback52
+      - address: a0::4
+        link_address: a0::5
+        vrf: aaa
+        local_interface: Loopback52
+      - address: a0::3
+        link_address: a0::5
+        vrf: aaa
+        local_interface: Loopback53
 
   - name: Ethernet56
     switchport:
@@ -1500,7 +1533,8 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8::2/64
+    ipv6_addresses:
+      - 2001:db8::2/64
     ipv6_address_link_local: fe80::2/64
     mac_timestamp: header
     vrrp_ids:
@@ -1541,7 +1575,8 @@ ethernet_interfaces:
       enabled: false
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8::2/64
+    ipv6_addresses:
+      - 2001:db8::2/64
     ipv6_address_link_local: fe80::2/64
     vrrp_ids:
       - id: 1
@@ -1977,6 +2012,9 @@ ethernet_interfaces:
         twamp_light_fallback:
           number: 2
           unit: milliseconds
+    monitor_link_flap_profiles:
+      - lfp2
+      - LFP1
 
   - name: Ethernet82
     description: Switchport_tap_tool
@@ -2091,3 +2129,70 @@ ethernet_interfaces:
       pae:
         mode: supplicant
         supplicant_profile: test_profile
+
+# All Transceiver Commands
+  - name: Ethernet86
+    switchport:
+      enabled: true
+    description: All_Transceiver_Commands
+    shutdown: false
+    transceiver:
+      frequency: 190050
+      application_override: 5
+      application_override_lanes:
+        - override: 5
+          first_lane: 1
+          last_lane: 1
+        - override: 5
+          first_lane: 2
+          last_lane: 3
+      frequency_unit: ghz
+      media:
+        override: 100gbase-ar4
+      power:
+        ignore: true
+      transmitter:
+        signal_power: -10.675
+        disabled: true
+
+# Additional Transmitter Signal Power Test
+  - name: Ethernet87
+    switchport:
+      enabled: true
+    description: Transmitter_SP_20
+    shutdown: false
+    transceiver:
+      transmitter:
+        signal_power: -20
+
+  # Disable monitor loop protection
+  - name: Ethernet88
+    description: Loop protection disable
+    loop_protection: false
+  - name: Ethernet89
+    description: Loop protection disable
+    loop_protection: false
+  # IPv6 ND new structure with cache and other_config_flag
+  - name: Ethernet90
+    description: IPv6 ND new structure test
+    shutdown: false
+    ipv6_enable: true
+    ipv6_addresses:
+      - 2001:db8:90::1/64
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      other_config_flag: true
+      cache:
+        dynamic_capacity: 2000
+        expire: 400
+        refresh_always: true
+      prefixes:
+        - ipv6_prefix: 2001:db8:90::/64
+          valid_lifetime: 200
+          preferred_lifetime: 100
+          no_autoconfig_flag: true

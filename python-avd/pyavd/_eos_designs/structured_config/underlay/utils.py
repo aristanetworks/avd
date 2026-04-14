@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol, overload
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import Undefined, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -89,6 +89,18 @@ class UtilsMixin(Protocol):
                     port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )
 
+                if self.shared_utils.node_config.link_tracking.downlinks.enabled and self.shared_utils.link_tracking_groups is not None:
+                    if (downlink_group := self.shared_utils.node_config.link_tracking.downlinks.group) is None:
+                        first_group = next(iter(self.shared_utils.link_tracking_groups.values()))
+                        downlink.link_tracking_groups.append_new(name=first_group.name, direction="downstream")
+                    elif downlink_group not in self.shared_utils.link_tracking_groups:
+                        msg = (
+                            f"Link tracking group '{downlink_group}' referenced under node setting 'link_tracking.downlinks.group' "
+                            f"is not defined in 'link_tracking.groups' for device '{self.shared_utils.hostname}'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
+                    else:
+                        downlink.link_tracking_groups.append_new(name=downlink_group, direction="downstream")
                 if peer_facts.inband_ztp:
                     # l2 inband ztp
                     downlink.inband_ztp_vlan = peer_facts.inband_ztp_vlan
@@ -144,18 +156,17 @@ class UtilsMixin(Protocol):
             )
             schema_key = "l3_port_channels"
 
+        is_subinterface = "." in l3_generic_interface.name
+
         # logic below is common to l3_interface and l3_port_channel interface types
 
-        # Check if the interface is a parent L3 Port-Channel with subinterfaces.
-        is_parent_l3_port_channel = schema_key == "l3_port_channels" and l3_generic_interface.name in self._l3_port_channels_with_subinterfaces
-
         # TODO: catch if ip_address is not valid or not dhcp
-        if not l3_generic_interface.ip_address and not is_parent_l3_port_channel:
+        # IP address is required for subinterfaces, but optional for main Ethernet interfaces or Port-Channels as we may define subinterfaces in other modules.
+        if is_subinterface and not l3_generic_interface.ip_address:
             msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
             msg += f"[name={l3_generic_interface.name}].ip_address"
             raise AristaAvdMissingVariableError(msg)
 
-        is_subinterface = "." in l3_generic_interface.name
         interface._update(
             name=l3_generic_interface.name,
             ip_address=l3_generic_interface.ip_address,
@@ -242,11 +253,12 @@ class UtilsMixin(Protocol):
             vrf=vrf.name if vrf.name != "default" else None,
             ip_address=svi.ip_address,
             ip_address_secondaries=EosCliConfigGen.EthernetInterfacesItem.IpAddressSecondaries(svi.ip_address_secondaries),
-            ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
+        if svi.ipv6_address:
+            subinterface.ipv6_addresses.append(svi.ipv6_address)
         subinterface.metadata._update(peer_interface=f"{link.peer_interface} VLAN {svi.id}", peer=link.peer, peer_type=link.peer_type)
 
         if flow_tracker := self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker):
@@ -271,8 +283,8 @@ class UtilsMixin(Protocol):
             # TODO: in separate PR adding VRRP support for SVIs
             pass
 
-        # Only set VRRPv6 if ipv6_address is set
-        if subinterface.ipv6_address:
+        # Only set VRRPv6 if ipv6_addresses is set
+        if subinterface.ipv6_addresses:
             # TODO: in separate PR adding VRRP support for SVIs
             pass
 
@@ -299,3 +311,8 @@ class UtilsMixin(Protocol):
             interface_ip=interface_ip,
             peer_ip=interface.peer_ip,
         )
+
+    @cached_property
+    def _underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
+        """Return a list of P2P underlay links."""
+        return [link for link in self._underlay_links if link.type == "underlay_p2p"]

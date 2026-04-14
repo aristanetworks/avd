@@ -23,10 +23,10 @@ dhcp_servers:
     - code: 42
       array_ipv4_address:
       - 2.2.2.55
-  subnets:
+  ipv4_subnets:
   - subnet: 172.16.255.2/31
-    name: inband ztp for inband-mgmt-parent-Ethernet2
     default_gateway: 172.16.255.2
+    name: inband ztp for inband-mgmt-parent-Ethernet2
     ranges:
     - start: 172.16.255.3
       end: 172.16.255.3
@@ -46,11 +46,12 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: inband-mgmt-spine2-ztp
-ip_name_servers:
-- ip_address: 1.1.1.1
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 1.1.1.1
+    - ip_address: 8.8.8.8
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
@@ -116,7 +117,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

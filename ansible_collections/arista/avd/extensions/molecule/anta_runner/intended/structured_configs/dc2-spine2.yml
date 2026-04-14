@@ -117,6 +117,8 @@ metadata:
   platform: vEOS-lab
   dc_name: DC2
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 router_bfd:
   multihop:
     interval: 300

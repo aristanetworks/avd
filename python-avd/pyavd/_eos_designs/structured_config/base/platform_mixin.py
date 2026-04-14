@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -115,7 +115,7 @@ class PlatformMixin(Protocol):
             name=l3_ethernet_interface.name,
             rx_queue=EosCliConfigGen.Platform.Sfe.Interface.ProfilesItem.InterfacesItem.RxQueue(
                 count=l3_ethernet_interface.rx_queue.count,
-                worker=rx_queue_workers_range if rx_queue_workers_range else None,
+                worker=rx_queue_workers_range or None,
                 mode=l3_ethernet_interface.rx_queue.mode,
             ),
         )

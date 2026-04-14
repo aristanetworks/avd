@@ -1,4 +1,5 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+---
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -179,6 +180,23 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: |-
+              IPv6 address with prefix length.
+              This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
+        ipv6_address_auto_config:
+          type: bool
+          description: |-
+            Use SLAAC to automatically configure the IPv6 address.
+            This option is mutually exclusive with `ipv6_addresses`.
         ipv6_address_virtuals:
           type: list
           description: The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
@@ -196,13 +214,33 @@ keys:
             description: IPv6 address or IPv6_address/Mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_other_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.other_config_flag
+            removed: false
+            remove_in_version: 7.0.0
           description: Set the "other stateful configuration" flag in IPv6 router advertisements.
         ipv6_nd_cache:
           type: dict
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.cache
+            removed: false
+            remove_in_version: 7.0.0
           description: IPv6 neighbor cache options.
           keys:
             dynamic_capacity:
@@ -224,6 +262,11 @@ keys:
               description: Force refresh on cache expiry.
         ipv6_nd_prefixes:
           type: list
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           primary_key: ipv6_prefix
           items:
             type: dict
@@ -270,22 +313,25 @@ keys:
         ipv6_dhcp_relay_all_subnets:
           type: bool
           description: Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field.
+        ipv6_nd:
+          type: dict
+          $ref: "eos_cli_config_gen#/$defs/ipv6_nd"
         access_group_in:
           type: str
           description: IPv4 access-list name.
-          convert_types: [ int ]
+          convert_types: [int]
         access_group_out:
           type: str
           description: IPv4 access-list name.
-          convert_types: [ int ]
+          convert_types: [int]
         ipv6_access_group_in:
           type: str
           description: IPv6 access-list name.
-          convert_types: [ int ]
+          convert_types: [int]
         ipv6_access_group_out:
           type: str
           description: IPv6 access-list name.
-          convert_types: [ int ]
+          convert_types: [int]
         multicast:
           type: dict
           keys:
@@ -302,7 +348,7 @@ keys:
                       boundary:
                         type: str
                         description: IPv4 access-list name or IPv4 multicast group prefix with mask.
-                        convert_types: [ int ]
+                        convert_types: [int]
                       out:
                         type: bool
                 source_route_export:
@@ -332,7 +378,7 @@ keys:
                       boundary:
                         type: str
                         description: IPv6 access-list name or IPv6 multicast group prefix with mask.
-                        convert_types: [ int ]
+                        convert_types: [int]
                 source_route_export:
                   type: dict
                   keys:
@@ -349,16 +395,33 @@ keys:
                   type: bool
         ospf_network_point_to_point:
           type: bool
-        ipv6_ospf_network_point_to_point:
-          type: bool
         ospf_area:
           type: str
           convert_types:
             - int
-        ipv6_ospf_area:
-          type: str
-          convert_types:
-            - int
+        ipv6_ospf:
+          type: dict
+          description: IPv6 OSPF configuration for the interface.
+          keys:
+            process:
+              type: dict
+              keys:
+                id:
+                  type: int
+                  description: OSPF Process ID.
+                  min: 1
+                  max: 65535
+                  required: true
+                  convert_types:
+                    - str
+                area:
+                  type: str
+                  description: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                  convert_types:
+                    - int
+                  required: true
+            network_point_to_point:
+              type: bool
         ospf_cost:
           type: int
           convert_types:
@@ -371,7 +434,16 @@ keys:
             - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password used for simple authentication.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+            - int
+          description: Authentication key type.
+          default: "7"
+          valid_values:
+            - "7"
+            - "8a"
         ospf_message_digest_keys:
           type: list
           description: Keys used for message-digest authentication.
@@ -394,6 +466,15 @@ keys:
               key:
                 type: str
                 description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                  - int
+                description: Authentication key type.
+                default: "7"
+                valid_values:
+                  - "7"
+                  - "8a"
         pim:
           type: dict
           keys:
@@ -644,6 +725,15 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        traffic_policy:
+          type: dict
+          keys:
+            input:
+              type: str
+              description: Ingress traffic policy.
+            output:
+              type: str
+              description: Egress traffic policy.
         ntp_serve:
           type: bool
           description: Enable/disable serving NTP to clients.
@@ -653,9 +743,11 @@ keys:
         metadata:
           type: dict
           keys:
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            tenants:
+              type: list
+              description: List of tenants where this VLAN interface is defined. Key only used for documentation or validation purposes.
+              items:
+                type: str
             tags:
               type: list
               items:

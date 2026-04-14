@@ -30,6 +30,39 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
+- name: Ethernet15
+  description: l3_interface_sflow_true
+  shutdown: false
+  vrf: VRF1
+  ip_address: 10.255.15.1/30
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet16
+  description: l3_interface_sflow_false
+  shutdown: false
+  vrf: VRF1
+  ip_address: 10.255.16.1/30
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: false
+  switchport:
+    enabled: false
+- name: Ethernet17
+  description: l3_interface_sflow_unset
+  shutdown: false
+  vrf: VRF1
+  ip_address: 10.255.17.1/30
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
 - name: Ethernet10
   description: SERVER_single-interface-true_eth1
   shutdown: false
@@ -98,6 +131,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: SFLOW_TESTS
+  validate_hardware:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -130,7 +165,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -165,7 +200,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: SFLOW
+      tenants:
+      - SFLOW
     rd: 10.254.1.1:10011
     route_targets:
       both:
@@ -229,7 +265,8 @@ vlan_interfaces:
   vrf: VRF1
   ip_address: 172.16.11.1/24
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
 vlan_internal_order:
   allocation: ascending
   range:
@@ -238,13 +275,17 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: SFLOW
+  metadata:
+    tenants:
+    - SFLOW
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: SFLOW
+  metadata:
+    tenants:
+    - SFLOW
 vxlan_interface:
   vxlan1:
     description: sflow-tests-leaf1_VTEP

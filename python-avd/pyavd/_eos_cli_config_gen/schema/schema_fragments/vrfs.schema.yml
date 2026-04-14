@@ -1,4 +1,5 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+---
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -27,6 +28,15 @@ keys:
           type: bool
         ip_routing_ipv6_interfaces:
           type: bool
-        tenant:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          description: |-
+            The data under `metadata` is used for documentation, validation or integration purposes.
+            It will not affect the generated EOS configuration.
+
+          keys:
+            tenants:
+              type: list
+              description: Key only used for documentation or validation purposes.
+              items:
+                type: str

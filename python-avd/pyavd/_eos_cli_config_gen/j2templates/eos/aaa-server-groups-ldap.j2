@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -9,13 +9,11 @@
 aaa group server ldap {{ aaa_server_group.name }}
 {%     if aaa_server_group.servers is arista.avd.defined %}
 {%         for server in aaa_server_group.servers %}
-{%             if server.server is arista.avd.defined %}
-{%                 set server_cli = "server " ~ server.server %}
-{%                 if server.vrf is arista.avd.defined %}
-{%                     set server_cli = server_cli ~ " vrf " ~ server.vrf %}
-{%                 endif %}
-   {{ server_cli }}
+{%             set server_cli = "server " ~ server.server %}
+{%             if server.vrf is arista.avd.defined %}
+{%                 set server_cli = server_cli ~ " vrf " ~ server.vrf %}
 {%             endif %}
+   {{ server_cli }}
 {%         endfor %}
 {%     endif %}
 {% endfor %}

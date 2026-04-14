@@ -67,9 +67,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -102,9 +102,9 @@ ip name-server vrf MGMT 192.168.200.5
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -234,7 +234,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -290,13 +290,13 @@ vlan 350
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet7 | test | - | 10.10.20.20/24 | Tenant_A_WAN_Zone | 9000 | False | - | - |
 | Ethernet8 | test | - | 10.10.30.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
 | Ethernet9 | test | - | 10.10.40.20/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
-| Ethernet10.100 | subinterface test | - | 10.10.31.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
-| Ethernet10.200 | subinterface test with vlan override | - | 10.10.41.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
+| Ethernet10.100 | subinterface test | - | 10.10.31.10/24 | Tenant_L3_VRF_Zone | - | False | - | - |
+| Ethernet10.200 | subinterface test with vlan override | - | 10.10.41.10/24 | Tenant_L3_VRF_Zone | - | False | - | - |
 | Ethernet45 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7 | - | 172.31.255.97/31 | default | 1500 | False | - | - |
 | Ethernet46 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7 | - | 172.31.255.99/31 | default | 1500 | False | - | - |
 | Ethernet47 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7 | - | 172.31.255.101/31 | default | 1500 | False | - | - |
@@ -338,7 +338,6 @@ interface Ethernet10
 interface Ethernet10.100
    description subinterface test
    no shutdown
-   mtu 9000
    encapsulation dot1q vlan 100
    vrf Tenant_L3_VRF_Zone
    ip address 10.10.31.10/24
@@ -346,7 +345,6 @@ interface Ethernet10.100
 interface Ethernet10.200
    description subinterface test with vlan override
    no shutdown
-   mtu 9000
    encapsulation dot1q vlan 141
    vrf Tenant_L3_VRF_Zone
    ip address 10.10.41.10/24
@@ -404,8 +402,8 @@ interface Ethernet4000
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | - |
 | Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | - |
 
@@ -428,8 +426,8 @@ interface Loopback1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan150 | Tenant_A_WAN_Zone_1 | Tenant_A_WAN_Zone | - | False |
 | Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | False |
 | Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | False |
@@ -438,9 +436,9 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan150 |  Tenant_A_WAN_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |
-| Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |
-| Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |
+| Vlan150 | Tenant_A_WAN_Zone | - | 10.1.40.1/24 | - | - | - |
+| Vlan250 | Tenant_B_WAN_Zone | - | 10.2.50.1/24 | - | - | - |
+| Vlan350 | Tenant_C_WAN_Zone | - | 10.3.50.1/24 | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -580,9 +578,9 @@ ip routing vrf Tenant_L3_VRF_Zone
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
-| Tenant_A_WAN_Zone | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 1.1.1.0/24 | 10.1.1.1 | vlan101 | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 1.1.2.0/24 | 10.1.1.1 | vlan101 | 200 | 666 | RT-TO-FAKE-DMZ | - |
+| Tenant_A_WAN_Zone | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 10.3.5.0/24 | - | Null0 | 1 | - | - | - |
 
 #### Static Routes Device Configuration
@@ -632,7 +630,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -702,7 +700,7 @@ router bgp 65105
    neighbor UNDERLAY-PEERS peer group
    neighbor UNDERLAY-PEERS password 7 <removed>
    neighbor UNDERLAY-PEERS send-community
-   neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.31.255.96 peer group UNDERLAY-PEERS
    neighbor 172.31.255.96 remote-as 65001
    neighbor 172.31.255.96 description DC1-SPINE1_Ethernet7

@@ -1,36 +1,42 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
 
 import json
 import sys
 import warnings
 from importlib import import_module
-from importlib.metadata import Distribution, PackageNotFoundError, metadata, version
+from importlib.metadata import Distribution, PackageNotFoundError, version
 from logging import getLogger
 from pathlib import Path
 from subprocess import PIPE, Popen
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
 from ansible import constants as C  # noqa: N812
 from ansible.utils.collection_loader._collection_finder import _get_collection_metadata
+from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins import PYTHON_AVD_PATH, RUNNING_FROM_SOURCE
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
 
+if TYPE_CHECKING:
+    # Relying on packaging installed by ansible
+    from packaging.requirements import Requirement
+    from packaging.specifiers import SpecifierSet
+
 try:
     # Relying on packaging installed by ansible
-    from packaging.requirements import InvalidRequirement, Requirement
+    from packaging.requirements import Requirement
     from packaging.specifiers import SpecifierSet
 
     HAS_PACKAGING = True
 except ImportError:
     HAS_PACKAGING = False
-    # Making ansible-test sanity happy
-    Requirement = object
 
 LOGGER = getLogger("ansible_collections.arista.avd")
+DISPLAY = Display()
 
 MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
 DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
@@ -77,24 +83,6 @@ def _validate_python_version(info: dict[str, Any]) -> bool:
         warnings.warn(msg, DeprecationWarning, stacklevel=2)
 
     return True
-
-
-def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
-    """Parse a requirement string and return the parsed object an a list of extras requirements to parse if any."""
-    try:
-        req = Requirement(req_str)
-    except InvalidRequirement as exc:
-        msg = f"Wrong format for requirement {req_str}"
-        raise ValueError(msg) from exc
-
-    extras = []
-    if req.extras:
-        for subreq_name in metadata(req.name).get_all("Requires-Dist"):
-            subreq = Requirement(subreq_name)
-            if subreq.marker:
-                extras = [subreq_name for marker in subreq.marker._markers if str(marker[0]) == "extra" and str(marker[2]) in req.extras]
-
-    return req, extras
 
 
 def _check_requirement(req: Requirement, requirements_dict: dict[str, Any]) -> bool:
@@ -193,18 +181,16 @@ def _validate_python_requirements(requirements: list[str], info: dict[str, Any])
     }
 
     # Remove the comments including inline comments
-    requirements = [req.split(" #", maxsplit=1)[0] for req in requirements if req[0] != "#"]
+    requirements = [req.split(" #", maxsplit=1)[0] for req in requirements if req != "" and req[0] != "#"]
     for raw_req in requirements:
-        req, extras = _parse_requirements(raw_req)
+        req = Requirement(raw_req)
         if RUNNING_FROM_SOURCE and req.name == "pyavd":
-            LOGGER.debug("AVD is running from source, *not* checking pyavd version nor any extra.")
+            LOGGER.debug("AVD is running from source, *not* checking pyavd version.")
             requirements_dict["valid"][req.name] = {
                 "installed": "running from source",
                 "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
             }
             continue
-
-        requirements.extend(extras)
 
         valid = valid and _check_requirement(req, requirements_dict)
 
@@ -379,15 +365,16 @@ def check_running_from_source() -> bool:
     from schema_tools.check_schemas import check_schemas, rebuild_schemas  # noqa: PLC0415
     from schema_tools.compile_templates import check_templates, recompile_templates  # noqa: PLC0415
 
+    # We always want Ansible to display the following messages in color, regardless of the verbosity level
     if schemas_recompiled := check_schemas():
-        LOGGER.info("Schemas have changed, rebuilding...", extra={"color": C.COLOR_CHANGED})
+        DISPLAY.display(msg="Schemas have changed, rebuilding...", color=C.COLOR_CHANGED)
         rebuild_schemas()
-        LOGGER.info("Done.", extra={"color": C.COLOR_CHANGED})
+        DISPLAY.display(msg="Done.", color=C.COLOR_CHANGED)
 
     if templates_recompiled := check_templates():
-        LOGGER.info("Templates have changed, recompiling...", extra={"color": C.COLOR_CHANGED})
+        DISPLAY.display(msg="Templates have changed, recompiling...", color=C.COLOR_CHANGED)
         recompile_templates()
-        LOGGER.info("Done.", extra={"color": C.COLOR_CHANGED})
+        DISPLAY.display(msg="Done.", color=C.COLOR_CHANGED)
 
     return schemas_recompiled or templates_recompiled
 
@@ -418,7 +405,7 @@ class ActionModule(AvdActionPlugin):
 
         self.result["failed"] = False
 
-        error_message = "Set 'avd_ignore_requirements=True' to ignore validation error(s)."
+        error_message = "If it is a false positive, set 'avd_ignore_requirements=True'."
         info: dict[str, Any] = {
             "ansible": {},
             "python": {},
@@ -429,9 +416,10 @@ class ActionModule(AvdActionPlugin):
         if check_running_from_source():
             self.result["changed"] = True
 
-        self.logger.info("AVD version %s", info["ansible"]["collection"]["version"], extra={"color": C.COLOR_OK})
+        # We always want Ansible to display the following messages in color, regardless of the verbosity level
+        DISPLAY.display(msg=f"AVD version {info['ansible']['collection']['version']}", color=C.COLOR_OK)
         if RUNNING_FROM_SOURCE:
-            self.logger.info("AVD is running from source using PyAVD at '%s'", PYTHON_AVD_PATH, extra={"color": C.COLOR_OK})
+            DISPLAY.display(msg=f"AVD is running from source using PyAVD at '{PYTHON_AVD_PATH}'", color=C.COLOR_OK)
 
         if not _validate_python_version(info["python"]):
             self.result["failed"] = True

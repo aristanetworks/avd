@@ -26,6 +26,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -56,7 +58,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -79,6 +81,18 @@ router_bgp:
     metadata:
       peer: cv-pathfinder-edge-wan-gateway-spine-uplink
     description: cv-pathfinder-edge-wan-gateway-spine-uplink_Loopback0
+  - ip_address: 192.168.42.12
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65000'
+    metadata:
+      peer: cv-pathfinder-edge-wan-use-evpn-on-lan
+    description: cv-pathfinder-edge-wan-use-evpn-on-lan_Loopback0
+  - ip_address: 192.168.45.13
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65042'
+    metadata:
+      peer: leaf-wan-use-evpn-on-lan
+    description: leaf-wan-use-evpn-on-lan_Loopback0
   redistribute:
     connected:
       enabled: true

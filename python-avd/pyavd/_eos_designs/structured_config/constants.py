@@ -1,6 +1,7 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+
 CV_REGION_TO_SERVER_MAP = {
     "auto": "apiserver.arista.io",
     "us-central1-a": "apiserver.cv-prod-us-central1-a.arista.io",
@@ -16,3 +17,6 @@ CV_REGION_TO_SERVER_MAP = {
     "dev": "apiserver.cv-dev.corp.arista.io",
     "play": "apiserver.cv-play.corp.arista.io",
 }
+
+INTERNET_EXIT_ZSCALER_NAT_PROFILE_NAME = "NAT-IE-ZSCALER"
+INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME = "NAT-IE-DIRECT"

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -28,7 +28,7 @@ class RouterPathSelectionMixin(Protocol):
             path_selection_policy=f"{vrf.policy}-WITH-CP" if vrf.name == "default" else vrf.policy,
         )
 
-    def _set_autovpn_control_plane_virtual_topology(
+    def _set_legacy_autovpn_control_plane_virtual_topology(
         self: AvdStructuredConfigNetworkServicesProtocol,
         output_policy: EosCliConfigGen.RouterPathSelection.PoliciesItem,
     ) -> None:
@@ -62,7 +62,7 @@ class RouterPathSelectionMixin(Protocol):
         self.structured_config.router_path_selection.load_balance_policies.append(load_balance_policy)
         self._set_virtual_topology_application_classification(control_plane_virtual_topology, output_policy.name)
 
-    def _set_autovpn_policy(
+    def _set_legacy_autovpn_policy(
         self: AvdStructuredConfigNetworkServicesProtocol,
         policy: EosDesigns.WanVirtualTopologies.PoliciesItem,
         *,
@@ -71,7 +71,7 @@ class RouterPathSelectionMixin(Protocol):
         """
         Add a router path-selection policy and its dependencies to the structured_config.
 
-        Router-path selection policies are used in autovpn mode.
+        Router-path selection policies are used in legacy-autovpn mode.
         """
         index = 1
         output_policy = EosCliConfigGen.RouterPathSelection.PoliciesItem(name=policy.name)
@@ -79,7 +79,7 @@ class RouterPathSelectionMixin(Protocol):
         # For Control Plane override the policy name and add the control plane VT.
         if control_plane:
             output_policy.name = f"{output_policy.name}-WITH-CP"
-            self._set_autovpn_control_plane_virtual_topology(output_policy)
+            self._set_legacy_autovpn_control_plane_virtual_topology(output_policy)
             index = 2
 
         # Normal entries

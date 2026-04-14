@@ -54,9 +54,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -73,9 +73,9 @@ interface Management1
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -146,7 +146,7 @@ no spanning-tree vlan-id 4094
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -232,8 +232,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet5 | P2P_DUMMY-CORE_Ethernet1/4 | - | 192.168.253.6/31 | default | 9214 | False | - | - |
 | Ethernet6 | P2P_DUMMY-CORE_Ethernet1/6 | - | 192.168.253.10/31 | default | 9214 | False | - | - |
 | Ethernet7 | P2P_DUMMY-CORE_Ethernet1/8 | 7 | *192.168.253.14/31 | *default | *9214 | *False | *- | *- |
@@ -356,7 +356,7 @@ interface Ethernet18.101
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_BGP-LEAFS_Port-Channel1 | trunk | 1,100,200,4092 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_BGP-SPINE1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel12 | - | - | - | - | - | - | - | 12 | - |
@@ -437,8 +437,8 @@ interface Port-Channel17
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
@@ -455,8 +455,8 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan1 | SVI_1 | default | - | False |
 | Vlan100 | SVI_100 | default | - | False |
 | Vlan200 | SVI_200 | default | - | False |
@@ -469,13 +469,13 @@ interface Loopback0
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan1 |  default  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |
-| Vlan100 |  default  |  -  |  10.1.100.1/24  |  -  |  -  |  -  |
-| Vlan200 |  default  |  -  |  10.1.200.1/24  |  -  |  -  |  -  |
-| Vlan220 |  default  |  -  |  10.1.220.1/24  |  -  |  -  |  -  |
-| Vlan3100 |  New_VRF  |  192.168.254.1/31  |  -  |  -  |  -  |  -  |
-| Vlan4092 |  default  |  172.23.254.3/24  |  -  |  172.23.254.1  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.254.1/31  |  -  |  -  |  -  |  -  |
+| Vlan1 | default | - | 10.1.1.1/24 | - | - | - |
+| Vlan100 | default | - | 10.1.100.1/24 | - | - | - |
+| Vlan200 | default | - | 10.1.200.1/24 | - | - | - |
+| Vlan220 | default | - | 10.1.220.1/24 | - | - | - |
+| Vlan3100 | New_VRF | 192.168.254.1/31 | - | - | - | - |
+| Vlan4092 | default | 172.23.254.3/24 | - | 172.23.254.1 | - | - |
+| Vlan4094 | default | 192.168.254.1/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -583,8 +583,8 @@ ip routing vrf New_VRF
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 172.31.0.1 | - | 1 | - | - | - |
 | default | 10.0.0.0/8 | 10.1.100.100 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 172.31.0.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
@@ -618,7 +618,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### MLAG-IPv4-UNDERLAY-PEER
 
@@ -628,7 +628,7 @@ ASN Notation: asplain
 | Remote AS | 65001 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -651,14 +651,14 @@ router bgp 65001
    maximum-paths 4
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65001
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER description BGP-SPINE1
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
-   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
+   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 256000
    neighbor 192.168.253.7 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.253.7 remote-as 65000
    neighbor 192.168.253.7 description DUMMY-CORE

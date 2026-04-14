@@ -35,6 +35,7 @@
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
   - [Route-maps](#route-maps)
+  - [AS Path Lists](#as-path-lists)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -96,7 +97,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -138,8 +139,8 @@ vlan 4085
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_DC1-POD1-SPINE1_Ethernet3 | - | 172.17.110.1/31 | default | - | False | - | - |
 | Ethernet2 | P2P_DC1-POD1-SPINE2_Ethernet3 | - | 172.17.110.3/31 | default | - | False | - | - |
 | Ethernet4 | P2P_DC1-RS1_Ethernet3 | - | 172.17.10.4/31 | default | - | False | - | - |
@@ -186,7 +187,7 @@ interface Ethernet4
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | L2_DC1-POD1-L2LEAF1A_Port-Channel1 | trunk | 4085 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -215,8 +216,8 @@ interface Port-Channel3
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 
@@ -239,15 +240,15 @@ interface Loopback1
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan4085 |  default  |  172.21.110.2/24  |  -  |  172.21.110.1  |  -  |  -  |
+| Vlan4085 | default | 172.21.110.2/24 | - | 172.21.110.1 | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -382,15 +383,15 @@ ASN Notation: asdot
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 172.16.20.1 | 65201 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 172.16.110.4 | 65112.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.110.5 | 65112.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 172.16.110.6 | 65112.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.200.1 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.210.1 | 65210 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.210.3 | 65211 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
@@ -430,17 +431,17 @@ router bgp 65111.100
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.16.20.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.20.1 remote-as 65201
    neighbor 172.16.20.1 description DC2-RS1_Loopback0
    neighbor 172.16.20.1 route-map RM-EVPN-FILTER-AS65201 out
-   neighbor 172.16.110.4 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.4 remote-as 65112.100
-   neighbor 172.16.110.4 description DC1.POD1.LEAF2A_Loopback0
    neighbor 172.16.110.5 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.5 remote-as 65112.100
    neighbor 172.16.110.5 description DC1-POD1-LEAF2B_Loopback0
+   neighbor 172.16.110.6 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.110.6 remote-as 65112.100
+   neighbor 172.16.110.6 description DC1.POD1.LEAF2A_Loopback0
    neighbor 172.16.200.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.200.1 remote-as 65200
    neighbor 172.16.200.1 description DC2-SUPER-SPINE1_Loopback0
@@ -522,28 +523,28 @@ router bfd
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65200 | - | - | - |
+| 10 | deny | as-path AS65200 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65201
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65201 | - | - | - |
+| 10 | deny | as-path AS65201 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65210
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65210 | - | - | - |
+| 10 | deny | as-path AS65210 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65211
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65211 | - | - | - |
+| 10 | deny | as-path AS65211 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 #### Route-maps Device Configuration
@@ -551,24 +552,45 @@ router bfd
 ```eos
 !
 route-map RM-EVPN-FILTER-AS65200 deny 10
-   match as 65200
+   match as-path AS65200
 !
 route-map RM-EVPN-FILTER-AS65200 permit 20
 !
 route-map RM-EVPN-FILTER-AS65201 deny 10
-   match as 65201
+   match as-path AS65201
 !
 route-map RM-EVPN-FILTER-AS65201 permit 20
 !
 route-map RM-EVPN-FILTER-AS65210 deny 10
-   match as 65210
+   match as-path AS65210
 !
 route-map RM-EVPN-FILTER-AS65210 permit 20
 !
 route-map RM-EVPN-FILTER-AS65211 deny 10
-   match as 65211
+   match as-path AS65211
 !
 route-map RM-EVPN-FILTER-AS65211 permit 20
+```
+
+### AS Path Lists
+
+#### AS Path Lists Summary
+
+| List Name | Type | Match | Origin |
+| --------- | ---- | ----- | ------ |
+| AS65200 | permit | `_65200_` | any |
+| AS65201 | permit | `_65201_` | any |
+| AS65210 | permit | `_65210_` | any |
+| AS65211 | permit | `_65211_` | any |
+
+#### AS Path Lists Device Configuration
+
+```eos
+!
+ip as-path access-list AS65200 permit _65200_ any
+ip as-path access-list AS65201 permit _65201_ any
+ip as-path access-list AS65210 permit _65210_ any
+ip as-path access-list AS65211 permit _65211_ any
 ```
 
 ## VRF Instances

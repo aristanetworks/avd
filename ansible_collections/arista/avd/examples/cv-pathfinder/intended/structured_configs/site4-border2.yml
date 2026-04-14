@@ -55,10 +55,10 @@ flow_tracking:
   sampled:
     sample: 10000
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 5000
-      name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
         collectors:
@@ -72,9 +72,11 @@ ip_domain_lookup:
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.17.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.17.1
 ip_routing: true
 local_users:
 - name: admin
@@ -117,6 +119,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: SITE4
   local_interface: Vlan4094
@@ -196,21 +200,13 @@ router_bgp:
     description: site4-border1
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
+    maximum_routes: 256000
   neighbors:
   - ip_address: 10.255.251.24
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -230,7 +226,8 @@ router_bgp:
   vlans:
   - id: 666
     metadata:
-      tenant: WAN-EXAMPLE-TENANT
+      tenants:
+      - WAN-EXAMPLE-TENANT
     rd: 192.168.255.14:10666
     route_targets:
       both:
@@ -239,25 +236,20 @@ router_bgp:
     - learned
   - id: 42
     metadata:
-      tenant: WAN-EXAMPLE-TENANT
+      tenants:
+      - WAN-EXAMPLE-TENANT
     rd: 192.168.255.14:10042
     route_targets:
       both:
       - 10042:10042
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: BLUE
     rd: 192.168.255.14:100
@@ -325,7 +317,8 @@ vlan_interfaces:
   vrf: BLUE
   ip_address: 10.66.44.1/24
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: Vlan3099
   description: MLAG_L3_VRF_BLUE
   shutdown: false
@@ -333,7 +326,8 @@ vlan_interfaces:
   ip_address: 10.255.251.25/31
   mtu: 9214
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
     type: underlay_peering
 - name: Vlan42
   description: RED-TEST
@@ -341,7 +335,8 @@ vlan_interfaces:
   vrf: RED
   ip_address: 10.42.44.1/24
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: Vlan3100
   description: MLAG_L3_VRF_RED
   shutdown: false
@@ -349,7 +344,8 @@ vlan_interfaces:
   ip_address: 10.255.251.25/31
   mtu: 9214
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -361,37 +357,53 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 666
   name: BLUE-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 3099
   name: MLAG_L3_VRF_BLUE
   trunk_groups:
   - MLAG
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 42
   name: RED-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 3100
   name: MLAG_L3_VRF_RED
   trunk_groups:
   - MLAG
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: BLUE
   ip_routing: true
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: RED
   ip_routing: true
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vxlan_interface:
   vxlan1:
     description: site4-border2_VTEP

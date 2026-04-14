@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -19,7 +19,7 @@ import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, AntaWorkflowFilter, AntaWorkflowHandler
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, AntaWorkflowFilter, AntaWorkflowHandler, raise_action_fail
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -27,9 +27,9 @@ if TYPE_CHECKING:
 PLUGIN_NAME = "arista.avd.anta_workflow"
 
 try:
-    from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, anta_runner
+    from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
     from pyavd._utils import default, get, strip_empties_from_dict
-    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData, InputFactorySettings
+    from pyavd.api.anta import AVDCatalogGenerationSettings, AVDFabricData
     from pyavd.get_device_test_catalog import get_device_test_catalog
 
     HAS_PYAVD = True
@@ -73,7 +73,7 @@ ARGUMENT_SPEC = {
             "output_dir": {"type": "str"},
             "structured_config_dir": {"type": "str"},
             "structured_config_suffix": {"type": "str", "choices": ["yml", "yaml", "json"], "default": "yml"},
-            "allow_bgp_vrfs": {"type": "bool", "default": False},
+            "extra_fabric_validation": {"type": "bool", "default": False},
             "filters": {
                 "type": "list",
                 "elements": "dict",
@@ -88,6 +88,7 @@ ARGUMENT_SPEC = {
     "user_catalogs": {
         "type": "dict",
         "options": {
+            "enabled": {"type": "bool", "default": False},
             "input_dir": {"type": "str"},
         },
     },
@@ -103,16 +104,29 @@ ARGUMENT_SPEC = {
     "report": {
         "type": "dict",
         "options": {
+            "expand_results": {"type": "bool", "default": False},
+            "generate_custom_field": {"type": "bool", "default": False},
             "csv_output": {"type": "str"},
             "md_output": {"type": "str"},
             "json_output": {"type": "str"},
             "filters": {
                 "type": "dict",
+                "options": {"exclude_statuses": {"type": "list", "elements": "str", "choices": ["error", "failure", "skipped", "success", "unset"]}},
+            },
+            "sorting": {
+                "type": "dict",
                 "options": {
-                    "hide_statuses": {
+                    "status_priority": {
                         "type": "list",
                         "elements": "str",
-                        "choices": ["success", "failure", "error", "skipped", "unset"],
+                        "choices": ["error", "failure", "skipped", "success", "unset"],
+                        "default": ["error", "failure", "skipped", "success", "unset"],
+                    },
+                    "sort_fields": {
+                        "type": "list",
+                        "elements": "str",
+                        "choices": ["categories", "custom_field", "description", "device", "test"],
+                        "default": ["device", "categories", "test", "description", "custom_field"],
                     },
                 },
             },
@@ -123,7 +137,7 @@ ARGUMENT_SPEC = {
 # Global variables to share data between processes. Since the plugin is forked, these variables are inherited by child processes.
 # TODO: Consider aggregating some of them into a SHARED_VARS dict or use multiprocessing.Manager()
 STRUCTURED_CONFIGS: dict[str, dict[str, Any]] | None = None
-FABRIC_DATA: AvdFabricData | None = None
+FABRIC_DATA: AVDFabricData | None = None
 PLUGIN_ARGS: dict[str, Any] | None = None
 ANSIBLE_VARS: dict[str, dict[str, Any]] | None = None
 USER_CATALOG: AntaCatalog | None = None
@@ -172,13 +186,11 @@ class ActionModule(ActionBase):
 
         generate_avd_catalogs = get(PLUGIN_ARGS, "avd_catalogs.enabled")
         structured_config_dir = get(PLUGIN_ARGS, "avd_catalogs.structured_config_dir")
+        generate_user_catalogs = get(PLUGIN_ARGS, "user_catalogs.enabled")
         user_catalog_dir = get(PLUGIN_ARGS, "user_catalogs.input_dir")
 
-        if generate_avd_catalogs is False and user_catalog_dir is None:
-            msg = (
-                "When 'avd_catalogs.enabled' is False, a directory with user-defined ANTA catalogs "
-                "must be provided using the 'user_catalogs.input_dir' argument"
-            )
+        if generate_avd_catalogs is False and generate_user_catalogs is False:
+            msg = "At least one of 'avd_catalogs.enabled' or 'user_catalogs.enabled' must be set to True"
             raise AnsibleActionFail(msg)
         if generate_avd_catalogs is True and structured_config_dir is None:
             msg = (
@@ -186,10 +198,16 @@ class ActionModule(ActionBase):
                 "must be provided using the 'avd_catalogs.structured_config_dir' argument"
             )
             raise AnsibleActionFail(msg)
+        if generate_user_catalogs is True and user_catalog_dir is None:
+            msg = (
+                "When 'user_catalogs.enabled' is True, a directory with user-defined ANTA catalogs "
+                "must be provided using the 'user_catalogs.input_dir' argument"
+            )
+            raise AnsibleActionFail(msg)
 
         try:
             # Load the user-defined ANTA catalogs if provided
-            if user_catalog_dir is not None:
+            if generate_user_catalogs and user_catalog_dir is not None:
                 USER_CATALOG = load_user_catalogs(user_catalog_dir)
                 if not generate_avd_catalogs and not USER_CATALOG.tests:
                     LOGGER.warning("No tests found in the user-defined ANTA catalogs, exiting")
@@ -198,7 +216,7 @@ class ActionModule(ActionBase):
             # Load the structured configs and build the minimal structured configs if needed
             if generate_avd_catalogs:
                 STRUCTURED_CONFIGS = load_structured_configs(deployed_devices, structured_config_dir, get(PLUGIN_ARGS, "avd_catalogs.structured_config_suffix"))
-                FABRIC_DATA = AvdFabricData.from_structured_configs(STRUCTURED_CONFIGS)
+                FABRIC_DATA = AVDFabricData.from_structured_configs(STRUCTURED_CONFIGS)
 
             with ProcessPoolExecutor(max_workers=max((ansible_forks - 1), 1), mp_context=get_context("fork")) as executor:
                 batch_size = get(PLUGIN_ARGS, "runner.batch_size")
@@ -213,7 +231,7 @@ class ActionModule(ActionBase):
         except Exception as error:
             # Recast errors as AnsibleActionFail
             msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from error
+            raise_action_fail(msg, error)
         finally:
             # Stop the logging queue listener
             listener.stop()
@@ -246,10 +264,14 @@ def run_anta(devices: list[str]) -> ResultManager:
 
 def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[str, Any]) -> dict[str, Any]:
     """Build the ANTA reports from the batch results and return a summary dictionary containing ANTA test statistics."""
-    hide_statuses = get(report_settings, "filters.hide_statuses")
+    exclude_statuses = get(report_settings, "filters.exclude_statuses")
+    sort_fields = get(report_settings, "sorting.sort_fields")
+    status_priority = get(report_settings, "sorting.status_priority")
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
     json_output_path = get(report_settings, "json_output")
+    expand_results = get(report_settings, "expand_results")
+    generate_custom_field = get(report_settings, "generate_custom_field")
 
     # Merge all results
     result_manager = ResultManager()
@@ -257,17 +279,17 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
         for result in manager.results:
             result_manager.add(result)
 
-    # Filter the results based on the hide_statuses if provided
-    if hide_statuses:
-        filtered_result_manager = result_manager.filter(hide=set(hide_statuses))
+    # Filter the results based on the exclude_statuses if provided
+    if exclude_statuses:
+        filtered_result_manager = result_manager.filter(hide=set(exclude_statuses))
         if not filtered_result_manager.results:
-            msg = f"The report is empty because all results were hidden by the provided status filters: {', '.join(hide_statuses)}"
+            msg = f"The report is empty because all results were hidden by the provided status filters: {', '.join(exclude_statuses)}"
             LOGGER.warning(msg)
     else:
         filtered_result_manager = result_manager
 
     # Sort the result manager
-    filtered_result_manager.sort(sort_by=["name", "categories", "test", "description", "result", "custom_field"])
+    sort_result_manager(filtered_result_manager, status_priority, sort_fields)
 
     # TODO: Consider using multiprocessing to generate reports in parallel
     if csv_output_path:
@@ -280,7 +302,8 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
         LOGGER.info("Generating Markdown report at %s", md_output_path)
         path = Path(md_output_path)
         md_report = MDReportGenerator()
-        md_report.generate(filtered_result_manager, path)
+        extra_data = {"_report_options": {"expand_results": expand_results, "render_custom_field": generate_custom_field}}
+        md_report.generate(filtered_result_manager, path, extra_data=extra_data)
 
     if json_output_path:
         LOGGER.info("Generating JSON report at %s", json_output_path)
@@ -306,6 +329,54 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
             tests_summary["devices_with_test_errors"].append(device)
 
     return tests_summary
+
+
+def sort_result_manager(result_manager: ResultManager, status_priority: list[str], sort_fields: list[str]) -> None:
+    """
+    Sort the results within a ResultManager in place.
+
+    Sorting logic:
+    1. **Primary Sort:** Results are grouped by their test status based on the order defined in `status_priority`.
+        Statuses not listed in the priority list are pushed to the bottom and grouped alphabetically.
+    2. **Secondary Sort:** Within each status group, results are sorted lexicographically by the attributes defined in `sort_fields`.
+
+    Args:
+        result_manager: The ANTA result manager.
+        status_priority: List of statuses (e.g., ["success", "failure"]) to force to the top.
+        sort_fields: List of attributes to use for secondary sorting (e.g., ["categories", "device"]).
+    """
+    if not result_manager.results:
+        return
+
+    # Define the master list of all possible sort fields (in preferred tie-breaker order).
+    all_sort_fields = ["device", "categories", "test", "description", "custom_field"]
+
+    # Start with the user explicit fields.
+    final_sort_fields = sort_fields.copy()
+
+    # Append missing fields from the master list to serve as automatic tie-breakers.
+    for field in all_sort_fields:
+        if field not in final_sort_fields:
+            final_sort_fields.append(field)
+
+    # Map 'device' to 'name' to match TestResult attribute names.
+    normalized_sort_fields = ["name" if field == "device" else field for field in final_sort_fields]
+
+    # Create a rank map for the primary sort order.
+    status_rank_map = {status: idx for idx, status in enumerate(status_priority)}
+
+    def sort_key(result: TestResult) -> tuple[Any, ...]:
+        """Generate a comparison tuple for sorting."""
+        # Primary sort: Get rank from map. If status is unknown, use Infinity to push it to the end.
+        rank = status_rank_map.get(result.result, float("inf"))
+
+        # Secondary sort: Extract values from the sort_fields.
+        secondary_values = [getattr(result, field) or "" for field in normalized_sort_fields]
+
+        # Test status is also included to group unranked statuses alphabetically.
+        return (rank, str(result.result), *secondary_values)
+
+    result_manager.results = sorted(result_manager.results, key=sort_key)
 
 
 def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, Any], has_errors_ref: list[bool]) -> dict[str, Any]:
@@ -390,7 +461,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
     if USER_CATALOG is not None:
         catalogs.append(USER_CATALOG)
 
-    input_factory_settings = InputFactorySettings(allow_bgp_vrfs=get(PLUGIN_ARGS, "avd_catalogs.allow_bgp_vrfs"))
+    extra_fabric_validation = get(PLUGIN_ARGS, "avd_catalogs.extra_fabric_validation")
     output_dir = get(PLUGIN_ARGS, "avd_catalogs.output_dir")
     avd_catalogs_filters = get(PLUGIN_ARGS, "avd_catalogs.filters", default=[])
 
@@ -399,8 +470,8 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
         inventory.add_device(anta_device)
         # We generate the device's AVD catalog only if structured configs are loaded
         if STRUCTURED_CONFIGS is not None and FABRIC_DATA is not None:
-            settings = AvdCatalogGenerationSettings(
-                input_factory_settings=input_factory_settings,
+            settings = AVDCatalogGenerationSettings(
+                extra_fabric_validation=extra_fabric_validation,
                 output_dir=output_dir,
                 **get_device_catalog_filters(device, avd_catalogs_filters),
             )

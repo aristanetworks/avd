@@ -23,6 +23,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: DIGITAL_TWIN
+  validate_hardware:
+    enabled: false
   digital_twin:
     environment: act
     node_type: veos

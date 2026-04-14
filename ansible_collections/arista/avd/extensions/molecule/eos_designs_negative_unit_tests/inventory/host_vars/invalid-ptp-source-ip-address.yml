@@ -1,0 +1,19 @@
+type: spine
+
+spine:
+  defaults:
+    id: 10
+    loopback_ipv4_pool: 10.255.0.0/27
+    bgp_as: 65200
+
+  nodes:
+    - name: invalid-ptp-source-ip-address
+      id: 1
+      mgmt_ip: 192.168.0.11/24
+      ptp:
+        clock_identity: "00:00:00:00:00:00"
+        enabled: true
+        source_ip: no_ip_address
+
+expected_error_message: >-
+  Invalid PTP source IP 'ptp.source_ip: no_ip_address'. The value must be either 'router_id' or a valid IPv4 address.

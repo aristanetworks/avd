@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -52,6 +52,12 @@ class DigitalTwinMixin(Protocol):
                     msg = (
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
                         " 'mgmt_ip' attribute must be set in the node configuration settings using either the 'digital_twin.mgmt_ip' or 'mgmt_ip' key."
+                    )
+                    raise AristaAvdError(msg)
+                if ip_addr == "dhcp":
+                    msg = (
+                        f"'mgmt_ip: dhcp' is not supported for Digital Twin. "
+                        f"A static management IP address is required for host '{self.shared_utils.hostname}'."
                     )
                     raise AristaAvdError(msg)
                 version = default(

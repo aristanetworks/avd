@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -48,10 +48,8 @@ FIPS restrictions enabled.
 | Key ID | Fallback |
 | ------ | -------- |
 {%                 for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
-{%                     if connection_key.encrypted_key is arista.avd.defined %}
-{%                         set fallback = connection_key.fallback | arista.avd.default('-') %}
+{%                     set fallback = connection_key.fallback | arista.avd.default('-') %}
 | {{ connection_key.id }} | {{ fallback }} |
-{%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%             if profile.l2_protocols | arista.avd.default([]) | length > 0 %}

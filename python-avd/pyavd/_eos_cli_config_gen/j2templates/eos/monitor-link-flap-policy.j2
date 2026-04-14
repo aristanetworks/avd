@@ -1,0 +1,48 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - monitor link flap policy #}
+{% if monitor_link_flap_policy.damping_profiles is arista.avd.defined or monitor_link_flap_policy.max_flap_profiles is arista.avd.defined or monitor_link_flap_policy.default_profiles is arista.avd.defined %}
+!
+monitor link-flap policy
+{%     for damping_profile in monitor_link_flap_policy.damping_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+   profile {{ damping_profile.name }} damping
+{%         if damping_profile.penalty_threshold is arista.avd.defined and damping_profile.penalty_threshold | length > 0 %}
+{%             set monitor_flap_cli = "penalty threshold" %}
+{%             if damping_profile.penalty_threshold.reuse is arista.avd.defined %}
+{%                 set monitor_flap_cli = monitor_flap_cli ~ " reuse " ~ damping_profile.penalty_threshold.reuse %}
+{%             endif %}
+{%             if damping_profile.penalty_threshold.suppression is arista.avd.defined %}
+{%                 set monitor_flap_cli = monitor_flap_cli ~ " suppression " ~ damping_profile.penalty_threshold.suppression %}
+{%             endif %}
+{%             if damping_profile.penalty_threshold.maximum is arista.avd.defined %}
+{%                 set monitor_flap_cli = monitor_flap_cli ~ " maximum " ~ damping_profile.penalty_threshold.maximum %}
+{%             endif %}
+      {{ monitor_flap_cli }}
+{%         endif %}
+{%         if damping_profile.mac_fault_local_penalty is arista.avd.defined %}
+      penalty mac fault local {{ damping_profile.mac_fault_local_penalty }}
+{%         endif %}
+{%         if damping_profile.mac_fault_remote_penalty is arista.avd.defined %}
+      penalty mac fault remote {{ damping_profile.mac_fault_remote_penalty }}
+{%         endif %}
+{%         if damping_profile.penalty_decay is arista.avd.defined %}
+      penalty decay half-life {{ damping_profile.penalty_decay.half_life }} {{ damping_profile.penalty_decay.units }}
+{%         endif %}
+{%         if not loop.last %}
+   !
+{%         endif %}
+{%     endfor %}
+{%     for max_flap_profile in monitor_link_flap_policy.max_flap_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         set monitor_max_flap_cli = "profile " ~ max_flap_profile.name ~ " max-flaps " ~ max_flap_profile.max_flaps ~ " time " ~ max_flap_profile.time %}
+{%         if max_flap_profile.violations is arista.avd.defined and max_flap_profile.intervals is arista.avd.defined %}
+{%             set monitor_max_flap_cli = monitor_max_flap_cli ~ " violations " ~ max_flap_profile.violations ~ " intervals " ~ max_flap_profile.intervals %}
+{%         endif %}
+   {{ monitor_max_flap_cli }}
+{%     endfor %}
+{%     if monitor_link_flap_policy.default_profiles is arista.avd.defined %}
+   default-profiles {{ monitor_link_flap_policy.default_profiles | arista.avd.natural_sort(ignore_case=false) | join(' ') }}
+{%     endif %}
+{% endif %}

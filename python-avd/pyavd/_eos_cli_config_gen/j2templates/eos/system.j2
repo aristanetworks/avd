@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -23,9 +23,9 @@ system control-plane
    ip access-group ingress default {{ system.control_plane.ipv4_access_group_ingress_default }}
 {%     endif %}
 {%     if system.control_plane.ipv4_access_groups is arista.avd.defined %}
-{%         set with_vrf_non_default = system.control_plane.ipv4_access_groups | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort | arista.avd.natural_sort('vrf') %}
-{%         set without_vrf = system.control_plane.ipv4_access_groups | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort %}
-{%         set with_vrf_default = system.control_plane.ipv4_access_groups | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort %}
+{%         set with_vrf_non_default = system.control_plane.ipv4_access_groups | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort(sort_key="acl_name") | arista.avd.natural_sort(sort_key='vrf') %}
+{%         set without_vrf = system.control_plane.ipv4_access_groups | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort(sort_key="acl_name") %}
+{%         set with_vrf_default = system.control_plane.ipv4_access_groups | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort(sort_key="acl_name") %}
 {%         set sorted_ipv4_access_groups =  without_vrf | list + with_vrf_default | list + with_vrf_non_default | list %}
 {%     endif %}
 {%     for acl_set in sorted_ipv4_access_groups | arista.avd.default([]) %}
@@ -41,9 +41,9 @@ system control-plane
    ipv6 access-group ingress default {{ system.control_plane.ipv6_access_group_ingress_default }}
 {%     endif %}
 {%     if system.control_plane.ipv6_access_groups is arista.avd.defined %}
-{%         set with_vrf_non_default = system.control_plane.ipv6_access_groups | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort | arista.avd.natural_sort('vrf') %}
-{%         set without_vrf = system.control_plane.ipv6_access_groups | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort %}
-{%         set with_vrf_default = system.control_plane.ipv6_access_groups | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort %}
+{%         set with_vrf_non_default = system.control_plane.ipv6_access_groups | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort(sort_key="acl_name") | arista.avd.natural_sort(sort_key='vrf') %}
+{%         set without_vrf = system.control_plane.ipv6_access_groups | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort(sort_key="acl_name") %}
+{%         set with_vrf_default = system.control_plane.ipv6_access_groups | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort(sort_key="acl_name") %}
 {%         set sorted_ipv6_access_groups =  without_vrf | list + with_vrf_default | list + with_vrf_non_default | list %}
 {%     endif %}
 {%     for acl_set in sorted_ipv6_access_groups | arista.avd.default([]) %}

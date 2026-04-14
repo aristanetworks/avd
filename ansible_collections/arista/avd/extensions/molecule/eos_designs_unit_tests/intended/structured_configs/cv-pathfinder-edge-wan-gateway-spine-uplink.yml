@@ -351,7 +351,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: EVPN-OVERLAY-PEERS
     metadata:
@@ -403,21 +403,21 @@ router_bgp:
         enable: true
         inter_domain: true
     peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     - name: WAN-OVERLAY-PEERS
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
       domain_remote: true
       encapsulation: path-selection
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: WAN-OVERLAY-PEERS
-      activate: false
     - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: WAN-OVERLAY-PEERS
       activate: false
   address_family_ipv4_sr_te:
     peer_groups:
@@ -561,16 +561,24 @@ vrfs:
   ip_routing: false
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenants:
+    - TenantA
 - name: VRF-NO-WAN
   ip_routing: true
-  tenant: TenantD
+  metadata:
+    tenants:
+    - TenantD
 - name: VRF-NO-WAN-NO-AF
   ip_routing: true
-  tenant: TenantD
+  metadata:
+    tenants:
+    - TenantD
 - name: WAN-VRF-NO-AF
   ip_routing: true
-  tenant: TenantD
+  metadata:
+    tenants:
+    - TenantD
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-edge-wan-gateway-spine-uplink_VTEP

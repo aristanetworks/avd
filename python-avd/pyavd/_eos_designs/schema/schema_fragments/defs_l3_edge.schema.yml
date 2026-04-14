@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -30,6 +30,18 @@ $defs:
               default: 31
               min: 8
               max: 31
+            ipv6_pool:
+              type: str
+              description: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+              format: ipv6_pool
+            ipv6_prefix_size:
+              type: int
+              convert_types:
+                - str
+              description: IPv6 prefix size.
+              default: 127
+              min: 32
+              max: 127
       p2p_links_profiles:
         type: list
         primary_key: name

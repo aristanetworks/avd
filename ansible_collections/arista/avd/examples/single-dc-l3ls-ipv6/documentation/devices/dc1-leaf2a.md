@@ -66,9 +66,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -139,9 +139,9 @@ ntp server vrf MGMT 0.pool.ntp.org prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -170,14 +170,14 @@ management api http-commands
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
 | admin | 15 | network-admin | False | - |
-| ansible | 15 | network-admin | False | - |
+| arista | 15 | network-admin | False | - |
 
 #### Local Users Device Configuration
 
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-username ansible privilege 15 role network-admin secret sha512 <removed>
+username arista privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ### Enable Password
@@ -256,7 +256,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -354,10 +354,10 @@ vlan 4094
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 2001:db8:2:4::2/64 | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 2001:db8:2:5::2/64 | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 2001:db8:2:4::2/64 | default | 9214 | False | - | - | - | - | - | - | - |
+| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 2001:db8:2:5::2/64 | default | 9214 | False | - | - | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -366,14 +366,14 @@ vlan 4094
 interface Ethernet1
    description P2P_dc1-spine1_Ethernet3
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ipv6 address 2001:db8:2:4::2/64
 !
 interface Ethernet2
    description P2P_dc1-spine2_Ethernet3
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ipv6 address 2001:db8:2:5::2/64
 !
@@ -405,7 +405,7 @@ interface Ethernet8
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_dc1-leaf2b_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel5 | SERVER_dc1-leaf2-server1 | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
 | Port-Channel8 | L2_dc1-leaf2c_Port-Channel1 | trunk | 11-12,21-22,31-32,3401-3402 | - | - | - | - | 8 | - |
@@ -456,8 +456,8 @@ interface Port-Channel8
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | 2001:db8:1:3::1/64 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 2001:db8:5:3::1/64 |
 | Loopback10 | DIAG_VRF_VRF10 | VRF10 | - |
@@ -501,48 +501,48 @@ interface Loopback12
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan11 | VRF10_VLAN11 | VRF10 | - | False |
 | Vlan12 | VRF10_VLAN12 | VRF10 | - | False |
 | Vlan21 | VRF11_VLAN21 | VRF11 | - | False |
 | Vlan22 | VRF11_VLAN22 | VRF11 | - | False |
 | Vlan31 | VRF12_VLAN31 | VRF12 | - | False |
 | Vlan32 | VRF12_VLAN32 | VRF12 | - | False |
-| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 1500 | False |
-| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 1500 | False |
-| Vlan3011 | MLAG_L3_VRF_VRF12 | VRF12 | 1500 | False |
-| Vlan4093 | MLAG_L3 | default | 1500 | False |
-| Vlan4094 | MLAG | default | 1500 | False |
+| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 9214 | False |
+| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 9214 | False |
+| Vlan3011 | MLAG_L3_VRF_VRF12 | VRF12 | 9214 | False |
+| Vlan4093 | MLAG_L3 | default | 9214 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan11 |  VRF10  |  -  |  10.10.11.1/24  |  -  |  -  |  -  |
-| Vlan12 |  VRF10  |  -  |  10.10.12.1/24  |  -  |  -  |  -  |
-| Vlan21 |  VRF11  |  -  |  -  |  -  |  -  |  -  |
-| Vlan22 |  VRF11  |  -  |  10.10.22.1/24  |  -  |  -  |  -  |
-| Vlan31 |  VRF12  |  -  |  -  |  -  |  -  |  -  |
-| Vlan32 |  VRF12  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3009 |  VRF10  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3010 |  VRF11  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3011 |  VRF12  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  -  |  -  |  -  |  -  |  -  |
+| Vlan11 | VRF10 | - | 10.10.11.1/24 | - | - | - |
+| Vlan12 | VRF10 | - | 10.10.12.1/24 | - | - | - |
+| Vlan21 | VRF11 | - | - | - | - | - |
+| Vlan22 | VRF11 | - | 10.10.22.1/24 | - | - | - |
+| Vlan31 | VRF12 | - | - | - | - | - |
+| Vlan32 | VRF12 | - | - | - | - | - |
+| Vlan3009 | VRF10 | - | - | - | - | - |
+| Vlan3010 | VRF11 | - | - | - | - | - |
+| Vlan3011 | VRF12 | - | - | - | - | - |
+| Vlan4093 | default | - | - | - | - | - |
+| Vlan4094 | default | - | - | - | - | - |
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan21 | VRF11 | - | 2001:DB8:21::1/48 | - | - | - | - | - | - |
-| Vlan31 | VRF12 | - | 2001:DB8:31::1/48 | - | - | - | - | - | - |
-| Vlan32 | VRF12 | - | 2001:DB8:32::1/48 | - | - | - | - | - | - |
-| Vlan3009 | VRF10 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - |
-| Vlan3010 | VRF11 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - |
-| Vlan3011 | VRF12 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - |
-| Vlan4093 | default | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - |
-| Vlan4094 | default | 2001:db8:3:2::1/64 | - | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Vlan21 | VRF11 | - | 2001:DB8:21::1/48 | - | - | - | - | - | - | - | - |
+| Vlan31 | VRF12 | - | 2001:DB8:31::1/48 | - | - | - | - | - | - | - | - |
+| Vlan32 | VRF12 | - | 2001:DB8:32::1/48 | - | - | - | - | - | - | - | - |
+| Vlan3009 | VRF10 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
+| Vlan3010 | VRF11 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
+| Vlan3011 | VRF12 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
+| Vlan4093 | default | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
+| Vlan4094 | default | 2001:db8:3:2::1/64 | - | - | - | - | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -590,34 +590,34 @@ interface Vlan32
 interface Vlan3009
    description MLAG_L3_VRF_VRF10
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF10
    ipv6 address 2001:db8:4:2::1/64
 !
 interface Vlan3010
    description MLAG_L3_VRF_VRF11
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF11
    ipv6 address 2001:db8:4:2::1/64
 !
 interface Vlan3011
    description MLAG_L3_VRF_VRF12
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF12
    ipv6 address 2001:db8:4:2::1/64
 !
 interface Vlan4093
    description MLAG_L3
    no shutdown
-   mtu 1500
+   mtu 9214
    ipv6 address 2001:db8:4:2::1/64
 !
 interface Vlan4094
    description MLAG
    no shutdown
-   mtu 1500
+   mtu 9214
    no autostate
    ipv6 address 2001:db8:3:2::1/64
 ```
@@ -794,7 +794,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv6 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### MLAG-IPv6-UNDERLAY-PEER
 
@@ -804,7 +804,7 @@ ASN Notation: asplain
 | Remote AS | 65102 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -866,7 +866,7 @@ router bgp 65102
    neighbor IPv6-UNDERLAY-PEERS peer group
    neighbor IPv6-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv6-UNDERLAY-PEERS send-community
-   neighbor IPv6-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv6-UNDERLAY-PEERS maximum-routes 256000
    neighbor MLAG-IPv6-UNDERLAY-PEER peer group
    neighbor MLAG-IPv6-UNDERLAY-PEER remote-as 65102
    neighbor MLAG-IPv6-UNDERLAY-PEER next-hop-self
@@ -874,7 +874,7 @@ router bgp 65102
    neighbor MLAG-IPv6-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv6-UNDERLAY-PEER password 7 <removed>
    neighbor MLAG-IPv6-UNDERLAY-PEER send-community
-   neighbor MLAG-IPv6-UNDERLAY-PEER maximum-routes 12000
+   neighbor MLAG-IPv6-UNDERLAY-PEER maximum-routes 256000
    neighbor 2001:db8:0:1::1 peer group EVPN-OVERLAY-PEERS
    neighbor 2001:db8:0:1::1 remote-as 65100
    neighbor 2001:db8:0:1::1 description dc1-spine1_Loopback0

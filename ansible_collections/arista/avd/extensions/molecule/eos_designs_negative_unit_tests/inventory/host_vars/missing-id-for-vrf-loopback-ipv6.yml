@@ -1,0 +1,29 @@
+---
+underlay_routing_protocol: none
+overlay_routing_protocol: none
+
+node_type_keys:
+  - key: core_router
+    type: core_router
+    network_services:
+      l3: true
+# Nodes
+type: core_router
+core_router:
+  nodes:
+    - name: missing-id-for-vrf-loopback-ipv6
+      loopback_ipv4_pool: 192.168.42.0/24
+      loopback_ipv4_address: 192.168.42.42
+      filter:
+        always_include_vrfs_in_tenants: ["TEST"]
+
+tenants:
+  - name: TEST
+    vrfs:
+      - name: TEST
+        vtep_diagnostic:
+          loopback: 666
+          loopback_ipv6_range: dead:beef:cafe::/64
+
+expected_error_message: |-
+  'id' is not set on 'missing-id-for-vrf-loopback-ipv6' to get IPv6 address for a vrf loopback interface

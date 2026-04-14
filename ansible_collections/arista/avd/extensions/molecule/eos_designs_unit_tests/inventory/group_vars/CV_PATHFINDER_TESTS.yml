@@ -173,6 +173,7 @@ wan_router:
         - name: cv-pathfinder-edge1
           id: 2
           uplink_switch_interfaces: [Ethernet2]
+          kernel_ecmp_cli: true
           l3_interfaces:
             # Testing on sub-interface
             - name: Ethernet1/49.3
@@ -294,18 +295,18 @@ wan_router:
 
     # SITE_HA_ENABLED
     # Because HA is enabled, this allow to test that MPLS-ONLY, present on
-    # cv-pathfinder-edge2B (because of Colt) is being configured on cv-pathfinder-edge2A
+    # cv-pathfinder-edge2b (because of Colt) is being configured on cv-pathfinder-edge2a
     # with only LAN_HA path-group.
     - group: Site423
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site423
       uplink_type: p2p-vrfs
-      uplink_switches: [site-ha-enabled-leaf2A, site-ha-enabled-leaf2B]
+      uplink_switches: [site-ha-enabled-leaf2a, site-ha-enabled-leaf2b]
       uplink_interfaces: [Ethernet52, Ethernet53]
       wan_ha:
         enabled: true # TODO AVD4.8.0: Remove once WAN HA is GA.
       nodes:
-        - name: cv-pathfinder-edge2A
+        - name: cv-pathfinder-edge2a
           id: 2
           l3_interfaces:
             - name: Ethernet1
@@ -314,7 +315,7 @@ wan_router:
               dhcp_accept_default_route: true
               ip_address: dhcp
           uplink_switch_interfaces: [Ethernet1, Ethernet1]
-        - name: cv-pathfinder-edge2B
+        - name: cv-pathfinder-edge2b
           id: 3
           l3_interfaces:
             - name: Ethernet2
@@ -339,7 +340,7 @@ wan_router:
         enabled: true # TODO AVD4.8.0: Remove once WAN HA is GA.
         ipsec: false
       nodes:
-        - name: cv-pathfinder-transit1A
+        - name: cv-pathfinder-transit1a
           cv_pathfinder_region: AVD_Land_West
           cv_pathfinder_site: Site422
           id: 1
@@ -358,7 +359,7 @@ wan_router:
               cv_pathfinder_internet_exit:
                 policies:
                   - name: DIRECT-EXIT-POLICY-2
-        - name: cv-pathfinder-transit1B
+        - name: cv-pathfinder-transit1b
           cv_pathfinder_region: AVD_Land_West
           cv_pathfinder_site: Site422
           id: 2
@@ -391,7 +392,7 @@ wan_router:
           enabled: true
         use_port_channel_for_direct_ha: false
       nodes:
-        - name: cv-pathfinder-edge3A
+        - name: cv-pathfinder-edge3a
           id: 6
           l3_interfaces:
             - name: Ethernet1
@@ -399,7 +400,7 @@ wan_router:
               wan_circuit_id: 404-01
               dhcp_accept_default_route: true
               ip_address: dhcp
-        - name: cv-pathfinder-edge3B
+        - name: cv-pathfinder-edge3b
           id: 7
           l3_interfaces:
             - name: Ethernet2
@@ -426,14 +427,14 @@ wan_router:
         # Testing overwriting port-channel ID
         port_channel_id: 666
       nodes:
-        - name: cv-pathfinder-edge4A
+        - name: cv-pathfinder-edge4a
           id: 8
           l3_interfaces:
             - name: Ethernet1.42
               wan_carrier: Comcast
               dhcp_accept_default_route: true
               ip_address: dhcp
-        - name: cv-pathfinder-edge4B
+        - name: cv-pathfinder-edge4b
           cv_pathfinder_region: AVD_Land_West
           id: 9
           l3_interfaces:
@@ -454,9 +455,9 @@ l3leaf:
   nodes:
     - name: site-ha-enabled-leaf1
       id: 1
-    - name: site-ha-enabled-leaf2A
+    - name: site-ha-enabled-leaf2a
       id: 2
-    - name: site-ha-enabled-leaf2B
+    - name: site-ha-enabled-leaf2b
       id: 3
     - name: site-ha-disabled-leaf
       id: 4

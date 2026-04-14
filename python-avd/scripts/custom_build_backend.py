@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from pathlib import Path
@@ -58,23 +58,21 @@ def _insert_version() -> None:
 
 
 def get_requires_for_build_wheel(config_settings: dict | None = None) -> list[str]:
-    print("Fetch version from ansible.avd ansible collection and insert into __init__.py")
+    print("Fetch version from arista.avd ansible collection and insert into __init__.py")
     _insert_version()
-
-    print("Running 'make dep' to generate compiled Jinja2 templates and schemas pickle files.")
-    with Popen("make dep", shell=True) as make_process:  # noqa: S602,S607
-        if make_process.wait() != 0:
-            msg = "Something went wrong during 'make dep'"
-            raise RuntimeError(msg)
+    _run_make_dep()
 
     return _orig.get_requires_for_build_wheel(config_settings)
 
 
 def get_requires_for_build_editable(config_settings: dict | None = None) -> list[str]:
-    print("Running 'make dep' to generate compiled Jinja2 templates and schemas pickle files.")
-    with Popen("make dep", shell=True) as make_process:  # noqa: S602,S607
-        if make_process.wait() != 0:
-            msg = "Something went wrong during 'make dep'"
-            raise RuntimeError(msg)
-
+    _run_make_dep()
     return _orig.get_requires_for_build_editable(config_settings)
+
+
+def _run_make_dep() -> None:
+    print("Running 'make dep' to generate compiled Jinja2 templates and schemas pickle files.")
+    with Popen("make dep", shell=True, cwd=Path(__file__).parents[1]) as make_process:  # noqa: S602,S607
+        if (return_code := make_process.wait()) != 0:
+            msg = f"Something went wrong during 'make dep': Return code {return_code} STDERR: {make_process.stderr} STDOUT: {make_process.stdout}"
+            raise RuntimeError(msg)
