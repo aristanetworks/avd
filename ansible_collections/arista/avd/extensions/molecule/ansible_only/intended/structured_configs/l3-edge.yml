@@ -27,7 +27,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet6
-  description: TEST_CUSTOM_PREFIX_L3_EDGE_PEER6_Ethernet6
+  description: TEST_CUSTOM_PREFIX_Ethernet6_L3_EDGE_PEER6_Ethernet6
   shutdown: false
   channel_group:
     id: 6

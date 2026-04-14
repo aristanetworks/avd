@@ -14,6 +14,7 @@ Serial Number: DEADBEEFC0FFEW
   - [IP Name Servers](#ip-name-servers)
   - [IP Name Server Groups](#ip-name-server-groups)
   - [Domain Lookup](#domain-lookup)
+  - [IP Hosts](#ip-hosts)
   - [Clock Settings](#clock-settings)
   - [NTP](#ntp)
   - [PTP](#ptp)
@@ -671,6 +672,26 @@ ip name-server group mynameserver2
 ```eos
 ip domain lookup source-interface Loopback0
 ip domain lookup vrf mgt source-interface Management0
+```
+
+### IP Hosts
+
+#### IP Host Summary
+
+| Host | IPv4 Address |
+| ---- | ------------ |
+| TEST1 | 10.1.1.1 |
+| host-with-multiple-ips | 1.1.1.1<br>2.2.2.2<br>4.4.4.4 |
+| host-with-same-ip | 10.1.1.1 |
+| small-host | 1.1.1.1 |
+
+#### IP Host Device Configuration
+
+```eos
+ip host TEST1 10.1.1.1
+ip host host-with-multiple-ips 1.1.1.1 2.2.2.2 4.4.4.4
+ip host host-with-same-ip 10.1.1.1
+ip host small-host 1.1.1.1
 ```
 
 ### Clock Settings
@@ -1646,23 +1667,25 @@ ip radius vrf abc source-interface Loopback10
 
 #### AAA Server Groups Summary
 
-| Server Group Name | Type | VRF | IP address |
-| ----------------- | ---- | --- | ---------- |
-| TACACS | tacacs+ | mgt | 10.10.11.157 |
-| TACACS | tacacs+ | default | 10.10.11.249 |
-| TACACS1 | tacacs+ | mgt | 10.10.10.157 |
-| TACACS1 | tacacs+ | default | 10.10.10.249 |
-| TACACS2 | tacacs+ | mgt | 192.168.10.157 |
-| TACACS2 | tacacs+ | default | 10.10.10.248 |
-| LDAP1 | ldap | mgt | 192.168.10.157 |
-| LDAP1 | ldap | default | 10.10.10.248 |
-| LADP2 | ldap | mgt | 10.10.10.157 |
-| LADP2 | ldap | default | 10.10.10.249 |
-| RADIUS1 | radius | mgt | 192.168.10.157 |
-| RADIUS1 | radius | default | 10.10.10.248 |
-| RADIUS2 | radius | mgt | 10.10.10.157 |
-| RADIUS2 | radius | default | 10.10.10.249 |
-| RADIUS3 | radius | - | - |
+| Server Group Name | Type | VRF | IP address | TLS Enabled | TLS Port |
+| ----------------- | ---- | --- | ---------- | ----------- | -------- |
+| TACACS | tacacs+ | mgt | 10.10.11.157 | - | - |
+| TACACS | tacacs+ | default | 10.10.11.249 | - | - |
+| TACACS1 | tacacs+ | mgt | 10.10.10.157 | - | - |
+| TACACS1 | tacacs+ | default | 10.10.10.249 | - | - |
+| TACACS2 | tacacs+ | mgt | 192.168.10.157 | - | - |
+| TACACS2 | tacacs+ | default | 10.10.10.248 | - | - |
+| LDAP1 | ldap | mgt | 192.168.10.157 | - | - |
+| LDAP1 | ldap | default | 10.10.10.248 | - | - |
+| LADP2 | ldap | mgt | 10.10.10.157 | - | - |
+| LADP2 | ldap | default | 10.10.10.249 | - | - |
+| RADIUS1 | radius | mgt | 192.168.10.157 | - | - |
+| RADIUS1 | radius | default | 10.10.10.248 | - | - |
+| RADIUS1 | radius | mgt | 11.11.11.123 | True | 2086 |
+| RADIUS2 | radius | mgt | 10.10.10.157 | - | - |
+| RADIUS2 | radius | default | 10.10.10.249 | - | - |
+| RADIUS2 | radius | default | 12.12.12.145 | True | - |
+| RADIUS3 | radius | - | - | - | - |
 
 #### AAA Server Groups Device Configuration
 
@@ -1679,10 +1702,12 @@ aaa group server ldap LDAP1
 aaa group server radius RADIUS1
    server 192.168.10.157 vrf mgt
    server 10.10.10.248
+   server 11.11.11.123 vrf mgt tls port 2086
 !
 aaa group server radius RADIUS2
    server 10.10.10.157 vrf mgt
    server 10.10.10.249
+   server 12.12.12.145 tls
 !
 aaa group server radius RADIUS3
 !
@@ -8829,6 +8854,7 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | Settings | Value |
 | -------- | ----- |
 | IPv6 Address-family Enabled | True |
+| Multi-topology Enabled | True |
 | TI-LFA Mode | node-protection |
 | TI-LFA Level | level-1 |
 | TI-LFA SRLG Enabled | True |
@@ -8883,6 +8909,7 @@ router isis EVPN_UNDERLAY
       fast-reroute ti-lfa srlg strict
    !
    address-family ipv6 unicast
+      multi-topology
       fast-reroute ti-lfa mode node-protection level-1
       fast-reroute ti-lfa srlg strict
    !
@@ -8890,8 +8917,6 @@ router isis EVPN_UNDERLAY
       no shutdown
       prefix-segment 155.2.1.1/32 index 211
       prefix-segment 2001:cafe:155::/64 index 6211
-   address-family ipv6 unicast
-     multi-topology
    traffic-engineering
      no shutdown
      is-type level-2
@@ -13627,6 +13652,15 @@ mac security
 
 ### Traffic Policies information
 
+#### Traffic Policies VRF Interfaces
+
+| VRF | CPU Traffic Policy | Management Ports | Physical Interfaces Traffic Policy |
+| --- | ------------------ | ---------------- | ---------------------------------- |
+| VRF1 | TP1 | True | TP1 |
+| VRF2 | TP2 | - | TP2 |
+| VRF3 | TP3 | - | - |
+| VRF4 | - | - | TP4 |
+
 #### IPv4 Field Sets
 
 | Field Set Name | IPv4 Prefixes | Excluded Prefixes |
@@ -13708,6 +13742,21 @@ Counters: test
 ```eos
 !
 traffic-policies
+   vrf VRF1
+      cpu traffic-policy TP1 fallback traffic-policy none
+         enforcement management
+      traffic-policy input TP1 physical
+   !
+   vrf VRF2
+      cpu traffic-policy TP2 fallback traffic-policy none
+      traffic-policy input TP2 physical
+   !
+   vrf VRF3
+      cpu traffic-policy TP3 fallback traffic-policy none
+   !
+   vrf VRF4
+      traffic-policy input TP4 physical
+   !
    field-set l4-port SERVICE-DEMO
       10,20,80,440-450
    !
