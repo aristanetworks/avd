@@ -232,7 +232,7 @@ The `ansible-avd-examples/isis-ldp-ipvpn/group_vars/WAN1.yml` file defines setti
 
 ```yaml title="WAN1.yml"
 --8<--
-ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:1:27
+ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:1:33
 --8<--
 ```
 
@@ -251,7 +251,7 @@ The following section covers the pe routers. Significantly more settings need to
 
 ```yaml title="WAN1.yml"
 --8<--
-ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:35:59
+ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:35:62
 --8<--
 ```
 
@@ -267,7 +267,7 @@ Finally, more of the same, but this time for the rr routers:
 
 ```yaml title="WAN1.yml"
 --8<--
-ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:62:78
+ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:64:80
 --8<--
 ```
 
@@ -279,7 +279,7 @@ A free-standing list of `core_interfaces` dictionaries and their associated prof
 
 ```yaml title="WAN1.yml"
 --8<--
-ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:83:103
+ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:86:156
 --8<--
 ```
 
@@ -311,7 +311,7 @@ ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/NETWORK_SERVIC
 
 This defines `C1_VRF1`, with a VRF ID of `10`, enables OSPF routing for PE-CE connections inside the VRF on selected pe routers and defines routed interfaces that are used to connect to the CE devices/aggregation nodes. Each interface has an IP address assigned, a description, and has OSPF routing enabled.
 
-The lists of interfaces, nodes, and ip_addresses used in the above definition of the l3 interface are read by the Ansible logic as follows: interface `Ethernet3.10` belongs to the node `pe1` and has the IP address of `10.0.1.1/29`. In other words, the list indices are used to form the basic parameters for one interface.
+The lists of interfaces, nodes, and IP addresses used in the above definition of the l3 interface are read by the Ansible logic as follows: interface `Ethernet3.10` belongs to the node `pe1` and has the IP address of `10.0.1.1/29`. In other words, the list indices are used to form the basic parameters for one interface.
 
 ## The playbook
 

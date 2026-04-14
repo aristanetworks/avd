@@ -13,12 +13,9 @@ bgp_distance: # (3)!
 p:
   # Definition of default values that will be configured to all nodes defined in this group
   defaults:
-    # Set the relevant platform as each platform has different default values in Ansible AVD
-    platform: cEOSLab
-    # Pool of IPv4 addresses to configure interface Loopback0 used for Router ID
-    loopback_ipv4_pool: 10.255.0.0/27
-    # ISIS NET system id prefix
-    isis_system_id_prefix: '0000.0000'
+    platform: cEOSLab # (4)!
+    loopback_ipv4_pool: 10.255.0.0/27 # (5)!
+    isis_system_id_prefix: '0000.0000' # (6)!
   # Definition of nodes contained in this group.
   # Specific configuration of device must take place under the node definition. Each node inherits all values defined under 'defaults'
   nodes: # (7)!
@@ -39,14 +36,14 @@ p:
 pe:
   defaults:
     # Set the relevant platform as each platform has different default values in Ansible AVD
-    platform: cEOSLab
+    platform: cEOSLab # (1)!
     # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
-    loopback_ipv4_pool: 10.255.1.0/27
-    virtual_router_mac_address: 00:1c:73:00:dc:00
-    mpls_route_reflectors: [rr1, rr2]
+    loopback_ipv4_pool: 10.255.1.0/27 # (2)!
+    virtual_router_mac_address: 00:1c:73:00:dc:00 # (3)!
+    mpls_route_reflectors: [rr1, rr2] # (4)!
     # ISIS NET system id prefix
-    isis_system_id_prefix: '0000.0001'
-    spanning_tree_mode: none
+    isis_system_id_prefix: '0000.0001' # (5)!
+    spanning_tree_mode: none # (6)!
 
   node_groups: # (7)!
     - group: WAN1-PE1-2
@@ -92,7 +89,6 @@ core_interfaces:
       ipv4_pool: 10.255.3.0/24
   p2p_links_profiles:
     - name: core_profile # (3)!
-      mtu: 1500
       isis_metric: 50
       ip_pool: core_pool
       isis_circuit_type: level-2
