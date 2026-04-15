@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from functools import cached_property
 from ipaddress import ip_network
 from typing import cast
 
@@ -33,11 +32,11 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             if self.shared_utils.inband_mgmt_vrf is None and self.shared_utils.underlay_bgp:
                 self._enable_router_bgp_redistribute_attached_host()
                 if self.inputs.underlay_filter_redistribute_connected:
-                    if self._inband_mgmt_ipv6_parent():
+                    if any(subnet["ipv6"] for subnet in self.shared_utils.inband_management_parent_vlans.values()):
                         if self.shared_utils.overlay_routing_protocol != "none":
                             self._set_route_map_conn_2_bgp_sequence_60()
                         self._set_l2leaf_inband_mgmt_ipv6_prefix_lists()
-                    if self.shared_utils.overlay_routing_protocol != "none" and self._inband_mgmt_ipv4_parent():
+                    if self.shared_utils.overlay_routing_protocol != "none" and any(subnet["ipv4"] for subnet in self.shared_utils.inband_management_parent_vlans.values()):
                         self._set_route_map_conn_2_bgp_sequence_20()
                         self._set_l2leaf_inband_mgmt_prefix_lists()
 
@@ -157,15 +156,3 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                 svi.ipv6_attached_host_route_export._update(enabled=True, distance=19)
 
         return svi
-
-    def _inband_mgmt_ipv6_parent(self) -> bool:
-        for subnet in self.shared_utils.inband_management_parent_vlans.values():
-            if subnet["ipv6"]:
-                return True
-        return False
-
-    def _inband_mgmt_ipv4_parent(self) -> bool:
-        for subnet in self.shared_utils.inband_management_parent_vlans.values():
-            if subnet["ipv4"]:
-                return True
-        return False
