@@ -36,7 +36,9 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                         if self.shared_utils.overlay_routing_protocol != "none":
                             self._set_route_map_conn_2_bgp_sequence_60()
                         self._set_l2leaf_inband_mgmt_ipv6_prefix_lists()
-                    if self.shared_utils.overlay_routing_protocol != "none" and any(subnet["ipv4"] for subnet in self.shared_utils.inband_management_parent_vlans.values()):
+                    if self.shared_utils.overlay_routing_protocol != "none" and any(
+                        subnet["ipv4"] for subnet in self.shared_utils.inband_management_parent_vlans.values()
+                    ):
                         self._set_route_map_conn_2_bgp_sequence_20()
                         self._set_l2leaf_inband_mgmt_prefix_lists()
 
