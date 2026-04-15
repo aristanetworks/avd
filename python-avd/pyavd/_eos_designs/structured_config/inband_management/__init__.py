@@ -29,12 +29,11 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         if self.shared_utils.inband_management_parent_vlans:
             self._set_ip_virtual_router_mac_address()
             self._set_inband_mgmt_vrf()
-            if self.shared_utils.inband_mgmt_vrf is None and self.shared_utils.underlay_bgp:
-                self._enable_router_bgp_redistribute_attached_host()
             for index, (vlan_id, vlan) in enumerate(self.shared_utils.inband_management_parent_vlans.items(), start=1):
                 self._set_parent_vlans(vlan_id)
                 self._set_parent_vlan_interface(vlan, vlan_id)
                 if self.shared_utils.inband_mgmt_vrf is None and self.shared_utils.underlay_bgp:
+                    self._enable_router_bgp_redistribute_attached_host()
                     if self.inputs.underlay_filter_redistribute_connected:
                         if vlan["ipv6"]:
                             if self.shared_utils.overlay_routing_protocol != "none":
@@ -99,6 +98,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             raise AristaAvdInvalidInputsError(msg)
         self.structured_config.ip_virtual_router_mac_address = self.shared_utils.node_config.virtual_router_mac_address.lower()
 
+    @run_once_method
     def _enable_router_bgp_redistribute_attached_host(self) -> None:
         self.structured_config.router_bgp.redistribute.attached_host.enabled = True
 
