@@ -23,7 +23,7 @@ l3leaf:
       pim:
         ipv4:
           sparse_mode: true
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
     spanning_tree_mode: mstp
@@ -35,9 +35,9 @@ l3leaf:
         - name: uplink-mlag-structured-config-l3leaf1a
           id: 1
           mgmt_ip: 192.168.200.105/24
-          uplink_switch_interfaces: [ Ethernet1 ]
+          uplink_switch_interfaces: [Ethernet1]
           uplink_bfd: true
         - name: uplink-mlag-structured-config-l3leaf1b
           id: 2
           mgmt_ip: 192.168.200.107/24
-          uplink_switch_interfaces: [ Ethernet2 ]
+          uplink_switch_interfaces: [Ethernet2]
