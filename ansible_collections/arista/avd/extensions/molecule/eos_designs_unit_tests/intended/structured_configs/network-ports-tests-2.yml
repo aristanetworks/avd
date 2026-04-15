@@ -15,7 +15,7 @@ ethernet_interfaces:
     peer_interface: Ethernet10/1
     peer_type: mlag_peer
 - name: Ethernet1
-  description: AP1 with port_channel_Po1
+  description: Ethernet1-AP1 with port_channel_Po1
   shutdown: false
   channel_group:
     id: 1
@@ -26,7 +26,7 @@ ethernet_interfaces:
     peer_key: network_ports
     port_profile: ap_with_port_channel
 - name: Ethernet2
-  description: AP1 with port_channel_Po2
+  description: Ethernet2-AP1 with port_channel_Po2
   shutdown: false
   channel_group:
     id: 2
@@ -945,7 +945,7 @@ port_channel_interfaces:
     mode: access
     access_vlan: 101
 - name: Port-Channel42
-  description: Checking port-channels
+  description: Port-Channel42-Checking port-channels-42
   shutdown: false
   mlag: 42
   switchport:

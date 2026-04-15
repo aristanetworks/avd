@@ -466,10 +466,15 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
     avd_catalogs_filters = get(PLUGIN_ARGS, "avd_catalogs.filters", default=[])
 
     for device in devices:
-        anta_device = build_anta_device(device)
-        inventory.add_device(anta_device)
         # We generate the device's AVD catalog only if structured configs are loaded
         if STRUCTURED_CONFIGS is not None and FABRIC_DATA is not None:
+            structured_config = STRUCTURED_CONFIGS[device]
+            # Skip the device if eAPI is not enabled on the device.
+            eapi_config = structured_config.get("management_api_http", {})
+            if not (eapi_config.get("enable_https") or eapi_config.get("enable_http")):
+                LOGGER.warning("<%s> Device eAPI is not enabled in the structured configuration - Skipping all tests", device)
+                continue
+
             settings = AVDCatalogGenerationSettings(
                 extra_fabric_validation=extra_fabric_validation,
                 output_dir=output_dir,
@@ -477,11 +482,14 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
             )
             catalog = get_device_test_catalog(
                 hostname=device,
-                structured_config=STRUCTURED_CONFIGS[device],
+                structured_config=structured_config,
                 fabric_data=FABRIC_DATA,
                 settings=settings,
             )
             catalogs.append(catalog)
+
+        anta_device = build_anta_device(device)
+        inventory.add_device(anta_device)
 
     catalog = AntaCatalog.merge_catalogs(catalogs)
 
