@@ -400,6 +400,10 @@ class MiscMixin(Protocol):
         if not (interface.peer_ipv6_address and interface.bgp):
             return
 
+        if bool(interface.wan_carrier):
+            msg = "IPv6 BGP is not supported for WAN interfaces."
+            raise AristaAvdInvalidInputsError(msg)
+
         neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
             ip_address=interface.peer_ipv6_address,
             remote_as=interface.bgp.peer_as,
