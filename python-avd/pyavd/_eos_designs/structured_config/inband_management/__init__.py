@@ -77,13 +77,13 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             vlan_interface.ipv6_addresses.append(ipv6_address)
 
     def _set_ipv4_default_route(self) -> None:
-        """Set default route with inband management gateway in inband mangement VRF."""
+        """Set default route with inband management gateway in inband management VRF."""
         self.structured_config.static_routes.append_new(
             prefix="0.0.0.0/0", next_hop=self.shared_utils.inband_mgmt_gateway, vrf=self.shared_utils.inband_mgmt_vrf
         )
 
     def _set_ipv6_default_route(self) -> None:
-        """Set default route with IPv6 inband management gateway in inband mangement VRF."""
+        """Set default route with IPv6 inband management gateway in inband management VRF."""
         self.structured_config.ipv6_static_routes.append_new(
             prefix="::/0", next_hop=self.shared_utils.inband_mgmt_ipv6_gateway, vrf=self.shared_utils.inband_mgmt_vrf
         )
