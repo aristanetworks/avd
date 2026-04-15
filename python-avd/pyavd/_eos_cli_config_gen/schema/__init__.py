@@ -1080,15 +1080,53 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class ServersItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"server": {"type": str}, "vrf": {"type": str}}
+            class Tls(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "port": {"type": int}}
+                enabled: bool
+                """Enable TLS to secure communication with the RADIUS group server."""
+                port: int | None
+                """
+                TCP port used for TLS-secured RADIUS communication. Overrides the default RadSec port (EOS default
+                is 2083).
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Tls.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable TLS to secure communication with the RADIUS group server.
+                            port:
+                               TCP port used for TLS-secured RADIUS communication. Overrides the default RadSec port (EOS default
+                               is 2083).
+
+                        """
+
+            _fields: ClassVar[dict] = {"server": {"type": str}, "vrf": {"type": str}, "tls": {"type": Tls}}
             server: str
             """Hostname or IP address."""
             vrf: str | None
             """VRF name."""
+            tls: Tls
+            """
+            TLS settings for the RADIUS group server. Only applicable when the parent server group type is
+            'radius'.
+
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, server: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, server: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined, tls: Tls | UndefinedType = Undefined
+                ) -> None:
                     """
                     ServersItem.
 
@@ -1098,6 +1136,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         server: Hostname or IP address.
                         vrf: VRF name.
+                        tls:
+                           TLS settings for the RADIUS group server. Only applicable when the parent server group type is
+                           'radius'.
+
+                           Subclass of AvdModel.
 
                     """
 
@@ -59674,12 +59717,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "enabled": {"type": bool},
                 "maximum_paths": {"type": int},
                 "bfd_all_interfaces": {"type": bool},
+                "multi_topology": {"type": bool},
                 "fast_reroute_ti_lfa": {"type": FastRerouteTiLfa},
             }
             enabled: bool
             maximum_paths: int | None
             bfd_all_interfaces: bool | None
             """Enable BFD on all interfaces."""
+            multi_topology: bool | None
+            """
+            Enable IS-IS multi-topology for the IPv6 address family.
+            Required for forming IPv6 adjacencies on
+            IS-IS interfaces that do not have an IPv4 address.
+            """
             fast_reroute_ti_lfa: FastRerouteTiLfa
             """Subclass of AvdModel."""
 
@@ -59691,6 +59741,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enabled: bool | UndefinedType = Undefined,
                     maximum_paths: int | None | UndefinedType = Undefined,
                     bfd_all_interfaces: bool | None | UndefinedType = Undefined,
+                    multi_topology: bool | None | UndefinedType = Undefined,
                     fast_reroute_ti_lfa: FastRerouteTiLfa | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -59703,6 +59754,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         enabled: enabled
                         maximum_paths: maximum_paths
                         bfd_all_interfaces: Enable BFD on all interfaces.
+                        multi_topology:
+                           Enable IS-IS multi-topology for the IPv6 address family.
+                           Required for forming IPv6 adjacencies on
+                           IS-IS interfaces that do not have an IPv4 address.
                         fast_reroute_ti_lfa: Subclass of AvdModel.
 
                     """
@@ -66517,6 +66572,96 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class TrafficPolicies(AvdModel):
         """Subclass of AvdModel."""
 
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Cpu(AvdModel):
+                """Subclass of AvdModel."""
+
+                class TrafficPolicy(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"name": {"type": str}, "enforcement_management": {"type": bool}}
+                    name: str
+                    """
+                    Traffic-policy name.
+                    Currently this is always configured with "fallback traffic-policy none".
+                    """
+                    enforcement_management: bool | None
+                    """Enforce CPU traffic-policy on management ports."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, name: str | UndefinedType = Undefined, enforcement_management: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            TrafficPolicy.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                name:
+                                   Traffic-policy name.
+                                   Currently this is always configured with "fallback traffic-policy none".
+                                enforcement_management: Enforce CPU traffic-policy on management ports.
+
+                            """
+
+                _fields: ClassVar[dict] = {"traffic_policy": {"type": TrafficPolicy}}
+                traffic_policy: TrafficPolicy
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, traffic_policy: TrafficPolicy | UndefinedType = Undefined) -> None:
+                        """
+                        Cpu.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            traffic_policy: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "cpu": {"type": Cpu}, "traffic_policy_input_physical": {"type": str}}
+            name: str
+            """VRF name."""
+            cpu: Cpu
+            """Subclass of AvdModel."""
+            traffic_policy_input_physical: str | None
+            """Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    cpu: Cpu | UndefinedType = Undefined,
+                    traffic_policy_input_physical: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF name.
+                        cpu: Subclass of AvdModel.
+                        traffic_policy_input_physical: Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
         class Options(AvdModel):
             """Subclass of AvdModel."""
 
@@ -67438,7 +67583,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Policies._item_type = PoliciesItem
 
-        _fields: ClassVar[dict] = {"options": {"type": Options}, "field_sets": {"type": FieldSets}, "policies": {"type": Policies}}
+        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}, "options": {"type": Options}, "field_sets": {"type": FieldSets}, "policies": {"type": Policies}}
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         options: Options
         """Subclass of AvdModel."""
         field_sets: FieldSets
@@ -67451,6 +67598,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
+                vrfs: Vrfs | UndefinedType = Undefined,
                 options: Options | UndefinedType = Undefined,
                 field_sets: FieldSets | UndefinedType = Undefined,
                 policies: Policies | UndefinedType = Undefined,
@@ -67462,6 +67610,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     options: Subclass of AvdModel.
                     field_sets: Subclass of AvdModel.
                     policies: Subclass of AvdIndexedList with `PoliciesItem` items. Primary key is `name` (`str`).
