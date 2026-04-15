@@ -15,7 +15,7 @@
 
 | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
 | :- | :- | :- | :- | :- |
-| 502 | 0 | 0 | 0 | 0 |
+| 482 | 0 | 0 | 0 | 0 |
 
 ### 🔌 Summary Totals Device Under Test <a id="summary-totals-device-under-test"></a>
 
@@ -38,7 +38,6 @@
 | **dc2-leaf1c** | 20 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf2a** | 28 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf2b** | 28 | 0 | 0 | 0 | 0 | - | - |
-| **dc2-leaf2c** | 20 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf3a.arista.com** | 28 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf3b.arista.com** | 28 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf3c** | 15 | 0 | 0 | 0 | 0 | - | - |
@@ -49,18 +48,18 @@
 | :- | :- | :- | :- | :- | :- |
 | **AVT** | 3 | 0 | 0 | 0 | 0 |
 | **BGP** | 14 | 0 | 0 | 0 | 0 |
-| **Configuration** | 38 | 0 | 0 | 0 | 0 |
-| **Connectivity** | 34 | 0 | 0 | 0 | 0 |
+| **Configuration** | 36 | 0 | 0 | 0 | 0 |
+| **Connectivity** | 33 | 0 | 0 | 0 | 0 |
 | **Hardware** | 42 | 0 | 0 | 0 | 0 |
-| **Interfaces** | 123 | 0 | 0 | 0 | 0 |
-| **Logging** | 19 | 0 | 0 | 0 | 0 |
+| **Interfaces** | 116 | 0 | 0 | 0 | 0 |
+| **Logging** | 18 | 0 | 0 | 0 | 0 |
 | **MLAG** | 27 | 0 | 0 | 0 | 0 |
 | **OSPF** | 12 | 0 | 0 | 0 | 0 |
 | **Path-Selection** | 3 | 0 | 0 | 0 | 0 |
-| **Routing** | 19 | 0 | 0 | 0 | 0 |
-| **Security** | 22 | 0 | 0 | 0 | 0 |
-| **STP** | 19 | 0 | 0 | 0 | 0 |
-| **System** | 114 | 0 | 0 | 0 | 0 |
+| **Routing** | 18 | 0 | 0 | 0 | 0 |
+| **Security** | 21 | 0 | 0 | 0 | 0 |
+| **STP** | 18 | 0 | 0 | 0 | 0 |
+| **System** | 108 | 0 | 0 | 0 | 0 |
 | **VXLAN** | 13 | 0 | 0 | 0 | 0 |
 
 ## 🧪 Test Results <a id="test-results"></a>
@@ -478,26 +477,6 @@
 | dc2-leaf2b | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
 | dc2-leaf2b | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc2-leaf2b | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | Unset | - |
-| dc2-leaf2c | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
-| dc2-leaf2c | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |
-| dc2-leaf2c | Connectivity | VerifyLLDPNeighbors | Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors. | Unset | - |
-| dc2-leaf2c | Interfaces | VerifyIllegalLACP | Verifies there are no illegal LACP packets in port channels. | Unset | - |
-| dc2-leaf2c | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | Unset | - |
-| dc2-leaf2c | Interfaces | VerifyInterfaceErrDisabled | Verifies there are no interfaces in the errdisabled state. | Unset | - |
-| dc2-leaf2c | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | Unset | - |
-| dc2-leaf2c | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | Unset | - |
-| dc2-leaf2c | Interfaces | VerifyInterfacesStatus | Verifies the operational states of specified interfaces to ensure they match expected configurations. | Unset | - |
-| dc2-leaf2c | Interfaces | VerifyPortChannels | Verifies there are no inactive ports in port channels. | Unset | - |
-| dc2-leaf2c | Logging | VerifyLoggingErrors | Verifies there are no syslog messages with a severity of ERRORS or higher. | Unset | - |
-| dc2-leaf2c | Routing | VerifyRoutingProtocolModel | Verifies the configured routing protocol model. | Unset | - |
-| dc2-leaf2c | Security | VerifyAPIHttpsSSL | Verifies if the eAPI has a valid SSL profile. | Unset | - |
-| dc2-leaf2c | STP | VerifySTPCounters | Verifies there is no errors in STP BPDU packets. | Unset | - |
-| dc2-leaf2c | System | VerifyAgentLogs | Verifies there are no agent crash reports. | Unset | - |
-| dc2-leaf2c | System | VerifyCoredump | Verifies there are no core dump files. | Unset | - |
-| dc2-leaf2c | System | VerifyFileSystemUtilization | Verifies that no partition is utilizing more than 75% of its disk space. | Unset | - |
-| dc2-leaf2c | System | VerifyMaintenance | Verifies that the device is not currently under or entering maintenance. | Unset | - |
-| dc2-leaf2c | System | VerifyMemoryUtilization | Verifies whether the memory utilization is below 75%. | Unset | - |
-| dc2-leaf2c | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc2-leaf3a.arista.com | BGP | VerifyBGPPeerSession | Verifies the session state of BGP peers. | Unset | - |
 | dc2-leaf3a.arista.com | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | Unset | - |
 | dc2-leaf3a.arista.com | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | Unset | - |

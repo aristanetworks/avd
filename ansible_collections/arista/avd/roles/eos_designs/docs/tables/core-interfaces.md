@@ -35,6 +35,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "core_interfaces.p2p_links_profiles.[].descriptions") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Interface descriptions. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].descriptions.[]") | String |  |  |  | Description or description template to be used on the ethernet interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br><br>The default description is set by `default_underlay_p2p_ethernet_description`.<br>By default the description is templated from the name and interface of the peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "core_interfaces.p2p_links_profiles.[].include_in_underlay_protocol") | Boolean |  | `True` |  | Add this interface to the underlay routing protocols.<br>This is currently not supported when IPv6 addresses are used. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_underlay_ospf_authentication</samp>](## "core_interfaces.p2p_links_profiles.[].use_underlay_ospf_authentication") | Boolean |  | `False` |  | Enable OSPF authentication on this P2P link when underlay is OSPF.<br>Requires `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled: true`.<br>When enabled, the message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "core_interfaces.p2p_links_profiles.[].isis_hello_padding") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "core_interfaces.p2p_links_profiles.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links_profiles.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> |  |
@@ -98,6 +99,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "core_interfaces.p2p_links.[].descriptions") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Interface descriptions. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].descriptions.[]") | String |  |  |  | Description or description template to be used on the ethernet interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br><br>The default description is set by `default_underlay_p2p_ethernet_description`.<br>By default the description is templated from the name and interface of the peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "core_interfaces.p2p_links.[].include_in_underlay_protocol") | Boolean |  | `True` |  | Add this interface to the underlay routing protocols.<br>This is currently not supported when IPv6 addresses are used. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_underlay_ospf_authentication</samp>](## "core_interfaces.p2p_links.[].use_underlay_ospf_authentication") | Boolean |  | `False` |  | Enable OSPF authentication on this P2P link when underlay is OSPF.<br>Requires `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled: true`.<br>When enabled, the message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "core_interfaces.p2p_links.[].isis_hello_padding") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "core_interfaces.p2p_links.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> |  |
@@ -235,6 +237,11 @@
           # Add this interface to the underlay routing protocols.
           # This is currently not supported when IPv6 addresses are used.
           include_in_underlay_protocol: <bool; default=True>
+
+          # Enable OSPF authentication on this P2P link when underlay is OSPF.
+          # Requires `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled: true`.
+          # When enabled, the message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+          use_underlay_ospf_authentication: <bool; default=False>
           isis_hello_padding: <bool; default=True>
           isis_metric: <int>
           isis_circuit_type: <str; "level-1" | "level-2" | "level-1-2">
@@ -437,6 +444,11 @@
           # Add this interface to the underlay routing protocols.
           # This is currently not supported when IPv6 addresses are used.
           include_in_underlay_protocol: <bool; default=True>
+
+          # Enable OSPF authentication on this P2P link when underlay is OSPF.
+          # Requires `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled: true`.
+          # When enabled, the message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+          use_underlay_ospf_authentication: <bool; default=False>
           isis_hello_padding: <bool; default=True>
           isis_metric: <int>
           isis_circuit_type: <str; "level-1" | "level-2" | "level-1-2">
