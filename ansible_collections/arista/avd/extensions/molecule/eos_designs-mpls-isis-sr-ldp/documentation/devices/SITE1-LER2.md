@@ -197,7 +197,7 @@ vlan 2020
 | Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
 | --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
 | Ethernet10.11 | - | 11 | dot1q | - | 11 | - | - | client | - | - | - | - |
-| Ethernet10.12 | - | 112 | dot1q | - | 211 | - | - | client | - | - | - | - |
+| Ethernet10.12 | Ethernet10.12-12-112-211-cpe-CPE2_TENANT_A_SITE1_SUBINTERFACES | 112 | dot1q | - | 211 | - | - | client | - | - | - | - |
 
 ##### IPv4
 
@@ -330,6 +330,7 @@ interface Ethernet10.11
    storm-control broadcast level 12
 !
 interface Ethernet10.12
+   description Ethernet10.12-12-112-211-cpe-CPE2_TENANT_A_SITE1_SUBINTERFACES
    vlan id 112
    encapsulation vlan
       client dot1q 211 network client

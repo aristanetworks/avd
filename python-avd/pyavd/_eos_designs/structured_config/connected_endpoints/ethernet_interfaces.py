@@ -10,7 +10,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, default, short_esi_to_route_target, strip_null_from_data
+from pyavd._utils import AvdStringFormatter, Undefined, default, short_esi_to_route_target, strip_null_from_data
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 
@@ -52,14 +52,13 @@ class EthernetInterfacesMixin(Protocol):
                         )
 
                     for subinterface in adapter.subinterfaces:
-                        if not subinterface.number:
-                            continue
-
                         ethernet_subinterface_name = f"{ethernet_interface.name}.{subinterface.number}"
+                        self.structured_config_utils.parent_interfaces_tracker.register_ethernet_subinterface(ethernet_subinterface_name)
                         self.structured_config.ethernet_interfaces.append(
                             self._get_ethernet_subinterface_cfg(
                                 subinterface,
                                 adapter,
+                                connected_endpoint,
                                 ethernet_subinterface_name,
                             )
                         )
@@ -91,6 +90,7 @@ class EthernetInterfacesMixin(Protocol):
 
                 # Using __setitem__ to replace any previous network_port.
                 ethernet_interface = self._get_ethernet_interface_cfg(network_port_as_adapter, 0, connected_endpoint)
+
                 network_ports_ethernet_interfaces[ethernet_interface_name] = ethernet_interface, network_port_as_adapter.structured_config
 
         # Now insert into the actual structured config and custom structured config
@@ -292,16 +292,35 @@ class EthernetInterfacesMixin(Protocol):
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         subinterface: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.SubinterfacesItem,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+        connected_endpoint: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem,
         ethernet_subinterface_name: str,
     ) -> EosCliConfigGen.EthernetInterfacesItem:
         """Return structured_config for one ethernet_interface (subinterface)."""
+        if (vlan_id := subinterface.vlan_id or subinterface.number) > 4094:
+            msg = f"'vlan_id' must be set for subinterface '{ethernet_subinterface_name}' since the subinterface number is above 4094."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+        if (dot1q_client_vlan := subinterface.encapsulation_vlan.client_dot1q or subinterface.number) > 4094:
+            msg = f"'encapsulation_vlan.client_dot1q' must be set for subinterface '{ethernet_subinterface_name}' since the subinterface number is above 4094."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
         # Common ethernet_interface settings
         ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
             name=ethernet_subinterface_name,
-            vlan_id=subinterface.vlan_id or subinterface.number,
+            description=AvdStringFormatter().format(
+                subinterface.description,
+                subinterface=ethernet_subinterface_name,
+                subinterface_number=subinterface.number,
+                vlan_id=vlan_id,
+                dot1q_client_vlan=dot1q_client_vlan,
+                endpoint_type=connected_endpoint.type,
+                endpoint=connected_endpoint.name,
+            )
+            if subinterface.description
+            else None,
+            vlan_id=vlan_id,
             eos_cli=subinterface.raw_eos_cli,
         )
-        ethernet_interface.encapsulation_vlan.client._update(encapsulation="dot1q", vlan=subinterface.encapsulation_vlan.client_dot1q or subinterface.number)
+        ethernet_interface.encapsulation_vlan.client._update(encapsulation="dot1q", vlan=dot1q_client_vlan)
         ethernet_interface.encapsulation_vlan.network.encapsulation = "client"
 
         # EVPN A/A

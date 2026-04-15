@@ -167,6 +167,7 @@ ethernet_interfaces:
   vlan_id: 11
   eos_cli: storm-control broadcast level 12
 - name: Ethernet10.12
+  description: Ethernet10.12-12-112-211-cpe-CPE2_TENANT_A_SITE1_SUBINTERFACES
   evpn_ethernet_segment:
     identifier: 0000:0000:0303:0202:0212
     route_target: 03:03:02:02:02:12

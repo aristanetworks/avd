@@ -55,8 +55,8 @@ cpes:
             structured_config:
               comment: Testing structured config on subinterface.
           - number: 12
+            description: "{subinterface}-{subinterface_number}-{vlan_id}-{dot1q_client_vlan}-{endpoint_type}-{endpoint}"
             short_esi: 0303:0202:0212
             vlan_id: 112
             encapsulation_vlan:
               client_dot1q: 211
-    rack: Undefined
