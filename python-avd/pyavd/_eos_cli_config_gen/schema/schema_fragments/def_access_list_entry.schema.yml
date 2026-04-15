@@ -103,4 +103,4 @@ $defs:
           - str
       inner_vlan_mask:
         type: str
-        description: 0x000-0xFFF inner VLAN mask.
+        description: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set.
