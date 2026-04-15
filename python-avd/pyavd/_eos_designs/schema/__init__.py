@@ -944,7 +944,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         remove_peer_group_mlag_ipv4_vrfs_peer: bool
         """
-        Remove the `mlag_ipv4_vrfs_peer` BGP peer group from the generated configuration.
+        Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
 
         Default value: `False`
         """
@@ -971,7 +971,7 @@ class EosDesigns(EosDesignsRootModel):
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
                        default instead of always deactivating it.
                     raise_for_port_channels_without_members: Raise an error if an L3 Port-Channel is configured without any member interfaces.
-                    remove_peer_group_mlag_ipv4_vrfs_peer: Remove the `mlag_ipv4_vrfs_peer` BGP peer group from the generated configuration.
+                    remove_peer_group_mlag_ipv4_vrfs_peer: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
 
                 """
 

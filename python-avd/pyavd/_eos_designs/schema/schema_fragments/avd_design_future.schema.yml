@@ -29,5 +29,5 @@ keys:
       remove_peer_group_mlag_ipv4_vrfs_peer:
         type: bool
         description: |-
-          Remove the `mlag_ipv4_vrfs_peer` BGP peer group from the generated configuration.
+          Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
         default: false
