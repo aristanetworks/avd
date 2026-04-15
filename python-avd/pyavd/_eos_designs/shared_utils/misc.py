@@ -422,15 +422,22 @@ class MiscMixin(Protocol):
         ipv6_neighbors = EosCliConfigGen.RouterBgp.Neighbors()
 
         for interface in self.l3_interfaces:
-            description = self._get_l3_generic_interface_bgp_description(
-                interface, interface.peer_interface, self.interface_descriptions.underlay_ethernet_interface
+            has_bgp = bool(interface.bgp and (interface.peer_ip or interface.peer_ipv6_address))
+            description = (
+                self._get_l3_generic_interface_bgp_description(interface, interface.peer_interface, self.interface_descriptions.underlay_ethernet_interface)
+                if has_bgp
+                else None
             )
             self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_interfaces[{interface.name}]", neighbors, prefix_lists, route_maps)
             self._update_l3_interface_ipv6_bgp(interface, description, ipv6_neighbors)
 
         for interface in self.node_config.l3_port_channels:
-            description = self._get_l3_generic_interface_bgp_description(
-                interface, interface.peer_port_channel, self.interface_descriptions.underlay_port_channel_interface
+            description = (
+                self._get_l3_generic_interface_bgp_description(
+                    interface, interface.peer_port_channel, self.interface_descriptions.underlay_port_channel_interface
+                )
+                if interface.bgp and interface.peer_ip
+                else None
             )
             self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_port_channels[{interface.name}]", neighbors, prefix_lists, route_maps)
 
