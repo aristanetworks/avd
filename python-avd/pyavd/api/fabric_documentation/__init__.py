@@ -43,7 +43,8 @@ class ACTDigitalTwin:
 class ContainerlabDigitalTwin:
     """Containerlab Digital Twin fabric documentation dataclass."""
 
-    prefix: str = "avd-dt"
+    name: str
+    prefix: str
 
 
 class FabricDocumentation:

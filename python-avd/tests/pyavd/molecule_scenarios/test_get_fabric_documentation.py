@@ -94,7 +94,6 @@ def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
         digital_twin_environment = get(first_hostvars, "digital_twin.environment", default="act")
         if digital_twin_environment == "containerlab":
             assert isinstance(fabric_documentation_obj.digital_twin, ContainerlabDigitalTwin)
-            assert fabric_documentation_obj.digital_twin.prefix == "avd-dt"
         else:
             assert isinstance(fabric_documentation_obj.digital_twin, ACTDigitalTwin)
         # TODO: add shortcut to the digital twin topology file contents in the MoleculeScenario object and assert that it matches.
