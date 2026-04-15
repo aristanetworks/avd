@@ -4321,6 +4321,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -4420,6 +4421,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -4547,6 +4559,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -4624,6 +4637,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -5105,6 +5125,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -5204,6 +5225,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -5331,6 +5363,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -5408,6 +5441,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -21187,6 +21227,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -21286,6 +21327,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -21413,6 +21465,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -21490,6 +21543,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -21971,6 +22031,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -22070,6 +22131,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -22197,6 +22269,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -22274,6 +22347,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
