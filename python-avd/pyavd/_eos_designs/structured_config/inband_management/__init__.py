@@ -11,6 +11,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import Str
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.run_once import run_once_method
 
+
 class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
     @structured_config_contributor
     def inband_management(self) -> None:
@@ -53,12 +54,12 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         inband_mgmt_vlan.metadata.tenants.append_unique("system")
 
     def _set_parent_vlans(self, vlan_id) -> None:
-            # TODO: explore combine here
-            self.structured_config.vlans.append_new(
-                id=vlan_id,
-                metadata=EosCliConfigGen.VlansItem.Metadata(tenants=EosCliConfigGen.VlansItem.Metadata.Tenants(["system"])),
-                name=self.shared_utils.node_config.inband_mgmt_vlan_name,
-            )
+        # TODO: explore combine here
+        self.structured_config.vlans.append_new(
+            id=vlan_id,
+            metadata=EosCliConfigGen.VlansItem.Metadata(tenants=EosCliConfigGen.VlansItem.Metadata.Tenants(["system"])),
+            name=self.shared_utils.node_config.inband_mgmt_vlan_name,
+        )
 
     def _set_vlan_interfaces(self) -> None:
         """VLAN interfaces can be our own management interface and/or SVIs created on behalf of child switches using us as uplink_switch."""
@@ -114,7 +115,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
         route_map.sequence_numbers.append_new(
             sequence=20, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-L2LEAF-INBAND-MGMT"])
-        ) 
+        )
 
     def _set_l2leaf_inband_mgmt_prefix_list(self) -> None:
         self.structured_config.prefix_lists.append_new(name="PL-L2LEAF-INBAND-MGMT")
