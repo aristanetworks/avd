@@ -263,7 +263,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
 
         # MLAG Peer group
         self.structured_config_utils.set_once_peer_group_mlag_ipv4_underlay_peer()
-        if not self.inputs.avd_design_future.remove_peer_group_mlag_ipv4_vrfs_peer and self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
+        if not self.inputs.avd_design_future.only_configure_mlag_vrfs_peer_group_when_used and self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
             self.structured_config_utils.set_once_peer_group_mlag_ipv4_vrfs_peer()
 
         vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)
