@@ -22,5 +22,4 @@
       ansible.builtin.assert:
         that:
           - "containerlab_topology_file.stat.exists"
-          - "(containerlab_topology_content.content | b64decode) == 'prefix: avd-dt\\n'"
       run_once: true

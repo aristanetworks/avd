@@ -57,6 +57,7 @@ def test_get_fabric_documentation_containerlab(digital_twin_enabled: bool) -> No
     assert isinstance(fabric_documentation_obj, FabricDocumentation)
     if digital_twin_enabled:
         assert isinstance(fabric_documentation_obj.digital_twin, ContainerlabDigitalTwin)
+        assert fabric_documentation_obj.digital_twin.name == "CONTAINERLAB_FABRIC, Containerlab Digital Twin"
         assert fabric_documentation_obj.digital_twin.prefix == "avd-dt"
     else:
         assert fabric_documentation_obj.digital_twin is None
