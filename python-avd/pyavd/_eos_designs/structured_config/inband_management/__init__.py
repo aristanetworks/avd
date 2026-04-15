@@ -52,7 +52,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         inband_mgmt_vlan.name = self.shared_utils.node_config.inband_mgmt_vlan_name
         inband_mgmt_vlan.metadata.tenants.append_unique("system")
 
-    def _set_parent_vlans(self, vlan_id) -> None:
+    def _set_parent_vlans(self, vlan_id: int) -> None:
         # TODO: explore combine here
         self.structured_config.vlans.append_new(
             id=vlan_id,
@@ -102,11 +102,11 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
     def _enable_router_bgp_redistribute_attached_host(self) -> None:
         self.structured_config.router_bgp.redistribute.attached_host.enabled = True
 
-    def _set_l2leaf_inband_mgmt_prefix_lists(self, vlan, index) -> None:
+    def _set_l2leaf_inband_mgmt_prefix_lists(self, vlan: dict, index: int) -> None:
         prefix_list = self.structured_config.prefix_lists.obtain("PL-L2LEAF-INBAND-MGMT")
         prefix_list.sequence_numbers.append_new(sequence=(index) * 10, action=f"permit {vlan['ipv4']}")
 
-    def _set_l2leaf_inband_mgmt_ipv6_prefix_lists(self, vlan, index) -> None:
+    def _set_l2leaf_inband_mgmt_ipv6_prefix_lists(self, vlan: dict, index: int) -> None:
         prefix_list = self.structured_config.ipv6_prefix_lists.obtain("IPv6-PL-L2LEAF-INBAND-MGMT")
         prefix_list.sequence_numbers.append_new(sequence=(index) * 10, action=f"permit {vlan['ipv6']}")
 
@@ -133,7 +133,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
     def _set_l2leaf_inband_mgmt_ipv6_prefix_list(self) -> None:
         self.structured_config.ipv6_prefix_lists.append_new(name="IPv6-PL-L2LEAF-INBAND-MGMT")
 
-    def _set_parent_vlan_interface(self, vlan, vlan_id) -> None:
+    def _set_parent_vlan_interface(self, vlan: dict, vlan_id: int) -> None:
         svi = EosCliConfigGen.VlanInterfacesItem(
             name=f"Vlan{vlan_id}",
             description=self.shared_utils.node_config.inband_mgmt_description,
