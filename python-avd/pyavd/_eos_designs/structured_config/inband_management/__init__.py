@@ -34,11 +34,11 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             if self.shared_utils.inband_mgmt_vrf is None and self.shared_utils.underlay_bgp:
                 self._set_router_bgp()
                 if self.inputs.underlay_filter_redistribute_connected:
-                    if self._inband_mgmt_ipv6_parent:
+                    if self._inband_mgmt_ipv6_parent():
                         if self.shared_utils.overlay_routing_protocol != "none":
                             self._set_ipv6_route_maps()
                         self._set_ipv6_prefix_lists()
-                    if self.shared_utils.overlay_routing_protocol != "none" and self._inband_mgmt_ipv4_parent:
+                    if self.shared_utils.overlay_routing_protocol != "none" and self._inband_mgmt_ipv4_parent():
                         self._set_ipv4_route_maps()
                         self._set_prefix_lists()
 
@@ -163,18 +163,14 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
 
         return svi
 
-    @cached_property
     def _inband_mgmt_ipv6_parent(self) -> bool:
-        if self.shared_utils.inband_management_parent_vlans:
-            for subnet in self.shared_utils.inband_management_parent_vlans.values():
-                if subnet["ipv6"]:
-                    return True
+        for subnet in self.shared_utils.inband_management_parent_vlans.values():
+            if subnet["ipv6"]:
+                return True
         return False
 
-    @cached_property
     def _inband_mgmt_ipv4_parent(self) -> bool:
-        if self.shared_utils.inband_management_parent_vlans:
-            for subnet in self.shared_utils.inband_management_parent_vlans.values():
-                if subnet["ipv4"]:
-                    return True
+        for subnet in self.shared_utils.inband_management_parent_vlans.values():
+            if subnet["ipv4"]:
+                return True
         return False
