@@ -119,9 +119,8 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
     def _set_route_map_conn_2_bgp_sequence_20(self) -> None:
         route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
         route_map.sequence_numbers.append_new(
-            sequence=20, type="permit",
-            match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-L2LEAF-INBAND-MGMT"])
-            )
+            sequence=20, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-L2LEAF-INBAND-MGMT"])
+        )
 
     def _set_route_map_conn_2_bgp_sequence_60(self) -> None:
         route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
