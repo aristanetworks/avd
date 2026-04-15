@@ -724,10 +724,8 @@ class AvdStructuredConfigBaseProtocol(
         else:
             server_kwargs["key"] = self._get_tacacs_or_radius_server_password(server)
 
-        if server.timeout is not None:
-            server_kwargs["timeout"] = server.timeout
-        if server.retransmit is not None:
-            server_kwargs["retransmit"] = server.retransmit
+        server_kwargs["timeout"] = server.timeout
+        server_kwargs["retransmit"] = server.retransmit
 
         if server_vrf == "default":
             self.structured_config.radius_server.servers.append_new(**server_kwargs)
