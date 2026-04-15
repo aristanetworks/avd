@@ -98,14 +98,14 @@ wan_virtual_topologies:
     - name: DEFAULT-POLICY
       default_virtual_topology:
         path_groups:
-          - names: [ INET ]
+          - names: [INET]
         outlier_elimination:
           threshold:
             loss_rate: 11.5
       application_virtual_topologies:
         - application_profile: TEST
           path_groups:
-            - names: [ INET ]
+            - names: [INET]
           internet_exit:
             policy: ZSCALER-EXIT-POLICY-1
           id: 42
