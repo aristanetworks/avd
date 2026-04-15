@@ -102,6 +102,47 @@ ethernet_interfaces:
     peer_type: cpe
     peer_key: cpes
     port_profile: TENANT_A_WAN_SERVICE_10
+- name: Ethernet10
+  description: CPE_CPE2_TENANT_A_SITE1_SUBINTERFACES_Ethernet2
+  shutdown: false
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0201
+    redundancy: single-active
+    designated_forwarder_election:
+      algorithm: preference
+      preference_value: 0
+    route_target: 03:03:02:02:02:01
+  metadata:
+    peer: CPE2_TENANT_A_SITE1_SUBINTERFACES
+    peer_interface: Ethernet2
+    peer_type: cpe
+    peer_key: cpes
+  switchport:
+    enabled: false
+- name: Ethernet10.11
+  comment: Testing structured config on subinterface.
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0211
+    route_target: 03:03:02:02:02:11
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 11
+    network:
+      encapsulation: client
+  vlan_id: 11
+  eos_cli: storm-control broadcast level 12
+- name: Ethernet10.12
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0212
+    route_target: 03:03:02:02:02:12
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 211
+    network:
+      encapsulation: client
+  vlan_id: 112
 - name: Ethernet5
   shutdown: false
   metadata:

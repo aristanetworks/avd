@@ -2789,6 +2789,106 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class SubinterfacesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class EncapsulationVlan(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                    client_dot1q: int | None
+                    """
+                    Client VLAN ID encapsulation.
+                    Default is the subinterface number.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            EncapsulationVlan.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                client_dot1q:
+                                   Client VLAN ID encapsulation.
+                                   Default is the subinterface number.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "number": {"type": int},
+                    "short_esi": {"type": str},
+                    "vlan_id": {"type": int},
+                    "encapsulation_vlan": {"type": EncapsulationVlan},
+                    "raw_eos_cli": {"type": str},
+                    "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                }
+                number: int
+                """Subinterface number."""
+                short_esi: str | None
+                """
+                In format xxxx:xxxx:xxxx or "auto".
+                Required for multihomed ethernet interfaces with subinterfaces.
+                """
+                vlan_id: int | None
+                """
+                VLAN ID to bridge.
+                Default is the subinterface number.
+                """
+                encapsulation_vlan: EncapsulationVlan
+                """Subclass of AvdModel."""
+                raw_eos_cli: str | None
+                """EOS CLI rendered directly on the subinterface in the final EOS configuration."""
+                structured_config: EosCliConfigGen.EthernetInterfacesItem
+                """
+                Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                eos_cli_config_gen.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        number: int | UndefinedType = Undefined,
+                        short_esi: str | None | UndefinedType = Undefined,
+                        vlan_id: int | None | UndefinedType = Undefined,
+                        encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                        raw_eos_cli: str | None | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        SubinterfacesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            number: Subinterface number.
+                            short_esi:
+                               In format xxxx:xxxx:xxxx or "auto".
+                               Required for multihomed ethernet interfaces with subinterfaces.
+                            vlan_id:
+                               VLAN ID to bridge.
+                               Default is the subinterface number.
+                            encapsulation_vlan: Subclass of AvdModel.
+                            raw_eos_cli: EOS CLI rendered directly on the subinterface in the final EOS configuration.
+                            structured_config:
+                               Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                               eos_cli_config_gen.
+
+                        """
+
+            class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                _primary_key: ClassVar[str] = "number"
+
+            Subinterfaces._item_type = SubinterfacesItem
+
             class PortChannel(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -2920,6 +3020,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
                         client_dot1q: int | None
+                        """
+                        Client VLAN ID encapsulation.
+                        Default is the subinterface number.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -2931,7 +3035,9 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    client_dot1q: client_dot1q
+                                    client_dot1q:
+                                       Client VLAN ID encapsulation.
+                                       Default is the subinterface number.
 
                                 """
 
@@ -2953,16 +3059,10 @@ class EosDesigns(EosDesignsRootModel):
                     vlan_id: int | None
                     """
                     VLAN ID to bridge.
-                    Default is subinterface number.
+                    Default is the subinterface number.
                     """
                     encapsulation_vlan: EncapsulationVlan
-                    """
-                    Client VLAN ID encapsulation.
-                    Default is subinterface number.
-
-
-                    Subclass of AvdModel.
-                    """
+                    """Subclass of AvdModel."""
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -2996,13 +3096,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Required for multihomed port-channels with subinterfaces.
                                 vlan_id:
                                    VLAN ID to bridge.
-                                   Default is subinterface number.
-                                encapsulation_vlan:
-                                   Client VLAN ID encapsulation.
-                                   Default is subinterface number.
-
-
-                                   Subclass of AvdModel.
+                                   Default is the subinterface number.
+                                encapsulation_vlan: Subclass of AvdModel.
                                 raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                                 structured_config:
                                    Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
@@ -3259,6 +3354,7 @@ class EosDesigns(EosDesignsRootModel):
                 "storm_control": {"type": StormControl},
                 "monitor_sessions": {"type": MonitorSessions},
                 "ethernet_segment": {"type": EthernetSegment},
+                "subinterfaces": {"type": Subinterfaces},
                 "port_channel": {"type": PortChannel},
                 "validate_state": {"type": bool},
                 "validate_lldp": {"type": bool},
@@ -3454,6 +3550,17 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            subinterfaces: Subinterfaces
+            """
+            L2 Subinterfaces
+            Subinterfaces are only supported on routed Ethernet interfaces, which means they
+            cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+            Setting
+            short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+            Please
+            see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+            Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
+            """
             port_channel: PortChannel
             """
             Used for port-channel adapter.
@@ -3537,6 +3644,7 @@ class EosDesigns(EosDesignsRootModel):
                     storm_control: StormControl | UndefinedType = Undefined,
                     monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                     ethernet_segment: EthernetSegment | UndefinedType = Undefined,
+                    subinterfaces: Subinterfaces | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
                     validate_state: bool | None | UndefinedType = Undefined,
                     validate_lldp: bool | None | UndefinedType = Undefined,
@@ -3692,6 +3800,15 @@ class EosDesigns(EosDesignsRootModel):
                            Settings for all or single-active EVPN multihoming.
 
                            Subclass of AvdModel.
+                        subinterfaces:
+                           L2 Subinterfaces
+                           Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                           cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                           Setting
+                           short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                           Please
+                           see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                           Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
                         port_channel:
                            Used for port-channel adapter.
 
@@ -24227,6 +24344,106 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class SubinterfacesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class EncapsulationVlan(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                client_dot1q: int | None
+                """
+                Client VLAN ID encapsulation.
+                Default is the subinterface number.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        EncapsulationVlan.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            client_dot1q:
+                               Client VLAN ID encapsulation.
+                               Default is the subinterface number.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "number": {"type": int},
+                "short_esi": {"type": str},
+                "vlan_id": {"type": int},
+                "encapsulation_vlan": {"type": EncapsulationVlan},
+                "raw_eos_cli": {"type": str},
+                "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            }
+            number: int
+            """Subinterface number."""
+            short_esi: str | None
+            """
+            In format xxxx:xxxx:xxxx or "auto".
+            Required for multihomed ethernet interfaces with subinterfaces.
+            """
+            vlan_id: int | None
+            """
+            VLAN ID to bridge.
+            Default is the subinterface number.
+            """
+            encapsulation_vlan: EncapsulationVlan
+            """Subclass of AvdModel."""
+            raw_eos_cli: str | None
+            """EOS CLI rendered directly on the subinterface in the final EOS configuration."""
+            structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """
+            Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+            eos_cli_config_gen.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    number: int | UndefinedType = Undefined,
+                    short_esi: str | None | UndefinedType = Undefined,
+                    vlan_id: int | None | UndefinedType = Undefined,
+                    encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                    structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    SubinterfacesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        number: Subinterface number.
+                        short_esi:
+                           In format xxxx:xxxx:xxxx or "auto".
+                           Required for multihomed ethernet interfaces with subinterfaces.
+                        vlan_id:
+                           VLAN ID to bridge.
+                           Default is the subinterface number.
+                        encapsulation_vlan: Subclass of AvdModel.
+                        raw_eos_cli: EOS CLI rendered directly on the subinterface in the final EOS configuration.
+                        structured_config:
+                           Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                           eos_cli_config_gen.
+
+                    """
+
+        class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+            """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+            _primary_key: ClassVar[str] = "number"
+
+        Subinterfaces._item_type = SubinterfacesItem
+
         class PortChannel(AvdModel):
             """Subclass of AvdModel."""
 
@@ -24358,6 +24575,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
                     client_dot1q: int | None
+                    """
+                    Client VLAN ID encapsulation.
+                    Default is the subinterface number.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -24369,7 +24590,9 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                client_dot1q: client_dot1q
+                                client_dot1q:
+                                   Client VLAN ID encapsulation.
+                                   Default is the subinterface number.
 
                             """
 
@@ -24391,16 +24614,10 @@ class EosDesigns(EosDesignsRootModel):
                 vlan_id: int | None
                 """
                 VLAN ID to bridge.
-                Default is subinterface number.
+                Default is the subinterface number.
                 """
                 encapsulation_vlan: EncapsulationVlan
-                """
-                Client VLAN ID encapsulation.
-                Default is subinterface number.
-
-
-                Subclass of AvdModel.
-                """
+                """Subclass of AvdModel."""
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                 structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -24434,13 +24651,8 @@ class EosDesigns(EosDesignsRootModel):
                                Required for multihomed port-channels with subinterfaces.
                             vlan_id:
                                VLAN ID to bridge.
-                               Default is subinterface number.
-                            encapsulation_vlan:
-                               Client VLAN ID encapsulation.
-                               Default is subinterface number.
-
-
-                               Subclass of AvdModel.
+                               Default is the subinterface number.
+                            encapsulation_vlan: Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                             structured_config:
                                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
@@ -24697,6 +24909,7 @@ class EosDesigns(EosDesignsRootModel):
             "storm_control": {"type": StormControl},
             "monitor_sessions": {"type": MonitorSessions},
             "ethernet_segment": {"type": EthernetSegment},
+            "subinterfaces": {"type": Subinterfaces},
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
@@ -24893,6 +25106,17 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        subinterfaces: Subinterfaces
+        """
+        L2 Subinterfaces
+        Subinterfaces are only supported on routed Ethernet interfaces, which means they
+        cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+        Setting
+        short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+        Please
+        see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+        Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
+        """
         port_channel: PortChannel
         """
         Used for port-channel adapter.
@@ -24976,6 +25200,7 @@ class EosDesigns(EosDesignsRootModel):
                 storm_control: StormControl | UndefinedType = Undefined,
                 monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                 ethernet_segment: EthernetSegment | UndefinedType = Undefined,
+                subinterfaces: Subinterfaces | UndefinedType = Undefined,
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
@@ -25133,6 +25358,15 @@ class EosDesigns(EosDesignsRootModel):
                        Settings for all or single-active EVPN multihoming.
 
                        Subclass of AvdModel.
+                    subinterfaces:
+                       L2 Subinterfaces
+                       Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                       cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                       Setting
+                       short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                       Please
+                       see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                       Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
                     port_channel:
                        Used for port-channel adapter.
 
@@ -29125,6 +29359,106 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class SubinterfacesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class EncapsulationVlan(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                client_dot1q: int | None
+                """
+                Client VLAN ID encapsulation.
+                Default is the subinterface number.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        EncapsulationVlan.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            client_dot1q:
+                               Client VLAN ID encapsulation.
+                               Default is the subinterface number.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "number": {"type": int},
+                "short_esi": {"type": str},
+                "vlan_id": {"type": int},
+                "encapsulation_vlan": {"type": EncapsulationVlan},
+                "raw_eos_cli": {"type": str},
+                "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            }
+            number: int
+            """Subinterface number."""
+            short_esi: str | None
+            """
+            In format xxxx:xxxx:xxxx or "auto".
+            Required for multihomed ethernet interfaces with subinterfaces.
+            """
+            vlan_id: int | None
+            """
+            VLAN ID to bridge.
+            Default is the subinterface number.
+            """
+            encapsulation_vlan: EncapsulationVlan
+            """Subclass of AvdModel."""
+            raw_eos_cli: str | None
+            """EOS CLI rendered directly on the subinterface in the final EOS configuration."""
+            structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """
+            Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+            eos_cli_config_gen.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    number: int | UndefinedType = Undefined,
+                    short_esi: str | None | UndefinedType = Undefined,
+                    vlan_id: int | None | UndefinedType = Undefined,
+                    encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                    structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    SubinterfacesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        number: Subinterface number.
+                        short_esi:
+                           In format xxxx:xxxx:xxxx or "auto".
+                           Required for multihomed ethernet interfaces with subinterfaces.
+                        vlan_id:
+                           VLAN ID to bridge.
+                           Default is the subinterface number.
+                        encapsulation_vlan: Subclass of AvdModel.
+                        raw_eos_cli: EOS CLI rendered directly on the subinterface in the final EOS configuration.
+                        structured_config:
+                           Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                           eos_cli_config_gen.
+
+                    """
+
+        class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+            """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+            _primary_key: ClassVar[str] = "number"
+
+        Subinterfaces._item_type = SubinterfacesItem
+
         class PortChannel(AvdModel):
             """Subclass of AvdModel."""
 
@@ -29256,6 +29590,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
                     client_dot1q: int | None
+                    """
+                    Client VLAN ID encapsulation.
+                    Default is the subinterface number.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -29267,7 +29605,9 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                client_dot1q: client_dot1q
+                                client_dot1q:
+                                   Client VLAN ID encapsulation.
+                                   Default is the subinterface number.
 
                             """
 
@@ -29289,16 +29629,10 @@ class EosDesigns(EosDesignsRootModel):
                 vlan_id: int | None
                 """
                 VLAN ID to bridge.
-                Default is subinterface number.
+                Default is the subinterface number.
                 """
                 encapsulation_vlan: EncapsulationVlan
-                """
-                Client VLAN ID encapsulation.
-                Default is subinterface number.
-
-
-                Subclass of AvdModel.
-                """
+                """Subclass of AvdModel."""
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                 structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -29332,13 +29666,8 @@ class EosDesigns(EosDesignsRootModel):
                                Required for multihomed port-channels with subinterfaces.
                             vlan_id:
                                VLAN ID to bridge.
-                               Default is subinterface number.
-                            encapsulation_vlan:
-                               Client VLAN ID encapsulation.
-                               Default is subinterface number.
-
-
-                               Subclass of AvdModel.
+                               Default is the subinterface number.
+                            encapsulation_vlan: Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                             structured_config:
                                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
@@ -29592,6 +29921,7 @@ class EosDesigns(EosDesignsRootModel):
             "storm_control": {"type": StormControl},
             "monitor_sessions": {"type": MonitorSessions},
             "ethernet_segment": {"type": EthernetSegment},
+            "subinterfaces": {"type": Subinterfaces},
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
@@ -29745,6 +30075,17 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        subinterfaces: Subinterfaces
+        """
+        L2 Subinterfaces
+        Subinterfaces are only supported on routed Ethernet interfaces, which means they
+        cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+        Setting
+        short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+        Please
+        see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+        Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
+        """
         port_channel: PortChannel
         """
         Used for port-channel adapter.
@@ -29825,6 +30166,7 @@ class EosDesigns(EosDesignsRootModel):
                 storm_control: StormControl | UndefinedType = Undefined,
                 monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                 ethernet_segment: EthernetSegment | UndefinedType = Undefined,
+                subinterfaces: Subinterfaces | UndefinedType = Undefined,
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
@@ -29944,6 +30286,15 @@ class EosDesigns(EosDesignsRootModel):
                        Settings for all or single-active EVPN multihoming.
 
                        Subclass of AvdModel.
+                    subinterfaces:
+                       L2 Subinterfaces
+                       Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                       cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                       Setting
+                       short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                       Please
+                       see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                       Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
                     port_channel:
                        Used for port-channel adapter.
 
@@ -57451,6 +57802,106 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class SubinterfacesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class EncapsulationVlan(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                            client_dot1q: int | None
+                            """
+                            Client VLAN ID encapsulation.
+                            Default is the subinterface number.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    EncapsulationVlan.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        client_dot1q:
+                                           Client VLAN ID encapsulation.
+                                           Default is the subinterface number.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "number": {"type": int},
+                            "short_esi": {"type": str},
+                            "vlan_id": {"type": int},
+                            "encapsulation_vlan": {"type": EncapsulationVlan},
+                            "raw_eos_cli": {"type": str},
+                            "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        }
+                        number: int
+                        """Subinterface number."""
+                        short_esi: str | None
+                        """
+                        In format xxxx:xxxx:xxxx or "auto".
+                        Required for multihomed ethernet interfaces with subinterfaces.
+                        """
+                        vlan_id: int | None
+                        """
+                        VLAN ID to bridge.
+                        Default is the subinterface number.
+                        """
+                        encapsulation_vlan: EncapsulationVlan
+                        """Subclass of AvdModel."""
+                        raw_eos_cli: str | None
+                        """EOS CLI rendered directly on the subinterface in the final EOS configuration."""
+                        structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """
+                        Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                        eos_cli_config_gen.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                number: int | UndefinedType = Undefined,
+                                short_esi: str | None | UndefinedType = Undefined,
+                                vlan_id: int | None | UndefinedType = Undefined,
+                                encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                                raw_eos_cli: str | None | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                SubinterfacesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    number: Subinterface number.
+                                    short_esi:
+                                       In format xxxx:xxxx:xxxx or "auto".
+                                       Required for multihomed ethernet interfaces with subinterfaces.
+                                    vlan_id:
+                                       VLAN ID to bridge.
+                                       Default is the subinterface number.
+                                    encapsulation_vlan: Subclass of AvdModel.
+                                    raw_eos_cli: EOS CLI rendered directly on the subinterface in the final EOS configuration.
+                                    structured_config:
+                                       Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                                       eos_cli_config_gen.
+
+                                """
+
+                    class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                        """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                        _primary_key: ClassVar[str] = "number"
+
+                    Subinterfaces._item_type = SubinterfacesItem
+
                     class PortChannel(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -57589,6 +58040,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                 _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
                                 client_dot1q: int | None
+                                """
+                                Client VLAN ID encapsulation.
+                                Default is the subinterface number.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -57600,7 +58055,9 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            client_dot1q: client_dot1q
+                                            client_dot1q:
+                                               Client VLAN ID encapsulation.
+                                               Default is the subinterface number.
 
                                         """
 
@@ -57622,16 +58079,10 @@ class EosDesigns(EosDesignsRootModel):
                             vlan_id: int | None
                             """
                             VLAN ID to bridge.
-                            Default is subinterface number.
+                            Default is the subinterface number.
                             """
                             encapsulation_vlan: EncapsulationVlan
-                            """
-                            Client VLAN ID encapsulation.
-                            Default is subinterface number.
-
-
-                            Subclass of AvdModel.
-                            """
+                            """Subclass of AvdModel."""
                             raw_eos_cli: str | None
                             """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                             structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -57665,13 +58116,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Required for multihomed port-channels with subinterfaces.
                                         vlan_id:
                                            VLAN ID to bridge.
-                                           Default is subinterface number.
-                                        encapsulation_vlan:
-                                           Client VLAN ID encapsulation.
-                                           Default is subinterface number.
-
-
-                                           Subclass of AvdModel.
+                                           Default is the subinterface number.
+                                        encapsulation_vlan: Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                                         structured_config:
                                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
@@ -57928,6 +58374,7 @@ class EosDesigns(EosDesignsRootModel):
                         "storm_control": {"type": StormControl},
                         "monitor_sessions": {"type": MonitorSessions},
                         "ethernet_segment": {"type": EthernetSegment},
+                        "subinterfaces": {"type": Subinterfaces},
                         "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
@@ -58123,6 +58570,17 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
+                    subinterfaces: Subinterfaces
+                    """
+                    L2 Subinterfaces
+                    Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                    cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                    Setting
+                    short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                    Please
+                    see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                    Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
+                    """
                     port_channel: PortChannel
                     """
                     Used for port-channel adapter.
@@ -58206,6 +58664,7 @@ class EosDesigns(EosDesignsRootModel):
                             storm_control: StormControl | UndefinedType = Undefined,
                             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                             ethernet_segment: EthernetSegment | UndefinedType = Undefined,
+                            subinterfaces: Subinterfaces | UndefinedType = Undefined,
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
@@ -58361,6 +58820,15 @@ class EosDesigns(EosDesignsRootModel):
                                    Settings for all or single-active EVPN multihoming.
 
                                    Subclass of AvdModel.
+                                subinterfaces:
+                                   L2 Subinterfaces
+                                   Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                                   cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                                   Setting
+                                   short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                                   Please
+                                   see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                                   Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
                                 port_channel:
                                    Used for port-channel adapter.
 
@@ -59252,6 +59720,106 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class SubinterfacesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class EncapsulationVlan(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                            client_dot1q: int | None
+                            """
+                            Client VLAN ID encapsulation.
+                            Default is the subinterface number.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    EncapsulationVlan.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        client_dot1q:
+                                           Client VLAN ID encapsulation.
+                                           Default is the subinterface number.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "number": {"type": int},
+                            "short_esi": {"type": str},
+                            "vlan_id": {"type": int},
+                            "encapsulation_vlan": {"type": EncapsulationVlan},
+                            "raw_eos_cli": {"type": str},
+                            "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        }
+                        number: int
+                        """Subinterface number."""
+                        short_esi: str | None
+                        """
+                        In format xxxx:xxxx:xxxx or "auto".
+                        Required for multihomed ethernet interfaces with subinterfaces.
+                        """
+                        vlan_id: int | None
+                        """
+                        VLAN ID to bridge.
+                        Default is the subinterface number.
+                        """
+                        encapsulation_vlan: EncapsulationVlan
+                        """Subclass of AvdModel."""
+                        raw_eos_cli: str | None
+                        """EOS CLI rendered directly on the subinterface in the final EOS configuration."""
+                        structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """
+                        Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                        eos_cli_config_gen.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                number: int | UndefinedType = Undefined,
+                                short_esi: str | None | UndefinedType = Undefined,
+                                vlan_id: int | None | UndefinedType = Undefined,
+                                encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                                raw_eos_cli: str | None | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                SubinterfacesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    number: Subinterface number.
+                                    short_esi:
+                                       In format xxxx:xxxx:xxxx or "auto".
+                                       Required for multihomed ethernet interfaces with subinterfaces.
+                                    vlan_id:
+                                       VLAN ID to bridge.
+                                       Default is the subinterface number.
+                                    encapsulation_vlan: Subclass of AvdModel.
+                                    raw_eos_cli: EOS CLI rendered directly on the subinterface in the final EOS configuration.
+                                    structured_config:
+                                       Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                                       eos_cli_config_gen.
+
+                                """
+
+                    class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                        """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                        _primary_key: ClassVar[str] = "number"
+
+                    Subinterfaces._item_type = SubinterfacesItem
+
                     class PortChannel(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -59390,6 +59958,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                 _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
                                 client_dot1q: int | None
+                                """
+                                Client VLAN ID encapsulation.
+                                Default is the subinterface number.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -59401,7 +59973,9 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            client_dot1q: client_dot1q
+                                            client_dot1q:
+                                               Client VLAN ID encapsulation.
+                                               Default is the subinterface number.
 
                                         """
 
@@ -59423,16 +59997,10 @@ class EosDesigns(EosDesignsRootModel):
                             vlan_id: int | None
                             """
                             VLAN ID to bridge.
-                            Default is subinterface number.
+                            Default is the subinterface number.
                             """
                             encapsulation_vlan: EncapsulationVlan
-                            """
-                            Client VLAN ID encapsulation.
-                            Default is subinterface number.
-
-
-                            Subclass of AvdModel.
-                            """
+                            """Subclass of AvdModel."""
                             raw_eos_cli: str | None
                             """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                             structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -59466,13 +60034,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Required for multihomed port-channels with subinterfaces.
                                         vlan_id:
                                            VLAN ID to bridge.
-                                           Default is subinterface number.
-                                        encapsulation_vlan:
-                                           Client VLAN ID encapsulation.
-                                           Default is subinterface number.
-
-
-                                           Subclass of AvdModel.
+                                           Default is the subinterface number.
+                                        encapsulation_vlan: Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                                         structured_config:
                                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
@@ -59729,6 +60292,7 @@ class EosDesigns(EosDesignsRootModel):
                         "storm_control": {"type": StormControl},
                         "monitor_sessions": {"type": MonitorSessions},
                         "ethernet_segment": {"type": EthernetSegment},
+                        "subinterfaces": {"type": Subinterfaces},
                         "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
@@ -59924,6 +60488,17 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
+                    subinterfaces: Subinterfaces
+                    """
+                    L2 Subinterfaces
+                    Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                    cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                    Setting
+                    short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                    Please
+                    see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                    Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
+                    """
                     port_channel: PortChannel
                     """
                     Used for port-channel adapter.
@@ -60007,6 +60582,7 @@ class EosDesigns(EosDesignsRootModel):
                             storm_control: StormControl | UndefinedType = Undefined,
                             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                             ethernet_segment: EthernetSegment | UndefinedType = Undefined,
+                            subinterfaces: Subinterfaces | UndefinedType = Undefined,
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
@@ -60162,6 +60738,15 @@ class EosDesigns(EosDesignsRootModel):
                                    Settings for all or single-active EVPN multihoming.
 
                                    Subclass of AvdModel.
+                                subinterfaces:
+                                   L2 Subinterfaces
+                                   Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                                   cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                                   Setting
+                                   short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                                   Please
+                                   see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                                   Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
                                 port_channel:
                                    Used for port-channel adapter.
 

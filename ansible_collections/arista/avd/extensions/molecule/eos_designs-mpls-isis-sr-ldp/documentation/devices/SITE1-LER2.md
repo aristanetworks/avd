@@ -192,6 +192,13 @@ vlan 2020
 | --------- | ----------- | ------- | -------------- | -------------------- |
 | Ethernet5.100 | TENANT_B_SITE_3 | - | 100 | - |
 
+##### Flexible Encapsulation Interfaces
+
+| Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
+| Ethernet10.11 | - | 11 | dot1q | - | 11 | - | - | client | - | - | - | - |
+| Ethernet10.12 | - | 112 | dot1q | - | 211 | - | - | client | - | - | - | - |
+
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
@@ -213,6 +220,22 @@ vlan 2020
 | --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
 | Ethernet1 | - | CORE | - | 50 | point-to-point | level-1-2 | False | md5 |
 | Ethernet2 | - | CORE | - | 500 | point-to-point | level-2 | False | md5 |
+
+##### EVPN Multihoming
+
+####### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Ethernet10 | 0000:0000:0303:0202:0201 | single-active | 03:03:02:02:02:01 |
+| Ethernet10.11 | 0000:0000:0303:0202:0211 | all-active | 03:03:02:02:02:11 |
+| Ethernet10.12 | 0000:0000:0303:0202:0212 | all-active | 03:03:02:02:02:12 |
+
+####### Designated Forwarder Election Summary
+
+| Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
+| --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
+| Ethernet10 | preference | 0 | False | - | - | False |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -283,6 +306,37 @@ interface Ethernet8
    description CPE_CPE_TENANT_A_SITE1_Ethernet2
    no shutdown
    channel-group 8 mode active
+!
+interface Ethernet10
+   description CPE_CPE2_TENANT_A_SITE1_SUBINTERFACES_Ethernet2
+   no shutdown
+   no switchport
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0201
+      redundancy single-active
+      designated-forwarder election algorithm preference 0
+      route-target import 03:03:02:02:02:01
+!
+interface Ethernet10.11
+   !! Testing structured config on subinterface.
+   vlan id 11
+   encapsulation vlan
+      client dot1q 11 network client
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0211
+      route-target import 03:03:02:02:02:11
+   storm-control broadcast level 12
+!
+interface Ethernet10.12
+   vlan id 112
+   encapsulation vlan
+      client dot1q 211 network client
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0212
+      route-target import 03:03:02:02:02:12
 ```
 
 ### Port-Channel Interfaces
