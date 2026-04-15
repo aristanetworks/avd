@@ -12,13 +12,6 @@
 
 This guide covers the complete workflow: configuring TerminAttr for device streaming, setting up the `cv_deploy` role, and managing workspaces and change controls.
 
-### When to Use CloudVision Deployment
-
-- **Centralized configuration management**: Deploy and audit all device configurations from a single platform
-- **Change control workflows**: Require approval gates before configurations are pushed to devices
-- **Configuration compliance**: Leverage CloudVision's config diff and validation before deployment
-- **Tag-based automation**: Assign device and interface tags for CloudVision Studios and dashboards
-
 ## Concepts
 
 **Workspace**: A staging area in CloudVision where configuration changes are prepared, validated, and reviewed before being applied. Workspaces go through states: `pending` -> `built` -> `submitted`.
@@ -39,16 +32,15 @@ Before deploying configurations with `cv_deploy`, devices must be streaming to C
 
 ```yaml title="CloudVision Settings"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTCD/fabric.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTCD/fabric.yml:cv_settings
 --8<--
 ```
 
 1. The `cv_settings` key configures TerminAttr on all devices in the fabric
 2. Enable CloudVision-as-a-Service connectivity
-3. Cluster name used in the TerminAttr `-cvopt` flags
-4. CVaaS region - must match the region where your tenant is deployed. See the [regional URLs](#cvaas-regional-urls) table below
-5. Sysdb paths excluded from streaming to reduce load
-6. When `false` (default), TerminAttr uses AAA authorization and accounting
+3. CVaaS region - must match the region where your tenant is deployed
+4. Sysdb paths excluded from streaming to reduce load
+5. When `false` (default), TerminAttr uses AAA authorization and accounting
 
 AVD generates the following `daemon TerminAttr` configuration on each device:
 
@@ -68,7 +60,7 @@ AVD generates the following `daemon TerminAttr` configuration on each device:
     --8<--
     ```
 
-The `-cvaddr` flag points to the CVaaS regional API server. The `-cvauth=token-secure` method uses a token file at `/tmp/cv-onboarding-token` that must be provisioned on each device before TerminAttr can connect.
+The `-cvaddr` flag points to the CVaaS regional API server. The `-cvauth=token-secure` method uses a token file at `/tmp/cv-onboarding-token` that must be provisioned on each device before TerminAttr can connect. Generate an onboarding token in the CloudVision portal under **Settings > Onboarding Tokens**, then copy it to each device at the configured path. See the [CloudVision Help Center](https://www.arista.com/en/cg-cv/cv-onboarding-devices) for detailed steps.
 
 TerminAttr streams over the management interface in VRF `MGMT`:
 
@@ -77,22 +69,6 @@ TerminAttr streams over the management interface in VRF `MGMT`:
 docs/howto/cloudvision_deployment/artifacts/htcd-leaf1a-management.cfg
 --8<--
 ```
-
-### CVaaS Regional URLs
-
-| Region | URL |
-| -------------- | --------------------------------------- |
-| United States 1a | `www.arista.io` |
-| United States 1b | `www.cv-prod-us-central1-b.arista.io` |
-| United States 1c | `www.cv-prod-us-central1-c.arista.io` |
-| Canada | `www.cv-prod-na-northeast1-b.arista.io` |
-| Europe West 2 | `www.cv-prod-euwest-2.arista.io` |
-| Japan | `www.cv-prod-apnortheast-1.arista.io` |
-| Australia | `www.cv-prod-ausoutheast-1.arista.io` |
-| United Kingdom | `www.cv-prod-uk-1.arista.io` |
-
-!!! warning
-    URLs **must** include the `www` prefix. For example, use `www.arista.io`, not `arista.io`.
 
 ### On-Premises CloudVision
 
@@ -144,20 +120,9 @@ The deployment workflow uses two plays: one to generate configurations, and one 
     - name: Deploy configurations and tags to CloudVision
       ansible.builtin.import_role:
         name: arista.avd.cv_deploy
-      vars:
-        cv_server: www.arista.io # (1)!
-        cv_token: "{{ lookup('file', '~/.cloudvision/token') }}" # (2)!
 ```
 
-1. CVaaS regional URL matching your tenant's region
-2. Service account token - use Ansible Vault or a file lookup to avoid storing secrets in plain text
-
-!!! tip
-    Deploy a subset of devices using the `--limit` flag:
-
-    ```bash
-    ansible-playbook playbooks/deploy.yml --limit htcd-leaf1a,htcd-leaf1b
-    ```
+The `cv_deploy` role requires `cv_server` and `cv_token` variables. See [Authentication Setup](#authentication-setup) below for how to configure them.
 
 ### Authentication Setup
 
@@ -179,7 +144,7 @@ cv_verify_certs: true # (2)!
 
 ## Workspace Management
 
-By default, `cv_deploy` creates a workspace, builds it, and submits it. The resulting change control is left in `pending approval` state.
+When `cv_deploy` pushes configurations to CloudVision, it stages them in a **workspace** — a draft environment where changes are validated before reaching devices. For a first-time onboarding, the defaults handle everything automatically: `cv_deploy` creates a workspace, builds it, and submits it. The resulting change control is left in `pending approval` state so you can review the diffs in the CloudVision UI before applying them. Customize workspace behavior when you need naming conventions for audit trails or want to pause at the `built` state for manual review.
 
 ### Workspace Options
 
@@ -212,7 +177,7 @@ cv_workspace_requested_state: built # (1)!
 
 ## Change Control Management
 
-Change controls are created automatically when a workspace is submitted. By default, they are left in `pending approval` state for manual review.
+After a workspace is submitted, CloudVision creates a **change control** — the mechanism that gates when and how configurations are applied to devices. For initial onboarding or lab environments, you may want `cv_deploy` to approve and execute the change control automatically. In production, the default behavior of leaving the change control in `pending approval` state lets network operators review and schedule the deployment through the CloudVision UI.
 
 ### Auto-Approve and Execute
 

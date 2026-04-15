@@ -7,13 +7,14 @@ fabric_name: FABRIC
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
 
-# CloudVision settings - configures TerminAttr on all devices
+# --8<-- [start:cv_settings]
 cv_settings: # (1)!
   cvaas:
     enabled: true # (2)!
     clusters:
-      - name: cvaas # (3)!
-        region: us-central1-a # (4)!
+      - name: cvaas
+        region: us-central1-a # (3)!
   terminattr:
-    smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata" # (5)!
-    disable_aaa: false # (6)!
+    smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata" # (4)!
+    disable_aaa: false # (5)!
+# --8<-- [end:cv_settings]
