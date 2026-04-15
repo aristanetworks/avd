@@ -436,7 +436,7 @@ class MiscMixin(Protocol):
 
         self._update_l3_generic_interface_ipv4_bgp(interface, description, context, neighbors, prefix_lists, route_maps)
 
-        if schema_key == "l3_interfaces:
+        if isinstance(interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem):
             self._update_l3_interface_ipv6_bgp(interface, description, ipv6_neighbors)
 
     @cached_property
