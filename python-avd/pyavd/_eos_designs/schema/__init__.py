@@ -19931,7 +19931,9 @@ class EosDesigns(EosDesignsRootModel):
             """Default value: `"eq"`"""
             vlan_inner: bool
             """
-            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when migrating to the new keys.
+            Render vlan and mask as inner vlan.
+            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
+            migrating to the new keys.
 
             Default value: `False`
             """
@@ -19962,7 +19964,7 @@ class EosDesigns(EosDesignsRootModel):
             """0x000-0xFFF VLAN mask."""
             inner_vlan_number: int | None
             inner_vlan_mask: str | None
-            """0x000-0xFFF inner VLAN mask."""
+            """0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set."""
 
             if TYPE_CHECKING:
 
@@ -20029,7 +20031,10 @@ class EosDesigns(EosDesignsRootModel):
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match
-                        vlan_inner: Both 'inner_vlan_number' and 'inner_vlan_mask' are required when migrating to the new keys.
+                        vlan_inner:
+                           Render vlan and mask as inner vlan.
+                           Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
+                           migrating to the new keys.
                         source_ports_match: source_ports_match
                         source_ports: Subclass of AvdList with `str` items.
                         destination_ports_match: destination_ports_match
@@ -20044,7 +20049,7 @@ class EosDesigns(EosDesignsRootModel):
                         vlan_number: vlan_number
                         vlan_mask: 0x000-0xFFF VLAN mask.
                         inner_vlan_number: inner_vlan_number
-                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask.
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set.
 
                     """
 

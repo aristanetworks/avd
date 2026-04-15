@@ -5928,8 +5928,10 @@ keys:
               vlan_inner:
                 type: bool
                 default: false
-                description: Both 'inner_vlan_number' and 'inner_vlan_mask' are required
-                  when migrating to the new keys.
+                description: 'Render vlan and mask as inner vlan.
+
+                  Both ''inner_vlan_number'' and ''inner_vlan_mask'' are required
+                  when migrating to the new keys.'
                 deprecation:
                   warning: true
                   removed: false
@@ -26157,7 +26159,8 @@ $defs:
         - str
       inner_vlan_mask:
         type: str
-        description: 0x000-0xFFF inner VLAN mask.
+        description: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number`
+          is set.
   methods:
     type: list
     min_length: 1
