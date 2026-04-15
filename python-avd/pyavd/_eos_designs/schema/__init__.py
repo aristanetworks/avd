@@ -17942,7 +17942,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    EvpnPreventReadvertiseToServerMode: TypeAlias = Literal["source_peer_asn", "as_path_acl"]
+    EvpnPreventReadvertiseToServerMode: TypeAlias = Literal["source_peer_asn", "as_path_acl", "rcf"]
 
     class EvpnVlanBundlesItem(AvdModel):
         """Subclass of AvdModel."""
@@ -91825,11 +91825,16 @@ class EosDesigns(EosDesignsRootModel):
     not be advertised to the EVPN route-servers.
     Only used when `evpn_prevent_readvertise_to_server` is
     set to `true`.
-    `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
-    which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
-    allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
-    `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
-    updates with the route-server ASN anywhere in the AS-path.
+    `source_peer_asn` mode configures an outbound route-maps towards EVPN route-servers
+    which filter out BGP updates learned directly from the ASN of the route-servers. This mode will
+    still allow routes learned via any other peer, even if they have the route-server's ASN in the AS-
+    path.
+    `as_path_acl` mode configures an outbound route-maps and as-path access-lists which filter out
+    BGP updates with the route-servers' ASN anywhere in the AS-path.
+    `rcf` method uses RCF `as_path
+    has_none` condition to filter out EVPN BGP routes containing the route-servers' ASN in the `AS PATH`
+    attribute. Filtering is applied to EVPN BGP Address Family only. This method requires EOS 4.35.2F
+    and newer.
 
     Default value: `"as_path_acl"`
     """
@@ -93878,11 +93883,16 @@ class EosDesigns(EosDesignsRootModel):
                    not be advertised to the EVPN route-servers.
                    Only used when `evpn_prevent_readvertise_to_server` is
                    set to `true`.
-                   `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
-                   which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
-                   allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
-                   `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
-                   updates with the route-server ASN anywhere in the AS-path.
+                   `source_peer_asn` mode configures an outbound route-maps towards EVPN route-servers
+                   which filter out BGP updates learned directly from the ASN of the route-servers. This mode will
+                   still allow routes learned via any other peer, even if they have the route-server's ASN in the AS-
+                   path.
+                   `as_path_acl` mode configures an outbound route-maps and as-path access-lists which filter out
+                   BGP updates with the route-servers' ASN anywhere in the AS-path.
+                   `rcf` method uses RCF `as_path
+                   has_none` condition to filter out EVPN BGP routes containing the route-servers' ASN in the `AS PATH`
+                   attribute. Filtering is applied to EVPN BGP Address Family only. This method requires EOS 4.35.2F
+                   and newer.
                 evpn_short_esi_prefix: Configure prefix for "short_esi" values.
                 evpn_vlan_aware_bundles:
                    Enable VLAN aware bundles for every EVPN MAC-VRF.
