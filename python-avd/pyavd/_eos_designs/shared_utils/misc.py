@@ -411,34 +411,6 @@ class MiscMixin(Protocol):
         )
         ipv6_neighbors.append(neighbor)
 
-    def update_l3_generic_interface_bgp_objects(
-        self: SharedUtilsProtocol,
-        interface: (
-            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
-            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
-        ),
-        neighbors: EosCliConfigGen.RouterBgp.Neighbors,
-        prefix_lists: EosCliConfigGen.PrefixLists,
-        route_maps: EosCliConfigGen.RouteMaps,
-        ipv6_neighbors: EosCliConfigGen.RouterBgp.Neighbors,
-    ) -> None:
-        if isinstance(interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem):
-            schema_key = "l3_interfaces"
-            description_function = self.interface_descriptions.underlay_ethernet_interface
-            peer_interface = interface.peer_interface
-        else:
-            schema_key = "l3_port_channels"
-            description_function = self.interface_descriptions.underlay_port_channel_interface
-            peer_interface = interface.peer_port_channel
-
-        context = f"{schema_key}[{interface.name}]"
-        description = self._get_l3_generic_interface_bgp_description(interface, peer_interface, description_function)
-
-        self._update_l3_generic_interface_ipv4_bgp(interface, description, context, neighbors, prefix_lists, route_maps)
-
-        if isinstance(interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem):
-            self._update_l3_interface_ipv6_bgp(interface, description, ipv6_neighbors)
-
     @cached_property
     def l3_bgp_objects(
         self: SharedUtilsProtocol,
@@ -450,9 +422,17 @@ class MiscMixin(Protocol):
         ipv6_neighbors = EosCliConfigGen.RouterBgp.Neighbors()
 
         for interface in self.l3_interfaces:
-            self.update_l3_generic_interface_bgp_objects(interface, neighbors, prefix_lists, route_maps, ipv6_neighbors)
+            description = self._get_l3_generic_interface_bgp_description(
+                interface, interface.peer_interface, self.interface_descriptions.underlay_ethernet_interface
+            )
+            self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_interfaces[{interface.name}]", neighbors, prefix_lists, route_maps)
+            self._update_l3_interface_ipv6_bgp(interface, description, ipv6_neighbors)
+
         for interface in self.node_config.l3_port_channels:
-            self.update_l3_generic_interface_bgp_objects(interface, neighbors, prefix_lists, route_maps, ipv6_neighbors)
+            description = self._get_l3_generic_interface_bgp_description(
+                interface, interface.peer_port_channel, self.interface_descriptions.underlay_port_channel_interface
+            )
+            self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_port_channels[{interface.name}]", neighbors, prefix_lists, route_maps)
 
         return neighbors, prefix_lists, route_maps, ipv6_neighbors
 
