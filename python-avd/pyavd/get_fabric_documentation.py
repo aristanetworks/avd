@@ -167,10 +167,7 @@ def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> A
 
 def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentationFacts) -> ContainerlabDigitalTwin:
     """Return the minimal Containerlab Digital Twin payload."""
-    return ContainerlabDigitalTwin(
-        name=f"{fabric_documentation_facts.fabric_name}, Containerlab Digital Twin",
-        prefix="avd-dt"
-    )
+    return ContainerlabDigitalTwin(name=f"{fabric_documentation_facts.fabric_name}, Containerlab Digital Twin", prefix="avd-dt")
 
 
 def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin:
