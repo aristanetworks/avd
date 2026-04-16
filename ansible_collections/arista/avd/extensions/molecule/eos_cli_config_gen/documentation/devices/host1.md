@@ -2555,10 +2555,10 @@ mcs client
 
 ```eos
 !
-snmp-server ipv4 access-list onur
 snmp-server ipv4 access-list SNMP-MGMT vrf MGMT
-snmp-server ipv6 access-list onur_v6
+snmp-server ipv4 access-list onur
 snmp-server ipv6 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv6 access-list onur_v6
 snmp-server engineID local 424242424242424242
 snmp-server contact DC1_OPS
 snmp-server location DC1

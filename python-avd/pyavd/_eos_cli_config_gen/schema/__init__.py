@@ -64666,7 +64666,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"local_interface": {"type": str}, "vrfs": {"type": Vrfs}}
             local_interface: str | None
-            """local_interface name for VRF default."""
+            """Local interface name for VRF default."""
             vrfs: Vrfs
             """
             Local interfaces for any VRF other than default.
@@ -64685,7 +64685,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        local_interface: local_interface name for VRF default.
+                        local_interface: Local interface name for VRF default.
                         vrfs:
                            Local interfaces for any VRF other than default.
 

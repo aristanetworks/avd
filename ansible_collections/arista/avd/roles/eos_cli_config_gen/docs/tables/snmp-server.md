@@ -44,7 +44,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.local_interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.local_interfaces.[].vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;local_interfaces_per_vrf</samp>](## "snmp_server.local_interfaces_per_vrf") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "snmp_server.local_interfaces_per_vrf.local_interface") | String |  |  |  | local_interface name for VRF default. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "snmp_server.local_interfaces_per_vrf.local_interface") | String |  |  |  | Local interface name for VRF default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "snmp_server.local_interfaces_per_vrf.vrfs") | List, items: Dictionary |  |  |  | Local interfaces for any VRF other than default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.local_interfaces_per_vrf.vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "snmp_server.local_interfaces_per_vrf.vrfs.[].local_interface") | String | Required |  |  |  |
@@ -174,7 +174,7 @@
           vrf: <str>
       local_interfaces_per_vrf:
 
-        # local_interface name for VRF default.
+        # Local interface name for VRF default.
         local_interface: <str>
 
         # Local interfaces for any VRF other than default.

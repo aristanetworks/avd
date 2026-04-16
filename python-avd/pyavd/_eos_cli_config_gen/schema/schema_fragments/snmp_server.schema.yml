@@ -171,7 +171,7 @@ keys:
         keys:
           local_interface:
             type: str
-            description: local_interface name for VRF default.
+            description: Local interface name for VRF default.
           vrfs:
             type: list
             primary_key: name
