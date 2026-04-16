@@ -16,7 +16,7 @@ p:
   # Definition of default values that will be configured to all nodes defined in this group
   defaults:
     # Set the relevant platform as each platform has different default values in Ansible AVD
-    platform: vEOS-lab
+    platform: cEOSLab
     # Pool of IPv4 addresses to configure interface Loopback0 used for Router ID
     loopback_ipv4_pool: 10.255.0.0/27
     # ISIS NET system id prefix
@@ -44,11 +44,11 @@ p:
 pe:
   defaults:
     # Set the relevant platform as each platform has different default values in Ansible AVD
-    platform: vEOS-lab
+    platform: cEOSLab
     # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
     loopback_ipv4_pool: 10.255.1.0/27
     virtual_router_mac_address: 00:1c:73:00:dc:00
-    mpls_route_reflectors: [ rr1, rr2 ]
+    mpls_route_reflectors: [rr1, rr2]
     # ISIS NET system id prefix
     isis_system_id_prefix: '0000.0001'
     spanning_tree_mode: none
@@ -76,10 +76,10 @@ pe:
 # RR router group
 rr:
   defaults:
-    platform: vEOS-lab
+    platform: cEOSLab
     spanning_tree_mode: none
     loopback_ipv4_pool: 10.255.2.0/27
-    mpls_route_reflectors: [ rr1, rr2 ]
+    mpls_route_reflectors: [rr1, rr2]
     # ISIS NET system id prefix
     isis_system_id_prefix: '0000.0002'
   node_groups:
@@ -104,8 +104,6 @@ core_interfaces:
   p2p_links_profiles:
     - name: core_profile
       # speed: 100gfull
-      # On vEOS-lab, MTU values larger than 1500 can cause issues, in an actual production network this is normally a larger value
-      mtu: 1500
       isis_metric: 50
       ip_pool: core_pool
       isis_circuit_type: level-2
@@ -113,62 +111,62 @@ core_interfaces:
       isis_authentication_key: $1c$sTNAlR6rKSw=
   p2p_links:
     # PE1 links
-    - nodes: [ pe1, p1 ]
+    - nodes: [pe1, p1]
       id: 1
-      interfaces: [ Ethernet1, Ethernet1 ]
+      interfaces: [Ethernet1, Ethernet1]
       profile: core_profile
-    - nodes: [ pe1, p2 ]
+    - nodes: [pe1, p2]
       id: 2
-      interfaces: [ Ethernet2, Ethernet2 ]
+      interfaces: [Ethernet2, Ethernet2]
       profile: core_profile
     # PE2 links
-    - nodes: [ pe2, p2 ]
+    - nodes: [pe2, p2]
       id: 3
-      interfaces: [ Ethernet1, Ethernet1 ]
+      interfaces: [Ethernet1, Ethernet1]
       profile: core_profile
-    - nodes: [ pe2, p1 ]
+    - nodes: [pe2, p1]
       id: 4
-      interfaces: [ Ethernet2, Ethernet2 ]
+      interfaces: [Ethernet2, Ethernet2]
       profile: core_profile
     # P1 links
     # The rest of the P1/P2 links are defined under PE1/PE2/RR1/RR2 links
-    - nodes: [ p1, p2 ]
+    - nodes: [p1, p2]
       id: 5
-      interfaces: [ Ethernet4, Ethernet4 ]
+      interfaces: [Ethernet4, Ethernet4]
       profile: core_profile
     # RR1 links
-    - nodes: [ rr1, p1 ]
+    - nodes: [rr1, p1]
       id: 6
-      interfaces: [ Ethernet3, Ethernet3 ]
+      interfaces: [Ethernet3, Ethernet3]
       profile: core_profile
-    - nodes: [ rr1, p3 ]
+    - nodes: [rr1, p3]
       id: 7
-      interfaces: [ Ethernet2, Ethernet2 ]
+      interfaces: [Ethernet2, Ethernet2]
       profile: core_profile
-    - nodes: [ rr1, rr2 ]
+    - nodes: [rr1, rr2]
       id: 8
-      interfaces: [ Ethernet4, Ethernet4 ]
+      interfaces: [Ethernet4, Ethernet4]
       profile: core_profile
     # RR2 links
-    - nodes: [ rr2, p2 ]
+    - nodes: [rr2, p2]
       id: 9
-      interfaces: [ Ethernet3, Ethernet3 ]
+      interfaces: [Ethernet3, Ethernet3]
       profile: core_profile
-    - nodes: [ rr2, p4 ]
+    - nodes: [rr2, p4]
       id: 10
-      interfaces: [ Ethernet2, Ethernet2 ]
+      interfaces: [Ethernet2, Ethernet2]
       profile: core_profile
     # P3 links
-    - nodes: [ p3, p4 ]
+    - nodes: [p3, p4]
       id: 11
-      interfaces: [ Ethernet4, Ethernet4 ]
+      interfaces: [Ethernet4, Ethernet4]
       profile: core_profile
     # PE3 links
-    - nodes: [ pe3, p3 ]
+    - nodes: [pe3, p3]
       id: 12
-      interfaces: [ Ethernet1, Ethernet1 ]
+      interfaces: [Ethernet1, Ethernet1]
       profile: core_profile
-    - nodes: [ pe3, p4 ]
+    - nodes: [pe3, p4]
       id: 13
-      interfaces: [ Ethernet3, Ethernet3 ]
+      interfaces: [Ethernet3, Ethernet3]
       profile: core_profile

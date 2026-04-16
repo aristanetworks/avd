@@ -550,6 +550,14 @@ route_maps:
     type: permit
     set:
     - extcommunity soo 192.168.42.1:511 additive
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 15
+    type: deny
+    match:
+    - ip address prefix-list PL-STATIC-VRF-DEFAULT
+  - sequence: 20
+    type: permit
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -676,7 +684,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
@@ -1044,15 +1052,18 @@ vrfs:
 - name: IT
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: ATTRACTED-VRF-FROM-UPLINK
   ip_routing: true
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-edge_VTEP

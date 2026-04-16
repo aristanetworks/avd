@@ -49,20 +49,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -70,7 +56,8 @@ router_bgp:
   vlans:
   - id: 100
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.101:10100
     route_targets:
       both:
@@ -79,7 +66,8 @@ router_bgp:
     - learned
   - id: 200
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.101:10200
     route_targets:
       both:
@@ -88,7 +76,8 @@ router_bgp:
     - learned
   - id: 300
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.101:10300
     route_targets:
       both:
@@ -97,7 +86,8 @@ router_bgp:
     - learned
   - id: 400
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.101:10400
     route_targets:
       both:
@@ -106,23 +96,14 @@ router_bgp:
     - learned
   - id: 500
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.101:10500
     route_targets:
       both:
       - 10500:10500
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: VRF1
     rd: 192.168.255.101:1
@@ -146,17 +127,20 @@ vlan_interfaces:
   description: VARPv6_configured_1
   shutdown: false
   vrf: VRF1
-  ipv6_address: 2001:db8::2/64
+  ipv6_addresses:
+  - 2001:db8::2/64
   ipv6_virtual_router_addresses:
   - fe80::1
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan200
   description: VARPv6_not_configured_1
   shutdown: false
   vrf: VRF1
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan300
   description: VARPv6_configured_2
   shutdown: false
@@ -165,14 +149,16 @@ vlan_interfaces:
   ipv6_virtual_router_addresses:
   - fe80::1
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan400
   description: VARPv6_not_configured_2
   shutdown: false
   vrf: VRF1
   ipv6_enable: false
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan500
   description: VARPv6_not_configured_3
   shutdown: false
@@ -181,7 +167,8 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:db8::1/64
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vlan_internal_order:
   allocation: ascending
   range:
@@ -191,23 +178,28 @@ vlans:
 - id: 100
   name: VARPv6_configured_1
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 200
   name: VARPv6_not_configured_1
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 300
   name: VARPv6_configured_2
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 400
   name: VARPv6_not_configured_2
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 500
   name: VARPv6_not_configured_3
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -215,7 +207,8 @@ vrfs:
   ip_routing: true
   ipv6_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: varpv6_VTEP

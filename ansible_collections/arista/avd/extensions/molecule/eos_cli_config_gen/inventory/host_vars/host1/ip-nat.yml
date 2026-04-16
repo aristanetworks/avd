@@ -13,6 +13,10 @@ ip_nat:
           last_ip: 10.1.255.255
           first_port: 1024
           last_port: 65535
+        # Keeping one pool with last_port only for backward compatibility
+        - first_ip: 10.2.0.1
+          last_ip: 10.2.255.254
+          last_port: 65535
       utilization_log_threshold: 91
     - name: prefix_32
       type: ip-port
@@ -70,6 +74,8 @@ ip_nat:
           limit: 100
         - ip: 10.0.0.2
           limit: 200
+        - ip: 9.0.0.1
+          limit: 300
     timeouts:
       - protocol: udp
         timeout: 3600

@@ -70,6 +70,26 @@ ethernet_interfaces:
     peer: flow-tracking-tests-l2-leaf2
     peer_interface: Ethernet1
     peer_type: l2leaf
+- name: Ethernet33
+  description: L2_flow-tracking-tests-l2-leaf3_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 33
+    mode: active
+  metadata:
+    peer: flow-tracking-tests-l2-leaf3
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+- name: Ethernet34
+  description: L2_flow-tracking-tests-l2-leaf4_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 34
+    mode: active
+  metadata:
+    peer: flow-tracking-tests-l2-leaf4
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 - name: Ethernet14
   description: SERVER_port-channel-interface-true_PCI1
   shutdown: false
@@ -194,6 +214,28 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 11,4092
+- name: Port-Channel33
+  description: L2_flow-tracking-tests-l2-leaf3_Port-Channel1
+  shutdown: false
+  mlag: 33
+  flow_tracker:
+    hardware: FLOW-TRACKER
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
+- name: Port-Channel34
+  description: L2_flow-tracking-tests-l2-leaf4_Port-Channel1
+  shutdown: false
+  mlag: 34
+  flow_tracker:
+    hardware: FLOW-TRACKER
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
 - name: Port-Channel14
   description: SERVER_port-channel-interface-true
   shutdown: false
@@ -285,13 +327,13 @@ router_bgp:
     description: flow-tracking-tests-leaf4
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -339,7 +381,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: FLOW_TRACKING
+      tenants:
+      - FLOW_TRACKING
     rd: 10.254.1.5:10011
     route_targets:
       both:
@@ -408,7 +451,8 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF1
   metadata:
-    tenant: FLOW_TRACKING
+    tenants:
+    - FLOW_TRACKING
 - name: Vlan3000
   description: MLAG_L3_VRF_VRF1
   shutdown: false
@@ -416,7 +460,8 @@ vlan_interfaces:
   ip_address: 10.254.1.104/31
   mtu: 9214
   metadata:
-    tenant: FLOW_TRACKING
+    tenants:
+    - FLOW_TRACKING
     type: underlay_peering
 - name: Vlan4092
   description: Inband Management
@@ -439,34 +484,40 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 11
   name: VLAN11
   metadata:
-    tenant: FLOW_TRACKING
+    tenants:
+    - FLOW_TRACKING
 - id: 3000
   name: MLAG_L3_VRF_VRF1
   trunk_groups:
   - MLAG
   metadata:
-    tenant: FLOW_TRACKING
+    tenants:
+    - FLOW_TRACKING
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
   metadata:
-    tenant: FLOW_TRACKING
+    tenants:
+    - FLOW_TRACKING
 vxlan_interface:
   vxlan1:
     description: flow-tracking-tests-leaf3_VTEP

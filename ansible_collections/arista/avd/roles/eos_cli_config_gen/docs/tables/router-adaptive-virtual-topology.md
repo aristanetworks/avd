@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -43,8 +43,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_adaptive_virtual_topology.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "router_adaptive_virtual_topology.vrfs.[].policy") | String |  |  |  | AVT Policy name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profiles</samp>](## "router_adaptive_virtual_topology.vrfs.[].profiles") | List, items: Dictionary |  |  |  | AVT profiles in this VRF. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_adaptive_virtual_topology.vrfs.[].profiles.[].name") | String |  |  |  | AVT profile name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "router_adaptive_virtual_topology.vrfs.[].profiles.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 254 | Unique ID for this AVT (per VRF). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_adaptive_virtual_topology.vrfs.[].profiles.[].name") | String | Required, Unique |  |  | AVT profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "router_adaptive_virtual_topology.vrfs.[].profiles.[].id") | Integer | Required |  | Min: 1<br>Max: 254 | ID for this AVT (per VRF). |
 
 === "YAML"
 
@@ -138,8 +138,8 @@
           profiles:
 
               # AVT profile name.
-            - name: <str>
+            - name: <str; required; unique>
 
-              # Unique ID for this AVT (per VRF).
-              id: <int; 1-254; required; unique>
+              # ID for this AVT (per VRF).
+              id: <int; 1-254; required>
     ```

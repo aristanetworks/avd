@@ -1,17 +1,23 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 from ipaddress import IPv4Address, ip_interface
+from typing import TYPE_CHECKING
 
 from anta.input_models.security import IPSecPeer
 from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn
 
+from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
-from ._base_classes import AntaTestInputFactory
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_missing_config
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class VerifyAPIHttpsSSLInputFactory(AntaTestInputFactory[VerifyAPIHttpsSSL.Input]):
@@ -22,10 +28,14 @@ class VerifyAPIHttpsSSLInputFactory(AntaTestInputFactory[VerifyAPIHttpsSSL.Input
     `management_api_http.https_ssl_profile` of the device structured config.
     """
 
-    def create(self) -> list[VerifyAPIHttpsSSL.Input] | None:
-        """Create a list of inputs for the `VerifyAPIHttpsSSL test."""
-        profile = self.structured_config.management_api_http.https_ssl_profile
-        return [VerifyAPIHttpsSSL.Input(profile=profile)] if profile else None
+    @skip_if_missing_config(StructuredConfigKey.HTTPS_SSL_PROFILE)
+    def create(self) -> Iterator[VerifyAPIHttpsSSL.Input]:
+        """Generate the inputs for the `VerifyAPIHttpsSSL test."""
+        if not (profile := self.structured_config.management_api_http.https_ssl_profile):
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+            return
+
+        yield VerifyAPIHttpsSSL.Input(profile=profile)
 
 
 class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory[VerifySpecificIPSecConn.Input]):
@@ -40,8 +50,9 @@ class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory[VerifySpecificIPS
     It deduplicates connections and always uses the default VRF.
     """
 
-    def create(self) -> list[VerifySpecificIPSecConn.Input] | None:
-        """Create a list of inputs for the `VerifySpecificIPSecConn` test."""
+    @skip_if_missing_config(StructuredConfigKey.ROUTER_PATH_SELECTION)
+    def create(self) -> Iterator[VerifySpecificIPSecConn.Input]:
+        """Generate the inputs for the `VerifySpecificIPSecConn` test."""
         ip_security_connections: list[IPSecPeer] = []
 
         added_peers: set[tuple[str, str]] = set()
@@ -66,6 +77,8 @@ class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory[VerifySpecificIPS
                     else:
                         self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=peer_ip, path_group=path_group.name)
 
-        return (
-            [VerifySpecificIPSecConn.Input(ip_security_connections=natural_sort(ip_security_connections, sort_key="peer"))] if ip_security_connections else None
-        )
+        if not ip_security_connections:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+            return
+
+        yield VerifySpecificIPSecConn.Input(ip_security_connections=natural_sort(ip_security_connections, sort_key="peer"))

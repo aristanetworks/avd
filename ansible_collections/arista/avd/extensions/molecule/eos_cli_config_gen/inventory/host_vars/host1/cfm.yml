@@ -36,6 +36,13 @@ cfm:
         - id: 201
           profile: profile_simple
           vlan: 201
+    # Test for sort with ignore_case: false
+    - name: abcd
+      level: 3
+      associations:
+        - id: 202
+          profile: profile_simple
+          vlan: 202
   profiles:
     # A full-featured profile demonstrating most options.
     - name: profile_10G
@@ -71,6 +78,14 @@ cfm:
 
     # Test for tx_interval without period
     - name: profile_20G
+      measurement:
+        loss:
+          synthetic:
+            tx_interval:
+              interval: 10
+
+    # Test for sort with ignore_case: false
+    - name: PROFILE_Z
       measurement:
         loss:
           synthetic:

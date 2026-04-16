@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2025-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -65,10 +65,12 @@ The Arista AVD project follows [Semantic Versioning](../versioning/semantic-vers
 
 AVD supports the following upgrade paths:
 
-- Between any minor versions in the same release train, i.e., from 5.1.0 to 5.7.0.
+- Between any minor versions in the same release train, i.e., from 5.3.0 to 5.7.2.
   - Skipping minor versions is supported.
-- Between major release trains, i.e., from 5.7 to 6.0.0.
-  - Skipping a major version is not supported, i.e, from 3.8.0 to 5.0.0.
+- Between major release trains, i.e., from 5.7.2 to 6.0.0.
+  - Recommended upgrade path is to do a minor version upgrade to the latest minor version in the current major release train before upgrading to the next major release train.
+    - The upgrade should be done sequentially, i.e., from 5.5.0 to 5.7.2, and address all deprecations warnings before proceeding to upgrade to 6.0.0.
+  - Skipping a major version is not supported, i.e, from 4.10.0 to 6.0.0.
   - Major versions may contain changes requiring updates to the inventory variables. Required updates will be described in a Porting Guide for each major version.
 
 Release notes and porting guide for version 6.x.x can be found here:
@@ -82,8 +84,8 @@ The following table depicts the AVD release support matrix, including the timeli
 
 | Release | Initial Release Date | Maintenance Phase | Support Only Phase | End of Support |
 | ------- | -------------------- | ----------------- | ------------------ | -------------- |
-| 6.x.x | - | - | - | - |
-| 5.x.x | Oct-2024 | - | - | - |
+| 6.x.x | Feb-2026 | - | - | - |
+| 5.x.x | Oct-2024 | Feb-2026 | Aug-2026 | Feb-2027 |
 | 4.x.x | Jun-2023 | Oct-2024 | Apr-2025 | Oct-2025 |
 
 ## Ordering Information

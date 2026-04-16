@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -22,8 +22,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local</samp>](## "aaa_authentication.policies.local") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_nopassword</samp>](## "aaa_authentication.policies.local.allow_nopassword") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lockout</samp>](## "aaa_authentication.policies.lockout") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;failure</samp>](## "aaa_authentication.policies.lockout.failure") | Integer |  |  | Min: 1<br>Max: 255 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duration</samp>](## "aaa_authentication.policies.lockout.duration") | Integer |  |  | Min: 1<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;failure</samp>](## "aaa_authentication.policies.lockout.failure") | Integer | Required |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;duration</samp>](## "aaa_authentication.policies.lockout.duration") | Integer | Required |  | Min: 1<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window</samp>](## "aaa_authentication.policies.lockout.window") | Integer |  |  | Min: 1<br>Max: 4294967295 |  |
 
 === "YAML"
@@ -73,7 +73,7 @@
         local:
           allow_nopassword: <bool>
         lockout:
-          failure: <int; 1-255>
-          duration: <int; 1-4294967295>
+          failure: <int; 1-255; required>
+          duration: <int; 1-4294967295; required>
           window: <int; 1-4294967295>
     ```

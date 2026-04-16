@@ -1,0 +1,10 @@
+---
+### IP HTTP Client ###
+
+ip_http_client:
+  source_interface: Ethernet10
+  vrfs:
+    - name: MGMT
+      source_interface: Management0
+    - name: aaa
+      source_interface: Loopback0

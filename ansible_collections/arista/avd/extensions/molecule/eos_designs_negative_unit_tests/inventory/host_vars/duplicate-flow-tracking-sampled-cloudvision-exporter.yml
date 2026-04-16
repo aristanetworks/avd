@@ -1,0 +1,54 @@
+---
+# Testing duplicate flow-tracking sampled exporters entry
+type: l2leaf
+
+cv_settings:
+  cvaas:
+    enabled: true
+    clusters:
+      - name: cvaas
+        vrf: use_mgmt_interface_vrf
+
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: 192.168.200.5
+
+dns_settings:
+  servers:
+    - ip_address: 192.168.200.5
+
+fabric_flow_tracking:
+  uplinks:
+    enabled: true
+    name: FLOW-TRACKER-11
+
+flow_tracking_settings:
+  cloudvision_exporter:
+    name: Exporter1
+    vrf: exporter_vrf
+  trackers:
+    - name: FLOW-TRACKER-11
+      export_to_cloudvision: true
+      exporters:
+        - name: Exporter1
+          collectors:
+            - host: 127.0.2.1
+
+l2leaf:
+  defaults:
+    platform: vEOS-lab
+    uplink_interfaces: ['Ethernet1']
+    uplink_switches: ['duplicate-flow-tracking-hardware-cloudvision-exporter']
+    # default value is sampled
+    flow_tracker_type: sampled
+
+  nodes:
+    - name: duplicate-flow-tracking-sampled-cloudvision-exporter
+      id: 1
+      mgmt_ip: 192.168.0.201/24
+      uplink_switch_interfaces:
+        - Ethernet15
+expected_error_message: >-
+  Found conflicting configuration for exporter 'Exporter1' while generating configuration for flow tracking 'export_to_cloudvision'.
+  One exporter defined for tracker 'FLOW-TRACKER-11' is conflicting with the 'cloudvision_exporter.name' configuration.

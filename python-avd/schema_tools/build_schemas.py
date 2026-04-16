@@ -1,8 +1,12 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import gzip
+import io
+import json
 import logging
 import subprocess
+from os.path import relpath
 from pathlib import Path
 from textwrap import indent
 
@@ -11,7 +15,7 @@ from yaml import CSafeDumper, CSafeLoader
 from yaml import dump as yaml_dump
 from yaml import load as yaml_load
 
-from .constants import LICENSE_HEADER, SCHEMAS
+from .constants import LICENSE_HEADER, METASCHEMA_DIR, SCHEMA_STORE_GZ_FILE, SCHEMAS
 from .generate_classes.src_generators import FileSrc
 from .generate_classes.utils import generate_class_name
 from .generate_docs.mdtabsgen import get_md_tabs
@@ -21,18 +25,31 @@ from .store import create_store
 try:
     import jsonschema_rs
 
+    JSON_SCHEMA_VALIDATOR = jsonschema_rs.Draft7Validator
     HAS_JSONSCHEMA_RS = True
 except ImportError:
     HAS_JSONSCHEMA_RS = False
 
 FRAGMENTS_PATTERN = "*.yml"
+METASCHEMA_FILE = METASCHEMA_DIR.joinpath("avd_meta_schema.json")
 
 LOGGER = logging.getLogger(__name__)
 
 
+def _get_relative_metaschema_path(schema_file: Path) -> str:
+    """Compute the relative path from a schema file directory to the metaschema JSON file."""
+    schema_dir = schema_file.parent
+    return relpath(METASCHEMA_FILE, schema_dir).replace("\\", "/")
+
+
 def combine_schemas() -> None:
-    """Combine all schema fragments into a single YAML file."""
-    for schema_paths in SCHEMAS.values():
+    """
+    Combine all schema fragments into a single YAML file.
+
+    Also writes the schemas.json.gz file.
+    """
+    store: dict[str, dict] = {}
+    for schema_name, schema_paths in SCHEMAS.items():
         if not (fragments_path := schema_paths.fragments_dir):
             continue
 
@@ -43,14 +60,26 @@ def combine_schemas() -> None:
             with fragment_filename.open(mode="r", encoding="UTF-8") as fragment_stream:
                 schema = always_merger.merge(schema, yaml_load(fragment_stream, Loader=CSafeLoader))
 
+        # Compute the relative path from this schema file to the metaschema
+        metaschema_rel_path = _get_relative_metaschema_path(schema_paths.yaml_file)
+
         with schema_paths.yaml_file.open(mode="w", encoding="UTF-8") as schema_stream:
             schema_stream.write(indent(LICENSE_HEADER, prefix="# ") + "\n")
             schema_stream.write(
-                "# yaml-language-server: $schema=../../_schema/avd_meta_schema.json\n"
+                f"# yaml-language-server: $schema={metaschema_rel_path}\n"
                 "# Line above is used by RedHat's YAML Schema vscode extension\n"
                 "# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.\n",
             )
             schema_stream.write(yaml_dump(schema, Dumper=CSafeDumper, sort_keys=False))
+
+        store[schema_name] = schema
+
+    with io.TextIOWrapper(
+        # Using mtime=0 to ensure a consistent Gzip file each time for the same content.
+        buffer=gzip.GzipFile(filename=SCHEMA_STORE_GZ_FILE, mode="wb", mtime=0),
+        encoding="UTF-8",
+    ) as gz_file:
+        json.dump(store, gz_file)
 
 
 def validate_schemas(schema_store: dict) -> None:
@@ -61,7 +90,7 @@ def validate_schemas(schema_store: dict) -> None:
             "The schemas could not be validated."
         )
         return
-    schema_validator = jsonschema_rs.Draft7Validator(schema_store["avd_meta_schema"])
+    schema_validator = JSON_SCHEMA_VALIDATOR(schema_store["avd_meta_schema"])
     for schema_name, schema in schema_store.items():
         if schema_name == "avd_meta_schema":
             continue

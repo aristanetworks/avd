@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """Input factories for the ANTA tests."""
@@ -16,13 +16,22 @@ from .hardware import (
     VerifyTransceiversManufacturersInputFactory,
     VerifyTransceiversTemperatureInputFactory,
 )
-from .interfaces import VerifyInterfacesStatusInputFactory, VerifyPortChannelsInputFactory, VerifyStormControlDropsInputFactory
+from .interfaces import (
+    VerifyIllegalLACPInputFactory,
+    VerifyInterfaceErrDisabledInputFactory,
+    VerifyInterfacesStatusInputFactory,
+    VerifyPortChannelsInputFactory,
+    VerifyStormControlDropsInputFactory,
+)
 from .logging import VerifyLoggingErrorsInputFactory
+from .mlag import VerifyMlagConfigSanityInputFactory, VerifyMlagInterfacesInputFactory, VerifyMlagStatusInputFactory
 from .router_path_selection import VerifySpecificPathInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
-from .routing_generic import VerifyRoutingProtocolModelInputFactory, VerifyRoutingTableEntryInputFactory
+from .routing_generic import VerifyIPv4RoutePresencePerVRFInputFactory, VerifyRoutingProtocolModelInputFactory
+from .routing_ospf import VerifyOSPFMaxLSAInputFactory, VerifyOSPFNeighborStateInputFactory
 from .security import VerifyAPIHttpsSSLInputFactory, VerifySpecificIPSecConnInputFactory
 from .system import VerifyReloadCauseInputFactory
+from .vxlan import VerifyVxlanConfigSanityInputFactory
 
 __all__ = [
     "VerifyAPIHttpsSSLInputFactory",
@@ -31,19 +40,27 @@ __all__ = [
     "VerifyEnvironmentCoolingInputFactory",
     "VerifyEnvironmentPowerInputFactory",
     "VerifyEnvironmentSystemCoolingInputFactory",
+    "VerifyIPv4RoutePresencePerVRFInputFactory",
+    "VerifyIllegalLACPInputFactory",
+    "VerifyInterfaceErrDisabledInputFactory",
     "VerifyInterfacesStatusInputFactory",
     "VerifyInventoryInputFactory",
     "VerifyLLDPNeighborsInputFactory",
     "VerifyLoggingErrorsInputFactory",
+    "VerifyMlagConfigSanityInputFactory",
+    "VerifyMlagInterfacesInputFactory",
+    "VerifyMlagStatusInputFactory",
+    "VerifyOSPFMaxLSAInputFactory",
+    "VerifyOSPFNeighborStateInputFactory",
     "VerifyPortChannelsInputFactory",
     "VerifyReachabilityInputFactory",
     "VerifyReloadCauseInputFactory",
     "VerifyRoutingProtocolModelInputFactory",
-    "VerifyRoutingTableEntryInputFactory",
     "VerifySpecificIPSecConnInputFactory",
     "VerifySpecificPathInputFactory",
     "VerifyStormControlDropsInputFactory",
     "VerifyTemperatureInputFactory",
     "VerifyTransceiversManufacturersInputFactory",
     "VerifyTransceiversTemperatureInputFactory",
+    "VerifyVxlanConfigSanityInputFactory",
 ]

@@ -81,9 +81,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -167,9 +167,9 @@ ntp server vrf MGMT 0.pool.ntp.org prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -258,8 +258,8 @@ management security
    !
    ssl profile STUN-DTLS
       tls versions 1.2
-      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
       certificate STUN-DTLS.crt key STUN-DTLS.key
+      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
 ```
 
 ## Kernel Settings
@@ -406,9 +406,9 @@ ip security
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.15/32 | - | 9194 | Hardware: FLOW-TRACKER | - |
+| Interface | IP address | IPv6 addresses | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | -------------- | -------- | --- | --------------- | --------------- |
+| Dps1 | 192.168.42.15/32 | - | - | 9194 | Hardware: FLOW-TRACKER | - |
 
 #### DPS Interfaces Device Configuration
 
@@ -489,8 +489,8 @@ interface Ethernet4
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
@@ -582,9 +582,9 @@ ip routing vrf RED
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
-| default | 172.18.0.0/16 | 172.18.40.1 | - | 1 | - | - | - |
 | default | 100.64.0.0/16 | 100.64.40.1 | - | 1 | - | - | - |
+| default | 172.18.0.0/16 | 172.18.40.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
@@ -755,16 +755,16 @@ router adaptive-virtual-topology
       avt profile BLUE-POLICY-VIDEO id 2
       avt profile BLUE-POLICY-VOICE id 3
    !
-   vrf default
-      avt policy DEFAULT-POLICY-WITH-CP
-      avt profile DEFAULT-POLICY-DEFAULT id 1
-      avt profile DEFAULT-POLICY-CONTROL-PLANE id 254
-   !
    vrf RED
       avt policy RED-POLICY
       avt profile RED-POLICY-CRITICAL-SECRET-DATA id 2
       avt profile RED-POLICY-NORMAL-DATA id 3
       avt profile RED-POLICY-NOT-SO-IMPORTANT-DATA id 4
+   !
+   vrf default
+      avt policy DEFAULT-POLICY-WITH-CP
+      avt profile DEFAULT-POLICY-CONTROL-PLANE id 254
+      avt profile DEFAULT-POLICY-DEFAULT id 1
 ```
 
 ### Router Traffic-Engineering
@@ -812,7 +812,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### WAN-OVERLAY-PEERS
 
@@ -909,7 +909,7 @@ router bgp 65000
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-IN in
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor WAN-OVERLAY-PEERS peer group
    neighbor WAN-OVERLAY-PEERS remote-as 65000
    neighbor WAN-OVERLAY-PEERS update-source Dps1
@@ -1102,7 +1102,6 @@ route-map RM-EVPN-SOO-OUT permit 10
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.15:102
 ```
 

@@ -19,17 +19,6 @@
         anta_reports_dir: "{{ root_dir }}/anta/reports/default_run"
       run_once: true
 
-    - name: ANTA Allow BGP VRFs Run
-      delegate_to: 127.0.0.1
-      ansible.builtin.import_role:
-        name: arista.avd.anta_runner
-      vars:
-        anta_runner_dry_run: true
-        avd_catalogs_dir: "{{ root_dir }}/anta/avd_catalogs/allow_bgp_vrfs_run"
-        anta_reports_dir: "{{ root_dir }}/anta/reports/allow_bgp_vrfs_run"
-        avd_catalogs_allow_bgp_vrfs: true
-      run_once: true
-
     - name: ANTA Filtered Run
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
@@ -48,7 +37,7 @@
             run_tests:
               - VerifyReachability
           # Skip tests take precedence over run_tests
-          # All tests except VerifyLLDPNeighbors will run on DC2_SPINES devices
+          # No test will run on DC2_SPINES devices
           - device_list: "{{ groups['DC2_SPINES'] }}"
             run_tests:
               - VerifyLLDPNeighbors
@@ -63,17 +52,21 @@
       vars:
         anta_runner_dry_run: true
         avd_catalogs_enabled: false
+        user_catalogs_enabled: true
         anta_reports_dir: "{{ root_dir }}/anta/reports/user_defined_catalogs_run"
       run_once: true
 
-    - name: ANTA User-Defined Catalogs Run with Tags
+    - name: ANTA User-Defined Catalogs Run with Tags and Markdown Granularity
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
         name: arista.avd.anta_runner
       vars:
         anta_runner_dry_run: true
         avd_catalogs_enabled: false
+        user_catalogs_enabled: true
         anta_reports_dir: "{{ root_dir }}/anta/reports/user_defined_catalogs_with_tags_run"
+        anta_report_expand_results: true
+        anta_report_custom_field: true
         anta_runner_tags: ["border_leaf"]
       run_once: true
 

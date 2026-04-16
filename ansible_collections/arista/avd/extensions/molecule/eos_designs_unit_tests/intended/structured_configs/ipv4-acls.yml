@@ -77,6 +77,8 @@ ip_access_lists:
     protocol: ip
     source: 172.16.0.1/30
     destination: 172.16.0.2
+    inner_vlan_number: 123
+    inner_vlan_mask: '0x000'
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet1
   entries:
   - remark: Some remark will not require source and destination fields.
@@ -95,6 +97,8 @@ ip_access_lists:
     protocol: ip
     source: 172.17.17.1
     destination: 172.17.17.17
+    inner_vlan_number: 123
+    inner_vlan_mask: '0x000'
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet2
   entries:
   - remark: Some remark will not require source and destination fields.
@@ -125,6 +129,8 @@ ip_access_lists:
     protocol: ip
     source: 172.20.20.1/30
     destination: 172.20.20.0
+    inner_vlan_number: 123
+    inner_vlan_mask: '0x000'
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet6_6.6
   entries:
   - remark: Some remark will not require source and destination fields.
@@ -169,35 +175,10 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    next_hop_unchanged: true
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

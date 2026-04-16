@@ -1,0 +1,104 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_bgp-peer-groups-3_Ethernet61
+  shutdown: false
+  mtu: 9214
+  ipv6_addresses:
+  - 2001:db8:a11:beef::d1/127
+  metadata:
+    peer: bgp-peer-groups-3
+    peer_interface: Ethernet61
+    peer_type: pe
+  switchport:
+    enabled: false
+hostname: bgp-peer-groups-ipv6-1
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ipv6_prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY-V6
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2001:db8:dead:beef::/64 eq 128
+ipv6_unicast_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ipv6_addresses:
+  - 2001:db8:dead:beef::69/128
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 30
+    type: permit
+    match:
+    - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65001'
+  router_id: 10.255.1.113
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPV6-UNDERLAY-PEERS
+    metadata:
+      type: ipv6
+    description: Description for ipv4_underlay_peers via structured_config for IPv6 underlay numbered
+    bfd: true
+    send_community: all
+    maximum_routes: 256000
+  neighbors:
+  - ip_address: 2001:db8:a11:beef::d0
+    peer_group: IPV6-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: bgp-peer-groups-3
+    description: bgp-peer-groups-3_Ethernet61
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_ipv6:
+    peer_groups:
+    - name: IPV6-UNDERLAY-PEERS
+      activate: true
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: bgp-peer-groups-ipv6-1_VTEP
+    vxlan:
+      source_interface: Loopback0
+      udp_port: 4789
+      encapsulations:
+        ipv6: true

@@ -1,0 +1,46 @@
+---
+# Testing with default none management
+type: l2leaf
+
+default_mgmt_method: none
+
+sflow_settings:
+  polling_interval: 1
+  sample:
+    rate: 10
+  destinations:
+    - destination: 10.10.10.12
+      vrf: default
+  export_to_cloudvision:
+    enabled: true
+    vrf: default
+fabric_sflow:
+  uplinks: true
+  downlinks: true
+  endpoints: true
+  l3_edge: true
+  core_interfaces: true
+  mlag_interfaces: true
+l2leaf:
+  defaults:
+    platform: vEOS-lab
+    uplink_interfaces: ['Ethernet1']
+    uplink_switches: ['sflow-settings-missing-destinations']
+    inband_mgmt_subnet: "10.254.254.0/24"
+
+  nodes:
+    - name: missing-cv-settings-for-sflow-export-cloudvision-vrf
+      id: 1
+      mgmt_ip: 192.168.0.201/24
+      uplink_switch_interfaces:
+        - Ethernet15
+l3_edge:
+  p2p_links:
+    - nodes: [missing-cv-settings-for-sflow-export-cloudvision-vrf, sflow-settings-missing-destinations]
+      interfaces: [Ethernet12, Ethernet13]
+      include_in_underlay_protocol: false
+      sflow: true
+
+expected_error_message: >-
+  CloudVision export is enabled for sFlow, but 'cv_settings' is not defined.
+  Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'.

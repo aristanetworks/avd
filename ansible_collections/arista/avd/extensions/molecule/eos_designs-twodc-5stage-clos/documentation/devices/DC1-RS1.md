@@ -158,8 +158,8 @@ interface Ethernet3
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
@@ -261,15 +261,15 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 172.16.20.1 | 65201 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 172.16.110.4 | 4267180132 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.110.5 | 4267180132 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
+| 172.16.110.6 | 4267180132 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.200.1 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.210.1 | 65210 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.210.3 | 65211 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
@@ -306,17 +306,17 @@ router bgp 65101
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.16.20.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.20.1 remote-as 65201
    neighbor 172.16.20.1 description DC2-RS1_Loopback0
    neighbor 172.16.20.1 route-map RM-EVPN-FILTER-AS65201 out
-   neighbor 172.16.110.4 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.4 remote-as 4267180132
-   neighbor 172.16.110.4 description DC1.POD1.LEAF2A_Loopback0
    neighbor 172.16.110.5 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.5 remote-as 4267180132
    neighbor 172.16.110.5 description DC1-POD1-LEAF2B_Loopback0
+   neighbor 172.16.110.6 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.110.6 remote-as 4267180132
+   neighbor 172.16.110.6 description DC1.POD1.LEAF2A_Loopback0
    neighbor 172.16.200.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.200.1 remote-as 65200
    neighbor 172.16.200.1 description DC2-SUPER-SPINE1_Loopback0

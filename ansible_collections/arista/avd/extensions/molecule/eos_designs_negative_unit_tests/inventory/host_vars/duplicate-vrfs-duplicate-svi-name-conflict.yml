@@ -1,3 +1,4 @@
+---
 # Testing duplicate VRF definitions according to the following rules documented in the schema.
 # Also see eos_designs_unit_tests for testing of the intended functionality.
 
@@ -42,8 +43,7 @@ tenants:
             enabled: true
             name: VLAN100_CONFLICTING_NAME
             ip_address_virtual: 10.0.100.1/24
-
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Vlans.
-  {'id': 100, 'name': 'VLAN100', 'metadata': {'tenant': 'TENANT1'}} conflicts with
-  {'id': 100, 'name': 'VLAN100_CONFLICTING_NAME', 'metadata': {'tenant': 'DUPLICATE_TENANT1'}}.
+  {'id': 100, 'name': 'VLAN100', 'metadata': {'tenants': ['TENANT1']}} conflicts with
+  {'id': 100, 'name': 'VLAN100_CONFLICTING_NAME', 'metadata': {'tenants': ['DUPLICATE_TENANT1']}}.

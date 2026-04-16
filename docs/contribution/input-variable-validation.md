@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -9,7 +9,7 @@
 !!! NOTE
     - Some schema validations are not implemented yet.
 
-`eos_designs` and `eos_cli_config_gen` support a wide range of input variables described under the role documentation sections.
+Arista AVD supports a wide range of data models described under the user manual's [data model](../data-models/README.md) section.
 
 Internally the supported data models are described in the proprietary "AVD Schema" format, which is used to perform validation of
 the input variables at run-time. The same schema is also used to generate the role documentation describing the supported data
@@ -44,27 +44,12 @@ is also given in the inputs, there is a conflict leading to validation error to 
 
 If a removed key is set in the inputs, a validation error will be raised and the task will fail.
 
-## Validation Options
+## Input Variables Validation
 
 Schema validation is built in to the central Action plugins used in AVD. Each plugin runs variable type conversion first and then
 performs validation of the converted data.
 
-By default any data validation issues will trigger errors - blocking further processing.
-This behavior can be adjusted by setting the variables described below.
-
-!!! danger
-    The input variable `avd_data_validation_mode` now has a default value of `error`, and while it can be set to `warning`, this is highly discouraged.
-    All AVD code relies on the validation to ensure valid data, so the code assumes that the data is valid.
-
-    If the validation mode is set to `warning`, execution will continue with invalid data, which can lead to hard-to-read errors or incorrect behavior.
-
-```yaml
-# Validation Mode for AVD input data validation | Optional
-# During validation, messages will generated with information about the host(s) and key(s) which failed validation.
-# "error" will produce error messages and fail the task.
-# "warning" will produce warning messages.
-avd_data_validation_mode: < "error" | "warning" | default -> "error" >
-```
+Any data validation issues will trigger errors - blocking further processing.
 
 ## Schema Details
 
@@ -92,8 +77,8 @@ This fragment will be merged with other fragments during development, to form th
 
 For reference, the full Role Schemas can be found here:
 
-- [`eos_designs` AVD Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml)
-- [`eos_cli_config_gen` AVD Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml)
+- `eos_designs` uses the [AVD Design Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml)
+- `eos_cli_config_gen` uses the [EOS Config Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml)
 
 The supported schema options depend on the type of variable that is described. The supported types are `int`, `bool`, `str`,
 `dict` and `list`. The schema does not support mixed types for the same variable, but the automatic type conversion mentioned

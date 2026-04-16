@@ -3,6 +3,58 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_bgp-peer-groups-1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.252.204/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  metadata:
+    peer: bgp-peer-groups-1
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_bgp-peer-groups-2_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.252.206/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  metadata:
+    peer: bgp-peer-groups-2
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet61
+  description: P2P_bgp-peer-groups-ipv6-1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 2001:db8:a11:beef::d0/127
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  metadata:
+    peer: bgp-peer-groups-ipv6-1
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: bgp-peer-groups-3
 ip_igmp_snooping:
   globally_enabled: true
@@ -56,6 +108,18 @@ router_bgp:
     bfd: false
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.112
+    peer_group: MPLS-OVERLAY-PEERS
+    metadata:
+      peer: bgp-peer-groups-2
+    description: bgp-peer-groups-2_Loopback0
+  - ip_address: 192.168.250.1
+    peer_group: IPVPN-GATEWAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: bgp-peer-groups-4
+    description: bgp-peer-groups-4
   address_family_evpn:
     domain_identifier: '65535:1'
     neighbor_default:
@@ -64,18 +128,12 @@ router_bgp:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
       activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: false
-    - name: IPVPN-GATEWAY-PEERS
-      activate: false
   address_family_vpn_ipv4:
     domain_identifier: '65535:2'
     peer_groups:
-    - name: IPVPN-GATEWAY-PEERS
-      activate: true
     - name: MPLS-OVERLAY-PEERS
+      activate: true
+    - name: IPVPN-GATEWAY-PEERS
       activate: true
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
@@ -85,8 +143,6 @@ router_isis:
   router_id: 192.168.255.114
   is_type: level-1-2
   log_adjacency_changes: true
-  advertise:
-    passive_only: false
   address_family_ipv4:
     enabled: true
     maximum_paths: 4

@@ -1,0 +1,28 @@
+---
+port_profiles:
+
+  - profile: PP-WEBSERVER # (1)!
+    mode: access
+    vlans: "10"
+    spanning_tree_portfast: edge
+    storm_control:
+      all:
+        level: "10"
+        unit: percent
+
+  - profile: PP-VMHOST-LACP # (2)!
+    mode: trunk
+    vlans: "20,30"
+    port_channel:
+      mode: active
+    spanning_tree_portfast: edge
+
+  - profile: PP-FIREWALL-TRUNK # (3)!
+    mode: trunk
+    vlans: "10,20,30,100"
+    native_vlan: 100
+
+  - profile: PP-APPSERVER
+    mode: trunk
+    vlans: "11,12"
+    spanning_tree_portfast: edge

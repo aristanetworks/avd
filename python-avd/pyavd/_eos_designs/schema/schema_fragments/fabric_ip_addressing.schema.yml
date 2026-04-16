@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -13,8 +13,6 @@ keys:
         type: dict
         keys:
           ipv6_prefix_length:
-            documentation_options:
-              table: node-type-loopback-vtep-configuration
             description: IPv6 prefix length used for Router ID, VTEP and diagnostic loopbacks.
             type: int
             default: 128

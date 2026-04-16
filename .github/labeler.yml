@@ -86,9 +86,8 @@
 "type: dependencies":
   - changed-files:
       - any-glob-to-any-file:
-          - development/requirements-dev.txt
-          - development/requirements.txt
-          - docs/requirements.txt
+          - ansible_collections/arista/avd/requirements.txt
+          - "**/pyproject.toml"
 
 "state: CI Updated":
   - changed-files:

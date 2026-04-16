@@ -3,7 +3,7 @@
 title: MPLS-VPN based WAN Network
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -12,7 +12,7 @@ title: MPLS-VPN based WAN Network
 
 ## Introduction
 
-This example is the logical second step in introducing AVD to new users, following the [Introduction to Ansible and AVD](../../../../../docs/getting-started/intro-to-ansible-and-avd.md) section. New users with access to virtual routers (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical routers will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical routers is not accessible, this example can also be used to only generate the output from AVD if desired.
+This example is the logical second step in introducing AVD to new users, following the [Introduction to Ansible and AVD](../../../../../docs/user-manual/intro-to-ansible-and-avd.md) section. New users with access to virtual routers (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical routers will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical routers is not accessible, this example can also be used to only generate the output from AVD if desired.
 
 The example includes and describes all the AVD files and their content used to build a MPLS-VPN WAN network covering two sites using the following:
 
@@ -21,6 +21,12 @@ The example includes and describes all the AVD files and their content used to b
 - Two (virtual) route reflectors act as route servers for the WAN.
 
 This example does not include Integration with CloudVision to keep everything as simple as possible. In this case, the Ansible host will communicate directly with the routers using eAPI.
+
+## AVD Playground
+
+--8<--
+ansible_collections/arista/avd/examples/common/start-avd-playground.md
+--8<--
 
 ## Installation
 
@@ -298,14 +304,11 @@ local_users: # (2)!
 bgp_peer_groups: # (3)!
   mpls_overlay_peers:
     password: Q4fqtbqcZ7oQuKfuWtNGRQ==
-
-p2p_uplinks_mtu: 1500 # (4)!
 ```
 
 1. The name of the fabric for internal AVD use. This name *must* match the name of an Ansible Group (and therefore a corresponding group_vars file) covering all network devices.
 2. Local users/passwords and their privilege levels. In this case, the `admin` user is set with no password and the `arista` user is set with the password `arista`.
 3. BGP peer groups and their passwords (all passwords are "arista").
-4. Point-to-point interface MTU, in this case, is set to 1500 since the example uses vEOS, but when using hardware, this should be set to 9214 instead.
 
 ## Setting device-specific configuration parameters
 
@@ -412,7 +415,6 @@ core_interfaces:
 
   p2p_links_profiles:
     - name: core_profile # (2)!
-      mtu: 1500
       isis_metric: 50
       ip_pool: core_pool
       isis_circuit_type: level-2

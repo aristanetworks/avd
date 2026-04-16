@@ -15,28 +15,28 @@ daemon_terminattr:
   disable_aaa: false
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 dhcp_servers:
-- disabled: false
-  vrf: default
+- vrf: default
+  disabled: false
   lease_time_ipv4:
     days: 6
     hours: 23
     minutes: 59
   ipv4_subnets:
   - subnet: 100.64.10.0/24
-    name: 10 NET
     default_gateway: 100.64.10.1
+    name: 10 NET
     ranges:
     - start: 100.64.10.2
       end: 100.64.10.2
   - subnet: 100.64.11.0/24
-    name: 11 NET
     default_gateway: 100.64.11.1
+    name: 11 NET
     ranges:
     - start: 100.64.11.2
       end: 100.64.11.2
   - subnet: 100.64.30.0/24
-    name: 30 NET
     default_gateway: 100.64.30.1
+    name: 30 NET
     ranges:
     - start: 100.64.30.2
       end: 100.64.30.2
@@ -113,9 +113,11 @@ ip_domain_lookup:
   source_interfaces:
   - name: Management1
     vrf: MGMT
-ip_name_servers:
-- ip_address: 192.168.17.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.17.1
 ip_routing: true
 local_users:
 - name: admin
@@ -182,25 +184,19 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
   neighbors:
   - ip_address: 100.64.21.2
-    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     default_originate:
       enabled: true
       always: true
+    send_community: all
   redistribute:
     connected:
       enabled: true
   address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
+    neighbors:
+    - ip_address: 100.64.21.2
       activate: true
 service_routing_protocols_model: multi-agent
 spanning_tree:

@@ -40,6 +40,10 @@ class_maps:
       ecn: ce
     - name: DSCP_TEST_5
       ecn: ce
+    # Test for sort with ignore_case: false
+    - name: aaa_test_6
+      ip:
+        access_group: acl_qos_tc5_v4
   pbr:
     - name: CM_PBR_EXCLUDE
       ip:
@@ -48,3 +52,7 @@ class_maps:
       ip:
         access_group: ACL_PBR_INCLUDE
     - name: CM_PBR_WITHOUT_ACCESS_GROUP
+    # Test for sort with ignore_case: false
+    - name: aaa
+      ip:
+        access_group: ACL_PBR_INCLUDE

@@ -92,11 +92,12 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: DC1-SPINE2
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
 ip_routing_ipv6_interfaces: true
 ipv6_unicast_routing: true
 local_users:
@@ -172,7 +173,7 @@ router_bgp:
       type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

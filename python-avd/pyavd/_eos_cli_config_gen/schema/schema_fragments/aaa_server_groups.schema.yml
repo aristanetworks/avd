@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -18,6 +18,7 @@ keys:
         type:
           type: str
           valid_values: ["tacacs+", "radius", "ldap"]
+          required: true
         servers:
           type: list
           items:
@@ -26,8 +27,24 @@ keys:
               server:
                 type: str
                 description: Hostname or IP address.
+                required: true
               vrf:
                 type: str
                 description: VRF name.
                 convert_types:
                   - int
+              tls:
+                type: dict
+                description: TLS settings for the RADIUS group server. Only applicable when the parent server group type is 'radius'.
+                keys:
+                  enabled:
+                    type: bool
+                    description: Enable TLS to secure communication with the RADIUS group server.
+                    required: true
+                  port:
+                    type: int
+                    min: 1
+                    max: 65535
+                    convert_types:
+                      - str
+                    description: TCP port used for TLS-secured RADIUS communication. Overrides the default RadSec port (EOS default is 2083).

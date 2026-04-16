@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -47,6 +47,7 @@ keys:
                 keys:
                   source_vrf:
                     type: str
+                    required: true
                     convert_types:
                       - int
                   subscribe_policy:

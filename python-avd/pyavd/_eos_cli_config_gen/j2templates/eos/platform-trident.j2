@@ -1,11 +1,11 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - platform trident #}
 {% if platform is arista.avd.defined %}
-{%     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
+{%     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 platform trident mmu queue profile {{ profile.name }}
 {%         if profile.ingress.reserved.memory is arista.avd.defined %}
@@ -30,7 +30,7 @@ platform trident mmu queue profile {{ profile.name }}
 {%         if profile.ingress.resume is arista.avd.defined %}
     ingress resume {{ profile.ingress.resume }}
 {%         endif %}
-{%         for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
+{%         for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort(sort_key='id') %}
 {%             if priority_group.reserved.memory is arista.avd.defined %}
 {%                 set priority_group_reserved = "ingress priority-group " ~ priority_group.id ~ " reserved " %}
 {%                 if priority_group.reserved.unit is arista.avd.defined %}
@@ -43,7 +43,7 @@ platform trident mmu queue profile {{ profile.name }}
     ingress priority-group {{ priority_group.id }} threshold {{ priority_group.threshold }}
 {%             endif %}
 {%         endfor %}
-{%         for queue in profile.unicast_queues | arista.avd.natural_sort('id') %}
+{%         for queue in profile.unicast_queues | arista.avd.natural_sort(sort_key='id') %}
 {%             if queue.reserved is arista.avd.defined %}
 {%                 set reserved_cli = "egress unicast queue " ~ queue.id ~ " reserved" %}
 {%                 if queue.unit is arista.avd.defined %}
@@ -59,7 +59,7 @@ platform trident mmu queue profile {{ profile.name }}
     egress unicast queue {{ queue.id }} drop-precedence {{ queue.drop.precedence }} drop-threshold {{ queue.drop.threshold }}
 {%             endif %}
 {%         endfor %}
-{%         for queue in profile.multicast_queues | arista.avd.natural_sort('id') %}
+{%         for queue in profile.multicast_queues | arista.avd.natural_sort(sort_key='id') %}
 {%             if queue.reserved is arista.avd.defined %}
 {%                 set reserved_cli = "egress multicast queue " ~ queue.id ~ " reserved" %}
 {%                 if queue.unit is arista.avd.defined %}

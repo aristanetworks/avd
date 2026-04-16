@@ -3,7 +3,7 @@
 title: arista.avd.eos_designs_documentation
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -26,6 +26,7 @@ The `arista.avd.eos_designs_documentation` module is an Ansible Action Plugin pr
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| <samp>tmp_dir</samp> | str | True | None | - | Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.<br>Must be the same across all plugins. |
 | <samp>structured_config_dir</samp> | str | True | None | - | Path to directory containing files with AVD structured configurations. |
 | <samp>structured_config_suffix</samp> | str | optional | yml | - | File suffix for AVD structured configuration files. |
 | <samp>fabric_documentation_file</samp> | str | True | None | - | Path to output Markdown file. |
@@ -46,6 +47,7 @@ The `arista.avd.eos_designs_documentation` module is an Ansible Action Plugin pr
 
 - name: Generate fabric documentation
   arista.avd.eos_designs_documentation:
+    tmp_dir: "intended/tmp_eos_designs"
     structured_config_dir: "{{ structured_dir }}"
     structured_config_suffix: "{{ avd_structured_config_file_format }}"
     fabric_documentation_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -102,7 +102,7 @@
 
 | Route Type | Route-Map | Include Leaked |
 | ---------- | --------- | -------------- |
-{%         for redistribute_route in router_isis.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
+{%         for redistribute_route in router_isis.redistribute_routes | arista.avd.natural_sort(sort_key='source_protocol') %}
 {%             set src_protocol = redistribute_route.source_protocol | arista.avd.default('-') %}
 {%             set route_map = redistribute_route.route_map | arista.avd.default('-') %}
 {%             if src_protocol in ['static', 'connected', 'ospf'] %}
@@ -126,7 +126,7 @@
 | --------- | ------------- | ----------- | -------------- |
 {# ethernet interfaces #}
 {# ------- #}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%         if ethernet_interface.isis_enable is arista.avd.defined %}
 {%             set row_isis_instance = ethernet_interface.isis_enable %}
 {%             set row_isis_metric = ethernet_interface.isis_metric | arista.avd.default('-') %}
@@ -143,7 +143,7 @@
 {# ------- #}
 {# vlan interfaces #}
 {# ------- #}
-{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%         if vlan_interface.isis_enable is arista.avd.defined %}
 {%             set row_isis_instance = vlan_interface.isis_enable %}
 {%             set row_isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
@@ -160,7 +160,7 @@
 {# ------- #}
 {# loopback interfaces #}
 {# ------- #}
-{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%         if loopback_interface.isis_enable is arista.avd.defined %}
 {%             set row_isis_instance = loopback_interface.isis_enable %}
 {%             set row_isis_metric = loopback_interface.isis_metric | arista.avd.default('-') %}
@@ -176,7 +176,7 @@
 {%     endfor %}
 {# ISIS Node-SID #}
 {%     set node_sid_loopbacks = [] %}
-{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%         if loopback_interface.node_segment.ipv4_index is arista.avd.defined or loopback_interface.node_segment.ipv6_index is arista.avd.defined %}
 {%             do node_sid_loopbacks.append(loopback_interface) %}
 {%         endif %}
@@ -187,7 +187,7 @@
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-{%         for loopback_interface in node_sid_loopbacks | arista.avd.natural_sort %}
+{%         for loopback_interface in node_sid_loopbacks | arista.avd.natural_sort(sort_key='name') %}
 {%             set row_ipv4_index = loopback_interface.node_segment.ipv4_index | arista.avd.default("-") %}
 {%             set row_ipv6_index = loopback_interface.node_segment.ipv6_index | arista.avd.default("-") %}
 | {{ loopback_interface.name }} | {{ row_ipv4_index }} | {{ row_ipv6_index }} |
@@ -199,7 +199,7 @@
 
 | Prefix Segment | Index |
 | -------------- | ----- |
-{%         for prefix_segment in router_isis.segment_routing_mpls.prefix_segments | arista.avd.natural_sort('prefix') %}
+{%         for prefix_segment in router_isis.segment_routing_mpls.prefix_segments | arista.avd.natural_sort(sort_key='prefix') %}
 {%             if prefix_segment.index is arista.avd.defined %}
 | {{ prefix_segment.prefix }} | {{ prefix_segment.index }} |
 {%             endif %}
@@ -249,6 +249,9 @@
 | IPv6 Address-family Enabled | True |
 {%         if router_isis.address_family_ipv6.maximum_paths is arista.avd.defined %}
 | Maximum-paths | {{ router_isis.address_family_ipv6.maximum_paths }} |
+{%         endif %}
+{%         if router_isis.address_family_ipv6.multi_topology is arista.avd.defined %}
+| Multi-topology Enabled | {{ router_isis.address_family_ipv6.multi_topology }} |
 {%         endif %}
 {%         if router_isis.address_family_ipv6.bfd_all_interfaces is arista.avd.defined %}
 | BFD All-interfaces | {{ router_isis.address_family_ipv6.bfd_all_interfaces }} |

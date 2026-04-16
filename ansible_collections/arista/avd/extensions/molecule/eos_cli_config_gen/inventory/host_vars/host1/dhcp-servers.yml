@@ -2,6 +2,7 @@
 dhcp_servers:
   - vrf: defauls
   - vrf: defaulu
+  # Test for sort with ignore_case: false
   - vrf: TEST
     ipv4_vendor_options:
       - vendor_id: NTP
@@ -13,6 +14,11 @@ dhcp_servers:
           - code: 66
             array_ipv4_address: [1.1.1.1, 2.2.2.2]
           - code: 70
+      # Test for sort with ignore_case: false
+      - vendor_id: abcd
+        sub_options:
+          - code: 42
+            ipv4_address: "10.1.1.1"
     disabled: false
     lease_time_ipv4:
       days: 10
@@ -94,12 +100,20 @@ dhcp_servers:
           - mac_address: 0001.0001.0001
             hostname: host3
             ipv4_address: 10.0.0.2
+        tftp_server:
+          file: "https://www.arista.io/ztp/bootstrap"
+          option_66: 192.168.66.22
+          option_150:
+            - 192.166.66.33
+            - 192.161.66.33
     ipv6_subnets:
       - subnet: 2a00:2::/64
       - subnet: 2001:db8:abcd:1234:c000::/66
         reservations:
           - mac_address: 0003.0003.003
             ipv6_address: 2001:db8:abcd:1234:c000::1
+        tftp_server:
+          file: "https://2001:0db8:fe/ztp/bootstrap"
     ipv4_vendor_options:
       - vendor_id: NTP
         sub_options:

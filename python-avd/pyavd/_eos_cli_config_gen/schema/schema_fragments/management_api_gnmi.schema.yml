@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -42,7 +42,9 @@ keys:
                     an option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.
                 ip_access_group:
                   type: str
-                  description: ACL name.
+                  description: ->
+                    ACL name.
+                    Only one transport in the same VRF can be configured with a service ACL; all transports in the same VRF use the same service ACL.
                 port:
                   type: int
                   description: |

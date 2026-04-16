@@ -12,6 +12,8 @@ tenants:
           loopback: 100
           loopback_ip_range: 10.255.1.0/24
           loopback_ipv6_range: 2001:db8:1::/48
+          loopback_ip_pools:
+            - pod: Tenant_X_OP_POD
         svis:
           - id: 310
             name: Tenant_X_OP_Zone_1
@@ -39,6 +41,10 @@ tenants:
             - pod: TENANT_NETWORKS_POD
               ipv4_pool: 10.101.102.0/24
               ipv6_pool: 2001:db8:1::-2001:db8:1:7fff::, 2001:db8:1:8000::/49
+          # Defining loopback_ip_range, loopback_ipv6_range should not change the configuration
+          # since pod and pod_name are matching and loopback_ip_pools are defined.
+          loopback_ip_range: 10.255.1.0/24
+          loopback_ipv6_range: 2001:db8:1:8000::/49
         svis:
           - id: 315
             name: Tenant_network_vrf_1
@@ -57,3 +63,31 @@ tenants:
             tags: [opzone]
             enabled: true
             ip_address_virtual: 10.1.10.3/24
+      - name: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
+        vrf_id: 24
+        vtep_diagnostic:
+          loopback: 400
+          loopback_ipv6_range: 2001:db8:2::/48
+          loopback_ip_pools:
+            - pod: TENANT_NETWORKS_POD
+              ipv4_pool: 10.101.10.0/24
+        svis:
+          - id: 320
+            name: Tenant_network_vrf_3
+            tags: [opzone]
+            enabled: true
+            ip_address_virtual: 10.1.10.4/24
+      - name: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
+        vrf_id: 25
+        vtep_diagnostic:
+          loopback: 500
+          loopback_ip_range: 10.255.1.0/24
+          loopback_ip_pools:
+            - pod: TENANT_NETWORKS_POD
+              ipv6_pool: 2001:db8:1:8000::/49
+        svis:
+          - id: 324
+            name: Tenant_network_vrf_4
+            tags: [opzone]
+            enabled: true
+            ip_address_virtual: 10.1.10.5/24

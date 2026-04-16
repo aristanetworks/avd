@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -53,7 +53,7 @@ pip3 install pyavd
 
 ## Examples
 
-- [Getting started](docs/getting-started/intro-to-ansible-and-avd.md)
+- [Getting started](docs/user-manual/intro-to-ansible-and-avd.md)
 - [Arista NetDevOps GitHub repository](https://github.com/aristanetworks/netdevops-examples)
 
 ## Additional resources

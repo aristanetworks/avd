@@ -1,7 +1,6 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from typing import Literal
 
 from aristaproto import _DateTime
 
@@ -53,247 +52,105 @@ def create_grpc_change_control(
     return ChangeControl(change=change, approve=Flag(value=approved), status=status, error=error)
 
 
+# === Tags Helper Functions ===
+
+
+def _get_device_tag(label: str, value: str) -> Tag:
+    """Return a single Device Tag."""
+    return Tag(
+        key=TagKey(workspace_id="", element_type=ElementType.DEVICE, label=label, value=value, element_sub_type=ElementSubType.DEVICE),
+        creator_type=CreatorType.USER,
+    )
+
+
+def _get_interface_tag(label: str, value: str) -> Tag:
+    """Return a single Interface Tag."""
+    return Tag(
+        key=TagKey(workspace_id="", element_type=ElementType.INTERFACE, label=label, value=value, element_sub_type=ElementSubType.DEVICE),
+        creator_type=CreatorType.USER,
+    )
+
+
+def _get_device_tag_assignment(label: str, value: str, device_id: str) -> TagAssignment:
+    """Return a single Device TagAssignment."""
+    return TagAssignment(
+        key=TagAssignmentKey(
+            workspace_id="",
+            element_type=ElementType.DEVICE,
+            label=label,
+            value=value,
+            device_id=device_id,
+            element_sub_type=ElementSubType.DEVICE,
+        ),
+        tag_creator_type=CreatorType.USER,
+    )
+
+
+def _get_interface_tag_assignment(label: str, value: str, device_id: str, interface_id: str = "Ethernet1") -> TagAssignment:
+    """Return a single Interface TagAssignment."""
+    return TagAssignment(
+        key=TagAssignmentKey(
+            workspace_id="",
+            element_type=ElementType.INTERFACE,
+            label=label,
+            value=value,
+            device_id=device_id,
+            interface_id=interface_id,
+            element_sub_type=ElementSubType.DEVICE,
+        ),
+        tag_creator_type=CreatorType.USER,
+    )
+
+
+def get_device_tags_cv_state() -> list[Tag]:
+    label_value_map = [
+        ("device_tag_1", "device_tag_1_value_2"),
+        ("device_tag_2", "device_tag_2_value_1"),
+        ("mixed_tag_1", "mixed_tag_1_value_2"),
+        ("mixed_tag_2", "mixed_tag_2_value_1"),
+        ("K", "V"),
+    ]
+    return [_get_device_tag(label, value) for label, value in label_value_map]
+
+
+def get_interface_tags_cv_state() -> list[Tag]:
+    label_value_map = [
+        ("interface_tag_1", "interface_tag_1_value_2"),
+        ("interface_tag_2", "interface_tag_2_value_1"),
+        ("mixed_tag_1", "mixed_tag_1_value_2"),
+        ("mixed_tag_2", "mixed_tag_2_value_1"),
+        ("K", "V"),
+    ]
+    return [_get_interface_tag(label, value) for label, value in label_value_map]
+
+
+def get_device_tag_assignments_cv_state() -> list[TagAssignment]:
+    label_value_map = [
+        ("device_tag_1", "device_tag_1_value_2", "L2_serial"),
+        ("device_tag_1", "device_tag_1_value_2", "L3_serial"),
+        ("device_tag_2", "device_tag_2_value_1", "L3_serial"),
+        ("mixed_tag_1", "mixed_tag_1_value_2", "L2_serial"),
+        ("mixed_tag_1", "mixed_tag_1_value_2", "L3_serial"),
+        ("mixed_tag_2", "mixed_tag_2_value_1", "L3_serial"),
+    ]
+    return [_get_device_tag_assignment(label, value, device_id) for label, value, device_id in label_value_map]
+
+
+def get_interface_tag_assignments_cv_state() -> list[TagAssignment]:
+    label_value_map = [
+        ("interface_tag_1", "interface_tag_1_value_2", "L2_serial"),
+        ("interface_tag_1", "interface_tag_1_value_2", "L3_serial"),
+        ("interface_tag_2", "interface_tag_2_value_1", "L3_serial"),
+        ("mixed_tag_1", "mixed_tag_1_value_2", "L2_serial"),
+        ("mixed_tag_1", "mixed_tag_1_value_2", "L3_serial"),
+        ("mixed_tag_2", "mixed_tag_2_value_1", "L3_serial"),
+    ]
+    return [_get_interface_tag_assignment(label, value, device_id) for label, value, device_id in label_value_map]
+
+
 # === Other Helper Functions ===
 
 
 def generate_id(key: str) -> str:
     """Helper to consistently generate expected IDs for tests."""
     return CVManifest._generate_deterministic_id(key)
-
-
-def get_tags_cv_state(tag_type: Literal["device", "interface", "all"]) -> list[Tag]:
-    device_tags = [
-        Tag(
-            key=TagKey(
-                workspace_id="", element_type=ElementType.DEVICE, label="device_tag_1", value="device_tag_1_value_2", element_sub_type=ElementSubType.DEVICE
-            ),
-            creator_type=CreatorType.USER,
-        ),
-        Tag(
-            key=TagKey(
-                workspace_id="", element_type=ElementType.DEVICE, label="device_tag_2", value="device_tag_2_value_1", element_sub_type=ElementSubType.DEVICE
-            ),
-            creator_type=CreatorType.USER,
-        ),
-        Tag(
-            key=TagKey(
-                workspace_id="", element_type=ElementType.DEVICE, label="mixed_tag_1", value="mixed_tag_1_value_2", element_sub_type=ElementSubType.DEVICE
-            ),
-            creator_type=CreatorType.USER,
-        ),
-        Tag(
-            key=TagKey(
-                workspace_id="", element_type=ElementType.DEVICE, label="mixed_tag_2", value="mixed_tag_2_value_1", element_sub_type=ElementSubType.DEVICE
-            ),
-            creator_type=CreatorType.USER,
-        ),
-        Tag(
-            key=TagKey(workspace_id="", element_type=ElementType.DEVICE, label="K", value="V", element_sub_type=ElementSubType.DEVICE),
-            creator_type=CreatorType.USER,
-        ),
-    ]
-    interface_tags = [
-        Tag(
-            key=TagKey(
-                workspace_id="",
-                element_type=ElementType.INTERFACE,
-                label="interface_tag_1",
-                value="interface_tag_1_value_2",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            creator_type=CreatorType.USER,
-        ),
-        Tag(
-            key=TagKey(
-                workspace_id="",
-                element_type=ElementType.INTERFACE,
-                label="interface_tag_2",
-                value="interface_tag_2_value_1",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            creator_type=CreatorType.USER,
-        ),
-        Tag(
-            key=TagKey(
-                workspace_id="", element_type=ElementType.INTERFACE, label="mixed_tag_1", value="mixed_tag_1_value_2", element_sub_type=ElementSubType.DEVICE
-            ),
-            creator_type=CreatorType.USER,
-        ),
-        Tag(
-            key=TagKey(
-                workspace_id="", element_type=ElementType.INTERFACE, label="mixed_tag_2", value="mixed_tag_2_value_1", element_sub_type=ElementSubType.DEVICE
-            ),
-            creator_type=CreatorType.USER,
-        ),
-        Tag(
-            key=TagKey(workspace_id="", element_type=ElementType.INTERFACE, label="K", value="V", element_sub_type=ElementSubType.DEVICE),
-            creator_type=CreatorType.USER,
-        ),
-    ]
-    if tag_type == "device":
-        return device_tags
-    if tag_type == "interface":
-        return interface_tags
-    return device_tags + interface_tags
-
-
-def get_tags_assignments_cv_state(tag_type: Literal["device", "interface", "all"]) -> list[TagAssignment]:
-    device_tag_assignments = [
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.DEVICE,
-                label="device_tag_1",
-                value="device_tag_1_value_2",
-                device_id="L2_serial",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.DEVICE,
-                label="device_tag_1",
-                value="device_tag_1_value_2",
-                device_id="L3_serial",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.DEVICE,
-                label="device_tag_2",
-                value="device_tag_2_value_1",
-                device_id="L3_serial",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.DEVICE,
-                label="mixed_tag_1",
-                value="mixed_tag_1_value_2",
-                device_id="L2_serial",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.DEVICE,
-                label="mixed_tag_1",
-                value="mixed_tag_1_value_2",
-                device_id="L3_serial",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.DEVICE,
-                label="mixed_tag_2",
-                value="mixed_tag_2_value_1",
-                device_id="L3_serial",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-    ]
-    interface_tag_assignments = [
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.INTERFACE,
-                label="interface_tag_1",
-                value="interface_tag_1_value_2",
-                device_id="L2_serial",
-                interface_id="Ethernet1",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.INTERFACE,
-                label="interface_tag_1",
-                value="interface_tag_1_value_2",
-                device_id="L3_serial",
-                interface_id="Ethernet1",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.INTERFACE,
-                label="interface_tag_2",
-                value="interface_tag_2_value_1",
-                device_id="L3_serial",
-                interface_id="Ethernet1",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.INTERFACE,
-                label="mixed_tag_1",
-                value="mixed_tag_1_value_2",
-                device_id="L2_serial",
-                interface_id="Ethernet1",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.INTERFACE,
-                label="mixed_tag_1",
-                value="mixed_tag_1_value_2",
-                device_id="L3_serial",
-                interface_id="Ethernet1",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.INTERFACE,
-                label="mixed_tag_1",
-                value="mixed_tag_1_value_2",
-                device_id="L3_serial",
-                interface_id="Ethernet1",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-        TagAssignment(
-            key=TagAssignmentKey(
-                workspace_id="",
-                element_type=ElementType.INTERFACE,
-                label="mixed_tag_2",
-                value="mixed_tag_2_value_1",
-                device_id="L3_serial",
-                interface_id="Ethernet1",
-                element_sub_type=ElementSubType.DEVICE,
-            ),
-            tag_creator_type=CreatorType.USER,
-        ),
-    ]
-    if tag_type == "device":
-        return device_tag_assignments
-    if tag_type == "interface":
-        return interface_tag_assignments
-    return device_tag_assignments + interface_tag_assignments

@@ -1,0 +1,14 @@
+{
+    "payload": {
+        "value": {
+            "key": {
+                "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                "configletId": "avd-B51AA89B6E51E89E1422107EDE3A9438"
+            },
+            "displayName": "TEST_CONFIGLET_NAME",
+            "description": "Configuration created and uploaded by AVD for avd-ci-leaf2",
+            "body": "alias test test"
+        },
+        "time": "2026-03-09T21:16:00.006299938"
+    }
+}

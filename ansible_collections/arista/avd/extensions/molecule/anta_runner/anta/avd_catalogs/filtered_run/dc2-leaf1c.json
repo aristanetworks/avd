@@ -47,7 +47,8 @@
             "neighbor_device": "dc2-leaf1b",
             "neighbor_port": "Ethernet8"
           }
-        ]
+        ],
+        "require_fqdn": false
       }
     }
   ],
@@ -85,7 +86,14 @@
           "tags": [
             "dc2-leaf1c"
           ]
-        }
+        },
+        "interfaces": [
+          "Ethernet1",
+          "Ethernet2",
+          "Ethernet5",
+          "Management1",
+          "Port-Channel1"
+        ]
       }
     },
     {

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -19,7 +19,7 @@
     | [<samp>&nbsp;&nbsp;onprem_clusters</samp>](## "cv_settings.onprem_clusters") | List, items: Dictionary |  |  |  | On-premise CloudVision clusters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings.onprem_clusters.[].name") | String | Required, Unique |  | Pattern: `[a-zA-Z0-9-_]+` | Short name for the cluster. Required here, but only used when configuring multiple clusters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "cv_settings.onprem_clusters.[].servers") | List, items: Dictionary | Required |  | Min Length: 1<br>Max Length: 3 | CloudVision servers that makes up one cluster. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings.onprem_clusters.[].servers.[].name") | String | Required, Unique |  |  | Server FQDN or IP address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings.onprem_clusters.[].servers.[].name") | String | Required, Unique |  |  | Server IP address or FQDN.<br>Note: It is currently recommended to use IP address because of limitations with Image transfers from CloudVision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "cv_settings.onprem_clusters.[].servers.[].port") | Integer |  | `9910` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "cv_settings.onprem_clusters.[].vrf") | String |  | `use_default_mgmt_method_vrf` |  | The VRF used to connect to CloudVision.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the `mgmt_interface` as the source interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_file</samp>](## "cv_settings.onprem_clusters.[].token_file") | String |  | `/tmp/token` |  | Path to the onboarding token used for certificate based authentication.<br>The path is on the EOS device and the token file must be copied to the device first. |
@@ -86,7 +86,8 @@
           # CloudVision servers that makes up one cluster.
           servers: # 1-3 items; required
 
-              # Server FQDN or IP address.
+              # Server IP address or FQDN.
+              # Note: It is currently recommended to use IP address because of limitations with Image transfers from CloudVision.
             - name: <str; required; unique>
               port: <int; default=9910>
 

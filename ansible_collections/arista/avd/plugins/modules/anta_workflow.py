@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ANSIBLE_METADATA = {"metadata_version": "1.0", "status": ["preview"]}
@@ -49,10 +49,6 @@ options:
         type: str
         default: "yml"
         choices: ["yml", "yaml", "json"]
-      allow_bgp_vrfs:
-        description: If `true`, generate tests for BGP peers in VRFs.
-        type: bool
-        default: false
       extra_fabric_validation:
         description: If `true`, generate extra fabric-wide validation tests (e.g., reachability and routing tests).
         type: bool
@@ -78,6 +74,10 @@ options:
     description: User-defined test catalogs settings. These settings are used to run user-provided ANTA catalogs against the devices.
     type: dict
     suboptions:
+      enabled:
+        description: Enable used-defined catalogs generation.
+        type: bool
+        default: false
       input_dir:
         description: Directory containing the user-defined ANTA test catalogs.
         type: str
@@ -97,6 +97,8 @@ options:
         description: |-
           List of tags used with user-defined catalogs to filter which tests to run on which devices.
           These tags are used in conjunction with `anta_tags` variable assigned to devices in the Ansible inventory.
+        type: list
+        elements: str
       dry_run:
         description: |-
           Run ANTA in dry-run mode. In this mode, only the test catalogs are generated,
@@ -107,6 +109,20 @@ options:
     description: ANTA report settings. These settings define the output format and location of the ANTA reports.
     type: dict
     suboptions:
+      expand_results:
+        description: |-
+          Controls the granularity of the Markdown report.
+          When enabled, test entries are expanded to show the individual status of every check performed.
+          Not all ANTA tests currently support expanded results. For tests that do not support this feature yet,
+          the report will display the standard aggregated result regardless of this setting.
+        type: bool
+        default: false
+      generate_custom_field:
+        description: |
+          Controls whether the `custom_field` column is generated in the Markdown report.
+          ANTA test definitions can include an arbitrary string in the `custom_field` input that will be added to the test result.
+        type: bool
+        default: false
       csv_output:
         description: Path to the CSV report file.
         type: str
@@ -163,12 +179,13 @@ EXAMPLES = r"""
           output_dir: "{{ inventory_dir }}/anta/avd_catalogs"
           structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
           # structured_config_suffix: ".yml"
-          allow_bgp_vrfs: true
           # filters:
           #   - device_list: "{{ groups['DC1'] }}"
           #     skip_tests:
           #       - VerifyNTP
+          # extra_fabric_validation: true
         user_catalogs:
+          enabled: true
           input_dir: "{{ inventory_dir }}/anta/user_catalogs"
         runner:
           timeout: 360.0
@@ -181,7 +198,16 @@ EXAMPLES = r"""
           md_output: "{{ inventory_dir }}/anta/reports/anta_report.md"
           json_output: "{{ inventory_dir }}/anta/reports/anta_report.json"
           # filters:
-          #   hide_statuses:
+          #   exclude_statuses:
           #     - success
           #     - skipped
+          # sorting:
+          #   status_priority:
+          #     - failure
+          #     - error
+          #     - skipped
+          #   sort_fields:
+          #     - categories
+          # expand_results: true
+          # generate_custom_field: true
 """

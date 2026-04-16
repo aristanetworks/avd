@@ -1,16 +1,16 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - mac access lists #}
-{% for mac_access_list in mac_access_lists | arista.avd.natural_sort('name') %}
+{% for mac_access_list in mac_access_lists | arista.avd.natural_sort(sort_key='name') %}
 !
 mac access-list {{ mac_access_list.name }}
 {%     if mac_access_list.counters_per_entry is arista.avd.defined(true) %}
    counters per-entry
 {%     endif %}
-{%     for acl_entry in mac_access_list.entries %}
+{%     for acl_entry in mac_access_list.entries | arista.avd.default([]) %}
 {%         set acl_string = '' %}
 {%         if acl_entry.sequence is arista.avd.defined %}
 {%             set acl_string = acl_string ~ acl_entry.sequence ~ ' ' %}

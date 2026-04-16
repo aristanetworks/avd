@@ -9,7 +9,6 @@ ansible:
     ANSIBLE_FORCE_COLOR: true
   cfg:
     defaults:
-      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
       gathering: explicit
       vault_password_file: "${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/.vault"
   playbooks:

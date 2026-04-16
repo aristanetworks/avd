@@ -1,9 +1,9 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 from anta.input_models.hardware import HardwareInventory
 from anta.tests.hardware import (
@@ -16,53 +16,56 @@ from anta.tests.hardware import (
     VerifyTransceiversTemperature,
 )
 
-from ._base_classes import AntaTestInputFactory
-from ._decorators import skip_if_hardware_validation_disabled
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_hardware_validation_disabled
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class VerifyEnvironmentCoolingInputFactory(AntaTestInputFactory[VerifyEnvironmentCooling.Input]):
     """Input factory class for the `VerifyEnvironmentCooling` test."""
 
     @skip_if_hardware_validation_disabled
-    def create(self) -> list[VerifyEnvironmentCooling.Input] | None:
-        """Create a list of inputs for the `VerifyEnvironmentCooling` test."""
-        return [VerifyEnvironmentCooling.Input(states=["ok"])]
+    def create(self) -> Iterator[VerifyEnvironmentCooling.Input]:
+        """Generate the inputs for the `VerifyEnvironmentCooling` test."""
+        yield VerifyEnvironmentCooling.Input(states=["ok"])
 
 
 class VerifyEnvironmentPowerInputFactory(AntaTestInputFactory[VerifyEnvironmentPower.Input]):
     """Input factory class for the `VerifyEnvironmentPower` test."""
 
     @skip_if_hardware_validation_disabled
-    def create(self) -> list[VerifyEnvironmentPower.Input] | None:
-        """Create a list of inputs for the `VerifyEnvironmentPower` test."""
-        return [VerifyEnvironmentPower.Input(states=["ok"])]
+    def create(self) -> Iterator[VerifyEnvironmentPower.Input]:
+        """Generate the inputs for the `VerifyEnvironmentPower` test."""
+        yield VerifyEnvironmentPower.Input(states=["ok"])
 
 
 class VerifyEnvironmentSystemCoolingInputFactory(AntaTestInputFactory[VerifyEnvironmentSystemCooling.Input]):
     """Input factory class for the `VerifyEnvironmentSystemCooling` test."""
 
     @skip_if_hardware_validation_disabled
-    def create(self) -> list[VerifyEnvironmentSystemCooling.Input] | None:
-        """Create a list of inputs for the `VerifyEnvironmentSystemCooling` test."""
-        return [VerifyEnvironmentSystemCooling.Input()]
+    def create(self) -> Iterator[VerifyEnvironmentSystemCooling.Input]:
+        """Generate the inputs for the `VerifyEnvironmentSystemCooling` test."""
+        yield VerifyEnvironmentSystemCooling.Input()
 
 
 class VerifyTemperatureInputFactory(AntaTestInputFactory[VerifyTemperature.Input]):
     """Input factory class for the `VerifyTemperature` test."""
 
     @skip_if_hardware_validation_disabled
-    def create(self) -> list[VerifyTemperature.Input] | None:
-        """Create a list of inputs for the `VerifyTemperature` test."""
-        return [VerifyTemperature.Input()]
+    def create(self) -> Iterator[VerifyTemperature.Input]:
+        """Generate the inputs for the `VerifyTemperature` test."""
+        yield VerifyTemperature.Input()
 
 
 class VerifyTransceiversTemperatureInputFactory(AntaTestInputFactory[VerifyTransceiversTemperature.Input]):
     """Input factory class for the `VerifyTransceiversTemperature` test."""
 
     @skip_if_hardware_validation_disabled
-    def create(self) -> list[VerifyTransceiversTemperature.Input] | None:
-        """Create a list of inputs for the `VerifyTransceiversTemperature` test."""
-        return [VerifyTransceiversTemperature.Input()]
+    def create(self) -> Iterator[VerifyTransceiversTemperature.Input]:
+        """Generate the inputs for the `VerifyTransceiversTemperature` test."""
+        yield VerifyTransceiversTemperature.Input()
 
 
 class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTransceiversManufacturers.Input]):
@@ -75,9 +78,9 @@ class VerifyTransceiversManufacturersInputFactory(AntaTestInputFactory[VerifyTra
     """
 
     @skip_if_hardware_validation_disabled
-    def create(self) -> list[VerifyTransceiversManufacturers.Input] | None:
-        """Create a list of inputs for the `VerifyTransceiversManufacturers` test."""
-        return [VerifyTransceiversManufacturers.Input(manufacturers=list(self.structured_config.metadata.validate_hardware.transceiver_manufacturers))]
+    def create(self) -> Iterator[VerifyTransceiversManufacturers.Input]:
+        """Generate the inputs for the `VerifyTransceiversManufacturers` test."""
+        yield VerifyTransceiversManufacturers.Input(manufacturers=list(self.structured_config.metadata.validate_hardware.transceiver_manufacturers))
 
 
 class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
@@ -111,8 +114,8 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
         return requirement
 
     @skip_if_hardware_validation_disabled
-    def create(self) -> list[VerifyInventory.Input] | None:
-        """Create a list of inputs for the `VerifyInventory` test."""
+    def create(self) -> Iterator[VerifyInventory.Input]:
+        """Generate the inputs for the `VerifyInventory` test."""
         validate_hardware = self.structured_config.metadata.validate_hardware
         input_req = HardwareInventory(
             power_supplies=self._get_hardware_requirement(validate_hardware.min_power_supplies),
@@ -121,4 +124,4 @@ class VerifyInventoryInputFactory(AntaTestInputFactory[VerifyInventory.Input]):
             line_cards=self._get_hardware_requirement(validate_hardware.min_line_cards),
             supervisors=self._get_hardware_requirement(validate_hardware.min_supervisors),
         )
-        return [VerifyInventory.Input(requirements=input_req)]
+        yield VerifyInventory.Input(requirements=input_req)

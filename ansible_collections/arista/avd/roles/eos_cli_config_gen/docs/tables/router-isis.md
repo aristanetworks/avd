@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -32,7 +32,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_isis.timers.csnp.generation.interval") | Integer |  |  | Min: 1<br>Max: 300 | Transmit frequency (in seconds) for CSN packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_disabled</samp>](## "router_isis.timers.csnp.generation.p2p_disabled") | Boolean |  |  |  | Disable periodic CSN packets for P2P links. |
     | [<samp>&nbsp;&nbsp;set_overload_bit</samp>](## "router_isis.set_overload_bit") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.set_overload_bit.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.set_overload_bit.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;on_startup</samp>](## "router_isis.set_overload_bit.on_startup") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_isis.set_overload_bit.on_startup.delay") | Integer |  |  |  | Number of seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wait_for_bgp</samp>](## "router_isis.set_overload_bit.on_startup.wait_for_bgp") | Dictionary |  |  |  |  |
@@ -111,6 +111,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.address_family_ipv6.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_paths</samp>](## "router_isis.address_family_ipv6.maximum_paths") | Integer |  |  | Min: 1<br>Max: 128 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_all_interfaces</samp>](## "router_isis.address_family_ipv6.bfd_all_interfaces") | Boolean |  |  |  | Enable BFD on all interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multi_topology</samp>](## "router_isis.address_family_ipv6.multi_topology") | Boolean |  |  |  | Enable IS-IS multi-topology for the IPv6 address family.<br>Required for forming IPv6 adjacencies on IS-IS interfaces that do not have an IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fast_reroute_ti_lfa</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode") | String |  |  | Valid Values:<br>- <code>link-protection</code><br>- <code>node-protection</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.level") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code> | Optional, default is to protect all levels. |
@@ -121,7 +122,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.segment_routing_mpls.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_isis.segment_routing_mpls.router_id") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_segments</samp>](## "router_isis.segment_routing_mpls.prefix_segments") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].prefix") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].prefix") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].index") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;spf_interval</samp>](## "router_isis.spf_interval") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_isis.spf_interval.interval") | Integer |  |  |  | Maximum interval between two SPFs in seconds or milliseconds.<br>Range in seconds: <1-300><br>Range in milliseconds: <1-300000> |
@@ -194,7 +195,7 @@
             # Disable periodic CSN packets for P2P links.
             p2p_disabled: <bool>
       set_overload_bit:
-        enabled: <bool>
+        enabled: <bool; required>
         on_startup:
 
           # Number of seconds.
@@ -355,6 +356,10 @@
 
         # Enable BFD on all interfaces.
         bfd_all_interfaces: <bool>
+
+        # Enable IS-IS multi-topology for the IPv6 address family.
+        # Required for forming IPv6 adjacencies on IS-IS interfaces that do not have an IPv4 address.
+        multi_topology: <bool>
         fast_reroute_ti_lfa:
           mode: <str; "link-protection" | "node-protection">
 
@@ -369,7 +374,7 @@
         enabled: <bool>
         router_id: <str>
         prefix_segments:
-          - prefix: <str>
+          - prefix: <str; required; unique>
             index: <int>
       spf_interval:
 

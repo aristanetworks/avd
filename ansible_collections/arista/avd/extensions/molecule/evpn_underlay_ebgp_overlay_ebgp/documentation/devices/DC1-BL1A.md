@@ -67,9 +67,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -104,9 +104,9 @@ ip name-server vrf MGMT 192.168.200.5
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -297,8 +297,8 @@ vlan 350
 | Ethernet7 | test | - | 10.10.10.10/24 | Tenant_A_WAN_Zone | 9000 | False | - | - |
 | Ethernet8 | test | - | 10.10.10.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
 | Ethernet9 | test | - | 10.10.20.20/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
-| Ethernet10.100 | subinterface test | - | 10.10.11.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
-| Ethernet10.200 | subinterface test with vlan override | - | 10.10.21.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
+| Ethernet10.100 | subinterface test | - | 10.10.11.10/24 | Tenant_L3_VRF_Zone | - | False | - | - |
+| Ethernet10.200 | subinterface test with vlan override | - | 10.10.21.10/24 | Tenant_L3_VRF_Zone | - | False | - | - |
 | Ethernet41 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet6 | - | 172.31.255.81/31 | default | 1500 | False | - | - |
 | Ethernet42 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet6 | - | 172.31.255.83/31 | default | 1500 | False | - | - |
 | Ethernet43 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet6 | - | 172.31.255.85/31 | default | 1500 | False | - | - |
@@ -340,7 +340,6 @@ interface Ethernet10
 interface Ethernet10.100
    description subinterface test
    no shutdown
-   mtu 9000
    encapsulation dot1q vlan 100
    vrf Tenant_L3_VRF_Zone
    ip address 10.10.11.10/24
@@ -348,7 +347,6 @@ interface Ethernet10.100
 interface Ethernet10.200
    description subinterface test with vlan override
    no shutdown
-   mtu 9000
    encapsulation dot1q vlan 121
    vrf Tenant_L3_VRF_Zone
    ip address 10.10.21.10/24
@@ -406,8 +404,8 @@ interface Ethernet4000
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | - |
 | Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | - |
 
@@ -582,9 +580,9 @@ ip routing vrf Tenant_L3_VRF_Zone
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
-| Tenant_A_WAN_Zone | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 1.1.1.0/24 | 10.1.1.1 | vlan101 | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 1.1.2.0/24 | 10.1.1.1 | vlan101 | 200 | 666 | RT-TO-FAKE-DMZ | - |
+| Tenant_A_WAN_Zone | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 10.3.5.0/24 | - | Null0 | 1 | - | - | - |
 
 #### Static Routes Device Configuration
@@ -634,7 +632,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -704,7 +702,7 @@ router bgp 65104
    neighbor UNDERLAY-PEERS peer group
    neighbor UNDERLAY-PEERS password 7 <removed>
    neighbor UNDERLAY-PEERS send-community
-   neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.31.255.80 peer group UNDERLAY-PEERS
    neighbor 172.31.255.80 remote-as 65001
    neighbor 172.31.255.80 description DC1-SPINE1_Ethernet6

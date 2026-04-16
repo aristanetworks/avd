@@ -1,0 +1,85 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: bgp-peer-groups-4
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.250.1/32
+  isis_enable: CORE
+  isis_passive: true
+  node_segment:
+    ipv4_index: 1
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+mpls:
+  ip: true
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65001'
+  router_id: 192.168.250.1
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp_cluster_id: 192.168.250.1
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: RR-OVERLAY-PEERS
+    metadata:
+      type: mpls
+    remote_as: '65001'
+    description: Description for rr_overlay_peers via structured_config
+    update_source: Loopback0
+    bfd: false
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.112
+    peer_group: RR-OVERLAY-PEERS
+    metadata:
+      peer: bgp-peer-groups-2
+    description: bgp-peer-groups-2_Loopback0
+  address_family_vpn_ipv4:
+    peer_groups:
+    - name: RR-OVERLAY-PEERS
+      activate: true
+router_isis:
+  instance: CORE
+  net: 49.0001.1921.6825.0001.00
+  router_id: 192.168.250.1
+  is_type: level-2
+  log_adjacency_changes: true
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
+  segment_routing_mpls:
+    enabled: true
+    router_id: 192.168.250.1
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

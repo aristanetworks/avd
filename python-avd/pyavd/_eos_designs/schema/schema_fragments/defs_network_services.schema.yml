@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -177,6 +177,41 @@ $defs:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+        igmp_snooping:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: dict
+          keys:
+            querier:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                source_address:
+                  type: str
+                  description: |-
+                    The value of `source_address` will be interpreted according to these rules:
+                    - `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                    - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
+                    - `main_router_id` will configure the Loopback0 IP address.
+                    - An IPv4 address will be used directly as the source address.
+                  default: main_router_id
+                version:
+                  type: int
+                  description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                  convert_types:
+                    - str
+                  valid_values:
+                    - 1
+                    - 2
+                    - 3
+            fast_leave:
+              type: bool
+              description: |-
+                Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the Tenant.
+                On EOS, IGMP fast-leave is enabled on all VLANs by default.
+
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -205,6 +240,11 @@ $defs:
                 - str
             fast_leave:
               type: bool
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 7.0.0
+                new_key: igmp_snooping.fast_leave under the Tenant
               description: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
             always_redistribute_igmp:
               type: bool
@@ -326,14 +366,24 @@ $defs:
             Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
             When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: igmp_snooping.querier
           keys:
             enabled:
               type: bool
               description: Will be enabled automatically if "evpn_l2_multicast" is enabled.
             source_address:
               type: str
-              format: ipv4
-              description: Default IP address of Loopback0.
+              description: |-
+                The value of `source_address` will be interpreted according to these rules:
+                - `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
+                - `main_router_id` will configure the Loopback0 IP address.
+                - An IPv4 address will be used directly as the source address.
+              default: main_router_id
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -423,6 +473,40 @@ $defs:
                   rt_override supports two formats:
                     - A single number will be used in the RT assigned number subfield (second part of the RT).
                     - A full RT string with colon separator which will override the full RT.
+              rt_import:
+                type: bool
+                description: |
+                  Enable or disable route target import for the VRF for all address families.
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_export:
+                type: bool
+                description: |
+                  Enable or disable route target export for the VRF for all address families.
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_import_evpn_remote:
+                type: bool
+                description: |-
+                  Enable or disable route target import for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_export_evpn_remote:
+                type: bool
+                description: |-
+                  Enable or disable route target export for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              evpn_vlan_bundle:
+                type: str
+                description: |
+                  Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
+                  This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this option.
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: |-
@@ -506,19 +590,21 @@ $defs:
                     type: str
                     description: |
                       IPv4_address/Mask.
-                      Loopback IPv4 range, a unique ip is derived from this range and assigned to each l3 leaf based on it's unique id.
+                      Loopback IPv4 range, a unique ip is derived from this range and assigned to each l3 leaf based on its unique id.
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name` of the device, and is configured with an `ipv4_pool`, it takes precedence over `loopback_ipv4_range`.
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
                   loopback_ipv6_range:
                     type: str
                     description: |
                       IPv6_address/Mask.
-                      Loopback IPv6 range, a unique IPv6 address is derived from this range and assigned to each L3 leaf based on it's unique ID.
+                      Loopback IPv6 range, a unique IPv6 address is derived from this range and assigned to each L3 leaf based on its unique ID.
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name` of the device, and is configured with an `ipv6_pool`, it takes precedence over `loopback_ipv6_range`.
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
                   loopback_ip_pools:
                     type: list
                     description: |
                       For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
-                      `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range` takes precedence for IPV6.
+                      POD level pools take precedence over `loopback_ip_range` and `loopback_ipv6_range`.
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
                     primary_key: pod
                     items:
@@ -646,7 +732,7 @@ $defs:
                   structured_config:
                     type: dict
                     relaxed_validation: true
-                    description: Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for eos_cli_config_gen.
+                    description: Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for the EOS Config schema.
                     documentation_options:
                       hide_keys: true
                     $ref: "eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items"
@@ -778,7 +864,7 @@ $defs:
                       type: str
                       description: |
                         Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                        This setting overrides "evpn_vlan_bundle" set at tenant level.
+                        This setting overrides "evpn_vlan_bundle" set at the VRF or tenant level.
                         The common option "evpn_vlan_aware_bundles" is disregarded for this option.
                     nodes:
                       type: list
@@ -815,7 +901,9 @@ $defs:
                       type: list
                       items:
                         type: str
-                        description: Interface name.
+                        description: |-
+                          Interface name.
+                          For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.
                     encapsulation_dot1q_vlan:
                       type: list
                       description: For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
@@ -956,6 +1044,10 @@ $defs:
                       $ref: "eos_designs#/$defs/flow_tracking_link"
                       description: |-
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                    sflow:
+                      type: bool
+                      description: |-
+                        Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces` setting.
                     monitor_sessions:
                       type: list
                       $ref: "eos_designs#/$defs/monitor_sessions"
@@ -965,7 +1057,7 @@ $defs:
                     structured_config:
                       type: dict
                       relaxed_validation: true
-                      description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+                      description: Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config schema.
                       documentation_options:
                         hide_keys: true
                       $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
@@ -1186,7 +1278,7 @@ $defs:
                     structured_config:
                       type: dict
                       relaxed_validation: true
-                      description: Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                      description: Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                       documentation_options:
                         hide_keys: true
                       $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
@@ -1304,6 +1396,30 @@ $defs:
                 type: bool
                 default: true
                 description: Enable or disable the redistribution of all connected routes to BGP in the VRF. Note this is not applicable to VRF `default`.
+              static_arp_entries:
+                type: list
+                description: |
+                  List of static ARP entries for the tenant VRF.
+                  Entries are configured on all devices carrying the VRF unless filtered using the nodes key.
+                items:
+                  type: dict
+                  keys:
+                    ipv4_address:
+                      type: str
+                      required: true
+                      description: ARP entry IPv4 address.
+                    mac_address:
+                      type: str
+                      description: ARP entry MAC address.
+                      required: true
+                      pattern: "[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}"
+                    nodes:
+                      type: list
+                      items:
+                        type: str
+                      description: |
+                        List of nodes where the ARP static entry should be configured.
+                        If not set, the entry will be configured on all devices carrying the VRF.
               bgp_peers:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
@@ -1315,7 +1431,7 @@ $defs:
                   This will configure BGP neighbors inside the tenant VRF for peering with external devices.
                   The configured peer will automatically be activated for ipv4 or ipv6 address family based on the ip address.
                   Note, only ipv4 and ipv6 address families are currently supported in eos_designs.
-                  For other address families, use custom_structured configuration with eos_cli_config_gen.
+                  For other address families, use custom_structured configuration with EOS Config schema.
                 items:
                   type: dict
                   keys:
@@ -1459,7 +1575,7 @@ $defs:
                   structured_config:
                     type: dict
                     relaxed_validation: true
-                    description: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for eos_cli_config_gen.
+                    description: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
                     documentation_options:
                       hide_keys: true
                     $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items"
@@ -1571,10 +1687,13 @@ $defs:
                       valid_values:
                         - import
                         - export
+                      required: true
                     address_family:
                       type: str
+                      required: true
                     route_target:
                       type: str
+                      required: true
                     nodes:
                       type: list
                       items:
@@ -1606,7 +1725,7 @@ $defs:
               structured_config:
                 type: dict
                 relaxed_validation: true
-                description: Custom structured config for eos_cli_config_gen.
+                description: Custom structured config for the EOS Config schema.
                 documentation_options:
                   hide_keys: true
                 $ref: "eos_cli_config_gen#"
@@ -1647,6 +1766,28 @@ $defs:
                 items:
                   type: str
                   default: all
+        vpws:
+          type: dict
+          description: |-
+            VPWS pseudowire settings for the tenant.
+            To render `mpls_control_word`, `mtu`, and `label_flow` in the BGP VPWS configuration,
+            both `point_to_point_services` and `pseudowire_rt_base` must be set under the tenant.
+          keys:
+            # TODO: AVD 7.0.0 Change default value true
+            mpls_control_word:
+              type: bool
+              default: false
+              description: |-
+                Enable or disable MPLS control word for VPWS pseudowires.
+            mtu:
+              type: int
+              convert_types:
+                - str
+              description: MTU for VPWS pseudowires.
+            label_flow:
+              type: bool
+              description: |-
+                Enable or disable MPLS label flow for VPWS pseudowires.
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings
@@ -1687,7 +1828,7 @@ $defs:
                           type: dict
                           relaxed_validation: true
                           description: |
-                            Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen.
+                            Custom structured config added on the Port-Channel subinterface for the EOS Config schema.
                           documentation_options:
                             hide_keys: true
                           $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
@@ -1699,7 +1840,7 @@ $defs:
                       type: dict
                       relaxed_validation: true
                       description: |
-                        Custom structured config added on the Ethernet subinterface for eos_cli_config_gen.
+                        Custom structured config added on the Ethernet subinterface for the EOS Config schema.
                       documentation_options:
                         hide_keys: true
                       $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
@@ -1733,6 +1874,7 @@ $defs:
                       description: |
                         Interfaces patched to the pseudowire on this endpoints.
                         The list of interfaces is mapped to the list of nodes, so they must have the same length.
+                        For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.
                       required: true
                       min_length: 1
                       items:

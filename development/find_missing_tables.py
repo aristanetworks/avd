@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import argparse
@@ -9,7 +9,10 @@ from pathlib import Path
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Checks that all table markdown files are referenced in global documentation.")
+    parser = argparse.ArgumentParser(
+        description="Checks that all table markdown files are referenced in global documentation.",
+        fromfile_prefix_chars="@",
+    )
     parser.add_argument("--root-path", type=Path, required=True, help="The relative path to the project's root directory from where pre-commit is run.")
     parser.add_argument("--table-files", nargs="+", required=True, help="Glob pattern for table markdown files.")
     parser.add_argument("--global-docs", nargs="+", required=True, help="Glob pattern for global documentation files.")

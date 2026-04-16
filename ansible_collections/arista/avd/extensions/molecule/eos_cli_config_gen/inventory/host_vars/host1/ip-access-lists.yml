@@ -87,10 +87,17 @@ ip_access_lists:
         destination: any
         nexthop_group: NH_TEST
       - action: permit
-        vlan_number: 123
-        vlan_inner: true
-        vlan_mask: "0x000"
+        inner_vlan_number: 123
+        inner_vlan_mask: "0x000"
         protocol: ip
+        source: any
+        destination: any
+      - action: permit
+        inner_vlan_number: 124
+        inner_vlan_mask: "0x001"
+        vlan_number: 235
+        vlan_mask: "0x1FF"
+        protocol: tcp
         source: any
         destination: any
       - action: permit
@@ -104,4 +111,7 @@ ip_access_lists:
         source: any
         destination: any
   - name: ACL_WITHOUT_ENTRIES
+    counters_per_entry: false
+  # Test for sort with ignore_case: false
+  - name: acl_aaa_short
     counters_per_entry: false

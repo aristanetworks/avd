@@ -3,7 +3,7 @@
 title: L2LS Fabric
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -24,6 +24,12 @@ The example is meant as a starting foundation. You may build more advanced fabri
 ???+ info
 
     The configurations may also be applied with CloudVision with a few updates to your playbook and Ansible variables.
+
+## AVD Playground
+
+--8<--
+ansible_collections/arista/avd/examples/common/start-avd-playground.md
+--8<--
 
 ## Installation & Requirements
 
@@ -193,7 +199,7 @@ The tabs below show the Ansible **group_vars** used in this example.
 
 ## The Playbooks
 
-Now that we have defined all of our Ansible variables (AVD inputs), it is time to generate some configs. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: eos_designs and eos_cli_config_gen, which do all the heavy lifting. Combining these two roles produces recommended configurations that follow Arista Design Guides.
+Now that we have defined all of our input variables according to AVD Design data models, it is time to generate some configs. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: eos_designs and eos_cli_config_gen, which do all the heavy lifting. Combining these two roles produces recommended configurations that follow Arista Design Guides.
 
 === "build.yml"
 

@@ -5,8 +5,8 @@ dhcp_servers:
 - vrf: default
   ipv4_subnets:
   - subnet: 172.16.255.12/31
-    name: inband ztp for inband-ztp-without-ntp-leaf-Ethernet1
     default_gateway: 172.16.255.12
+    name: inband ztp for inband-ztp-without-ntp-leaf-Ethernet1
     ranges:
     - start: 172.16.255.13
       end: 172.16.255.13
@@ -75,7 +75,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

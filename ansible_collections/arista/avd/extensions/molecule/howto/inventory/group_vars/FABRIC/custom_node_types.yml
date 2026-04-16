@@ -1,0 +1,15 @@
+---
+custom_node_type_keys:
+  - key: service_leaf
+    type: service_leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    underlay_router: true
+    uplink_type: p2p
+    default_ptp_priority1: 40
+    cv_tags_topology_type: leaf

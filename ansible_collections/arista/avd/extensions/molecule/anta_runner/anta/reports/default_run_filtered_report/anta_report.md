@@ -1,4 +1,4 @@
-# ANTA Report
+# 📊 ANTA Report <a id="anta-report"></a>
 
 **Table of Contents:**
 
@@ -9,25 +9,25 @@
     - [Summary Totals Per Category](#summary-totals-per-category)
   - [Test Results](#test-results)
 
-## Test Results Summary
+## 📉 Test Results Summary <a id="test-results-summary"></a>
 
-### Summary Totals
+### 🔢 Summary Totals <a id="summary-totals"></a>
 
-| Total Tests | Total Tests Success | Total Tests Skipped | Total Tests Failure | Total Tests Error |
-| ----------- | ------------------- | ------------------- | ------------------- | ------------------|
+| Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
+| :- | :- | :- | :- | :- |
 | 0 | 0 | 0 | 0 | 0 |
 
-### Summary Totals Device Under Test
+### 🔌 Summary Totals Device Under Test <a id="summary-totals-device-under-test"></a>
 
-| Device Under Test | Total Tests | Tests Success | Tests Skipped | Tests Failure | Tests Error | Categories Skipped | Categories Failed |
-| ------------------| ----------- | ------------- | ------------- | ------------- | ----------- | -------------------| ------------------|
+| Device | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error | Categories Skipped | Categories Failed |
+| :- | :- | :- | :- | :- | :- | :- | :- |
 
-### Summary Totals Per Category
+### 🗂️ Summary Totals Per Category <a id="summary-totals-per-category"></a>
 
-| Test Category | Total Tests | Tests Success | Tests Skipped | Tests Failure | Tests Error |
-| ------------- | ----------- | ------------- | ------------- | ------------- | ----------- |
+| Test Category | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
+| :- | :- | :- | :- | :- | :- |
 
-## Test Results
+## 🧪 Test Results <a id="test-results"></a>
 
-| Device Under Test | Categories | Test | Description | Custom Field | Result | Messages |
-| ----------------- | ---------- | ---- | ----------- | ------------ | ------ | -------- |
+| Device | Categories | Test | Description | Result | Messages |
+| :- | :- | :- | :- | :- | :- |

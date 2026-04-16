@@ -39,7 +39,7 @@ jobs:
           WHEEL_FILE=$(find ./dist/*.whl -print0 -type f | xargs -0 -n 1 basename)
           echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
       - name: Upload pyavd artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: pyavd
           path: ./python-avd/dist/*.whl
@@ -57,11 +57,11 @@ jobs:
         avd_scenario:
           - "cv_workflow"
         ansible_version:
-          - "ansible-core<2.20.0 --upgrade"
+          - "ansible-core<2.21.0 --upgrade"
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -90,11 +90,11 @@ jobs:
         avd_scenario:
           - "cv_deploy"
         ansible_version:
-          - "ansible-core<2.20.0 --upgrade"
+          - "ansible-core<2.21.0 --upgrade"
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: pyavd
           path: /tmp/pyavd/

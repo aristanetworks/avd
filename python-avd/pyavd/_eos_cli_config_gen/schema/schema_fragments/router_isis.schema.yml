@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -119,6 +119,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           on_startup:
             type: dict
             keys:
@@ -334,6 +335,11 @@ keys:
           bfd_all_interfaces:
             type: bool
             description: Enable BFD on all interfaces.
+          multi_topology:
+            type: bool
+            description: |-
+              Enable IS-IS multi-topology for the IPv6 address family.
+              Required for forming IPv6 adjacencies on IS-IS interfaces that do not have an IPv4 address.
           fast_reroute_ti_lfa:
             type: dict
             keys:
@@ -365,6 +371,7 @@ keys:
             type: str
           prefix_segments:
             type: list
+            primary_key: prefix
             items:
               type: dict
               keys:

@@ -1,1 +1,1 @@
-../../requirements-dev.txt
+../../requirements.txt

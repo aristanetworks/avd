@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -36,7 +36,6 @@ class LoopbackInterfacesMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 if (loopback_interface := self._get_vtep_diagnostic_loopback_for_vrf(vrf, tenant)) is not None:
-                    self._set_virtual_source_nat_for_vrf_loopback(loopback_interface)
                     self.structured_config.loopback_interfaces.append(loopback_interface)
 
                 # The loopbacks have already been filtered in _filtered_tenants
@@ -55,7 +54,7 @@ class LoopbackInterfacesMixin(Protocol):
                         loopback_interface_item.ospf_area = loopback.ospf.area
                     if loopback.hardware_forwarding:
                         loopback_interface_item.hardware_forwarding_id = True
-                    self._set_virtual_source_nat_for_vrf_loopback(loopback_interface_item)
+                    self._set_virtual_source_nat_for_vrf_loopback(loopback_interface_item.vrf, loopback_interface_item.ip_address)
                     self.structured_config.loopback_interfaces.append(loopback_interface_item)
 
     def _get_vtep_diagnostic_loopback_for_vrf(
@@ -68,23 +67,36 @@ class LoopbackInterfacesMixin(Protocol):
 
         pod_name = self.inputs.pod_name
         loopback_ip_pools = vrf.vtep_diagnostic.loopback_ip_pools
-        if not (loopback_ipv4_pool := vrf.vtep_diagnostic.loopback_ip_range) and pod_name and loopback_ip_pools and pod_name in loopback_ip_pools:
-            loopback_ipv4_pool = loopback_ip_pools[pod_name].ipv4_pool
 
-        if not (loopback_ipv6_pool := vrf.vtep_diagnostic.loopback_ipv6_range) and pod_name and loopback_ip_pools and pod_name in loopback_ip_pools:
-            loopback_ipv6_pool = loopback_ip_pools[pod_name].ipv6_pool
+        loopback_ipv4_pool = vrf.vtep_diagnostic.loopback_ip_range
+        loopback_ipv6_pool = vrf.vtep_diagnostic.loopback_ipv6_range
+
+        # Override defaults if pod-specific pools exist
+        if pod_name and loopback_ip_pools and (pod_pools := loopback_ip_pools.get(pod_name)):
+            if ipv4_pool := pod_pools.ipv4_pool:
+                loopback_ipv4_pool = ipv4_pool
+            if ipv6_pool := pod_pools.ipv6_pool:
+                loopback_ipv6_pool = ipv6_pool
 
         if not loopback_ipv4_pool and not loopback_ipv6_pool:
             return None
 
+        ipv4_address = f"{self.shared_utils.ip_addressing.vrf_loopback_ip(loopback_ipv4_pool)}/32" if loopback_ipv4_pool else None
+        ipv6_address = f"{self.shared_utils.ip_addressing.vrf_loopback_ipv6(loopback_ipv6_pool)}/128" if loopback_ipv6_pool else None
+
         interface_name = f"Loopback{loopback}"
         description_template = default(vrf.vtep_diagnostic.loopback_description, self.inputs.default_vrf_diag_loopback_description)
-        return EosCliConfigGen.LoopbackInterfacesItem(
+        loopback_interface = EosCliConfigGen.LoopbackInterfacesItem(
             name=interface_name,
             description=AvdStringFormatter().format(description_template, interface=interface_name, vrf=vrf.name, tenant=tenant.name) or None,
             shutdown=False,
             vrf=vrf.name,
-            ip_address=f"{self.shared_utils.ip_addressing.vrf_loopback_ip(loopback_ipv4_pool)}/32" if loopback_ipv4_pool else None,
-            ipv6_address=f"{self.shared_utils.ip_addressing.vrf_loopback_ipv6(loopback_ipv6_pool)}/128" if loopback_ipv6_pool else None,
+            ip_address=ipv4_address,
             hardware_forwarding_id=vrf.vtep_diagnostic.hardware_forwarding or None,
         )
+        loopback_interface.ipv6_addresses.append(ipv6_address) if ipv6_address else None
+
+        # Set virtual source NAT for this loopback. This will ensure that the VRF is added to virtual_source_nat_vrfs with the correct IPs.
+        self._set_virtual_source_nat_for_vrf_loopback(vrf.name, ipv4_address, ipv6_address)
+
+        return loopback_interface

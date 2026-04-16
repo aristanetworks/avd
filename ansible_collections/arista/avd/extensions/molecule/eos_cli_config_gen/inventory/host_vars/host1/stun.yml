@@ -22,3 +22,5 @@ stun:
       - name: server1
         ip_address: 1.2.3.4
         ssl_profile: pathfinder
+      - name: SERVER3
+        ip_address: 1.2.3.5

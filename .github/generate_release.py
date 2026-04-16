@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """
@@ -29,7 +29,6 @@ SCOPES = [
     "eos_designs|eos_cli_config_gen",
     "eos_cli_config_gen|eos_designs",
     "pyavd",
-    "pyavd-utils",
 ]
 
 # CI and Test are excluded from Release Notes
@@ -73,7 +72,6 @@ if __name__ == "__main__":
             "eos_designs|eos_cli_config_gen",
             "anta_runner",
             "pyavd",
-            "pyavd-utils",
         ]
     ]
 
@@ -84,10 +82,10 @@ if __name__ == "__main__":
     exclude_list.extend(["rn: Test", "rn: CI"])
 
     # Then add the categories
-    # First add Breaking Changes EXCEPT `pyavd` and `pyavd-utils` ones
+    # First add Breaking Changes EXCEPT `pyavd`
     # TODO: should we consider changing this and adding back pyavd?
     breaking_label_categories = ["Feat", "Fix", "Cut", "Revert", "Refactor", "Bump"]
-    breaking_labels = [f"rn: {cc_type}({scope})!" for cc_type in breaking_label_categories for scope in SCOPES if scope not in ["pyavd", "pyavd-utils"]]
+    breaking_labels = [f"rn: {cc_type}({scope})!" for cc_type in breaking_label_categories for scope in SCOPES if scope != "pyavd"]
     breaking_labels.extend([f"rn: {cc_type}!" for cc_type in breaking_label_categories])
 
     categories_list.append(
@@ -119,6 +117,14 @@ if __name__ == "__main__":
                 "rn: Fix(eos_cli_config_gen|eos_designs)",
                 "rn: Fix(eos_designs|eos_cli_config_gen)",
             ],
+        },
+    )
+
+    # Add fixes in anta_runner
+    categories_list.append(
+        {
+            "title": "Fixed issues in anta_runner",
+            "labels": ["rn: Fix(anta_runner)"],
         },
     )
 
@@ -195,15 +201,6 @@ if __name__ == "__main__":
         {
             "title": "PyAVD Changes",
             "labels": pyavd_labels,
-        },
-    )
-
-    # Add all pyavd-utils changes
-    pyavd_utils_labels = [f"rn: {category}(pyavd-utils)" for category in CATEGORIES]
-    categories_list.append(
-        {
-            "title": "pyavd-utils Changes",
-            "labels": pyavd_utils_labels,
         },
     )
 

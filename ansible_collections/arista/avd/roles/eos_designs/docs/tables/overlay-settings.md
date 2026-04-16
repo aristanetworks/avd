@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -11,7 +11,7 @@
     | [<samp>overlay_bgp_peer_description</samp>](## "overlay_bgp_peer_description") | String |  | `{peer}{peer_interface?<_}` |  | Description or description template to be used on the overlay BGP peers.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the BGP peer.<br>  - `peer_interface`: The interface on the BGP peer if available.<br><br>The default description is built from the name and interface of the BGP peer. |
     | [<samp>overlay_cvx_servers</samp>](## "overlay_cvx_servers") | List, items: String |  |  |  | List of CVX vxlan overlay controllers.<br>Required if overlay_routing_protocol == CVX.<br>CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "overlay_cvx_servers.[]") | String |  |  |  | 'inventory_hostname' of CVX server.<br> |
-    | [<samp>overlay_her_flood_list_per_vni</samp>](## "overlay_her_flood_list_per_vni") | Boolean |  | `False` |  | When using Head-End Replication, configure flood-lists per VNI.<br>By default HER will be configured with a common flood-list containing all VTEPs.<br>This behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.<br>This will make `eos_designs` consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.<br> |
+    | [<samp>overlay_her_flood_list_per_vni</samp>](## "overlay_her_flood_list_per_vni") | Boolean |  | `False` |  | When using Head-End Replication, configure flood-lists per VNI.<br>By default HER will be configured with a common flood-list containing all VTEPs.<br>This behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.<br>This will make Arista AVD consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.<br> |
     | [<samp>overlay_her_flood_list_scope</samp>](## "overlay_her_flood_list_scope") | String |  | `fabric` | Valid Values:<br>- <code>fabric</code><br>- <code>dc</code> | When using Head-End Replication, set the scope of flood-lists to Fabric or DC.<br>By default all VTEPs in the Fabric (part of the inventory group referenced by "fabric_name") are added to the flood-lists.<br>This can be changed to all VTEPs in the DC (sharing the same "dc_name" value).<br>This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.<br> |
     | [<samp>overlay_loopback_description</samp>](## "overlay_loopback_description") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>router_id_loopback_description</samp> instead.</span> |
     | [<samp>overlay_mlag_rfc5549</samp>](## "overlay_mlag_rfc5549") | Boolean |  | `False` |  | IPv6 Unnumbered for MLAG iBGP connections.<br>Requires "underlay_rfc5549: true".<br> |
@@ -58,7 +58,7 @@
     # When using Head-End Replication, configure flood-lists per VNI.
     # By default HER will be configured with a common flood-list containing all VTEPs.
     # This behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.
-    # This will make `eos_designs` consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.
+    # This will make Arista AVD consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.
     overlay_her_flood_list_per_vni: <bool; default=False>
 
     # When using Head-End Replication, set the scope of flood-lists to Fabric or DC.

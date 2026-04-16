@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -97,6 +97,41 @@ $defs:
             underlay_multicast_group:
               description: Specific multicast group to use for this VLAN.
               type: str
+        igmp_snooping:
+          type: dict
+          documentation_options:
+            table: network-services-multicast-settings
+          keys:
+            enabled:
+              type: bool
+              description: Enable or disable IGMP snooping (Enabled by default on EOS).
+            querier:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                source_address:
+                  type: str
+                  description: |-
+                    The value of `source_address` will be interpreted according to these rules:
+                    - `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                    - 'diagnostic_loopback' will configure the VRF Diagnostic Loopback address.
+                    - `main_router_id` will configure the Loopback0 IP address.
+                    - An IPv4 address will be used directly as the source address.
+                    Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.
+                version:
+                  type: int
+                  description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                  convert_types:
+                    - str
+                  valid_values:
+                    - 1
+                    - 2
+                    - 3
+            fast_leave:
+              type: bool
+              description: Enable IGMP snooping fast-leave feature.
         igmp_snooping_enabled:
           documentation_options:
             table: network-services-multicast-settings
@@ -106,6 +141,11 @@ $defs:
           documentation_options:
             table: network-services-multicast-settings
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: igmp_snooping.querier
           description: |
             Enable igmp snooping querier, by default using IP address of Loopback 0.
             When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
@@ -115,9 +155,11 @@ $defs:
               description: Will be enabled automatically if evpn_l2_multicast is enabled.
             source_address:
               type: str
-              description: |
-                IPv4_address
-                If not set, IP address of "Loopback0" will be used.
+              description: |-
+                The value of `source_address` will be interpreted according to these rules:
+                - `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will configure the Loopback0 IP since there is no VRF tied to an L2VLAN.
+                - An IPv4 address will be used directly as the source address.
+                Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -137,7 +179,7 @@ $defs:
               type: dict
               relaxed_validation: true
               description: |
-                Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+                Custom structured config added under router_bgp.vlans.[id=<vlan>] for the EOS Config schema.
                 This configuration will not be applied to vlan aware bundles.
               documentation_options:
                 hide_keys: true

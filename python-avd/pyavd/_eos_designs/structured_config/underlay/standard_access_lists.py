@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -34,5 +34,5 @@ class StandardAccessListsMixin(Protocol):
                 continue
             standard_access_list = EosCliConfigGen.StandardAccessListsItem(name=rp_entry.access_list_name)
             for index, group in enumerate(rp_entry.groups):
-                standard_access_list.sequence_numbers.append_new(sequence=(index + 1) * 10, action=f"permit {group}")
+                standard_access_list.entries.append_new(sequence=(index + 1) * 10, action="permit", source=group)
             self.structured_config.standard_access_lists.append(standard_access_list)

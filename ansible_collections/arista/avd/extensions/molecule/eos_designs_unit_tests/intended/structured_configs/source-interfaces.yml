@@ -4,16 +4,18 @@ config_end: true
 enable_password:
   disabled: true
 hostname: source-interfaces
-ip_http_client_source_interfaces:
-- name: Management1
-- name: Vlan4092
-  vrf: INBANDMGMT
+ip_http_client:
+  source_interface: Management1
+  vrfs:
+  - name: INBANDMGMT
+    source_interface: Vlan4092
 ip_igmp_snooping:
   globally_enabled: true
-ip_ssh_client_source_interfaces:
-- name: Management1
-- name: Vlan4092
-  vrf: INBANDMGMT
+ip_ssh_client:
+  source_interface: Management1
+  vrfs:
+  - name: INBANDMGMT
+    source_interface: Vlan4092
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -48,7 +50,8 @@ vlans:
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: default
   ip_routing: false

@@ -1,0 +1,16 @@
+---
+# Super-Spine Switches
+super_spine:
+  defaults:
+    platform: cEOSLab
+    bgp_as: 65000
+    loopback_ipv4_pool: 192.168.101.0/24
+    evpn_role: server
+
+  nodes:
+    - name: dc1-ss1
+      id: 201
+      mgmt_ip: 172.16.1.25/24
+    - name: dc1-ss2
+      id: 202
+      mgmt_ip: 172.16.1.26/24

@@ -49,7 +49,7 @@
         strict_tags: true
         # skip_strict_devices: false
         # configlet_name_template: "AVD-${hostname}"
-        cv_servers: [ '{{ cv_server }}' ]
+        cv_servers: ['{{ cv_server }}']
         cv_token: '{{ token }}'
         # cv_verify_certs: true
         workspace:
@@ -127,8 +127,7 @@
         configs: ["{{ configuration_dir ~ '/test_configs' }}/ci-s1-leaf1.cfg",
                   "{{ configuration_dir ~ '/test_configs' }}/ci-s1-leaf2.cfg",
                   "{{ configuration_dir ~ '/test_configs' }}/ci-s1-leaf3.cfg",
-                  "{{ configuration_dir ~ '/test_configs' }}/ci-s1-leaf4.cfg"
-        ]
+                  "{{ configuration_dir ~ '/test_configs' }}/ci-s1-leaf4.cfg"]
       ansible.builtin.set_fact:
         response_configlet: "{{ response_configlet | default({}) | combine({item.0.json.value.body | trim: item.1}) }}"
       loop: "{{ result.results | zip(configs) | list }}"
@@ -206,7 +205,7 @@
         structured_config_dir: "{{ structured_config_dir  ~ '/strict_tags' }}"
         device_list: ["ci-s1-leaf1"]
         strict_tags: true
-        cv_servers: [ '{{ cv_server }}' ]
+        cv_servers: ['{{ cv_server }}']
         cv_token: '{{ token }}'
         workspace:
           name: '{{ ws_name_strict }}'
@@ -262,7 +261,7 @@
         structured_config_dir: "{{ structured_config_dir ~ '/change_tags' }}"
         device_list: ["ci-s1-leaf1"]
         strict_tags: true
-        cv_servers: [ '{{ cv_server }}' ]
+        cv_servers: ['{{ cv_server }}']
         cv_token: '{{ token }}'
         workspace:
           name: '{{ ws_name_value }}'
@@ -320,7 +319,7 @@
         structured_config_dir: "{{ structured_config_dir ~ '/dotted_hostname/set_dotted_hostname' }}"
         device_list: ["ci-s1-leaf1"]
         strict_tags: true
-        cv_servers: [ '{{ cv_server }}' ]
+        cv_servers: ['{{ cv_server }}']
         cv_token: '{{ token }}'
         workspace:
           name: '{{ ws_name_dotted }}'
@@ -351,7 +350,7 @@
         structured_config_dir: "{{ structured_config_dir ~ '/dotted_hostname/test_dotted_hostname' }}"
         device_list: ["ci-s1-leaf.1"]
         strict_tags: true
-        cv_servers: [ '{{ cv_server }}' ]
+        cv_servers: ['{{ cv_server }}']
         cv_token: '{{ token }}'
         workspace:
           name: '{{ ws_name_dotted }}'
@@ -367,7 +366,7 @@
       register: test_dotted_results
 
     # WS asserts
-    - name: Get workspace information
+    - name: Get workspace information for dotted hostname
       delegate_to: localhost
       run_once: true
       no_log: true
@@ -385,7 +384,7 @@
         - "avd-ci-s1-leaf1"
       register: dotted_result
 
-    - name: Set configlets facts
+    - name: Set configlets facts for dotted hostname
       run_once: true
       no_log: true
       vars:
@@ -394,7 +393,7 @@
         dotted_response_configlet: "{{ response_configlet | default({}) | combine({item.0.json.value.body | trim: item.1}) }}"
       loop: "{{ dotted_result.results | zip(configs) | list }}"
 
-    - name: Check configlets
+    - name: Check configlets for dotted hostname
       ansible.builtin.assert:
         that:
           - item.key  == lookup('file', item.value)
@@ -416,7 +415,7 @@
         structured_config_dir: "{{ structured_config_dir ~ '/dotted_hostname/reset_dotted_hostname' }}"
         device_list: ["ci-s1-leaf.1"]
         strict_tags: true
-        cv_servers: [ '{{ cv_server }}' ]
+        cv_servers: ['{{ cv_server }}']
         cv_token: '{{ token }}'
         workspace:
           name: '{{ ws_name_dotted }}'

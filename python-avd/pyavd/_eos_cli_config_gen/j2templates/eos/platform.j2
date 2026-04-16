@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -26,29 +26,31 @@ platform sand forwarding mode {{ platform.sand.forwarding_mode }}
 {%         if platform.sand.lag.mode is arista.avd.defined %}
 platform sand lag mode {{ platform.sand.lag.mode }}
 {%         endif %}
-{%         if platform.sand.lag.hardware_only is arista.avd.defined(true) %}
-platform sand lag hardware-only
-{%         endif %}
 {%         if platform.fap.buffering_egress.profile is arista.avd.defined %}
 platform fap buffering egress profile {{ platform.fap.buffering_egress.profile }}
 {%         endif %}
-{%         if platform.fap.voq.credit_rates_unified is arista.avd.defined(true) %}
-!
-platform fap voq credit rates unified
+{%         if platform.sand.lag.hardware_only is arista.avd.defined(true) %}
+platform sand lag hardware-only
 {%         endif %}
 {%         for qos_map in platform.sand.qos_maps | arista.avd.natural_sort('traffic_class') %}
 {%             if qos_map.traffic_class is arista.avd.defined and qos_map.to_network_qos is arista.avd.defined %}
 platform sand qos map traffic-class {{ qos_map.traffic_class }} to network-qos {{ qos_map.to_network_qos }}
 {%             endif %}
 {%         endfor %}
+{%         if platform.fap.voq.credit_rates_unified is arista.avd.defined(true) %}
+!
+platform fap voq credit rates unified
+{%         endif %}
 {%         if port_channel.load_balance_sand_profile is arista.avd.defined %}
 !
 port-channel load-balance sand profile {{ port_channel.load_balance_sand_profile }}
 {%         endif %}
 {%         if platform.sand.multicast_replication.default is arista.avd.defined %}
+!
 platform sand multicast replication default {{ platform.sand.multicast_replication.default }}
 {%         endif %}
 {%         if platform.sand.mdb_profile is arista.avd.defined %}
+!
 platform sand mdb profile {{ platform.sand.mdb_profile }}
 {%         endif %}
 {%     endif %}

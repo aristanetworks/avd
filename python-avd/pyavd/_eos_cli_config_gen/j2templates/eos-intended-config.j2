@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -91,6 +91,8 @@
 {% include 'eos/monitor-layer1.j2' %}
 {# load balance #}
 {% include 'eos/load-balance.j2' %}
+{# monitor link flap profiles #}
+{% include 'eos/monitor-link-flap-policy.j2' %}
 {# Link Tracking #}
 {% include 'eos/link-tracking-groups.j2' %}
 {# lldp #}
@@ -118,11 +120,13 @@
 {# domain lookup #}
 {% include 'eos/ip-domain-lookup.j2' %}
 {# ip name servers #}
-{% include 'eos/ip-name-servers.j2' %}
+{% include 'eos/ip-name-server.j2' %}
 {# dns domain #}
 {% include 'eos/dns-domain.j2' %}
 {# domain-list #}
 {% include 'eos/domain-list.j2' %}
+{# ip-host #}
+{% include 'eos/ip-hosts.j2' %}
 {# aaa server groups ldap #}
 {% include 'eos/aaa-server-groups-ldap.j2' %}
 {# Object Tracking #}
@@ -283,12 +287,8 @@
 {% include 'eos/ipv6-icmp-redirect.j2' %}
 {# as-paths #}
 {% include 'eos/as-path.j2' %}
-{# Community-lists, improved data model #}
-{% include 'eos/ip-community-lists.j2' %}
-{# IP Extended Community Lists #}
-{% include 'eos/ip-extcommunity-lists.j2' %}
-{# IP Extended Community Lists Regexp #}
-{% include 'eos/ip-extcommunity-lists-regexp.j2' %}
+{# All community-lists #}
+{% include 'eos/all-community-lists.j2' %}
 {# Dynamic Prefix-lists #}
 {% include 'eos/dynamic-prefix-lists.j2' %}
 {# Prefix-lists #}
@@ -322,6 +322,8 @@
 {% include 'eos/arp.j2' %}
 {# IPv6 Static Route #}
 {% include 'eos/ipv6-static-routes.j2' %}
+{# monitor loop protection #}
+{% include 'eos/monitor-loop-protection.j2' %}
 {# MPLS #}
 {% include 'eos/mpls.j2' %}
 {# IP NAT - Part 2#}
@@ -338,14 +340,14 @@
 {% include 'eos/monitor-telemetry-postcard-policy.j2' %}
 {# qos #}
 {% include 'eos/qos.j2' %}
+{# eos - priority flow control #}
+{% include 'eos/priority-flow-control.j2' %}
 {# QOS class-map #}
 {% include 'eos/class-maps.j2' %}
 {# COPP policy-map #}
 {% include 'eos/policy-maps-copp.j2' %}
 {# QOS policy-map #}
 {% include 'eos/policy-maps-qos.j2' %}
-{# eos - priority flow control #}
-{% include 'eos/priority-flow-control.j2' %}
 {# ip radius source interfaces #}
 {% include 'eos/ip-radius-source-interfaces.j2' %}
 {# roles #}
@@ -378,6 +380,8 @@
 {% include 'eos/router-msdp.j2' %}
 {# router rip configuration #}
 {% include 'eos/router-rip.j2' %}
+{# mpls rsvp #}
+{% include 'eos/mpls-rsvp.j2' %}
 {# stun #}
 {% include 'eos/stun.j2' %}
 {# ip tacacs+ source interfaces #}

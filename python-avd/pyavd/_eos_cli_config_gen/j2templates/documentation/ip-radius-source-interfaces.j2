@@ -1,10 +1,10 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# doc - ip radius source interfaces #}
-{% if ip_radius_source_interfaces is arista.avd.defined %}
+{% if ip_radius_source_interfaces is arista.avd.defined or ip_radius is arista.avd.defined %}
 
 ### IP RADIUS Source Interfaces
 
@@ -12,11 +12,17 @@
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-{%     for ip_radius_source_interface in ip_radius_source_interfaces | arista.avd.natural_sort %}
-| {{ ip_radius_source_interface.vrf | arista.avd.default('default') }} | {{ ip_radius_source_interface.name }} |
+{%     if ip_radius.source_interface is arista.avd.defined %}
+| default | {{ ip_radius.source_interface }} |
+{%     endif %}
+{%     for vrf in ip_radius.vrfs | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+| {{ vrf.name }} | {{ vrf.source_interface }} |
+{%     endfor %}
+{%     for ip_radius in ip_radius_source_interfaces | arista.avd.natural_sort(sort_key="name") %}
+| {{ ip_radius.vrf | arista.avd.default('default') }} | {{ ip_radius.name }} |
 {%     endfor %}
 
-#### IP SOURCE Source Interfaces Device Configuration
+#### IP RADIUS Source Interfaces Device Configuration
 
 ```eos
 {%     include 'eos/ip-radius-source-interfaces.j2' %}

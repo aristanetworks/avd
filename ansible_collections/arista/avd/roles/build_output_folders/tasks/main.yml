@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
@@ -20,7 +20,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ structured_dir_name }} for structured YAML files"
+- name: "Create folder for structured YAML files {{ structured_dir_name }}"
   ansible.builtin.file:
     path: "{{ structured_dir }}"
     state: directory
@@ -28,7 +28,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ eos_config_dir_name }} for EOS Configuration files"
+- name: "Create folder for EOS Configuration files {{ eos_config_dir_name }}"
   ansible.builtin.file:
     path: "{{ eos_config_dir }}"
     state: directory
@@ -36,7 +36,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ structured_cvp_dir_name }} for CVP structured YAML files"
+- name: "Create folder for CVP structured YAML files {{ structured_cvp_dir_name }}"
   ansible.builtin.file:
     path: "{{ structured_cvp_dir }}"
     state: directory
@@ -44,7 +44,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create documentation folder: {{ documentation_dir_name }}"
+- name: "Create documentation folder {{ documentation_dir_name }}"
   ansible.builtin.file:
     path: "{{ documentation_dir }}"
     state: directory
@@ -52,7 +52,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ fabric_dir_name }} for Fabric documentation"
+- name: "Create folder for Fabric documentation {{ fabric_dir_name }}"
   ansible.builtin.file:
     path: "{{ fabric_dir }}"
     state: directory
@@ -60,7 +60,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ devices_dir_name }} for EOS documentation"
+- name: "Create folder for EOS documentation {{ devices_dir_name }}"
   ansible.builtin.file:
     path: "{{ devices_dir }}"
     state: directory
@@ -68,7 +68,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ post_running_config_backup_dir }} for EOS post backup dir"
+- name: "Create folder for EOS post backup dir {{ post_running_config_backup_dir }}"
   ansible.builtin.file:
     path: "{{ post_running_config_backup_dir }}"
     state: directory
@@ -76,7 +76,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ pre_running_config_backup_dir }} for EOS pre backup dir"
+- name: "Create folder for EOS pre backup dir {{ pre_running_config_backup_dir }}"
   ansible.builtin.file:
     path: "{{ pre_running_config_backup_dir }}"
     state: directory
@@ -94,7 +94,7 @@
 
 # anta_runner directories
 
-- name: "Cleanup existing folders in {{ anta_dir_name }}, preserving {{ user_catalogs_dir_name }}"
+- name: "Cleanup existing folders in {{ anta_dir_name ~ ', preserving ' ~ user_catalogs_dir_name }}"
   ansible.builtin.find:
     paths: "{{ anta_dir }}"
     file_type: directory
@@ -111,7 +111,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ anta_dir_name }} for ANTA"
+- name: "Create folder for ANTA {{ anta_dir_name }}"
   ansible.builtin.file:
     path: "{{ anta_dir }}"
     state: directory
@@ -119,7 +119,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ user_catalogs_dir_name }} for ANTA user-defined catalogs"
+- name: "Create folder for ANTA user-defined catalogs {{ user_catalogs_dir_name }}"
   ansible.builtin.file:
     path: "{{ user_catalogs_dir }}"
     state: directory
@@ -127,7 +127,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ avd_catalogs_dir_name }} for ANTA AVD generated catalogs"
+- name: "Create folder for ANTA AVD generated catalogs {{ avd_catalogs_dir_name }}"
   ansible.builtin.file:
     path: "{{ avd_catalogs_dir }}"
     state: directory
@@ -135,7 +135,7 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Create folder {{ anta_reports_dir_name }} for ANTA reports"
+- name: "Create folder for ANTA reports {{ anta_reports_dir_name }}"
   ansible.builtin.file:
     path: "{{ anta_reports_dir }}"
     state: directory

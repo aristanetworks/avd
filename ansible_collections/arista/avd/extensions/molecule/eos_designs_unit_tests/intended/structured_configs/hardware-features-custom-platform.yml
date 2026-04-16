@@ -1,0 +1,171 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet3
+  description: MLAG_hardware-features-7280r_Ethernet3
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  metadata:
+    peer: hardware-features-7280r
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
+- name: Ethernet1
+  description: L2_hardware-features-cloudeos-2_Ethernet2
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: hardware-features-cloudeos-2
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+- name: Ethernet9
+  description: P2P_hardware-features-7280r_Ethernet9
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.60.1/31
+  metadata:
+    peer: hardware-features-7280r
+    peer_interface: Ethernet9
+    peer_type: l3leaf
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet9.9
+  description: P2P_hardware-feature-sflow-subinterface-1_Ethernet9.9
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.60.5/31
+  metadata:
+    peer: hardware-feature-sflow-subinterface-1
+    peer_interface: Ethernet9.9
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+hardware_counters:
+  features: null
+hostname: hardware-features-custom-platform
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.10.10.6/32
+metadata:
+  is_deployed: true
+  platform: customplatform
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+mlag_configuration:
+  domain_id: group_3
+  local_interface: Vlan4094
+  peer_address: 10.10.30.8
+  peer_link: Port-Channel3
+port_channel_interfaces:
+- name: Port-Channel3
+  description: MLAG_hardware-features-7280r_Port-Channel3
+  shutdown: false
+  sflow:
+    enable: true
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+- name: Port-Channel1
+  description: L2_hardware-features-cloudeos-2_Port-Channel2
+  shutdown: false
+  mlag: 1
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  sflow:
+    enable: true
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+ptp:
+  mode: boundary
+  clock_identity: 00:1C:73:1e:00:06
+  priority1: 30
+  priority2: 6
+  domain: 127
+  monitor:
+    enabled: true
+    threshold:
+      offset_from_master: 250
+      mean_path_delay: 1500
+    missing_message:
+      sequence_ids:
+        enabled: true
+        announce: 3
+        delay_resp: 3
+        follow_up: 3
+        sync: 3
+queue_monitor_length:
+  enabled: true
+  notifying: true
+queue_monitor_streaming:
+  enable: true
+service_routing_protocols_model: multi-agent
+sflow:
+  sample: 1000000
+  polling_interval: 5
+  destinations:
+  - destination: 10.10.10.10
+  source_interface: Vlan10
+  run: true
+spanning_tree:
+  no_spanning_tree_vlan: 4093-4094
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4093
+  description: MLAG_L3
+  shutdown: false
+  ip_address: 10.10.40.9/31
+  mtu: 9214
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 10.10.30.9/31
+  mtu: 9214
+  no_autostate: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4093
+  name: MLAG_L3
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false

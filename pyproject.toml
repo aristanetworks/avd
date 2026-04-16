@@ -1,22 +1,63 @@
 [dependency-groups]
-pytest = [
-    "ansible-core>=2.16.0,<2.20.0",
-    "anta>=1.6.0",
-    "pytest>=8.2.0",
-    "pytest-asyncio>=1.2.0",
-    "pydantic>=2.3.0",
-    "referencing>=0.35.0",
+# pyavd minimal requirements when running from source
+# anta is set to latest version to make sure developers run with the latest version
+# when generating molecule artifacts.
+dev = [
+    "anta==1.8.0",
+    "cryptography>=43.0.0",
+    "deepmerge>=1.1.0",
+    "netaddr>=0.7.19",
+    "pyavd-utils==0.0.4",
+    "python-socks[asyncio]>=2.7.2",
+    "pyyaml>=6.0.0",
+    # dev requirements"
+    {include-group = "pytest"},
+    {include-group = "molecule"},
+    "ansible-doc-extractor>=0.1.11",
+    "ansible-lint>=26.4.0",
+    "aristaproto[compiler]==0.1.4",
+    "bump-my-version>=1.3.0",
+    "codespell>=2.4.2",
+    "docker>=7.1.0",
+    "identify>=2.6.18",
+    "jsonschema-rs>=0.46.0",
+    "pre-commit-hooks>=6.0.0",
+    "pre-commit>=4.5.1",
+    "pylint>=4.0.5",
+    "ruff==0.15.10",
+    "setuptools>=82.0.1", # for pyright check in CI
+    "tox>=4.52.1",
+    "twine>=6.2.0",
+    "yamllint>=1.38.0",
 ]
 coverage = [
-    "coverage[toml]==7.12.0",
+    "coverage[toml]==7.13.5",
 ]
-# group used to build cross platform pyavd-utils wheels
-build_wheel = [
-    "cibuildwheel==3.3.0",
+doc = [
+    "mkdocs<2",
+    "mkdocs-material<10",
+    "mkdocs-material-extensions",
+    "mkdocs-same-dir",
+    "pymdown-extensions",
+    "mdx_truly_sane_lists",
+    "mike==1.1.2",
+    "mkdocs-git-revision-date-localized-plugin",
+    "mkdocs-git-revision-date-plugin",
+    "mkdocs-exclude",
+    "mkdocs-include-dir-to-nav",
+    "mkdocstrings[python]",
 ]
 molecule = [
-    "molecule>=6.0",
-    "molecule-plugins[docker]>=23.4.0",
+    "molecule>=26.4.0",
+    "molecule-plugins[docker]>=25.8.12",
+]
+pytest = [
+    "ansible-core>=2.16.0,<2.21.0",
+    "anta==1.8.0",
+    "pytest>=9.0.3",
+    "pytest-asyncio>=1.3.0",
+    "pydantic>=2.11.10",
+    "referencing>=0.37.0",
 ]
 
 [tool.ruff]
@@ -115,7 +156,7 @@ max-returns = 10
 max-statements = 148
 
 [tool.ruff.lint.isort]
-known-first-party = ["pyavd_utils", "pyavd", "schema_tools"]
+known-first-party = ["pyavd", "schema_tools"]
 
 [tool.ruff.format]
 docstring-code-format = true
@@ -125,12 +166,13 @@ docstring-code-format = true
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 
 [tool.pyright]
+typeCheckingMode = "standard"
 exclude = [
   "ansible_collections/arista/avd",                                      # TODO
-  "python-avd/pyavd/api",                                                # TODO
   "python-avd/pyavd/_cv",                                                # TODO
-  "python-avd/pyavd/_schema",                                            # TODO
-  "python-avd/schema_tools",                                             # TODO
+  "python-avd/pyavd/_schema/models",                                     # TODO
+  "python-avd/schema_tools/generate_docs",                               # TODO
+  "python-avd/schema_tools/metaschema",                                  # TODO
   "python-avd/tests",                                                    # TODO
   # Excluded
   "python-avd/pyavd/_cv/api",
@@ -145,33 +187,38 @@ pythonVersion = "3.10"
 # This is to direct pyright where to look for schema_tools
 extraPaths = [
   "python-avd",
-  "pyavd-utils"
 ]
 reportMissingImports = "error"
 
 [tool.pytest.ini_options]
 testpaths = [
   "python-avd/tests",
-  "pyavd-utils/tests",
 ]
 pythonpath = [
   ".", # This is needed to import from ansible_collections
   "python-avd",
-  "pyavd-utils"
 ]
 markers = [
     "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
     "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
 ]
 asyncio_default_fixture_loop_scope = "function"
+# log_file = "pytest.log"
+# log_file_level = "DEBUG"
+log_file_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_file_date_format = "%Y-%m-%d %H:%M:%S.%f"
 
 [tool.coverage.run]
 branch = true
 parallel = true
-source = [
-  "python-avd/pyavd",
-  "python-avd/schema_tools",
-  "pyavd-utils/pyavd_utils",
+source_pkgs = [
+  "pyavd",
+  "schema_tools",
+]
+source_dirs = [
+  # Adding compiled templates as source dir since they are not part of the pyavd package
+  "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates",
+  "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
 ]
 omit = [
   "python-avd/pyavd/_cv/api/*"
@@ -210,7 +257,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.0.0-dev3"
+current_version = "6.2.0-dev1"
 
 allow_dirty = true
 commit = false
@@ -242,17 +289,12 @@ filename = "ansible_collections/arista/avd/galaxy.yml"
 search = "version: {current_version}"
 replace = "version: {new_version}"
 
-[[tool.bumpversion.files]]
-filename = "Cargo.toml"
-search = 'package.version = "{current_version}"'
-replace = 'package.version = "{new_version}"'
-
 ### Bumping version using PEP440 style like x.y.z.dev1
 
 [[tool.bumpversion.files]]
-filename = "ansible_collections/arista/avd/requirements.txt"
-search = "pyavd[ansible-collection]=={current_version}"
-replace = "pyavd[ansible-collection]=={new_version}"
+filename = "python-avd/pyproject.toml"
+search = 'pyavd=={current_version}'
+replace = 'pyavd=={new_version}'
 parse = """(?x)
     (?P<major>0|[1-9]\\d*)\\.
     (?P<minor>0|[1-9]\\d*)\\.
@@ -270,44 +312,6 @@ serialize = [
 
 [[tool.bumpversion.files]]
 filename = "python-avd/pyavd/__init__.py"
-search = '__version__ = "{current_version}"'
-replace = '__version__ = "{new_version}"'
-parse = """(?x)
-    (?P<major>0|[1-9]\\d*)\\.
-    (?P<minor>0|[1-9]\\d*)\\.
-    (?P<patch>0|[1-9]\\d*)
-    (?:
-        \\.                           # dot separator for pre-release section
-        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
-        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
-    )?                                # pre-release section is optional
-"""
-serialize = [
-    "{major}.{minor}.{patch}.{pre_l}{pre_n}",
-    "{major}.{minor}.{patch}",
-]
-
-[[tool.bumpversion.files]]
-filename = "python-avd/pyproject.toml"
-search = '"pyavd-utils=={current_version}"'
-replace = '"pyavd-utils=={new_version}"'
-parse = """(?x)
-    (?P<major>0|[1-9]\\d*)\\.
-    (?P<minor>0|[1-9]\\d*)\\.
-    (?P<patch>0|[1-9]\\d*)
-    (?:
-        \\.                           # dot separator for pre-release section
-        (?P<pre_l>[a-zA-Z-]+)         # pre-release label
-        (?P<pre_n>0|[1-9]\\d*)        # pre-release version number
-    )?                                # pre-release section is optional
-"""
-serialize = [
-    "{major}.{minor}.{patch}.{pre_l}{pre_n}",
-    "{major}.{minor}.{patch}",
-]
-
-[[tool.bumpversion.files]]
-filename = "pyavd-utils/pyavd_utils/__init__.py"
 search = '__version__ = "{current_version}"'
 replace = '__version__ = "{new_version}"'
 parse = """(?x)

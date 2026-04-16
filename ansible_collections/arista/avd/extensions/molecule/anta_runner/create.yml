@@ -20,12 +20,10 @@
         mode: "0o775"
       loop:
         - "{{ avd_catalogs_dir }}/default_run"
-        - "{{ avd_catalogs_dir }}/allow_bgp_vrfs_run"
         - "{{ avd_catalogs_dir }}/filtered_run"
         - "{{ avd_catalogs_dir }}/default_run_filtered_report"
         - "{{ avd_catalogs_dir }}/default_run_sorted_report"
         - "{{ anta_reports_dir }}/default_run"
-        - "{{ anta_reports_dir }}/allow_bgp_vrfs_run"
         - "{{ anta_reports_dir }}/filtered_run"
         - "{{ anta_reports_dir }}/user_defined_catalogs_run"
         - "{{ anta_reports_dir }}/user_defined_catalogs_with_tags_run"

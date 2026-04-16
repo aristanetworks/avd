@@ -1,0 +1,18 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: source-interfaces-1
+      id: 1
+      mgmt_ip: 192.168.0.2/24
+      inband_mgmt_ip: 10.20.30.40/24
+      inband_mgmt_gateway: 10.20.30.1
+      # inband_mgmt_vrf: default
+
+# Testing source_interfaces with inband_mgmt_vrf: default
+source_interfaces:
+  http_client:
+    mgmt_interface: true
+    inband_mgmt_interface: true
+  ssh_client:
+    mgmt_interface: true
+    inband_mgmt_interface: true

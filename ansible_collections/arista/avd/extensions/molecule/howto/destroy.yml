@@ -1,0 +1,31 @@
+---
+- name: Remove output folders
+  hosts: FABRIC
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Delete local folders
+      delegate_to: 127.0.0.1
+      run_once: true
+      ansible.builtin.file:
+        path: "{{ root_dir }}/{{ item }}"
+        state: absent
+      with_items:
+        - documentation
+        - intended
+        - config_backup
+        - reports
+
+    - name: Delete howto artifact folders
+      delegate_to: 127.0.0.1
+      run_once: true
+      ansible.builtin.file:
+        path: "{{ how_to_root_dir }}/{{ item }}"
+        state: absent
+      with_items:
+        - connected_endpoints/artifacts
+        - fabric_topology/artifacts
+        - ip_addressing/artifacts
+        - ipv6_numbered/artifacts
+        - network_services/artifacts
+        - node_types/artifacts

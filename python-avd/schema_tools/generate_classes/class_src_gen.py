@@ -1,26 +1,30 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 from keyword import iskeyword
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Generic, TypeVar, cast
 
 from .src_generators import ClassVarSrc, FieldSrc, FieldTypeHintSrc, ListSrc, LiteralSrc, ModelSrc, SrcData
 from .utils import generate_class_name, generate_class_name_from_ref
 
 if TYPE_CHECKING:
-    from schema_tools.metaschema.meta_schema_model import AvdSchemaBool, AvdSchemaDict, AvdSchemaField, AvdSchemaInt, AvdSchemaList, AvdSchemaStr
+    from schema_tools.metaschema.meta_schema_model import AvdSchemaBool, AvdSchemaDict, AvdSchemaInt, AvdSchemaList, AvdSchemaStr
+
+T = TypeVar("T", bound="AvdSchemaBool | AvdSchemaDict | AvdSchemaInt | AvdSchemaList | AvdSchemaStr")
 
 
-class SrcGenBase:
+class SrcGenBase(Generic[T]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
 
     # TODO: add deprecation handling
     #       dynamic_valid_values
 
-    def generate_class_src(self, schema: AvdSchemaField, class_name: str | None = None) -> SrcData:
+    schema: T
+
+    def generate_class_src(self, schema: T, class_name: str | None = None) -> SrcData:
         """
         Returns SrcData for the given schema.
 
@@ -82,6 +86,9 @@ class SrcGenBase:
 
     def get_key(self) -> str:
         """Returns the key name after stripping dynamic key syntax."""
+        if self.schema._key is None:
+            msg = f"'get_key' was called when 'schema._key' is 'None' for {self}."
+            raise RuntimeError(msg)
         return self.schema._key.replace("<", "").replace(">", "").replace(".", "_")
 
     def get_field_name(self) -> str:
@@ -97,6 +104,9 @@ class SrcGenBase:
     @property
     def valid_key(self) -> bool:
         """Check if the key name can be used as field name."""
+        if self.schema._key is None:
+            msg = f"'valid_key' was called when 'schema._key' is 'None' for {self}."
+            raise RuntimeError(msg)
         return not iskeyword(self.schema._key) and self.schema._key.islower()
 
     def get_default(self) -> str | None:
@@ -106,10 +116,8 @@ class SrcGenBase:
         return None
 
 
-class SrcGenInt(SrcGenBase):
+class SrcGenInt(SrcGenBase["AvdSchemaInt"]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
-
-    schema: AvdSchemaInt
 
     @cached_property
     def class_src(self) -> LiteralSrc | None:
@@ -120,16 +128,12 @@ class SrcGenInt(SrcGenBase):
         return LiteralSrc(self.get_class_name(), self.schema.valid_values)
 
 
-class SrcGenBool(SrcGenBase):
+class SrcGenBool(SrcGenBase["AvdSchemaBool"]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
 
-    schema: AvdSchemaBool
 
-
-class SrcGenStr(SrcGenBase):
+class SrcGenStr(SrcGenBase["AvdSchemaStr"]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
-
-    schema: AvdSchemaStr
 
     def get_default(self) -> str | None:
         """Returns the default value from the schema as a source code string."""
@@ -146,10 +150,8 @@ class SrcGenStr(SrcGenBase):
         return LiteralSrc(self.get_class_name(), self.schema.valid_values)
 
 
-class SrcGenList(SrcGenBase):
+class SrcGenList(SrcGenBase["AvdSchemaList"]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
-
-    schema: AvdSchemaList
 
     def get_type(self) -> str:
         if self.schema.field_ref:
@@ -219,6 +221,13 @@ class SrcGenList(SrcGenBase):
             return None
 
         item_classes = []
+
+        # Ensure that the items for lists with primary key always have the primary key as the first key:
+        if self.schema.primary_key:
+            self.schema.items = cast("AvdSchemaDict", self.schema.items)
+            if self.schema.items.keys:
+                self.schema.items.keys = {self.schema.primary_key: self.schema.items.keys[self.schema.primary_key]} | self.schema.items.keys
+
         fieldsrc = self.schema.items._generate_class_src(f"{self.get_class_name()}Item")
         item_classes.append(fieldsrc.cls)
         if fieldsrc.item_classes:
@@ -267,10 +276,8 @@ class SrcGenList(SrcGenBase):
         return imports
 
 
-class SrcGenDict(SrcGenBase):
+class SrcGenDict(SrcGenBase["AvdSchemaDict"]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
-
-    schema: AvdSchemaDict
 
     def get_type(self) -> str:
         if self.schema.field_ref:
@@ -454,25 +461,29 @@ class SrcGenRootDict(SrcGenDict):
                 dynamic_key_model_name = generate_class_name(f"dynamic_{dynamic_key_type}")
                 _dynamic_key_maps.append({"dynamic_keys_path": dynamic_keys_path, "model_key": dynamic_key_type})
                 fieldsrc = childschema._generate_class_src(class_name=generate_class_name(dynamic_key_type))
+                fieldsrc_list = [
+                    FieldSrc(
+                        name="key",
+                        field_type="str",
+                        type_hints=[FieldTypeHintSrc(field_type="str")],
+                        description="Key used as dynamic key",
+                        optional=False,
+                    )
+                ]
+
                 # Overriding the details from the autocreated field. This way we can reuse the field definition with types and type hints
-                fieldsrc.field.name = "value"
-                fieldsrc.field.description = "Value of dynamic key"
+                if fieldsrc.field is not None:
+                    fieldsrc.field.name = "value"
+                    fieldsrc.field.description = "Value of dynamic key"
+                    fieldsrc_list.append(fieldsrc.field)
+
                 dyn_classes.extend(
                     [
                         ModelSrc(
                             name=f"{dynamic_key_model_name}Item",
                             # Reversing the order to ensure we put items before the class needing it.
                             classes=[cls for cls in [*reversed(fieldsrc.item_classes or []), fieldsrc.cls] if cls is not None],
-                            fields=[
-                                FieldSrc(
-                                    name="key",
-                                    field_type="str",
-                                    type_hints=[FieldTypeHintSrc(field_type="str")],
-                                    description="Key used as dynamic key",
-                                    optional=False,
-                                ),
-                                fieldsrc.field,
-                            ],
+                            fields=fieldsrc_list,
                         ),
                         ListSrc(
                             name=dynamic_key_model_name,

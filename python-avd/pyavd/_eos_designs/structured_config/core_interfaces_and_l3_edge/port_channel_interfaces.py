@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -39,6 +39,8 @@ class PortChannelInterfacesMixin(Protocol):
                     p2p_link.port_channel_structured_config,
                     list_merge=self.custom_structured_configs.list_merge_strategy,
                 )
+
+            self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(port_channel_interface.name)
 
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
