@@ -20275,8 +20275,6 @@ class EosDesigns(EosDesignsRootModel):
                 "hop_limit": {"type": int},
                 "hop_limit_match": {"type": str, "default": "eq"},
                 "dscp_mask": {"type": str},
-                "inner_vlan_number": {"type": int},
-                "inner_vlan_mask": {"type": str},
                 "sequence": {"type": int},
                 "remark": {"type": str},
                 "action": {"type": str},
@@ -20293,6 +20291,8 @@ class EosDesigns(EosDesignsRootModel):
                 "dscp": {"type": str},
                 "vlan_number": {"type": int},
                 "vlan_mask": {"type": str},
+                "inner_vlan_number": {"type": int},
+                "inner_vlan_mask": {"type": str},
             }
             source: str | None
             """
@@ -20321,9 +20321,6 @@ class EosDesigns(EosDesignsRootModel):
             """Default value: `"eq"`"""
             dscp_mask: str | None
             """DSCP mask ranges from 0x00 to 0x3F."""
-            inner_vlan_number: int | None
-            inner_vlan_mask: str | None
-            """0x000-0xFFF inner VLAN mask."""
             sequence: int | None
             """ACL entry sequence number."""
             remark: str | None
@@ -20361,6 +20358,9 @@ class EosDesigns(EosDesignsRootModel):
             vlan_number: int | None
             vlan_mask: str | None
             """0x000-0xFFF VLAN mask."""
+            inner_vlan_number: int | None
+            inner_vlan_mask: str | None
+            """0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set."""
 
             if TYPE_CHECKING:
 
@@ -20373,8 +20373,6 @@ class EosDesigns(EosDesignsRootModel):
                     hop_limit: int | None | UndefinedType = Undefined,
                     hop_limit_match: HopLimitMatch | UndefinedType = Undefined,
                     dscp_mask: str | None | UndefinedType = Undefined,
-                    inner_vlan_number: int | None | UndefinedType = Undefined,
-                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                     sequence: int | None | UndefinedType = Undefined,
                     remark: str | None | UndefinedType = Undefined,
                     action: Action | None | UndefinedType = Undefined,
@@ -20391,6 +20389,8 @@ class EosDesigns(EosDesignsRootModel):
                     dscp: str | None | UndefinedType = Undefined,
                     vlan_number: int | None | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -20417,8 +20417,6 @@ class EosDesigns(EosDesignsRootModel):
                         hop_limit: Match Hop Limit value.
                         hop_limit_match: hop_limit_match
                         dscp_mask: DSCP mask ranges from 0x00 to 0x3F.
-                        inner_vlan_number: inner_vlan_number
-                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask.
                         sequence: ACL entry sequence number.
                         remark:
                            Comment up to 100 characters.
@@ -20439,6 +20437,8 @@ class EosDesigns(EosDesignsRootModel):
                         dscp: DSCP value or name.
                         vlan_number: vlan_number
                         vlan_mask: 0x000-0xFFF VLAN mask.
+                        inner_vlan_number: inner_vlan_number
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set.
 
                     """
 

@@ -16,8 +16,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hop_limit</samp>](## "ipv6_acls.[].entries.[].hop_limit") | Integer |  |  | Min: 0 | Match Hop Limit value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hop_limit_match</samp>](## "ipv6_acls.[].entries.[].hop_limit_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_mask</samp>](## "ipv6_acls.[].entries.[].dscp_mask") | String |  |  |  | DSCP mask ranges from 0x00 to 0x3F. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_number</samp>](## "ipv6_acls.[].entries.[].inner_vlan_number") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_mask</samp>](## "ipv6_acls.[].entries.[].inner_vlan_mask") | String |  |  |  | 0x000-0xFFF inner VLAN mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sequence</samp>](## "ipv6_acls.[].entries.[].sequence") | Integer |  |  |  | ACL entry sequence number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remark</samp>](## "ipv6_acls.[].entries.[].remark") | String |  |  |  | Comment up to 100 characters.<br>If remark is defined, other keys in the ACL entry will be ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "ipv6_acls.[].entries.[].action") | String |  |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> | ACL action.<br>Required except for remarks. |
@@ -37,6 +35,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "ipv6_acls.[].entries.[].dscp") | String |  |  |  | DSCP value or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_number</samp>](## "ipv6_acls.[].entries.[].vlan_number") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_mask</samp>](## "ipv6_acls.[].entries.[].vlan_mask") | String |  |  |  | 0x000-0xFFF VLAN mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_number</samp>](## "ipv6_acls.[].entries.[].inner_vlan_number") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_mask</samp>](## "ipv6_acls.[].entries.[].inner_vlan_mask") | String |  |  |  | 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "ipv6_acls.[].counters_per_entry") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "ipv6_acls.[].sequence_numbers") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "ipv6_acls.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID. |
@@ -82,10 +82,6 @@
 
             # DSCP mask ranges from 0x00 to 0x3F.
             dscp_mask: <str>
-            inner_vlan_number: <int>
-
-            # 0x000-0xFFF inner VLAN mask.
-            inner_vlan_mask: <str>
 
             # ACL entry sequence number.
             sequence: <int>
@@ -133,6 +129,10 @@
 
             # 0x000-0xFFF VLAN mask.
             vlan_mask: <str>
+            inner_vlan_number: <int>
+
+            # 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set.
+            inner_vlan_mask: <str>
         counters_per_entry: <bool>
         # This key is deprecated.
         # Support will be removed in AVD version 7.0.0.
