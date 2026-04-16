@@ -33,7 +33,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                 self._set_parent_vlans(vlan_id)
                 self._set_parent_vlan_interface(vlan, vlan_id)
                 if self.shared_utils.inband_mgmt_vrf is None and self.shared_utils.underlay_bgp:
-                    self._enable_router_bgp_redistribute_attached_host()
+                    self._set_once_enable_router_bgp_redistribute_attached_host()
                     if self.inputs.underlay_filter_redistribute_connected:
                         if vlan["ipv6"]:
                             if self.shared_utils.overlay_routing_protocol != "none":
