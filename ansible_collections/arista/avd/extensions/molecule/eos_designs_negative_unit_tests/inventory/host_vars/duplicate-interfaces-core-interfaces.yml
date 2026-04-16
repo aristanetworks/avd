@@ -25,15 +25,15 @@ core_interfaces:
       isis_authentication_key: $1c$sTNAlR6rKSw=
 
   p2p_links:
-    - nodes: [ duplicate-interfaces-core-interfaces, peer1]
+    - nodes: [duplicate-interfaces-core-interfaces, peer1]
       id: 1
-      interfaces: [ Ethernet1, Ethernet2 ]
+      interfaces: [Ethernet1, Ethernet2]
       profile: isis_bb_profile
 
     # Link w/o bb profile
-    - nodes: [ duplicate-interfaces-core-interfaces, peer2]
+    - nodes: [duplicate-interfaces-core-interfaces, peer2]
       id: 2
-      interfaces: [ Ethernet1, Ethernet3 ]
+      interfaces: [Ethernet1, Ethernet3]
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for EthernetInterfaces.

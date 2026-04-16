@@ -921,6 +921,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
+            "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -941,6 +942,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        only_configure_mlag_vrfs_peer_group_when_used: bool
+        """
+        Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -950,6 +957,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
+                only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -963,6 +971,7 @@ class EosDesigns(EosDesignsRootModel):
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
                        default instead of always deactivating it.
                     raise_for_port_channels_without_members: Raise an error if an L3 Port-Channel is configured without any member interfaces.
+                    only_configure_mlag_vrfs_peer_group_when_used: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
 
                 """
 
@@ -4321,6 +4330,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -4420,6 +4430,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -4547,6 +4568,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -4624,6 +4646,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -5105,6 +5134,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -5204,6 +5234,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -5331,6 +5372,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -5408,6 +5450,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -17893,7 +17942,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    EvpnPreventReadvertiseToServerMode: TypeAlias = Literal["source_peer_asn", "as_path_acl"]
+    EvpnPreventReadvertiseToServerMode: TypeAlias = Literal["source_peer_asn", "as_path_acl", "rcf"]
 
     class EvpnVlanBundlesItem(AvdModel):
         """Subclass of AvdModel."""
@@ -21488,6 +21537,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -21587,6 +21637,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -21714,6 +21775,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -21791,6 +21853,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -22272,6 +22341,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -22371,6 +22441,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -22498,6 +22579,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -22575,6 +22657,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -92134,11 +92223,16 @@ class EosDesigns(EosDesignsRootModel):
     not be advertised to the EVPN route-servers.
     Only used when `evpn_prevent_readvertise_to_server` is
     set to `true`.
-    `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
-    which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
-    allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
-    `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
-    updates with the route-server ASN anywhere in the AS-path.
+    `source_peer_asn` mode configures an outbound route-maps towards EVPN route-servers
+    which filter out BGP updates learned directly from the ASN of the route-servers. This mode will
+    still allow routes learned via any other peer, even if they have the route-server's ASN in the AS-
+    path.
+    `as_path_acl` mode configures an outbound route-maps and as-path access-lists which filter out
+    BGP updates with the route-servers' ASN anywhere in the AS-path.
+    `rcf` method uses RCF `as_path
+    has_none` condition to filter out EVPN BGP routes containing the route-servers' ASN in the `AS PATH`
+    attribute. Filtering is applied to EVPN BGP Address Family only. This method requires EOS 4.35.2F
+    and newer.
 
     Default value: `"as_path_acl"`
     """
@@ -94204,11 +94298,16 @@ class EosDesigns(EosDesignsRootModel):
                    not be advertised to the EVPN route-servers.
                    Only used when `evpn_prevent_readvertise_to_server` is
                    set to `true`.
-                   `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
-                   which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
-                   allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
-                   `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
-                   updates with the route-server ASN anywhere in the AS-path.
+                   `source_peer_asn` mode configures an outbound route-maps towards EVPN route-servers
+                   which filter out BGP updates learned directly from the ASN of the route-servers. This mode will
+                   still allow routes learned via any other peer, even if they have the route-server's ASN in the AS-
+                   path.
+                   `as_path_acl` mode configures an outbound route-maps and as-path access-lists which filter out
+                   BGP updates with the route-servers' ASN anywhere in the AS-path.
+                   `rcf` method uses RCF `as_path
+                   has_none` condition to filter out EVPN BGP routes containing the route-servers' ASN in the `AS PATH`
+                   attribute. Filtering is applied to EVPN BGP Address Family only. This method requires EOS 4.35.2F
+                   and newer.
                 evpn_short_esi_prefix: Configure prefix for "short_esi" values.
                 evpn_vlan_aware_bundles:
                    Enable VLAN aware bundles for every EVPN MAC-VRF.
