@@ -119,7 +119,7 @@ class TagMixin(Protocol):
 
         return tags
 
-    @GRPCRequestHandler(iter_field="tags")
+    @GRPCRequestHandler(collection_field="tags")
     async def set_tags(
         self: CVClientProtocol,
         workspace_id: str,
@@ -218,7 +218,7 @@ class TagMixin(Protocol):
 
         return tag_assignments
 
-    @GRPCRequestHandler(iter_field="tag_assignments")
+    @GRPCRequestHandler(collection_field="tag_assignments")
     async def set_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
@@ -256,7 +256,7 @@ class TagMixin(Protocol):
 
         return [response.key async for response in responses]
 
-    @GRPCRequestHandler(iter_field="tag_assignments")
+    @GRPCRequestHandler(collection_field="tag_assignments")
     async def delete_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,

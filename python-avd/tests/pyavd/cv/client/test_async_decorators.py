@@ -113,7 +113,7 @@ class CvClass:
     async def version_limited_method(self) -> tuple[str, str]:  # noqa: F811
         return (CVAAS_VERSION_STRING, CVAAS_VERSION_STRING)
 
-    @GRPCRequestHandler(iter_field="field")
+    @GRPCRequestHandler(collection_field="field")
     async def msgsize_limited_method(self, field: list[Any] | set[Any] | tuple[Any, ...], max_accepted_len: int) -> list[int]:
         # Check if the number of entries is higher than the max accepted length and raise.
         if len(field) > max_accepted_len:
@@ -143,7 +143,7 @@ class CvClass:
         joined = "".join([str(x) for x in input_list if x is not None])
         return sha256(joined.encode("utf-8")).hexdigest()
 
-    @GRPCRequestHandler(iter_field="field")
+    @GRPCRequestHandler(collection_field="field")
     async def msgsize_limited_grpc_method_success(self, field: list[int] | None = None, max_accepted_size: int = 0) -> list:
         self._grpc_msgsize_limited_call_count[self.msgsize_limited_grpc_method_success.__name__][self._calculate_list_hash(field)] += 1
         if (field_sum := sum(field)) > max_accepted_size:
@@ -151,12 +151,12 @@ class CvClass:
         # return list with len of fields for this execution.
         return [len(field)]
 
-    @GRPCRequestHandler(iter_field="field")
+    @GRPCRequestHandler(collection_field="field")
     async def msgsize_limited_grpc_method_exception(self, inner_exception: Exception, field: list[int] | None = None) -> list:
         self._grpc_msgsize_limited_call_count[self.msgsize_limited_grpc_method_exception.__name__][self._calculate_list_hash(field)] += 1
         raise inner_exception
 
-    @GRPCRequestHandler(iter_field="field")
+    @GRPCRequestHandler(collection_field="field")
     async def msgsize_limited_grpc_method_failure(self, failures: int = 0, field: list[int] | None = None, max_accepted_size: int = 0) -> list:
         self._grpc_msgsize_limited_call_count[self.msgsize_limited_grpc_method_failure.__name__][self._calculate_list_hash(field)] += 1
         if self._grpc_msgsize_limited_call_count[self.msgsize_limited_grpc_method_failure.__name__][self._calculate_list_hash(field)] > failures:
@@ -166,27 +166,27 @@ class CvClass:
             return [len(field)]
         raise GRPCError(Status.UNAVAILABLE)
 
-    @GRPCRequestHandler(iter_field="field")
+    @GRPCRequestHandler(collection_field="field")
     async def responses_no_errors(self, field: list[str]) -> list:
         return [MockedResponse(x) for x in field]
 
-    @GRPCRequestHandler(iter_field="field", check_bulk_response_errors=True)
+    @GRPCRequestHandler(collection_field="field", check_bulk_response_errors=True)
     async def responses_no_errors_check_bulk_response_errors(self, field: list[str]) -> list:
         return [MockedResponse(x) for x in field]
 
-    @GRPCRequestHandler(iter_field="field")
+    @GRPCRequestHandler(collection_field="field")
     async def responses_mixed_errors(self, field: list[str]) -> list:
         return [MockedResponseWithError(MockedResponse(x), f"Error for item {x}") if int(x) % 2 == 0 else MockedResponse(x) for x in field]
 
-    @GRPCRequestHandler(iter_field="field", check_bulk_response_errors=True)
+    @GRPCRequestHandler(collection_field="field", check_bulk_response_errors=True)
     async def responses_mixed_errors_check_bulk_response_errors(self, field: list[str]) -> list:
         return [MockedResponseWithError(MockedResponse(x), f"Error for item {x}") if int(x) % 2 == 0 else MockedResponse(x) for x in field]
 
-    @GRPCRequestHandler(iter_field="field")
+    @GRPCRequestHandler(collection_field="field")
     async def responses_all_errors(self, field: list[str]) -> list:
         return [MockedResponseWithError(MockedResponse(x), f"Error for item {x}") for x in field]
 
-    @GRPCRequestHandler(iter_field="field", check_bulk_response_errors=True)
+    @GRPCRequestHandler(collection_field="field", check_bulk_response_errors=True)
     async def responses_all_errors_check_bulk_response_errors(self, field: list[str]) -> list:
         return [MockedResponseWithError(MockedResponse(x), f"Error for item {x}") for x in field]
 
@@ -240,7 +240,7 @@ async def test_msg_size_handler_invalid_function_return_type() -> None:
         return "foo"
 
     with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator is unable to bind to the function .+"):
-        await GRPCRequestHandler(iter_field="_field")(function_not_returning_list)(["foo", "bar"])
+        await GRPCRequestHandler(collection_field="_field")(function_not_returning_list)(["foo", "bar"])
 
 
 @pytest.mark.asyncio
@@ -251,34 +251,34 @@ async def test_msg_size_handler_invalid_function_return_type_union() -> None:
         return "foo"
 
     with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator is unable to bind to the function .+"):
-        await GRPCRequestHandler(iter_field="_field")(function_returning_union_of_list_and_string)(["foo", "bar"])
+        await GRPCRequestHandler(collection_field="_field")(function_returning_union_of_list_and_string)(["foo", "bar"])
 
 
 @pytest.mark.asyncio
-async def test_msg_size_handler_invalid_function_iter_field() -> None:
+async def test_msg_size_handler_invalid_function_collection_field() -> None:
     def function_with_wrong_arg(_wrong_field: list) -> list:
         return ["foo"]
 
-    with pytest.raises(KeyError, match=r"GRPCRequestHandler decorator is unable to find the iter_field .+"):
-        await GRPCRequestHandler(iter_field="_field")(function_with_wrong_arg)(["foo", "bar"])
+    with pytest.raises(KeyError, match=r"GRPCRequestHandler decorator is unable to find the collection_field .+"):
+        await GRPCRequestHandler(collection_field="_field")(function_with_wrong_arg)(["foo", "bar"])
 
 
 @pytest.mark.asyncio
-async def test_msg_size_handler_invalid_function_iter_field_annotation_type() -> None:
+async def test_msg_size_handler_invalid_function_collection_field_annotation_type() -> None:
     def function_with_wrong_arg_type(_field: str) -> list:
         return ["foo"]
 
-    with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator expected the type of the iter_field.*to be defined as a list, set or tuple. Got"):
-        await GRPCRequestHandler(iter_field="_field")(function_with_wrong_arg_type)(["foo", "bar"])
+    with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator expected the type of the collection_field.*to be defined as a list, set or tuple. Got"):
+        await GRPCRequestHandler(collection_field="_field")(function_with_wrong_arg_type)(["foo", "bar"])
 
 
 @pytest.mark.asyncio
-async def test_msg_size_handler_invalid_function_iter_field_value_type() -> None:
+async def test_msg_size_handler_invalid_function_collection_field_value_type() -> None:
     def function_with_wrong_value_type_of_field(_field: list) -> list:
         return ["foo"]
 
-    with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator expected the value of the iter_field.*to be a non-empty list, set or tuple. Got"):
-        await GRPCRequestHandler(iter_field="_field")(function_with_wrong_value_type_of_field)("foo")
+    with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator expected the value of the collection_field.*to be a non-empty list, set or tuple. Got"):
+        await GRPCRequestHandler(collection_field="_field")(function_with_wrong_value_type_of_field)("foo")
 
 
 @pytest.mark.asyncio
@@ -393,25 +393,25 @@ async def test_grpc_request_handler_failures(
         pytest.param(
             8,
             [
-                "Preparing call for '.*' for iter_field '.*' with 10 item.*",
-                "Message size 55 exceeded the max of 15 for '.*' on iter_field '.*'\\. Attempting to split 10 items.*",
-                "Splitting iter_field '.*' for '.*' into 5 calls with up to 2 items each.*",
-                "Processing chunk 1/5 for '.*' with 2 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 2 item.*",
-                "Processing chunk 2/5 for '.*' with 2 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 2 item.*",
-                "Processing chunk 3/5 for '.*' with 2 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 2 item.*",
-                "Processing chunk 4/5 for '.*' with 2 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 2 item.*",
-                "Processing chunk 5/5 for '.*' with 2 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 2 item.*",
-                "Message size 19 exceeded the max of 15 for '.*' on iter_field '.*'\\. Attempting to split 2 items.*",
-                "Splitting iter_field '.*' for '.*' into 2 calls with up to 1 items each.*",
-                "Processing chunk 1/2 for '.*' with 1 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 1 item.*",
-                "Processing chunk 2/2 for '.*' with 1 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 1 item.*",
+                "Preparing call for '.*' for collection_field '.*' with 10 item.*",
+                "Message size 55 exceeded the max of 15 for '.*' on collection_field '.*'\\. Attempting to split 10 items.*",
+                "Splitting collection_field '.*' for '.*' into 5 calls with up to 2 items each.*",
+                "Processing chunk 1/5 for '.*' with 2 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 2 item.*",
+                "Processing chunk 2/5 for '.*' with 2 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 2 item.*",
+                "Processing chunk 3/5 for '.*' with 2 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 2 item.*",
+                "Processing chunk 4/5 for '.*' with 2 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 2 item.*",
+                "Processing chunk 5/5 for '.*' with 2 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 2 item.*",
+                "Message size 19 exceeded the max of 15 for '.*' on collection_field '.*'\\. Attempting to split 2 items.*",
+                "Splitting collection_field '.*' for '.*' into 2 calls with up to 1 items each.*",
+                "Processing chunk 1/2 for '.*' with 1 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 1 item.*",
+                "Processing chunk 2/2 for '.*' with 1 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 1 item.*",
             ],
             [2, 2, 2, 2, 1, 1],
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -474,63 +474,63 @@ async def test_grpc_request_handler_limited_success(
             44,
             33,
             [
-                "Preparing call for '.*' for iter_field '.*' with 11 item.*",
+                "Preparing call for '.*' for collection_field '.*' with 11 item.*",
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
-                "Message size 70 exceeded the max of 15 for '.*' on iter_field '.*'\\. Attempting to split 11 items.*",
-                "Splitting iter_field '.*' for '.*' into 6 calls with up to 2 items each.*",
-                "Processing chunk 1/6 for '.*' with 2 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 2 item.*",
+                "Message size 70 exceeded the max of 15 for '.*' on collection_field '.*'\\. Attempting to split 11 items.*",
+                "Splitting collection_field '.*' for '.*' into 6 calls with up to 2 items each.*",
+                "Processing chunk 1/6 for '.*' with 2 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 2 item.*",
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
-                "Processing chunk 2/6 for '.*' with 2 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 2 item.*",
+                "Processing chunk 2/6 for '.*' with 2 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 2 item.*",
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
-                "Processing chunk 3/6 for '.*' with 2 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 2 item.*",
+                "Processing chunk 3/6 for '.*' with 2 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 2 item.*",
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
-                "Message size 20 exceeded the max of 15 for '.*' on iter_field '.*'\\. Attempting to split 2 items.*",
-                "Splitting iter_field '.*' for '.*' into 2 calls with up to 1 items each.*",
-                "Processing chunk 1/2 for '.*' with 1 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 1 item.*",
+                "Message size 20 exceeded the max of 15 for '.*' on collection_field '.*'\\. Attempting to split 2 items.*",
+                "Splitting collection_field '.*' for '.*' into 2 calls with up to 1 items each.*",
+                "Processing chunk 1/2 for '.*' with 1 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 1 item.*",
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
-                "Processing chunk 2/2 for '.*' with 1 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 1 item.*",
+                "Processing chunk 2/2 for '.*' with 1 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 1 item.*",
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
-                "Processing chunk 4/6 for '.*' with 2 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 2 item.*",
+                "Processing chunk 4/6 for '.*' with 2 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 2 item.*",
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
-                "Processing chunk 5/6 for '.*' with 2 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 2 item.*",
+                "Processing chunk 5/6 for '.*' with 2 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 2 item.*",
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
-                "Message size 17 exceeded the max of 15 for '.*' on iter_field '.*'\\. Attempting to split 2 items.*",
-                "Splitting iter_field '.*' for '.*' into 2 calls with up to 1 items each.*",
-                "Processing chunk 1/2 for '.*' with 1 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 1 item.*",
+                "Message size 17 exceeded the max of 15 for '.*' on collection_field '.*'\\. Attempting to split 2 items.*",
+                "Splitting collection_field '.*' for '.*' into 2 calls with up to 1 items each.*",
+                "Processing chunk 1/2 for '.*' with 1 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 1 item.*",
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
-                "Processing chunk 2/2 for '.*' with 1 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 1 item.*",
+                "Processing chunk 2/2 for '.*' with 1 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 1 item.*",
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
-                "Processing chunk 6/6 for '.*' with 1 item\\(s\\) from iter_field '.*'\\..*",
-                "Preparing call for '.*' for iter_field '.*' with 1 item.*",
+                "Processing chunk 6/6 for '.*' with 1 item\\(s\\) from collection_field '.*'\\..*",
+                "Preparing call for '.*' for collection_field '.*' with 1 item.*",
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",

@@ -133,7 +133,7 @@ class ConfigletMixin(Protocol):
         return response.value
 
     @LimitCvVersion(min_ver="2024.2.0")
-    @GRPCRequestHandler(iter_field="containers")
+    @GRPCRequestHandler(collection_field="containers")
     async def set_configlet_containers(
         self: CVClientProtocol,
         workspace_id: str,
@@ -249,7 +249,7 @@ class ConfigletMixin(Protocol):
 
         return response.value
 
-    @GRPCRequestHandler(iter_field="configlet_ids")
+    @GRPCRequestHandler(collection_field="configlet_ids")
     async def get_configlets(
         self: CVClientProtocol,
         workspace_id: str,
@@ -359,7 +359,7 @@ class ConfigletMixin(Protocol):
         return response.value
 
     @LimitCvVersion(min_ver="2024.2.0")
-    @GRPCRequestHandler(iter_field="configlets", check_bulk_response_errors=True)
+    @GRPCRequestHandler(collection_field="configlets", check_bulk_response_errors=True)
     async def set_configlets_from_files(
         self: CVClientProtocol,
         workspace_id: str,
@@ -477,7 +477,7 @@ class ConfigletMixin(Protocol):
 
         return responses_with_errors
 
-    @GRPCRequestHandler(iter_field="configlet_ids")
+    @GRPCRequestHandler(collection_field="configlet_ids")
     async def delete_configlets(
         self: CVClientProtocol,
         workspace_id: str,
