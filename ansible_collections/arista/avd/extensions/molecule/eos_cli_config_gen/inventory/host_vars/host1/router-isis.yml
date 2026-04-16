@@ -70,6 +70,7 @@ router_isis:
       rcf: lu_2_sr_pfx()
   address_family_ipv6:
     enabled: true
+    multi_topology: true
     fast_reroute_ti_lfa:
       mode: node-protection
       level: level-1
@@ -148,8 +149,6 @@ router_isis:
           key_type: 0
           key: password2
   eos_cli: |-
-    address-family ipv6 unicast
-      multi-topology
     traffic-engineering
       no shutdown
       is-type level-2

@@ -54,11 +54,6 @@ class RouteMapsMixin(Protocol):
                     self.structured_config.route_maps.append(route_maps_item)
         self._route_maps_vrf_default()
 
-        # Note we check the 'flag need_mlag_peer_group' here which is being set by router_bgp logic. So this must run after.
-        # TODO: Move this logic to a single place instead.
-        if self.need_mlag_peer_group and self.shared_utils.node_config.mlag_ibgp_origin_incomplete:
-            self._bgp_mlag_peer_group_route_map()
-
         if self._mlag_ibgp_peering_subnets_without_redistribution:
             self.set_once_route_map_connected_to_bgp_vrfs()
 
@@ -88,23 +83,6 @@ class RouteMapsMixin(Protocol):
             return False
 
         return bool(self.shared_utils.wan_role and self._vrf_default_ipv4_static_routes["redistribute_in_overlay"])
-
-    def _bgp_mlag_peer_group_route_map(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
-        """
-        Set one route-map item.
-
-        Origin Incomplete for MLAG iBGP learned routes.
-
-        TODO: Partially duplicated from mlag. Should be moved to a common class
-        """
-        route_maps_item = EosCliConfigGen.RouteMapsItem(name="RM-MLAG-PEER-IN")
-        route_maps_item.sequence_numbers.append_new(
-            sequence=10,
-            type="permit",
-            set=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Set(["origin incomplete"]),
-            description="Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing",
-        )
-        self.structured_config.route_maps.append(route_maps_item)
 
     @run_once_method
     def set_once_route_map_connected_to_bgp_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
