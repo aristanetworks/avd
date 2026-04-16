@@ -99,7 +99,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         self.structured_config.ip_virtual_router_mac_address = self.shared_utils.node_config.virtual_router_mac_address.lower()
 
     @run_once_method
-    def _enable_router_bgp_redistribute_attached_host(self) -> None:
+    def _set_once_enable_router_bgp_redistribute_attached_host(self) -> None:
         self.structured_config.router_bgp.redistribute.attached_host.enabled = True
 
     def _set_l2leaf_inband_mgmt_prefix_lists(self, vlan: dict, index: int) -> None:
