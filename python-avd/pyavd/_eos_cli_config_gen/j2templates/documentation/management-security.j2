@@ -36,13 +36,13 @@
 | Signature verification SSL profile | {{ management_security.signature_verification.ssl_profile }} |
 {%         endif %}
 {%     endif %}
-{%     if management_security.auto_certificate_profiles is arista.avd.defined %}
+{%     if management_security.auto_certificate.profiles is arista.avd.defined %}
 
 ### Management Security Auto-Certificate Profiles
 
 | Auto-Certificate Profile Name | Key filename | Auto-Certificate Protocol Name | Certificate Signature Digest | Renewal Time | Distinguished Name Parameters | Subject Alternative Name Parameters |
 | ----------------------------- | ------------ | ------------------------------ | ---------------------------- | ------------ | ----------------------------- | ----------------------------------- |
-{%         for auto_certificate_profile in management_security.auto_certificate_profiles | arista.avd.natural_sort(sort_key="name") %}
+{%         for auto_certificate_profile in management_security.auto_certificate.profiles | arista.avd.natural_sort(sort_key="name") %}
 {%             set auto_certificate_dn = [] %}
 {%             for dn_key in auto_certificate_profile.parameters.distinguished_name | arista.avd.natural_sort %}
 {%                 set display_dn_key = dn_key | replace('_', ' ') %}
@@ -59,17 +59,17 @@
 {%             if auto_certificate_san | length == 0 %}
 {%                 do auto_certificate_san.append('-') %}
 {%             endif %}
-| {{ auto_certificate_profile.name }} | {{ auto_certificate_profile.key }} | {{ auto_certificate_profile.protocol_name }} | {{ auto_certificate_profile.digest | arista.avd.default("-") }} | {{ auto_certificate_profile.renewal | arista.avd.default('-') }} | {{ auto_certificate_dn | join('<br>') }} | {{ auto_certificate_san | join('<br>') }} |
+| {{ auto_certificate_profile.name }} | {{ auto_certificate_profile.key | arista.avd.default("-") }} | {{ auto_certificate_profile.protocol_name | arista.avd.default("-") }} | {{ auto_certificate_profile.digest | arista.avd.default("-") }} | {{ auto_certificate_profile.renewal | arista.avd.default('-') }} | {{ auto_certificate_dn | join('<br>') }} | {{ auto_certificate_san | join('<br>') }} |
 {%         endfor %}
 {%     endif %}
-{%     if management_security.auto_certificate_protocols is arista.avd.defined %}
+{%     if management_security.auto_certificate.protocols is arista.avd.defined %}
 
 ### Management Security Auto-Certificate Protocols
 
 | Auto-Certificate Protocol Name | Protocol | Disabled | Server URL | SSL Profile Name | VRF | Connection Retry Count | Connection Retry Interval | Exponential Backoff |
 | ------------------------------ | -------- | -------- | ---------- | ---------------- | --- | ---------------------- | ------------------------- | ------------------- |
-{%         for auto_certificate_protocol in management_security.auto_certificate_protocols | arista.avd.natural_sort(sort_key="name") %}
-| {{ auto_certificate_protocol.name }} | {{ auto_certificate_protocol.protocol | upper }} | {{ "Disabled" if auto_certificate_protocol.disabled is arista.avd.defined(true) else "-" }} | {{ auto_certificate_protocol.server.url }} | {{ auto_certificate_protocol.server.ssl_profile }} | {{ auto_certificate_protocol.server.vrf | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection.retry.count | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection.retry.interval | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection.retry.exponential_backoff | arista.avd.default('False') }} |
+{%         for auto_certificate_protocol in management_security.auto_certificate.protocols | arista.avd.natural_sort(sort_key="name") %}
+| {{ auto_certificate_protocol.name }} | {{ auto_certificate_protocol.protocol | upper }} | {{ auto_certificate_protocol.disabled | arista.avd.default("-") }} | {{ auto_certificate_protocol.server.url | arista.avd.default("-") }} | {{ auto_certificate_protocol.server.ssl_profile | arista.avd.default("-") }} | {{ auto_certificate_protocol.server.vrf | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection.retry.count | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection.retry.interval | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection.retry.exponential_backoff | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 {%     if management_security.ssl_profiles is arista.avd.defined %}

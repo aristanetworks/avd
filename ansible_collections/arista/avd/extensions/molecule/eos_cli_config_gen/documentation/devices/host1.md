@@ -1881,8 +1881,8 @@ address locking
 
 | Auto-Certificate Protocol Name | Protocol | Disabled | Server URL | SSL Profile Name | VRF | Connection Retry Count | Connection Retry Interval | Exponential Backoff |
 | ------------------------------ | -------- | -------- | ---------- | ---------------- | --- | ---------------------- | ------------------------- | ------------------- |
-| AVD_EST_PROTOCOL_both | EST | Disabled | https://test_est.example.com/test2 | SSL_PROFILE | MGMT | 100 | 30 | False |
-| AVD_EST_PROTOCOL_secret | EST | - | https://test_est.example.com/test1 | SSL_PROFILE | - | 100 | - | False |
+| AVD_EST_PROTOCOL_both | EST | True | https://test_est.example.com/test2 | SSL_PROFILE | MGMT | 100 | 30 | False |
+| AVD_EST_PROTOCOL_secret | EST | - | https://test_est.example.com/test1 | SSL_PROFILE | - | 100 | - | - |
 | AVD_EST_PROTOCOL_token | EST | - | https://test_est.example.com/test | SSL_PROFILE | MGMT | 100 | 30 | True |
 
 ### Management Security SSL Profiles
@@ -1993,13 +1993,14 @@ management security
       connection retry interval 30 seconds
       connection retry count 100
       disabled
-      credentials enroll token 7 <removed>
+      credentials enroll token 0 <removed>
    !
    auto-certificate protocol est AVD_EST_PROTOCOL_secret
       server url https://test_est.example.com/test1
       server ssl profile SSL_PROFILE
       connection retry count 100
       credentials enroll username est_authentication secret 7 <removed>
+      credentials re-enroll username est_authentication secret 0 <removed>
    !
    auto-certificate protocol est AVD_EST_PROTOCOL_token
       server url https://test_est.example.com/test
@@ -2008,6 +2009,7 @@ management security
       connection retry interval 30 seconds backoff exponential
       connection retry count 100
       credentials enroll token 7 <removed>
+      credentials re-enroll token 7 <removed>
    !
    entropy source hardware haveged cpu jitter
    entropy source hardware exclusive

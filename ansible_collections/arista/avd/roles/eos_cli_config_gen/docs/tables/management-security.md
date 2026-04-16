@@ -8,49 +8,54 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>management_security</samp>](## "management_security") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;auto_certificate_profiles</samp>](## "management_security.auto_certificate_profiles") | List, items: Dictionary |  |  |  | Profiles for automatic certificate enrollment and renewal. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.auto_certificate_profiles.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digest</samp>](## "management_security.auto_certificate_profiles.[].digest") | String |  |  | Valid Values:<br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "management_security.auto_certificate_profiles.[].key") | String | Required |  |  | Key to use with auto-enrolled certificate. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol_name</samp>](## "management_security.auto_certificate_profiles.[].protocol_name") | String | Required |  |  | Protocol definition to use to auto-enroll/renew the certificate. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;renewal</samp>](## "management_security.auto_certificate_profiles.[].renewal") | Integer |  |  | Min: 1<br>Max: 4294967295 | Renewal time in seconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameters</samp>](## "management_security.auto_certificate_profiles.[].parameters") | Dictionary |  |  |  | Parameters of the distinguished name and subject alternative name for the CSR. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distinguished_name</samp>](## "management_security.auto_certificate_profiles.[].parameters.distinguished_name") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;common_name</samp>](## "management_security.auto_certificate_profiles.[].parameters.distinguished_name.common_name") | String |  |  |  | Common name for use in subject |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country</samp>](## "management_security.auto_certificate_profiles.[].parameters.distinguished_name.country") | String |  |  |  | Two-Letter Country Code for use in subject |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;email</samp>](## "management_security.auto_certificate_profiles.[].parameters.distinguished_name.email") | String |  |  |  | Email address for use in subject |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locality</samp>](## "management_security.auto_certificate_profiles.[].parameters.distinguished_name.locality") | String |  |  |  | Locality Name for use in subject |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;organization</samp>](## "management_security.auto_certificate_profiles.[].parameters.distinguished_name.organization") | String |  |  |  | Organization Name for use in subject |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;organization_unit</samp>](## "management_security.auto_certificate_profiles.[].parameters.distinguished_name.organization_unit") | String |  |  |  | Organization Unit Name for use in subject |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "management_security.auto_certificate_profiles.[].parameters.distinguished_name.serial_number") | String |  |  |  | Serial Number for use in subject |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state</samp>](## "management_security.auto_certificate_profiles.[].parameters.distinguished_name.state") | String |  |  |  | State for use in subject |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subject_alternative_name</samp>](## "management_security.auto_certificate_profiles.[].parameters.subject_alternative_name") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns</samp>](## "management_security.auto_certificate_profiles.[].parameters.subject_alternative_name.dns") | String |  |  |  | DNS names for use in subject-alternative-name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;email</samp>](## "management_security.auto_certificate_profiles.[].parameters.subject_alternative_name.email") | String |  |  |  | Email addresses for use in subject-alternative-name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "management_security.auto_certificate_profiles.[].parameters.subject_alternative_name.ip") | String |  |  |  | IP addresses for use in subject-alternative-name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uri</samp>](## "management_security.auto_certificate_profiles.[].parameters.subject_alternative_name.uri") | String |  |  |  | URIs for use in subject-alternative-name. |
-    | [<samp>&nbsp;&nbsp;auto_certificate_protocols</samp>](## "management_security.auto_certificate_protocols") | List, items: Dictionary |  |  |  | Protocols for automatic certificate enrollment and renewal. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.auto_certificate_protocols.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "management_security.auto_certificate_protocols.[].protocol") | String | Required |  | Valid Values:<br>- <code>est</code> | Protocol to use to communicate with endpoint; only EST is supported currently. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "management_security.auto_certificate_protocols.[].disabled") | Boolean |  |  |  | Temporarily disable sending requests to the server. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection</samp>](## "management_security.auto_certificate_protocols.[].connection") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retry</samp>](## "management_security.auto_certificate_protocols.[].connection.retry") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "management_security.auto_certificate_protocols.[].connection.retry.count") | Integer |  |  | Min: 1<br>Max: 4294967295 | Number of retries to attempt before giving up, if not configured the number of retries is infinite. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "management_security.auto_certificate_protocols.[].connection.retry.interval") | Integer |  |  | Min: 1<br>Max: 4294967295 | Number of seconds between retries. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exponential_backoff</samp>](## "management_security.auto_certificate_protocols.[].connection.retry.exponential_backoff") | Boolean |  |  |  | Exponentially increase the interval between retries to a maximum of 24 hours. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;credentials</samp>](## "management_security.auto_certificate_protocols.[].credentials") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enroll</samp>](## "management_security.auto_certificate_protocols.[].credentials.enroll") | Dictionary |  |  |  | Token or username/secret for initial certificate enrollment.<br>If both token and username/secret are defined, token will take precedence.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate_protocols.[].credentials.enroll.token") | String |  |  |  | Encrypted authentication token - only type 7 supported. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate_protocols.[].credentials.enroll.username") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate_protocols.[].credentials.enroll.secret") | String |  |  |  | Encrypted authentication secret - only type 7 supported. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_enroll</samp>](## "management_security.auto_certificate_protocols.[].credentials.re_enroll") | Dictionary |  |  |  | Token or username/secret for certificate re-enrollment.<br>If both token and username/secret are defined, token will take precedence.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate_protocols.[].credentials.re_enroll.token") | String |  |  |  | Encrypted authentication token - only type 7 supported. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate_protocols.[].credentials.re_enroll.username") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate_protocols.[].credentials.re_enroll.secret") | String |  |  |  | Encrypted authentication secret - only type 7 supported. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server</samp>](## "management_security.auto_certificate_protocols.[].server") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "management_security.auto_certificate_protocols.[].server.ssl_profile") | String | Required |  |  | Name of TLS profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "management_security.auto_certificate_protocols.[].server.url") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_security.auto_certificate_protocols.[].server.vrf") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;auto_certificate</samp>](## "management_security.auto_certificate") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profiles</samp>](## "management_security.auto_certificate.profiles") | List, items: Dictionary |  |  |  | Profiles for automatic certificate enrollment and renewal. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.auto_certificate.profiles.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digest</samp>](## "management_security.auto_certificate.profiles.[].digest") | String |  |  | Valid Values:<br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "management_security.auto_certificate.profiles.[].key") | String |  |  |  | Key to use with auto-enrolled certificate. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol_name</samp>](## "management_security.auto_certificate.profiles.[].protocol_name") | String |  |  |  | Protocol definition to use to auto-enroll/renew the certificate. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;renewal</samp>](## "management_security.auto_certificate.profiles.[].renewal") | Integer |  |  | Min: 1<br>Max: 4294967295 | Renewal time in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameters</samp>](## "management_security.auto_certificate.profiles.[].parameters") | Dictionary |  |  |  | Parameters of the distinguished name and subject alternative name for the CSR. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distinguished_name</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;common_name</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.common_name") | String |  |  |  | Common name for use in subject. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.country") | String |  |  |  | Two-Letter Country Code for use in subject. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;email</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.email") | String |  |  | Pattern: `[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}` | Email address for use in subject. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locality</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.locality") | String |  |  |  | Locality Name for use in subject. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;organization</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.organization") | String |  |  |  | Organization Name for use in subject. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;organization_unit</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.organization_unit") | String |  |  |  | Organization Unit Name for use in subject. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.serial_number") | String |  |  |  | Serial Number for use in subject.<br>system: Use the device's serial number in subject. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.state") | String |  |  |  | State for use in subject. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subject_alternative_name</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.dns") | String |  |  |  | DNS names for use in subject-alternative-name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;email</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.email") | String |  |  | Pattern: `[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}` | Email addresses for use in subject-alternative-name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.ip") | String |  |  |  | IPv4/IPv6 addresses for use in subject-alternative-name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uri</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.uri") | String |  |  |  | URIs for use in subject-alternative-name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "management_security.auto_certificate.protocols") | List, items: Dictionary |  |  |  | Protocols for automatic certificate enrollment and renewal. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.auto_certificate.protocols.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "management_security.auto_certificate.protocols.[].protocol") | String | Required |  | Valid Values:<br>- <code>est</code> | Protocol to use to communicate with endpoint; only EST is supported currently. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "management_security.auto_certificate.protocols.[].disabled") | Boolean |  |  |  | Temporarily disable sending requests to the server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection</samp>](## "management_security.auto_certificate.protocols.[].connection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retry</samp>](## "management_security.auto_certificate.protocols.[].connection.retry") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "management_security.auto_certificate.protocols.[].connection.retry.count") | Integer |  |  | Min: 0<br>Max: 4294967295 | Number of retries to attempt before giving up, if not configured the number of retries is infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "management_security.auto_certificate.protocols.[].connection.retry.interval") | Integer |  |  | Min: 1<br>Max: 4294967295 | Number of seconds between retries. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exponential_backoff</samp>](## "management_security.auto_certificate.protocols.[].connection.retry.exponential_backoff") | Boolean |  |  |  | Exponentially increase the interval between retries to a maximum of 24 hours. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;credentials</samp>](## "management_security.auto_certificate.protocols.[].credentials") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enroll</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll") | Dictionary |  |  |  | Token or username/secret for initial certificate enrollment.<br>If both token and username/secret are defined, token will take precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.token") | String |  |  |  | Authentication token. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.token_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.username") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.secret") | String |  |  |  | Authentication secret. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_enroll</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll") | Dictionary |  |  |  | Token or username/secret for certificate re-enrollment.<br>If both token and username/secret are defined, token will take precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.token") | String |  |  |  | Authentication token. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.token_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.username") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.secret") | String |  |  |  | Authentication secret. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server</samp>](## "management_security.auto_certificate.protocols.[].server") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "management_security.auto_certificate.protocols.[].server.ssl_profile") | String |  |  |  | Name of TLS profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "management_security.auto_certificate.protocols.[].server.url") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_security.auto_certificate.protocols.[].server.vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;entropy_sources</samp>](## "management_security.entropy_sources") | Dictionary |  |  |  | Source of entropy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "management_security.entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;haveged</samp>](## "management_security.entropy_sources.haveged") | Boolean |  |  |  | Use the HAVEGE algorithm. |
@@ -121,111 +126,117 @@
 
     ```yaml
     management_security:
+      auto_certificate:
 
-      # Profiles for automatic certificate enrollment and renewal.
-      auto_certificate_profiles:
-        - name: <str; required; unique>
-          digest: <str; "sha256" | "sha384" | "sha512">
+        # Profiles for automatic certificate enrollment and renewal.
+        profiles:
+          - name: <str; required; unique>
+            digest: <str; "sha256" | "sha384" | "sha512">
 
-          # Key to use with auto-enrolled certificate.
-          key: <str; required>
+            # Key to use with auto-enrolled certificate.
+            key: <str>
 
-          # Protocol definition to use to auto-enroll/renew the certificate.
-          protocol_name: <str; required>
+            # Protocol definition to use to auto-enroll/renew the certificate.
+            protocol_name: <str>
 
-          # Renewal time in seconds.
-          renewal: <int; 1-4294967295>
+            # Renewal time in seconds.
+            renewal: <int; 1-4294967295>
 
-          # Parameters of the distinguished name and subject alternative name for the CSR.
-          parameters:
-            distinguished_name:
+            # Parameters of the distinguished name and subject alternative name for the CSR.
+            parameters:
+              distinguished_name:
 
-              # Common name for use in subject
-              common_name: <str>
+                # Common name for use in subject.
+                common_name: <str>
 
-              # Two-Letter Country Code for use in subject
-              country: <str>
+                # Two-Letter Country Code for use in subject.
+                country: <str>
 
-              # Email address for use in subject
-              email: <str>
+                # Email address for use in subject.
+                email: <str>
 
-              # Locality Name for use in subject
-              locality: <str>
+                # Locality Name for use in subject.
+                locality: <str>
 
-              # Organization Name for use in subject
-              organization: <str>
+                # Organization Name for use in subject.
+                organization: <str>
 
-              # Organization Unit Name for use in subject
-              organization_unit: <str>
+                # Organization Unit Name for use in subject.
+                organization_unit: <str>
 
-              # Serial Number for use in subject
-              serial_number: <str>
+                # Serial Number for use in subject.
+                # system: Use the device's serial number in subject.
+                serial_number: <str>
 
-              # State for use in subject
-              state: <str>
-            subject_alternative_name:
+                # State for use in subject.
+                state: <str>
+              subject_alternative_name:
 
-              # DNS names for use in subject-alternative-name.
-              dns: <str>
+                # DNS names for use in subject-alternative-name.
+                dns: <str>
 
-              # Email addresses for use in subject-alternative-name.
-              email: <str>
+                # Email addresses for use in subject-alternative-name.
+                email: <str>
 
-              # IP addresses for use in subject-alternative-name.
-              ip: <str>
+                # IPv4/IPv6 addresses for use in subject-alternative-name.
+                ip: <str>
 
-              # URIs for use in subject-alternative-name.
-              uri: <str>
+                # URIs for use in subject-alternative-name.
+                uri: <str>
 
-      # Protocols for automatic certificate enrollment and renewal.
-      auto_certificate_protocols:
-        - name: <str; required; unique>
+        # Protocols for automatic certificate enrollment and renewal.
+        protocols:
+          - name: <str; required; unique>
 
-          # Protocol to use to communicate with endpoint; only EST is supported currently.
-          protocol: <str; "est"; required>
+            # Protocol to use to communicate with endpoint; only EST is supported currently.
+            protocol: <str; "est"; required>
 
-          # Temporarily disable sending requests to the server.
-          disabled: <bool>
-          connection:
-            retry:
+            # Temporarily disable sending requests to the server.
+            disabled: <bool>
+            connection:
+              retry:
 
-              # Number of retries to attempt before giving up, if not configured the number of retries is infinite.
-              count: <int; 1-4294967295>
+                # Number of retries to attempt before giving up, if not configured the number of retries is infinite.
+                count: <int; 0-4294967295>
 
-              # Number of seconds between retries.
-              interval: <int; 1-4294967295>
+                # Number of seconds between retries.
+                interval: <int; 1-4294967295>
 
-              # Exponentially increase the interval between retries to a maximum of 24 hours.
-              exponential_backoff: <bool>
-          credentials:
+                # Exponentially increase the interval between retries to a maximum of 24 hours.
+                exponential_backoff: <bool>
+            credentials:
 
-            # Token or username/secret for initial certificate enrollment.
-            # If both token and username/secret are defined, token will take precedence.
-            enroll:
+              # Token or username/secret for initial certificate enrollment.
+              # If both token and username/secret are defined, token will take precedence.
+              enroll:
 
-              # Encrypted authentication token - only type 7 supported.
-              token: <str>
-              username: <str>
+                # Authentication token.
+                token: <str>
+                token_type: <str; "0" | "7" | "8a"; default="7">
+                username: <str>
 
-              # Encrypted authentication secret - only type 7 supported.
-              secret: <str>
+                # Authentication secret.
+                secret: <str>
+                secret_type: <str; "0" | "7" | "8a"; default="7">
 
-            # Token or username/secret for certificate re-enrollment.
-            # If both token and username/secret are defined, token will take precedence.
-            re_enroll:
+              # Token or username/secret for certificate re-enrollment.
+              # If both token and username/secret are defined, token will take precedence.
+              re_enroll:
 
-              # Encrypted authentication token - only type 7 supported.
-              token: <str>
-              username: <str>
+                # Authentication token.
+                token: <str>
+                token_type: <str; "0" | "7" | "8a"; default="7">
+                username: <str>
 
-              # Encrypted authentication secret - only type 7 supported.
-              secret: <str>
-          server:
+                # Authentication secret.
+                secret: <str>
+                secret_type: <str; "0" | "7" | "8a"; default="7">
+            server:
 
-            # Name of TLS profile.
-            ssl_profile: <str; required>
-            url: <str; required>
-            vrf: <str>
+              # Name of TLS profile.
+              ssl_profile: <str>
+              url: <str>
+              vrf: <str>
 
       # Source of entropy.
       entropy_sources:

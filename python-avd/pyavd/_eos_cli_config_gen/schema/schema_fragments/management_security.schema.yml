@@ -9,159 +9,208 @@ keys:
   management_security:
     type: dict
     keys:
-      auto_certificate_profiles:
-        type: list
-        primary_key: name
-        description: Profiles for automatic certificate enrollment and renewal.
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-            digest:
-              type: str
-              valid_values: ["sha256", "sha384", "sha512"]
-            key:
-              type: str
-              description: Key to use with auto-enrolled certificate.
-              required: true
-            protocol_name:
-              type: str
-              required: true
-              description: Protocol definition to use to auto-enroll/renew the certificate.
-            renewal:
-              description: Renewal time in seconds.
-              type: int
-              min: 1
-              max: 4294967295
-              convert_types: [str]
-            parameters:
-              description: Parameters of the distinguished name and subject alternative name for the CSR.
+      auto_certificate:
+        type: dict
+        keys:
+          profiles:
+            type: list
+            primary_key: name
+            description: Profiles for automatic certificate enrollment and renewal.
+            items:
               type: dict
               keys:
-                distinguished_name:
-                  type: dict
-                  keys:
-                    common_name:
-                      type: str
-                      description: Common name for use in subject
-                    country:
-                      type: str
-                      description: Two-Letter Country Code for use in subject
-                    email:
-                      type: str
-                      description: Email address for use in subject
-                    locality:
-                      type: str
-                      description: Locality Name for use in subject
-                    organization:
-                      type: str
-                      description: Organization Name for use in subject
-                    organization_unit:
-                      type: str
-                      description: Organization Unit Name for use in subject
-                    serial_number:
-                      type: str
-                      description: Serial Number for use in subject
-                    state:
-                      type: str
-                      description: State for use in subject
-                subject_alternative_name:
-                  type: dict
-                  keys:
-                    dns:
-                      type: str
-                      description: DNS names for use in subject-alternative-name.
-                    email:
-                      type: str
-                      description: Email addresses for use in subject-alternative-name.
-                    ip:
-                      type: str
-                      description: IP addresses for use in subject-alternative-name.
-                    uri:
-                      type: str
-                      description: URIs for use in subject-alternative-name.
-      auto_certificate_protocols:
-        type: list
-        primary_key: name
-        description: Protocols for automatic certificate enrollment and renewal.
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-            protocol:
-              type: str
-              valid_values: ["est"]
-              required: true
-              description: Protocol to use to communicate with endpoint; only EST is supported currently.
-            disabled:
-              type: bool
-              description: Temporarily disable sending requests to the server.
-            connection:
-              type: dict
-              keys:
-                retry:
-                  type: dict
-                  keys:
-                    count:
-                      type: int
-                      convert_types: [str]
-                      min: 1
-                      max: 4294967295
-                      description: Number of retries to attempt before giving up, if not configured the number of retries is infinite.
-                    interval:
-                      type: int
-                      convert_types: [str]
-                      min: 1
-                      max: 4294967295
-                      description: Number of seconds between retries.
-                    exponential_backoff:
-                      type: bool
-                      description: Exponentially increase the interval between retries to a maximum of 24 hours.
-            credentials:
-              type: dict
-              keys:
-                enroll:
-                  type: dict
-                  description: |
-                    Token or username/secret for initial certificate enrollment.
-                    If both token and username/secret are defined, token will take precedence.
-                  keys:
-                    token:
-                      type: str
-                      description: Encrypted authentication token - only type 7 supported.
-                    username:
-                      type: str
-                    secret:
-                      type: str
-                      description: Encrypted authentication secret - only type 7 supported.
-                re_enroll:
-                  type: dict
-                  description: |
-                    Token or username/secret for certificate re-enrollment.
-                    If both token and username/secret are defined, token will take precedence.
-                  keys:
-                    token:
-                      type: str
-                      description: Encrypted authentication token - only type 7 supported.
-                    username:
-                      type: str
-                    secret:
-                      type: str
-                      description: Encrypted authentication secret - only type 7 supported.
-            server:
-              type: dict
-              keys:
-                ssl_profile:
+                name:
                   type: str
-                  description: Name of TLS profile.
+                digest:
+                  type: str
+                  valid_values: ["sha256", "sha384", "sha512"]
+                key:
+                  type: str
+                  description: Key to use with auto-enrolled certificate.
+                protocol_name:
+                  type: str
+                  description: Protocol definition to use to auto-enroll/renew the certificate.
+                renewal:
+                  description: Renewal time in seconds.
+                  type: int
+                  min: 1
+                  max: 4294967295
+                  convert_types: [str]
+                parameters:
+                  description: Parameters of the distinguished name and subject alternative name for the CSR.
+                  type: dict
+                  keys:
+                    distinguished_name:
+                      type: dict
+                      keys:
+                        common_name:
+                          type: str
+                          description: Common name for use in subject.
+                        country:
+                          type: str
+                          description: Two-Letter Country Code for use in subject.
+                        email:
+                          type: str
+                          pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+                          description: Email address for use in subject.
+                        locality:
+                          type: str
+                          description: Locality Name for use in subject.
+                        organization:
+                          type: str
+                          description: Organization Name for use in subject.
+                        organization_unit:
+                          type: str
+                          convert_types:
+                            - int
+                          description: Organization Unit Name for use in subject.
+                        serial_number:
+                          type: str
+                          description: |-
+                            Serial Number for use in subject.
+                            system: Use the device's serial number in subject.
+                          convert_types:
+                            - int
+                        state:
+                          type: str
+                          description: State for use in subject.
+                    subject_alternative_name:
+                      type: dict
+                      keys:
+                        dns:
+                          type: str
+                          description: DNS names for use in subject-alternative-name.
+                        email:
+                          type: str
+                          pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+                          description: Email addresses for use in subject-alternative-name.
+                        ip:
+                          type: str
+                          description: IPv4/IPv6 addresses for use in subject-alternative-name.
+                        uri:
+                          type: str
+                          convert_types:
+                            - int
+                          description: URIs for use in subject-alternative-name.
+          protocols:
+            type: list
+            primary_key: name
+            description: Protocols for automatic certificate enrollment and renewal.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                protocol:
+                  type: str
+                  valid_values: ["est"]
                   required: true
-                url:
-                  type: str
-                  required: true
-                vrf:
-                  type: str
+                  description: Protocol to use to communicate with endpoint; only EST is supported currently.
+                disabled:
+                  type: bool
+                  description: Temporarily disable sending requests to the server.
+                connection:
+                  type: dict
+                  keys:
+                    retry:
+                      type: dict
+                      keys:
+                        count:
+                          type: int
+                          convert_types: [str]
+                          min: 0
+                          max: 4294967295
+                          description: Number of retries to attempt before giving up, if not configured the number of retries is infinite.
+                        interval:
+                          type: int
+                          convert_types: [str]
+                          min: 1
+                          max: 4294967295
+                          description: Number of seconds between retries.
+                        exponential_backoff:
+                          type: bool
+                          description: Exponentially increase the interval between retries to a maximum of 24 hours.
+                credentials:
+                  type: dict
+                  keys:
+                    enroll:
+                      type: dict
+                      description: |
+                        Token or username/secret for initial certificate enrollment.
+                        If both token and username/secret are defined, token will take precedence.
+                      keys:
+                        token:
+                          type: str
+                          description: |-
+                            Authentication token.
+                        token_type:
+                          type: str
+                          convert_types:
+                            - int
+                          valid_values:
+                            - "0"
+                            - "7"
+                            - "8a"
+                          default: "7"
+                        username:
+                          type: str
+                        secret:
+                          type: str
+                          description: |-
+                            Authentication secret.
+                        secret_type:
+                          type: str
+                          convert_types:
+                            - int
+                          valid_values:
+                            - "0"
+                            - "7"
+                            - "8a"
+                          default: "7"
+                    re_enroll:
+                      type: dict
+                      description: |
+                        Token or username/secret for certificate re-enrollment.
+                        If both token and username/secret are defined, token will take precedence.
+                      keys:
+                        token:
+                          type: str
+                          description: Authentication token.
+                        token_type:
+                          type: str
+                          convert_types:
+                            - int
+                          valid_values:
+                            - "0"
+                            - "7"
+                            - "8a"
+                          default: "7"
+                        username:
+                          type: str
+                          convert_types:
+                            - int
+                        secret:
+                          type: str
+                          description: Authentication secret.
+                        secret_type:
+                          type: str
+                          convert_types:
+                            - int
+                          valid_values:
+                            - "0"
+                            - "7"
+                            - "8a"
+                          default: "7"
+                server:
+                  type: dict
+                  keys:
+                    ssl_profile:
+                      type: str
+                      description: Name of TLS profile.
+                    url:
+                      type: str
+                    vrf:
+                      type: str
       entropy_sources:
         type: dict
         description: Source of entropy.
