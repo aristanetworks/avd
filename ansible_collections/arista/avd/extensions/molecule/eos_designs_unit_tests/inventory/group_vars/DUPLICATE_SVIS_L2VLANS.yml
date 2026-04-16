@@ -30,17 +30,17 @@ tenants:
           # Test non unique svi ids in schema
           - id: 100
             name: Duplicate_SVI_100_LEAF1
-            tags: [ dup-leaf1 ]
+            tags: [dup-leaf1]
             enabled: true
           - id: 100
             name: Duplicate_SVI_100_LEAF2
-            tags: [ dup-leaf2 ]
+            tags: [dup-leaf2]
             enabled: true
     l2vlans:
       # Test non unique l2vlans ids in schema
       - id: 200
         name: Duplicate_L2VLAN_200_LEAF1
-        tags: [ dup-leaf1 ]
+        tags: [dup-leaf1]
       - id: 200
         name: Duplicate_L2VLAN_200_LEAF2
-        tags: [ dup-leaf2 ]
+        tags: [dup-leaf2]
