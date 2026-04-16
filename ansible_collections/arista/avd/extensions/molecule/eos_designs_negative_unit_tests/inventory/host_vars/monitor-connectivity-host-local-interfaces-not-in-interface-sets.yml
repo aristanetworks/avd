@@ -21,4 +21,4 @@ monitor_connectivity:
       local_interfaces: Loopback0
 
 expected_error_message: >-
-  monitor_connectivity.hosts[DNS1].local_interfaces 'Loopback0' has to be defined in monitor_connectivity.interface_sets.
+  monitor_connectivity.hosts[name=DNS1].local_interfaces 'Loopback0' has to be defined in monitor_connectivity.interface_sets.

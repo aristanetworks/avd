@@ -434,15 +434,15 @@ class AvdStructuredConfigBaseProtocol(
                     monitor_connectivity_vrf.local_interfaces = vrf_local_interfaces
                 else:
                     msg = (
-                        f"monitor_connectivity.vrfs[{vrf.name}].local_interfaces '{vrf_local_interfaces}' "
-                        f"has to be defined in monitor_connectivity.vrfs[{vrf.name}].interface_sets."
+                        f"monitor_connectivity.vrfs[name={vrf.name}].local_interfaces '{vrf_local_interfaces}' "
+                        f"has to be defined in monitor_connectivity.vrfs[name={vrf.name}].interface_sets."
                     )
                     raise AristaAvdInvalidInputsError(msg)
             self._set_monitor_connectivity_hosts(
                 vrf.hosts,
                 monitor_connectivity_vrf.hosts,
                 vrf.interface_sets,
-                f"monitor_connectivity.vrfs[{vrf.name}]",
+                f"monitor_connectivity.vrfs[name={vrf.name}]",
             )
 
     @structured_config_contributor

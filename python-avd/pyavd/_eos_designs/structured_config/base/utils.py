@@ -150,11 +150,11 @@ class UtilsMixin(Protocol):
             monitor_connectivity_hosts: Target host list in the EOS CLI config gen
                 structure where the mapped entries will be appended.
             interface_sets: The parent interface_sets to validate host local_interfaces against.
-            context: Path prefix used in error messages (e.g. "monitor_connectivity" or "monitor_connectivity.vrfs[MGMT]").
+            context: Path prefix used in error messages (e.g. "monitor_connectivity" or "monitor_connectivity.vrfs[name=MGMT]").
         """
         for host in hosts:
             if host.local_interfaces is not None and host.local_interfaces not in interface_sets:
-                msg = f"{context}.hosts[{host.name}].local_interfaces '{host.local_interfaces}' has to be defined in {context}.interface_sets."
+                msg = f"{context}.hosts[name={host.name}].local_interfaces '{host.local_interfaces}' has to be defined in {context}.interface_sets."
                 raise AristaAvdInvalidInputsError(msg)
             monitor_connectivity_hosts.append_new(
                 name=host.name,

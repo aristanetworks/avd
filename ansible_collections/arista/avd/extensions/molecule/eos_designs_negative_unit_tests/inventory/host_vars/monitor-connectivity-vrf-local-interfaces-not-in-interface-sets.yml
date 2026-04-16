@@ -20,4 +20,4 @@ monitor_connectivity:
       local_interfaces: Loopback0
 
 expected_error_message: >-
-  monitor_connectivity.vrfs[MGMT].local_interfaces 'Loopback0' has to be defined in monitor_connectivity.vrfs[MGMT].interface_sets.
+  monitor_connectivity.vrfs[name=MGMT].local_interfaces 'Loopback0' has to be defined in monitor_connectivity.vrfs[name=MGMT].interface_sets.
