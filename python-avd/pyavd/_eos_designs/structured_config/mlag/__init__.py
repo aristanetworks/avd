@@ -251,27 +251,6 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         self.structured_config.mlag_configuration = mlag_configuration
 
     @structured_config_contributor
-    def route_maps(self) -> None:
-        """
-        Set list of route-maps.
-
-        Origin Incomplete for MLAG iBGP learned routes.
-
-        TODO: Partially duplicated in network_services. Should be moved to a common class
-        """
-        if not (self.shared_utils.mlag_l3 and self.shared_utils.node_config.mlag_ibgp_origin_incomplete and self.shared_utils.underlay_bgp):
-            return
-
-        route_map = EosCliConfigGen.RouteMapsItem(name="RM-MLAG-PEER-IN")
-        route_map.sequence_numbers.append_new(
-            sequence=10,
-            type="permit",
-            description="Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing",
-            set=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Set(["origin incomplete"]),
-        )
-        self.structured_config.route_maps.append(route_map)
-
-    @structured_config_contributor
     def router_bgp(self) -> None:
         """
         Set the structured config for router bgp.
@@ -283,7 +262,9 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             return
 
         # MLAG Peer group
-        self.shared_utils.update_router_bgp_with_mlag_peer_group(self.structured_config.router_bgp, self.custom_structured_configs)
+        self.structured_config_utils.set_once_peer_group_mlag_ipv4_underlay_peer()
+        if not self.inputs.avd_design_future.only_configure_mlag_vrfs_peer_group_when_used and self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
+            self.structured_config_utils.set_once_peer_group_mlag_ipv4_vrfs_peer()
 
         vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)
         interface_name = f"Vlan{vlan}"
