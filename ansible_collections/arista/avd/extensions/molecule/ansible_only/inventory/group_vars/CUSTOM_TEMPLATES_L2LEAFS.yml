@@ -15,8 +15,8 @@ l2leaf:
         - name: custom-templates-l2leaf1a
           id: 1
           mgmt_ip: 192.168.200.103/24
-          uplink_switch_interfaces: [Ethernet5, Ethernet5 ]
+          uplink_switch_interfaces: [Ethernet5, Ethernet5]
         - name: custom-templates-l2leaf1b
           id: 1
           mgmt_ip: 192.168.200.103/24
-          uplink_switch_interfaces: [Ethernet6, Ethernet6 ]
+          uplink_switch_interfaces: [Ethernet6, Ethernet6]

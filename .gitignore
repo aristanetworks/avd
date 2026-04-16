@@ -80,3 +80,9 @@ Cargo.lock
 
 # Coverage
 /lcov.info
+
+# AI configs, skills, etc.
+.codex/*
+.claude/*
+!.claude/skills
+!.agents/skills

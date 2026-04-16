@@ -10,14 +10,14 @@ mgmt_gateway: 192.168.0.1
 # This makes it possible to only forward PTP packets and nothing more.
 core_interfaces:
   p2p_links:
-    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
-      interfaces: [ Ethernet6, Ethernet6 ]
+    - nodes: [ptp-tests-spine1, ptp-tests-spine2]
+      interfaces: [Ethernet6, Ethernet6]
       ptp:
         enabled: true
         profile: myptpprofile
       include_in_underlay_protocol: false
-    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
-      interfaces: [ Ethernet7, Ethernet7 ]
+    - nodes: [ptp-tests-spine1, ptp-tests-spine2]
+      interfaces: [Ethernet7, Ethernet7]
       ptp:
         enabled: true
         roles: ["master", "dynamic"]
@@ -26,13 +26,13 @@ core_interfaces:
 # Testing the same as above with l3_edge
 l3_edge:
   p2p_links:
-    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
-      interfaces: [ Ethernet8, Ethernet8 ]
+    - nodes: [ptp-tests-spine1, ptp-tests-spine2]
+      interfaces: [Ethernet8, Ethernet8]
       ptp:
         enabled: true
       include_in_underlay_protocol: false
-    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
-      interfaces: [ Ethernet9, Ethernet9 ]
+    - nodes: [ptp-tests-spine1, ptp-tests-spine2]
+      interfaces: [Ethernet9, Ethernet9]
       ptp:
         enabled: true
       include_in_underlay_protocol: false
@@ -71,16 +71,16 @@ port_profiles:
 servers:
   - name: dynamic-endpoint
     adapters:
-      - endpoint_ports: [ eth1 ]
-        switch_ports: [ Ethernet13 ]
-        switches: [ ptp-tests-leaf1 ]
+      - endpoint_ports: [eth1]
+        switch_ports: [Ethernet13]
+        switches: [ptp-tests-leaf1]
         profile: PTP-profile-dynamic
 
   - name: video-endpoint
     adapters:
-      - endpoint_ports: [ PCI1, PCI2 ]
-        switch_ports: [ Ethernet5, Ethernet5 ]
-        switches: [ ptp-tests-leaf1, ptp-tests-leaf2 ]
+      - endpoint_ports: [PCI1, PCI2]
+        switch_ports: [Ethernet5, Ethernet5]
+        switches: [ptp-tests-leaf1, ptp-tests-leaf2]
         vlans: 11
         mode: access
         spanning_tree_portfast: edge
@@ -90,9 +90,9 @@ servers:
 
   - name: Endpoint-with-mpass
     adapters:
-      - endpoint_ports: [ PCI1, PCI2 ]
-        switch_ports: [ Ethernet6, Ethernet6 ]
-        switches: [ ptp-tests-leaf1, ptp-tests-leaf2 ]
+      - endpoint_ports: [PCI1, PCI2]
+        switch_ports: [Ethernet6, Ethernet6]
+        switches: [ptp-tests-leaf1, ptp-tests-leaf2]
         vlans: 11
         mode: access
         ptp:
@@ -104,9 +104,9 @@ servers:
 
   - name: Endpoint-with-specific-PTP-profile
     adapters:
-      - endpoint_ports: [ eth3 ]
-        switch_ports: [ Ethernet3 ]
-        switches: [ ptp-tests-leaf1 ]
+      - endpoint_ports: [eth3]
+        switch_ports: [Ethernet3]
+        switches: [ptp-tests-leaf1]
         vlans: 11
         mode: access
         ptp:

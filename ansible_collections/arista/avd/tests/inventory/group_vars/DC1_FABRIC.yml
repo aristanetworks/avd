@@ -47,7 +47,7 @@ l3leaf:
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
     uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2']
     uplink_ipv4_pool: 172.31.255.0/24
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_ipv4_pool: 10.255.252.0/24
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     virtual_router_mac_address: 00:1c:73:00:dc:01
@@ -83,8 +83,8 @@ l2leaf:
   defaults:
     platform: vEOS-LAB
     uplink_switches: ['DC1-LEAF1A', 'DC1-LEAF1B']
-    uplink_interfaces: [ Ethernet1, Ethernet2 ]
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_ipv4_pool: 10.255.252.0/24
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     virtual_router_mac_address: 00:1c:73:00:dc:01
@@ -93,25 +93,25 @@ l2leaf:
     mlag: false
   node_groups:
     DC1_L2LEAF1:
-      uplink_switches: [ DC1-LEAF1A, DC1-LEAF1B ]
+      uplink_switches: [DC1-LEAF1A, DC1-LEAF1B]
       filter:
-        tenants: [ Tenant_A ]
-        tags: [ opzone, web, app ]
+        tenants: [Tenant_A]
+        tags: [opzone, web, app]
       nodes:
         DC1-L2LEAF1A:
           id: 5
           mgmt_ip: 10.255.0.17/24
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5 ]
+          uplink_switch_interfaces: [Ethernet5, Ethernet5]
     DC1_L2LEAF2:
-      uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+      uplink_switches: [DC1-LEAF2A, DC1-LEAF2B]
       filter:
-        tenants: [ Tenant_A ]
-        tags: [ opzone, web, app ]
+        tenants: [Tenant_A]
+        tags: [opzone, web, app]
       nodes:
         DC1-L2LEAF2A:
           id: 7
           mgmt_ip: 10.255.0.18/24
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5 ]
+          uplink_switch_interfaces: [Ethernet5, Ethernet5]
 
 #### Override for vEOS Lab Caveats ####
 

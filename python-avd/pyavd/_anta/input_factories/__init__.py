@@ -16,7 +16,13 @@ from .hardware import (
     VerifyTransceiversManufacturersInputFactory,
     VerifyTransceiversTemperatureInputFactory,
 )
-from .interfaces import VerifyIllegalLACPInputFactory, VerifyInterfacesStatusInputFactory, VerifyPortChannelsInputFactory, VerifyStormControlDropsInputFactory
+from .interfaces import (
+    VerifyIllegalLACPInputFactory,
+    VerifyInterfaceErrDisabledInputFactory,
+    VerifyInterfacesStatusInputFactory,
+    VerifyPortChannelsInputFactory,
+    VerifyStormControlDropsInputFactory,
+)
 from .logging import VerifyLoggingErrorsInputFactory
 from .mlag import VerifyMlagConfigSanityInputFactory, VerifyMlagInterfacesInputFactory, VerifyMlagStatusInputFactory
 from .router_path_selection import VerifySpecificPathInputFactory
@@ -36,6 +42,7 @@ __all__ = [
     "VerifyEnvironmentSystemCoolingInputFactory",
     "VerifyIPv4RoutePresencePerVRFInputFactory",
     "VerifyIllegalLACPInputFactory",
+    "VerifyInterfaceErrDisabledInputFactory",
     "VerifyInterfacesStatusInputFactory",
     "VerifyInventoryInputFactory",
     "VerifyLLDPNeighborsInputFactory",

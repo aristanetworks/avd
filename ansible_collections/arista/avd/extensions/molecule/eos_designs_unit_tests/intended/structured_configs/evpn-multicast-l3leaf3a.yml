@@ -391,6 +391,7 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
+    - router-mac system
   - id: 2
     metadata:
       tenants:
@@ -947,9 +948,10 @@ sflow:
   run: true
 standard_access_lists:
 - name: RPS_ACL_VRF_Tenant_E_2
-  sequence_numbers:
+  entries:
   - sequence: 10
-    action: permit 232.0.136.0/21
+    action: permit
+    source: 232.0.136.0/21
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0

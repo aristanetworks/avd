@@ -116,9 +116,6 @@ l3leaf:
           mlag_peer_l3_vlan_structured_config:
             description: "Description from mlag_peer_l3_vlan_structured_config."
           uplink_switch_interfaces: [Ethernet1]
-          evpn_gateway:
-            evpn_l3:
-              enabled: true
         - name: bgp-peer-groups-2
           id: 104
           # bgp_as: 104
