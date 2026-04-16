@@ -117,9 +117,6 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             sequence=20, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-L2LEAF-INBAND-MGMT"])
         )
 
-    def _set_l2leaf_inband_mgmt_prefix_list(self) -> None:
-        self.structured_config.prefix_lists.append_new(name="PL-L2LEAF-INBAND-MGMT")
-
     @run_once_method
     def _set_once_route_map_conn_2_bgp_sequence_60(self) -> None:
         route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
@@ -128,10 +125,6 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             type="permit",
             match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]),
         )
-        self._set_l2leaf_inband_mgmt_ipv6_prefix_list()
-
-    def _set_l2leaf_inband_mgmt_ipv6_prefix_list(self) -> None:
-        self.structured_config.ipv6_prefix_lists.append_new(name="IPv6-PL-L2LEAF-INBAND-MGMT")
 
     def _set_parent_vlan_interface(self, vlan: dict, vlan_id: int) -> None:
         svi = EosCliConfigGen.VlanInterfacesItem(
