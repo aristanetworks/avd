@@ -341,6 +341,11 @@ keys:
         description: Raise an error if an L3 Port-Channel is configured without any
           member interfaces.
         default: false
+      only_configure_mlag_vrfs_peer_group_when_used:
+        type: bool
+        description: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when
+          needed.
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -2509,19 +2514,25 @@ keys:
 
       Only used when `evpn_prevent_readvertise_to_server` is set to `true`.
 
-      `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
-      which filter out BGP updates learned directly from the ASN of the route-server.
+      `source_peer_asn` mode configures an outbound route-maps towards EVPN route-servers
+      which filter out BGP updates learned directly from the ASN of the route-servers.
       This mode will still allow routes learned via any other peer, even if they have
       the route-server''s ASN in the AS-path.
 
-      `as_path_acl` mode configures an outbound route-map and as-path access-list
-      which filters out BGP updates with the route-server ASN anywhere in the AS-path.
+      `as_path_acl` mode configures an outbound route-maps and as-path access-lists
+      which filter out BGP updates with the route-servers'' ASN anywhere in the AS-path.
+
+      `rcf` method uses RCF `as_path has_none` condition to filter out EVPN BGP routes
+      containing the route-servers'' ASN in the `AS PATH` attribute. Filtering is
+      applied to EVPN BGP Address Family only. This method requires EOS 4.35.2F and
+      newer.
 
       '
     type: str
     valid_values:
     - source_peer_asn
     - as_path_acl
+    - rcf
     default: as_path_acl
   evpn_short_esi_prefix:
     documentation_options:
