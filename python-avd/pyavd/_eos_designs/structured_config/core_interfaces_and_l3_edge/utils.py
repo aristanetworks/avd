@@ -13,7 +13,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_pool
-from pyavd._utils.password_utils.password import isis_encrypt
+from pyavd._utils.password_utils.password import isis_encrypt, ospf_message_digest_encrypt
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
@@ -44,16 +44,16 @@ class UtilsMixin(Protocol):
         # Apply p2p_profiles if set. Silently ignoring missing profile.
         p2p_links: list[T_P2pLinksItem] = [self._apply_p2p_links_profile(p2p_link) for p2p_link in cast("list[T_P2pLinksItem]", self.inputs_data.p2p_links)]
 
-        # Filter to only include p2p_links with our hostname under "nodes"
-        p2p_links = [p2p_link for p2p_link in p2p_links if self.shared_utils.hostname in p2p_link.nodes]
-        if not p2p_links:
+        # Filter to only include p2p_links with our hostname under "nodes", preserving original index for error messages.
+        p2p_links_with_index = [(idx, p2p_link) for idx, p2p_link in enumerate(p2p_links) if self.shared_utils.hostname in p2p_link.nodes]
+        if not p2p_links_with_index:
             return []
 
         # Resolve IPs from subnet or p2p_pools.
-        p2p_links = [self._resolve_p2p_ips(p2p_link) for p2p_link in p2p_links]
+        p2p_links_with_index = [(idx, self._resolve_p2p_ips(p2p_link)) for idx, p2p_link in p2p_links_with_index]
 
         # Parse P2P data model and create simplified data
-        return [(p2p_link, self._get_p2p_data(p2p_link)) for p2p_link in p2p_links]
+        return [(p2p_link, self._get_p2p_data(p2p_link, p2p_link_index=idx)) for idx, p2p_link in p2p_links_with_index]
 
     def _apply_p2p_links_profile(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> T_P2pLinksItem:
         """Apply a profile to a p2p_link. Always returns a new instance. TODO: Raise if profile is missing."""
@@ -112,7 +112,7 @@ class UtilsMixin(Protocol):
                     ]
                 )
 
-    def _get_p2p_data(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> dict:
+    def _get_p2p_data(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem, p2p_link_index: int | None = None) -> dict:
         """
         Parses p2p_link data model and extracts information which is easier to parse.
 
@@ -132,6 +132,7 @@ class UtilsMixin(Protocol):
             peer_ipv6: <peer ipv6 if set | None>
             bgp_as: <as if set | None>
             peer_bgp_as: <peer as if set | None>
+            p2p_link_index: int | None
         }
         """
         if p2p_link.include_in_underlay_protocol and p2p_link.ipv6:
@@ -159,6 +160,7 @@ class UtilsMixin(Protocol):
         description = descriptions[index]
 
         data = {
+            "p2p_link_index": p2p_link_index,
             "peer": peer,
             "peer_type": peer_type,
             "ip": ip,
@@ -296,6 +298,26 @@ class UtilsMixin(Protocol):
 
             if self.shared_utils.underlay_ospf:
                 interface._update(ospf_network_point_to_point=True, ospf_area=self.inputs.underlay_ospf_area)
+                if p2p_link.use_underlay_ospf_authentication is True:
+                    if not self.inputs.underlay_ospf_authentication.enabled:
+                        msg = (
+                            f"'use_underlay_ospf_authentication' is set to true for {self.data_model}.p2p_links"
+                            f"[{p2p_link_data['p2p_link_index']}] but 'underlay_ospf_authentication.enabled' is false. "
+                            "Enable 'underlay_ospf_authentication.enabled'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
+                    interface.ospf_authentication = "message-digest"
+                    for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
+                        interface.ospf_message_digest_keys.append_new(
+                            id=ospf_key.id,
+                            hash_algorithm=ospf_key.hash_algorithm,
+                            key=ospf_message_digest_encrypt(
+                                password=ospf_key.cleartext_key,
+                                key=interface.name,
+                                hash_algorithm=ospf_key.hash_algorithm,
+                                key_id=str(ospf_key.id),
+                            ),
+                        )
 
             if self.shared_utils.underlay_isis:
                 interface._update(

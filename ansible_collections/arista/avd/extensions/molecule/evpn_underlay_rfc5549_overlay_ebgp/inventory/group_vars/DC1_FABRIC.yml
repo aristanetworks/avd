@@ -5,7 +5,7 @@
 fabric_name: DC1_FABRIC
 
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
-# Assign range larger then total [ spines * total potential leafs * 2 ]
+# Assign range larger then total [spines * total potential leafs * 2]
 # underlay_uplink_ipv4_pool: 172.31.255.0/24
 
 # Point to Point Underlay with IPv6 Unnumbered
@@ -91,26 +91,26 @@ l3leaf:
     bgp_defaults: ['distance bgp 20 200 200']
     platform: 7280R
     bgp_as: 65101
-    mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    mlag_interfaces: [Ethernet5, Ethernet6]
     spanning_tree_mode: mstp
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
     filter:
-      tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-      tags: [ opzone, web, app, db, vmotion, nfs ]
+      tenants: [Tenant_A, Tenant_B, Tenant_C]
+      tags: [opzone, web, app, db, vmotion, nfs]
     # mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # Not needed since we run rfc5549
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
     - group: DC1_LEAF1
       filter:
-        tenants: [ all ]
-        tags: [ web, app ]
+        tenants: [all]
+        tags: [web, app]
       nodes:
         - name: DC1-LEAF1A
           id: 1
           mgmt_ip: 192.168.200.105/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
+          uplink_switch_interfaces: [Ethernet1, Ethernet1, Ethernet1, Ethernet1]
     - group: DC1_LEAF2
       bgp_as: 65102
       # since this device is not using rfc5549 for overlay, we need mlag_peer_l3_ipv4_pool set specifically.
@@ -120,30 +120,30 @@ l3leaf:
           id: 2
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
+          uplink_switch_interfaces: [Ethernet2, Ethernet2, Ethernet2, Ethernet2]
         - name: DC1-LEAF2B
           id: 3
           mgmt_ip: 192.168.200.107/24
-          uplink_switch_interfaces: [ Ethernet3, Ethernet3, Ethernet3, Ethernet3 ]
+          uplink_switch_interfaces: [Ethernet3, Ethernet3, Ethernet3, Ethernet3]
     - group: DC1_SVC3
       bgp_as: 65103
       filter:
-        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-        tags: [ opzone, web, app, db, vmotion, nfs, wan ]
+        tenants: [Tenant_A, Tenant_B, Tenant_C]
+        tags: [opzone, web, app, db, vmotion, nfs, wan]
       nodes:
         - name: DC1-SVC3A
           id: 4
           mgmt_ip: 192.168.200.108/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet4, Ethernet4, Ethernet4, Ethernet4 ]
+          uplink_switch_interfaces: [Ethernet4, Ethernet4, Ethernet4, Ethernet4]
         - name: DC1-SVC3B
           id: 5
           mgmt_ip: 192.168.200.109/24
-          uplink_switch_interfaces: [ Ethernet5, Ethernet5, Ethernet5, Ethernet5 ]
+          uplink_switch_interfaces: [Ethernet5, Ethernet5, Ethernet5, Ethernet5]
     - group: DC1_BL1
       filter:
-        tenants: [ all ]
-        tags: [ wan ]
+        tenants: [all]
+        tags: [wan]
       mlag: false
       nodes:
         - name: DC1-BL1A
@@ -151,13 +151,13 @@ l3leaf:
           bgp_as: 65104
           mgmt_ip: 192.168.200.110/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet6, Ethernet6, Ethernet6, Ethernet6 ]
+          uplink_switch_interfaces: [Ethernet6, Ethernet6, Ethernet6, Ethernet6]
         - name: DC1-BL1B
           id: 7
           bgp_as: 65105
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
+          uplink_switch_interfaces: [Ethernet7, Ethernet7, Ethernet7, Ethernet7]
     - group: DC1_LEAF3
       # Testing RFC5549 with IPv6 overlay peers only
       bgp_as: 65106
@@ -175,11 +175,11 @@ l3leaf:
           id: 8
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet1, Ethernet3 ]
+          uplink_switch_interfaces: [Ethernet1, Ethernet3]
         - name: DC1-LEAF3B
           id: 9
           mgmt_ip: 192.168.200.107/24
-          uplink_switch_interfaces: [ Ethernet2, Ethernet4 ]
+          uplink_switch_interfaces: [Ethernet2, Ethernet4]
     - group: DC1_LEAF4
       # Testing underlay IPv6 peers
       bgp_as: 65107
@@ -192,19 +192,19 @@ l3leaf:
           id: 10
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet1 ]
+          uplink_switch_interfaces: [Ethernet1]
         - name: DC1-LEAF4B
           id: 11
           mgmt_ip: 192.168.200.107/24
-          uplink_switch_interfaces: [ Ethernet2 ]
+          uplink_switch_interfaces: [Ethernet2]
 
 l2leaf:
   defaults:
     platform: vEOS-LAB
-    uplink_switches: [ DC1-SVC3A, DC1-SVC3B ]
-    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    uplink_switches: [DC1-SVC3A, DC1-SVC3B]
+    uplink_interfaces: [Ethernet1, Ethernet2]
     mlag: true
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_interfaces: [Ethernet3, Ethernet4]
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
     # mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # Not needed since this is l2
@@ -212,16 +212,16 @@ l2leaf:
   node_groups:
     - group: DC1_L2LEAF1
       mlag: false
-      uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+      uplink_switches: [DC1-LEAF2A, DC1-LEAF2B]
       filter:
-        tenants: [ Tenant_A ]
-        tags: [ opzone, web, app ]
+        tenants: [Tenant_A]
+        tags: [opzone, web, app]
       nodes:
         - name: DC1-L2LEAF1A
           id: 8
           mgmt_ip: 192.168.200.112/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet7, Ethernet7 ]
+          uplink_switch_interfaces: [Ethernet7, Ethernet7]
     - group: DC1_L2LEAF2
       mlag_dual_primary_detection: true
       nodes:
@@ -229,12 +229,12 @@ l2leaf:
           id: 9
           mgmt_ip: 192.168.200.113/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet7, Ethernet7 ]
+          uplink_switch_interfaces: [Ethernet7, Ethernet7]
         - name: DC1-L2LEAF2B
           id: 10
           mgmt_ip: 192.168.200.114/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet8, Ethernet8 ]
+          uplink_switch_interfaces: [Ethernet8, Ethernet8]
 
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500
@@ -245,32 +245,32 @@ bfd_multihop:
   min_rx: 1200
   multiplier: 3
 
-custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_', 'custom_structured_configuration_' ]
+custom_structured_configuration_prefix: ['my_dci_', 'my_special_dci_', 'custom_structured_configuration_']
 
 core_interfaces:
   p2p_links:
     - id: 1
-      nodes: [ DC1-BL1A, DC1-BL1B ]
-      interfaces: [ Ethernet9, Ethernet9 ]
-      as: [ "65104", "65105" ]
+      nodes: [DC1-BL1A, DC1-BL1B]
+      interfaces: [Ethernet9, Ethernet9]
+      as: ["65104", "65105"]
     - id: 2
-      nodes: [ DC1-BL1A, DC1-BL1B ]
-      interfaces: [ Ethernet10, Ethernet10 ]
-      as: [ "65104", "65105" ]
+      nodes: [DC1-BL1A, DC1-BL1B]
+      interfaces: [Ethernet10, Ethernet10]
+      as: ["65104", "65105"]
 
 l3_edge:
   p2p_links_profiles:
     - name: IPV4-UNDERLAY-EXTERNAL
       routing_protocol: ebgp
   p2p_links:
-    - nodes: [ DC1-BL1A, outside-r1]
-      interfaces: [ Ethernet11, other1]
-      as: [ "65104", "64900" ]
+    - nodes: [DC1-BL1A, outside-r1]
+      interfaces: [Ethernet11, other1]
+      as: ["65104", "64900"]
       subnet: 10.23.23.0/30
       profile: IPV4-UNDERLAY-EXTERNAL
-    - nodes: [ DC1-BL1B, outside-r1]
-      interfaces: [ Ethernet11, other2]
-      as: [ "65105", "64900" ]
+    - nodes: [DC1-BL1B, outside-r1]
+      interfaces: [Ethernet11, other2]
+      as: ["65105", "64900"]
       subnet: 10.23.23.4/30
       profile: IPV4-UNDERLAY-EXTERNAL
       ipv6_enable: true
