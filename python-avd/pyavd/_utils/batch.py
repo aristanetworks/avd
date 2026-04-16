@@ -4,18 +4,30 @@
 from __future__ import annotations
 
 from itertools import islice
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, TypeVar, overload
 
 if TYPE_CHECKING:
-    from collections.abc import Generator, Iterable
+    from collections.abc import Collection, Generator
 
 
 T = TypeVar("T")
 Batch_Type = type[list] | type[set] | type[tuple]
 
 
-def batch(iterable: Iterable[T], size: int, batch_type: Batch_Type = list) -> Generator[list[T] | set[T] | tuple[T]]:
+@overload
+def batch(collection: Collection[T], size: int, batch_type: type[list] = list) -> Generator[list[T], None, None]: ...
+
+
+@overload
+def batch(collection: Collection[T], size: int, batch_type: type[set]) -> Generator[set[T], None, None]: ...
+
+
+@overload
+def batch(collection: Collection[T], size: int, batch_type: type[tuple]) -> Generator[tuple[T], None, None]: ...
+
+
+def batch(collection: Collection[T], size: int, batch_type: Batch_Type = list) -> Generator[list[T] | set[T] | tuple[T], None, None]:
     """Returns a Generator of lists, sets or tuples containing 'size' items. The final yielded iterator may be shorter."""
-    iterator = iter(iterable)
-    while batch := list(islice(iterator, size)):
-        yield batch_type(batch)
+    iterator = iter(collection)
+    while chunk := list(islice(iterator, size)):
+        yield batch_type(chunk)
