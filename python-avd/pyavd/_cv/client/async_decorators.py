@@ -292,7 +292,9 @@ class GRPCRequestHandler:
             )
             raise TypeError(msg)
 
-        LOGGER.debug("%s: Preparing call for '%s' for collection_field '%s' with %s item(s).", self.__class__.__name__, func_name, self.collection_field, len(iter_value))
+        LOGGER.debug(
+            "%s: Preparing call for '%s' for collection_field '%s' with %s item(s).", self.__class__.__name__, func_name, self.collection_field, len(iter_value)
+        )
 
         if len(iter_value) < self.min_items_for_splitting_attempt:
             # No need to try/except if we cannot split the list.
