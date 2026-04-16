@@ -921,6 +921,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
+            "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -941,6 +942,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        only_configure_mlag_vrfs_peer_group_when_used: bool
+        """
+        Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -950,6 +957,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
+                only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -963,6 +971,7 @@ class EosDesigns(EosDesignsRootModel):
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
                        default instead of always deactivating it.
                     raise_for_port_channels_without_members: Raise an error if an L3 Port-Channel is configured without any member interfaces.
+                    only_configure_mlag_vrfs_peer_group_when_used: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
 
                 """
 
@@ -20080,6 +20089,8 @@ class EosDesigns(EosDesignsRootModel):
                 "dscp": {"type": str},
                 "vlan_number": {"type": int},
                 "vlan_mask": {"type": str},
+                "inner_vlan_number": {"type": int},
+                "inner_vlan_mask": {"type": str},
             }
             source: str | None
             """
@@ -20123,7 +20134,13 @@ class EosDesigns(EosDesignsRootModel):
             ttl_match: TtlMatch
             """Default value: `"eq"`"""
             vlan_inner: bool
-            """Default value: `False`"""
+            """
+            Render vlan and mask as inner vlan.
+            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
+            migrating to the new keys.
+
+            Default value: `False`
+            """
             source_ports_match: SourcePortsMatch
             """Default value: `"eq"`"""
             source_ports: SourcePorts
@@ -20149,6 +20166,9 @@ class EosDesigns(EosDesignsRootModel):
             vlan_number: int | None
             vlan_mask: str | None
             """0x000-0xFFF VLAN mask."""
+            inner_vlan_number: int | None
+            inner_vlan_mask: str | None
+            """0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set."""
 
             if TYPE_CHECKING:
 
@@ -20178,6 +20198,8 @@ class EosDesigns(EosDesignsRootModel):
                     dscp: str | None | UndefinedType = Undefined,
                     vlan_number: int | None | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -20213,7 +20235,10 @@ class EosDesigns(EosDesignsRootModel):
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match
-                        vlan_inner: vlan_inner
+                        vlan_inner:
+                           Render vlan and mask as inner vlan.
+                           Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
+                           migrating to the new keys.
                         source_ports_match: source_ports_match
                         source_ports: Subclass of AvdList with `str` items.
                         destination_ports_match: destination_ports_match
@@ -20227,6 +20252,8 @@ class EosDesigns(EosDesignsRootModel):
                         dscp: DSCP value or name.
                         vlan_number: vlan_number
                         vlan_mask: 0x000-0xFFF VLAN mask.
+                        inner_vlan_number: inner_vlan_number
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set.
 
                     """
 
