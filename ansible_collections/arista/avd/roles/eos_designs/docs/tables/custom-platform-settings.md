@@ -24,7 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "custom_platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  | Support for storm-control.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "custom_platform_settings.[].feature_support.poe") | Boolean |  | `False` |  | Support for PoE.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_mtu</samp>](## "custom_platform_settings.[].feature_support.subinterface_mtu") | Boolean |  | `True` |  | Support for MTU configuration under sub-interfaces.<br>When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_monitor_session</samp>](## "custom_platform_settings.[].feature_support.subinterface_monitor_session") | Boolean |  | `True` |  | Support for monitor session configuration for sub-interfaces.<br>When this key is set to False, monitor session is not rendered for sub-interfaces even if it is set in the network services inputs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_monitor_session</samp>](## "custom_platform_settings.[].feature_support.subinterface_monitor_session") | Boolean |  | `True` |  | Support for monitor session configuration on sub-interfaces.<br>When this key is set to false, the monitor session will not be applied to sub-interfaces, even if it is set in the network services inputs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_mtu</samp>](## "custom_platform_settings.[].feature_support.per_interface_mtu") | Boolean |  | `True` |  | Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.<br>Effectively this means that all settings regarding interface MTU will be ignored if this is false.<br>Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mtu</samp>](## "custom_platform_settings.[].feature_support.per_interface_l2_mtu") | Boolean |  | `True` |  | Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.<br>The feature will be ignored on platforms where this is false.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mru</samp>](## "custom_platform_settings.[].feature_support.per_interface_l2_mru") | Boolean |  | `True` |  | Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.<br>The feature will be ignored on platforms where this is false.<br> |
@@ -139,8 +139,8 @@
           # When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.
           subinterface_mtu: <bool; default=True>
 
-          # Support for monitor session configuration for sub-interfaces.
-          # When this key is set to False, monitor session is not rendered for sub-interfaces even if it is set in the network services inputs.
+          # Support for monitor session configuration on sub-interfaces.
+          # When this key is set to false, the monitor session will not be applied to sub-interfaces, even if it is set in the network services inputs.
           subinterface_monitor_session: <bool; default=True>
 
           # Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.

@@ -27171,9 +27171,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             subinterface_monitor_session: bool
             """
-            Support for monitor session configuration for sub-interfaces.
-            When this key is set to False, monitor
-            session is not rendered for sub-interfaces even if it is set in the network services inputs.
+            Support for monitor session configuration on sub-interfaces.
+            When this key is set to false, the
+            monitor session will not be applied to sub-interfaces, even if it is set in the network services
+            inputs.
 
             Default value: `True`
             """
@@ -27375,9 +27376,10 @@ class EosDesigns(EosDesignsRootModel):
                            When this key is set to False, MTU is not
                            rendered under sub-interfaces even if it is set in the inputs.
                         subinterface_monitor_session:
-                           Support for monitor session configuration for sub-interfaces.
-                           When this key is set to False, monitor
-                           session is not rendered for sub-interfaces even if it is set in the network services inputs.
+                           Support for monitor session configuration on sub-interfaces.
+                           When this key is set to false, the
+                           monitor session will not be applied to sub-interfaces, even if it is set in the network services
+                           inputs.
                         per_interface_mtu:
                            Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
@@ -27956,9 +27958,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             subinterface_monitor_session: bool
             """
-            Support for monitor session configuration for sub-interfaces.
-            When this key is set to False, monitor
-            session is not rendered for sub-interfaces even if it is set in the network services inputs.
+            Support for monitor session configuration on sub-interfaces.
+            When this key is set to false, the
+            monitor session will not be applied to sub-interfaces, even if it is set in the network services
+            inputs.
 
             Default value: `True`
             """
@@ -28160,9 +28163,10 @@ class EosDesigns(EosDesignsRootModel):
                            When this key is set to False, MTU is not
                            rendered under sub-interfaces even if it is set in the inputs.
                         subinterface_monitor_session:
-                           Support for monitor session configuration for sub-interfaces.
-                           When this key is set to False, monitor
-                           session is not rendered for sub-interfaces even if it is set in the network services inputs.
+                           Support for monitor session configuration on sub-interfaces.
+                           When this key is set to false, the
+                           monitor session will not be applied to sub-interfaces, even if it is set in the network services
+                           inputs.
                         per_interface_mtu:
                            Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
