@@ -136,7 +136,7 @@ class GRPCRequestHandler:
     func_signature: Signature
     bound_arguments: BoundArguments
     current_arguments_dict: dict
-    permitted_field_types: ClassVar[list[type]] = [list, set, tuple]
+    permitted_collection_field_types: ClassVar[list[type]] = [list, set, tuple]
 
     def __init__(
         self,
@@ -159,7 +159,8 @@ class GRPCRequestHandler:
         self.func_signature = signature(func)
 
         if self.collection_field:
-            if not (return_annotation := self._is_sized_iterable_annotation(self.func_signature.return_annotation, strict=True, allowed_types=[list]))[0]:
+            # Verify that bound function returns a 'list' type.
+            if not (return_annotation := self._check_annotation(self.func_signature.return_annotation, strict=True, allowed_types=[list]))[0]:
                 msg = (
                     f"GRPCRequestHandler decorator is unable to bind to the function '{func.__name__}' with the 'collection_field' argument. "
                     f"Expected a return type of 'list'. Got '{return_annotation[1]}'."
@@ -174,15 +175,17 @@ class GRPCRequestHandler:
                 )
                 raise KeyError(msg)
 
-            # Verify that annotation of `self.collection_field` is `list`, `set`, `tuple` or a `UnionType` with `list`, `set` or `tuple` being one of the arguments
+            # Verify that annotation of `self.collection_field` is `list`, `set`, `tuple` or
+            # a `UnionType` with `list`, `set` or `tuple` being one of the arguments
             if not (
-                collection_field_annotation := self._is_sized_iterable_annotation(
-                    self.func_signature.parameters[self.collection_field].annotation, allowed_types=self.permitted_field_types
+                collection_field_annotation := self._check_annotation(
+                    self.func_signature.parameters[self.collection_field].annotation, allowed_types=self.permitted_collection_field_types
                 )
             )[0]:
                 msg = (
-                    f"{self.__class__.__name__} decorator expected the type of the collection_field '{self.collection_field}' in function '{self.func.__name__}' "
-                    f"to be defined as a list, set or tuple. Got '{collection_field_annotation[1]}' (type '{type(collection_field_annotation[1])}')."
+                    f"{self.__class__.__name__} decorator expected the type of the collection_field '{self.collection_field}' in function "
+                    f"'{self.func.__name__}' to be defined as a list, set or tuple. Got '{collection_field_annotation[1]}' "
+                    f"(type '{type(collection_field_annotation[1])}')."
                 )
                 raise TypeError(msg)
 
@@ -199,11 +202,15 @@ class GRPCRequestHandler:
         return wrapper
 
     @staticmethod
-    def _is_sized_iterable_annotation(annotation: Any, allowed_types: list[type], strict: bool = False) -> tuple[bool, Any]:
+    def _check_annotation(annotation: Any, allowed_types: list[type], strict: bool = False) -> tuple[bool, Any]:
         """
         Check if provided annotation matches any type specified in `allowed_types`.
 
         Default `strict: False` will also match 'allowed_types.UnionType'.
+
+        Returns:
+            (True, <matched allowed type>) if provided annotation matched provided allowed_types list.
+            (False, annotation) if provided annotation did not match provided allowed_types list.
         """
         _string_based_annotation = None
         for permitted_type in allowed_types:
@@ -284,30 +291,34 @@ class GRPCRequestHandler:
         bound_arguments = self.func_signature.bind(*original_call_args, **original_call_kwargs)
         current_arguments_dict = bound_arguments.arguments
 
-        iter_value: list | set | tuple = current_arguments_dict.get(self.collection_field, [])
-        if not any(isinstance(iter_value, allowed_type) for allowed_type in self.permitted_field_types) or not iter_value:
+        collection_value: list | set | tuple = current_arguments_dict.get(self.collection_field, [])
+        if not any(isinstance(collection_value, allowed_type) for allowed_type in self.permitted_collection_field_types) or not collection_value:
             msg = (
                 f"{self.__class__.__name__} decorator expected the value of the collection_field '{self.collection_field}' for function '{func_name}' "
-                f"to be a non-empty list, set or tuple. Got '{iter_value}' of a type '{type(iter_value)}'."
+                f"to be a non-empty list, set or tuple. Got '{collection_value}' of a type '{type(collection_value)}'."
             )
             raise TypeError(msg)
 
         LOGGER.debug(
-            "%s: Preparing call for '%s' for collection_field '%s' with %s item(s).", self.__class__.__name__, func_name, self.collection_field, len(iter_value)
+            "%s: Preparing call for '%s' for collection_field '%s' with %s item(s).",
+            self.__class__.__name__,
+            func_name,
+            self.collection_field,
+            len(collection_value),
         )
 
-        if len(iter_value) < self.min_items_for_splitting_attempt:
-            # No need to try/except if we cannot split the list.
+        if len(collection_value) < self.min_items_for_splitting_attempt:
+            # No need to try/except if we cannot split the collection.
             return await self._execute_single_call_with_retries(original_call_args, original_call_kwargs)
 
         try:
-            # Initial attempt with the full list
+            # Initial attempt with the full collection
             return await self._execute_single_call_with_retries(original_call_args, original_call_kwargs)
         except CVMessageSizeExceeded as e:
             # At minimum try to split in two.
             # The double negatives make // round up instead of down.
             ratio = max(2, -(-e.size // e.max_size))
-            chunk_size = len(iter_value) // ratio
+            chunk_size = len(collection_value) // ratio
             LOGGER.info(
                 "%s: Message size %s exceeded the max of %s for '%s' on collection_field '%s'. Attempting to split %s items.",
                 self.__class__.__name__,
@@ -315,13 +326,13 @@ class GRPCRequestHandler:
                 e.max_size,
                 func_name,
                 self.collection_field,
-                len(iter_value),
+                len(collection_value),
             )
             # Use case where ratio is too high leading to the chuck_size being calculated as zero
-            if chunk_size == 0 and len(iter_value) > 0:
+            if chunk_size == 0 and len(collection_value) > 0:
                 chunk_size = 1
 
-            planned_attempts_qty = int((len(iter_value) / chunk_size) + (1 if len(iter_value) % chunk_size else 0))
+            planned_attempts_qty = int((len(collection_value) / chunk_size) + (1 if len(collection_value) % chunk_size else 0))
 
             LOGGER.info(
                 "%s: Splitting collection_field '%s' for '%s' into %s calls with up to %s items each.",
@@ -334,13 +345,9 @@ class GRPCRequestHandler:
 
             # For every chunk we call ourselves recursively, so we can catch any further needs of splitting.
             aggregated_results = []
-            # Identify type of the iterable
-            iter_type = list
-            if isinstance(iter_value, set):
-                iter_type = set
-            if isinstance(iter_value, tuple):
-                iter_type = tuple
-            for chunk_id, chunk in enumerate(batch(iter_value, chunk_size, iter_type)):
+            # Identify type of the collection to yield chunks of the same type
+            collection_type = type(collection_value)
+            for chunk_id, chunk in enumerate(batch(collection_value, chunk_size, collection_type)):
                 LOGGER.info(
                     "%s: Processing chunk %s/%s for '%s' with %s item(s) from collection_field '%s'.",
                     self.__class__.__name__,
