@@ -110,7 +110,7 @@ class EthernetInterfacesMixin(Protocol):
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.LinkTrackingGroups),
         )
-        ethernet_interface.sflow.enable = self.shared_utils.get_interface_sflow(
+        ethernet_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             ethernet_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
         )
         ethernet_interface.switchport._update(
