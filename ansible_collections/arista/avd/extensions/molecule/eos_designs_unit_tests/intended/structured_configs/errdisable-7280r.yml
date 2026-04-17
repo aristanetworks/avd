@@ -9,6 +9,9 @@ errdisable:
     - link-change
     - acl
     - arp-inspection
+    - error-correction-encoding
+    - hardware-speed-group
+    - transceiver-adapter
     - xcvr-misconfigured
     - xcvr-overheat
     - xcvr-power-unsupported
@@ -18,8 +21,14 @@ errdisable:
       interval: 90
     - name: bpduguard
       interval: 300
+    - name: error-correction-encoding
+      interval: 300
+    - name: hardware-speed-group
+      interval: 300
     - name: link-flap
       interval: 60
+    - name: transceiver-adapter
+      interval: 300
     - name: xcvr-misconfigured
       interval: 300
     - name: xcvr-overheat
