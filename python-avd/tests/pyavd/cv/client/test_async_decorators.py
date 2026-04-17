@@ -313,6 +313,39 @@ async def test_msg_size_handler_invalid_function_collection_field_value_type() -
 
 
 @pytest.mark.asyncio
+async def test_msg_size_handler_none_value_on_optional_collection_field() -> None:
+    async def function_with_optional_field(_field: list[int] | None = None) -> list:
+        return [] if _field is None else [len(_field)]
+
+    resp = await GRPCRequestHandler(collection_field="_field")(function_with_optional_field)(_field=None)
+    assert resp == []
+
+
+@pytest.mark.asyncio
+async def test_msg_size_handler_invalid_function_collection_field_value_type_set() -> None:
+    def function_with_set_field(_field: set) -> list:
+        return list(_field)
+
+    with pytest.raises(
+        TypeError,
+        match=r"GRPCRequestHandler decorator expected the value of the collection_field '_field' for function 'function_with_set_field' to be 'set'\.",
+    ):
+        await GRPCRequestHandler(collection_field="_field")(function_with_set_field)(["foo", "bar"])
+
+
+@pytest.mark.asyncio
+async def test_msg_size_handler_invalid_function_collection_field_value_type_tuple() -> None:
+    def function_with_tuple_field(_field: tuple) -> list:
+        return list(_field)
+
+    with pytest.raises(
+        TypeError,
+        match=r"GRPCRequestHandler decorator expected the value of the collection_field '_field' for function 'function_with_tuple_field' to be 'tuple'\.",
+    ):
+        await GRPCRequestHandler(collection_field="_field")(function_with_tuple_field)(["foo", "bar"])
+
+
+@pytest.mark.asyncio
 async def test_msg_size_handler_zero_chunk_size(caplog: pytest.LogCaptureFixture) -> None:
     mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
 

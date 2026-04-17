@@ -209,19 +209,19 @@ class GRPCRequestHandler:
         """
         Check if provided annotation matches any type specified in `allowed_types`.
 
-        Default `strict: False` will also match 'allowed_types.UnionType'.
+        Default `strict: False` will also match 'types.UnionType'.
 
         Returns:
             (True, <matched allowed type>) if provided annotation matched provided allowed_types list.
             (False, annotation) if provided annotation did not match provided allowed_types list.
         """
+        # Whether the annotation is a UnionType (like list[str] | None) and unions are permitted (strict=False).
+        allowed_union_annotation = not strict and get_origin(annotation) is UnionType
         _string_based_annotation = None
         for permitted_type in allowed_types:
-            # Check if UnionType annotation is allowed and is present
-            allowed_union_annotation = not strict and get_origin(annotation) is UnionType
             if (
                 # Modules with lazy annotations (from __future__ import annotations): annotation is a string like "list[str]" or "list[str] | None".
-                # In strict mode, reject union strings like "list | str" by forcing no "|" in the annotation.
+                # In strict mode, reject union strings like "list | str" by requiring no "|" in the annotation.
                 (isinstance(annotation, str) and annotation.startswith(permitted_type.__name__) and (not strict or "|" not in annotation))
                 # Modules without lazy annotations: annotation is a UnionType object like list[str] | None or list | None
                 or (allowed_union_annotation and any(get_origin(arg) is permitted_type or arg is permitted_type for arg in get_args(annotation)))
@@ -230,7 +230,7 @@ class GRPCRequestHandler:
             ):
                 _string_based_annotation = permitted_type
                 break
-        # Bare types like list, set or tuple fallback here as well
+        # Bare types like list, set or tuple fall back here
         if _string_based_annotation is None:
             _string_based_annotation = annotation
 
@@ -303,7 +303,10 @@ class GRPCRequestHandler:
         bound_arguments = self.func_signature.bind(*original_call_args, **original_call_kwargs)
         current_arguments_dict = bound_arguments.arguments
 
-        collection_value: list | set | tuple = current_arguments_dict.get(self.collection_field, self.collection_type())
+        collection_value: list | set | tuple | None = current_arguments_dict.get(self.collection_field, self.collection_type())
+        if collection_value is None:
+            # None is valid for optional collection fields (like list[str] | None) - execute directly without splitting.
+            return await self._execute_single_call_with_retries(original_call_args, original_call_kwargs)
         if not isinstance(collection_value, self.collection_type):
             msg = (
                 f"{self.__class__.__name__} decorator expected the value of the collection_field '{self.collection_field}' for function '{func_name}' "
