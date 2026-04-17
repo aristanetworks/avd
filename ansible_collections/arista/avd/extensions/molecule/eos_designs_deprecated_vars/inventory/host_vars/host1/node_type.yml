@@ -44,6 +44,11 @@ l3leaf:
               evpn_ethernet_segment:
                 identifier: 0000:0001:0001:0000:0509
                 rt_import: 00:00:00:00:07:09
+          l3_interfaces:
+            - name: Ethernet1
+              ip_address: 172.16.0.2/30
+              ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+              peer_ip: 172.16.0.1/30
 
 # Used by source-interfaces test: Testing that the generated source interfaces do not contain the VRF if VRF "default"
 mgmt_interface_vrf: default
