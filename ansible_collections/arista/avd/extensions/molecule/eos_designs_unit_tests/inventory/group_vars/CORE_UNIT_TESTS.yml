@@ -183,7 +183,7 @@ core_interfaces:
         - CUSTOM_DESCRIPTION_ON_P2P_LINK_A
         - CUSTOM_DESCRIPTION_ON_P2P_LINK_B
       port_channel:
-        description: "CUSTOM_DESCRIPTION_ON_P2P_PORT_CHANNEL_{port_channel_id}"
+        description: "CUSTOM_DESCRIPTION_ON_P2P_PORT_CHANNEL_{interface}_PCID-{port_channel_id}"
         mode: active
         nodes_child_interfaces:
           - node: core-1-isis-sr-ldp
@@ -196,8 +196,8 @@ core_interfaces:
     - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 9
       descriptions:
-        - CUSTOM_DESCRIPTION_ON_P2P_LINK_A
-        - CUSTOM_DESCRIPTION_ON_P2P_LINK_B
+        - CUSTOM_DESCRIPTION_ON_P2P_LINK_A_{interface}
+        - CUSTOM_DESCRIPTION_ON_P2P_LINK_B_{interface}
       port_channel:
         mode: active
         channel_id_offset: 100

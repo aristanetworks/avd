@@ -432,6 +432,24 @@ keys:
                 description: VRF name.
                 convert_types:
                 - int
+              tls:
+                type: dict
+                description: TLS settings for the RADIUS group server. Only applicable
+                  when the parent server group type is 'radius'.
+                keys:
+                  enabled:
+                    type: bool
+                    description: Enable TLS to secure communication with the RADIUS
+                      group server.
+                    required: true
+                  port:
+                    type: int
+                    min: 1
+                    max: 65535
+                    convert_types:
+                    - str
+                    description: TCP port used for TLS-secured RADIUS communication.
+                      Overrides the default RadSec port (EOS default is 2083).
   access_lists:
     type: list
     primary_key: name
@@ -5928,6 +5946,15 @@ keys:
               vlan_inner:
                 type: bool
                 default: false
+                description: 'Render vlan and mask as inner vlan.
+
+                  Both ''inner_vlan_number'' and ''inner_vlan_mask'' are required
+                  when migrating to the new keys.'
+                deprecation:
+                  warning: true
+                  removed: false
+                  remove_in_version: 7.0.0
+                  new_key: inner_vlan_number
         permit_response_traffic:
           type: str
           valid_values:
@@ -7106,13 +7133,6 @@ keys:
                 convert_types:
                 - int
                 description: DSCP mask ranges from 0x00 to 0x3F.
-              inner_vlan_number:
-                type: int
-                convert_types:
-                - str
-              inner_vlan_mask:
-                type: str
-                description: 0x000-0xFFF inner VLAN mask.
         sequence_numbers:
           deprecation:
             warning: true
@@ -21686,6 +21706,12 @@ keys:
           bfd_all_interfaces:
             type: bool
             description: Enable BFD on all interfaces.
+          multi_topology:
+            type: bool
+            description: 'Enable IS-IS multi-topology for the IPv6 address family.
+
+              Required for forming IPv6 adjacencies on IS-IS interfaces that do not
+              have an IPv4 address.'
           fast_reroute_ti_lfa:
             type: dict
             keys:
@@ -24419,6 +24445,42 @@ keys:
   traffic_policies:
     type: dict
     keys:
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+              convert_types:
+              - int
+            cpu:
+              type: dict
+              keys:
+                traffic_policy:
+                  type: dict
+                  required: true
+                  keys:
+                    name:
+                      type: str
+                      convert_types:
+                      - int
+                      required: true
+                      description: 'Traffic-policy name.
+
+                        Currently this is always configured with "fallback traffic-policy
+                        none".'
+                    enforcement_management:
+                      type: bool
+                      description: Enforce CPU traffic-policy on management ports.
+            traffic_policy_input_physical:
+              type: str
+              convert_types:
+              - int
+              description: Name of the Traffic Policy applied to traffic arriving
+                on physical interfaces within VRF.
       options:
         type: dict
         keys:
@@ -26176,6 +26238,14 @@ $defs:
       vlan_mask:
         type: str
         description: 0x000-0xFFF VLAN mask.
+      inner_vlan_number:
+        type: int
+        convert_types:
+        - str
+      inner_vlan_mask:
+        type: str
+        description: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number`
+          is set.
   methods:
     type: list
     min_length: 1
