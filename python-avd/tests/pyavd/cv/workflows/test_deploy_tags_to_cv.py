@@ -839,7 +839,7 @@ async def test_deploy_tags_to_cv_message_splitting(
     cv_tags_fixture: set[CVTag],
     cv_tag_assignments_fixture: set[CVTagAssignment],
 ) -> None:
-    """Test ability to gracefully push amount of Tags and Assignments which exceeds the message limit (1837788 vs. 1048576 max)."""
+    """Test ability to gracefully push amount of Tags and Assignments which exceeds the message limit (1837788 Bytes vs. 1048576 Bytes max)."""
     with does_not_raise(), caplog.at_level(INFO):
         async with CVClient(
             servers=targeted_cv["cv_server"],

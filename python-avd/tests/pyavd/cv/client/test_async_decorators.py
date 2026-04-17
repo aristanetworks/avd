@@ -59,7 +59,7 @@ MSG_SIZE_HANDLER_TESTS = [
     pytest.param((1, 2, 3, 4, 5, 6, 7, 8, 9), 3, [3, 3, 3], id="tuple_equal_sized_chunks_2"),
     pytest.param((1, 2, 3, 4, 5, 6, 7, 8, 9), 1, [1, 1, 1, 1, 1, 1, 1, 1, 1], id="tuple_equal_sized_chunks_3"),
     # The items are chunked by calculating a ratio. This ratio rounds up, so the number of items per message is rounded down. So numbers below can look funny.
-    # This is on purpose since this is actually variable sized items in bytes fitting into messages of 10MB.
+    # This is on purpose since this is actually variable sized items in bytes fitting into messages of 1MB.
     # We wish to pack many but also avoid many attempts stepping over the boundary.
     pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 4, [3, 3, 3], id="list_variable_sized_chunks_1"),
     pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 5, [4, 4, 1], id="list_variable_sized_chunks_2"),
