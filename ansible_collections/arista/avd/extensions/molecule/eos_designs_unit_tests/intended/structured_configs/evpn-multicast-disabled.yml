@@ -296,6 +296,7 @@ router_bgp:
       - 10001:10001
     redistribute_routes:
     - learned
+    - router-mac system
   - id: 2
     metadata:
       tenants:

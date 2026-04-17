@@ -71,6 +71,14 @@ keys:
               vlan_inner:
                 type: bool
                 default: false
+                description: |-
+                  Render vlan and mask as inner vlan.
+                  Both 'inner_vlan_number' and 'inner_vlan_mask' are required when migrating to the new keys.
+                deprecation:
+                  warning: true
+                  removed: false
+                  remove_in_version: 7.0.0
+                  new_key: inner_vlan_number
         permit_response_traffic:
           type: str
           valid_values:

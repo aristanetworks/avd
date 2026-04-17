@@ -192,7 +192,7 @@ ethernet_interfaces:
     peer_interface: Ethernet15
     peer_type: core_router
 - name: Ethernet16
-  description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
+  description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B_Ethernet16
   shutdown: false
   speed: forced 1000full
   channel_group:
@@ -203,7 +203,7 @@ ethernet_interfaces:
     peer_interface: Ethernet16
     peer_type: core_router
 - name: Ethernet17
-  description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
+  description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B_Ethernet17
   shutdown: false
   speed: forced 1000full
   channel_group:
@@ -299,7 +299,7 @@ port_channel_interfaces:
   switchport:
     enabled: false
 - name: Port-Channel9
-  description: CUSTOM_DESCRIPTION_ON_P2P_PORT_CHANNEL_9
+  description: CUSTOM_DESCRIPTION_ON_P2P_PORT_CHANNEL_Port-Channel9_PCID-9
   shutdown: false
   mtu: 1500
   mpls:
@@ -318,7 +318,7 @@ port_channel_interfaces:
   switchport:
     enabled: false
 - name: Port-Channel109
-  description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
+  description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B_Port-Channel109
   shutdown: false
   mtu: 1500
   mpls:
