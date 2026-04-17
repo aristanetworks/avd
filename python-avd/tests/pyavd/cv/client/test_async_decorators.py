@@ -114,7 +114,25 @@ class CvClass:
         return (CVAAS_VERSION_STRING, CVAAS_VERSION_STRING)
 
     @GRPCRequestHandler(collection_field="field")
-    async def msgsize_limited_method(self, field: list[Any] | set[Any] | tuple[Any, ...], max_accepted_len: int) -> list[int]:
+    async def msgsize_limited_method_list(self, field: list[Any], max_accepted_len: int) -> list[int]:
+        # Check if the number of entries is higher than the max accepted length and raise.
+        if len(field) > max_accepted_len:
+            raise GRPCError(status=Status.RESOURCE_EXHAUSTED, message=f"grpc: received message larger than max ({len(field)} vs. {max_accepted_len})")
+
+        # return list with len of fields for this execution.
+        return [len(field)]
+
+    @GRPCRequestHandler(collection_field="field")
+    async def msgsize_limited_method_set(self, field: set[Any], max_accepted_len: int) -> list[int]:
+        # Check if the number of entries is higher than the max accepted length and raise.
+        if len(field) > max_accepted_len:
+            raise GRPCError(status=Status.RESOURCE_EXHAUSTED, message=f"grpc: received message larger than max ({len(field)} vs. {max_accepted_len})")
+
+        # return list with len of fields for this execution.
+        return [len(field)]
+
+    @GRPCRequestHandler(collection_field="field")
+    async def msgsize_limited_method_tuple(self, field: tuple[Any, ...], max_accepted_len: int) -> list[int]:
         # Check if the number of entries is higher than the max accepted length and raise.
         if len(field) > max_accepted_len:
             raise GRPCError(status=Status.RESOURCE_EXHAUSTED, message=f"grpc: received message larger than max ({len(field)} vs. {max_accepted_len})")
@@ -230,7 +248,14 @@ async def test_valid_versions(version: str, expected_response: tuple[str, str]) 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(("data", "max_len", "expected_response"), MSG_SIZE_HANDLER_TESTS)
 async def test_msg_size_handler(data: list | set | tuple, max_len: int, expected_response: list[int]) -> None:
-    resp = await CvClass(CvVersion(CVAAS_VERSION_STRING)).msgsize_limited_method(field=data, max_accepted_len=max_len)
+    match data:
+        case list():
+            method = CvClass(CvVersion(CVAAS_VERSION_STRING)).msgsize_limited_method_list
+        case set():
+            method = CvClass(CvVersion(CVAAS_VERSION_STRING)).msgsize_limited_method_set
+        case tuple():
+            method = CvClass(CvVersion(CVAAS_VERSION_STRING)).msgsize_limited_method_tuple
+    resp = await method(field=data, max_accepted_len=max_len)
     assert resp == expected_response
 
 
@@ -277,7 +302,13 @@ async def test_msg_size_handler_invalid_function_collection_field_value_type() -
     def function_with_wrong_value_type_of_field(_field: list) -> list:
         return ["foo"]
 
-    with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator expected the value of the collection_field.*to be a non-empty list, set or tuple. Got"):
+    with pytest.raises(
+        TypeError,
+        match=(
+            r"GRPCRequestHandler decorator expected the value of the collection_field '_field' for function 'function_with_wrong_value_type_of_field' "
+            r"to be 'list'. Got 'foo' of a type '<class 'str'>'."
+        ),
+    ):
         await GRPCRequestHandler(collection_field="_field")(function_with_wrong_value_type_of_field)("foo")
 
 

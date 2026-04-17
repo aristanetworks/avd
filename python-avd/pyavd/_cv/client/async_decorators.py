@@ -136,6 +136,7 @@ class GRPCRequestHandler:
     func_signature: Signature
     bound_arguments: BoundArguments
     current_arguments_dict: dict
+    collection_type: type
     permitted_collection_field_types: ClassVar[list[type]] = [list, set, tuple]
 
     def __init__(
@@ -189,6 +190,8 @@ class GRPCRequestHandler:
                 )
                 raise TypeError(msg)
 
+            self.collection_type = collection_field_annotation[1]
+
         @wraps(func)
         async def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
             result = await self._execute_with_splitting(args, kwargs)
@@ -214,11 +217,20 @@ class GRPCRequestHandler:
         """
         _string_based_annotation = None
         for permitted_type in allowed_types:
-            if (isinstance(annotation, str) and annotation.startswith(permitted_type.__name__)) or (
-                not strict and get_origin(annotation) is UnionType and any(get_origin(arg) in allowed_types for arg in get_args(annotation))
+            # Check if UnionType annotation is allowed and is present
+            allowed_union_annotation = not strict and get_origin(annotation) is UnionType
+            if (
+                # Modules with lazy annotations (from __future__ import annotations): annotation is a string like "list[str]" or "list[str] | None".
+                # In strict mode, reject union strings like "list | str" by forcing no "|" in the annotation.
+                (isinstance(annotation, str) and annotation.startswith(permitted_type.__name__) and (not strict or "|" not in annotation))
+                # Modules without lazy annotations: annotation is a UnionType object like list[str] | None or list | None
+                or (allowed_union_annotation and any(get_origin(arg) is permitted_type or arg is permitted_type for arg in get_args(annotation)))
+                # Modules without lazy annotations: annotation is a generic alias like list[str] or set[str]
+                or get_origin(annotation) is permitted_type
             ):
                 _string_based_annotation = permitted_type
                 break
+        # Bare types like list, set or tuple fallback here as well
         if _string_based_annotation is None:
             _string_based_annotation = annotation
 
@@ -291,11 +303,11 @@ class GRPCRequestHandler:
         bound_arguments = self.func_signature.bind(*original_call_args, **original_call_kwargs)
         current_arguments_dict = bound_arguments.arguments
 
-        collection_value: list | set | tuple = current_arguments_dict.get(self.collection_field, [])
-        if not any(isinstance(collection_value, allowed_type) for allowed_type in self.permitted_collection_field_types) or not collection_value:
+        collection_value: list | set | tuple = current_arguments_dict.get(self.collection_field, self.collection_type())
+        if not isinstance(collection_value, self.collection_type):
             msg = (
                 f"{self.__class__.__name__} decorator expected the value of the collection_field '{self.collection_field}' for function '{func_name}' "
-                f"to be a non-empty list, set or tuple. Got '{collection_value}' of a type '{type(collection_value)}'."
+                f"to be '{self.collection_type.__name__}'. Got '{collection_value}' of a type '{type(collection_value)}'."
             )
             raise TypeError(msg)
 
