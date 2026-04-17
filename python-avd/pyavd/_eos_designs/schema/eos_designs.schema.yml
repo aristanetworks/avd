@@ -4880,8 +4880,31 @@ keys:
         platform: vEOS-lab
     - platforms:
       - 720DP
+      feature_support:
+        poe: true
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          tap_port_init:
+            recovery: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 722XP
-      - 710P
       feature_support:
         poe: true
         queue_monitor_length_notify: false
@@ -4931,7 +4954,61 @@ keys:
       digital_twin:
         platform: vEOS-lab
     - platforms:
+      - 710P
+      feature_support:
+        poe: true
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          tap_port_init:
+            recovery: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 720DP-24ZS
+      feature_support:
+        queue_monitor_length_notify: false
+        poe: true
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          tap_port_init:
+            recovery: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 720DP-48ZS
       feature_support:
         queue_monitor_length_notify: false
@@ -4953,6 +5030,8 @@ keys:
             detection: false
           tap_port_init:
             recovery: false
+          tapagg:
+            detection: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -5000,9 +5079,6 @@ keys:
           dot1x_coa:
             detection: false
             recovery: false
-          dot1x_phone_classification:
-            detection: false
-            recovery: false
           dot1x_session_replace:
             detection: false
           tap_port_init:
@@ -5042,6 +5118,17 @@ keys:
           traffic_policy: false
           vlan: false
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -5049,7 +5136,88 @@ keys:
         platform: vEOS-lab
     - platforms:
       - 7280R
+      lag_hardware_only: true
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+      tcam_profile: vxlan-routing
+      feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
+        private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tapagg:
+            detection: false
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 7280R2
+      lag_hardware_only: true
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+      tcam_profile: vxlan-routing
+      feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
+        private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 7020R
       lag_hardware_only: true
       reload_delay:
@@ -5178,6 +5346,17 @@ keys:
           traffic_policy: false
           vlan: false
         sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
       management_interface: Management0
       reload_delay:
         mlag: 300
@@ -5186,6 +5365,56 @@ keys:
         platform: vEOS-lab
     - platforms:
       - 7500R
+      lag_hardware_only: true
+      management_interface: Management0
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+      tcam_profile: vxlan-routing
+      feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
+        private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          tapagg:
+            detection: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 7500R2
       lag_hardware_only: true
       management_interface: Management0
@@ -5197,6 +5426,44 @@ keys:
         subinterface_mtu: false
         per_interface_l2_mtu: false
         private_vlan: false
+        errdisable_causes:
+          acl:
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+            recovery: false
+          error_correction_encoding:
+            detection: false
+            recovery: false
+          hardware_speed_group:
+            detection: false
+            recovery: false
+          interface_speed:
+            detection: false
+            recovery: false
+          internal_error:
+            detection: false
+            recovery: false
+          port_breakout:
+            detection: false
+            recovery: false
+          storm_control:
+            detection: false
+            recovery: false
+          stuck_queue:
+            recovery: false
+          switchcard_unreachable:
+            detection: false
+            recovery: false
+          transceiver_adapter:
+            detection: false
+            recovery: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
