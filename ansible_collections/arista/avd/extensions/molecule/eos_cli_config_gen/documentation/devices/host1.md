@@ -2481,9 +2481,13 @@ mcs client
 | IP | ACL | VRF |
 | -- | --- | --- |
 | IPv4 | onur | default |
+| IPv4 | SNMP-MGMT2 | AAA |
 | IPv4 | SNMP-MGMT | MGMT |
+| IPv4 | SNMP-MGMT1 | aaa |
 | IPv4 | onur | default |
 | IPv6 | onur_v6 | default |
+| IPv6 | SNMP-MGMT1 | aaa |
+| IPv6 | SNMP-MGMT2 | AAA |
 | IPv6 | onur_v6 | default |
 | IPv6 | SNMP-MGMT | MGMT |
 
@@ -2557,10 +2561,14 @@ mcs client
 
 ```eos
 !
+snmp-server ipv4 access-list SNMP-MGMT2 vrf AAA
 snmp-server ipv4 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv4 access-list SNMP-MGMT1 vrf aaa
 snmp-server ipv4 access-list onur
 snmp-server ipv4 access-list onur
+snmp-server ipv6 access-list SNMP-MGMT2 vrf AAA
 snmp-server ipv6 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv6 access-list SNMP-MGMT1 vrf aaa
 snmp-server ipv6 access-list onur_v6
 snmp-server ipv6 access-list onur_v6
 snmp-server engineID local 424242424242424242
