@@ -48,7 +48,7 @@ VALID_VERSION_TESTS = [
 ]
 
 MSG_SIZE_HANDLER_TESTS = [
-    # Format: data, max_len, expected_response (sized iterable of ints where each entry is one execution and the int is the number of entries covered)
+    # Format: data, max_len, expected_response (collections of ints where each entry is one execution and the int is the number of entries covered)
     pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5, [5, 5], id="list_equal_sized_chunks_1"),
     pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, [3, 3, 3], id="list_equal_sized_chunks_2"),
     pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 1, [1, 1, 1, 1, 1, 1, 1, 1, 1], id="list_equal_sized_chunks_3"),

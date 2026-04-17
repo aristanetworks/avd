@@ -52,9 +52,9 @@ class CVMessageSizeExceeded(CVClientException):
     """GRPC message to CloudVision exceeded the allowed message size."""
 
     max_size: int
-    """Maximum GRPC message size"""
+    """Maximum GRPC message size in Bytes"""
     size: int
-    """Actual GRPC message size"""
+    """Actual GRPC message size in Bytes"""
 
 
 class CVDuplicatedDevices(CVClientException):
