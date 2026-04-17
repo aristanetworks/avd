@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>snmp_server</samp>](## "snmp_server") | Dictionary |  |  |  | SNMP settings. |
+    | [<samp>snmp_server</samp>](## "snmp_server") | Dictionary |  |  |  | SNMP settings.<br>This requires to set the 'eos_config_future.new_snmp_server_cli_order: true' to render the new CLI order. |
     | [<samp>&nbsp;&nbsp;engine_ids</samp>](## "snmp_server.engine_ids") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local</samp>](## "snmp_server.engine_ids.local") | String |  |  |  | Engine ID in hexadecimal.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;remotes</samp>](## "snmp_server.engine_ids.remotes") | List, items: Dictionary |  |  |  |  |
@@ -31,7 +31,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list</samp>](## "snmp_server.ipv4_acls_per_vrf.access_list") | String |  |  |  | IPv4 access list for VRF default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "snmp_server.ipv4_acls_per_vrf.vrfs") | List, items: Dictionary |  |  |  | IPv4 access lists for any VRF other than default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.ipv4_acls_per_vrf.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list</samp>](## "snmp_server.ipv4_acls_per_vrf.vrfs.[].access_list") | String |  |  |  | IPv4 access list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list</samp>](## "snmp_server.ipv4_acls_per_vrf.vrfs.[].access_list") | String | Required |  |  | IPv4 access list name. |
     | [<samp>&nbsp;&nbsp;ipv6_acls</samp>](## "snmp_server.ipv6_acls") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>ipv6_acls_per_vrf</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.ipv6_acls.[].name") | String |  |  |  | IPv6 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.ipv6_acls.[].vrf") | String |  |  |  |  |
@@ -39,7 +39,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list</samp>](## "snmp_server.ipv6_acls_per_vrf.access_list") | String |  |  |  | IPv6 access list for VRF default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "snmp_server.ipv6_acls_per_vrf.vrfs") | List, items: Dictionary |  |  |  | IPv6 access lists for any VRF other than default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.ipv6_acls_per_vrf.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list</samp>](## "snmp_server.ipv6_acls_per_vrf.vrfs.[].access_list") | String |  |  |  | IPv6 access list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list</samp>](## "snmp_server.ipv6_acls_per_vrf.vrfs.[].access_list") | String | Required |  |  | IPv6 access list name. |
     | [<samp>&nbsp;&nbsp;local_interfaces</samp>](## "snmp_server.local_interfaces") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Use <samp>local_interfaces_per_vrf</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_server.local_interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.local_interfaces.[].vrf") | String |  |  |  |  |
@@ -92,6 +92,7 @@
 
     ```yaml
     # SNMP settings.
+    # This requires to set the 'eos_config_future.new_snmp_server_cli_order: true' to render the new CLI order.
     snmp_server:
       engine_ids:
 
@@ -144,7 +145,7 @@
           - name: <str; required; unique>
 
             # IPv4 access list name.
-            access_list: <str>
+            access_list: <str; required>
       # This key is deprecated.
       # Use `ipv6_acls_per_vrf` instead.
       ipv6_acls:
@@ -164,7 +165,7 @@
           - name: <str; required; unique>
 
             # IPv6 access list name.
-            access_list: <str>
+            access_list: <str; required>
       # This key is deprecated.
       # Use `local_interfaces_per_vrf` instead.
       local_interfaces:

@@ -9,7 +9,9 @@ type: dict
 keys:
   snmp_server:
     type: dict
-    description: SNMP settings.
+    description: |-
+      SNMP settings.
+      This requires to set the 'eos_config_future.new_snmp_server_cli_order: true' to render the new CLI order.
     keys:
       engine_ids:
         type: dict
@@ -109,6 +111,7 @@ keys:
                   description: VRF name.
                 access_list:
                   type: str
+                  required: true
                   description: IPv4 access list name.
       ipv6_acls:
         type: list
@@ -147,6 +150,7 @@ keys:
                   description: VRF name.
                 access_list:
                   type: str
+                  required: true
                   description: IPv6 access list name.
       local_interfaces:
         type: list

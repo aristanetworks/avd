@@ -2482,6 +2482,8 @@ mcs client
 | -- | --- | --- |
 | IPv4 | onur | default |
 | IPv4 | SNMP-MGMT | MGMT |
+| IPv4 | onur | default |
+| IPv6 | onur_v6 | default |
 | IPv6 | onur_v6 | default |
 | IPv6 | SNMP-MGMT | MGMT |
 
@@ -2557,7 +2559,9 @@ mcs client
 !
 snmp-server ipv4 access-list SNMP-MGMT vrf MGMT
 snmp-server ipv4 access-list onur
+snmp-server ipv4 access-list onur
 snmp-server ipv6 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv6 access-list onur_v6
 snmp-server ipv6 access-list onur_v6
 snmp-server engineID local 424242424242424242
 snmp-server contact DC1_OPS

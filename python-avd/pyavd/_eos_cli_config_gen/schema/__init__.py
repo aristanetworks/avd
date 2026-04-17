@@ -6194,7 +6194,53 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class EosConfigFuture(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"new_ip_radius_cli_order": {"type": bool, "default": False}, "new_ip_tacacs_cli_order": {"type": bool, "default": False}}
+        class NewSnmpServerCliOrder(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"ipv4_acls": {"type": bool, "default": False}, "ipv6_acls": {"type": bool, "default": False}}
+            ipv4_acls: bool
+            """
+            When `true`, renders IPv4 ACLs grouped under each VRF in the new EOS CLI order.
+            When `false`
+            (default), renders the legacy CLI order with all IPv4 ACLs rendered at the end of the configuration.
+
+            Default value: `False`
+            """
+            ipv6_acls: bool
+            """
+            When `true`, renders IPv6 ACLs grouped under each VRF in the new EOS CLI order.
+            When `false`
+            (default), renders the legacy CLI order with all IPv6 ACLs rendered at the end of the configuration.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ipv4_acls: bool | UndefinedType = Undefined, ipv6_acls: bool | UndefinedType = Undefined) -> None:
+                    """
+                    NewSnmpServerCliOrder.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4_acls:
+                           When `true`, renders IPv4 ACLs grouped under each VRF in the new EOS CLI order.
+                           When `false`
+                           (default), renders the legacy CLI order with all IPv4 ACLs rendered at the end of the configuration.
+                        ipv6_acls:
+                           When `true`, renders IPv6 ACLs grouped under each VRF in the new EOS CLI order.
+                           When `false`
+                           (default), renders the legacy CLI order with all IPv6 ACLs rendered at the end of the configuration.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "new_ip_radius_cli_order": {"type": bool, "default": False},
+            "new_ip_tacacs_cli_order": {"type": bool, "default": False},
+            "new_snmp_server_cli_order": {"type": NewSnmpServerCliOrder},
+        }
         new_ip_radius_cli_order: bool
         """
         When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
@@ -6213,10 +6259,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        new_snmp_server_cli_order: NewSnmpServerCliOrder
+        """
+        Opt-in to new EOS CLI order for `snmp_server` keys.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, new_ip_radius_cli_order: bool | UndefinedType = Undefined, new_ip_tacacs_cli_order: bool | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                new_ip_radius_cli_order: bool | UndefinedType = Undefined,
+                new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
+                new_snmp_server_cli_order: NewSnmpServerCliOrder | UndefinedType = Undefined,
+            ) -> None:
                 """
                 EosConfigFuture.
 
@@ -6234,6 +6292,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        When `false`
                        (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
                        interface name.
+                    new_snmp_server_cli_order:
+                       Opt-in to new EOS CLI order for `snmp_server` keys.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -64455,12 +64517,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"name": {"type": str}, "access_list": {"type": str}}
                 name: str
                 """VRF name."""
-                access_list: str | None
+                access_list: str
                 """IPv4 access list name."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, access_list: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, access_list: str | UndefinedType = Undefined) -> None:
                         """
                         VrfsItem.
 
@@ -64547,12 +64609,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"name": {"type": str}, "access_list": {"type": str}}
                 name: str
                 """VRF name."""
-                access_list: str | None
+                access_list: str
                 """IPv6 access list name."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, access_list: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, access_list: str | UndefinedType = Undefined) -> None:
                         """
                         VrfsItem.
 
@@ -72879,6 +72941,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     snmp_server: SnmpServer
     """
     SNMP settings.
+    This requires to set the 'eos_config_future.new_snmp_server_cli_order: true' to
+    render the new CLI order.
 
     Subclass of AvdModel.
     """
@@ -73511,6 +73575,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 sflow: Subclass of AvdModel.
                 snmp_server:
                    SNMP settings.
+                   This requires to set the 'eos_config_future.new_snmp_server_cli_order: true' to
+                   render the new CLI order.
 
                    Subclass of AvdModel.
                 spanning_tree: Subclass of AvdModel.

@@ -1,4 +1,8 @@
 ---
+new_snmp_server_cli_order:
+  ipv4_acls: true
+  ipv6_acls: true
+
 snmp_server:
   engine_ids:
     local: 424242424242424242

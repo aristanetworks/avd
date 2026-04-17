@@ -2469,6 +2469,26 @@ keys:
 
           When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`,
           sorted by source interface name.'
+      new_snmp_server_cli_order:
+        type: dict
+        description: Opt-in to new EOS CLI order for `snmp_server` keys.
+        keys:
+          ipv4_acls:
+            type: bool
+            default: false
+            description: 'When `true`, renders IPv4 ACLs grouped under each VRF in
+              the new EOS CLI order.
+
+              When `false` (default), renders the legacy CLI order with all IPv4 ACLs
+              rendered at the end of the configuration.'
+          ipv6_acls:
+            type: bool
+            default: false
+            description: 'When `true`, renders IPv6 ACLs grouped under each VRF in
+              the new EOS CLI order.
+
+              When `false` (default), renders the legacy CLI order with all IPv6 ACLs
+              rendered at the end of the configuration.'
   errdisable:
     type: dict
     keys:
@@ -23431,7 +23451,10 @@ keys:
                   default: true
   snmp_server:
     type: dict
-    description: SNMP settings.
+    description: 'SNMP settings.
+
+      This requires to set the ''eos_config_future.new_snmp_server_cli_order: true''
+      to render the new CLI order.'
     keys:
       engine_ids:
         type: dict
@@ -23535,6 +23558,7 @@ keys:
                   description: VRF name.
                 access_list:
                   type: str
+                  required: true
                   description: IPv4 access list name.
       ipv6_acls:
         type: list
@@ -23573,6 +23597,7 @@ keys:
                   description: VRF name.
                 access_list:
                   type: str
+                  required: true
                   description: IPv6 access list name.
       local_interfaces:
         type: list
