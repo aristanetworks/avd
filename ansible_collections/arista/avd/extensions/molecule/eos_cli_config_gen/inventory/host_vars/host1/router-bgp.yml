@@ -752,6 +752,8 @@ router_bgp:
         activate: false
         additional_paths:
           send: disabled
+        default_originate:
+          enabled: true
       - ip_address: 2001:db8::22
         additional_paths:
           send: limit
