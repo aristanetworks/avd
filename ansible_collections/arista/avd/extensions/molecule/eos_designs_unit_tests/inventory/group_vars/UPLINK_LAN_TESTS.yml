@@ -19,7 +19,7 @@ fabric_flow_tracking:
 # Test p2p_uplinks_mtu
 p2p_uplinks_mtu: 9214
 platform_settings:
-  - platforms: [ default ]
+  - platforms: [default]
     # platform settings p2p_uplinks_mtu takes precedence
     p2p_uplinks_mtu: 9218
 
