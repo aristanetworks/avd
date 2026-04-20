@@ -921,6 +921,7 @@ class EosDesigns(EosDesignsRootModel):
             "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
+            "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -941,6 +942,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        only_configure_mlag_vrfs_peer_group_when_used: bool
+        """
+        Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -950,6 +957,7 @@ class EosDesigns(EosDesignsRootModel):
                 accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
+                only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -963,6 +971,7 @@ class EosDesigns(EosDesignsRootModel):
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
                        default instead of always deactivating it.
                     raise_for_port_channels_without_members: Raise an error if an L3 Port-Channel is configured without any member interfaces.
+                    only_configure_mlag_vrfs_peer_group_when_used: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
 
                 """
 
@@ -4331,6 +4340,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -4430,6 +4440,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -4557,6 +4578,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -4634,6 +4656,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -5115,6 +5144,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -5214,6 +5244,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -5341,6 +5382,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -5418,6 +5460,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -17903,7 +17952,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    EvpnPreventReadvertiseToServerMode: TypeAlias = Literal["source_peer_asn", "as_path_acl"]
+    EvpnPreventReadvertiseToServerMode: TypeAlias = Literal["source_peer_asn", "as_path_acl", "rcf"]
 
     class EvpnVlanBundlesItem(AvdModel):
         """Subclass of AvdModel."""
@@ -19457,12 +19506,78 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"interface_defaults": {"type": InterfaceDefaults}, "arp": {"type": Arp}, "ip_icmp_redirect": {"type": bool}}
+        class DhcpRelay(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "information_option": {"type": bool, "default": False},
+                "tunnel_requests_disabled": {"type": bool, "default": False},
+                "mlag_peerlink_requests_disabled": {"type": bool, "default": False},
+            }
+            information_option: bool
+            """
+            Enables the insertion of DHCP Relay Agent Information (Option 82).
+
+            Default value: `False`
+            """
+            tunnel_requests_disabled: bool
+            """
+            Blocks DHCP relay for packets received over VXLAN tunnels.
+            This is a VTEP-specific optimization and
+            will only be configured on VXLAN VTEPs.
+
+            Default value: `False`
+            """
+            mlag_peerlink_requests_disabled: bool
+            """
+            Blocks DHCP relay for packets arriving via the MLAG peer-link.
+            This will only be configured on VXLAN
+            VTEPs which are also MLAG devices.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    information_option: bool | UndefinedType = Undefined,
+                    tunnel_requests_disabled: bool | UndefinedType = Undefined,
+                    mlag_peerlink_requests_disabled: bool | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DhcpRelay.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        information_option: Enables the insertion of DHCP Relay Agent Information (Option 82).
+                        tunnel_requests_disabled:
+                           Blocks DHCP relay for packets received over VXLAN tunnels.
+                           This is a VTEP-specific optimization and
+                           will only be configured on VXLAN VTEPs.
+                        mlag_peerlink_requests_disabled:
+                           Blocks DHCP relay for packets arriving via the MLAG peer-link.
+                           This will only be configured on VXLAN
+                           VTEPs which are also MLAG devices.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "interface_defaults": {"type": InterfaceDefaults},
+            "arp": {"type": Arp},
+            "ip_icmp_redirect": {"type": bool},
+            "dhcp_relay": {"type": DhcpRelay},
+        }
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
         arp: Arp
         """Subclass of AvdModel."""
         ip_icmp_redirect: bool | None
+        dhcp_relay: DhcpRelay
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -19472,6 +19587,7 @@ class EosDesigns(EosDesignsRootModel):
                 interface_defaults: InterfaceDefaults | UndefinedType = Undefined,
                 arp: Arp | UndefinedType = Undefined,
                 ip_icmp_redirect: bool | None | UndefinedType = Undefined,
+                dhcp_relay: DhcpRelay | UndefinedType = Undefined,
             ) -> None:
                 """
                 GeneralSettings.
@@ -19483,6 +19599,7 @@ class EosDesigns(EosDesignsRootModel):
                     interface_defaults: Subclass of AvdModel.
                     arp: Subclass of AvdModel.
                     ip_icmp_redirect: ip_icmp_redirect
+                    dhcp_relay: Subclass of AvdModel.
 
                 """
 
@@ -19827,6 +19944,8 @@ class EosDesigns(EosDesignsRootModel):
                 "dscp": {"type": str},
                 "vlan_number": {"type": int},
                 "vlan_mask": {"type": str},
+                "inner_vlan_number": {"type": int},
+                "inner_vlan_mask": {"type": str},
             }
             source: str | None
             """
@@ -19870,7 +19989,13 @@ class EosDesigns(EosDesignsRootModel):
             ttl_match: TtlMatch
             """Default value: `"eq"`"""
             vlan_inner: bool
-            """Default value: `False`"""
+            """
+            Render vlan and mask as inner vlan.
+            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
+            migrating to the new keys.
+
+            Default value: `False`
+            """
             source_ports_match: SourcePortsMatch
             """Default value: `"eq"`"""
             source_ports: SourcePorts
@@ -19896,6 +20021,9 @@ class EosDesigns(EosDesignsRootModel):
             vlan_number: int | None
             vlan_mask: str | None
             """0x000-0xFFF VLAN mask."""
+            inner_vlan_number: int | None
+            inner_vlan_mask: str | None
+            """0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set."""
 
             if TYPE_CHECKING:
 
@@ -19925,6 +20053,8 @@ class EosDesigns(EosDesignsRootModel):
                     dscp: str | None | UndefinedType = Undefined,
                     vlan_number: int | None | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -19960,7 +20090,10 @@ class EosDesigns(EosDesignsRootModel):
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match
-                        vlan_inner: vlan_inner
+                        vlan_inner:
+                           Render vlan and mask as inner vlan.
+                           Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
+                           migrating to the new keys.
                         source_ports_match: source_ports_match
                         source_ports: Subclass of AvdList with `str` items.
                         destination_ports_match: destination_ports_match
@@ -19974,6 +20107,8 @@ class EosDesigns(EosDesignsRootModel):
                         dscp: DSCP value or name.
                         vlan_number: vlan_number
                         vlan_mask: 0x000-0xFFF VLAN mask.
+                        inner_vlan_number: inner_vlan_number
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set.
 
                     """
 
@@ -21129,6 +21264,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -21228,6 +21364,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -21355,6 +21502,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -21432,6 +21580,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -21913,6 +22068,7 @@ class EosDesigns(EosDesignsRootModel):
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
+                "use_underlay_ospf_authentication": {"type": bool, "default": False},
                 "isis_hello_padding": {"type": bool, "default": True},
                 "isis_metric": {"type": int},
                 "isis_circuit_type": {"type": str},
@@ -22012,6 +22168,17 @@ class EosDesigns(EosDesignsRootModel):
             addresses are used.
 
             Default value: `True`
+            """
+            use_underlay_ospf_authentication: bool
+            """
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires
+            `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+            When enabled, the message digest keys defined under
+            `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
+
+            Default value: `False`
             """
             isis_hello_padding: bool
             """Default value: `True`"""
@@ -22139,6 +22306,7 @@ class EosDesigns(EosDesignsRootModel):
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     include_in_underlay_protocol: bool | UndefinedType = Undefined,
+                    use_underlay_ospf_authentication: bool | UndefinedType = Undefined,
                     isis_hello_padding: bool | UndefinedType = Undefined,
                     isis_metric: int | None | UndefinedType = Undefined,
                     isis_circuit_type: IsisCircuitType | None | UndefinedType = Undefined,
@@ -22216,6 +22384,13 @@ class EosDesigns(EosDesignsRootModel):
                            Add this interface to the underlay routing protocols.
                            This is currently not supported when IPv6
                            addresses are used.
+                        use_underlay_ospf_authentication:
+                           Enable OSPF authentication on this P2P link when underlay is OSPF.
+                           Requires
+                           `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+                           true`.
+                           When enabled, the message digest keys defined under
+                           `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -23491,6 +23666,30 @@ class EosDesigns(EosDesignsRootModel):
                     enable_https: enable_https
                     default_services: default_services
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
+    class ManagementSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"console": {"type": EosCliConfigGen.ManagementConsole}, "banners": {"type": EosCliConfigGen.Banners}}
+        console: EosCliConfigGen.ManagementConsole
+        banners: EosCliConfigGen.Banners
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self, *, console: EosCliConfigGen.ManagementConsole | UndefinedType = Undefined, banners: EosCliConfigGen.Banners | UndefinedType = Undefined
+            ) -> None:
+                """
+                ManagementSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    console: console
+                    banners: banners
 
                 """
 
@@ -32313,6 +32512,7 @@ class EosDesigns(EosDesignsRootModel):
                 "rd_override": {"type": str},
                 "trunk_groups": {"type": TrunkGroups},
                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
                 "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                 "igmp_snooping": {"type": IgmpSnooping},
@@ -32472,6 +32672,12 @@ class EosDesigns(EosDesignsRootModel):
             Subclass
             of AvdModel.
             """
+            evpn_redistribute_router_mac_system: bool
+            """
+            Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+            Default value: `False`
+            """
             vxlan_flood_multicast: VxlanFloodMulticast
             """Subclass of AvdModel."""
             evpn_l3_multicast: EvpnL3Multicast
@@ -32559,6 +32765,7 @@ class EosDesigns(EosDesignsRootModel):
                     rd_override: str | None | UndefinedType = Undefined,
                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                    evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                     vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                     igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -32686,6 +32893,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass
                            of AvdModel.
+                        evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                         vxlan_flood_multicast: Subclass of AvdModel.
                         evpn_l3_multicast:
                            Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -33407,6 +33615,7 @@ class EosDesigns(EosDesignsRootModel):
             "rd_override": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
             "evpn_l2_multicast": {"type": EvpnL2Multicast},
+            "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
             "evpn_l3_multicast": {"type": EvpnL3Multicast},
             "igmp_snooping": {"type": IgmpSnooping},
@@ -33582,6 +33791,12 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
+        evpn_redistribute_router_mac_system: bool
+        """
+        Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+        Default value: `False`
+        """
         vxlan_flood_multicast: VxlanFloodMulticast
         """Subclass of AvdModel."""
         evpn_l3_multicast: EvpnL3Multicast
@@ -33671,6 +33886,7 @@ class EosDesigns(EosDesignsRootModel):
                 rd_override: str | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                 igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -33810,6 +34026,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
+                    evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                     vxlan_flood_multicast: Subclass of AvdModel.
                     evpn_l3_multicast:
                        Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -63001,6 +63218,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "rd_override": {"type": str},
                                 "trunk_groups": {"type": TrunkGroups},
                                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                                "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
                                 "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                                 "igmp_snooping": {"type": IgmpSnooping},
@@ -63170,6 +63388,12 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass
                             of AvdModel.
                             """
+                            evpn_redistribute_router_mac_system: bool
+                            """
+                            Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+                            Default value: `False`
+                            """
                             vxlan_flood_multicast: VxlanFloodMulticast
                             """Subclass of AvdModel."""
                             evpn_l3_multicast: EvpnL3Multicast
@@ -63258,6 +63482,7 @@ class EosDesigns(EosDesignsRootModel):
                                     rd_override: str | None | UndefinedType = Undefined,
                                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                                    evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                                     vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                                     igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -63391,6 +63616,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass
                                            of AvdModel.
+                                        evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                                         vxlan_flood_multicast: Subclass of AvdModel.
                                         evpn_l3_multicast:
                                            Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -64124,6 +64350,7 @@ class EosDesigns(EosDesignsRootModel):
                             "rd_override": {"type": str},
                             "trunk_groups": {"type": TrunkGroups},
                             "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                            "evpn_redistribute_router_mac_system": {"type": bool, "default": False},
                             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                             "evpn_l3_multicast": {"type": EvpnL3Multicast},
                             "igmp_snooping": {"type": IgmpSnooping},
@@ -64323,6 +64550,12 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass
                         of AvdModel.
                         """
+                        evpn_redistribute_router_mac_system: bool
+                        """
+                        Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
+
+                        Default value: `False`
+                        """
                         vxlan_flood_multicast: VxlanFloodMulticast
                         """Subclass of AvdModel."""
                         evpn_l3_multicast: EvpnL3Multicast
@@ -64415,6 +64648,7 @@ class EosDesigns(EosDesignsRootModel):
                                 rd_override: str | None | UndefinedType = Undefined,
                                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                                evpn_redistribute_router_mac_system: bool | UndefinedType = Undefined,
                                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                                 igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
@@ -64570,6 +64804,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass
                                        of AvdModel.
+                                    evpn_redistribute_router_mac_system: Configure 'redistribute router-mac system' under BGP for this L3 VLAN.
                                     vxlan_flood_multicast: Subclass of AvdModel.
                                     evpn_l3_multicast:
                                        Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -90423,6 +90658,7 @@ class EosDesigns(EosDesignsRootModel):
         "mac_acls": {"type": MacAcls},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
+        "management_settings": {"type": ManagementSettings},
         "mgmt_destination_networks": {"type": MgmtDestinationNetworks},
         "mgmt_gateway": {"type": str},
         "mgmt_interface": {"type": str, "default": "Management1"},
@@ -91787,11 +92023,16 @@ class EosDesigns(EosDesignsRootModel):
     not be advertised to the EVPN route-servers.
     Only used when `evpn_prevent_readvertise_to_server` is
     set to `true`.
-    `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
-    which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
-    allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
-    `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
-    updates with the route-server ASN anywhere in the AS-path.
+    `source_peer_asn` mode configures an outbound route-maps towards EVPN route-servers
+    which filter out BGP updates learned directly from the ASN of the route-servers. This mode will
+    still allow routes learned via any other peer, even if they have the route-server's ASN in the AS-
+    path.
+    `as_path_acl` mode configures an outbound route-maps and as-path access-lists which filter out
+    BGP updates with the route-servers' ASN anywhere in the AS-path.
+    `rcf` method uses RCF `as_path
+    has_none` condition to filter out EVPN BGP routes containing the route-servers' ASN in the `AS PATH`
+    attribute. Filtering is applied to EVPN BGP Address Family only. This method requires EOS 4.35.2F
+    and newer.
 
     Default value: `"as_path_acl"`
     """
@@ -92059,6 +92300,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    management_settings: ManagementSettings
+    """Subclass of AvdModel."""
     mgmt_destination_networks: MgmtDestinationNetworks
     """
     List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
@@ -93172,6 +93415,7 @@ class EosDesigns(EosDesignsRootModel):
             mac_acls: MacAcls | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
+            management_settings: ManagementSettings | UndefinedType = Undefined,
             mgmt_destination_networks: MgmtDestinationNetworks | UndefinedType = Undefined,
             mgmt_gateway: str | None | UndefinedType = Undefined,
             mgmt_interface: str | UndefinedType = Undefined,
@@ -93848,11 +94092,16 @@ class EosDesigns(EosDesignsRootModel):
                    not be advertised to the EVPN route-servers.
                    Only used when `evpn_prevent_readvertise_to_server` is
                    set to `true`.
-                   `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
-                   which filter out BGP updates learned directly from the ASN of the route-server. This mode will still
-                   allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
-                   `as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP
-                   updates with the route-server ASN anywhere in the AS-path.
+                   `source_peer_asn` mode configures an outbound route-maps towards EVPN route-servers
+                   which filter out BGP updates learned directly from the ASN of the route-servers. This mode will
+                   still allow routes learned via any other peer, even if they have the route-server's ASN in the AS-
+                   path.
+                   `as_path_acl` mode configures an outbound route-maps and as-path access-lists which filter out
+                   BGP updates with the route-servers' ASN anywhere in the AS-path.
+                   `rcf` method uses RCF `as_path
+                   has_none` condition to filter out EVPN BGP routes containing the route-servers' ASN in the `AS PATH`
+                   attribute. Filtering is applied to EVPN BGP Address Family only. This method requires EOS 4.35.2F
+                   and newer.
                 evpn_short_esi_prefix: Configure prefix for "short_esi" values.
                 evpn_vlan_aware_bundles:
                    Enable VLAN aware bundles for every EVPN MAC-VRF.
@@ -94035,6 +94284,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                management_settings: Subclass of AvdModel.
                 mgmt_destination_networks:
                    List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
                    Replaces the default route.

@@ -68,7 +68,7 @@ network_ports:
     switch_ports:
       - Ethernet1-2
     # testing using port_channel_id for member interface description
-    description: "{endpoint}{port_channel_id?<_Po}"
+    description: "{interface}-{endpoint}{port_channel_id?<_Po}"
     profile: ap_with_port_channel
     endpoint: AP1 with port_channel
 
@@ -105,6 +105,7 @@ network_ports:
     port_channel:
       channel_id: 42
       mode: "active"
+      description: "{interface}-{endpoint}-{port_channel_id}"
 
   # Tests for issue #3816
   - switches:

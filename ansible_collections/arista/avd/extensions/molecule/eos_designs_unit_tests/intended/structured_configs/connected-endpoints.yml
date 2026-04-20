@@ -21,7 +21,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: Interface description custom_server_OLD_SW-1/2_ENDPOINT_PORT1
+  description: Interface description Ethernet1 custom_server_OLD_SW-1/2_ENDPOINT_PORT1
   shutdown: false
   channel_group:
     id: 1
@@ -32,7 +32,7 @@ ethernet_interfaces:
     peer_type: custom_server
     peer_key: servers
 - name: Ethernet2
-  description: Interface description custom_server_OLD_SW-1/2_ENDPOINT_PORT2
+  description: Interface description Ethernet2 custom_server_OLD_SW-1/2_ENDPOINT_PORT2
   shutdown: false
   channel_group:
     id: 1
@@ -663,7 +663,8 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:
 - name: Port-Channel1
-  description: Port channel description custom_server_OLD_SW-1/2_Po1_ENDPOINT_PORT_CHANNEL_INTERFACE DESCRIPTION CUSTOM_SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
+  description: Port channel description Port-Channel1 custom_server_OLD_SW-1/2_Po1_ENDPOINT_PORT_CHANNEL_INTERFACE DESCRIPTION PORT-CHANNEL1
+    CUSTOM_SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
   shutdown: false
   switchport:
     enabled: true

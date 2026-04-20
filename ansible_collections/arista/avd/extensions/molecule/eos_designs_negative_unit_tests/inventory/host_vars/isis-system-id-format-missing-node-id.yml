@@ -15,7 +15,7 @@ pe:
     node_sid_base: 100
     is_type: level-2
     loopback_ipv4_pool: 172.28.4.0/22
-    overlay_address_families: [ "evpn" ]
+    overlay_address_families: ["evpn"]
   nodes:
     - name: "isis-system-id-format-missing-node-id"
       id: 1

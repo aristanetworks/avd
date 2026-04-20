@@ -5,7 +5,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1A_Ethernet1
+  description: TEST_CUSTOM_PREFIX_Ethernet1_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1A_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.20/31
@@ -16,7 +16,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet2
-  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1B_Ethernet1
+  description: TEST_CUSTOM_PREFIX_Ethernet2_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1B_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.22/31
@@ -30,7 +30,7 @@ hostname: custom-templates-spine1
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
-  description: TEST_CUSTOM_PREFIX_EVPN_Overlay_Peering_SPINE
+  description: TEST_CUSTOM_PREFIX_Loopback0_EVPN_Overlay_Peering_SPINE
   shutdown: false
   ip_address: 192.168.255.1/32
 management_api_http:

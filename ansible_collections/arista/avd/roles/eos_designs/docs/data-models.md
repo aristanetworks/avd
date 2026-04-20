@@ -456,6 +456,7 @@ To help format the custom interface descriptions, the following contextual varia
 
 underlay_ethernet_interfaces:
 
+- `{{ link.interface }}`
 - `{{ link.peer }}`
 - `{{ link.peer_interface }}`
 - `{{ link.type }} (underlay_p2p, underlay_l2, l3_edge or core_interfaces)`
@@ -463,6 +464,7 @@ underlay_ethernet_interfaces:
 
 underlay_port_channel_interfaces:
 
+- `{{ link.interface }}`
 - `{{ link.channel_description }}`
 - `{{ link.channel_group_id }}`
 - `{{ link.peer }}`
@@ -479,6 +481,7 @@ mlag_ethernet_interfaces:
 
 mlag_port_channel_interfaces:
 
+- `{{ interface }}`
 - `{{ mlag_interfaces }}` (list of strings)
 - `{{ mlag_peer }}`
 - `{{ mlag_port_channel_id }}`
@@ -486,6 +489,7 @@ mlag_port_channel_interfaces:
 
 connected_endpoints_ethernet_interfaces:
 
+- `{{ interface }}`
 - `{{ peer }}`
 - `{{ peer_interface }}`
 - `{{ adapter_description }}`
@@ -493,6 +497,7 @@ connected_endpoints_ethernet_interfaces:
 
 connected_endpoints_port_channel_interfaces:
 
+- `{{ interface }}`
 - `{{ peer }}`
 - `{{ peer_interface }}`
 - `{{ adapter_port_channel_id }}`
@@ -502,11 +507,13 @@ connected_endpoints_port_channel_interfaces:
 
 router_id_loopback_interfaces:
 
+- `{{ interface }}`
 - `{{ router_id_loopback_description }}`
 - All group/hostvars
 
 vtep_loopback_interface:
 
+- `{{ interface }}`
 - `{{ vtep_loopback_description }}`
 - All group/hostvars
 
@@ -1043,6 +1050,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/ssh-settings.md
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/inband-ztp-bootstrap-file.md
+--8<--
+
+### Other management settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-settings.md
 --8<--
 
 ## 802.1X Settings

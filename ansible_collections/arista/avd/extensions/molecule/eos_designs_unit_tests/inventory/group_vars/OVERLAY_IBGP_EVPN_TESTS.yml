@@ -32,7 +32,7 @@ l3leaf:
       id: 3
       mgmt_ip: 192.168.0.206/24
       evpn_role: server
-      overlay_address_families: [ evpn ]
+      overlay_address_families: [evpn]
       evpn_route_servers: [evpn-overlay-mpls-route-reflectors-ibgp, evpn-overlay-mpls-route-reflectors2-ibgp]
     - name: evpn-overlay-mpls-route-reflectors3-ibgp
       id: 4

@@ -86,10 +86,10 @@ servers:
       - switches: [connected-endpoints, connected-endpoints]
         switch_ports: [Ethernet1, Ethernet2]
         endpoint_ports: [Endpoint_port1, ENDPOINT_PORT2]
-        description: "Interface description {endpoint_type}_{endpoint}{endpoint_port?<_!u}"
+        description: "Interface description {interface} {endpoint_type}_{endpoint}{endpoint_port?<_!u}"
         port_channel:
           mode: "active"
-          description: "Port channel description {endpoint_type}_{endpoint}_Po{port_channel_id}_{endpoint_port_channel}_{adapter_description!u}"
+          description: "Port channel description {interface} {endpoint_type}_{endpoint}_Po{port_channel_id}_{endpoint_port_channel}_{adapter_description!u}"
           endpoint_port_channel: ENDPOINT_PORT_CHANNEL
   # port-channel and physical port with default descriptions - all fields
   - name: OLD_SW-1/3
