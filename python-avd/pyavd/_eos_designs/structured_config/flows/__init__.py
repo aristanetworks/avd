@@ -21,6 +21,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
 
     The only exception is of course custom_structured_configuration which always comes last.
     """
+
     @structured_config_contributor
     def flow_tracking(self) -> None:
         """

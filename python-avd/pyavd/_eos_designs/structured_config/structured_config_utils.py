@@ -13,12 +13,12 @@ import ipaddress
 from typing import TYPE_CHECKING
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import as_path_list_match_from_bgp_asns
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.run_once import RunOnceMethodStateHelper, run_once_method
-from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._eos_designs.schema import EosDesigns
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
@@ -296,5 +296,6 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
                 self.set_once_sflow()
             return configured_sflow
         return None
+
 
 __all__ = ["StructuredConfigUtils"]
