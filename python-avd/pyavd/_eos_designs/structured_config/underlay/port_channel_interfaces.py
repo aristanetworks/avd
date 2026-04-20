@@ -164,6 +164,7 @@ class PortChannelInterfacesMixin(Protocol):
             or None
         )
         interface.metadata._update(peer_interface=l3_port_channel.peer_port_channel, peer_type="l3_port_channel")
+        interface.ipv6_addresses.extend(l3_port_channel.ipv6_addresses)
 
         if l3_port_channel.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_port_channel.ipv4_acl_in, l3_port_channel)

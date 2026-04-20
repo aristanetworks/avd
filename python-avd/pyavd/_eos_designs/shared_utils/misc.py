@@ -390,13 +390,16 @@ class MiscMixin(Protocol):
 
         neighbors.append(neighbor)
 
-    def _update_l3_interface_ipv6_bgp(
+    def _update_l3_generic_interface_ipv6_bgp(
         self: SharedUtilsProtocol,
-        interface: EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem,
+        interface: (
+            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
+            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
+        ),
         description: str | None,
         ipv6_neighbors: EosCliConfigGen.RouterBgp.Neighbors,
     ) -> None:
-        """Creates an IPv6 BGP neighbor entry for an L3 interface if peer_ipv6_address and bgp are configured."""
+        """Creates an IPv6 BGP neighbor entry for an L3 interface or L3 Port-Channel if peer_ipv6_address and bgp are configured."""
         if not (interface.peer_ipv6_address and interface.bgp):
             return
 
@@ -429,17 +432,19 @@ class MiscMixin(Protocol):
                 else None
             )
             self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_interfaces[{interface.name}]", neighbors, prefix_lists, route_maps)
-            self._update_l3_interface_ipv6_bgp(interface, description, ipv6_neighbors)
+            self._update_l3_generic_interface_ipv6_bgp(interface, description, ipv6_neighbors)
 
         for interface in self.node_config.l3_port_channels:
+            has_bgp = bool(interface.bgp and (interface.peer_ip or interface.peer_ipv6_address))
             description = (
                 self._get_l3_generic_interface_bgp_description(
                     interface, interface.peer_port_channel, self.interface_descriptions.underlay_port_channel_interface
                 )
-                if interface.bgp and interface.peer_ip
+                if has_bgp
                 else None
             )
             self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_port_channels[{interface.name}]", neighbors, prefix_lists, route_maps)
+            self._update_l3_generic_interface_ipv6_bgp(interface, description, ipv6_neighbors)
 
         return neighbors, prefix_lists, route_maps, ipv6_neighbors
 
