@@ -28,6 +28,9 @@ vlan_interfaces:
   - ip_helper: 1.1.1.4
     source_interface: vlan100
     vrf: INBANDMGMT
+  - ip_helper: 1.1.1.5
+    source_interface: vlan100
+    vrf: INBANDMGMT
   metadata:
     tenants:
     - TEST2

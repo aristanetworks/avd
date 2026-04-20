@@ -52,9 +52,11 @@ tenants:
                 source_interface: Management1
                 source_vrf: use_mgmt_interface_vrf
               - ip_helper: 1.1.1.2
-                source_interface: Management1
+                source_interface: use_default_mgmt_method_interface
                 source_vrf: use_default_mgmt_method_vrf
-
+              - ip_helper: 1.1.1.3
+                source_interface: use_mgmt_interface
+                source_vrf: use_mgmt_interface_vrf
   - name: TEST2
     vrfs:
       - name: IP_HELPERS3
@@ -64,5 +66,8 @@ tenants:
             name: SVI2
             ip_helpers:
               - ip_helper: 1.1.1.4
+                source_interface: use_inband_mgmt_interface
+                source_vrf: use_inband_mgmt_vrf
+              - ip_helper: 1.1.1.5
                 source_interface: vlan100
                 source_vrf: use_inband_mgmt_vrf

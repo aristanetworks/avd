@@ -508,17 +508,9 @@ class FilteredTenantsMixin(Protocol):
         """
         ip_helpers = svi.ip_helpers or vrf.ip_helpers
         if ip_helpers:
-            for helper_idx, svi_ip_helper in enumerate(ip_helpers):
+            for svi_ip_helper in ip_helpers:
                 source_vrf = svi_ip_helper.source_vrf
-                source_interface = svi_ip_helper.source_interface
-                # If VRF is set then compute the value of VRF as per input.
-                vrf_source_interface = self.get_source_interface(source_vrf, None) if source_vrf else None
-                if source_interface and vrf_source_interface and (source_interface != vrf_source_interface):
-                    msg = (
-                        f"Incorrect source_interface is set for 'tenants[name={tenant.name}].vrfs[name={vrf.name}].ip_helpers[{helper_idx}]'"
-                        f" or 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}].ip_helpers[{helper_idx}]'."
-                    )
-                    raise AristaAvdInvalidInputsError(msg)
+                source_interface = self.get_source_interface_for_ip_helpers(svi_ip_helper.source_interface)
                 source_vrf = (
                     self.get_vrf(svi_ip_helper.source_vrf, context=f"{vrf.name}.source_vrf or {vrf.name}.svis[{svi.name}].source_vrf") if source_vrf else None
                 )
@@ -701,3 +693,15 @@ class FilteredTenantsMixin(Protocol):
                 self.is_wan_vrf(vrf),
             ]
         )
+
+    def get_source_interface_for_ip_helpers(self: SharedUtilsProtocol, source_interface: str | None) -> str | None:
+        """Returns source interface for the given input."""
+        match source_interface:
+            case "use_default_mgmt_method_interface":
+                return self.default_mgmt_protocol_interface
+            case "use_mgmt_interface":
+                return self.mgmt_interface
+            case "use_inband_mgmt_interface":
+                return self.inband_mgmt_interface
+            case _:
+                return source_interface
