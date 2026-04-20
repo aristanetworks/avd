@@ -31,6 +31,7 @@ from tests.models import MoleculeScenario
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
     "example-single-dc-l3ls-ipv6",
+    "example-single-dc-multipod-l3ls",
 )
 @pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos", "digital_twin")
 def test_get_avd_facts(molecule_scenario: MoleculeScenario) -> None:
