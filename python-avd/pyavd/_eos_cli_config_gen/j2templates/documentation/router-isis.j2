@@ -250,6 +250,9 @@
 {%         if router_isis.address_family_ipv6.maximum_paths is arista.avd.defined %}
 | Maximum-paths | {{ router_isis.address_family_ipv6.maximum_paths }} |
 {%         endif %}
+{%         if router_isis.address_family_ipv6.multi_topology is arista.avd.defined %}
+| Multi-topology Enabled | {{ router_isis.address_family_ipv6.multi_topology }} |
+{%         endif %}
 {%         if router_isis.address_family_ipv6.bfd_all_interfaces is arista.avd.defined %}
 | BFD All-interfaces | {{ router_isis.address_family_ipv6.bfd_all_interfaces }} |
 {%         endif %}
