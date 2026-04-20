@@ -62,13 +62,6 @@ keys:
                 convert_types:
                   - int
                 description: DSCP mask ranges from 0x00 to 0x3F.
-              inner_vlan_number:
-                type: int
-                convert_types:
-                  - str
-              inner_vlan_mask:
-                type: str
-                description: 0x000-0xFFF inner VLAN mask.
         sequence_numbers:
           deprecation:
             warning: true

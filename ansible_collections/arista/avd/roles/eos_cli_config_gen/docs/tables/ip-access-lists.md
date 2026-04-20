@@ -20,7 +20,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fragments</samp>](## "ip_access_lists.[].entries.[].fragments") | Boolean |  |  |  | Match non-head fragment packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "ip_access_lists.[].entries.[].ttl") | Integer |  |  | Min: 0<br>Max: 255 | TTL value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_match</samp>](## "ip_access_lists.[].entries.[].ttl_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_inner</samp>](## "ip_access_lists.[].entries.[].vlan_inner") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_inner</samp>](## "ip_access_lists.[].entries.[].vlan_inner") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | Render vlan and mask as inner vlan.<br>Both 'inner_vlan_number' and 'inner_vlan_mask' are required when migrating to the new keys.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>inner_vlan_number</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ports_match</samp>](## "ip_access_lists.[].entries.[].source_ports_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code><br>- <code>range</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ports</samp>](## "ip_access_lists.[].entries.[].source_ports") | List, items: String |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ip_access_lists.[].entries.[].source_ports.[]") | String |  |  |  | TCP/UDP source port name or number. |
@@ -37,6 +37,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "ip_access_lists.[].entries.[].dscp") | String |  |  |  | DSCP value or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_number</samp>](## "ip_access_lists.[].entries.[].vlan_number") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_mask</samp>](## "ip_access_lists.[].entries.[].vlan_mask") | String |  |  |  | 0x000-0xFFF VLAN mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_number</samp>](## "ip_access_lists.[].entries.[].inner_vlan_number") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_mask</samp>](## "ip_access_lists.[].entries.[].inner_vlan_mask") | String |  |  |  | 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;permit_response_traffic</samp>](## "ip_access_lists.[].permit_response_traffic") | String |  |  | Valid Values:<br>- <code>nat</code> | Permit response traffic automatically based on NAT translations.<br>Minimum EOS version requirement 4.32.2F. |
 
 === "YAML"
@@ -82,6 +84,12 @@
             # TTL value.
             ttl: <int; 0-255>
             ttl_match: <str; "eq" | "gt" | "lt" | "neq"; default="eq">
+
+            # Render vlan and mask as inner vlan.
+            # Both 'inner_vlan_number' and 'inner_vlan_mask' are required when migrating to the new keys.
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `inner_vlan_number` instead.
             vlan_inner: <bool; default=False>
             source_ports_match: <str; "eq" | "gt" | "lt" | "neq" | "range"; default="eq">
             source_ports: # >=1 items
@@ -119,6 +127,10 @@
 
             # 0x000-0xFFF VLAN mask.
             vlan_mask: <str>
+            inner_vlan_number: <int>
+
+            # 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set.
+            inner_vlan_mask: <str>
 
         # Permit response traffic automatically based on NAT translations.
         # Minimum EOS version requirement 4.32.2F.
