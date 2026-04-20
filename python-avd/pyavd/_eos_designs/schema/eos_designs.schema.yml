@@ -1158,9 +1158,7 @@ keys:
                       type: str
                       description: 'In format xxxx:xxxx:xxxx or "auto".
 
-                        Required for multihomed ethernet interfaces with subinterfaces.
-
-                        '
+                        Required for multihomed ethernet interfaces with subinterfaces.'
                     vlan_id:
                       type: int
                       convert_types:
@@ -1169,9 +1167,7 @@ keys:
                       max: 4094
                       description: 'VLAN ID to bridge.
 
-                        Default is the subinterface number.
-
-                        '
+                        Default is the subinterface number.'
                     encapsulation_vlan:
                       type: dict
                       keys:
@@ -1179,9 +1175,7 @@ keys:
                           type: int
                           description: 'Client VLAN ID encapsulation.
 
-                            Default is the subinterface number.
-
-                            '
+                            Default is the subinterface number.'
                           convert_types:
                           - str
                           min: 1
