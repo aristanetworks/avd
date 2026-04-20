@@ -31648,10 +31648,7 @@ class EosDesigns(EosDesignsRootModel):
                 - `use_default_mgmt_method_interface` will configure the source interface for one
                 of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be
-                used directly as the source interface. An error is raised, if source VRF is set with
-                `use_mgmt_interface_vrf` or `use_inband_mgmt_vrf`
-                  or `use_default_mgmt_method_vrf`; and the string
-                does not match with the calculated source interface.
+                used directly as the source interface.
                 - If not set, EOS uses the VRF on the SVI.
                 """
                 source_vrf: str | None
@@ -31702,10 +31699,7 @@ class EosDesigns(EosDesignsRootModel):
                                - `use_default_mgmt_method_interface` will configure the source interface for one
                                of the two options above depending on the value of `default_mgmt_method`.
                                - Any other string will be
-                               used directly as the source interface. An error is raised, if source VRF is set with
-                               `use_mgmt_interface_vrf` or `use_inband_mgmt_vrf`
-                                 or `use_default_mgmt_method_vrf`; and the string
-                               does not match with the calculated source interface.
+                               used directly as the source interface.
                                - If not set, EOS uses the VRF on the SVI.
                             source_vrf:
                                VRF to originate DHCP relay packets to DHCP server.
@@ -32804,10 +32798,7 @@ class EosDesigns(EosDesignsRootModel):
             - `use_default_mgmt_method_interface` will configure the source interface for one
             of the two options above depending on the value of `default_mgmt_method`.
             - Any other string will be
-            used directly as the source interface. An error is raised, if source VRF is set with
-            `use_mgmt_interface_vrf` or `use_inband_mgmt_vrf`
-              or `use_default_mgmt_method_vrf`; and the string
-            does not match with the calculated source interface.
+            used directly as the source interface.
             - If not set, EOS uses the VRF on the SVI.
             """
             source_vrf: str | None
@@ -32858,10 +32849,7 @@ class EosDesigns(EosDesignsRootModel):
                            - `use_default_mgmt_method_interface` will configure the source interface for one
                            of the two options above depending on the value of `default_mgmt_method`.
                            - Any other string will be
-                           used directly as the source interface. An error is raised, if source VRF is set with
-                           `use_mgmt_interface_vrf` or `use_inband_mgmt_vrf`
-                             or `use_default_mgmt_method_vrf`; and the string
-                           does not match with the calculated source interface.
+                           used directly as the source interface.
                            - If not set, EOS uses the VRF on the SVI.
                         source_vrf:
                            VRF to originate DHCP relay packets to DHCP server.
@@ -61706,7 +61694,20 @@ class EosDesigns(EosDesignsRootModel):
                         ip_helper: str
                         """IPv4 DHCP server IP."""
                         source_interface: str | None
-                        """Interface name."""
+                        """
+                        Interface name to originate DHCP relay packets to DHCP server.
+                        The value will be interpreted
+                        according to these rules:
+                        - `use_mgmt_interface` will configure the OOB management interface as the
+                        source interface.
+                        - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                        source interface.
+                        - `use_default_mgmt_method_interface` will configure the source interface for one
+                        of the two options above depending on the value of `default_mgmt_method`.
+                        - Any other string will be
+                        used directly as the source interface.
+                        - If not set, EOS uses the VRF on the SVI.
+                        """
                         source_vrf: str | None
                         """
                         VRF to originate DHCP relay packets to DHCP server.
@@ -61744,7 +61745,19 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     ip_helper: IPv4 DHCP server IP.
-                                    source_interface: Interface name.
+                                    source_interface:
+                                       Interface name to originate DHCP relay packets to DHCP server.
+                                       The value will be interpreted
+                                       according to these rules:
+                                       - `use_mgmt_interface` will configure the OOB management interface as the
+                                       source interface.
+                                       - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the
+                                       source interface.
+                                       - `use_default_mgmt_method_interface` will configure the source interface for one
+                                       of the two options above depending on the value of `default_mgmt_method`.
+                                       - Any other string will be
+                                       used directly as the source interface.
+                                       - If not set, EOS uses the VRF on the SVI.
                                     source_vrf:
                                        VRF to originate DHCP relay packets to DHCP server.
                                        The value will be interpreted according to these
@@ -62465,10 +62478,7 @@ class EosDesigns(EosDesignsRootModel):
                                 - `use_default_mgmt_method_interface` will configure the source interface for one
                                 of the two options above depending on the value of `default_mgmt_method`.
                                 - Any other string will be
-                                used directly as the source interface. An error is raised, if source VRF is set with
-                                `use_mgmt_interface_vrf` or `use_inband_mgmt_vrf`
-                                  or `use_default_mgmt_method_vrf`; and the string
-                                does not match with the calculated source interface.
+                                used directly as the source interface.
                                 - If not set, EOS uses the VRF on the SVI.
                                 """
                                 source_vrf: str | None
@@ -62519,10 +62529,7 @@ class EosDesigns(EosDesignsRootModel):
                                                - `use_default_mgmt_method_interface` will configure the source interface for one
                                                of the two options above depending on the value of `default_mgmt_method`.
                                                - Any other string will be
-                                               used directly as the source interface. An error is raised, if source VRF is set with
-                                               `use_mgmt_interface_vrf` or `use_inband_mgmt_vrf`
-                                                 or `use_default_mgmt_method_vrf`; and the string
-                                               does not match with the calculated source interface.
+                                               used directly as the source interface.
                                                - If not set, EOS uses the VRF on the SVI.
                                             source_vrf:
                                                VRF to originate DHCP relay packets to DHCP server.
@@ -63654,10 +63661,7 @@ class EosDesigns(EosDesignsRootModel):
                             - `use_default_mgmt_method_interface` will configure the source interface for one
                             of the two options above depending on the value of `default_mgmt_method`.
                             - Any other string will be
-                            used directly as the source interface. An error is raised, if source VRF is set with
-                            `use_mgmt_interface_vrf` or `use_inband_mgmt_vrf`
-                              or `use_default_mgmt_method_vrf`; and the string
-                            does not match with the calculated source interface.
+                            used directly as the source interface.
                             - If not set, EOS uses the VRF on the SVI.
                             """
                             source_vrf: str | None
@@ -63708,10 +63712,7 @@ class EosDesigns(EosDesignsRootModel):
                                            - `use_default_mgmt_method_interface` will configure the source interface for one
                                            of the two options above depending on the value of `default_mgmt_method`.
                                            - Any other string will be
-                                           used directly as the source interface. An error is raised, if source VRF is set with
-                                           `use_mgmt_interface_vrf` or `use_inband_mgmt_vrf`
-                                             or `use_default_mgmt_method_vrf`; and the string
-                                           does not match with the calculated source interface.
+                                           used directly as the source interface.
                                            - If not set, EOS uses the VRF on the SVI.
                                         source_vrf:
                                            VRF to originate DHCP relay packets to DHCP server.
