@@ -53,6 +53,7 @@ class TestSetupModuleLogging:
             mock_filter_cls.assert_called_once_with("test-host")
             mock_handler_instance.addFilter.assert_called_once_with(mock_filter_instance)
             mock_logger.addHandler.assert_called_once_with(mock_handler_instance)
+            assert mock_logger.propagate is False
             mock_logger.setLevel.assert_called_once_with(logging.DEBUG)
 
     def test_uses_hostname_for_filter(self) -> None:
