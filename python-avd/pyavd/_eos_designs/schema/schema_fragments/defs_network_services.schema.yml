@@ -545,7 +545,7 @@ $defs:
                           An error will be raised if inband management is not configured for the device.
                         - `use_default_mgmt_method_vrf` will configure the source VRF for one of the two options above depending on the value of `default_mgmt_method`.
                         - Any other string will be used directly as the source VRF name.
-                        - If not set, uses current VRF.
+                        - If not set, EOS uses current VRF.
                       convert_types:
                         - int
               enable_mlag_ibgp_peering_vrfs:

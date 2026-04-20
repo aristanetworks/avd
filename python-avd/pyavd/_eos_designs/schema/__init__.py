@@ -61724,7 +61724,7 @@ class EosDesigns(EosDesignsRootModel):
                         `default_mgmt_method`.
                         - Any other string will be used directly as the source VRF name.
                         - If not
-                        set, uses current VRF.
+                        set, EOS uses current VRF.
                         """
 
                         if TYPE_CHECKING:
@@ -61761,7 +61761,7 @@ class EosDesigns(EosDesignsRootModel):
                                        `default_mgmt_method`.
                                        - Any other string will be used directly as the source VRF name.
                                        - If not
-                                       set, uses current VRF.
+                                       set, EOS uses current VRF.
 
                                 """
 

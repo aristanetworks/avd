@@ -8675,7 +8675,7 @@ $defs:
                         the source VRF for one of the two options above depending
                         on the value of `default_mgmt_method`.\n- Any other string
                         will be used directly as the source VRF name.\n- If not set,
-                        uses current VRF."
+                        EOS uses current VRF."
                       convert_types:
                       - int
               enable_mlag_ibgp_peering_vrfs:
