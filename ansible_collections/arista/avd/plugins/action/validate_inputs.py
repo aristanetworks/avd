@@ -24,7 +24,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     get_workers,
     parse_validation_result,
 )
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
 if TYPE_CHECKING:
     from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
@@ -175,10 +175,10 @@ def get_worker_hostvars() -> ActionPluginVars:
     return _HOSTVARS_MANAGER
 
 
-class ActionModule(AvdActionPlugin):
+class ActionModule(AVDActionPlugin):
     """Ansible Action Plugin for validating inputs against AVD schemas."""
 
-    _logging_config = AvdLoggingConfig(target_loggers=TARGET_LOGGERS)
+    _logging_config = AVDLoggingConfig(target_loggers=TARGET_LOGGERS)
 
     def main(self, task_vars: dict[str, Any]) -> None:
         """Execute the validate_inputs action plugin."""
