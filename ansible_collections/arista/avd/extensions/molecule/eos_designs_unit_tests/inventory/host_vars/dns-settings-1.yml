@@ -35,7 +35,7 @@ dns_settings:
     # Testing override of source for VRF default - no VRF in output source interface model.
     - name: default
       source_interface: Vlan123
-  
+
   ip_hosts:
     - hostname: dns-settings-1
       ipv4_addresses:
