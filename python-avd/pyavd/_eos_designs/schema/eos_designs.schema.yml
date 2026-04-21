@@ -4743,7 +4743,10 @@ keys:
       If you need to add custom platforms, create them under `custom_platform_settings`.
 
       Entries under `custom_platform_settings` will be matched before the equivalent
-      entries from `platform_settings`.'
+      entries from `platform_settings`.
+
+      Deprecated platforms in AVD 7.0: `720DP` (use `720DP-24S` or `720DP-48S`), `720DT`
+      (use `720DT-24S` or `720DT-48S`).'
     default:
     - platforms:
       - default
@@ -4891,6 +4894,7 @@ keys:
         platform: vEOS-lab
     - platforms:
       - 720DP
+      - 720DP-24S
       feature_support:
         poe: true
         queue_monitor_length_notify: false
@@ -4909,6 +4913,33 @@ keys:
             detection: false
           tap_port_init:
             recovery: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
+      - 720DP-48S
+      feature_support:
+        poe: true
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          tap_port_init:
+            recovery: false
+          tapagg:
+            detection: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -5076,6 +5107,7 @@ keys:
         platform: vEOS-lab
     - platforms:
       - 720DT
+      - 720DT-48S
       - 7010TX
       feature_support:
         queue_monitor_length_notify: false
@@ -5088,6 +5120,33 @@ keys:
             detection: false
             recovery: false
           dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_session_replace:
+            detection: false
+          tap_port_init:
+            recovery: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
+      - 720DT-24S
+      feature_support:
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
+        errdisable_causes:
+          dot1x:
+            detection: false
+            recovery: false
+          dot1x_coa:
+            detection: false
+            recovery: false
+          dot1x_phone_classification:
             detection: false
             recovery: false
           dot1x_session_replace:

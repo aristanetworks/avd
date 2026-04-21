@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings.<br>The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.<br>If no matches are found, the first entry containing a platform `default` will be chosen.<br>The default values will be overridden if `platform_settings` is defined.<br>If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.<br>If you need to add custom platforms, create them under `custom_platform_settings`.<br>Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`. |
+    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings.<br>The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.<br>If no matches are found, the first entry containing a platform `default` will be chosen.<br>The default values will be overridden if `platform_settings` is defined.<br>If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.<br>If you need to add custom platforms, create them under `custom_platform_settings`.<br>Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.<br>Deprecated platforms in AVD 7.0: `720DP` (use `720DP-24S` or `720DP-48S`), `720DT` (use `720DT-24S` or `720DT-48S`). |
     | [<samp>&nbsp;&nbsp;-&nbsp;platforms</samp>](## "platform_settings.[].platforms") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "platform_settings.[].platforms.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trident_forwarding_table_partition</samp>](## "platform_settings.[].trident_forwarding_table_partition") | String |  |  |  | Only applied when evpn_multicast is true. |
@@ -176,6 +176,7 @@
     # If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.
     # If you need to add custom platforms, create them under `custom_platform_settings`.
     # Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
+    # Deprecated platforms in AVD 7.0: `720DP` (use `720DP-24S` or `720DP-48S`), `720DT` (use `720DT-24S` or `720DT-48S`).
     platform_settings: # (1)!
       - platforms:
           - <str>
@@ -600,6 +601,7 @@
             platform: vEOS-lab
         - platforms:
           - 720DP
+          - 720DP-24S
           feature_support:
             poe: true
             queue_monitor_length_notify: false
@@ -618,6 +620,33 @@
                 detection: false
               tap_port_init:
                 recovery: false
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
+          - 720DP-48S
+          feature_support:
+            poe: true
+            queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_mtu: false
+            per_interface_l2_mru: false
+            sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              tap_port_init:
+                recovery: false
+              tapagg:
+                detection: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -785,6 +814,7 @@
             platform: vEOS-lab
         - platforms:
           - 720DT
+          - 720DT-48S
           - 7010TX
           feature_support:
             queue_monitor_length_notify: false
@@ -797,6 +827,33 @@
                 detection: false
                 recovery: false
               dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_session_replace:
+                detection: false
+              tap_port_init:
+                recovery: false
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
+          - 720DT-24S
+          feature_support:
+            queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_mtu: false
+            per_interface_l2_mru: false
+            sflow_subinterfaces: false
+            errdisable_causes:
+              dot1x:
+                detection: false
+                recovery: false
+              dot1x_coa:
+                detection: false
+                recovery: false
+              dot1x_phone_classification:
                 detection: false
                 recovery: false
               dot1x_session_replace:
