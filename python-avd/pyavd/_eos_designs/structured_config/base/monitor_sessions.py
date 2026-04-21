@@ -145,7 +145,11 @@ class MonitorSessionsMixin(Protocol):
                             continue
                         interface_name = l3_interface.interfaces[node_index]
                         context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
-                        if l3_interface.monitor_sessions and "." in interface_name and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session:
+                        if (
+                            l3_interface.monitor_sessions
+                            and "." in interface_name
+                            and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session
+                        ):
                             msg = (
                                 f"Monitor session on sub-interfaces is not supported on this platform. "
                                 f"Got monitor session on interface '{interface_name}' under {context}."
