@@ -20,12 +20,11 @@ snmp-server ipv4 access-list {{ vrf.access_list }} vrf {{ vrf.name }}
 {%                 endif %}
 {%             endfor %}
 {%         else %}
-{%             for vrf in ipv4_vrfs %}
-{%                 if vrf.name == "default" %}
-snmp-server ipv4 access-list {{ vrf.access_list }}
-{%                 else %}
+{%             if snmp_server.ipv4_acls_per_vrf.access_list is arista.avd.defined %}
+snmp-server ipv4 access-list {{ snmp_server.ipv4_acls_per_vrf.access_list }}
+{%             endif %}
+{%             for vrf in snmp_server.ipv4_acls_per_vrf.vrfs | arista.avd.default([]) %}
 snmp-server ipv4 access-list {{ vrf.access_list }} vrf {{ vrf.name }}
-{%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%     elif snmp_server.ipv4_acls is arista.avd.defined %}
@@ -38,11 +37,11 @@ snmp-server ipv4 access-list {{ vrf.access_list }} vrf {{ vrf.name }}
 {%         endfor %}
 {%     endif %}
 {%     if snmp_server.ipv6_acls_per_vrf is arista.avd.defined %}
-{%         set ipv6_vrfs = snmp_server.ipv6_acls_per_vrf.vrfs | arista.avd.default([]) | list %}
-{%         if snmp_server.ipv6_acls_per_vrf.access_list is arista.avd.defined %}
-{%             do ipv6_vrfs.extend([{"name": "default", "access_list": snmp_server.ipv6_acls_per_vrf.access_list}]) %}
-{%         endif %}
 {%         if eos_config_future.new_snmp_server_cli_order.ipv6_acls is arista.avd.defined(true) %}
+{%             set ipv6_vrfs = snmp_server.ipv6_acls_per_vrf.vrfs | arista.avd.default([]) | list %}
+{%             if snmp_server.ipv6_acls_per_vrf.access_list is arista.avd.defined %}
+{%                 do ipv6_vrfs.extend([{"name": "default", "access_list": snmp_server.ipv6_acls_per_vrf.access_list}]) %}
+{%             endif %}
 {%             for vrf in ipv6_vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 {%                 if vrf.name == "default" %}
 snmp-server ipv6 access-list {{ vrf.access_list }}
@@ -51,12 +50,11 @@ snmp-server ipv6 access-list {{ vrf.access_list }} vrf {{ vrf.name }}
 {%                 endif %}
 {%             endfor %}
 {%         else %}
-{%             for vrf in ipv6_vrfs %}
-{%                 if vrf.name == "default" %}
-snmp-server ipv6 access-list {{ vrf.access_list }}
-{%                 else %}
+{%             if snmp_server.ipv6_acls_per_vrf.access_list is arista.avd.defined %}
+snmp-server ipv6 access-list {{ snmp_server.ipv6_acls_per_vrf.access_list }}
+{%             endif %}
+{%             for vrf in snmp_server.ipv6_acls_per_vrf.vrfs | arista.avd.default([]) %}
 snmp-server ipv6 access-list {{ vrf.access_list }} vrf {{ vrf.name }}
-{%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%     elif snmp_server.ipv6_acls is arista.avd.defined %}
