@@ -13,7 +13,7 @@ from pyavd._utils import Undefined, UndefinedType, merge
 
 from .avd_base import AvdBase
 from .avd_indexed_list import AvdIndexedList
-from .input_path import InputPath, _EMPTY_PATH
+from .input_path import _EMPTY_PATH, InputPath
 
 if TYPE_CHECKING:
     from collections.abc import ItemsView
@@ -162,9 +162,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
                 continue
             setattr(self, field, field_value)
             self._field_source[field] = (
-                field_value._source
-                if isinstance(field_value, AvdBase)
-                else self._source.create_descendant(self._field_to_key_map.get(field, field))
+                field_value._source if isinstance(field_value, AvdBase) else self._source.create_descendant(self._field_to_key_map.get(field, field))
             )
 
     def __getattr__(self, name: str) -> Any:

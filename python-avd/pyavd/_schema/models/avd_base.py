@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from copy import deepcopy
 from typing import TYPE_CHECKING, Literal
 
-from .input_path import InputPath, _EMPTY_PATH
+from .input_path import _EMPTY_PATH, InputPath
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
