@@ -51,7 +51,6 @@ class RouterBgpMixin(Protocol):
         # These functions update structured config directly.
         self._router_bgp_peer_groups()
         self._router_bgp_vrfs()
-        self._set_router_bgp_listen_ranges()
         self._router_bgp_vlans(tenant_svis_l2vlans_dict)
         self._router_bgp_vlan_aware_bundles(tenant_svis_l2vlans_dict)
         self._router_bgp_redistribute_routes()
@@ -142,6 +141,13 @@ class RouterBgpMixin(Protocol):
 
         # For VRF default the bgp_vrf variable will be set to the global router_bgp for some settings.
         for tenant in self.shared_utils.filtered_tenants:
+            for bgp_peer_group in tenant.bgp_peer_groups:
+                if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
+                    for listen_range in bgp_peer_group.listen_ranges:
+                        self.structured_config.router_bgp.listen_ranges.append_new(
+                            prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined
+                        )
+
             for vrf in tenant.vrfs:
                 if not self.shared_utils.bgp_enabled_for_vrf(vrf):
                     continue
@@ -167,6 +173,13 @@ class RouterBgpMixin(Protocol):
 
                 if vrf.name != "default":
                     bgp_vrf.router_id = self.get_protocol_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
+
+                    for bgp_peer_group in vrf.bgp_peer_groups:
+                        if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
+                            for listen_range in bgp_peer_group.listen_ranges:
+                                bgp_vrf.listen_ranges.append_new(
+                                    prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined
+                                )
 
                     if vrf.redistribute_connected:
                         bgp_vrf.redistribute.connected.enabled = True
@@ -201,6 +214,13 @@ class RouterBgpMixin(Protocol):
                     if self.shared_utils.underlay_routing_protocol == "none":
                         # We need to add redistribute connected for the default VRF when underlay_routing_protocol is "none"
                         bgp_vrf.redistribute.connected.enabled = True
+
+                    for bgp_peer_group in vrf.bgp_peer_groups:
+                        if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
+                            for listen_range in bgp_peer_group.listen_ranges:
+                                bgp_vrf.listen_ranges.append_new(
+                                    prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined
+                                )
 
                     # Common things but need it repeated between default and non-default since type checker gets too confused
                     # about the type of bgp_vrf vs. bgp_peer_config.
@@ -358,7 +378,7 @@ class RouterBgpMixin(Protocol):
         if evpn_multicast_transit_mode := getattr(vrf._internal_data, "evpn_l3_multicast_evpn_peg_transit", False):
             bgp_vrf.evpn_multicast_address_family.ipv4.transit = evpn_multicast_transit_mode
 
-    def _set_router_bgp_listen_ranges(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+    def _set_router_bgp_listen_ranges(self: AvdStructuredConfigNetworkServicesProtocol, bgp_peer_group) -> None:
         for tenant in self.shared_utils.filtered_tenants:
             for bgp_peer_group in tenant.bgp_peer_groups:
                 if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
