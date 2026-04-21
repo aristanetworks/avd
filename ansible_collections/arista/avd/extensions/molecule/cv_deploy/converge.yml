@@ -1,48 +1,48 @@
 ---
-# - name: Test cv deploy
-#   import_playbook: cv_deploy.yml
+- name: Test cv deploy
+  import_playbook: cv_deploy.yml
 
-# - name: Test Provisions with Workspace Pending
-#   import_playbook: workspace_pending.yml
+- name: Test Provisions with Workspace Pending
+  import_playbook: workspace_pending.yml
 
-# - name: Test Workspace Requested State = built
-#   import_playbook: workspace_requested_state.yml
+- name: Test Workspace Requested State = built
+  import_playbook: workspace_requested_state.yml
 
-# - name: Test Workspace custom ID
-#   import_playbook: workspace_id.yml
+- name: Test Workspace custom ID
+  import_playbook: workspace_id.yml
 
-# - name: Test Workspace Force True
-#   import_playbook: workspace_force_true.yml
+- name: Test Workspace Force True
+  import_playbook: workspace_force_true.yml
 
-# - name: Test Workspace Force False
-#   import_playbook: workspace_force_false.yml
+- name: Test Workspace Force False
+  import_playbook: workspace_force_false.yml
 
-# - name: Test Workspace build with invalid Designed Config
-#   import_playbook: invalid_config.yml
+- name: Test Workspace build with invalid Designed Config
+  import_playbook: invalid_config.yml
 
-# - name: Test Change Control False
-#   import_playbook: cc_false.yml
+- name: Test Change Control False
+  import_playbook: cc_false.yml
 
-# - name: Test Change Control Requested State = pending approval
-#   import_playbook: cc_requested_state.yml
+- name: Test Change Control Requested State = pending approval
+  import_playbook: cc_requested_state.yml
 
-# - name: Test cv_deploy with devices with uniquely set serial_numbers and system_mac_addresses
-#   import_playbook: no_duplicated_devices.yml
+- name: Test cv_deploy with devices with uniquely set serial_numbers and system_mac_addresses
+  import_playbook: no_duplicated_devices.yml
 
-# - name: Test cv_deploy with duplicated devices in inventory and default cv_strict_system_mac_address
-#   import_playbook: duplicated_devices.yml
+- name: Test cv_deploy with duplicated devices in inventory and default cv_strict_system_mac_address
+  import_playbook: duplicated_devices.yml
 
-# - name: Test cv_deploy with duplicated devices in inventory and non-default cv_strict_system_mac_address
-#   import_playbook: duplicated_devices_strict_system_mac.yml
+- name: Test cv_deploy with duplicated devices in inventory and non-default cv_strict_system_mac_address
+  import_playbook: duplicated_devices_strict_system_mac.yml
 
-# - name: Test cv_deploy with hostvars instead of structured config files
-#   import_playbook: cv_deploy_hostvars.yml
+- name: Test cv_deploy with hostvars instead of structured config files
+  import_playbook: cv_deploy_hostvars.yml
 
-# - name: Test cv_deploy with manifest alongside regular deployment
-#   import_playbook: cv_deploy_with_manifest.yml
+- name: Test cv_deploy with manifest alongside regular deployment
+  import_playbook: cv_deploy_with_manifest.yml
 
-# - name: Test cv_deploy with manifest-only deployment (no regular AVD device configs)
-#   import_playbook: cv_deploy_manifest_only.yml
+- name: Test cv_deploy with manifest-only deployment (no regular AVD device configs)
+  import_playbook: cv_deploy_manifest_only.yml
 
 - name: Test cv_deploy with cv_use_static_config_manifest on one device (hybrid)
   import_playbook: cv_deploy_use_manifest_hybrid.yml
