@@ -304,6 +304,8 @@ class EosDesigns(EosDesignsRootModel):
                     "host": {"type": str},
                     "groups": {"type": Groups},
                     "vrf": {"type": str},
+                    "timeout": {"type": int},
+                    "retransmit": {"type": int},
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
                     "tls": {"type": EosCliConfigGen.RadiusServer.ServersItem.Tls},
@@ -333,6 +335,8 @@ class EosDesigns(EosDesignsRootModel):
                 `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
                 """
+                timeout: int | None
+                retransmit: int | None
                 key: str | None
                 """
                 Encrypted type-7 key.
@@ -356,6 +360,8 @@ class EosDesigns(EosDesignsRootModel):
                         host: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
+                        timeout: int | None | UndefinedType = Undefined,
+                        retransmit: int | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         cleartext_key: str | None | UndefinedType = Undefined,
                         tls: EosCliConfigGen.RadiusServer.ServersItem.Tls | UndefinedType = Undefined,
@@ -387,6 +393,8 @@ class EosDesigns(EosDesignsRootModel):
                                the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
+                            timeout: timeout
+                            retransmit: retransmit
                             key:
                                Encrypted type-7 key.
                                Takes precedence over `cleartext_key`.
