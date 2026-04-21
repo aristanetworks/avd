@@ -26408,6 +26408,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "serial_number": {"type": str},
             "validate_hardware": {"type": ValidateHardware},
             "cv_tags": {"type": CvTags},
+            "cv_use_static_config_manifest": {"type": bool, "default": False},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
             "validate_no_errors_period": {"type": int},
@@ -26446,6 +26447,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         cv_tags: CvTags
         """Subclass of AvdModel."""
+        cv_use_static_config_manifest: bool
+        """
+        PREVIEW: This key is in preview mode.
+
+        When set to `true`, the device configuration is expected to
+        be deployed via the
+        `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+        flat "AVD Configurations" layout in the Static Configlet Studio.
+        The device will still be verified
+        and onboarded in the Inventory & Topology Studio.
+
+        Default value: `False`
+        """
         cv_pathfinder: CvPathfinder
         """
         Metadata used for CV Pathfinder visualization on CloudVision.
@@ -26490,6 +26504,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 serial_number: str | None | UndefinedType = Undefined,
                 validate_hardware: ValidateHardware | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
+                cv_use_static_config_manifest: bool | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validate_no_errors_period: int | None | UndefinedType = Undefined,
@@ -26529,6 +26544,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdModel.
                     cv_tags: Subclass of AvdModel.
+                    cv_use_static_config_manifest:
+                       PREVIEW: This key is in preview mode.
+
+                       When set to `true`, the device configuration is expected to
+                       be deployed via the
+                       `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+                       flat "AVD Configurations" layout in the Static Configlet Studio.
+                       The device will still be verified
+                       and onboarded in the Inventory & Topology Studio.
                     cv_pathfinder:
                        Metadata used for CV Pathfinder visualization on CloudVision.
 

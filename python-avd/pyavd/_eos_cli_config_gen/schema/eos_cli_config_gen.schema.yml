@@ -9736,6 +9736,22 @@ keys:
                       value:
                         type: str
                         required: true
+      cv_use_static_config_manifest:
+        type: bool
+        default: false
+        description: 'PREVIEW: This key is in preview mode.
+
+
+          When set to `true`, the device configuration is expected to be deployed
+          via the
+
+          `static_config_manifest` / `cv_static_config_manifest` hierarchy instead
+          of the
+
+          flat "AVD Configurations" layout in the Static Configlet Studio.
+
+          The device will still be verified and onboarded in the Inventory & Topology
+          Studio.'
       cv_pathfinder:
         type: dict
         description: Metadata used for CV Pathfinder visualization on CloudVision.

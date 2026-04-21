@@ -271,6 +271,38 @@ class CVEosConfig:
 
 
 @dataclass
+class CVDeviceDeployment:
+    """All deployment objects for a single device."""
+
+    device: CVDevice
+    use_static_config_manifest: bool = False
+    """When `True`, the device configuration is expected to be deployed via the static config manifest hierarchy
+    instead of the flat "AVD Configurations" layout."""
+    eos_config: CVEosConfig | None = None
+    device_tags: list[CVDeviceTag] = field(default_factory=list)
+    interface_tags: list[CVInterfaceTag] = field(default_factory=list)
+    cv_pathfinder_metadata: CVPathfinderMetadata | None = None
+
+
+def extract_from_device_deployments(
+    device_deployments: list[CVDeviceDeployment],
+) -> tuple[list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]]:
+    """Extract configs, device tags, interface tags and pathfinder metadata from a list of CVDeviceDeployment objects."""
+    configs: list[CVEosConfig] = []
+    device_tags: list[CVDeviceTag] = []
+    interface_tags: list[CVInterfaceTag] = []
+    cv_pathfinder_metadata: list[CVPathfinderMetadata] = []
+    for device_deployment in device_deployments:
+        if device_deployment.eos_config is not None:
+            configs.append(device_deployment.eos_config)
+        device_tags.extend(device_deployment.device_tags)
+        interface_tags.extend(device_deployment.interface_tags)
+        if device_deployment.cv_pathfinder_metadata is not None:
+            cv_pathfinder_metadata.append(device_deployment.cv_pathfinder_metadata)
+    return configs, device_tags, interface_tags, cv_pathfinder_metadata
+
+
+@dataclass
 class CVTimeOuts:
     """Timeouts in seconds."""
 
