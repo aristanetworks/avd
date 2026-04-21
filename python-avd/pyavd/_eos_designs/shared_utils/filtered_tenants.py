@@ -509,7 +509,7 @@ class FilteredTenantsMixin(Protocol):
         ip_helpers = svi.ip_helpers or vrf.ip_helpers
         if ip_helpers:
             for svi_ip_helper in ip_helpers:
-                source_interface = self.get_source_interface_for_ip_helpers(svi_ip_helper.source_interface)
+                source_interface = self.get_local_interface(svi_ip_helper.source_interface) if svi_ip_helper.source_interface else None
                 source_vrf = (
                     self.get_vrf(svi_ip_helper.source_vrf, context=f"{vrf.name}.source_vrf or {vrf.name}.svis[{svi.name}].source_vrf")
                     if svi_ip_helper.source_vrf
@@ -694,15 +694,3 @@ class FilteredTenantsMixin(Protocol):
                 self.is_wan_vrf(vrf),
             ]
         )
-
-    def get_source_interface_for_ip_helpers(self: SharedUtilsProtocol, source_interface: str | None) -> str | None:
-        """Returns source interface for the given input."""
-        match source_interface:
-            case "use_default_mgmt_method_interface":
-                return self.default_mgmt_protocol_interface
-            case "use_mgmt_interface":
-                return self.mgmt_interface
-            case "use_inband_mgmt_interface":
-                return self.inband_mgmt_interface
-            case _:
-                return source_interface
