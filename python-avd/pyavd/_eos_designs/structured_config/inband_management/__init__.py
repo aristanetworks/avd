@@ -35,13 +35,12 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                 if self.shared_utils.inband_mgmt_vrf is None and self.shared_utils.underlay_bgp:
                     self._set_once_enable_router_bgp_redistribute_attached_host()
                     if self.inputs.underlay_filter_redistribute_connected:
-                        if vlan["ipv6"]:
-                            if self.shared_utils.overlay_routing_protocol != "none":
-                                self._set_once_route_map_conn_2_bgp_sequence_60()
-                            self._set_l2leaf_inband_mgmt_ipv6_prefix_lists(vlan, index)
                         if self.shared_utils.overlay_routing_protocol != "none" and vlan["ipv4"]:
                             self._set_once_route_map_conn_2_bgp_sequence_20()
                             self._set_l2leaf_inband_mgmt_prefix_lists(vlan, index)
+                        if self.shared_utils.overlay_routing_protocol != "none" and vlan["ipv6"]:
+                                self._set_once_route_map_conn_2_bgp_sequence_60()
+                            self._set_l2leaf_inband_mgmt_ipv6_prefix_lists(vlan, index)
 
     def _set_vlans(self) -> None:
         # TODO: Refactor this later to inject from filtered tenants
