@@ -145,21 +145,20 @@ class MonitorSessionsMixin(Protocol):
                             continue
                         interface_name = l3_interface.interfaces[node_index]
                         context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
+                        if l3_interface.monitor_sessions and "." in interface_name and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session:
+                            msg = (
+                                f"Monitor session on sub-interfaces is not supported on this platform. "
+                                f"Got monitor session on interface '{interface_name}' under {context}."
+                            )
+                            raise AristaAvdInvalidInputsError(msg)
                         for monitor_session in l3_interface.monitor_sessions:
-                            if "." in interface_name:
-                                if not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session:
-                                    msg = (
-                                        f"Monitor session on sub-interfaces is not supported on this platform. "
-                                        f"Got monitor session '{monitor_session.name}' on interface '{interface_name}' under {context}."
-                                    )
-                                    raise AristaAvdInvalidInputsError(msg)
-                                if monitor_session.source_settings.direction != "rx":
-                                    msg = (
-                                        f"Only 'direction: rx' supported on sub-interfaces for monitor session. "
-                                        f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
-                                        f"on interface '{interface_name}' under {context}."
-                                    )
-                                    raise AristaAvdInvalidInputsError(msg)
+                            if "." in interface_name and monitor_session.source_settings.direction != "rx":
+                                msg = (
+                                    f"Only 'direction: rx' supported on sub-interfaces for monitor session. "
+                                    f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
+                                    f"on interface '{interface_name}' under {context}."
+                                )
+                                raise AristaAvdInvalidInputsError(msg)
 
                             # We merge using the adapter datamodel to catch conflicts in direction.
                             per_interface_monitor_session = monitor_session._deepcopy()._cast_as(
