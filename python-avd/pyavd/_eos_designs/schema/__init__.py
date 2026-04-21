@@ -92410,17 +92410,15 @@ class EosDesigns(EosDesignsRootModel):
     """
     IPv6 extended access-lists supporting substitution on certain fields.
     These access-lists can be
-    referenced under `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be configured on devices
-    where they are in use.
+    referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be
+    configured on devices where they are in use.
 
-    The substitution is useful when assigning the same access-list on multiple
-    interfaces,
-    but where certain fields require unique values like the "interface_ip".
-    When using
-    substitution, the interface name will be appended to the ACL name.
+    The substitution is useful when assigning the same
+    access-list on multiple interfaces where certain fields (e.g. interface_ip) require unique values.
+    When using substitution, the interface name will be appended to the ACL name.
 
-    Subclass of AvdIndexedList with
-    `Ipv6AclsItem` items. Primary key is `name` (`str`).
+    Subclass of
+    AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
     """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
     """
@@ -94439,17 +94437,15 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_acls:
                    IPv6 extended access-lists supporting substitution on certain fields.
                    These access-lists can be
-                   referenced under `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be configured on devices
-                   where they are in use.
+                   referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be
+                   configured on devices where they are in use.
 
-                   The substitution is useful when assigning the same access-list on multiple
-                   interfaces,
-                   but where certain fields require unique values like the "interface_ip".
-                   When using
-                   substitution, the interface name will be appended to the ACL name.
+                   The substitution is useful when assigning the same
+                   access-list on multiple interfaces where certain fields (e.g. interface_ip) require unique values.
+                   When using substitution, the interface name will be appended to the ACL name.
 
-                   Subclass of AvdIndexedList with
-                   `Ipv6AclsItem` items. Primary key is `name` (`str`).
+                   Subclass of
+                   AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.
