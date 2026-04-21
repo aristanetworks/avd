@@ -334,6 +334,13 @@ class AvdStructuredConfigBaseProtocol(
             ip_name_server_vrf.servers.append_new(ip_address=server.ip_address, priority=server.priority)
 
     @structured_config_contributor
+    def ip_hosts(self) -> None:
+        """Configure IP host setting based on the input data model."""
+        if not self.inputs.dns_settings.ip_hosts:
+            return
+        self.structured_config.ip_hosts = self.inputs.dns_settings.ip_hosts
+
+    @structured_config_contributor
     def logging(self) -> None:
         """
         Configures logging settings based on the input data model.
