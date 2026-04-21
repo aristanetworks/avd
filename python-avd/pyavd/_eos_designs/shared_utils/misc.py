@@ -404,7 +404,10 @@ class MiscMixin(Protocol):
             return
 
         if bool(interface.wan_carrier):
-            msg = "IPv6 BGP is not supported for WAN interfaces."
+            msg = (
+                "IPv6 BGP peering ('peer_ipv6_address' with 'bgp') is not supported on WAN interfaces ('wan_carrier' is set). "
+                "WAN path-group integration only supports IPv4 BGP peering. Use 'peer_ip' with 'bgp' instead."
+            )
             raise AristaAvdInvalidInputsError(msg)
 
         neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(

@@ -103,6 +103,7 @@ ethernet_interfaces:
     enabled: false
 hostname: node-type-l3-interfaces
 ip_routing: true
+ipv6_unicast_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

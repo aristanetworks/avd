@@ -171,6 +171,7 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+ipv6_unicast_routing: true
 kernel:
   software_forwarding_ecmp: true
 loopback_interfaces:

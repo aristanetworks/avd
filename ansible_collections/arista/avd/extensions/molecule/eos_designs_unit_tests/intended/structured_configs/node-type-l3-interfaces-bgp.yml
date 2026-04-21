@@ -23,10 +23,21 @@ ethernet_interfaces:
     peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet45
+  description: PEER-PC-BGP_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 47
+    mode: active
+  metadata:
+    peer: PEER-PC-BGP
+    peer_interface: Ethernet1
+    peer_type: l3_port_channel_member
 hostname: node-type-l3-interfaces-bgp
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
+ipv6_unicast_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -35,6 +46,18 @@ loopback_interfaces:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel47
+  description: PEER-PC-BGP_Port-Channel47
+  shutdown: false
+  ipv6_addresses:
+  - 2001:db8:1::1/64
+  metadata:
+    peer: PEER-PC-BGP
+    peer_interface: Port-Channel47
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
 prefix_lists:
 - name: ALLOW-DEFAULT
   sequence_numbers:
@@ -72,6 +95,9 @@ router_bgp:
   - ip_address: 2001:db8::2
     remote_as: '65044'
     description: PEER-IPV6_Ethernet1
+  - ip_address: 2001:db8:1::2
+    remote_as: '65047'
+    description: PEER-PC-BGP_Port-Channel47
   redistribute:
     connected:
       enabled: true
@@ -82,6 +108,8 @@ router_bgp:
   address_family_ipv6:
     neighbors:
     - ip_address: 2001:db8::2
+      activate: true
+    - ip_address: 2001:db8:1::2
       activate: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true

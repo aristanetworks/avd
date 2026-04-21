@@ -38,3 +38,18 @@ l3spine:
           peer_ipv6_address: 2001:db8::2
           bgp:
             peer_as: 65044
+      l3_port_channels:
+        - # IPv6 BGP peering via Port-Channel
+          name: Port-Channel47
+          mode: active
+          member_interfaces:
+            - name: Ethernet45
+              peer: PEER-PC-BGP
+              peer_interface: Ethernet1
+          ipv6_addresses:
+            - 2001:db8:1::1/64
+          peer: PEER-PC-BGP
+          peer_port_channel: Port-Channel47
+          peer_ipv6_address: 2001:db8:1::2
+          bgp:
+            peer_as: 65047
