@@ -19,7 +19,7 @@ from ansible.utils.collection_loader._collection_finder import _get_collection_m
 from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins import PYTHON_AVD_PATH, RUNNING_FROM_SOURCE
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AVDActionPlugin, AVDLoggingConfig
 
 if TYPE_CHECKING:
     # Relying on packaging installed by ansible
@@ -379,8 +379,8 @@ def check_running_from_source() -> bool:
     return schemas_recompiled or templates_recompiled
 
 
-class ActionModule(AvdActionPlugin):
-    _logging_config = AvdLoggingConfig(add_role_context=True)
+class ActionModule(AVDActionPlugin):
+    _logging_config = AVDLoggingConfig(add_role_context=True)
 
     def main(self, task_vars: dict[str, Any]) -> None:
         if not HAS_PACKAGING:
