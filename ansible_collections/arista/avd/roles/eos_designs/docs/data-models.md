@@ -848,7 +848,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-acls.md
 --8<--
 
-## IPv6 ACL settings
+### IPv6 extended ACLs Catalog
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv6-acls.md

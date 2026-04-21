@@ -71,7 +71,7 @@ class VlanInterfacesMixin(Protocol):
         ipv4_interface_ip = svi.ip_address or svi.ip_address_virtual
         if ipv4_interface_ip is not None and "/" in ipv4_interface_ip:
             ipv4_interface_ip = get_ip_from_ip_prefix(ipv4_interface_ip)
-        ipv6_interface_ip = svi.ipv6_address
+        ipv6_interface_ip = svi.ipv6_address or next(iter(svi.ipv6_address_virtuals), None)
         if ipv6_interface_ip is not None and "/" in ipv6_interface_ip:
             ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_interface_ip)
         vlan_interface_config = EosCliConfigGen.VlanInterfacesItem(
