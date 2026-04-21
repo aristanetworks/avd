@@ -1,0 +1,257 @@
+---
+- name: "Converge - Hybrid deployment with cv_use_static_config_manifest on one device - {{ test_id | upper }}"
+  hosts: SITE1_FABRIC
+  connection: local
+  gather_facts: false
+  vars:
+    cv_server: "{{ lookup('env', 'CV_SERVER') }}"
+    cv_token: "{{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+    proxy_host: "{{ lookup('env', 'CV_PROXY_HOST') | default('', true) }}"
+    proxy_port: "{{ lookup('env', 'CV_PROXY_PORT') | default(3128, true) | int }}"
+    proxy_username: "{{ lookup('env', 'CV_PROXY_USERNAME') | default('', true) }}"
+    proxy_password: "{{ lookup('env', 'CV_PROXY_PASSWORD') | default('', true) }}"
+    cv_verify_certs: "{{ lookup('env', 'CV_VERIFY_CERTS') | default(true, true) | bool }}"
+    cv_skip_missing_devices: true
+    eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
+    structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_use_manifest_hybrid_configs"
+    cv_deploy_tmp_dir: "{{ playbook_dir }}/intended/tmp_cv_deploy"
+    test_id: "use-static-config-manifest-hybrid"
+    cv_common_pattern: "avd_cv-deploy_{{ test_id }}"
+
+  tasks:
+    - name: "Banner - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      ansible.builtin.debug:
+        msg:
+          - "{{ ('#' * (31 + test_id | length))[:100] }}"
+          - "### STARTING MOLECULE TEST {{ test_id[:69] | upper }} ###"
+          - "{{ ('#' * (31 + test_id | length))[:100] }}"
+
+    - name: "{{ (test_id | upper) + ' - ' + ('Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate') + ' molecule execution ID' }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      ansible.builtin.set_fact:
+        r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
+
+    - name: "Code block for hybrid deployment with manifest - {{ test_id | upper }}"
+      tags: ["{{ test_id }}"]
+      run_once: true
+      delegate_to: localhost
+
+      block:
+
+        - name: "(BLOCK) Banner - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_DEPLOY ROLE WITH HYBRID MANIFEST DEPLOYMENT FOR {{ test_id[:69] | upper }} ###"
+
+        - name: "(BLOCK) Provision CVP with hybrid manifest deployment - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          delegate_to: localhost
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+            cv_register_detailed_results: true
+            cv_submit_workspace_force: true
+            cv_run_change_control: true
+            cv_static_config_manifest:
+              configlets:
+                - name: "TEST-MANIFEST-ALIAS"
+                  file: "{{ playbook_dir }}/intended/configlets/test_manifest_alias.txt"
+                - name: "TEST-MANIFEST-ACCESS-LISTS"
+                  file: "{{ playbook_dir }}/intended/configlets/test_manifest_access_lists.txt"
+                # Device configlet for the manifest-opted device (avd-ci-leaf1)
+                - name: "AVD-avd-ci-leaf1"
+                  file: "{{ eos_config_dir }}/avd-ci-leaf1.cfg"
+              containers:
+                - name: "AVD-MANIFEST-ROOT"
+                  description: "Root container for AVD manifest deployment"
+                  tag_query: "dummy_name:dummy_val"
+                  sub_containers:
+                    - name: "AVD-MANIFEST-CHILD"
+                      description: "Child container for AVD manifest deployment"
+                      tag_query: "device:13C20F1EDCCED2D85F6DB2FB9E3AC5B6"
+                      configlets:
+                        - name: "TEST-MANIFEST-ACCESS-LISTS"
+                        - name: "AVD-avd-ci-leaf1"
+
+        - name: "(BLOCK) Check CVP returns - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              # workspace
+              - cv_deploy_results.workspace.name == cv_workspace_name
+              - cv_deploy_results.workspace.state == "submitted"
+              - cv_deploy_results.workspace.description == cv_workspace_description
+              # errors and warnings
+              - cv_deploy_results.errors == []
+              - cv_deploy_results.warnings | default([]) | length == 0
+              # tags - avd-ci-leaf1 (manifest-opted) should still have its tags deployed
+              - cv_deploy_results.deployed_device_tags != []
+              - cv_deploy_results.deployed_interface_tags != []
+              # Change control
+              - cv_deploy_results.change_control.name == cv_change_control_name
+              - cv_deploy_results.change_control.description == cv_change_control_description
+              - cv_deploy_results.change_control.requested_state == "completed"
+              - cv_deploy_results.change_control.state == "completed"
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+
+        - name: "(BLOCK) Verify manifest-opted device (avd-ci-leaf1) was NOT deployed to flat layout - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - "'AVD-avd-ci-leaf1' not in cv_deploy_results.deployed_configs | map(attribute='configlet_name') | list"
+
+        - name: "(BLOCK) Verify other devices were deployed to flat layout - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - "'AVD-avd-ci-leaf2' in cv_deploy_results.deployed_configs | map(attribute='configlet_name') | list"
+              - "'AVD-avd-ci-spine1' in cv_deploy_results.deployed_configs | map(attribute='configlet_name') | list"
+
+        - name: "(BLOCK) Verify manifest-opted device container was removed from AVD Configurations - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - cv_deploy_results.removed_configs | length > 0
+
+        - name: "(BLOCK) Verify manifest configlets were deployed (shared + device config) - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - cv_deploy_results.deployed_static_config_configlets is defined
+              - "'TEST-MANIFEST-ACCESS-LISTS' in cv_deploy_results.deployed_static_config_configlets | map(attribute='name') | list"
+              - "'TEST-MANIFEST-ALIAS' in cv_deploy_results.deployed_static_config_configlets | map(attribute='name') | list"
+              # The manifest-opted device's config is deployed as a manifest configlet
+              - "'AVD-avd-ci-leaf1' in cv_deploy_results.deployed_static_config_configlets | map(attribute='name') | list"
+
+        - name: "(BLOCK) Verify manifest containers were deployed - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - cv_deploy_results.deployed_static_config_containers is defined
+              - cv_deploy_results.deployed_static_config_containers | length == 2
+
+      always:
+
+        - name: "(ALWAYS) Display CVP detailed result - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            var: cv_deploy_results
+
+        - name: "(ALWAYS) Banner - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
+
+        - name: "(ALWAYS) Check status of the Workspace - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/workspace/v1/Workspace?key.workspaceId={{ cv_deploy_results.workspace.id }}
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: GET
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_workspace_status_result
+          until: cvp_workspace_status_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          when: cv_deploy_results.workspace.id is not none and cv_deploy_results.workspace.id | length > 0
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) Cleanup orphan workspace (if needed) - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "values": [
+                  {
+                    "key": {
+                      "workspaceId": "{{ cv_deploy_results.workspace.id }}"
+                    },
+                    "request": "REQUEST_ABANDON",
+                    "requestParams": {
+                      "requestId": "{{ r }}"
+                    }
+                  }
+                ]
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_abandon_workspace_result
+          until: cvp_abandon_workspace_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          when:
+            - cv_deploy_results.workspace.id is not none and cv_deploy_results.workspace.id | length > 0
+            - >
+              cvp_workspace_status_result.json.value.state | default("WORKSPACE_STATE_UNSPECIFIED") not in
+              ["WORKSPACE_STATE_SUBMITTED", "WORKSPACE_STATE_ABANDONED", "WORKSPACE_STATE_ROLLED_BACK"]
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) Cleanup - {{ test_id | upper }}"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          delegate_to: localhost
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
+            cv_register_detailed_results: true
+            cv_devices: "{{ ansible_play_hosts_all }}"
+            eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+            structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+            cv_submit_workspace_force: true
+            cv_run_change_control: true
+            cv_static_config_manifest:
+              containers:
+                - name: "AVD-MANIFEST-ROOT-CLEANUP-PLACEHOLDER"
+                  tag_query: "MANIFEST_PLACEHOLDER:MANIFEST_PLACEHOLDER"
