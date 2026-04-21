@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -9,7 +9,7 @@
 {%     if lacp.system_priority is arista.avd.defined %}
 lacp system-priority {{ lacp.system_priority }}
 {%     endif %}
-{%     if lacp.port_id.range.begin is arista.avd.defined and lacp.port_id.range.end is arista.avd.defined %}
+{%     if lacp.port_id.range is arista.avd.defined %}
 lacp port-id range {{ lacp.port_id.range.begin }} {{ lacp.port_id.range.end }}
 {%     endif %}
 {%     if lacp.rate_limit.default is arista.avd.defined(true) %}

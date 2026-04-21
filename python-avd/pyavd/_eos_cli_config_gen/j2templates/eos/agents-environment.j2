@@ -1,0 +1,17 @@
+{#
+ Copyright (c) 2025-2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - agents environment #}
+{% set env_agents = agents | arista.avd.default([]) | selectattr('environment_variables', 'arista.avd.defined') %}
+{% for agent in env_agents %}
+{%     if loop.first %}
+!
+{%     endif %}
+{%     set env_list = [] %}
+{%     for envvar in agent.environment_variables %}
+{%         do env_list.append(envvar.name ~ "=" ~ envvar.value) %}
+{%     endfor %}
+agent {{ agent.name }} environment {{ env_list | join(":") }}
+{% endfor %}

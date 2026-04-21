@@ -3,7 +3,7 @@
 title: Ansible Collection Role eos_designs
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -21,9 +21,9 @@ The **eos_designs** role:
   - Enabled by the [eos_designs_custom_templates](docs/role-configuration.md#custom-templates) data model.
 - Designed to be used with the [eos_cli_config_gen](../eos_cli_config_gen/README.md) role to generate a complete switch configuration and applied using a config replace strategy with either
   - [eos_config_deploy_eapi](../eos_config_deploy_eapi/README.md) role.
-  - [eos_config_deploy_cvp](../eos_config_deploy_cvp/README.md)  role.
+  - [cv_deploy](../cv_deploy/README.md)  role.
 - Designed to generate the intended configuration offline, without relying on switch current state information.
-- Facilitates the evaluation of the configuration post-deployment with [eos_validate_state](../eos_validate_state/README.md) role.
+- Facilitates the evaluation of the configuration post-deployment with the [anta_runner](../anta_runner/README.md) role.
 - Facilitates the evaluation of the configuration prior to deployment with tools like [Batfish](https://www.batfish.org/)
 
 ## Role Inputs and Outputs
@@ -35,15 +35,16 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 
 **Inputs:**
 
+- [AVD Design](./docs/data-models.md) inputs according to supported data models.
 - Desired variables are defined in: role defaults, group_vars, and host_vars variables.
 - If desired, the role can be extended to leverage data from dynamic sources such as an IPAM or CMDB.
 
-To understand the interaction between `eos_designs` input variables and `eos_cli_config_gen` input variables refer to the [Variables Precedence section](docs/how-to/custom-structured-configuration.md#variables-precedence)
+To understand the interaction between `eos_designs` input variables and `eos_cli_config_gen` input variables refer to the [Variables Precedence section](docs/how-to/custom-structured-configuration.md#precedence)
 
 **Outputs:**
 
 - A structured EOS configuration file in YAML format. This provides the following benefits:
-  - Leverage the structured data to create eos CLI configuration.
+  - Leverage the structured data to create EOS CLI configuration.
   - Leverage the structured data to create end-user documentation.
   - Leverage the structured data for pre and post-fabric validation.
 - Fabric Documentation in Markdown format.
@@ -51,18 +52,18 @@ To understand the interaction between `eos_designs` input variables and `eos_cli
 
 **Tasks:**
 
-1. Set AVD facts.
-2. Generate YAML file with host variables (Optional for debugging/development with tag -> debug).
-3. Set device configuration facts.
-4. Write structured device configuration to YAML file.
-5. Include device structured configuration that was previously generated.
+1. Template and validate input variables according to the AVD Design schema.
+2. Generate AVD facts.
+3. Generate the structured configuration for each device.
+4. Write the structured configurations to files.
+5. Optionally return the structured configurations as Ansible facts.
 6. Generate fabric documentation in Markdown format.
 7. Generate fabric point-to-point links summary in CSV format.
 8. Generate fabric physical topology summary in CSV format.
 
 ## Reference Designs
 
-The following reference design types are included in the roles default variables:
+The following reference design types are included in the role's default variables:
 
 - L3LS EVPN: Layer 3 Leaf Spine with VXLAN EVPN
 - L2LS: Layer 2 Leaf Spine
@@ -152,7 +153,7 @@ Requirements are located in the [collection installation guide](../../../../../d
 
 ## Input Variables
 
-The input variables are documented in the [Input Variables](docs/input-variables.md) section.
+The input variables are documented in the [Input Variables](docs/data-models.md) section.
 
 Input variables are grouped by configuration elements and are typically stored in different group_vars files.
 

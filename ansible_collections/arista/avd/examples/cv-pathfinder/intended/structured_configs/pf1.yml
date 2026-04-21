@@ -3,11 +3,6 @@ aaa_authorization:
     default: local
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   field_sets:
     l4_ports:
@@ -89,9 +84,10 @@ ethernet_interfaces:
   description: ACME-MPLS-INC_mpls-pf1_mpls-cloud_Ethernet1
   shutdown: false
   ip_address: 172.18.100.2/24
-  peer: mpls-cloud
-  peer_interface: Ethernet1
-  peer_type: l3_interface
+  metadata:
+    peer: mpls-cloud
+    peer_interface: Ethernet1
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
@@ -99,9 +95,10 @@ ethernet_interfaces:
   shutdown: false
   ip_address: 100.64.100.2/24
   access_group_in: ACL-PF-INTERNET-IN_Ethernet2
-  peer: inet-cloud
-  peer_interface: Ethernet1
-  peer_type: l3_interface
+  metadata:
+    peer: inet-cloud
+    peer_interface: Ethernet1
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -113,8 +110,8 @@ flow_tracking:
         on_interval: 5000
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
     shutdown: false
 hostname: pf1
@@ -158,9 +155,11 @@ ip_extcommunity_lists:
   entries:
   - type: permit
     extcommunities: soo 192.168.255.1:0
-ip_name_servers:
-- ip_address: 192.168.17.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.17.1
 ip_routing: true
 ip_security:
   ike_policies:
@@ -182,7 +181,8 @@ ip_security:
       time: 50
       action: clear
     mode: transport
-is_deployed: true
+kernel:
+  software_forwarding_ecmp: true
 local_users:
 - name: admin
   privilege: 15
@@ -227,8 +227,11 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  is_deployed: true
   platform: CloudEOS
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
   cv_tags:
     device_tags:
     - name: Role
@@ -429,7 +432,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 platform:
   sfe:
     data_plane_cpu_allocation_max: 1
@@ -542,7 +545,8 @@ router_bgp:
     remote_as: '65000'
   peer_groups:
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
@@ -556,7 +560,8 @@ router_bgp:
     maximum_routes: 0
     ttl_maximum_hops: 1
   - name: WAN-RR-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     route_reflector_client: true
@@ -572,7 +577,8 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.42.2
     peer_group: WAN-RR-OVERLAY-PEERS
-    peer: pf2
+    metadata:
+      peer: pf2
     description: pf2_Dps1
   redistribute:
     connected:

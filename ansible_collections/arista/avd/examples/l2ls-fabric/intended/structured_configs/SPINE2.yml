@@ -17,77 +17,85 @@ ethernet_interfaces:
   channel_group:
     id: 47
     mode: active
-  peer: SPINE1
-  peer_interface: Ethernet47
-  peer_type: mlag_peer
+  metadata:
+    peer: SPINE1
+    peer_interface: Ethernet47
+    peer_type: mlag_peer
 - name: Ethernet48
   description: MLAG_SPINE1_Ethernet48
   shutdown: false
   channel_group:
     id: 47
     mode: active
-  peer: SPINE1
-  peer_interface: Ethernet48
-  peer_type: mlag_peer
+  metadata:
+    peer: SPINE1
+    peer_interface: Ethernet48
+    peer_type: mlag_peer
 - name: Ethernet1
   description: L2_LEAF1_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: LEAF1
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF1
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet2
   description: L2_LEAF2_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: LEAF2
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF2
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet3
   description: L2_LEAF3_Ethernet2
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: LEAF3
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF3
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet4
   description: L2_LEAF4_Ethernet2
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  peer: LEAF4
-  peer_interface: Ethernet2
-  peer_type: l2leaf
+  metadata:
+    peer: LEAF4
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet5
   description: FIREWALL_FIREWALL_Eth2
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  peer: FIREWALL
-  peer_interface: Eth2
-  peer_type: firewall
-  port_profile: PP-FIREWALL
+  metadata:
+    peer: FIREWALL
+    peer_interface: Eth2
+    peer_type: firewall
+    peer_key: firewalls
+    port_profile: PP-FIREWALL
 hostname: SPINE2
 ip_domain_lookup:
   source_interfaces:
-  - name: Management0
+  - name: Management1
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 8.8.4.4
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
-is_deployed: true
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 8.8.4.4
+    - ip_address: 8.8.8.8
 local_users:
 - name: admin
   privilege: 15
@@ -102,7 +110,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 management_interfaces:
-- name: Management0
+- name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
@@ -110,8 +118,11 @@ management_interfaces:
   type: oob
   gateway: 172.16.100.1
 metadata:
-  platform: cEOS-LAB
-  fabric_name: DC1_FABRIC
+  is_deployed: true
+  platform: cEOSLab
+  fabric_name: DC1
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: SPINES
   local_interface: Vlan4094
@@ -121,14 +132,13 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 ntp:
   local_interface:
-    name: Management0
+    name: Management1
     vrf: MGMT
   servers:
   - name: time.google.com
     preferred: true
-    vrf: MGMT
   - name: pool.ntp.org
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel47
   description: MLAG_SPINE1_Port-Channel47
@@ -183,7 +193,7 @@ vlan_interfaces:
   description: MLAG
   shutdown: false
   ip_address: 192.168.0.1/31
-  mtu: 1500
+  mtu: 9214
   no_autostate: true
 vlan_internal_order:
   allocation: ascending
@@ -195,16 +205,24 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 10
   name: BLUE-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenants:
+    - MY_FABRIC
 - id: 20
   name: GREEN-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenants:
+    - MY_FABRIC
 - id: 30
   name: ORANGE-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenants:
+    - MY_FABRIC
 vrfs:
 - name: MGMT
   ip_routing: false

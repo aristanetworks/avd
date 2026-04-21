@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -14,22 +14,18 @@
 | --- | ------- | -------- | -------- |
 {%     set _vrf_default = namespace(enable = management_ssh.enable | arista.avd.default) %}
 {%     if management_ssh.vrfs is arista.avd.defined %}
-{%         for vrf in management_ssh.vrfs | arista.avd.natural_sort %}
+{%         for vrf in management_ssh.vrfs | arista.avd.natural_sort(sort_key="name") %}
 {%             if vrf.name == "default" %}
 {%                 set _vrf_default.enable = vrf.enable | arista.avd.default(_vrf_default.enable) %}
 {%             else %}
 {%                 if vrf.enable is arista.avd.defined and _vrf_default.enable is not arista.avd.defined %}
 {%                     set _vrf_default.enable = false %}
 {%                 endif %}
-{%                 set _ipv4_acl = management_ssh.access_groups | arista.avd.default([]) | selectattr("vrf", "arista.avd.defined") | list | last %}
-{%                 set _ipv6_acl = management_ssh.ipv6_access_groups | arista.avd.default([]) | selectattr("vrf", "arista.avd.defined") | list | last %}
-| {{ vrf.name }} | {{ vrf.enable | arista.avd.default("-") }} | {{ vrf.ip_access_group_in | arista.avd.default(_ipv4_acl.name, "-") }} | {{ vrf.ipv6_access_group_in | arista.avd.default(_ipv6_acl.name, "-") }} |
+| {{ vrf.name }} | {{ vrf.enable | arista.avd.default("-") }} | {{ vrf.ip_access_group_in | arista.avd.default("-") }} | {{ vrf.ipv6_access_group_in | arista.avd.default("-") }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     set _ipv4_acl = management_ssh.access_groups | arista.avd.default([]) | rejectattr("vrf", "arista.avd.defined") | list | last %}
-{%     set _ipv6_acl = management_ssh.ipv6_access_groups | arista.avd.default([]) | rejectattr("vrf", "arista.avd.defined") | list | last %}
-| default | {{ _vrf_default.enable | arista.avd.default(true) }} | {{ management_ssh.ip_access_group_in | arista.avd.default(_ipv4_acl.name, "-") }} | {{ management_ssh.ipv6_access_group_in | arista.avd.default(_ipv6_acl.name, "-") }} |
+| default | {{ _vrf_default.enable | arista.avd.default(true) }} | {{ management_ssh.ip_access_group_in | arista.avd.default("-") }} | {{ management_ssh.ipv6_access_group_in | arista.avd.default("-") }} |
 {%     if management_ssh.authentication is arista.avd.defined %}
 
 #### Authentication Settings

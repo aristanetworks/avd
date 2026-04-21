@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -116,16 +116,16 @@ class FabricDocumentationFacts(AvdFacts):
         topology = Topology()
         for hostname, structured_config in self.structured_configs.items():
             for ethernet_interface in get(structured_config, "ethernet_interfaces", default=[]):
-                if (peer_type := get(ethernet_interface, "peer_type")) not in self._node_types and peer_type != "mlag_peer":
+                if (peer_type := get(ethernet_interface, "metadata.peer_type")) not in self._node_types and peer_type != "mlag_peer":
                     continue
 
-                peer = get(ethernet_interface, "peer", required=True)
+                peer = get(ethernet_interface, "metadata.peer", required=True)
                 if peer_type == "mlag_peer":
                     peer_type = self.avd_facts[peer].type
                     mlag_peer = True
                 else:
                     mlag_peer = False
-                if peer_interface := get(ethernet_interface, "peer_interface"):
+                if peer_interface := get(ethernet_interface, "metadata.peer_interface"):
                     peer_ethernet_interface = get_item(
                         get(self.structured_configs, f"{peer}..ethernet_interfaces", separator="..", default=[]), "name", peer_interface, default={}
                     )
@@ -156,28 +156,35 @@ class FabricDocumentationFacts(AvdFacts):
     @cached_property
     def topology_links(self) -> list[dict]:
         """List of topology links extracted from _topology."""
+        # TODO: with the changed I need to sort twice...
         return natural_sort(
-            [
-                {
-                    "node": hostname,
-                    "type": data[0],
-                    "node_interface": data[1],
-                    "node_ip_address": data[2],
-                    "routed": data[4],
-                    "peer": peer_name,
-                    "peer_type": "mlag_peer" if peer_data[3] else peer_data[0],
-                    "peer_interface": peer_data[1],
-                    "peer_ip_address": peer_data[2],
-                }
-                for hostname, edges in self._topology.get_edges_by_node_unidirectional_sorted().items()
-                if edges
-                for edge in edges
-                for node_name, data in edge.node_data
-                if node_name == hostname
-                # Below is just a way to set the peer variables for easy reuse.
-                for peer_name, peer_data in edge.node_data
-                if peer_name != hostname
-            ]
+            natural_sort(
+                [
+                    {
+                        "node": hostname,
+                        "type": data[0],
+                        "serial_number": self.avd_facts[hostname].serial_number,
+                        "node_interface": data[1],
+                        "node_ip_address": data[2],
+                        "routed": data[4],
+                        "peer": peer_name,
+                        "peer_type": "mlag_peer" if peer_data[3] else peer_data[0],
+                        "peer_serial_number": self.avd_facts[peer_name].serial_number if peer_name else None,
+                        "peer_interface": peer_data[1],
+                        "peer_ip_address": peer_data[2],
+                    }
+                    for hostname, edges in self._topology.get_edges_by_node_unidirectional_sorted().items()
+                    if edges
+                    for edge in edges
+                    for node_name, data in edge.node_data
+                    if node_name == hostname
+                    # Below is just a way to set the peer variables for easy reuse.
+                    for peer_name, peer_data in edge.node_data
+                    if peer_name != hostname
+                ],
+                sort_key="node_interface",
+            ),
+            sort_key="node",
         )
 
     # TODO: - Add IPv6 to fabric docs.
@@ -266,33 +273,43 @@ class FabricDocumentationFacts(AvdFacts):
         all_connected_endpoints = {}
         for hostname, structured_config in self.structured_configs.items():
             connected_endpoints_keys = self.avd_facts[hostname].connected_endpoints_keys
-            connected_endpoints_by_type = {item.type: item for item in connected_endpoints_keys}
+            connected_endpoints_by_key = {item.key: item for item in connected_endpoints_keys}
             port_channel_interfaces = get(structured_config, "port_channel_interfaces", default=[])
             for ethernet_interface in get(structured_config, "ethernet_interfaces", default=[]):
-                if (peer_type := get(ethernet_interface, "peer_type")) not in connected_endpoints_by_type:
+                if (peer_key := get(ethernet_interface, "metadata.peer_key")) not in connected_endpoints_by_key:
                     continue
 
                 if (channel_group := get(ethernet_interface, "channel_group.id")) is not None:
                     # Port channel member
                     port_channel_interface = get_item(port_channel_interfaces, "name", f"Port-Channel{channel_group}")
+                    description = get(port_channel_interface, "description", default="-")
+                    shutdown = get(port_channel_interface, "shutdown", default="-")
+                    mode = get(port_channel_interface, "switchport.mode", default="-")
+                    access_vlan = get(port_channel_interface, "switchport.access_vlan", default="-")
+                    trunk_allowed_vlan = get(port_channel_interface, "switchport.trunk.allowed_vlan", default="-")
+                    fabric_port = f"{port_channel_interface['name']}({ethernet_interface['name']})"
                 else:
                     port_channel_interface = {}
+                    description = get(ethernet_interface, "description", default="-")
+                    shutdown = get(ethernet_interface, "shutdown", default="-")
+                    mode = get(ethernet_interface, "switchport.mode", default="-")
+                    access_vlan = get(ethernet_interface, "switchport.access_vlan", default="-")
+                    trunk_allowed_vlan = get(ethernet_interface, "switchport.trunk.allowed_vlan", default="-")
+                    fabric_port = ethernet_interface["name"]
 
-                all_connected_endpoints.setdefault(connected_endpoints_by_type[peer_type].key, []).append(
+                all_connected_endpoints.setdefault(peer_key, []).append(
                     {
-                        "peer": get(ethernet_interface, "peer", default="-"),
-                        "peer_type": peer_type,
-                        "peer_interface": get(ethernet_interface, "peer_interface", default="-"),
+                        "peer": get(ethernet_interface, "metadata.peer", default="-"),
+                        "peer_type": get(ethernet_interface, "metadata.peer_type"),
+                        "peer_interface": get(ethernet_interface, "metadata.peer_interface", default="-"),
                         "fabric_switch": hostname,
-                        "fabric_port": ethernet_interface["name"],
-                        "description": get(ethernet_interface, "description", default="-"),
-                        "shutdown": default(get(ethernet_interface, "shutdown"), get(port_channel_interface, "shutdown"), "-"),
-                        "mode": default(get(ethernet_interface, "switchport.mode"), get(port_channel_interface, "switchport.mode"), "-"),
-                        "access_vlan": default(get(ethernet_interface, "switchport.access_vlan"), get(port_channel_interface, "switchport.access_vlan"), "-"),
-                        "trunk_allowed_vlan": default(
-                            get(ethernet_interface, "switchport.trunk.allowed_vlan"), get(port_channel_interface, "switchport.trunk.allowed_vlan"), "-"
-                        ),
-                        "profile": default(get(ethernet_interface, "port_profile"), "-"),
+                        "fabric_port": fabric_port,
+                        "description": description,
+                        "shutdown": shutdown,
+                        "mode": mode,
+                        "access_vlan": access_vlan,
+                        "trunk_allowed_vlan": trunk_allowed_vlan,
+                        "profile": default(get(ethernet_interface, "metadata.port_profile"), "-"),
                     }
                 )
 
@@ -353,10 +370,12 @@ class FabricDocumentationFacts(AvdFacts):
             (
                 self.avd_facts[hostname].type,
                 hostname,
+                self.avd_facts[hostname].serial_number,
                 ethernet_interface["name"],
-                get(ethernet_interface, "peer_type", default=""),
-                get(ethernet_interface, "peer", default=""),
-                get(ethernet_interface, "peer_interface", default=""),
+                get(ethernet_interface, "metadata.peer_type", default=""),
+                (peer_name := get(ethernet_interface, "metadata.peer", default="")),
+                self.avd_facts[peer_name].serial_number if get(self.avd_facts, peer_name) else None,
+                get(ethernet_interface, "metadata.peer_interface", default=""),
                 not get(ethernet_interface, "shutdown", default=False),
             )
             for hostname in natural_sort(self.structured_configs)

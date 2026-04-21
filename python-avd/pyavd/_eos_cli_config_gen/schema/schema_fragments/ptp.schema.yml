@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -58,6 +58,16 @@ keys:
         type: int
         min: 0
         max: 255
+        convert_types:
+        - str
+      hold_ptp_time:
+        type: int
+        min: 0
+        max: 172000
+        description: |-
+          The length of time that PTP will remain in hold-down on the internal oscillator if the connection to the GM is lost.
+          If a new GM is not elected before the expiry of the hold-down time, the clock will revert to free-running.
+          Some platforms support larger maximum values, however 172000 seconds was the max for 7150 series, and was widely used.
         convert_types:
         - str
       message_type:
@@ -166,3 +176,19 @@ keys:
                     max: 255
                     convert_types:
                     - str
+      free_running:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: |-
+              Enables PTP configuration in free-running mode.
+              When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+              When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+          source_clock_hardware:
+            type: bool
+            description: When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+      forward_v1:
+        type: bool
+        description: Forward dataplane PTP V1 packets.

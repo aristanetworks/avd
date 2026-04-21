@@ -1,0 +1,29 @@
+---
+ansible:
+  executor:
+    backend: ansible-playbook
+    args:
+      ansible_playbook:
+        - --inventory=inventory/
+  env:
+    ANSIBLE_FORCE_COLOR: true
+  cfg:
+    defaults:
+      gathering: explicit
+scenario:
+  converge_sequence:
+    - syntax
+    - converge
+  test_sequence:
+    - syntax
+    - create
+    - converge
+    - verify
+    - cleanup
+  cleanup_sequence:
+    - destroy
+dependency:
+  name: galaxy
+  enabled: false
+verifier:
+  name: ansible

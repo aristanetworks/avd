@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -39,7 +39,7 @@
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
 | ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- | ---------- |
-{%             for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort('name') %}
+{%             for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort(sort_key='name') %}
 {%                 set on_inactive_timeout = tracker.record_export.on_inactive_timeout | arista.avd.default("-") %}
 {%                 set on_interval = tracker.record_export.on_interval | arista.avd.default("-") %}
 {%                 set mpls = tracker.record_export.mpls | arista.avd.default("-") %}
@@ -61,6 +61,9 @@
 {%                         do applied_on.append(port_channel_interface.name) %}
 {%                     endif %}
 {%                 endfor %}
+{%                 if applied_on | length == 0 %}
+{%                     set applied_on = ["-"] %}
+{%                 endif %}
 | {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} | {{ table_size }} |
 {%             endfor %}
 
@@ -68,12 +71,12 @@
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-{%             for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort('name') %}
-{%                 for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
-{%                     set host = exporter.host | arista.avd.default("-") %}
-{%                     set port = exporter.port | arista.avd.default("-") %}
+{%             for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort(sort_key='name') %}
+{%                 for exporter in tracker.exporters | arista.avd.natural_sort(sort_key='name') %}
+{%                     set host = exporter.collectors | arista.avd.natural_sort(sort_key="host") | map(attribute='host') | list | join('<br>') %}
+{%                     set port = exporter.collectors | arista.avd.natural_sort(sort_key="host") | map(attribute='port') | map('arista.avd.default', '-') | list | join('<br>') %}
 {%                     set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
-| {{ tracker.name }} | {{ exporter.name }} | {{ host }} | {{ port }} | {{ local_interface }} |
+| {{ tracker.name }} | {{ exporter.name }} | {{ host | arista.avd.default("-") }} | {{ port | arista.avd.default("-") }} | {{ local_interface }} |
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
@@ -91,7 +94,7 @@ Software export of IPFIX data records enabled.
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
 | ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
-{%             for tracker in flow_tracking.hardware.trackers | arista.avd.natural_sort('name') %}
+{%             for tracker in flow_tracking.hardware.trackers | arista.avd.natural_sort(sort_key='name') %}
 {%                 set on_inactive_timeout = tracker.record_export.on_inactive_timeout | arista.avd.default("-") %}
 {%                 set on_interval = tracker.record_export.on_interval | arista.avd.default("-") %}
 {%                 set count_exporter = tracker.exporters | arista.avd.default([]) | length %}
@@ -111,6 +114,9 @@ Software export of IPFIX data records enabled.
 {%                         do applied_on.append(port_channel_interface.name) %}
 {%                     endif %}
 {%                 endfor %}
+{%                 if applied_on | length == 0 %}
+{%                     set applied_on = ["-"] %}
+{%                 endif %}
 | {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} |
 {%             endfor %}
 
@@ -118,12 +124,14 @@ Software export of IPFIX data records enabled.
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-{%             for tracker in flow_tracking.hardware.trackers | arista.avd.natural_sort('name') %}
-{%                 for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
-{%                     set host = exporter.host | arista.avd.default("-") %}
-{%                     set port = exporter.port | arista.avd.default("-") %}
+{%             for tracker in flow_tracking.hardware.trackers | arista.avd.natural_sort(sort_key='name') %}
+{%                 for exporter in tracker.exporters | arista.avd.natural_sort(sort_key='name') %}
+{%                     if exporter.collectors is arista.avd.defined %}
+{%                         set host = exporter.collectors | arista.avd.natural_sort(sort_key="host") | map(attribute='host') | list | join('<br>') %}
+{%                         set port = exporter.collectors | arista.avd.natural_sort(sort_key="host") | map(attribute='port') | map('arista.avd.default', '-') | list | join('<br>') %}
+{%                     endif %}
 {%                     set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
-| {{ tracker.name }} | {{ exporter.name }} | {{ host }} | {{ port }} | {{ local_interface }} |
+| {{ tracker.name }} | {{ exporter.name }} | {{ host | arista.avd.default("-") }} | {{ port | arista.avd.default("-") }} | {{ local_interface }} |
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
@@ -152,7 +160,7 @@ Software export of IPFIX data records enabled.
 {# Note: Add the Applied On Interface column similar to sample and hardware once support is available under ethernet_interface/port_channel_interface/dps_interfaces #}
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters |
 | ------------ | --------------------------------- | ------------------------- | ------------------- |
-{%             for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
+{%             for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort(sort_key='name') %}
 {%                 set on_inactive_timeout = tracker.record_export.on_inactive_timeout | arista.avd.default("-") %}
 {%                 set on_interval = tracker.record_export.on_interval | arista.avd.default("-") %}
 {%                 set ns_count_exporter.count_exporter = tracker.exporters | arista.avd.default([]) | length %}
@@ -162,12 +170,12 @@ Software export of IPFIX data records enabled.
 
 ##### Exporters Summary
 
-| Tracker Name | Exporter Name |  Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port | DSCP Value | Format |
-| ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- | ---------- | ------ |
-{%                 for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
-{%                     for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
-{%                         set current_exporter_collector_hosts = exporter.collectors | arista.avd.natural_sort | map(attribute='host') | list %}
-{%                         set current_exporter_collector_ports = exporter.collectors | arista.avd.natural_sort | map(attribute='port') | map('arista.avd.default', '-') | list %}
+| Tracker Name | Exporter Name | Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port | DSCP Value | Format |
+| ------------ | ------------- | --------------- | ----------------- | ----------------------- | -------------- | ---------- | ------ |
+{%                 for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort(sort_key='name') %}
+{%                     for exporter in tracker.exporters | arista.avd.natural_sort(sort_key='name') %}
+{%                         set current_exporter_collector_hosts = exporter.collectors | arista.avd.natural_sort(sort_key="host") | map(attribute='host') | list %}
+{%                         set current_exporter_collector_ports = exporter.collectors | arista.avd.natural_sort(sort_key="host") | map(attribute='port') | map('arista.avd.default', '-') | list %}
 | {{ tracker.name }} | {{ exporter.name }} | {{ exporter.local_interface | arista.avd.default("-") }} | {{ exporter.template_interval | arista.avd.default("-") }} | {{ current_exporter_collector_hosts | join('<br>') }} | {{ current_exporter_collector_ports | join('<br>') }} | {{ exporter.dscp | arista.avd.default("-") }} | {{ exporter.format | arista.avd.default("-") }} |
 {%                     endfor %}
 {%                 endfor %}

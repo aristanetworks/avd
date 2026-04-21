@@ -1,0 +1,101 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_L2ONLY-SPINE1_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: L2ONLY-SPINE1
+    peer_interface: Ethernet1
+    peer_type: l2spine
+- name: Ethernet2
+  description: L2_L2ONLY-SPINE2_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: L2ONLY-SPINE2
+    peer_interface: Ethernet1
+    peer_type: l2spine
+- name: Ethernet10
+  description: Endpoint
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 100
+- name: Ethernet11
+  description: Endpoint
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 100
+hostname: L2ONLY-LEAF1
+ip_igmp_snooping:
+  globally_enabled: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: default
+metadata:
+  is_deployed: true
+  pod_name: L2LS_L2ONLY
+  fabric_name: L2LS
+port_channel_interfaces:
+- name: Port-Channel1
+  description: L2_L2ONLY_SPINES_Port-Channel1
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100,4092
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 172.31.0.1
+- prefix: 0.0.0.0/0
+  next_hop: 172.23.254.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  ip_address: 172.23.254.4/24
+  mtu: 1500
+  metadata:
+    type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 100
+  name: L2VLAN_100
+  metadata:
+    tenants:
+    - L2LS_L2ONLY
+- id: 4092
+  name: INBAND_MGMT
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -19,6 +19,7 @@
     | [<samp>&nbsp;&nbsp;priority2</samp>](## "ptp.priority2") | Integer |  |  | Min: 0<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;ttl</samp>](## "ptp.ttl") | Integer |  |  | Min: 1<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;domain</samp>](## "ptp.domain") | Integer |  |  | Min: 0<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;hold_ptp_time</samp>](## "ptp.hold_ptp_time") | Integer |  |  | Min: 0<br>Max: 172000 | The length of time that PTP will remain in hold-down on the internal oscillator if the connection to the GM is lost.<br>If a new GM is not elected before the expiry of the hold-down time, the clock will revert to free-running.<br>Some platforms support larger maximum values, however 172000 seconds was the max for 7150 series, and was widely used. |
     | [<samp>&nbsp;&nbsp;message_type</samp>](## "ptp.message_type") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;general</samp>](## "ptp.message_type.general") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "ptp.message_type.general.dscp") | Integer |  |  |  |  |
@@ -43,6 +44,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay_resp</samp>](## "ptp.monitor.missing_message.sequence_ids.delay_resp") | Integer |  |  | Min: 2<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;follow_up</samp>](## "ptp.monitor.missing_message.sequence_ids.follow_up") | Integer |  |  | Min: 2<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sync</samp>](## "ptp.monitor.missing_message.sequence_ids.sync") | Integer |  |  | Min: 2<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;free_running</samp>](## "ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
+    | [<samp>&nbsp;&nbsp;forward_v1</samp>](## "ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
 
 === "YAML"
 
@@ -63,6 +68,11 @@
       priority2: <int; 0-255>
       ttl: <int; 1-255>
       domain: <int; 0-255>
+
+      # The length of time that PTP will remain in hold-down on the internal oscillator if the connection to the GM is lost.
+      # If a new GM is not elected before the expiry of the hold-down time, the clock will revert to free-running.
+      # Some platforms support larger maximum values, however 172000 seconds was the max for 7150 series, and was widely used.
+      hold_ptp_time: <int; 0-172000>
       message_type:
         general:
           dscp: <int>
@@ -87,4 +97,16 @@
             delay_resp: <int; 2-255>
             follow_up: <int; 2-255>
             sync: <int; 2-255>
+      free_running:
+
+        # Enables PTP configuration in free-running mode.
+        # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+        # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+        enabled: <bool; required>
+
+        # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+        source_clock_hardware: <bool>
+
+      # Forward dataplane PTP V1 packets.
+      forward_v1: <bool>
     ```

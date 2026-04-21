@@ -1,0 +1,4 @@
+---
+ptp:
+  free_running:
+    enabled: false

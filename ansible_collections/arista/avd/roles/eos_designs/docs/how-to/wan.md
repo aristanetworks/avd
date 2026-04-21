@@ -1,9 +1,9 @@
 ---
 # This title is used for search results
-title: Ansible Collection Role eos_designs - WAN
+title: WAN
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -41,23 +41,16 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 !!! info "CV Pathfinder & CloudVision"
 
     When deploying CV Pathfinder with CloudVision, it is necessary to leverage
-    the `arista.avd.cv_deploy` role and not the `arista.avd.eos_config_deploy_cvp`
-    role, as CloudVision relies on metadata sent by AVD for visualization and to
-    generate and deliver certificates for STUN to devices.
+    the `arista.avd.cv_deploy` role, as CloudVision relies on metadata sent by
+    AVD for visualization and to generate and deliver certificates for STUN to devices.
 
 ### Features in preview
 
-- WAN HA is in preview
-  - While HA is in preview, it is required to either enable or disable HA if exactly two WAN routers are in one node group.
-  - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default or the interfaces defined under `wan_ha.ha_interfaces` node settings. This key can be used either to select only some `uplink_interfaces` available for establishing the HA tunnel OR to select one interface that is not an `uplink_interfaces`, for instance for direct HA connectivity.
-  - HA for AutoVPN is not supported
 - Internet-exit for Zscaler is in preview
-- `eos_validate_state` is being enriched to support new tests for WAN designs.
-- EVPN WAN gateway is in preview as it requires the use of `wan_use_evpn_node_settings_for_lan`. It is supported only on sites with single WAN Router.
 
 ### Known limitations
 
-- Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `<region_name>-ZONE` with ID `1`. Hence, in `eos_designs`, the `transit` node type is always configured as `transit region`.
+- Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `<region_name>-ZONE` with ID `1`. Hence, with Arista AVD the `transit` node type is always configured as `transit region`.
 - All Pathfinders must be able to create a full mesh
 - No IPv6 support
 - Path-group ID is currently required under `wan_path_groups` until an algorithm is implemented to auto generate IDs.
@@ -67,11 +60,18 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - For the default VRF, routes received over BGP peering configured under tenants in `network_services` will not be automatically advertised to the WAN (they will be advertised toward the LAN if eBGP is used). To advertise them towards the WAN, they need to be injected in EVPN and this can be achieved by adding a route-map to mark them with the site SOO.
 - Internet exit policies are not supported under WAN port-channel interfaces.
 - EVPN WAN gateway is supported only on sites with single WAN Router.
+- WAN HA must be explicitly enabled.
+- WAN HA for AutoVPN is not supported
+- For WAN HA, the considered interfaces are only the `uplink_interfaces` in VRF default or the interfaces defined under `wan_ha.ha_interfaces` node settings. This key can be used either to select only some `uplink_interfaces` available for establishing the HA tunnel OR to select one interface that is not an `uplink_interfaces`, for instance for direct HA connectivity.
 
 ### Future work
 
+!!! info
+
+    This section describes features which have been envisionned. No active work
+    is done in AVD to implement these until a request is made.
+
 - New LAN scenarios (L2 port-channel, HA for L2 `lan` using VRRP..)
-- HA for AutoVPN
 - WAN Internet exit for other type than Zscaler
 - `import path-group` functionality
 - Indirect connectivity to pathfinder
@@ -79,14 +79,8 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - Auto generation of Path-group IDs and other IDs.
 - Proper OSPF-BGP redistribution in VRF default.
 - Support for OSPF subinterfaces for `p2p-vrfs`.
-- Increase test coverage in `eos_validate_state` support for AutoVPN and CV-Pathfinder
-- Path selection outlier detection feature
-
-!!! info
-
-    `eos_cli_config_gen` schema should support all of the required keys to configure a WAN network, whether AutoVPN or Pathfinder except for the most recent features.
-    This means that any missing `eos_designs` feature should be supported using `custom_structured_configuration` functionality.
-    If you find any missing functionality, please open an issue on Github.
+- Increase test coverage in `anta_runner` support for AutoVPN and CV-Pathfinder
+- WAN HA for AutoVPN
 
 ## Getting started with WAN
 
@@ -103,17 +97,17 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 
 #### Summary
 
-The following table list the `eos_designs` top level keys used for WAN and how they should be set:
+The following table list the AVD Design top level keys used for WAN and how they should be set:
 
 | Key | Must be the same for all the WAN routers | Comment |
 | --- | ---------------------------------------- | ------- |
-| `wan_mode` | ✅ | Two possible modes, `autovpn` and `cv-pathfinder` (default). |
+| `wan_mode` | ✅ | Two possible modes, `legacy-autovpn` and `cv-pathfinder` (default). |
 | `wan_encapsulation` | ✅ | Two possible encapsulations, `vxlan` and `path-selection` (default). |
 | `wan_virtual_topologies` | ✅ | to define the Policies and the VRF to policy mappings. |
 | `wan_path_groups` | ✅ | to define the list of path-groups in the network. |
 | `wan_carriers` | ✅ | to define the list of carriers in the network, each carrier is assigned to a path-group. |
 | `wan_ipsec_profiles` | ✅ | to define the shared key for the Control Plane and Data Plane IPSec profiles. |
-| `cv_pathfinder_regions` | ✅ | to define the Region/Zone/Site hierarchy, not required for AutoVPN. |
+| `cv_pathfinder_regions` | ✅ | to define the Region/Zone/Site hierarchy, not required for Legacy AutoVPN. |
 | `tenants` | ✅ | the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF information. |
 | `wan_stun_dtls_disable` | ✅ | disable dTLS for STUN for instance for lab. (**NOT** recommended in production). |
 | `application_classification` | ✅ | to define the specific traffic classification required for the WAN if any. |
@@ -136,14 +130,14 @@ Additionally, following keys must be set for the WAN route servers for the conne
 
 AVD supports two design types for WAN:
 
-- AutoVPN
+- Legacy AutoVPN
 - CV Pathfinder
 
 By default the mode is set to `cv-pathfinder` and can be changed using:
 
 ```yaml
 ---
-wan_mode: autovpn | cv-pathfinder # default: cv-pathfinder
+wan_mode: legacy-autovpn | cv-pathfinder # default: cv-pathfinder
 ```
 
 #### WAN encapsulation
@@ -743,7 +737,7 @@ wan_router:
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site42
       wan_ha:
-      enabled: true
+        enabled: true
       nodes:
         - name: node1
           id: 1
@@ -824,11 +818,7 @@ The following diagram shows the additional route-maps configured to support eBGP
   <img src="../../../../../../../docs/_media/wan_ebgp_lan_single_router.png" alt="WAN eBGP LAN Single Router"/>
 </div>
 
-##### HA (PREVIEW)
-
-!!! warning "PREVIEW: Changes ahead"
-
-    This configuration currently in PREVIEW **will** change in future version of AVD.
+##### HA
 
 for eBGP LAN routing protocol the following is done to enable HA:
 
@@ -849,7 +839,7 @@ This is described in the following diagram:
   <img src="../../../../../../../docs/_media/wan_ebgp_lan_ha.png" alt="WAN eBGP LAN with HA"/>
 </div>
 
-##### HA with Direct Link (PREVIEW)
+##### HA with Direct Link
 
 In the situation where the LAN is EBGP but HA is configured over a direct link, there is no peering with the HA peer required via the LAN and the configuration is simplified as follow:
 
@@ -872,7 +862,6 @@ In the situation where the LAN is EBGP but HA is configured over a direct link, 
 
 - the LAN routes are received via EVPN
 - Enabling the gateway requires to configure:
-  - `wan_use_evpn_node_settings_for_lan: true`
   - `overlay_routing_protocol: ebgp` for the WAN router
   - `evpn_role: client` for the WAN router
   - an EVPN route server should be defined, e.g. using `evpn_route_servers` settings.
@@ -1093,19 +1082,20 @@ wan_virtual_topologies:
 
 ### WAN Validation
 
-`eos_validate_state` is being enriched to support new tests for WAN designs. The tests listed below are validating WAN designs.
+The `anta_runner` role validates WAN designs by executing a series of automated tests. Alongside generic network validations, it runs the following tests specifically designed for WAN deployments:
 
-| AVD Test Class | ANTA Test Class | Description |
-| -------------- | --------------- | ----------- |
-| AvdTestInterfacesState | VerifyInterfacesStatus | Validate the DPS interface status. |
-| AvdTestBGP | VerifyBGPSpecificPeers | Validate the state of BGP Address Family sessions, including `Path-Selection` for AutoVPN, `Link-State` and `IPv4/IPv6 SR-TE` for CV Pathfinder. |
-| AvdTestIPSecurity | VerifySpecificIPSecConn | Validate the establishment of IP security connections for each static peer under the `router path-selection` section of the configuration. |
-| AvdTestStun | VerifyStunClient | Validate the presence of a STUN client translation for a given source IPv4 address and port. The list of expected translations for each device is built by searching local interfaces in each path-group. |
-| AvdTestDpsReachability | VerifyReachability | Validate DPS reachability between devices. |
-| AvdTestAvtPath | VerifyAVTSpecificPath | Validate that the status is active and the type is direct for an Adaptive Virtual Topology (AVT) path in a specified VRF for the static peers. |
-| AvdTestAvtRole | VerifyAVTRole | Validate the Adaptive Virtual Topology (AVT) role of a device. |
+| ANTA Test Class | Description |
+| --------------- | ----------- |
+| VerifyAVTSpecificPath | Validates that **Adaptive Virtual Topology (AVT)** paths are active and using a direct path type for specified static peers within a VRF. |
+| VerifyBGPSpecificPeers | Validates the session state of specific **BGP address families**, such as `Path-Selection` for AutoVPN, `Link-State` and `IPv4/IPv6 SR-TE` for CV Pathfinder. |
+| VerifyInterfacesStatus | Validates the operational status of the **Dynamic Path Selection (DPS)** interface. |
+| VerifySpecificIPSecConn | Validates the establishment of **IPsec connections** for static peers defined under the `router path-selection` configuration. |
+| VerifySpecificPath | Validates that **Dynamic Path Selection (DPS)** paths are healthy and report an active telemetry state for each configured IPv4 peer. |
+
+See the [AVD-generated catalog test index](../../../anta_runner/README.md#avd-generated-catalog-test-index) for more details.
 
 !!! note
 
-    More WAN-related tests are available directly in ANTA and can be added using custom catalogs.
-    They will be progressively added to `eos_validate_state`.
+    Many more tests are available directly in ANTA and can be added using user-defined catalogs. Please refer to the `anta_runner` [role documentation](../../../anta_runner/README.md) for more information.
+
+    If you believe a valuable WAN test is missing, we encourage you to let us know by raising a GitHub issue or submitting a pull request.

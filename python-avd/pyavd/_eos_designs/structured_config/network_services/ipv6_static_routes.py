@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -37,9 +37,9 @@ class Ipv6StaticRoutesMixin(Protocol):
                     static_route_item = EosCliConfigGen.Ipv6StaticRoutesItem()
                     static_route_item._update(
                         vrf=vrf.name,
-                        prefix=static_route.prefix or static_route.destination_address_prefix,
+                        prefix=static_route.prefix,
                         interface=static_route.interface,
-                        next_hop=static_route.next_hop or static_route.gateway,
+                        next_hop=static_route.next_hop,
                         track_bfd=static_route.track_bfd,
                         distance=static_route.distance,
                         tag=static_route.tag,

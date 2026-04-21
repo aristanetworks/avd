@@ -55,9 +55,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -74,9 +74,9 @@ interface Management1
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -153,7 +153,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -178,11 +178,11 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_p3_Ethernet1 | - | 10.255.3.22/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Ethernet1 | P2P_p3_Ethernet1 | - | 10.255.3.22/31 | default | 9214 | False | - | - |
 | Ethernet2 | C1_L3_SERVICE | - | 10.0.1.9/30 | C1_VRF1 | - | False | - | - |
-| Ethernet3 | P2P_p4_Ethernet3 | - | 10.255.3.24/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_p4_Ethernet3 | - | 10.255.3.24/31 | default | 9214 | False | - | - |
 | Ethernet4 | C2_L3_SERVICE | - | 10.1.1.9/30 | C2_VRF1 | - | False | - | - |
 
 ##### ISIS
@@ -199,7 +199,7 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_p3_Ethernet1
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 10.255.3.22/31
    mpls ldp igp sync
@@ -224,7 +224,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_p4_Ethernet3
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 10.255.3.24/31
    mpls ldp igp sync
@@ -258,8 +258,8 @@ interface Ethernet4
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 
 ##### ISIS
@@ -358,7 +358,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 10 | 10.255.1.3 | enabled | Ethernet2 <br> | disabled | default | disabled | disabled | - | - | - | - |
+| 10 | 10.255.1.3 | enabled | Ethernet2 | disabled | default | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Router Redistribution
 
@@ -441,7 +441,7 @@ ASN Notation: asplain
 | ---------- |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -468,9 +468,9 @@ ASN Notation: asplain
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-OVERLAY-PEERS | True | - | - | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - | - | - |
 
 #### Router BGP VRFs
 
@@ -487,7 +487,7 @@ router bgp 65001
    router-id 10.255.1.3
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65001
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0

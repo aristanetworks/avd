@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -7,58 +7,87 @@
 {% if traffic_policies is arista.avd.defined %}
 !
 traffic-policies
+{%     set ns = namespace(first=true) %}
+{%     for vrf in traffic_policies.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if vrf.cpu is arista.avd.defined or vrf.traffic_policy_input_physical is arista.avd.defined %}
+{%             if not ns.first %}
+   !
+{%             endif %}
+{%             set ns.first = false %}
+   vrf {{ vrf.name }}
+{%             if vrf.cpu is arista.avd.defined %}
+      cpu traffic-policy {{ vrf.cpu.traffic_policy.name }} fallback traffic-policy none
+{%                 if vrf.cpu.traffic_policy.enforcement_management is arista.avd.defined(true) %}
+         enforcement management
+{%                 endif %}
+{%             endif %}
+{%             if vrf.traffic_policy_input_physical is arista.avd.defined %}
+      traffic-policy input {{ vrf.traffic_policy_input_physical }} physical
+{%             endif %}
+{%         endif %}
+{%     endfor %}
 {# FIELD SET #}
 {#     -- L4 PORT MANAGEMENT -- #}
-{%     for field_set_port in traffic_policies.field_sets.ports | arista.avd.natural_sort('name') %}
+{%     for field_set_port in traffic_policies.field_sets.ports | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if not ns.first %}
+   !
+{%         endif %}
+{%         set ns.first = false %}
    field-set l4-port {{ field_set_port.name }}
 {%         if field_set_port.port_range is arista.avd.defined %}
       {{ field_set_port.port_range }}
 {%         endif %}
-{%         if not loop.last %}
-   !
-{%         endif %}
 {%     endfor %}
 {#     -- IPv4 PREFIX MANAGEMENT -- #}
-{%     for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.natural_sort('name') %}
+{%     for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if not ns.first %}
+   !
+{%         endif %}
+{%         set ns.first = false %}
    field-set ipv4 prefix {{ field_set_ipv4.name }}
 {%         if field_set_ipv4.prefixes is arista.avd.defined %}
       {{ field_set_ipv4.prefixes | arista.avd.natural_sort | join(' ') }}
 {%         endif %}
-{%         if not loop.last %}
-   !
+{%         if field_set_ipv4.except is arista.avd.defined %}
+      except {{ field_set_ipv4.except | arista.avd.natural_sort | join(' ') }}
 {%         endif %}
 {%     endfor %}
 {#     -- IPv6 PREFIX MANAGEMENT -- #}
-{%     for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.natural_sort('name') %}
+{%     for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if not ns.first %}
+   !
+{%         endif %}
+{%         set ns.first = false %}
    field-set ipv6 prefix {{ field_set_ipv6.name }}
 {%         if field_set_ipv6.prefixes is arista.avd.defined %}
       {{ field_set_ipv6.prefixes | arista.avd.natural_sort | join(' ') }}
 {%         endif %}
-{%         if not loop.last %}
-   !
+{%         if field_set_ipv6.except is arista.avd.defined %}
+      except {{ field_set_ipv6.except | arista.avd.natural_sort | join(' ') }}
 {%         endif %}
 {%     endfor %}
 {# Global options #}
 {%     if traffic_policies.options.counter_per_interface is arista.avd.defined(true) %}
    counter interface per-interface ingress
-   !
+{%         set ns.first = false %}
+{%     endif %}
+{%     if traffic_policies.options.counter_interface_poll_interval is arista.avd.defined %}
+   counter interface poll interval {{ traffic_policies.options.counter_interface_poll_interval }} seconds
+{%         set ns.first = false %}
 {%     endif %}
 {# TRAFFIC POLICIES #}
-{%     for policy in traffic_policies.policies | arista.avd.natural_sort('name') %}
+{%     for policy in traffic_policies.policies | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if not ns.first %}
+   !
+{%         endif %}
+{%         set ns.first = false %}
    traffic-policy {{ policy.name }}
-{%         if policy.matches is arista.avd.defined %}
-{# COUNTER CREATION SECTION #}
-{%             set transient_values = namespace() %}
-{%             set transient_values.counters = [] %}
-{%             for match in policy.matches %}
-{%                 if match.actions.count is arista.avd.defined %}
-{%                     do transient_values.counters.append(match.actions.count | string) %}
-{%                 endif %}
-{%             endfor %}
-{%             if transient_values.counters | length > 0 %}
-      counter {{ transient_values.counters | arista.avd.natural_sort | join(' ') }}
+{# COUNTER SECTION #}
+{%         if policy.counters is arista.avd.defined %}
+      counter {{ policy.counters | unique | arista.avd.natural_sort | join(' ') }}
       !
-{%             endif %}
+{%         endif %}
+{%         if policy.matches is arista.avd.defined %}
 {# MATCH SECTION #}
 {%             for match in policy.matches %}
       match {{ match.name }} {{ match.type | lower }}
@@ -124,7 +153,7 @@ traffic-policies
 {%                                     endif %}
          {{ protocol_field_cli }}
 {%                                 endif %}
-{%                             elif protocol.icmp_type is arista.avd.defined and protocol.protocol | lower == 'icmp' %}
+{%                             elif protocol.icmp_type is arista.avd.defined and (protocol.protocol | lower == 'icmp' or protocol.protocol | lower == 'icmpv6') %}
          {{ protocol_cli }} type {{ protocol.icmp_type | arista.avd.natural_sort | join(' ') }} code all
 {%                             else %}
          {{ protocol_cli }}
@@ -142,8 +171,18 @@ traffic-policies
 {%                 if match.ttl is arista.avd.defined %}
          ttl {{ match.ttl }}
 {%                 endif %}
+{%                 if match.packet_type.vxlan is arista.avd.defined or match.packet_type.multicast is arista.avd.defined(true) %}
+         !
+         packet type
+{%                     if match.packet_type.multicast is arista.avd.defined(true) %}
+            multicast
+{%                     endif %}
+{%                     if match.packet_type.vxlan is arista.avd.defined %}
+            vxlan {{ match.packet_type.vxlan }}
+{%                     endif %}
+{%                 endif %}
 {#       -- ACTIONS SECTION -- #}
-{%                 if match.actions.count is arista.avd.defined or match.actions.traffic_class is arista.avd.defined or match.actions.dscp is arista.avd.defined or match.actions.drop is arista.avd.defined(true)  %}
+{%                 if match.actions.count is arista.avd.defined or match.actions.traffic_class is arista.avd.defined or match.actions.dscp is arista.avd.defined or match.actions.drop is arista.avd.defined(true) or match.actions.redirect is arista.avd.defined %}
          !
          actions
 {#                     -- COUNT packets -- #}
@@ -156,6 +195,50 @@ traffic-policies
 {#                         -- LOGGING only if DROP is set-- #}
 {%                         if match.actions.log is arista.avd.defined(true) %}
             log
+{%                         endif %}
+{%                     endif %}
+{%                     if match.actions.redirect.aggregation_groups is arista.avd.defined %}
+            redirect aggregation group {{ match.actions.redirect.aggregation_groups | arista.avd.natural_sort | join(' ') }}
+{%                     endif %}
+{%                     if match.actions.redirect.interface is arista.avd.defined %}
+            redirect interface {{ match.actions.redirect.interface }}
+{%                     endif %}
+{%                     if not (match.actions.redirect.interface is arista.avd.defined or match.actions.redirect.aggregation_groups is arista.avd.defined) and match.actions.redirect.next_hop is arista.avd.defined %}
+{%                         set redirect_cli = "redirect next-hop " %}
+{%                         set next_hop_flag = false %}
+{%                         if match.actions.redirect.next_hop.ipv4_addresses is arista.avd.defined %}
+{%                             set redirect_cli = redirect_cli ~ match.actions.redirect.next_hop.ipv4_addresses | arista.avd.natural_sort | join(' ') %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set redirect_cli = redirect_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
+{%                             endif %}
+{%                             set next_hop_flag = true %}
+{%                         elif match.actions.redirect.next_hop.ipv6_addresses is arista.avd.defined %}
+{%                             set redirect_cli = redirect_cli ~ match.actions.redirect.next_hop.ipv6_addresses | arista.avd.natural_sort | join(' ') %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set redirect_cli = redirect_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
+{%                             endif %}
+{%                             set next_hop_flag = true %}
+{%                         elif match.actions.redirect.next_hop.groups is arista.avd.defined %}
+{%                             set redirect_cli = redirect_cli ~ "group " ~ match.actions.redirect.next_hop.groups | arista.avd.natural_sort | join(' ') %}
+{%                             set next_hop_flag = true %}
+{%                         elif match.actions.redirect.next_hop.recursive_ipv4_addresses is arista.avd.defined %}
+{%                             set redirect_cli = redirect_cli ~ "recursive " ~ match.actions.redirect.next_hop.recursive_ipv4_addresses | arista.avd.natural_sort | join(' ') %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set redirect_cli = redirect_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
+{%                             endif %}
+{%                             set next_hop_flag = true %}
+{%                         elif match.actions.redirect.next_hop.recursive_ipv6_addresses is arista.avd.defined %}
+{%                             set redirect_cli = redirect_cli ~ "recursive " ~ match.actions.redirect.next_hop.recursive_ipv6_addresses | arista.avd.natural_sort | join(' ') %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set redirect_cli = redirect_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
+{%                             endif %}
+{%                             set next_hop_flag = true %}
+{%                         endif %}
+{%                         if match.actions.redirect.next_hop.ttl is arista.avd.defined and next_hop_flag %}
+{%                             set redirect_cli = redirect_cli ~ " ttl " ~ match.actions.redirect.next_hop.ttl %}
+{%                         endif %}
+{%                         if next_hop_flag == true %}
+            {{ redirect_cli }}
 {%                         endif %}
 {%                     endif %}
 {#                     -- DSCP -- #}
@@ -222,8 +305,5 @@ traffic-policies
 {%             endif %}
 {%         endif %}
 {# END of DEFAULT MATCH Section #}
-{%         if not loop.last %}
-   !
-{%         endif %}
 {%     endfor %}
 {% endif %}

@@ -1,0 +1,4 @@
+---
+# Disable management EAPI to keep a node without mgmt_ip.
+management_eapi:
+  enabled: false

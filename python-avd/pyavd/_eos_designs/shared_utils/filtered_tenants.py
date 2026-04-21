@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -27,6 +27,8 @@ class FilteredTenantsMixin(Protocol):
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
+    resolved_l2vlan_profiles_cache: dict[str, EosDesigns.L2vlanProfilesItem] | None = None
+
     @cached_property
     def filtered_tenants(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices:
         """
@@ -45,6 +47,7 @@ class FilteredTenantsMixin(Protocol):
                 if original_tenant.name not in filter_tenants and "all" not in filter_tenants:
                     continue
                 tenant = original_tenant._deepcopy()
+                tenant._internal_data.context = f"{network_services_key.key}"
                 tenant.l2vlans = self.filtered_l2vlans(tenant)
                 tenant.vrfs = self.filtered_vrfs(tenant)
                 filtered_tenants.append(tenant)
@@ -86,17 +89,82 @@ class FilteredTenantsMixin(Protocol):
         Filtering based on l2vlan tags.
         """
         if not self.network_services_l2 or not tenant.l2vlans:
-            EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
+            return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
 
-        filtered_l2vlans = tenant.l2vlans._filtered(
-            lambda l2vlan: self.is_accepted_vlan(l2vlan) and bool("all" in self.filter_tags or set(l2vlan.tags).intersection(self.filter_tags))
-        )
+        filtered_l2vlans = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
+        for l2vlan in tenant.l2vlans:
+            if not self.is_accepted_vlan(l2vlan):
+                continue
 
-        if tenant.evpn_vlan_bundle:
-            for l2vlan in filtered_l2vlans:
-                l2vlan.evpn_vlan_bundle = l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
+            # Perform filtering on tags before merge of profiles, to avoid spending cycles on merging something that will be filtered away.
+            if not ("all" in self.filter_tags or bool(set(l2vlan.tags).intersection(self.filter_tags))):
+                continue
+
+            merged_l2vlan = self.get_merged_l2vlan_config(l2vlan)
+            merged_l2vlan.evpn_vlan_bundle = default(merged_l2vlan.evpn_vlan_bundle, tenant.evpn_vlan_bundle)
+
+            filtered_l2vlans.append(merged_l2vlan)
 
         return filtered_l2vlans._natural_sorted(sort_key="id")
+
+    def get_merged_l2vlan_config(
+        self: SharedUtilsProtocol, vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem:
+        """
+        Return structured config for one l2vlan after inheritance.
+
+        Handle inheritance of l2vlan_profiles in two levels:
+        l2vlan > l2vlan_profile > l2vlan_parent_profile --> l2vlan_cfg
+        """
+        if vlan.profile:
+            l2vlan_profile = self.get_merged_l2vlan_profile(vlan.profile, f"{vlan.name}")
+
+            # Inherit from the profile
+            merged_vlan = vlan._deepinherited(
+                l2vlan_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem, ignore_extra_keys=True)
+            )
+        else:
+            merged_vlan = vlan
+        return merged_vlan
+
+    def get_merged_l2vlan_profile(self: SharedUtilsProtocol, profile_name: str, context: str) -> EosDesigns.L2vlanProfilesItem:
+        """
+        Returns a merged "l2vlan_profile" where "parent_profile" has been applied.
+
+        Leverages a dict of resolved profiles as a cache.
+        """
+        if self.resolved_l2vlan_profiles_cache and profile_name in self.resolved_l2vlan_profiles_cache:
+            return self.resolved_l2vlan_profiles_cache[profile_name]
+
+        resolved_profile = self.resolve_l2vlan_profile(profile_name, context)
+
+        # Update the cache so we don't resolve again next time.
+        if self.resolved_l2vlan_profiles_cache is None:
+            self.resolved_l2vlan_profiles_cache = {}
+        self.resolved_l2vlan_profiles_cache[profile_name] = resolved_profile
+
+        return resolved_profile
+
+    def resolve_l2vlan_profile(self: SharedUtilsProtocol, profile_name: str, context: str) -> EosDesigns.L2vlanProfilesItem:
+        """Resolve one l2vlan profile and return it."""
+        if profile_name not in self.inputs.l2vlan_profiles:
+            msg = f"Profile '{profile_name}' applied under l2vlan '{context}' does not exist in 'l2vlan_profiles'."
+            raise AristaAvdInvalidInputsError(msg)
+
+        l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]
+        if l2vlan_profile.parent_profile:
+            if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
+                msg = f"Profile '{l2vlan_profile.parent_profile}' applied under L2VLAN Profile '{profile_name}' does not exist in 'l2vlan_profiles'."
+                raise AristaAvdInvalidInputsError(msg)
+
+            parent_profile = self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile]
+
+            # Notice reuse of the same variable with the merged content.
+            l2vlan_profile = l2vlan_profile._deepinherited(parent_profile)
+
+        delattr(l2vlan_profile, "parent_profile")
+
+        return l2vlan_profile
 
     def is_accepted_vlan(
         self: SharedUtilsProtocol,
@@ -104,7 +172,7 @@ class FilteredTenantsMixin(Protocol):
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
     ) -> bool:
         """
-        Check if vlan is in accepted_vlans list.
+        Check if vlan is in accepted_vlans set.
 
         If filter.only_vlans_in_use is True also check if vlan id or trunk group is assigned to connected endpoint.
         """
@@ -124,7 +192,7 @@ class FilteredTenantsMixin(Protocol):
         return bool(self.inputs.enable_trunk_groups and vlan.trunk_groups and endpoint_trunk_groups.intersection(vlan.trunk_groups))
 
     @cached_property
-    def accepted_vlans(self: SharedUtilsProtocol) -> list[int]:
+    def accepted_vlans(self: SharedUtilsProtocol) -> set[int]:
         """
         The 'vlans' switch fact is a string representing a vlan range (ex. "1-200").
 
@@ -133,9 +201,9 @@ class FilteredTenantsMixin(Protocol):
         """
         switch_vlans = self.switch_facts.vlans
         if not switch_vlans:
-            return []
+            return set()
         switch_vlans_list = range_expand(switch_vlans)
-        accepted_vlans = [int(vlan) for vlan in switch_vlans_list]
+        accepted_vlans = {int(vlan) for vlan in switch_vlans_list}
         if self.uplink_type != "port-channel":
             return accepted_vlans
 
@@ -143,10 +211,8 @@ class FilteredTenantsMixin(Protocol):
         uplink_switches = [uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.all_fabric_devices]
         for uplink_switch in uplink_switches:
             uplink_switch_facts = self.get_peer_facts(uplink_switch, required=True)
-            uplink_switch_vlans = uplink_switch_facts.vlans
-            uplink_switch_vlans_list = range_expand(uplink_switch_vlans)
-            uplink_switch_vlans_list = [int(vlan) for vlan in uplink_switch_vlans_list]
-            accepted_vlans = [vlan for vlan in accepted_vlans if vlan in uplink_switch_vlans_list]
+            uplink_switch_vlans_set = {int(vlan) for vlan in range_expand(uplink_switch_facts.vlans)}
+            accepted_vlans = accepted_vlans.intersection(uplink_switch_vlans_set)
 
         return accepted_vlans
 
@@ -195,13 +261,17 @@ class FilteredTenantsMixin(Protocol):
             if not self.is_accepted_vrf(vrf):
                 continue
 
-            vrf.bgp_peers = vrf.bgp_peers._filtered(lambda bgp_peer: self.hostname in bgp_peer.nodes)._natural_sorted(sort_key="ip_address")
+            vrf.bgp_peers = vrf.bgp_peers._filtered(lambda bgp_peer: self.match_regexes(bgp_peer.nodes, self.hostname))._natural_sorted(sort_key="ip_address")
             vrf.static_routes = vrf.static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.ipv6_static_routes = vrf.ipv6_static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
-            vrf.svis = self.filtered_svis(vrf)
+            vrf.static_arp_entries = vrf.static_arp_entries._filtered(lambda entry: not entry.nodes or self.hostname in entry.nodes)
+            vrf.svis = self.filtered_svis(vrf, tenant)
             vrf.l3_interfaces = self.filtered_l3_interfaces(vrf)
             vrf.l3_port_channels = self.filtered_l3_port_channels(vrf)
             vrf.loopbacks = vrf.loopbacks._filtered(lambda loopback: loopback.node == self.hostname)
+            vrf.aggregate_addresses = vrf.aggregate_addresses._filtered(lambda aggregate_address: self.match_nodes(aggregate_address.nodes))._natural_sorted(
+                sort_key="prefix"
+            )
 
             if self.vtep is True:
                 evpn_l3_multicast_enabled = default(vrf.evpn_l3_multicast.enabled, tenant.evpn_l3_multicast.enabled)
@@ -235,16 +305,10 @@ class FilteredTenantsMixin(Protocol):
                                 vrf._internal_data.evpn_l3_multicast_evpn_peg_transit = evpn_peg.transit
                                 break
 
-            vrf.additional_route_targets = vrf.additional_route_targets._filtered(
-                lambda rt: bool((not rt.nodes or self.hostname in rt.nodes) and rt.address_family and rt.route_target and rt.type in ["import", "export"])
-            )
+            vrf.additional_route_targets = vrf.additional_route_targets._filtered(lambda rt: bool(not rt.nodes or self.hostname in rt.nodes))
 
             if vrf.svis or vrf.l3_interfaces or vrf.loopbacks or vrf.l3_port_channels or self.is_forced_vrf(vrf, tenant.name):
                 filtered_vrfs.append(vrf)
-
-            if tenant_evpn_vlan_bundle := tenant.evpn_vlan_bundle:
-                for svi in vrf.svis:
-                    svi.evpn_vlan_bundle = svi.evpn_vlan_bundle or tenant_evpn_vlan_bundle
 
         return filtered_vrfs
 
@@ -295,14 +359,16 @@ class FilteredTenantsMixin(Protocol):
         return merged_svi
 
     def filtered_svis(
-        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
+        self: SharedUtilsProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis:
         """
         Return sorted and filtered svi list from given tenant vrf.
 
         Filtering based on accepted vlans since eos_designs_facts already
         filtered that on tags and trunk_groups.
-        Extracts static_routes set under SVIs.
+        Extracts static_routes and ipv6_static_routes set under SVIs and appends them to vrf.static_routes and vrf.ipv6_static_routes.
         """
         if not (self.network_services_l2 or self.network_services_l2_as_subint):
             return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
@@ -311,17 +377,24 @@ class FilteredTenantsMixin(Protocol):
         for svi in vrf.svis:
             if not self.is_accepted_vlan(svi):
                 continue
+            # TODO: Tags exist only on the SVI itself, not in svi_profiles. Avoid duplicating this logic here—check tags before merging.
             # Handle svi_profile inheritance
             merged_svi = self.get_merged_svi_config(svi)
             # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
             if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
                 continue
 
+            merged_svi.evpn_vlan_bundle = default(merged_svi.evpn_vlan_bundle, vrf.evpn_vlan_bundle, tenant.evpn_vlan_bundle)
+
             filtered_svis.append(merged_svi)
 
             if merged_svi.static_routes:
                 vrf.static_routes.extend(
                     merged_svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            if merged_svi.ipv6_static_routes:
+                vrf.ipv6_static_routes.extend(
+                    merged_svi.ipv6_static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes)
                 )
 
         return filtered_svis._natural_sorted(sort_key="id")
@@ -332,7 +405,7 @@ class FilteredTenantsMixin(Protocol):
         """
         Returns filtered l3_interfaces for the VRFs.
 
-        Extracts static_routes set under l3_interfaces and appends to vrf.static_routes.
+        Extracts static_routes and ipv6_static_routes defined under l3_interfaces and appends them to vrf.static_routes and vrf.ipv6_static_routes.
         """
         filtered_l3_interfaces = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces()
         for l3_interface in vrf.l3_interfaces:
@@ -341,6 +414,10 @@ class FilteredTenantsMixin(Protocol):
             if l3_interface.static_routes:
                 vrf.static_routes.extend(
                     l3_interface.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            if l3_interface.ipv6_static_routes:
+                vrf.ipv6_static_routes.extend(
+                    l3_interface.ipv6_static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes)
                 )
             filtered_l3_interfaces.append(l3_interface)
 
@@ -352,7 +429,7 @@ class FilteredTenantsMixin(Protocol):
         """
         Returns filtered l3_port_channels for the VRFs.
 
-        Extracts static_routes set under l3_port_channels and appends to vrf.static_routes.
+        Extracts static_routes and ipv6_static_routes defined under l3_port_channels and appends them to vrf.static_routes and vrf.ipv6_static_routes.
         """
         filtered_l3_port_channels = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannels()
         for l3_port_channel in vrf.l3_port_channels:
@@ -361,6 +438,12 @@ class FilteredTenantsMixin(Protocol):
             if l3_port_channel.static_routes:
                 vrf.static_routes.extend(
                     l3_port_channel.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            if l3_port_channel.ipv6_static_routes:
+                vrf.ipv6_static_routes.extend(
+                    l3_port_channel.ipv6_static_routes._cast_as(
+                        EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes
+                    )
                 )
             filtered_l3_port_channels.append(l3_port_channel)
 
@@ -432,7 +515,10 @@ class FilteredTenantsMixin(Protocol):
                     vrf=svi_ip_helper.source_vrf,
                 )
 
-        if svi.ospf.enabled and vrf.ospf.enabled:
+        if svi.ospf.enabled:
+            if not vrf.ospf.enabled:
+                msg = f"OSPF is enabled on SVI '{svi.name}' but not under 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
+                raise AristaAvdError(msg)
             config._update(
                 ospf_area=svi.ospf.area,
                 ospf_network_point_to_point=svi.ospf.point_to_point,

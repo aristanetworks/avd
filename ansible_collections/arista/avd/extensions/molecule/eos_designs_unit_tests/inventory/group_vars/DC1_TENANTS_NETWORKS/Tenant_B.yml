@@ -1,0 +1,45 @@
+---
+tenant_b:
+  - name: Tenant_B
+    mac_vrf_vni_base: 20000
+    vrfs:
+      - name: Tenant_B_OP_Zone
+        vrf_vni: 20
+        svis:
+          - id: 210
+            name: Tenant_B_OP_Zone_1
+            tags: ['opzone']
+            enabled: true
+            ip_address_virtual: 10.2.10.1/24
+          - id: 211
+            name: Tenant_B_OP_Zone_2
+            tags: ['opzone']
+            enabled: true
+            ip_address_virtual: 10.2.11.1/24
+      - name: Tenant_B_WAN_Zone
+        vrf_vni: 21
+        evpn_l2_multi_domain: false
+        svis:
+          - id: 250
+            name: Tenant_B_WAN_Zone_1
+            tags: ['wan']
+            enabled: true
+            ip_address_virtual: 10.2.50.1/24
+      # Test for VRF across multiple tenants with MLAG IBGP peering enabled
+      # This VRF is also defined in Tenant_C to test that the same VRF name
+      # across multiple tenants doesn't create duplicate MLAG L3 peering VLAN interfaces
+      - name: MULTI_TENANT_VRF_TEST
+        vrf_id: 99
+        vrf_vni: 99099
+        enable_mlag_ibgp_peering_vrfs: true
+        loopbacks:
+          - node: dc1-svc3a
+            ip_address: 172.26.128.12/32
+            loopback: 99
+            description: MULTI_TENANT_VRF_TEST_TENANT_B
+            enabled: true
+          - node: dc1-svc3b
+            ip_address: 172.26.128.13/32
+            loopback: 99
+            description: MULTI_TENANT_VRF_TEST_TENANT_B
+            enabled: true

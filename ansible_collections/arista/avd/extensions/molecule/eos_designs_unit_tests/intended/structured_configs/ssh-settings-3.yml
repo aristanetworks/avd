@@ -1,0 +1,29 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: ssh-settings-3
+ip_igmp_snooping:
+  globally_enabled: true
+management_ssh:
+  vrfs:
+  - name: default
+    enable: false
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 10.10.10.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

@@ -1,0 +1,28 @@
+---
+ansible:
+  executor:
+    backend: ansible-playbook
+    args:
+      ansible_playbook:
+        - --inventory=${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/inventory.yml
+  env:
+    ANSIBLE_FORCE_COLOR: true
+  cfg:
+    defaults:
+      gathering: explicit
+      vault_password_file: "${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/cv-pathfinder/.vault"
+  playbooks:
+    converge: '../../../examples/cv-pathfinder/build.yml'
+scenario:
+  converge_sequence:
+    - converge
+  test_sequence:
+    - converge
+    - idempotence
+  cleanup_sequence:
+    - destroy
+dependency:
+  name: galaxy
+  enabled: false
+verifier:
+  name: ansible

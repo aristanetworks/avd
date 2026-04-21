@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -27,6 +27,16 @@ QOS rewrite DSCP: **disabled**
 {%     if qos.tx_queue.shape_rate_percent_adaptive is arista.avd.defined(true) %}
 
 QOS adaptive transmit queue percentage-based allocation: **enabled**
+{%     endif %}
+{%     if qos.tx_queue.queues is arista.avd.defined %}
+
+##### QOS Transmit Queue Parameters
+
+| Queue ID | Scheduler Profile Responsive |
+| -------- | ---------------------------- |
+{%         for queue in qos.tx_queue.queues | arista.avd.natural_sort("id") %}
+| {{ queue.id }} | {{ queue.scheduler_profile_responsive | arista.avd.default("-") }} |
+{%         endfor %}
 {%     endif %}
 {%     if qos.map is arista.avd.defined %}
 

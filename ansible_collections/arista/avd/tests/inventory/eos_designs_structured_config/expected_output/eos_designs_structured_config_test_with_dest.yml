@@ -6,13 +6,9 @@ enable_password:
 hostname: testhost
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
-  fabric_name: integration_tests
+  is_deployed: true
+  fabric_name: testgroup
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
@@ -21,5 +17,5 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-- name: MGMT
-  ip_routing: false
+  - name: MGMT
+    ip_routing: false

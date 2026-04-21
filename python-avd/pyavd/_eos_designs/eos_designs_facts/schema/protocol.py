@@ -1,11 +1,12 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Literal, Protocol
+from typing import TYPE_CHECKING, ClassVar, Literal, Protocol, TypeAlias
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._schema.models.avd_indexed_list import AvdIndexedList
 from pyavd._schema.models.avd_list import AvdList
@@ -179,6 +180,28 @@ class EosDesignsFactsProtocol(Protocol):
 
                 """
 
+    class MlagUnderlayMulticast(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"pim_sm": {"type": bool}, "static": {"type": bool}}
+        pim_sm: bool
+        static: bool
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, pim_sm: bool | UndefinedType = Undefined, static: bool | UndefinedType = Undefined) -> None:
+                """
+                MlagUnderlayMulticast.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    pim_sm: pim_sm
+                    static: static
+
+                """
+
     class EvpnRouteServers(AvdList[str]):
         """Subclass of AvdList with `str` items."""
 
@@ -213,6 +236,176 @@ class EosDesignsFactsProtocol(Protocol):
 
     class UplinksItem(AvdModel):
         """Subclass of AvdModel."""
+
+        Type: TypeAlias = Literal["underlay_p2p", "underlay_l2"]
+        Speed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
+        PeerSpeed: TypeAlias = Literal[
+            "100full",
+            "100g",
+            "100g-1",
+            "100g-2",
+            "100g-4",
+            "100half",
+            "10full",
+            "10g",
+            "10half",
+            "1g",
+            "200g",
+            "200g-2",
+            "200g-4",
+            "25g",
+            "400g",
+            "400g-4",
+            "400g-8",
+            "40g",
+            "50g",
+            "50g-1",
+            "50g-2",
+            "800g-8",
+            "sfp-1000baset auto 100full",
+            "1.6t-8",
+            "100mfull",
+            "100mhalf",
+            "10mfull",
+            "10mhalf",
+            "200g-1",
+            "400g-2",
+            "40g-4",
+            "800g-4",
+            "auto",
+            "auto 10000full",
+            "auto 1000full",
+            "auto 100full",
+            "auto 100g-1",
+            "auto 100g-2",
+            "auto 100g-4",
+            "auto 100gfull",
+            "auto 100half",
+            "auto 10full",
+            "auto 10gfull",
+            "auto 10half",
+            "auto 1gfull",
+            "auto 2.5gfull",
+            "auto 200g-2",
+            "auto 200g-4",
+            "auto 25gfull",
+            "auto 400g-4",
+            "auto 400g-8",
+            "auto 40gfull",
+            "auto 50g-1",
+            "auto 50g-2",
+            "auto 50gfull",
+            "auto 5gfull",
+            "auto 800g-8",
+            "auto 1.6t-8",
+            "auto 100mfull",
+            "auto 100mhalf",
+            "auto 10g",
+            "auto 10mfull",
+            "auto 10mhalf",
+            "auto 1g",
+            "auto 2.5g",
+            "auto 200g-1",
+            "auto 25g",
+            "auto 400g-2",
+            "auto 40g-4",
+            "auto 5g",
+            "auto 800g-4",
+            "forced 10000full",
+            "forced 1000full",
+            "forced 1000half",
+            "forced 100full",
+            "forced 100gfull",
+            "forced 100half",
+            "forced 10full",
+            "forced 10half",
+            "forced 25gfull",
+            "forced 40gfull",
+            "forced 50gfull",
+        ]
 
         class Ptp(AvdModel):
             """Subclass of AvdModel."""
@@ -258,13 +451,14 @@ class EosDesignsFactsProtocol(Protocol):
         class LinkTrackingGroupsItem(AvdModel):
             """Subclass of AvdModel."""
 
+            Direction: TypeAlias = Literal["upstream", "downstream"]
             _fields: ClassVar[dict] = {"name": {"type": str}, "direction": {"type": str}}
             name: str
-            direction: Literal["upstream", "downstream"]
+            direction: Direction
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, direction: Literal["upstream", "downstream"] | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, direction: Direction | UndefinedType = Undefined) -> None:
                     """
                     LinkTrackingGroupsItem.
 
@@ -294,6 +488,9 @@ class EosDesignsFactsProtocol(Protocol):
 
         PeerTrunkGroups._item_type = str
 
+        SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+        PeerSpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+
         class SubinterfacesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -309,7 +506,7 @@ class EosDesignsFactsProtocol(Protocol):
                 "ipv6_address": {"type": str},
                 "peer_ip_address": {"type": str},
                 "peer_ipv6_address": {"type": str},
-                "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             }
             interface: str
             peer_interface: str
@@ -322,20 +519,8 @@ class EosDesignsFactsProtocol(Protocol):
             ipv6_address: str | None
             peer_ip_address: str | None
             peer_ipv6_address: str | None
-            structured_config: dict
-            """
-            Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-            When
-            uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-            for eos_cli_config_gen overrides the settings on the ethernet interface level.
-            When uplink_type ==
-            "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-            eos_cli_config_gen overrides the settings on the port-channel interface level.
-            "uplink_structured_config" is applied after "structured_config", so it can override
-            "structured_config" defined on node-level.
-            Note! The content of this dictionary is _not_ validated
-            by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config applied to `uplink_interfaces`."""
 
             if TYPE_CHECKING:
 
@@ -353,7 +538,7 @@ class EosDesignsFactsProtocol(Protocol):
                     ipv6_address: str | None | UndefinedType = Undefined,
                     peer_ip_address: str | None | UndefinedType = Undefined,
                     peer_ipv6_address: str | None | UndefinedType = Undefined,
-                    structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SubinterfacesItem.
@@ -373,18 +558,7 @@ class EosDesignsFactsProtocol(Protocol):
                         ipv6_address: ipv6_address
                         peer_ip_address: peer_ip_address
                         peer_ipv6_address: peer_ipv6_address
-                        structured_config:
-                           Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                           When
-                           uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                           for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                           When uplink_type ==
-                           "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                           eos_cli_config_gen overrides the settings on the port-channel interface level.
-                           "uplink_structured_config" is applied after "structured_config", so it can override
-                           "structured_config" defined on node-level.
-                           Note! The content of this dictionary is _not_ validated
-                           by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
 
                     """
 
@@ -408,7 +582,8 @@ class EosDesignsFactsProtocol(Protocol):
             "peer_speed": {"type": str},
             "ptp": {"type": Ptp},
             "mac_security": {"type": MacSecurity},
-            "underlay_multicast": {"type": bool},
+            "underlay_multicast_pim_sm": {"type": bool},
+            "underlay_multicast_static": {"type": bool},
             "ipv6_enable": {"type": bool},
             "prefix_length": {"type": int},
             "ip_address": {"type": str},
@@ -433,7 +608,10 @@ class EosDesignsFactsProtocol(Protocol):
             "inband_ztp_vlan": {"type": int},
             "inband_ztp_lacp_fallback_delay": {"type": int},
             "dhcp_server": {"type": bool},
-            "structured_config": {"type": dict},
+            "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "peer_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "peer_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "subinterfaces": {"type": Subinterfaces},
         }
         interface: str
@@ -442,10 +620,12 @@ class EosDesignsFactsProtocol(Protocol):
         peer_type: str
         peer_is_deployed: bool
         peer_bgp_as: str | None
-        type: Literal["underlay_p2p", "underlay_l2"]
-        speed: str | None
+        type: Type
+        speed: Speed | None
+        """Interface Speed."""
         bfd: bool | None
-        peer_speed: str | None
+        peer_speed: PeerSpeed | None
+        """Interface Speed."""
         ptp: Ptp
         """
         Enable PTP on all infrastructure links.
@@ -454,7 +634,8 @@ class EosDesignsFactsProtocol(Protocol):
         """
         mac_security: MacSecurity
         """Subclass of AvdModel."""
-        underlay_multicast: bool | None
+        underlay_multicast_pim_sm: bool | None
+        underlay_multicast_static: bool | None
         ipv6_enable: bool | None
         prefix_length: int | None
         ip_address: str | None
@@ -475,28 +656,22 @@ class EosDesignsFactsProtocol(Protocol):
         native_vlan: int | None
         short_esi: str | None
         peer_short_esi: str | None
-        spanning_tree_portfast: Literal["edge", "network"] | None
-        peer_spanning_tree_portfast: Literal["edge", "network"] | None
+        spanning_tree_portfast: SpanningTreePortfast | None
+        peer_spanning_tree_portfast: PeerSpanningTreePortfast | None
         sflow_enabled: bool | None
         flow_tracking: EosDesigns.FabricFlowTracking.Uplinks
         """Enable flow-tracking on all fabric uplinks."""
         inband_ztp_vlan: int | None
         inband_ztp_lacp_fallback_delay: int | None
         dhcp_server: bool | None
-        structured_config: dict
-        """
-        Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-        When
-        uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-        for eos_cli_config_gen overrides the settings on the ethernet interface level.
-        When uplink_type ==
-        "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-        eos_cli_config_gen overrides the settings on the port-channel interface level.
-        "uplink_structured_config" is applied after "structured_config", so it can override
-        "structured_config" defined on node-level.
-        Note! The content of this dictionary is _not_ validated
-        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-        """
+        ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """Custom structured config applied to `uplink_interfaces`."""
+        port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+        peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """Custom structured config applied to `uplink_interfaces`."""
+        peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
         subinterfaces: Subinterfaces
         """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`)."""
 
@@ -511,13 +686,14 @@ class EosDesignsFactsProtocol(Protocol):
                 peer_type: str | UndefinedType = Undefined,
                 peer_is_deployed: bool | UndefinedType = Undefined,
                 peer_bgp_as: str | None | UndefinedType = Undefined,
-                type: Literal["underlay_p2p", "underlay_l2"] | UndefinedType = Undefined,
-                speed: str | None | UndefinedType = Undefined,
+                type: Type | UndefinedType = Undefined,
+                speed: Speed | None | UndefinedType = Undefined,
                 bfd: bool | None | UndefinedType = Undefined,
-                peer_speed: str | None | UndefinedType = Undefined,
+                peer_speed: PeerSpeed | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 mac_security: MacSecurity | UndefinedType = Undefined,
-                underlay_multicast: bool | None | UndefinedType = Undefined,
+                underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                underlay_multicast_static: bool | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 prefix_length: int | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
@@ -535,14 +711,17 @@ class EosDesignsFactsProtocol(Protocol):
                 native_vlan: int | None | UndefinedType = Undefined,
                 short_esi: str | None | UndefinedType = Undefined,
                 peer_short_esi: str | None | UndefinedType = Undefined,
-                spanning_tree_portfast: Literal["edge", "network"] | None | UndefinedType = Undefined,
-                peer_spanning_tree_portfast: Literal["edge", "network"] | None | UndefinedType = Undefined,
+                spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                peer_spanning_tree_portfast: PeerSpanningTreePortfast | None | UndefinedType = Undefined,
                 sflow_enabled: bool | None | UndefinedType = Undefined,
                 flow_tracking: EosDesigns.FabricFlowTracking.Uplinks | UndefinedType = Undefined,
                 inband_ztp_vlan: int | None | UndefinedType = Undefined,
                 inband_ztp_lacp_fallback_delay: int | None | UndefinedType = Undefined,
                 dhcp_server: bool | None | UndefinedType = Undefined,
-                structured_config: dict | UndefinedType = Undefined,
+                ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 subinterfaces: Subinterfaces | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -559,15 +738,16 @@ class EosDesignsFactsProtocol(Protocol):
                     peer_is_deployed: peer_is_deployed
                     peer_bgp_as: peer_bgp_as
                     type: type
-                    speed: speed
+                    speed: Interface Speed.
                     bfd: bfd
-                    peer_speed: peer_speed
+                    peer_speed: Interface Speed.
                     ptp:
                        Enable PTP on all infrastructure links.
 
                        Subclass of AvdModel.
                     mac_security: Subclass of AvdModel.
-                    underlay_multicast: underlay_multicast
+                    underlay_multicast_pim_sm: underlay_multicast_pim_sm
+                    underlay_multicast_static: underlay_multicast_static
                     ipv6_enable: ipv6_enable
                     prefix_length: prefix_length
                     ip_address: ip_address
@@ -592,18 +772,10 @@ class EosDesignsFactsProtocol(Protocol):
                     inband_ztp_vlan: inband_ztp_vlan
                     inband_ztp_lacp_fallback_delay: inband_ztp_lacp_fallback_delay
                     dhcp_server: dhcp_server
-                    structured_config:
-                       Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-                       When
-                       uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>]
-                       for eos_cli_config_gen overrides the settings on the ethernet interface level.
-                       When uplink_type ==
-                       "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for
-                       eos_cli_config_gen overrides the settings on the port-channel interface level.
-                       "uplink_structured_config" is applied after "structured_config", so it can override
-                       "structured_config" defined on node-level.
-                       Note! The content of this dictionary is _not_ validated
-                       by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                    port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                    peer_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                    peer_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                     subinterfaces: Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`).
 
                 """
@@ -780,8 +952,8 @@ class EosDesignsFactsProtocol(Protocol):
                     """
 
         _fields: ClassVar[dict] = {
-            "interfaces": {"type": Interfaces},
             "name": {"type": str},
+            "interfaces": {"type": Interfaces},
             "id": {"type": int},
             "description": {"type": str},
             "ipsec": {"type": Ipsec},
@@ -790,10 +962,10 @@ class EosDesignsFactsProtocol(Protocol):
             "excluded_from_default_policy": {"type": bool, "default": False},
             "dps_keepalive": {"type": DpsKeepalive},
         }
-        interfaces: Interfaces
-        """Subclass of AvdList with `InterfacesItem` items."""
         name: str
         """Path-group name."""
+        interfaces: Interfaces
+        """Subclass of AvdList with `InterfacesItem` items."""
         id: int
         """
         Path-group id.
@@ -848,8 +1020,8 @@ class EosDesignsFactsProtocol(Protocol):
             def __init__(
                 self,
                 *,
-                interfaces: Interfaces | UndefinedType = Undefined,
                 name: str | UndefinedType = Undefined,
+                interfaces: Interfaces | UndefinedType = Undefined,
                 id: int | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 ipsec: Ipsec | UndefinedType = Undefined,
@@ -865,8 +1037,8 @@ class EosDesignsFactsProtocol(Protocol):
                 Subclass of AvdModel.
 
                 Args:
-                    interfaces: Subclass of AvdList with `InterfacesItem` items.
                     name: Path-group name.
+                    interfaces: Subclass of AvdList with `InterfacesItem` items.
                     id:
                        Path-group id.
                        Required until an auto ID algorithm is implemented.
@@ -965,6 +1137,7 @@ class EosDesignsFactsProtocol(Protocol):
         "mlag_ip": {"type": str},
         "mlag_l3_ip": {"type": str},
         "mlag_switch_ids": {"type": MlagSwitchIds},
+        "mlag_underlay_multicast": {"type": MlagUnderlayMulticast},
         "evpn_role": {"type": str},
         "mpls_overlay_role": {"type": str},
         "evpn_route_servers": {"type": EvpnRouteServers},
@@ -1051,6 +1224,12 @@ class EosDesignsFactsProtocol(Protocol):
     mlag_switch_ids: MlagSwitchIds
     """
     The switch ids of both primary and secondary switches for a this node group.
+
+    Subclass of AvdModel.
+    """
+    mlag_underlay_multicast: MlagUnderlayMulticast
+    """
+    Should multicast be enabled on the mlag peer-l3-vlan.
 
     Subclass of AvdModel.
     """
@@ -1188,6 +1367,7 @@ class EosDesignsFactsProtocol(Protocol):
             mlag_ip: str | None | UndefinedType = Undefined,
             mlag_l3_ip: str | None | UndefinedType = Undefined,
             mlag_switch_ids: MlagSwitchIds | UndefinedType = Undefined,
+            mlag_underlay_multicast: MlagUnderlayMulticast | UndefinedType = Undefined,
             evpn_role: str | None | UndefinedType = Undefined,
             mpls_overlay_role: str | None | UndefinedType = Undefined,
             evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
@@ -1270,6 +1450,10 @@ class EosDesignsFactsProtocol(Protocol):
                 mlag_l3_ip: mlag_l3_ip
                 mlag_switch_ids:
                    The switch ids of both primary and secondary switches for a this node group.
+
+                   Subclass of AvdModel.
+                mlag_underlay_multicast:
+                   Should multicast be enabled on the mlag peer-l3-vlan.
 
                    Subclass of AvdModel.
                 evpn_role: evpn_role

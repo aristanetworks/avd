@@ -1,0 +1,15 @@
+---
+type: l3leaf
+bgp_as_notation: asplain
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: invalid-value-bgp-as-asplain-notation
+      id: 4
+      bgp_as: dd.s2d
+
+expected_error_message: >-
+  Failed to convert 'dd' or 's2 to an integer when converting the BGP AS 'dd.s2' to asplain notation`.

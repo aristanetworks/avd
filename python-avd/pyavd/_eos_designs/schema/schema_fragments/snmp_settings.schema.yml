@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -20,7 +20,19 @@ keys:
       location:
         type: bool
         default: false
-        description: Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack> <inventory_hostname>".
+        description: |-
+          Enables SNMP location using `location_template` value.
+      location_template:
+        type: str
+        description: |-
+          Customize the SNMP location description.
+          The available template fields are:
+            - fabric_name: The logical name of the fabric.
+            - dc_name: The name of the data center associated with the fabric.
+            - pod_name: The pod or cluster grouping within the data center.
+            - rack: Physical rack location of switch.
+            - hostname: Hostname used in inventory.
+        default: "{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"
       vrfs:
         type: list
         primary_key: name
@@ -60,26 +72,6 @@ keys:
               description: IPv6 access-list name.
               convert_types:
                 - int
-      enable_mgmt_interface_vrf:
-        type: bool
-        description: |-
-          Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
-          Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device.
-          Can be used in combination with "vrfs" and "enable_inband_mgmt_vrf".
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
-      enable_inband_mgmt_vrf:
-        type: bool
-        description: |-
-          Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
-          Ignored if inband management is not configured for the device.
-          Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
       compute_local_engineid:
         type: bool
         default: false
@@ -87,18 +79,38 @@ keys:
           Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
       compute_local_engineid_source:
         type: str
-        default: hostname_and_ip
-        description: |
+        default: rfc3411_type5
+        description: |-
           `compute_local_engineid_source` supports:
-          - `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1
-            the string generated via the concatenation of the hostname plus the management IP.
-            {{ inventory_hostname }} + {{ switch.mgmt_ip }}.
-          - `system_mac` generate the switch default engine id for AVD usage.
+          - `rfc3411_type5` use the value of `local_engineid_ip` to find the mgmt ip and calculate an RFC3411 compliant Engine ID based on 8000757105 + sha1(hostname + local_engineid_ip)
+          - `rfc3411_type3` generate an RFC3411 type 3 compliant Engine ID.
+            To use this, `system_mac_address` MUST be set for the device.
+            The formula is 8000757103 + system_mac_address.
+          - `system_mac` generate the Engine ID similar to the default EOS behavior.
             To use this, `system_mac_address` MUST be set for the device.
             The formula is f5717f + system_mac_address + 00.
+          - `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1 the string generated via the concatenation of the hostname plus the out-of-band management IP.
+              sha1(hostname + mgmt_ip)
+            `local_engineid_ip` does not have any effect when using `compute_local_engineid_source: hostname_and_ip`.
+            Note that this is a legacy method kept for backward compatibility; it does not follow RFC 3411 and does not properly support in-band management.
         valid_values:
-          - hostname_and_ip
+          - rfc3411_type5
+          - rfc3411_type3
           - system_mac
+          - hostname_and_ip
+      local_engineid_ip:
+        type: str
+        description: |
+          The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411_type5`.
+          The value will be interpreted according to these rules:
+          - `use_mgmt_interface` will use the Out-of-band interface IP or IPv6.
+            The order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.
+            An error will be raised if neither are configured for the device.
+          - `use_inband_mgmt_interface` will use the inband management IP.
+            An error will be raised if inband management is not configured for the device.
+          - `use_default_mgmt_method_interface` will use the IP for one of the two options above depending on the value of `default_mgmt_method`.
+          - Any other string will be used directly as the IP (it can be IP or IPv6).
+        default: use_default_mgmt_method_interface
       compute_v3_user_localized_key:
         type: bool
         default: false
@@ -158,45 +170,23 @@ keys:
                 - int
             use_mgmt_interface_vrf:
               type: bool
-              description: |-
-                Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-                Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
-                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
               deprecation:
                 warning: true
+                removed: true
                 remove_in_version: 6.0.0
                 new_key: |-
                   vrf: "use_mgmt_interface_vrf"
             use_inband_mgmt_vrf:
               type: bool
-              description: |-
-                Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
-                Ignored if inband management is not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
-                Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure the SNMP host under multiple VRFs.
               deprecation:
                 warning: true
+                removed: true
                 remove_in_version: 6.0.0
                 new_key: |-
                   vrf: "use_inband_mgmt_vrf"
       communities:
         type: list
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/communities"
-      ipv4_acls:
-        type: list
-        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/ipv4_acls"
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: |-
-            vrfs[].ipv4_acl
-      ipv6_acls:
-        type: list
-        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/ipv6_acls"
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: |-
-            vrfs[].ipv6_acl
       views:
         type: list
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/views"
@@ -206,3 +196,33 @@ keys:
       traps:
         type: dict
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/traps"
+      enable_mgmt_interface_vrf:
+        type: bool
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
+      enable_inband_mgmt_vrf:
+        type: bool
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
+      ipv4_acls:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: |-
+            vrfs[].ipv4_acl
+      ipv6_acls:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: |-
+            vrfs[].ipv6_acl

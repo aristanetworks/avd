@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2025-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -22,7 +22,6 @@ Arista AVD is a network automation framework covering multiple network design do
 ### AVD Ansible Collections
 
 - arista.avd
-- arista.cvp
 
 !!! note
     Red Hat supports “ansible-core” and Ansible Automation Platform. For non-AVD Ansible issues, please contact Red Hat Ansible TAC.
@@ -55,7 +54,7 @@ Arista AVD Software Release Policy and Life Cycle defines the various phases of 
 
 The Arista AVD project follows [Semantic Versioning](../versioning/semantic-versioning.md): <font class="v-r">Major</font>.<font class="v-gr">Minor</font>.<font class="v-ygr">Maintenance</font> (ex. <font class="v-r">4</font>.<font class="v-gr">10</font>.<font class="v-ygr">2</font>):
 
-- <font class="v-r">Major: Contains breaking changes, follow the</font> [porting guide](../porting-guides/5.x.x.md).
+- <font class="v-r">Major: Contains breaking changes, follow the</font> [porting guide](../porting-guides/6.x.x.md).
 - <font class="v-gr">Minor: New features and fixes (non-breaking)</font>.
 - <font class="v-ygr">Maintenance: Fixes only (non-breaking)</font>.
 
@@ -66,16 +65,18 @@ The Arista AVD project follows [Semantic Versioning](../versioning/semantic-vers
 
 AVD supports the following upgrade paths:
 
-- Between any minor versions in the same release train, i.e., from 4.1.0 to 4.5.0.
+- Between any minor versions in the same release train, i.e., from 5.3.0 to 5.7.2.
   - Skipping minor versions is supported.
-- Between major release trains, i.e., from 4.10.2 to 5.0.0.
-  - Skipping a major version is not supported, i.e, from 3.8.0 to 5.0.0.
+- Between major release trains, i.e., from 5.7.2 to 6.0.0.
+  - Recommended upgrade path is to do a minor version upgrade to the latest minor version in the current major release train before upgrading to the next major release train.
+    - The upgrade should be done sequentially, i.e., from 5.5.0 to 5.7.2, and address all deprecations warnings before proceeding to upgrade to 6.0.0.
+  - Skipping a major version is not supported, i.e, from 4.10.0 to 6.0.0.
   - Major versions may contain changes requiring updates to the inventory variables. Required updates will be described in a Porting Guide for each major version.
 
-Release notes and porting guide for version 5.x.x can be found here:
+Release notes and porting guide for version 6.x.x can be found here:
 
-- [Release Notes](../release-notes/5.x.x.md)
-- [Porting Guide](../porting-guides/5.x.x.md)
+- [Release Notes](../release-notes/6.x.x.md)
+- [Porting Guide](../porting-guides/6.x.x.md)
 
 ## Support Matrix
 
@@ -83,7 +84,8 @@ The following table depicts the AVD release support matrix, including the timeli
 
 | Release | Initial Release Date | Maintenance Phase | Support Only Phase | End of Support |
 | ------- | -------------------- | ----------------- | ------------------ | -------------- |
-| 5.x.x | Oct-2024 | - | - | - |
+| 6.x.x | Feb-2026 | - | - | - |
+| 5.x.x | Oct-2024 | Feb-2026 | Aug-2026 | Feb-2027 |
 | 4.x.x | Jun-2023 | Oct-2024 | Apr-2025 | Oct-2025 |
 
 ## Ordering Information
@@ -91,4 +93,4 @@ The following table depicts the AVD release support matrix, including the timeli
 | Product Number | Product Description |
 | -------------- | ------------------- |
 | SVC-AVD-SWITCH-1M | 1-Month A-Care Ansible AVD support for 1 Arista EOS-based Switch.<br>10G+ Fixed and Modular Platforms. |
-| SVC-AVD-G-SWITCH-1M | 1-Month A-Care Ansible AVD support for 1 Arista EOS-based Switch.<br>1G/mG Fixed and Modular Platforms.|
+| SVC-AVD-G-SWITCH-1M | 1-Month A-Care Ansible AVD support for 1 Arista EOS-based Switch.<br>1G/mG Fixed and Modular Platforms. |

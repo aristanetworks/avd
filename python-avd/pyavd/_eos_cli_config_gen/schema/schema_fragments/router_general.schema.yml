@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -47,11 +47,18 @@ keys:
                 keys:
                   source_vrf:
                     type: str
+                    required: true
                     convert_types:
                       - int
                   subscribe_policy:
                     type: str
                     description: Route-Map Policy.
+                  subscribe_rcf:
+                    type: str
+                    description: |-
+                      RCF Policy name with parenthesis.
+                      Example: MyFunction(myarg).
+                      Mutually exclusive with `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
             routes:
               type: dict
               keys:
@@ -78,7 +85,7 @@ keys:
           Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.
           Warning:
           This configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.
-          The configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.
+          The configuration can be pushed via CloudVision with the `cv_deploy` role.
         keys:
           code_units:
             type: list

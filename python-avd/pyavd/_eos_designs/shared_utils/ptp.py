@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -25,6 +25,8 @@ class PtpMixin(Protocol):
 
     @cached_property
     def ptp_enabled(self: SharedUtilsProtocol) -> bool:
+        if not self.platform_settings.feature_support.ptp:
+            return False
         default_ptp_enabled = self.inputs.ptp_settings.enabled
         return bool(default(self.node_config.ptp.enabled, default_ptp_enabled))
 

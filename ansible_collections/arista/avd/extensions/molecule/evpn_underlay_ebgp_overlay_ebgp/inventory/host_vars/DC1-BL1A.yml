@@ -1,0 +1,13 @@
+---
+my_special_dci_ethernet_interfaces:
+  - name: Ethernet4000
+    ip_address: 10.3.2.1/21
+
+custom_structured_configuration_list_merge: append
+
+# Test adding an extra ip name-server.
+override_ip_name_server:
+  vrfs:
+    - name: MGMT
+      servers:
+        - ip_address: 1.1.1.1

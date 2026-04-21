@@ -1,0 +1,247 @@
+---
+# This yml file is being used to test the various supported schema attributes for L3 Port-Channel
+ipv4_acls:
+  - name: inACL
+    entries:
+      - sequence: 10
+        action: deny
+        protocol: ip
+        source: any
+        destination: any
+  - name: outACL
+    entries:
+      - sequence: 10
+        action: deny
+        protocol: ip
+        source: any
+        destination: any
+
+flow_tracking_settings:
+  trackers:
+    - name: FT_Test
+      exporters:
+        - name: CV-TELEMETRY
+          collectors:
+            - host: 127.0.0.1
+          local_interface: Loopback0
+          template_interval: 3600000
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: network-services-l3-port-channels
+      id: 101
+      bgp_as: 101
+      l3_port_channels:
+        # Making sure we can define a Port-Channel without ip_address
+        - name: Port-Channel77
+          description: L3 Port-Channel without ip_address
+          member_interfaces:
+            - name: Ethernet77
+              peer_interface: Ethernet77
+              peer: underlay-peer
+        # Test case: Parent Port-Channel created in underlay with member_interfaces
+        # Subinterfaces will be created in network services
+        # This should work without errors
+        - name: Port-Channel78
+          ip_address: 10.10.10.10/24
+          member_interfaces:
+            - name: Ethernet78
+              peer_interface: Ethernet78
+              peer: underlay-peer
+            - name: Ethernet79
+              peer_interface: Ethernet79
+              peer: underlay-peer
+
+tenants:
+  - name: L3PO
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: default
+        vrf_id: 1
+        bgp:
+          enabled: false
+        l3_port_channels:
+          - name: Port-Channel11
+            mode: active
+            peer_port_channel: Po11
+            enabled: true
+            node: network-services-l3-port-channels
+            arp_gratuitous_accept: true
+            member_interfaces:
+              - name: Ethernet10
+                peer_interface: Ethernet10
+                peer: inet-cloud
+              - name: Ethernet11
+          - name: Port-Channel11.100
+            peer: inet-cloud-sub100
+            peer_port_channel: Po11.100
+            enabled: true
+            ip_address: 10.10.10.2/29
+            node: network-services-l3-port-channels
+          - name: Port-Channel11.1111
+            peer: inet-cloud-sub1111
+            peer_port_channel: Po11.111
+            enabled: false
+            ip_address: 10.10.10.11/29
+            node: network-services-l3-port-channels
+          - name: Port-Channel22
+            mode: active
+            peer: inet-cloud
+            peer_port_channel: Po22
+            enabled: true
+            node: network-services-l3-port-channels
+            member_interfaces:
+              - name: Ethernet20
+                peer_interface: Ethernet20
+                peer: inet-cloud
+              - name: Ethernet21
+          - name: Port-Channel23
+            mode: "on"
+            peer: inet-cloud
+            peer_port_channel: Po23
+            enabled: true
+            node: network-services-l3-port-channels
+            member_interfaces:
+              - name: Ethernet23
+                peer_interface: Ethernet23
+                peer: inet-cloud
+              - name: Ethernet24
+                peer_interface: Ethernet24
+                peer: inet-cloud
+      - name: TESTING
+        vrf_id: 2
+        ospf:
+          enabled: true
+          authentication: simple
+          structured_config:
+            auto_cost_reference_bandwidth: 10
+        l3_port_channels:
+          - name: Port-Channel1111
+            mode: active
+            mtu: 1555
+            description: Description list
+            peer: inet-cloud
+            peer_port_channel: Po1111
+            enabled: true
+            node: network-services-l3-port-channels
+            member_interfaces:
+              - name: Ethernet4
+                peer_interface: Ethernet8
+                peer: inet-cloud
+                description: man descr inet-clout eth8
+                speed: forced 100gfull
+                structured_config:
+                  mtu: 1600
+              - name: Ethernet5
+                peer_interface: Ethernet9
+                peer: inet-cloud
+                speed: forced 100gfull
+                structured_config:
+                  mtu: 1600
+          - name: Port-Channel1111.100
+            description: Single description line
+            peer: inet-cloud-sub100
+            peer_port_channel: Po1111.100
+            enabled: true
+            ip_address: 1.1.1.2/29
+            node: network-services-l3-port-channels
+            flow_tracking:
+              enabled: true
+              name: FT_Test
+            ospf:
+              enabled: true
+              point_to_point: false
+              area: "0.0.0.0"
+              cost: 1
+              authentication: simple
+              simple_auth_key: VYW+BCfsYBkuQbloxSLuoQ==
+            structured_config:
+              logging:
+                event:
+                  link_status: true
+                  storm_control_discards: true
+          - name: Port-Channel1111.199
+            enabled: true
+            ip_address: 1.1.1.40/29
+            node: network-services-l3-port-channels
+          - name: Port-Channel1111.200
+            peer: inet-cloud
+            peer_port_channel: Po1111.200
+            encapsulation_dot1q_vlan: 300
+            enabled: true
+            ip_address: 1.1.1.30/29
+            ipv4_acl_in: inACL
+            ipv4_acl_out: outACL
+            node: network-services-l3-port-channels
+            flow_tracking:
+              enabled: true
+            ospf:
+              enabled: true
+              point_to_point: false
+              area: "0.0.0.0"
+              cost: 1
+              authentication: message-digest
+              message_digest_keys:
+                - id: 1
+                  hash_algorithm: sha256
+                  key: ocAzkT2JRNKrbPGT790Geg==
+                - id: 2
+                  key: uVG6QXeIXN+QGY2DP4UCtA==
+            raw_eos_cli: |
+              logging event storm-control discards
+              logging event link-status
+          - name: Port-Channel1112
+            description: incomplete message-digest keys
+            peer: inet-cloud-po1112
+            peer_port_channel: Po1112
+            enabled: true
+            ip_address: 1.1.1.12/29
+            node: network-services-l3-port-channels
+            ospf:
+              enabled: true
+              authentication: "message-digest"
+              message_digest_keys:
+                - id: 1
+                  key: uVG6QXeIXN+QGY2DP4UCtA==
+                  hash_algorithm: "sha256"
+          - name: Port-Channel1113
+            description: empty message_digest_keys with authentication set to message-digest
+            peer: inet-cloud-po1113
+            peer_port_channel: Po1113
+            enabled: true
+            ip_address: 1.1.1.13/29
+            node: network-services-l3-port-channels
+            ospf:
+              enabled: true
+              authentication: "message-digest"
+
+  - name: Subinterface
+    mac_vrf_vni_base: 20000
+    vrfs:
+      - name: subIntVRF
+        vrf_id: 3
+        l3_port_channels:
+          - name: Port-Channel22.100
+            peer: inet-cloud-sub100
+            peer_port_channel: Po22.100
+            enabled: true
+            ip_address: 10.10.10.2/29
+            node: network-services-l3-port-channels
+          # Test case: Subinterface in network services with parent Port-Channel created in underlay
+          # The parent Port-Channel78 is defined in l3leaf.nodes[].l3_port_channels with member_interfaces
+          # This should work without errors
+          - name: Port-Channel78.100
+            peer: inet-cloud-sub100
+            peer_port_channel: Po77.100
+            enabled: true
+            ip_address: 10.10.78.2/29
+            node: network-services-l3-port-channels

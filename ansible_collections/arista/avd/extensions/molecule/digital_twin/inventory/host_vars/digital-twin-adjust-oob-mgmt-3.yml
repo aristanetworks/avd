@@ -1,0 +1,14 @@
+---
+# Inline MGMT, no OOB MGMT set. No adjustment for OOB MGMT interface as it is not generated.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-adjust-oob-mgmt-3
+      id: 1
+      digital_twin:
+        mgmt_ip: 192.168.1.3/32
+      inband_mgmt_ip: 192.168.1.3/32
+      inband_mgmt_vrf: INBAND_MGMT
+
+default_mgmt_method: inband

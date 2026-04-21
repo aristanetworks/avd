@@ -1,0 +1,32 @@
+---
+# Global cv_deploy keys should be overridden by metadata.
+cv_device_tags:
+  - name: Role
+    value: SHOULD_BE_OVERRIDDEN
+
+cv_interface_tags:
+  - interface: Ethernet1
+    tags:
+      - name: Type
+        value: wan
+  - interface: Ethernet2
+    tags:
+      - name: Type
+        value: wan
+  - interface: Ethernet3
+    tags:
+      - name: Type
+        value: wan
+
+# Metadata keys take precedence over global keys.
+metadata:
+  cv_tags:
+    device_tags:
+      - name: Role
+        value: edge
+      - name: Region
+        value: AVD_Land_East
+      - name: Zone
+        value: DEFAULT-ZONE
+      - name: Site
+        value: Site511

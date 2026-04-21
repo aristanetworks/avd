@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -11,7 +11,7 @@ keys:
       table: management-interface-settings
     type: str
     description: |
-      `default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with `eos_designs`:
+      `default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with AVD Design:
         - `aaa_settings`
         - `cv_settings`
         - `logging_settings`

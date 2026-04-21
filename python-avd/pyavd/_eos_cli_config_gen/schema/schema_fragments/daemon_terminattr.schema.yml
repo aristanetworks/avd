@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -38,6 +38,8 @@ keys:
               description: Cluster Name.
             cvaddrs:
               type: list
+              required: true
+              min_length: 1
               description: |
                 Streaming address(es) for CloudVision cluster.
                 - TCP 9910 is used for CV on-prem
@@ -211,12 +213,10 @@ keys:
         type: bool
         description: |
           Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
-      cvcompression:
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: v5.0.0
-        type: str
-        description: |
-          The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
-          There is no need to change the compression scheme.
+      cv_loss_timeout:
+        type: int
+        description: |-
+          Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to CloudVision after a configuration change.
+          The recommended timeout is five minutes.
+        convert_types:
+          - str

@@ -1,0 +1,35 @@
+---
+fabric_name: FABRIC_MISSING_BGP_AS_ON_UPLINK_SWITCH
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - .*-spine
+  - node_type: l3leaf
+    match_hostnames:
+      - .*-leaf
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+    # removing bgp_as which will make AVD sad
+    # bgp_as: 65000
+  nodes:
+    - name: missing-bgp-as-on-uplink-switch-spine
+      id: 10
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.1.0/24
+    uplink_ipv4_pool: 10.0.2.0/24
+    vtep_loopback_ipv4_pool: 192.168.2.0/24
+    bgp_as: 65000-65100
+    uplink_switches: [missing-bgp-as-on-uplink-switch-spine]
+    uplink_interfaces: [Ethernet1]
+  nodes:
+    - name: missing-bgp-as-on-uplink-switch-leaf
+      id: 42
+      uplink_switch_interfaces: [Ethernet3]
+
+expected_error_message: >-
+  'bgp_as' is required but was not found for host 'missing-bgp-as-on-uplink-switch-spine'.

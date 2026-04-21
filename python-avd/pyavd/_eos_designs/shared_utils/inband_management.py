@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -112,7 +112,7 @@ class InbandManagementMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         subnet = ip_network(self.node_config.inband_mgmt_subnet, strict=False)
-        inband_mgmt_ip = str(subnet[3 + self.id])
+        inband_mgmt_ip = str(subnet[3 + self.id + self.node_config.inband_mgmt_subnet_offset])
         return f"{inband_mgmt_ip}/{subnet.prefixlen}"
 
     @cached_property

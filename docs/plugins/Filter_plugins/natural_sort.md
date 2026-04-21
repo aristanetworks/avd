@@ -3,7 +3,7 @@
 title: arista.avd.natural_sort
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -19,7 +19,7 @@ Sort an input list with natural sorting.
 
 Provides the capability to sort a list or a dictionary of integers and strings that contain alphanumeric characters naturally.
 When leveraged on a dictionary, only the key value will be returned.
-An optional `sort_key` can be specified, to sort on content of certain key if the items are dictionaries.
+If the items are dictionaries, a `sort_key` must be specified, to sort on the content of the key.
 
 The filter will return an empty list if the value parsed to `arista.avd.natural_sort` is `None` or `undefined`.
 
@@ -27,10 +27,10 @@ The filter will return an empty list if the value parsed to `arista.avd.natural_
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>_input</samp> | any | True | None |  | List or dictionary |
-| <samp>sort_key</samp> | string | optional | None |  | Key to sort on when sorting a list of dictionaries |
-| <samp>strict</samp> | bool | optional | True |  | When `sort_key` is set, setting strict to true will trigger an exception if the `sort_key` is missing in any items in the input. |
-| <samp>ignore_case</samp> | bool | optional | True |  | When true, strings are coerced to lower case before being compared. |
+| <samp>_input</samp> | any | True | None | - | List or dictionary |
+| <samp>sort_key</samp> | string | optional | None | - | Key to sort on when sorting a list of dictionaries |
+| <samp>strict</samp> | bool | optional | True | - | When `sort_key` is set, setting strict to true will trigger an exception if the `sort_key` is missing in any items in the input. |
+| <samp>ignore_case</samp> | bool | optional | True | - | When true, strings are coerced to lower case before being compared. |
 
 ## Examples
 

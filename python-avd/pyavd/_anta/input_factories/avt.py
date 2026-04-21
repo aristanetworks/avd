@@ -1,18 +1,26 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from ipaddress import IPv4Address, ip_address
+from typing import TYPE_CHECKING
+
 from anta.input_models.avt import AVTPath
 from anta.tests.avt import VerifyAVTSpecificPath
 
+from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
-from ._base_classes import AntaTestInputFactory
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_missing_config
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
-class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory):
+class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPath.Input]):
     """
     Input factory class for the `VerifyAVTSpecificPath` test.
 
@@ -20,22 +28,27 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory):
     `router_path_selection.path_groups.static_peers`.
     """
 
-    def create(self) -> list[VerifyAVTSpecificPath.Input] | None:
-        """Create a list of inputs for the `VerifyAVTSpecificPath` test."""
+    @skip_if_missing_config(StructuredConfigKey.ROUTER_AVT, StructuredConfigKey.ROUTER_PATH_SELECTION)
+    def create(self) -> Iterator[VerifyAVTSpecificPath.Input]:
+        """Generate the inputs for the `VerifyAVTSpecificPath` test."""
         avt_vrfs = self.structured_config.router_adaptive_virtual_topology.vrfs
         path_groups = self.structured_config.router_path_selection.path_groups
-        static_peers: set[str] = set()
+        static_peers: set[IPv4Address] = set()
 
         for path_group in path_groups:
             if not path_group.static_peers:
                 self.logger_adapter.debug(LogMessage.PATH_GROUP_NO_STATIC_PEERS, path_group=path_group.name)
                 continue
             for static_peer in path_group.static_peers:
-                static_peers.add(static_peer.router_ip)
+                static_peer_ip = ip_address(static_peer.router_ip)
+                if isinstance(static_peer_ip, IPv4Address):
+                    static_peers.add(static_peer_ip)
+                else:
+                    self.logger_adapter.debug(LogMessage.PATH_GROUP_IPV6_STATIC_PEER, peer=static_peer.router_ip, path_group=path_group.name)
 
         if not static_peers:
             self.logger_adapter.debug(LogMessage.NO_STATIC_PEERS)
-            return None
+            return
 
         avt_paths: list[AVTPath] = [
             AVTPath(avt_name=avt_profile.name, vrf=vrf.name, destination=dst_address, next_hop=dst_address)
@@ -45,4 +58,8 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory):
             for dst_address in static_peers
         ]
 
-        return [VerifyAVTSpecificPath.Input(avt_paths=natural_sort(avt_paths, sort_key="avt_name"))] if avt_paths else None
+        if not avt_paths:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+            return
+
+        yield VerifyAVTSpecificPath.Input(avt_paths=natural_sort(avt_paths, sort_key="avt_name"))

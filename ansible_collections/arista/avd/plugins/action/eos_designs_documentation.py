@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -15,7 +15,7 @@ from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, write_file
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get_eos_designs_facts_path, write_file
 
 PLUGIN_NAME = "arista.avd.eos_designs_documentation"
 try:
@@ -35,6 +35,7 @@ LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 ARGUMENT_SPEC = {
+    "tmp_dir": {"type": "str", "required": True},
     "structured_config_dir": {"type": "str", "required": True},
     "structured_config_suffix": {"type": "str", "default": "yml"},
     "fabric_documentation_file": {"type": "str", "required": True},
@@ -52,6 +53,8 @@ ARGUMENT_SPEC = {
 
 
 class ActionModule(ActionBase):
+    tmp_dir: str
+
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         self._supports_check_mode = False
 
@@ -65,16 +68,18 @@ class ActionModule(ActionBase):
         setup_module_logging(result)
 
         # Get task arguments and validate them
-        validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
+        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
         validated_args = strip_empties_from_dict(validated_args)
 
         # Converting to json and back to remove any AnsibeUnsafe types
         validated_args = json.loads(json.dumps(validated_args))
 
+        self.tmp_dir = validated_args.get("tmp_dir")
+
         return self.main(validated_args, task_vars, result)
 
     def main(self, validated_args: dict, task_vars: dict, result: dict) -> dict:
-        avd_switch_facts: dict[str, dict] = get(task_vars, "avd_switch_facts", required=True)
+        avd_switch_facts = self.load_facts()
         device_list = list(avd_switch_facts.keys())
 
         # Create dict of all facts.
@@ -120,7 +125,9 @@ class ActionModule(ActionBase):
             result["changed"] = result.get("changed") or changed
 
         if output.digital_twin:
-            content = {str(key).replace("_", "-"): value for key, value in asdict(output.digital_twin).items() if value is not None}
+            content = strip_empties_from_dict(
+                {str(key).replace("_", "-"): list(value) if isinstance(value, tuple) else value for key, value in asdict(output.digital_twin).items()}
+            )
             changed = write_file(
                 content=yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130),
                 filename=validated_args["digital_twin_file"],
@@ -154,6 +161,22 @@ class ActionModule(ActionBase):
 
             # JSON
             return json.load(stream)
+
+    def load_facts(self) -> dict[str, dict]:
+        """
+        Load facts from the temporary file.
+
+        Returns:
+            Dict of facts keyed by hostname.
+        """
+        file_path = get_eos_designs_facts_path(self.tmp_dir)
+
+        if not file_path.exists():
+            msg = f"Missing AVD eos_designs facts to generate documentation ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
+            raise AnsibleActionFail(message=msg)
+
+        with file_path.open(mode="r", encoding="utf-8") as f:
+            return json.load(f)
 
 
 def setup_module_logging(result: dict) -> None:

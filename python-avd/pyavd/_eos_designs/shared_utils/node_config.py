@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -22,7 +22,7 @@ class NodeConfigMixin(Protocol):
     """
 
     @cached_property
-    def node_type_config(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes:
+    def node_type_config(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes | None:
         """
         The object representing the `<node_type_key like l3leaf, spine etc>:` containing the `defaults`, `nodes`, `node_groups` etc.
 
@@ -36,8 +36,9 @@ class NodeConfigMixin(Protocol):
         if node_type_key in self.inputs._dynamic_keys.node_types:
             return self.inputs._dynamic_keys.node_types[node_type_key].value
 
-        msg = f"'type' is set to '{self.type}', for which node configs should use the key '{node_type_key}'. '{node_type_key}' was not found."
-        raise AristaAvdInvalidInputsError(msg)
+        # We did not find a matching node type key. Either this was forgotten or we are using the new `devices` model.
+        # This is caught inside self.node_config.
+        return None
 
     @cached_property
     def node_group_config(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodeGroupsItem | None:
@@ -46,9 +47,10 @@ class NodeConfigMixin(Protocol):
 
         Used by MLAG and WAN HA logic to find out who our MLAG / WAN HA peer is.
         """
-        for node_group in self.node_type_config.node_groups:
-            if self.hostname in node_group.nodes:
-                return node_group
+        if self.node_type_config is not None:
+            for node_group in self.node_type_config.node_groups:
+                if self.hostname in node_group.nodes:
+                    return node_group
 
         return None
 
@@ -57,17 +59,49 @@ class NodeConfigMixin(Protocol):
         """
         NodesItem object containing the fully inherited node config.
 
-        Vars are inherited like:
-        <node_type_key>.defaults ->
-            <node_type_key>.node_groups.[<node_group>] ->
-                <node_type_key>.node_groups.[<node_group>].nodes.[<node>] ->
-                    <node_type_key>.nodes.[<node>]
+        This is coming from either node_type_config (like 'l3leaf:') or from the new 'devices'/'device_profiles' models.
+
+        For node_type_config vars are inherited like (first one wins):
+        <node_type_key>.nodes.[<node>] ->
+            <node_type_key>.node_groups.[<node_group>].nodes.[<node>] ->
+                <node_type_key>.node_groups.[<node_group>] ->
+                    <node_type_key>.defaults
+
+        For 'devices' vars are already inherited in self.device_config (first one wins):
+        devices[name=hostname] ->
+            profile[name=profile] ->
+                parent_profiles[name=parent_profile]
         """
-        node_config = (
-            self.node_type_config.nodes[self.hostname]
-            if self.hostname in self.node_type_config.nodes
-            else EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem()
-        )
+        if self.device_config is not None:
+            # Detect if the device is _also_ defined under the node type model. If so raise an error.
+            if self.node_type_config is not None and (self.hostname in self.node_type_config.nodes or self.node_group_config is not None):
+                if self.hostname in self.inputs.devices:
+                    msg = (
+                        f"Found the device '{self.hostname}' under both '{self.node_type_key_data.key}' and 'devices'. "
+                        "Remove the device from one of the models."
+                    )
+                else:
+                    # Device config was created only from the device_profile key.
+                    msg = (
+                        f"Found the device '{self.hostname}' under '{self.node_type_key_data.key}' but it also has 'device_profile' set. "
+                        "Those two models are mutually exclusive one of them must be removed for this device."
+                    )
+                raise AristaAvdInvalidInputsError(
+                    msg,
+                    host=self.hostname,
+                )
+
+            # Casting as NodesItem so all the code relying on this does not have to care which model the input came from.
+            return self.device_config._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
+
+        if self.node_type_config is None:
+            msg = (
+                f"'type' is set to '{self.type}', for which node configs should use the key '{self.node_type_key_data.key}'"
+                f"but '{self.node_type_key_data.key}' was not found."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+
+        node_config = self.node_type_config.nodes.get(self.hostname, default=EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem())
 
         if self.node_group_config is not None:
             node_config._deepinherit(

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -154,6 +154,9 @@
 | -------- | ----- |
 {%             if platform.fap.buffering_egress.profile is arista.avd.defined %}
 | Buffering Egress Profile | {{ platform.fap.buffering_egress.profile }} |
+{%             endif %}
+{%             if platform.fap.voq.credit_rates_unified is arista.avd.defined %}
+| VOQ Credit Rates Unified | {{ platform.fap.voq.credit_rates_unified }} |
 {%             endif %}
 {%         endif %}
 {%     endif %}

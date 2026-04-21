@@ -1,11 +1,13 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+import logging
 import os
-from collections import namedtuple
 from importlib.metadata import PackageNotFoundError
+from itertools import repeat
 from pathlib import Path
+from typing import NamedTuple
 from unittest.mock import patch
 
 import pytest
@@ -20,6 +22,14 @@ from ansible_collections.arista.avd.plugins.action.verify_requirements import (
 )
 
 
+class VersionInfo(NamedTuple):
+    major: int
+    minor: int
+    micro: int
+    releaselevel: str
+    serial: int
+
+
 @pytest.mark.parametrize(
     ("mocked_version", "expected_return"),
     [
@@ -28,14 +38,12 @@ from ansible_collections.arista.avd.plugins.action.verify_requirements import (
         ((MIN_PYTHON_SUPPORTED_VERSION[0], MIN_PYTHON_SUPPORTED_VERSION[1] + 1, 42, "final", 0), True),
     ],
 )
-def test__validate_python_version(mocked_version, expected_return) -> None:
+def test__validate_python_version(mocked_version: tuple[int, int, int, str, int], expected_return: bool) -> None:
     """TODO: - could add the expected stderr."""
     info = {}
-    result = {}  # As in ansible module result
-    version_info = namedtuple("version_info", "major minor micro releaselevel serial")
     with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys:
-        mocked_sys.version_info = version_info(*mocked_version)
-        ret = _validate_python_version(info, result)
+        mocked_sys.version_info = VersionInfo(*mocked_version)
+        ret = _validate_python_version(info)
     assert ret == expected_return
     assert info["python_version_info"] == {
         "major": mocked_version[0],
@@ -50,14 +58,13 @@ def test__validate_python_version(mocked_version, expected_return) -> None:
 def test__validate_python_version_deprecation_message() -> None:
     """Test to verify the deprecation message."""
     info: dict[str, str | int] = {}
-    result = {}  # As in ansible module result
-    version_info = namedtuple("version_info", "major minor micro releaselevel serial")
     with (
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION", True),
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION", new=True),
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys,
     ):
-        mocked_sys.version_info = version_info(*MIN_PYTHON_SUPPORTED_VERSION, 42, "final", 0)
-        ret = _validate_python_version(info, result)
+        mocked_sys.version_info = VersionInfo(*MIN_PYTHON_SUPPORTED_VERSION, 42, "final", 0)
+        with pytest.warns(DeprecationWarning, match="will drop support for Python version") as recorded_warnings:
+            ret = _validate_python_version(info)
     assert ret is True
     assert info["python_version_info"] == {
         "major": MIN_PYTHON_SUPPORTED_VERSION[0],
@@ -68,7 +75,7 @@ def test__validate_python_version_deprecation_message() -> None:
     }
     assert bool(info["python_path"])
     # Check for deprecation of PYTHON min version
-    assert len(result["deprecations"]) == 1
+    assert len(recorded_warnings) == 1
 
 
 @pytest.mark.parametrize(
@@ -111,7 +118,7 @@ def test__validate_python_version_deprecation_message() -> None:
         ),
     ],
 )
-def test__validate_python_requirements(n_reqs, mocked_version, requirement_version, expected_return) -> None:
+def test__validate_python_requirements(n_reqs: int, mocked_version: str | None, requirement_version: str | None, expected_return: bool) -> None:
     """
     Running with n_reqs requirements.
 
@@ -119,7 +126,7 @@ def test__validate_python_requirements(n_reqs, mocked_version, requirement_versi
          - not testing for wrongly formatted requirements
     """
     result = {}
-    requirements = [f"test-dep>={requirement_version}" for _ in range(n_reqs)]  # pylint: disable=disallowed-name
+    requirements = list(repeat(f"test-dep>={requirement_version}", n_reqs))
     with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.version") as patched_version:
         patched_version.return_value = mocked_version
         if mocked_version is None:
@@ -129,20 +136,16 @@ def test__validate_python_requirements(n_reqs, mocked_version, requirement_versi
 
 
 @pytest.mark.parametrize(
-    ("extras", "running_from_source", "expected_return"),
+    ("running_from_source", "expected_return"),
     [
-        pytest.param(False, False, True, id="pyavd - no extra - not running from source"),
-        pytest.param(True, False, True, id="pyavd - extra - not running from source"),
-        pytest.param(False, True, True, id="pyavd - no extra - running from source"),
-        pytest.param(False, True, True, id="pyavd - extra - running from source"),
+        pytest.param(False, True, id="pyavd - not running from source"),
+        pytest.param(True, True, id="pyavd - running from source"),
     ],
 )
-def test__validate_python_requirements_pyavd(extras: bool, running_from_source: bool, expected_return: bool) -> None:
-    """
-    Testing behavior of the function for pyavd when running from source or not.
-    """
+def test__validate_python_requirements_pyavd(running_from_source: bool, expected_return: bool) -> None:
+    """Testing behavior of the function for pyavd when running from source or not."""
     result = {}
-    req = f"pyavd{'[ansible-collection]' if extras else ''}==5.3.0"
+    req = "pyavd==5.3.0"
 
     requirements = [req]
 
@@ -154,24 +157,14 @@ def test__validate_python_requirements_pyavd(extras: bool, running_from_source: 
         ret = _validate_python_requirements(requirements, result)
         assert ret == expected_return
     python_req_result = result["python_requirements"]
+    assert (
+        len(python_req_result["valid"]) + len(python_req_result["mismatched"]) + len(python_req_result["not_found"]) + len(python_req_result["parsing_failed"])
+        == 1
+    )
     if running_from_source:
         assert python_req_result["valid"]["pyavd"]["installed"] == "running from source"
-        # only pyavd is expected for this test when running from source with or without extra
-        assert (
-            len(python_req_result["valid"])
-            + len(python_req_result["mismatched"])
-            + len(python_req_result["not_found"])
-            + len(python_req_result["parsing_failed"])
-            == 1
-        )
-    elif extras:
-        assert (
-            len(python_req_result["valid"])
-            + len(python_req_result["mismatched"])
-            + len(python_req_result["not_found"])
-            + len(python_req_result["parsing_failed"])
-            > 1
-        )
+    else:
+        assert python_req_result["valid"]["pyavd"]["installed"] == "5.3.0"
 
 
 @pytest.mark.parametrize(
@@ -189,19 +182,13 @@ def test__validate_python_requirements_pyavd(extras: bool, running_from_source: 
             False,
             id="invalid ansible version",
         ),
-        # pytest.param(
-        #     "2.12.6",
-        #     True,
-        #     True,
-        #     id="deprecated ansible version",
-        # ),
     ],
 )
-def test__validate_ansible_version(mocked_running_version, deprecated_version, expected_return) -> None:
+def test__validate_ansible_version(mocked_running_version: str, deprecated_version: bool, expected_return: bool) -> None:
     """TODO: - check that the requires_ansible is picked up from the correct place."""
     info = {}
     result = {}  # As in ansible module result
-    ret = _validate_ansible_version("arista.avd", mocked_running_version, info, result)
+    ret = _validate_ansible_version("arista.avd", mocked_running_version, info)
     assert ret == expected_return
     if expected_return is True and deprecated_version is True:
         # Check for depreecation of old Ansible versions (Not used right now)
@@ -218,7 +205,7 @@ def test__validate_ansible_version(mocked_running_version, deprecated_version, e
         pytest.param(0, None, None, True, id="no requirement"),
     ],
 )
-def test__validate_ansible_collections(n_reqs, mocked_version, requirement_version, expected_return) -> None:
+def test__validate_ansible_collections(n_reqs: int, mocked_version: str | None, requirement_version: str | None, expected_return: bool) -> None:
     """
     Running with n_reqs requirements in the collection file.
 
@@ -230,7 +217,7 @@ def test__validate_ansible_collections(n_reqs, mocked_version, requirement_versi
     # Create the metadata based on test input data
     metadata = {}
     if n_reqs > 0:
-        metadata["collections"] = [{"name": "test-collection"} for _ in range(n_reqs)]  # pylint: disable=disallowed-name
+        metadata["collections"] = list(repeat({"name": "test-collection"}, n_reqs))
         if requirement_version is not None:
             for collection in metadata["collections"]:
                 collection["version"] = requirement_version
@@ -259,7 +246,7 @@ def test__validate_ansible_collections(n_reqs, mocked_version, requirement_versi
         assert ret == expected_return
 
 
-def test__get_running_collection_version_git_not_installed() -> None:
+def test__get_running_collection_version_git_not_installed(caplog: pytest.LogCaptureFixture) -> None:
     """Verify that when git is not found in PATH the function returns properly."""
     # setting PATH to empty string to make sure git is not present
     os.environ["PATH"] = ""
@@ -267,18 +254,19 @@ def test__get_running_collection_version_git_not_installed() -> None:
     os.environ["ANSIBLE_VERBOSITY"] = "3"
     result = {}
     with (
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.Path") as patched_Path,
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.Path") as patched_path,
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path") as patched__get_collection_path,
         patch(
             "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version",
         ) as patched__get_collection_version,
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.display") as patched_display,
     ):
         patched__get_collection_path.return_value = "."
         patched__get_collection_version.return_value = "42.0.0"
         # TODO: Path is less kind than os.path was
-        patched_Path.return_value = Path("/collections/foo/bar/__synthetic__/blah")
+        patched_path.return_value = Path("/collections/foo/bar/__synthetic__/blah")
 
-        _get_running_collection_version("dummy", result)
-        patched_display.vvv.assert_called_once_with("Could not find 'git' executable, returning collection version")
+        with caplog.at_level(logging.DEBUG):
+            _get_running_collection_version("dummy", result)
+
     assert result == {"collection": {"name": "dummy", "path": "/collections/foo/bar", "version": "42.0.0"}}
+    assert "Could not find 'git' executable, returning collection version" in caplog.text

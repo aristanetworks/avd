@@ -1,0 +1,300 @@
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvsourceintf: Management1
+  cvvrf: MGMT
+  disable_aaa: false
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_DC1-LEAF1A_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.4/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: /wCirdje6f59x/1Ev+Oe6xok2+5jD3M/
+  metadata:
+    peer: DC1-LEAF1A
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_DC1-LEAF2A_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.12/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
+  metadata:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet3
+  description: P2P_DC1-LEAF2B_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.20/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: 1/hPOHp0a3PkQCWZMV0yGy6bP8mYwQ5y
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet4
+  description: P2P_DC1-SVC3A_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.28/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: QB0XEg/PJV6Y5HtvjDdiafrPx/g+JRKk
+  metadata:
+    peer: DC1-SVC3A
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet5
+  description: P2P_DC1-SVC3B_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.36/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: QB0XEg/PJV6Y5HtvjDdiafrPx/g+JRKk
+  metadata:
+    peer: DC1-SVC3B
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet6
+  description: P2P_DC1-BL1A_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.44/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: kguPGHyy/wCN0mKibi4dLRL4PmsrU4UP
+  metadata:
+    peer: DC1-BL1A
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: P2P_DC1-BL1B_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.52/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: kguPGHyy/wCN0mKibi4dLRL4PmsrU4UP
+  metadata:
+    peer: DC1-BL1B
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+hostname: DC1-SPINE3
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
+ip_routing: true
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.3/32
+  ospf_area: 0.0.0.0
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.103/24
+  type: oob
+  gateway: 192.168.200.5
+metadata:
+  is_deployed: true
+  platform: vEOS-LAB
+  fabric_name: DC1_FABRIC
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+  vrf: MGMT
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+router_bgp:
+  as: '65001'
+  router_id: 192.168.255.3
+  maximum_paths:
+    paths: 10
+    ecmp: 10
+  updates:
+    wait_install: true
+  bgp_defaults:
+  - distance bgp 20 200 200
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: EVPN-OVERLAY-PEERS
+    metadata:
+      type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    password: q+VNViP5i4rVjW1cxFv2wA==
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.10
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65104'
+    metadata:
+      peer: DC1-BL1A
+    description: DC1-BL1A_Loopback0
+  - ip_address: 192.168.255.11
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65104'
+    metadata:
+      peer: DC1-BL1B
+    description: DC1-BL1B_Loopback0
+  - ip_address: 192.168.255.5
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65101'
+    metadata:
+      peer: DC1-LEAF1A
+    description: DC1-LEAF1A_Loopback0
+  - ip_address: 192.168.255.6
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65102'
+    metadata:
+      peer: DC1-LEAF2A
+    description: DC1-LEAF2A_Loopback0
+  - ip_address: 192.168.255.7
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65102'
+    metadata:
+      peer: DC1-LEAF2B
+    description: DC1-LEAF2B_Loopback0
+  - ip_address: 192.168.255.8
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65103'
+    metadata:
+      peer: DC1-SVC3A
+    description: DC1-SVC3A_Loopback0
+  - ip_address: 192.168.255.9
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65103'
+    metadata:
+      peer: DC1-SVC3B
+    description: DC1-SVC3B_Loopback0
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+router_ospf:
+  process_ids:
+  - id: 101
+    passive_interface_default: true
+    router_id: 192.168.255.3
+    bfd_enable: true
+    no_passive_interfaces:
+    - Ethernet1
+    - Ethernet2
+    - Ethernet3
+    - Ethernet4
+    - Ethernet5
+    - Ethernet6
+    - Ethernet7
+    max_lsa: 12000
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.5
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

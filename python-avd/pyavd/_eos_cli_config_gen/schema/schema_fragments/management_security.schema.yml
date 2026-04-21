@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -105,6 +105,7 @@ keys:
                       - str
       ssl_profiles:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
@@ -274,10 +275,3 @@ keys:
                   local_time:
                     type: bool
                     description: Configuring secret using the local timezone from system clock. Default is UTC.
-      entropy_source:
-        type: str
-        deprecation:
-          warning: true
-          removed: true
-          remove_in_version: v5.0.0
-          new_key: entropy_sources

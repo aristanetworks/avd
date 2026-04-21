@@ -1,10 +1,10 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - router ospf #}
-{% for process_id in router_ospf.process_ids | arista.avd.natural_sort('id') %}
+{% for process_id in router_ospf.process_ids | arista.avd.natural_sort(sort_key='id') %}
 !
 {%     if process_id.vrf is arista.avd.defined %}
 router ospf {{ process_id.id }} vrf {{ process_id.vrf }}
@@ -75,7 +75,7 @@ router ospf {{ process_id.id }}
 {%     if process_id.distribute_list_in.route_map is arista.avd.defined %}
    distribute-list route-map {{ process_id.distribute_list_in.route_map }} in
 {%     endif %}
-{%     for area in process_id.areas | arista.avd.natural_sort('id') %}
+{%     for area in process_id.areas | arista.avd.natural_sort(sort_key='id') %}
 {# OSPF stub area configuration #}
 {%         if area.type is arista.avd.defined("stub") %}
 {%             set stub_area_cli = "area " ~ area.id ~ " stub" %}
@@ -119,7 +119,7 @@ router ospf {{ process_id.id }}
    area {{ area.id }} filter prefix-list {{ area.filter.prefix_list }}
 {%         endif %}
 {%     endfor %}
-{%     for network_prefix in process_id.network_prefixes | arista.avd.natural_sort('ipv4_prefix') %}
+{%     for network_prefix in process_id.network_prefixes | arista.avd.natural_sort(sort_key='ipv4_prefix') %}
 {%         if network_prefix.area is arista.avd.defined %}
    network {{ network_prefix.ipv4_prefix }} area {{ network_prefix.area }}
 {%         endif %}
@@ -219,3 +219,8 @@ router ospf {{ process_id.id }}
    {{ process_id.eos_cli | indent(3, false) }}
 {%     endif %}
 {% endfor %}
+{# eos - ip ospf router-id output-format hostnames #}
+{% if ip_ospf_router_id_output_format_hostnames is arista.avd.defined(true) %}
+!
+ip ospf router-id output-format hostnames
+{% endif %}

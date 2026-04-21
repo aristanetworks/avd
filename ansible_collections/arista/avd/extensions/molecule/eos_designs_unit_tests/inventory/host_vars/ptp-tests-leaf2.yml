@@ -1,0 +1,13 @@
+---
+# Test that auto_clock_identify: false works on a global level:
+ptp_settings:
+  enabled: true
+  auto_clock_identity: false
+  # Test forward_v1
+  forward_v1: true
+  # Test overriding domain
+  domain: 111
+  # Test free_running enabled
+  free_running:
+    enabled: true
+    source_clock_hardware: true

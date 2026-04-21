@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -25,6 +25,7 @@ keys:
               type: str
             interfaces:
               type: str
+              required: true
               description: |
                 Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
                 Multiple interface ranges can be specified separated by ",".
@@ -48,6 +49,17 @@ keys:
               type: str
             description:
               type: str
+              description: |-
+                Description in the form of
+                ```
+                description
+                <description>
+                ```
+            single_line_description:
+              type: str
+              description: |-
+                Description in the form of `description <description>`.
+                Supported in EOS versions 4.32.2F and above.
             ip:
               type: str
             icmp_echo_size:
@@ -84,6 +96,17 @@ keys:
                 - int
             description:
               type: str
+              description: |-
+                Description in the form of
+                ```
+                description
+                <description>
+                ```
+            single_line_description:
+              type: str
+              description: |-
+                Description in the form of `description <description>`.
+                Supported in EOS versions 4.32.2F and above.
             interface_sets:
               type: list
               primary_key: name
@@ -92,6 +115,7 @@ keys:
                 keys:
                   name:
                     type: str
+                  # TODO: Add min_length: 1 and required.
                   interfaces:
                     type: str
             local_interfaces:
@@ -114,6 +138,17 @@ keys:
                     type: str
                   description:
                     type: str
+                    description: |-
+                      Description in the form of
+                      ```
+                      description
+                      <description>
+                      ```
+                  single_line_description:
+                    type: str
+                    description: |-
+                      Description in the form of `description <description>`.
+                      Supported in EOS versions 4.32.2F and above.
                   ip:
                     type: str
                   icmp_echo_size:

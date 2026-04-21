@@ -9,8 +9,8 @@ git config --global --add safe.directory /data
 git config --global --add safe.directory /site
 
 # install pip requirements
-echo "Installing Python requirements"
-pip install -r docs/requirements.txt --upgrade
+echo "Installing Documentation python requirements"
+pip install --group doc --upgrade
 
 # Start mkdocs
 echo "Starting mkdocs"

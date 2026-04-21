@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 #
@@ -21,6 +21,11 @@ except ImportError as e:
             orig_exc=e,
         ),
     )
+
+try:
+    from ansible.template import accept_args_markers
+except ImportError:
+    accept_args_markers = None
 
 DOCUMENTATION = r"""
 ---
@@ -61,6 +66,9 @@ _value:
 
 class FilterModule:
     def filters(self) -> dict:
+        wrapped_filter = wrap_filter(PLUGIN_NAME)(default)
+        if accept_args_markers is not None:
+            wrapped_filter = accept_args_markers(wrapped_filter)
         return {
-            "default": wrap_filter(PLUGIN_NAME)(default),
+            "default": wrapped_filter,
         }

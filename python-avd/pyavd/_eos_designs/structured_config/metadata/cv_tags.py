@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -20,15 +20,10 @@ if TYPE_CHECKING:
 
 CAMPUS_TOPOLOGY_NETWORK_TYPE = "campusV2"
 INVALID_CUSTOM_DEVICE_TAGS = [
-    "topology_hint_network_type",
-    "topology_hint_type",
     "topology_type",
-    "topology_hint_datacenter",
     "topology_datacenter",
-    "topology_hint_rack",
     "topology_rack",
     "topology_pod",
-    "topology_hint_pod",
     "eos",
     "eostrain",
     "ztp",
@@ -42,12 +37,8 @@ INVALID_CUSTOM_DEVICE_TAGS = [
     "tapagg",
     "hostname",
     "terminattr",
-    "Campus",
-    "Campus-Pod",
-    "Access-Pod",
-    "Role",
 ]
-"""These tag names overlap with CV system tags or topology_hints"""
+"""These tag names overlap with CV system tags."""
 CAMPUS_LINK_TYPE_MAP = {
     "downlink": "Downlink",
     "egress": "Egress",
@@ -177,7 +168,7 @@ class CvTagsMixin(Protocol):
                 raise AristaAvdError(msg)
 
             # Silently ignoring empty values since structured config may vary between devices.
-            if value:
+            if value is not None and value != "":
                 self.structured_config.metadata.cv_tags.device_tags.append_new(name=generate_tag.name, value=str(value))
 
     def _set_interface_tags(self: AvdStructuredConfigMetadataProtocol) -> None:
@@ -211,7 +202,7 @@ class CvTagsMixin(Protocol):
                     raise AristaAvdError(msg)
 
                 # Silently ignoring empty values since structured config may vary between devices.
-                if value:
+                if value is not None and value != "":
                     tags.append(EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.TagsItem(name=generate_tag.name, value=str(value)))
 
             if self.shared_utils.is_cv_pathfinder_router:
@@ -320,11 +311,11 @@ class CvTagsMixin(Protocol):
         tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
         tags.append_new(name="Link-Type", value="AVD-Managed")
 
-        if interface_peer := generic_interface.peer:
+        if interface_peer := generic_interface.metadata.peer:
             if interface_peer in self.shared_utils.all_fabric_devices:
                 tags.append_new(name="Link-Type", value="Fabric")
 
-            if generic_interface.peer_type == "mlag_peer":
+            if generic_interface.metadata.peer_type == "mlag_peer":
                 tags.append_new(name="Link-Type", value="MLAG")
             elif self.facts.uplink_peers and interface_peer in self.facts.uplink_peers:
                 tags.append_new(name="Link-Type", value="Uplink")

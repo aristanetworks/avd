@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -14,10 +14,43 @@ keys:
       keys:
         name:
           type: str
+        vrfs:
+          type: list
+          primary_key: name
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                convert_types:
+                  - int
+                description: VRF name. Use "default" for the default VRF.
+              name_servers:
+                type: list
+                required: true
+                primary_key: ip_address
+                min_length: 1
+                items:
+                  type: dict
+                  keys:
+                    ip_address:
+                      type: str
+                      description: IPv4 or IPv6 address for DNS server.
+                    priority:
+                      description: Priority value (lower is first).
+                      type: int
+                      convert_types:
+                        - str
+                      min: 0
+                      max: 15
         name_servers:
           type: list
           primary_key: ip_address
           allow_duplicate_primary_key: true
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -39,15 +72,16 @@ keys:
                 max: 15
         dns_domain:
           type: str
-        ip_domain_list:
-          type: str
-          description: Set domain names to complete unqualified host names.
-          deprecation:
-            warning: true
-            new_key: ip_domain_lists
-            remove_in_version: 6.0.0
         ip_domain_lists:
           type: list
           description: Set domain names to complete unqualified host names.
           items:
             type: str
+        ip_domain_list:
+          type: str
+          description: Set domain names to complete unqualified host names.
+          deprecation:
+            removed: true
+            warning: true
+            new_key: ip_domain_lists
+            remove_in_version: 6.0.0

@@ -1,9 +1,11 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import Protocol
+from functools import cached_property
+from ipaddress import AddressValueError, IPv4Address
+from typing import TYPE_CHECKING, Any, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import (
@@ -12,25 +14,34 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, default, get_v2
-from pyavd.j2filters import natural_sort
+from pyavd._utils import default, get_v2
+from pyavd.j2filters import natural_sort, secure_hash
 
+from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
+from .dot1x import Dot1xMixin
 from .management_ssh import ManagementSshMixin
+from .monitor_sessions import MonitorSessionsMixin
 from .ntp import NtpMixin
 from .platform_mixin import PlatformMixin
 from .router_general import RouterGeneralMixin
 from .snmp_server import SnmpServerMixin
 from .utils import UtilsMixin
 
+if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
 
 class AvdStructuredConfigBaseProtocol(
+    AddressLockingMixin,
     DaemonTerminattrMixin,
+    Dot1xMixin,
     ManagementSshMixin,
     NtpMixin,
     SnmpServerMixin,
     RouterGeneralMixin,
     PlatformMixin,
+    MonitorSessionsMixin,
     UtilsMixin,
     StructuredConfigGeneratorProtocol,
     Protocol,
@@ -53,15 +64,6 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.hostname = self.shared_utils.hostname
 
     @structured_config_contributor
-    def is_deployed(self) -> None:
-        self.structured_config.is_deployed = self.inputs.is_deployed
-
-    @structured_config_contributor
-    def serial_number(self) -> None:
-        """serial_number variable set based on serial_number fact."""
-        self.structured_config.serial_number = self.shared_utils.serial_number
-
-    @structured_config_contributor
     def router_bgp(self) -> None:
         """
         Set the structured config for router_bgp.
@@ -71,20 +73,19 @@ class AvdStructuredConfigBaseProtocol(
         if self.shared_utils.bgp_as is None:
             return
 
+        # Keeping None since EOS default is asplain.
+        self.structured_config.router_bgp.as_notation = "asdot" if self.shared_utils.bgp_as_notation == "asdot" else None
+
         platform_bgp_update_wait_for_convergence = self.shared_utils.platform_settings.feature_support.bgp_update_wait_for_convergence
         platform_bgp_update_wait_install = self.shared_utils.platform_settings.feature_support.bgp_update_wait_install
 
-        if self.shared_utils.is_wan_router:
-            # Special defaults for WAN routers
-            default_maximum_paths = 16
-            default_ecmp = None
-        else:
-            default_maximum_paths = 4
-            default_ecmp = 4
+        default_maximum_paths = 16 if self.shared_utils.is_wan_router else 4
 
         self.structured_config.router_bgp._update(
-            router_id=self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None, field_as=self.shared_utils.bgp_as
+            router_id=self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None,
+            field_as=self.shared_utils.formatted_bgp_as,
         )
+
         if bgp_defaults := self.shared_utils.node_config.bgp_defaults:
             self.structured_config.router_bgp.bgp_defaults = bgp_defaults._cast_as(EosCliConfigGen.RouterBgp.BgpDefaults)
 
@@ -92,15 +93,7 @@ class AvdStructuredConfigBaseProtocol(
             self.structured_config.router_bgp.distance = bgp_distance
 
         self.structured_config.router_bgp.bgp.default.ipv4_unicast = self.inputs.bgp_default_ipv4_unicast
-        self.structured_config.router_bgp.maximum_paths._update(
-            paths=self.inputs.bgp_maximum_paths or default_maximum_paths, ecmp=self.inputs.bgp_ecmp or default_ecmp
-        )
-
-        if self.shared_utils.underlay_bgp or self.shared_utils.is_wan_router or self.shared_utils.l3_bgp_neighbors:
-            self.structured_config.router_bgp.redistribute.connected.enabled = True
-            if (self.shared_utils.overlay_routing_protocol != "none" or self.shared_utils.is_wan_router) and self.inputs.underlay_filter_redistribute_connected:
-                # Use route-map for redistribution
-                self.structured_config.router_bgp.redistribute.connected.route_map = "RM-CONN-2-BGP"
+        self.structured_config.router_bgp.maximum_paths._update(paths=self.inputs.bgp_maximum_paths or default_maximum_paths, ecmp=self.inputs.bgp_ecmp)
 
         if self.inputs.bgp_update_wait_for_convergence and platform_bgp_update_wait_for_convergence:
             self.structured_config.router_bgp.updates.wait_for_convergence = True
@@ -119,6 +112,11 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def static_routes(self) -> None:
         """static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf."""
+        # Skip static routes if mgmt_ip is set to "dhcp" and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true,
+        # since DHCP will provide the default route
+        if self.shared_utils.node_config.mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+            return
+
         if self.shared_utils.mgmt_gateway is None:
             return
 
@@ -165,8 +163,8 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def router_multicast(self) -> None:
-        """router_multicast set based on underlay_multicast, underlay_router and switch.evpn_multicast facts."""
-        if not self.shared_utils.underlay_multicast:
+        """router_multicast set based on underlay_multicast_<>, underlay_router and switch.evpn_multicast facts."""
+        if not self.shared_utils.any_multicast_enabled:
             return
 
         self.structured_config.router_multicast.ipv4.routing = True
@@ -253,8 +251,15 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def enable_password(self) -> None:
-        """enable_password.disable is always set to match EOS default config and historic configs."""
-        self.structured_config.enable_password.disabled = True
+        """enable_password.disable is set to match EOS default config and historic configs if aaa_settings.enable_password.password is not defined."""
+        if self.inputs.aaa_settings.enable_password.password:
+            self.structured_config.enable_password._update(hash_algorithm="sha512", key=self.inputs.aaa_settings.enable_password.password)
+        elif self.inputs.aaa_settings.enable_password.cleartext_password:
+            salt = self.get_salt(self.shared_utils.hostname)
+            secure_hash_password = secure_hash(self.inputs.aaa_settings.enable_password.cleartext_password, salt)
+            self.structured_config.enable_password._update(hash_algorithm="sha512", key=secure_hash_password)
+        else:
+            self.structured_config.enable_password.disabled = True
 
     @structured_config_contributor
     def transceiver_qsfp_default_mode_4x10(self) -> None:
@@ -304,20 +309,19 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.queue_monitor_length = queue_monitor_length
 
     @structured_config_contributor
-    def ip_name_servers(self) -> None:
+    def ip_name_server(self) -> None:
         """Set ip name servers using old name_servers model and new dns_settings model. Results will be combined."""
-        for name_server in self.inputs.name_servers:
-            self.structured_config.ip_name_servers.append_new(ip_address=name_server, vrf=self.inputs.mgmt_interface_vrf)
-
         if not self.inputs.dns_settings:
             return
 
         if self.inputs.dns_settings.domain:
             self.structured_config.dns_domain = self.inputs.dns_settings.domain
 
+        self.structured_config.domain_list = EosCliConfigGen.DomainList(self.inputs.dns_settings.domain_list)
+
         vrfs = self.inputs.dns_settings.vrfs
         for server in self.inputs.dns_settings.servers:
-            server_vrf, source_interface = self._get_vrf_and_source_interface(
+            server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
                 vrfs=vrfs,
                 set_source_interfaces=self.inputs.dns_settings.set_source_interfaces,
@@ -326,7 +330,8 @@ class AvdStructuredConfigBaseProtocol(
             if source_interface:
                 self.structured_config.ip_domain_lookup.source_interfaces.append_new(name=source_interface, vrf=server_vrf if server_vrf != "default" else None)
 
-            self.structured_config.ip_name_servers.append_new(ip_address=server.ip_address, vrf=server_vrf, priority=server.priority)
+            ip_name_server_vrf = self.structured_config.ip_name_server.vrfs.obtain(server_vrf)
+            ip_name_server_vrf.servers.append_new(ip_address=server.ip_address, priority=server.priority)
 
     @structured_config_contributor
     def logging(self) -> None:
@@ -362,7 +367,7 @@ class AvdStructuredConfigBaseProtocol(
 
         for host in settings.hosts:
             # Determine the correct VRF and source interface for the host
-            host_vrf, source_interface = self._get_vrf_and_source_interface(
+            host_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=host.vrf,
                 vrfs=settings.vrfs,
                 set_source_interfaces=True,
@@ -373,7 +378,11 @@ class AvdStructuredConfigBaseProtocol(
             if source_interface:
                 # Add to local tmp object to detect conflicts.
                 vrf_logging_config.append_new(name=host_vrf, source_interface=source_interface)
-                logging_vrf.source_interface = source_interface
+                # Set either local_interface or source_interface based on use_local_interface_cli
+                if settings.use_local_interface_cli:
+                    logging_vrf.local_interface = source_interface
+                else:
+                    logging_vrf.source_interface = source_interface
 
             # Add host entry under the correct VRF
             logging_vrf.hosts.append_new(
@@ -394,6 +403,8 @@ class AvdStructuredConfigBaseProtocol(
         """interface_defaults set based on default_interface_mtu."""
         if self.shared_utils.default_interface_mtu is not None:
             self.structured_config.interface_defaults.mtu = self.shared_utils.default_interface_mtu
+        if self.inputs.general_settings.interface_defaults.ethernet_shutdown:
+            self.structured_config.interface_defaults.ethernet.shutdown = True
 
     @structured_config_contributor
     def spanning_tree(self) -> None:
@@ -429,11 +440,42 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def local_users(self) -> None:
-        """local_users set based on local_users data model."""
-        if not self.inputs.local_users:
+        """local_users set based on global aaa_settings.local_users data model."""
+        # Exit early if no local users are defined in inputs
+        if not (local_users := self.inputs.aaa_settings.local_users):
             return
 
-        self.structured_config.local_users = self.inputs.local_users._natural_sorted()
+        for local_user in local_users._natural_sorted():
+            local_user_data = EosCliConfigGen.LocalUsersItem(name=local_user.name, disabled=local_user.disabled)
+
+            # If the user is disabled, append it as-is and skip further processing
+            if local_user_data.disabled is True:
+                self.structured_config.local_users.append(local_user_data)
+                continue
+            local_user_data._update(
+                privilege=local_user.privilege,
+                role=local_user.role,
+                ssh_key=local_user.ssh_key,
+                secondary_ssh_key=local_user.secondary_ssh_key,
+                shell=local_user.shell,
+            )
+
+            # Pre-hashed SHA-512 password
+            if local_user.sha512_password:
+                local_user_data.sha512_password = local_user.sha512_password
+            # Cleartext password (hashed using a deterministic salt)
+            elif local_user.cleartext_password:
+                salt = self.get_salt(f"{self.shared_utils.hostname}-{local_user.name}")
+                password = secure_hash(local_user.cleartext_password, salt)
+                local_user_data.sha512_password = password
+            # Explicitly configure user with no password
+            elif local_user.no_password:
+                local_user_data.no_password = True
+                # EOS requires either no_password: true or a secret to be set.
+            else:
+                msg = f"Either 'sha512_password', 'cleartext_password' or 'no_password: true' must be set for username '{local_user.name}'."
+                raise AristaAvdInvalidInputsError(msg)
+            self.structured_config.local_users.append(local_user_data)
 
     @structured_config_contributor
     def clock(self) -> None:
@@ -454,22 +496,34 @@ class AvdStructuredConfigBaseProtocol(
     def management_interfaces(self) -> None:
         """management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts, mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables."""
         if self.shared_utils.node_config.mgmt_ip or self.shared_utils.node_config.ipv6_mgmt_ip:
+            # Check if mgmt_ip is set to "dhcp"
+            is_dhcp = self.shared_utils.node_config.mgmt_ip == "dhcp"
+
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,
                 description=self.inputs.mgmt_interface_description,
                 shutdown=False,
                 vrf=self.inputs.mgmt_interface_vrf,
                 ip_address=self.shared_utils.node_config.mgmt_ip,
-                gateway=self.shared_utils.mgmt_gateway,
                 type="oob",
             )
+
+            # For DHCP, automatically accept default route instead of using gateway
+            if is_dhcp and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+                interface_settings.dhcp_client_accept_default_route = True
+            else:
+                # For static IP, set gateway (metadata field, actual routing done via static_routes)
+                interface_settings.gateway = self.shared_utils.mgmt_gateway
+
             """
             inserting ipv6 variables if ipv6_mgmt_ip is set
             """
             if self.shared_utils.node_config.ipv6_mgmt_ip:
                 interface_settings._update(
-                    ipv6_enable=True, ipv6_address=self.shared_utils.node_config.ipv6_mgmt_ip, ipv6_gateway=self.shared_utils.ipv6_mgmt_gateway
+                    ipv6_enable=True,
+                    ipv6_gateway=self.shared_utils.ipv6_mgmt_gateway,
                 )
+                interface_settings.ipv6_addresses.append(self.shared_utils.node_config.ipv6_mgmt_ip)
             self.structured_config.management_interfaces.append(interface_settings)
 
     @structured_config_contributor
@@ -511,19 +565,16 @@ class AvdStructuredConfigBaseProtocol(
                 default_services=self.inputs.management_eapi.default_services,
             )
 
-            # TODO: For backward compatibility, checking in advance if we are using the default value
-            # remove in AVD 6.0 as well as the try/except below
-            using_default_vrfs = self.inputs.management_eapi._get_defined_attr("vrfs") == Undefined
-
             for vrf in self.inputs.management_eapi.vrfs:
                 if vrf.enabled:
-                    try:
-                        vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
-                    except AristaAvdInvalidInputsError:
-                        if not using_default_vrfs:
-                            raise
-                        vrf_name = self.inputs.mgmt_interface_vrf
+                    vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
                     self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
+
+        # Enforce eAPI management access in default VRF for ACT Digital Twin if required
+        if self._act_ensure_eapi_access:
+            self.structured_config.management_api_http.enable_https = True
+            # Create item for default VRF if not present. If present, remove IPv4 ACL.
+            self.structured_config.management_api_http.enable_vrfs.obtain("default").access_group = None
 
     @structured_config_contributor
     def link_tracking_groups(self) -> None:
@@ -590,9 +641,30 @@ class AvdStructuredConfigBaseProtocol(
             ttl=self.shared_utils.node_config.ptp.ttl,
             domain=default(self.shared_utils.node_config.ptp.domain, default_ptp_domain),
             monitor=self.get_ptp_monitor(),
+            forward_v1=default(self.shared_utils.node_config.ptp.forward_v1, self.inputs.ptp_settings.forward_v1) or None,
         )
 
-        self.structured_config.ptp.source.ip = self.shared_utils.node_config.ptp.source_ip
+        self.structured_config.ptp.free_running.enabled = default(
+            self.shared_utils.node_config.ptp.free_running.enabled, self.inputs.ptp_settings.free_running.enabled
+        )
+        self.structured_config.ptp.free_running.source_clock_hardware = default(
+            self.shared_utils.node_config.ptp.free_running.source_clock_hardware, self.inputs.ptp_settings.free_running.source_clock_hardware
+        )
+        source_ip = self.shared_utils.node_config.ptp.source_ip
+
+        if source_ip == "router_id":
+            if self.shared_utils.router_id is None:
+                msg = "PTP source IP is set to 'ptp.source_ip: router_id' but no router ID is configured for this device."
+                raise AristaAvdInvalidInputsError(msg)
+            self.structured_config.ptp.source.ip = self.shared_utils.router_id
+        elif source_ip is not None:
+            try:
+                IPv4Address(source_ip)
+                self.structured_config.ptp.source.ip = source_ip
+            except AddressValueError:
+                msg = f"Invalid PTP source IP 'ptp.source_ip: {source_ip}'. The value must be either 'router_id' or a valid IPv4 address."
+                raise AristaAvdInvalidInputsError(msg) from None
+
         self.structured_config.ptp.message_type.general.dscp = self.shared_utils.node_config.ptp.dscp.general_messages
         self.structured_config.ptp.message_type.event.dscp = self.shared_utils.node_config.ptp.dscp.event_messages
 
@@ -638,17 +710,30 @@ class AvdStructuredConfigBaseProtocol(
         if eos_cli:
             self.structured_config.eos_cli = eos_cli
 
-    # need to update return type in self._build_source_interfaces() method, then update the below cached_property where this method is used
-    @structured_config_contributor
-    def ip_radius_source_interfaces(self) -> None:
-        """Parse source_interfaces.radius and return list of source_interfaces."""
-        if not (inputs := self.inputs.source_interfaces.radius):
-            return
+    def _add_radius_server_config(self, server: EosDesigns.AaaSettings.Radius.ServersItem, server_vrf: str) -> None:
+        """
+        Add radius server configuration to the appropriate VRF.
 
-        if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Radius", output_type=EosCliConfigGen.IpRadiusSourceInterfaces
-        ):
-            self.structured_config.ip_radius_source_interfaces.extend(source_interfaces)
+        Args:
+            server: The RADIUS server configuration from EOS Designs inputs.
+            server_vrf: The VRF name where the server should be configured.
+        """
+        server_kwargs: dict[str, Any] = {"host": server.host}
+        if server.tls.enabled:
+            server_kwargs["tls"] = server.tls
+        else:
+            server_kwargs["key"] = self._get_tacacs_or_radius_server_password(server)
+
+        server_kwargs["timeout"] = server.timeout
+        server_kwargs["retransmit"] = server.retransmit
+
+        if server_vrf == "default":
+            self.structured_config.radius_server.servers.append_new(**server_kwargs)
+        else:
+            radius_server_vrf = self.structured_config.radius_server.vrfs.obtain(server_vrf)
+            if server.tls.enabled:
+                server_kwargs["tls"] = server.tls._cast_as(EosCliConfigGen.RadiusServer.VrfsItem.ServersItem.Tls)
+            radius_server_vrf.servers.append_new(**server_kwargs)
 
     @structured_config_contributor
     def radius_servers(self) -> None:
@@ -657,18 +742,19 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         for server in self.inputs.aaa_settings.radius.servers:
-            server_vrf, source_interface = self._get_vrf_and_source_interface(
+            server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
                 vrfs=self.inputs.aaa_settings.radius.vrfs,
                 set_source_interfaces=True,
                 context=f"aaa_settings.radius.servers[host={server.host}].vrf",
             )
             if source_interface:
-                self.structured_config.ip_radius_source_interfaces.append_unique(
-                    EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
-                )
+                if server_vrf == "default":
+                    self.structured_config.ip_radius.source_interface = source_interface
+                else:
+                    self.structured_config.ip_radius.vrfs.append_new(name=server_vrf, source_interface=source_interface)
 
-            self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
+            self._add_radius_server_config(server, server_vrf)
 
             for group in server.groups:
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
@@ -676,40 +762,36 @@ class AvdStructuredConfigBaseProtocol(
                 radius_group.servers.append_new(server=server.host, vrf=server_vrf)
 
     @structured_config_contributor
-    def ip_tacacs_source_interfaces(self) -> None:
-        """Parse source_interfaces.tacacs and return list of source_interfaces."""
-        if not (inputs := self.inputs.source_interfaces.tacacs):
-            return
-
-        if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Tacacs", output_type=EosCliConfigGen.IpTacacsSourceInterfaces
-        ):
-            self.structured_config.ip_tacacs_source_interfaces.extend(source_interfaces)
-
-    @structured_config_contributor
     def tacacs_servers(self) -> None:
         """Parse AAA tacacs server configurations and update structured config with server and source interface details."""
         if not self.inputs.aaa_settings.tacacs:
             return
 
+        all_tacacs_servers = EosCliConfigGen.TacacsServers.Hosts()
         for server in self.inputs.aaa_settings.tacacs.servers:
-            server_vrf, source_interface = self._get_vrf_and_source_interface(
+            server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
                 vrfs=self.inputs.aaa_settings.tacacs.vrfs,
                 set_source_interfaces=True,
                 context=f"aaa_settings.tacacs.servers[host={server.host}].vrf",
             )
+
             if source_interface:
-                self.structured_config.ip_tacacs_source_interfaces.append_unique(
-                    EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
-                )
+                if server_vrf == "default":
+                    self.structured_config.ip_tacacs.source_interface = source_interface
+                else:
+                    self.structured_config.ip_tacacs.vrfs.append_new(name=server_vrf, source_interface=source_interface)
 
-            self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
+            tacacs_server = EosCliConfigGen.TacacsServers.HostsItem(host=server.host, vrf=server_vrf)
+            if not all_tacacs_servers.__contains__(tacacs_server):
+                all_tacacs_servers.append(tacacs_server)
+                server_key = self._get_tacacs_or_radius_server_password(server)
+                self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key, timeout=server.timeout)
 
-            for group in server.groups:
-                tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
-                tacacs_group.type = "tacacs+"
-                tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
+                for group in server.groups:
+                    tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
+                    tacacs_group.type = "tacacs+"
+                    tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
 
         self.structured_config.tacacs_servers.policy_unknown_mandatory_attribute_ignore = (
             self.inputs.aaa_settings.tacacs.policy.ignore_unknown_mandatory_attribute
@@ -718,23 +800,26 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def aaa_authentication(self) -> None:
         """Assign AAA authentication configuration from inputs to structured config."""
-        if not (aaa_authentication := self.inputs.aaa_settings.authentication):
+        if not self.inputs.aaa_settings.authentication:
             return
-        self.structured_config.aaa_authentication = aaa_authentication
+
+        self.structured_config.aaa_authentication = self.inputs.aaa_settings.authentication._cast_as(new_type=EosCliConfigGen.AaaAuthentication)
 
     @structured_config_contributor
     def aaa_authorization(self) -> None:
         """Assign AAA authorization configuration from inputs to structured config."""
-        if not (aaa_authorization := self.inputs.aaa_settings.authorization):
+        if not self.inputs.aaa_settings.authorization:
             return
-        self.structured_config.aaa_authorization = aaa_authorization
+
+        self.structured_config.aaa_authorization = self.inputs.aaa_settings.authorization._cast_as(new_type=EosCliConfigGen.AaaAuthorization)
 
     @structured_config_contributor
     def aaa_accounting(self) -> None:
         """Assign AAA accounting configuration from inputs to structured config."""
-        if not (aaa_accounting := self.inputs.aaa_settings.accounting):
+        if not self.inputs.aaa_settings.accounting:
             return
-        self.structured_config.aaa_accounting = aaa_accounting
+
+        self.structured_config.aaa_accounting = self.inputs.aaa_settings.accounting._cast_as(new_type=EosCliConfigGen.AaaAccounting)
 
     @structured_config_contributor
     def aaa_root_login(self) -> None:
@@ -744,37 +829,48 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.aaa_root.secret.sha512_password = aaa_root_login.sha512_password
 
     @structured_config_contributor
-    def ip_ssh_client_source_interfaces(self) -> None:
+    def ip_ssh_client(self) -> None:
         """Parse source_interfaces.ssh_client and return list of source_interfaces."""
         if not (inputs := self.inputs.source_interfaces.ssh_client):
             return
 
         if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP SSH Client", output_type=EosCliConfigGen.IpSshClientSourceInterfaces
+            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP SSH Client", output_type=EosCliConfigGen.IpSshClient
         ):
-            self.structured_config.ip_ssh_client_source_interfaces = source_interfaces
+            self.structured_config.ip_ssh_client = source_interfaces
 
     @structured_config_contributor
-    def ip_domain_lookup(self) -> None:
-        """Parse source_interfaces.domain_lookup and return dict with nested source_interfaces list."""
-        if not (inputs := self.inputs.source_interfaces.domain_lookup):
-            return
-
-        if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Domain Lookup", output_type=EosCliConfigGen.IpDomainLookup.SourceInterfaces
-        ):
-            self.structured_config.ip_domain_lookup.source_interfaces = source_interfaces
-
-    @structured_config_contributor
-    def ip_http_client_source_interfaces(self) -> None:
+    def ip_http_client(self) -> None:
         """Parse source_interfaces.http_client and set list of source_interfaces."""
         if not (inputs := self.inputs.source_interfaces.http_client):
             return
 
         if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP HTTP Client", output_type=EosCliConfigGen.IpHttpClientSourceInterfaces
+            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP HTTP Client", output_type=EosCliConfigGen.IpHttpClient
         ):
-            self.structured_config.ip_http_client_source_interfaces = source_interfaces
+            self.structured_config.ip_http_client = source_interfaces
+
+    @structured_config_contributor
+    def arp(self: AvdStructuredConfigBaseProtocol) -> None:
+        """
+        Set ARP configuration.
+
+        ARP set based on "general_settings.arp" data-model.
+        """
+        if not (arp_settings := self.inputs.general_settings.arp):
+            return
+
+        self.structured_config.arp.persistent = arp_settings.persistent
+        self.structured_config.arp.aging.timeout_default = arp_settings.aging.timeout_default
+
+    @structured_config_contributor
+    def ip_icmp_redirect(self: AvdStructuredConfigBaseProtocol) -> None:
+        """
+        Set IP ICMP redirect.
+
+        IP ICMP redirect set based on "general_settings.ip_icmp_redirect" data-model.
+        """
+        self.structured_config.ip_icmp_redirect = self.inputs.general_settings.ip_icmp_redirect
 
     @structured_config_contributor
     def prefix_lists(self) -> None:
@@ -788,6 +884,46 @@ class AvdStructuredConfigBaseProtocol(
     def struct_cfgs(self) -> None:
         if self.shared_utils.platform_settings.structured_config:
             self.custom_structured_configs.root.append(self.shared_utils.platform_settings.structured_config)
+
+    @cached_property
+    def _act_ensure_eapi_access(self) -> bool:
+        """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
+        return self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_ensure_eapi_access
+
+    @structured_config_contributor
+    def management_settings(self) -> None:
+        """Configures management settings based on the input data model."""
+        if not (management_settings := self.inputs.management_settings):
+            return
+
+        # Apply management console settings
+        if management_settings.console:
+            self.structured_config.management_console = management_settings.console._cast_as(EosCliConfigGen.ManagementConsole)
+
+        # Apply banner settings
+        if management_settings.banners:
+            self.structured_config.banners = management_settings.banners._cast_as(EosCliConfigGen.Banners)
+
+    @structured_config_contributor
+    def ip_dhcp_relay(self: AvdStructuredConfigBaseProtocol) -> None:
+        """Set ip dhcp relay global configurations."""
+        if not (relay_settings := self.inputs.general_settings.dhcp_relay):
+            return
+
+        if relay_settings.information_option:
+            self.structured_config.ip_dhcp_relay.information_option = relay_settings.information_option
+
+    @structured_config_contributor
+    def dhcp_relay(self: AvdStructuredConfigBaseProtocol) -> None:
+        """Set general relay agent configuration."""
+        if not (relay_settings := self.inputs.general_settings.dhcp_relay):
+            return
+
+        if self.shared_utils.vtep:
+            if relay_settings.tunnel_requests_disabled:
+                self.structured_config.dhcp_relay.tunnel_requests_disabled = relay_settings.tunnel_requests_disabled
+            if self.shared_utils.mlag and relay_settings.mlag_peerlink_requests_disabled:
+                self.structured_config.dhcp_relay.mlag_peerlink_requests_disabled = relay_settings.mlag_peerlink_requests_disabled
 
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):

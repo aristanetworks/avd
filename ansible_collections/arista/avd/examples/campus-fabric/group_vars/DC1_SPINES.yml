@@ -2,3 +2,4 @@
 ### group_vars/DC1_SPINES.yml
 
 type: l3spine     # Must be either spine|l3spine
+underlay_ospf_graceful_restart: false

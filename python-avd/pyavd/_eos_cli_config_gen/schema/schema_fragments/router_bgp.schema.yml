@@ -1,4 +1,5 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+---
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -19,8 +20,8 @@ keys:
       as_notation:
         display_name: ASN Notation
         type: str
-        description: 'BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>".
-          This flag indicates which mode is preferred - asplain is the default.'
+        description: 'BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>". This flag indicates which mode is preferred -
+          asplain is the default.'
         valid_values:
           - asdot
           - asplain
@@ -143,6 +144,49 @@ keys:
               - str
             min: 1
             max: 600
+      route_distinguisher:
+        type: dict
+        keys:
+          assignment_auto:
+            type: dict
+            description: Automatic Route Distinguisher (auto RD) feature.
+            keys:
+              range:
+                type: dict
+                description: |-
+                  Range for the 2-byte assigned number field of RD.
+                  The range is inclusive of start and end values.
+                keys:
+                  start:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: Start of range. EOS default is 4096.
+                  end:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: |-
+                        End of range. Must be greater than or equal to `start`.
+                        EOS default is 65535.
+              address_families:
+                type: list
+                min_length: 1
+                description: |-
+                  Address families for which to enable automatic RD assignment.
+                  Each address family has its own range allocation.
+                items:
+                  type: str
+                  valid_values: ["l2-evpn", "l3-vrf"]
+                  description: |-
+                    l2-evpn: L2 EVPN VXLAN, VPWS, VLAN-aware-bundle, VNI-aware-bundle.
+                    l3-vrf: L3 EVPN and MPLS VPN.
       updates:
         type: dict
         keys:
@@ -193,6 +237,33 @@ keys:
           redistribute_internal:
             type: bool
             description: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
+          labeled_unicast:
+            type: dict
+            keys:
+              rib:
+                type: dict
+                description: Configure LU RIB behavior for ip and/or tunnel.
+                keys:
+                  ip:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into IP RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to IP RIB.
+                  tunnel:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into Tunnel RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to tunnel RIB.
       listen_ranges:
         type: list
         description: |
@@ -245,9 +316,12 @@ keys:
             name:
               type: str
               description: Peer-group name.
-            type:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                type:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             remote_as:
               type: str
               description: |-
@@ -344,6 +418,14 @@ keys:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+                - "7"
+                - "8a"
+              convert_types:
+                - int
+              default: "7"
             passive:
               type: bool
             default_originate:
@@ -463,6 +545,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             session_tracker:
               type: str
             shared_secret:
@@ -488,20 +576,6 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
-            peer_filter:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].peer_filter
-            bgp_listen_range_prefix:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].bgp_listen_range_prefix
       neighbors:
         type: list
         primary_key: ip_address
@@ -536,15 +610,30 @@ keys:
                 prepend_own_disabled:
                   type: bool
                   description: Disable prepending own AS number to AS path.
-            peer:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                peer:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
+                  default: true
+                  description: Used for validation by the `anta_runner` role.
             description:
               type: str
             route_reflector_client:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+                - "7"
+                - "8a"
+              convert_types:
+                - int
+              default: "7"
             passive:
               type: bool
             shutdown:
@@ -598,6 +687,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             default_originate:
               type: dict
               keys:
@@ -768,9 +863,16 @@ keys:
               description: |-
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                 For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
-            peer:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                peer:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
+                  default: true
+                  description: Used for validation by the `anta_runner` role.
             peer_group:
               type: str
               default: Peer-group name
@@ -800,6 +902,12 @@ keys:
             match_map:
               type: str
               description: Route-map name.
+            attribute:
+              type: dict
+              keys:
+                rcf:
+                  type: str
+                  description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
       redistribute:
         type: dict
         description: Redistribute routes in to BGP.
@@ -1022,52 +1130,6 @@ keys:
                   RCF function name with parenthesis.
                   Example: MyFunction(myarg).
                   `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-      redistribute_routes:
-        type: list
-        primary_key: source_protocol
-        allow_duplicate_primary_key: true
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: redistribute
-        items:
-          type: dict
-          keys:
-            source_protocol:
-              type: str
-              valid_values:
-                - "attached-host"
-                - "bgp"
-                - "connected"
-                - "dynamic"
-                - "isis"
-                - "ospf"
-                - "ospfv3"
-                - "rip"
-                - "static"
-                - "user"
-            route_map:
-              type: str
-            rcf:
-              type: str
-              description: |-
-                RCF function name with parenthesis.
-                Example: MyFunction(myarg).
-                `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
-            include_leaked:
-              type: bool
-            ospf_route_type:
-              type: str
-              valid_values:
-                - "external"
-                - "internal"
-                - "nssa-external"
-                - "nssa-external 1"
-                - "nssa-external 2"
-              description: |
-                Routes learned by the OSPF protocol.
-                The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -1077,12 +1139,17 @@ keys:
             name:
               type: str
               description: VLAN aware bundle name.
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
-            description:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                tenants:
+                  type: list
+                  description: List of tenants where this bundle is defined. Key only used for documentation or validation purposes.
+                  items:
+                    type: str
+                description:
+                  type: str
+                  description: Key only used for documentation or validation purposes.
             rd:
               description: Route distinguisher.
               type: str
@@ -1174,9 +1241,14 @@ keys:
               type: int
               convert_types:
                 - str
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            metadata:
+              type: dict
+              keys:
+                tenants:
+                  type: list
+                  description: List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                  items:
+                    type: str
             rd:
               description: Route distinguisher.
               type: str
@@ -1360,6 +1432,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: |-
@@ -1412,6 +1490,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: |-
@@ -1537,40 +1621,9 @@ keys:
             type: dict
             deprecation:
               warning: true
+              removed: true
               remove_in_version: 6.0.0
               new_key: bgp.additional_paths
-            description: BGP additional-paths commands.
-            keys:
-              receive:
-                type: bool
-                description: Receive multiple paths.
-              send:
-                type: dict
-                description: Send multiple paths.
-                keys:
-                  any:
-                    type: bool
-                    description: Any eligible path.
-                  backup:
-                    type: bool
-                    description: Best path and installed backup path.
-                  ecmp:
-                    type: bool
-                    description: All paths in best path ECMP group.
-                  ecmp_limit:
-                    type: int
-                    description: Amount of ECMP paths to send.
-                    convert_types:
-                      - str
-                    min: 2
-                    max: 64
-                  limit:
-                    type: int
-                    description: Amount of paths to send.
-                    convert_types:
-                      - str
-                    min: 2
-                    max: 64
       address_family_rtc:
         type: dict
         keys:
@@ -1607,6 +1660,11 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                  type: str
           bgp:
             type: dict
             keys:
@@ -1640,6 +1698,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: |-
@@ -1682,13 +1746,6 @@ keys:
                           required: true
                         originate:
                           type: bool
-                    address_family_ipv6_originate:
-                      type: bool
-                      deprecation:
-                        warning: true
-                        removed: true
-                        new_key: address_family_ipv6
-                        remove_in_version: 5.0.0
           neighbors:
             type: list
             primary_key: ip_address
@@ -1705,6 +1762,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: |-
@@ -1971,51 +2034,11 @@ keys:
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             deprecation:
               warning: true
+              removed: true
               remove_in_version: 6.0.0
               new_key: redistribute
-            items:
-              type: dict
-              keys:
-                source_protocol:
-                  type: str
-                  valid_values:
-                    - "attached-host"
-                    - "bgp"
-                    - "connected"
-                    - "dynamic"
-                    - "isis"
-                    - "ospf"
-                    - "ospfv3"
-                    - "rip"
-                    - "static"
-                    - "user"
-                route_map:
-                  type: str
-                include_leaked:
-                  type: bool
-                  description: Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`.
-                rcf:
-                  type: str
-                  description: |-
-                    RCF function name with parenthesis.
-                    Example: MyFunction(myarg).
-                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                    Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
-                ospf_route_type:
-                  type: str
-                  valid_values:
-                    - "external"
-                    - "internal"
-                    - "nssa-external"
-                    - "nssa-external 1"
-                    - "nssa-external 2"
-                  description: |
-                    Routes learned by the OSPF protocol.
-                    The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
       address_family_ipv4_labeled_unicast:
         type: dict
         keys:
@@ -2182,12 +2205,6 @@ keys:
                           description: Include sub-route-map references in missing policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -2214,6 +2231,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           neighbors:
             type: list
             primary_key: ip_address
@@ -2298,12 +2321,6 @@ keys:
                           description: Include sub-route-map references in missing policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -2330,6 +2347,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           networks:
             type: list
             primary_key: prefix
@@ -2342,6 +2365,11 @@ keys:
                   type: str
                 route_map:
                   description: Route-map name.
+                  type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                   type: str
           next_hops:
             type: list
@@ -2422,6 +2450,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -2443,6 +2477,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -2588,40 +2628,11 @@ keys:
                     type: str
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             deprecation:
               warning: true
+              removed: true
               remove_in_version: 6.0.0
               new_key: redistribute
-            items:
-              type: dict
-              keys:
-                source_protocol:
-                  type: str
-                route_map:
-                  type: str
-                include_leaked:
-                  type: bool
-                  description: Only applicable if `source_protocol` is `isis`.
-                rcf:
-                  type: str
-                  description: |-
-                    RCF function name with parenthesis.
-                    Example: MyFunction(myarg).
-                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                    Only applicable if `source_protocol` is `isis`.
-                ospf_route_type:
-                  type: str
-                  valid_values:
-                    - "external"
-                    - "internal"
-                    - "nssa-external"
-                    - "nssa-external 1"
-                    - "nssa-external 2"
-                  description: |
-                    Routes learned by the OSPF protocol.
-                    The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
       address_family_ipv4_sr_te:
         type: dict
         keys:
@@ -2641,6 +2652,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -2658,6 +2675,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_ipv6:
         type: dict
         keys:
@@ -2672,6 +2695,11 @@ keys:
                   type: str
                 route_map:
                   description: Route-map name.
+                  type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                   type: str
           bgp:
             type: dict
@@ -2706,6 +2734,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: |-
@@ -2729,6 +2763,15 @@ keys:
                     prefix_list:
                       type: str
                       description: Apply the configurations only to the routes matching the prefix list.
+                default_originate:
+                  type: dict
+                  keys:
+                    always:
+                      type: bool
+                      description: Always advertise a default route to this peer.
+                    route_map:
+                      type: str
+                      description: Route-map name.
           neighbors:
             type: list
             primary_key: ip_address
@@ -2745,6 +2788,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: |-
@@ -2937,39 +2986,11 @@ keys:
                       `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             deprecation:
               warning: true
+              removed: true
               remove_in_version: 6.0.0
               new_key: redistribute
-            items:
-              type: dict
-              keys:
-                source_protocol:
-                  type: str
-                route_map:
-                  type: str
-                include_leaked:
-                  type: bool
-                rcf:
-                  type: str
-                  description: |-
-                    RCF function name with parenthesis.
-                    Example: MyFunction(myarg).
-                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                    Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
-                ospf_route_type:
-                  type: str
-                  valid_values:
-                    - "external"
-                    - "internal"
-                    - "nssa-external"
-                    - "nssa-external 1"
-                    - "nssa-external 2"
-                  description: |
-                    Routes learned by the OSPF protocol.
-                    The `ospf_route_type` is valid for source_protocols 'ospfv3'.
       address_family_ipv6_multicast:
         type: dict
         keys:
@@ -3012,6 +3033,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -3176,46 +3203,11 @@ keys:
                     type: str
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             deprecation:
               warning: true
+              removed: true
               remove_in_version: 6.0.0
               new_key: redistribute
-            items:
-              type: dict
-              keys:
-                source_protocol:
-                  type: str
-                  valid_values:
-                    - "connected"
-                    - "isis"
-                    - "ospf"
-                    - "ospfv3"
-                    - "static"
-                include_leaked:
-                  type: bool
-                  description: Only applicable if `source_protocol` is `isis`.
-                route_map:
-                  type: str
-                rcf:
-                  type: str
-                  description: |-
-                    RCF function name with parenthesis.
-                    Example: MyFunction(myarg).
-                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                    Only applicable if `source_protocol` is `isis`.
-                ospf_route_type:
-                  type: str
-                  valid_values:
-                    - "external"
-                    - "internal"
-                    - "nssa-external"
-                    - "nssa-external 1"
-                    - "nssa-external 2"
-                  description: |
-                    Routes learned by the OSPF protocol.
-                    The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
       address_family_ipv6_sr_te:
         type: dict
         keys:
@@ -3235,6 +3227,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -3252,6 +3250,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_link_state:
         type: dict
         keys:
@@ -3478,6 +3482,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: |-
@@ -3523,6 +3533,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: |-
@@ -3572,6 +3588,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: |-
@@ -3617,6 +3639,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: |-
@@ -3674,6 +3702,19 @@ keys:
             rd:
               type: str
               description: Route distinguisher.
+            rd_evpn_domain:
+              type: dict
+              keys:
+                domain:
+                  type: str
+                  valid_values:
+                    - "remote"
+                    - "all"
+                  required: true
+                rd:
+                  type: str
+                  description: Route distinguisher.
+                  required: true
             evpn_multicast:
               type: bool
             evpn_multicast_address_family:
@@ -3787,6 +3828,36 @@ keys:
                           RCF function name with parenthesis for filtering VRF routes. Also requires `rcf` to be set.
                           Example: MyFunction(myarg).
                           Only applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`.
+                import_evpn_domains:
+                  type: list
+                  description: List of EVPN domains from which to import routes.
+                  primary_key: route_target
+                  items:
+                    type: dict
+                    keys:
+                      route_target:
+                        type: str
+                      domain:
+                        type: str
+                        required: true
+                        valid_values:
+                          - "remote"
+                          - "all"
+                export_evpn_domains:
+                  type: list
+                  description: List of EVPN domains to which local routes should be exported.
+                  primary_key: route_target
+                  items:
+                    type: dict
+                    keys:
+                      route_target:
+                        type: str
+                      domain:
+                        type: str
+                        required: true
+                        valid_values:
+                          - "remote"
+                          - "all"
             router_id:
               description: in IP address format A.B.C.D.
               type: str
@@ -3901,6 +3972,14 @@ keys:
                       - int
                   password:
                     type: str
+                  password_type:
+                    type: str
+                    valid_values:
+                      - "7"
+                      - "8a"
+                    convert_types:
+                      - int
+                    default: "7"
                   passive:
                     type: bool
                   remove_private_as:
@@ -4044,25 +4123,22 @@ keys:
                   route_map_out:
                     type: str
                     description: Outbound route-map name.
+                  peer_tag_in:
+                    type: str
+                    description: Inbound peer tag name.
+                  peer_tag_out_discard:
+                    type: str
+                    description: Outbound discard peer tag name.
                   additional_paths:
                     type: dict
                     $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
-                  prefix_list_in:
-                    type: str
-                    description: Inbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in"
-                      remove_in_version: 5.0.0
-                  prefix_list_out:
-                    type: str
-                    description: Outbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out"
-                      remove_in_version: 5.0.0
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        default: false
+                        description: Used for validation by the `anta_runner` role.
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -4087,6 +4163,13 @@ keys:
                     description: Peer-filter name.
                   description:
                     type: str
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        default: false
+                        description: Used for validation by the `anta_runner` role.
             redistribute:
               type: dict
               description: Redistribute routes in to BGP.
@@ -4309,41 +4392,6 @@ keys:
                         RCF function name with parenthesis.
                         Example: MyFunction(myarg).
                         `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-            redistribute_routes:
-              type: list
-              primary_key: source_protocol
-              allow_duplicate_primary_key: true
-              deprecation:
-                warning: true
-                remove_in_version: 6.0.0
-                new_key: redistribute
-              items:
-                type: dict
-                keys:
-                  source_protocol:
-                    type: str
-                  route_map:
-                    type: str
-                  include_leaked:
-                    type: bool
-                  rcf:
-                    type: str
-                    description: |-
-                      RCF function name with parenthesis.
-                      Example: MyFunction(myarg).
-                      `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                      Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
-                  ospf_route_type:
-                    type: str
-                    valid_values:
-                      - "external"
-                      - "internal"
-                      - "nssa-external"
-                      - "nssa-external 1"
-                      - "nssa-external 2"
-                    description: |
-                      Routes learned by the OSPF protocol.
-                      The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
             aggregate_addresses:
               type: list
               primary_key: prefix
@@ -4363,6 +4411,12 @@ keys:
                     type: str
                   match_map:
                     type: str
+                  attribute:
+                    type: dict
+                    keys:
+                      rcf:
+                        type: str
+                        description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
             address_family_ipv4:
               type: dict
               keys:
@@ -4413,6 +4467,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: |-
@@ -4453,6 +4513,11 @@ keys:
                         type: str
                         description: IPv4 prefix "A.B.C.D/E".
                       route_map:
+                        type: str
+                      rcf:
+                        description: |-
+                          RCF name with parenthesis. Example "NETWORK-RCF()".
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                         type: str
                 redistribute:
                   type: dict
@@ -4678,50 +4743,11 @@ keys:
                             `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   deprecation:
                     warning: true
+                    removed: true
                     remove_in_version: 6.0.0
                     new_key: redistribute
-                  items:
-                    type: dict
-                    keys:
-                      source_protocol:
-                        type: str
-                        valid_values:
-                          - "attached-host"
-                          - "bgp"
-                          - "connected"
-                          - "dynamic"
-                          - "isis"
-                          - "ospf"
-                          - "ospfv3"
-                          - "rip"
-                          - "static"
-                          - "user"
-                      route_map:
-                        type: str
-                      include_leaked:
-                        type: bool
-                      rcf:
-                        type: str
-                        description: |-
-                          RCF function name with parenthesis.
-                          Example: MyFunction(myarg).
-                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                          Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
-                      ospf_route_type:
-                        type: str
-                        valid_values:
-                          - "external"
-                          - "internal"
-                          - "nssa-external"
-                          - "nssa-external 1"
-                          - "nssa-external 2"
-                        description: |
-                          Routes learned by the OSPF protocol.
-                          The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
             address_family_ipv6:
               type: dict
               keys:
@@ -4772,6 +4798,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: |-
@@ -4801,6 +4833,11 @@ keys:
                         type: str
                         description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                       route_map:
+                        type: str
+                      rcf:
+                        description: |-
+                          RCF name with parenthesis. Example "NETWORK-RCF()".
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                         type: str
                 redistribute:
                   type: dict
@@ -4971,49 +5008,11 @@ keys:
                             `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   deprecation:
                     warning: true
+                    removed: true
                     remove_in_version: 6.0.0
                     new_key: redistribute
-                  items:
-                    type: dict
-                    keys:
-                      source_protocol:
-                        type: str
-                        valid_values:
-                          - "attached-host"
-                          - "bgp"
-                          - "connected"
-                          - "dhcp"
-                          - "dynamic"
-                          - "isis"
-                          - "ospfv3"
-                          - "static"
-                          - "user"
-                      route_map:
-                        type: str
-                      include_leaked:
-                        type: bool
-                      rcf:
-                        type: str
-                        description: |-
-                          RCF function name with parenthesis.
-                          Example: MyFunction(myarg).
-                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                          Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
-                      ospf_route_type:
-                        type: str
-                        valid_values:
-                          - "external"
-                          - "internal"
-                          - "nssa-external"
-                          - "nssa-external 1"
-                          - "nssa-external 2"
-                        description: |
-                          Routes learned by the OSPF protocol.
-                          The `ospf_route_type` is valid for source_protocols 'ospfv3'.
             address_family_ipv4_multicast:
               type: dict
               keys:
@@ -5056,6 +5055,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
@@ -5224,47 +5229,11 @@ keys:
                           type: str
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   deprecation:
                     warning: true
+                    removed: true
                     remove_in_version: 6.0.0
                     new_key: redistribute
-                  items:
-                    type: dict
-                    keys:
-                      source_protocol:
-                        type: str
-                        valid_values:
-                          - "attached-host"
-                          - "connected"
-                          - "isis"
-                          - "ospf"
-                          - "ospfv3"
-                          - "static"
-                      route_map:
-                        type: str
-                      include_leaked:
-                        type: bool
-                        description: Only applicable if `source_protocol` is `isis`.
-                      rcf:
-                        type: str
-                        description: |-
-                          RCF function name with parenthesis.
-                          Example: MyFunction(myarg).
-                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                          Only applicable if `source_protocol` is `isis`.
-                      ospf_route_type:
-                        type: str
-                        valid_values:
-                          - "external"
-                          - "internal"
-                          - "nssa-external"
-                          - "nssa-external 1"
-                          - "nssa-external 2"
-                        description: |
-                          Routes learned by the OSPF protocol.
-                          The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
             address_family_ipv6_multicast:
               type: dict
               keys:
@@ -5307,6 +5276,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
@@ -5455,46 +5430,11 @@ keys:
                           type: str
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   deprecation:
                     warning: true
+                    removed: true
                     remove_in_version: 6.0.0
                     new_key: redistribute
-                  items:
-                    type: dict
-                    keys:
-                      source_protocol:
-                        type: str
-                        valid_values:
-                          - "connected"
-                          - "isis"
-                          - "ospf"
-                          - "ospfv3"
-                          - "static"
-                      route_map:
-                        type: str
-                      include_leaked:
-                        type: bool
-                        description: Only applicable if `source_protocol` is `isis`.
-                      rcf:
-                        type: str
-                        description: |-
-                          RCF function name with parenthesis.
-                          Example: MyFunction(myarg).
-                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                          Only applicable if `source_protocol` is `isis`.
-                      ospf_route_type:
-                        type: str
-                        valid_values:
-                          - "external"
-                          - "internal"
-                          - "nssa-external"
-                          - "nssa-external 1"
-                          - "nssa-external 2"
-                        description: |
-                          Routes learned by the OSPF protocol.
-                          The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
             address_family_flow_spec_ipv4:
               type: dict
               keys:
@@ -5557,18 +5497,17 @@ keys:
                         type: str
                       activate:
                         type: bool
+            redistribute_routes:
+              type: list
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: redistribute
             eos_cli:
               type: str
               description: |
                 Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
-            address_families:
-              type: list
-              primary_key: address_family
-              deprecation:
-                warning: true
-                removed: true
-                new_key: address_family_*
-                remove_in_version: 5.0.0
       session_trackers:
         type: list
         primary_key: name
@@ -5585,6 +5524,13 @@ keys:
                 - str
               min: 1
               max: 3600
+      redistribute_routes:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: redistribute
       eos_cli:
         type: str
         description: |-

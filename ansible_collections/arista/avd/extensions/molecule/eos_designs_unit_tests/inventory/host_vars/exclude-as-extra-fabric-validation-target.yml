@@ -1,0 +1,20 @@
+type: spine
+
+spine:
+  nodes:
+    - name: exclude-as-extra-fabric-validation-target
+      id: 1
+      loopback_ipv4_pool: 10.10.255.0/24
+      bgp_as: 65000
+      rack: ABC567
+      validation_profile: profile1
+      l3_interfaces:
+        - name: Ethernet11
+          ip_address: 10.20.30.40/24
+          description: Test interface
+          peer: Someotherdevice
+          peer_ip: 10.20.30.50/24
+
+validation_profiles:
+  - name: profile1
+    exclude_as_extra_fabric_validation_target: true

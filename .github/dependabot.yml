@@ -10,8 +10,6 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    reviewers:
-      - "aristanetworks/avd-maintainers"
     groups:
       prod:
         dependency-type: "production"
@@ -28,7 +26,5 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    reviewers:
-      - "aristanetworks/avd-maintainers"
     commit-message:
       prefix: "CI: "

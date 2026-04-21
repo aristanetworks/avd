@@ -1,0 +1,27 @@
+---
+type: l2leaf
+
+l2leaf:
+  defaults:
+    platform: vEOS-lab
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+
+  nodes:
+    - name: htns-l2-leaf1
+      id: 1
+      mgmt_ip: 172.16.1.251/24
+      uplink_switches: [htns-l3-leaf1]
+      uplink_switch_interfaces: [Ethernet8]
+      uplink_interfaces: [Ethernet1]
+      filter:
+        only_vlans_in_use: true  # (1)!
+
+servers:  # (2)!
+  - name: webserver1
+    adapters:
+      - switches: [htns-l2-leaf1]
+        switch_ports: [Ethernet2]
+        endpoint_ports: [NIC1]
+        vlans: 100-101
+        mode: trunk

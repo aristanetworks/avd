@@ -1,22 +1,20 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
-from functools import cached_property
 from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol
 
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import Undefined, UndefinedType, get_v2, short_esi_to_route_target
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
     from typing import TypeVar
 
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+    from pyavd._eos_designs.schema import EosDesigns
 
     from . import AvdStructuredConfigConnectedEndpointsProtocol
 
@@ -43,90 +41,28 @@ class UtilsMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class or other Mixins.
     """
 
-    @cached_property
-    def _filtered_connected_endpoints(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
-    ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints:
-        """
-        Return list of endpoints defined under one of the keys in "connected_endpoints_keys" which are connected to this switch.
-
-        Adapters are filtered to contain only the ones connected to this switch.
-        """
-        connected_endpoints = self.shared_utils.all_connected_endpoints
-        filtered_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints()
-        for connected_endpoints_key in connected_endpoints:
-            for connected_endpoint in connected_endpoints_key.value:
-                filtered_adapters = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.Adapters()
-                for adapter_index, adapter in enumerate(connected_endpoint.adapters):
-                    adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
-                    if not adapter_settings.switches or self.shared_utils.hostname not in adapter_settings.switches:
-                        continue
-
-                    # Verify that length of all lists are the same
-                    nodes_length = len(adapter_settings.switches)
-                    endpoint_ports = adapter_settings.endpoint_ports
-                    if len(adapter_settings.switch_ports) != nodes_length or (endpoint_ports and len(endpoint_ports) != nodes_length):
-                        msg = (
-                            f"Length of lists 'switches' ({len(adapter.switches)}), 'switch_ports' ({len(adapter.switch_ports)}), "
-                            f"'endpoint_ports' ({len(endpoint_ports) or '-'}) (if used) did not match on adapter {adapter_index} on"
-                            f" connected_endpoint '{connected_endpoint.name}' under '{connected_endpoints_key.key}'."
-                            " Notice that some or all of these variables could be inherited from 'port_profiles'"
-                        )
-                        raise AristaAvdError(msg)
-
-                    filtered_adapters.append(adapter_settings)
-
-                if filtered_adapters:
-                    # The object was deepcopied inside "get_merged_adapter_settings" so we can modify it here.
-                    connected_endpoint.adapters = filtered_adapters
-                    connected_endpoint._internal_data.type = connected_endpoints_key._internal_data.type
-                    filtered_connected_endpoints.append(connected_endpoint)
-
-        return filtered_connected_endpoints
-
-    @cached_property
-    def _filtered_network_ports(self: AvdStructuredConfigConnectedEndpointsProtocol) -> EosDesigns.NetworkPorts:
-        """Return list of endpoints defined under "network_ports" which are connected to this switch."""
-        filtered_network_ports = EosDesigns.NetworkPorts()
-        for index, network_port in enumerate(self.inputs.network_ports):
-            network_port_settings = self.shared_utils.get_merged_adapter_settings(network_port)
-
-            if not network_port_settings.switches and not network_port_settings.platforms:
-                continue
-            if network_port_settings.switches and not self._match_regexes(network_port_settings.switches, self.shared_utils.hostname):
-                continue
-            if network_port_settings.platforms and (
-                not self.shared_utils.platform or not self._match_regexes(network_port_settings.platforms, self.shared_utils.platform)
-            ):
-                continue
-
-            filtered_network_ports.append(network_port_settings)
-
-        return filtered_network_ports
-
-    def _match_regexes(self: AvdStructuredConfigConnectedEndpointsProtocol, regexes: Iterable[str], value: str) -> bool:
-        """
-        Match a list of regexes with the supplied value.
-
-        Regex must match the full value to pass.
-        """
-        return any(re.fullmatch(regex, value) for regex in regexes)
-
     def _get_short_esi(
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         channel_group_id: int,
-        short_esi: str | None = None,
+        port_channel_subif_short_esi: str | None = None,
         hash_extra_value: str = "",
     ) -> str | None:
-        """Return short_esi for one adapter."""
-        if len(set(adapter.switches)) < 2 or not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
-            # Only configure ESI for EVPN multi-homing.
+        """
+        Return short_esi for one adapter.
+
+        short_esi is only set when called from sub-interface port-channels.
+        """
+        if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
             return None
 
-        # short_esi is only set when called from sub-interface port-channels.
-        if (short_esi is None) and (short_esi := adapter.ethernet_segment.short_esi) is None:
+        if (short_esi := (port_channel_subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
             return None
+
+        if len(set(adapter.switches)) < 2:
+            # Only configure ESI for multi-homing.
+            msg = f"The length of '{adapter._internal_data.context}.switches' should be greater than 1 to configure short ESI."
+            raise AristaAvdInvalidInputsError(msg)
 
         endpoint_ports = adapter.endpoint_ports
         short_esi = str(short_esi)
@@ -240,7 +176,7 @@ class UtilsMixin(Protocol):
         output_type: type[T_Ptp],
     ) -> T_Ptp | UndefinedType:
         """Return ptp for one adapter."""
-        if not adapter.ptp.enabled:
+        if not (adapter.ptp.enabled and self.shared_utils.platform_settings.feature_support.ptp):
             return Undefined
 
         # Apply PTP profile config
@@ -298,6 +234,24 @@ class UtilsMixin(Protocol):
 
         return None
 
+    def _get_adapter_dot1x(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> EosCliConfigGen.EthernetInterfacesItem.Dot1x:
+        """
+        Return dot1x for one adapter.
+
+        Raise AristaAvdInvalidInputsError if dot1x is not globally enabled.
+        """
+        if not self.inputs.dot1x_settings.enabled:
+            msg = (
+                f"802.1X settings are configured under '{adapter._internal_data.context}' but 802.1X is not enabled globally. "
+                "802.1X must be enabled globally by setting 'dot1x_settings.enabled: true' before configuring 802.1X on any interface."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        return adapter.dot1x
+
     def _get_adapter_l2_mru(
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
@@ -307,3 +261,20 @@ class UtilsMixin(Protocol):
             return adapter.l2_mru
 
         return None
+
+    def _get_adapter_vlans(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> str | UndefinedType:
+        """Return a list of allowed VLANs for a Trunk port for one adapter."""
+        if adapter.mode == "trunk":
+            if adapter.vlans == "defined_vlans":
+                return self.facts.vlans or "none"
+            # EOS default is implicit "switchport trunk allowed vlan 1-4094" ("all" is its alias)
+            if adapter.vlans == "all":
+                return Undefined
+            # Covers both "none" and actual range of VLANs
+            if adapter.vlans:
+                return adapter.vlans
+
+        return Undefined

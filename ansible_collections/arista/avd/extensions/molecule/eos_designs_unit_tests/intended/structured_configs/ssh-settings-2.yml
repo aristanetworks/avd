@@ -1,0 +1,42 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: ssh-settings-2
+ip_igmp_snooping:
+  globally_enabled: true
+management_ssh:
+  ip_access_group_in: ACL-SSH-INBAND-MGMT
+  idle_timeout: 0
+  enable: true
+  vrfs:
+  - name: default
+    enable: true
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan123
+  description: Inband Management
+  shutdown: false
+  ip_address: 192.168.0.1/24
+  mtu: 1500
+  metadata:
+    type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4092
+  name: INBAND_MGMT
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false

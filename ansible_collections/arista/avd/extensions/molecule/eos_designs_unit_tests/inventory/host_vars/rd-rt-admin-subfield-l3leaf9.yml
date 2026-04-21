@@ -1,0 +1,10 @@
+# Expected result: rd 192.168.254.9:<vlan_id>
+bgp_as_notation: asdot
+overlay_rd_type:
+  admin_subfield: vtep_loopback
+  vlan_assigned_number_subfield: vlan_id
+
+# Expected result: rt 1.16:<vlan_id>
+overlay_rt_type:
+  admin_subfield: bgp_as
+  vlan_assigned_number_subfield: vlan_id

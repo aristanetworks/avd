@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -16,20 +16,28 @@
 
 DNS Domain: {{ group.dns_domain }}
 {%         endif %}
-{%         if group.ip_domain_list is arista.avd.defined or group.ip_domain_lists is arista.avd.defined %}
+{%         if group.ip_domain_lists is arista.avd.defined %}
 
 ###### IP Domain List
 
 | IP Domain |
 | --------- |
-{%             if group.ip_domain_list is arista.avd.defined %}
-| {{ group.ip_domain_list }} |
-{%             endif %}
 {%             for domain in group.ip_domain_lists | arista.avd.natural_sort %}
 | {{ domain }} |
 {%             endfor %}
 {%         endif %}
-{%         if group.name_servers is arista.avd.defined %}
+{%         if group.vrfs is arista.avd.defined %}
+
+###### Name Server
+
+| VRF | IP Address | Priority |
+| --- | ---------- | -------- |
+{%             for vrf in group.vrfs | arista.avd.natural_sort("name") %}
+{%                 for server in vrf.name_servers | arista.avd.natural_sort("ip_address") %}
+| {{ vrf.name }} | {{ server.ip_address }} | {{ server.priority | arista.avd.default('-') }} |
+{%                 endfor %}
+{%             endfor %}
+{%         elif group.name_servers is arista.avd.defined %}
 
 ###### Name Server
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -8,20 +8,11 @@ type: dict
 keys:
   generate_default_config:
     type: bool
+    documentation_options:
+      table: role-settings
     default: false
-    description: |
-      The `generate_default_config` knob allows to omit default EOS configuration.
-      This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
-
-      The following commands will be omitted when `generate_default_config` is set to `false`:
-
-      - RANCID Content Type
-      - Hostname (even if `hostname` variable is not set. Then the hostname is picked up from `inventory_hostname`)
-      - Default configuration for `aaa`
-      - Default configuration for `enable password`
-      - Transceiver qsfp default mode
-      - End of configuration delimiter
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
       url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#default-eos-configuration-is-no-longer-automatically-generated

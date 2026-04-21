@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -9,21 +9,41 @@
 ### Standard Access-lists
 
 #### Standard Access-lists Summary
-
 {%     for standard_access_list in standard_access_lists | arista.avd.natural_sort('name') %}
+
 ##### {{ standard_access_list.name }}
 {%         if standard_access_list.counters_per_entry is arista.avd.defined(true) %}
 
 ACL has counting mode `counters per-entry` enabled!
 {%         endif %}
+{%         if standard_access_list.sequence_numbers is arista.avd.defined or standard_access_list.entries is arista.avd.defined %}
 
-| Sequence | Action |
-| -------- | ------ |
-{%         for sequence in standard_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
-| {{ sequence.sequence }} | {{ sequence.action }} |
-{%         endfor %}
-
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
+{%             if standard_access_list.entries is arista.avd.defined %}
+{%                 for entry in standard_access_list.entries %}
+{%                     if entry.vlan is arista.avd.defined %}
+{%                         set vlan_var = entry.vlan %}
+{%                     endif %}
+{%                     if entry.vlan_mask is arista.avd.defined %}
+{%                         set vlan_var = vlan_var ~ " " ~ entry.vlan_mask %}
+{%                     endif %}
+{%                     if entry.inner_vlan is arista.avd.defined %}
+{%                         set inner_vlan_var = entry.inner_vlan %}
+{%                     endif %}
+{%                     if entry.inner_vlan_mask is arista.avd.defined %}
+{%                         set inner_vlan_var = inner_vlan_var ~ " " ~ entry.inner_vlan_mask %}
+{%                     endif %}
+| {{ entry.sequence | arista.avd.default("-") }} | {{ entry.action | arista.avd.default("-") }} | {{ entry.source | arista.avd.default("-") }} | {{ entry.remark | arista.avd.default("-") }} | {{ vlan_var | arista.avd.default("-") }} | {{ inner_vlan_var | arista.avd.default("-") }} | {{ entry.log | arista.avd.default("-") }} | {{ entry.mirror_session | arista.avd.default("-") }} |
+{%                 endfor %}
+{%             elif standard_access_list.sequence_numbers is arista.avd.defined %}
+{%                 for sequence in standard_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
+| {{ sequence.sequence }} | {{ sequence.action }} | - | - | - | - | - | - |
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
 {%     endfor %}
+
 #### Standard Access-lists Device Configuration
 
 ```eos

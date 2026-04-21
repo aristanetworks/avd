@@ -1,0 +1,37 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.10
+  nodes:
+    - name: address-locking-2
+      id: 101
+      bgp_as: 101
+
+address_locking_settings:
+  disabled: true
+  leases:
+    - ip: 2.2.2.2
+      mac: deaf.beef.cafe
+    - ip: 3.3.3.3
+      mac: de:af:be:ef:ca:fe
+  locked_address:
+    expiration_mac_disabled: true
+    ipv4_enforcement_disabled: true
+    ipv6_enforcement_disabled: true
+
+  # Testing use_mgmt_interface
+  local_interface: use_mgmt_interface
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 101
+        name: test-address-locking-2
+        address_locking:
+          ipv4: true

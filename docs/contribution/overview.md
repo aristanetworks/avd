@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -21,6 +21,8 @@ The following individuals are on the AVD Core Team:
 - Julio Perez ([@JulioPDX](https://github.com/JulioPDX))
 - Guillaume Mulocher ([@gmuloc](https://github.com/gmuloc))
 - Carl Baillargeon ([@carl-baillargeon](https://github.com/carl-baillargeon))
+- Alexey Gorbunov ([@alexeygorbunov](https://github.com/alexeygorbunov))
+- Joel Breton ([@joelbreton2](https://github.com/joelbreton2))
 
 ## Contributing
 

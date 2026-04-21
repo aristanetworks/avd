@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -6,6 +6,7 @@ from collections import ChainMap
 from typing import Any, Protocol
 
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import get_ip_from_pool
 
 from .utils import UtilsMixin
@@ -14,9 +15,6 @@ from .utils import UtilsMixin
 class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
     """
     Protocol for the AvdIpAddressing Class which is used to render IP addresses either from custom Jinja2 templates or using default Python Logic.
-
-    Since some templates might contain certain legacy variables (switch_*),
-    those are mapped from the switch.* model
 
     This class is imported adhoc based on the variable `templates.ip_addressing.python_module` so it can
     be overridden by a custom python class.
@@ -57,6 +55,8 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ibgp_peering_ip_primary:
             return self._template(
                 template_path,
+                mlag_primary_id=self._mlag_primary_id,
+                mlag_secondary_id=self._mlag_secondary_id,
                 vrf={"mlag_ibgp_peering_ipv4_pool": mlag_ibgp_peering_ipv4_pool},
             )
 
@@ -67,6 +67,8 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ibgp_peering_ip_secondary:
             return self._template(
                 template_path,
+                mlag_primary_id=self._mlag_primary_id,
+                mlag_secondary_id=self._mlag_secondary_id,
                 vrf={"mlag_ibgp_peering_ipv4_pool": mlag_ibgp_peering_ipv4_pool},
             )
 
@@ -402,7 +404,10 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         Used for "vtep_diagnostic.loopback".
         """
-        offset = self.shared_utils.id + self.shared_utils.node_config.loopback_ipv4_offset
+        if (switch_id := self.shared_utils.id) is None:
+            msg = f"'id' is not set on '{self.shared_utils.hostname}' to get IP address for a vrf loopback interface"
+            raise AristaAvdInvalidInputsError(msg)
+        offset = switch_id + self.shared_utils.node_config.loopback_ipv4_offset
         return get_ip_from_pool(pool, 32, offset, 0)
 
     def vrf_loopback_ipv6(self, pool: str) -> str:
@@ -413,7 +418,10 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         Used for "vtep_diagnostic.loopback".
         """
-        offset = self.shared_utils.id + self.shared_utils.node_config.loopback_ipv6_offset
+        if (switch_id := self.shared_utils.id) is None:
+            msg = f"'id' is not set on '{self.shared_utils.hostname}' to get IPv6 address for a vrf loopback interface"
+            raise AristaAvdInvalidInputsError(msg)
+        offset = switch_id + self.shared_utils.node_config.loopback_ipv6_offset
         return get_ip_from_pool(pool, 128, offset, 0)
 
     def evpn_underlay_l3_multicast_group(
@@ -475,9 +483,6 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 class AvdIpAddressing(AvdFacts, AvdIpAddressingProtocol):
     """
     Class used to render IP addresses either from custom Jinja2 templates or using default Python Logic.
-
-    Since some templates might contain certain legacy variables (switch_*),
-    those are mapped from the switch.* model
 
     This class is imported adhoc based on the variable `templates.ip_addressing.python_module` so it can
     be overridden by a custom python class.

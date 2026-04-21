@@ -1,5 +1,5 @@
 {#
-    Copyright (c) 2023-2025 Arista Networks, Inc.
+    Copyright (c) 2023-2026 Arista Networks, Inc.
     Use of this source code is governed by the Apache License 2.0
     that can be found in the LICENSE file.
 #}
@@ -83,7 +83,10 @@
 {%                     do apps.append( app_details.name ) %}
 {%                 endif %}
 {%             endfor %}
-| {{ category.name }} | {{ apps | arista.avd.default([]) | join('<br>') }} |
+{%             if apps | length == 0 %}
+{%                 set apps = ["-"] %}
+{%             endif %}
+| {{ category.name }} | {{ apps | join('<br>') }} |
 {%         endfor %}
 {%     endif %}
 {%     if application_traffic_recognition.field_sets is arista.avd.defined %}

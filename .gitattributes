@@ -13,7 +13,7 @@
 /ansible_collections/arista/avd/docs/plugins/*  linguist-generated=true
 
 # debatable maybe only for some scenarios ?
-# /ansible_collections/arista/avd/molecule/*/documentation/*  linguist-generated=true
+# /ansible_collections/arista/avd/extensions/molecule/*/documentation/*  linguist-generated=true
 
 # Excluding docs from stats for linguist
 /ansible_collections/arista/avd/roles/*/docs/*  linguist-documentation

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -13,13 +13,14 @@
     | [<samp>&nbsp;&nbsp;enable_unix</samp>](## "management_api_http.enable_unix") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;https_ssl_profile</samp>](## "management_api_http.https_ssl_profile") | String |  |  |  | SSL Profile Name. |
     | [<samp>&nbsp;&nbsp;default_services</samp>](## "management_api_http.default_services") | Boolean |  |  |  | Enable default services: capi-doc and tapagg. |
+    | [<samp>&nbsp;&nbsp;session_timeout</samp>](## "management_api_http.session_timeout") | Integer |  |  | Min: 1<br>Max: 1440 | User session timeout value in minutes.<br>EOS default is 1440 minutes. |
     | [<samp>&nbsp;&nbsp;enable_vrfs</samp>](## "management_api_http.enable_vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_api_http.enable_vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "management_api_http.enable_vrfs.[].access_group") | String |  |  |  | Standard IPv4 ACL name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_group</samp>](## "management_api_http.enable_vrfs.[].ipv6_access_group") | String |  |  |  | Standard IPv6 ACL name. |
     | [<samp>&nbsp;&nbsp;protocol_https_certificate</samp>](## "management_api_http.protocol_https_certificate") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;certificate</samp>](## "management_api_http.protocol_https_certificate.certificate") | String |  |  |  | Name of certificate; private key must also be specified. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;private_key</samp>](## "management_api_http.protocol_https_certificate.private_key") | String |  |  |  | Name of private key; certificate must also be specified. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;certificate</samp>](## "management_api_http.protocol_https_certificate.certificate") | String | Required |  |  | Name of certificate; private key must also be specified. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;private_key</samp>](## "management_api_http.protocol_https_certificate.private_key") | String | Required |  |  | Name of private key; certificate must also be specified. |
 
 === "YAML"
 
@@ -34,6 +35,10 @@
 
       # Enable default services: capi-doc and tapagg.
       default_services: <bool>
+
+      # User session timeout value in minutes.
+      # EOS default is 1440 minutes.
+      session_timeout: <int; 1-1440>
       enable_vrfs:
 
           # VRF Name.
@@ -47,8 +52,8 @@
       protocol_https_certificate:
 
         # Name of certificate; private key must also be specified.
-        certificate: <str>
+        certificate: <str; required>
 
         # Name of private key; certificate must also be specified.
-        private_key: <str>
+        private_key: <str; required>
     ```

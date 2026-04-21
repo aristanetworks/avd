@@ -1,13 +1,13 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.password_utils.password import bgp_encrypt
 from pyavd.j2filters import range_expand
 
@@ -47,9 +47,6 @@ class RoutingMixin(Protocol):
     @cached_property
     def overlay_routing_protocol(self: SharedUtilsProtocol) -> str:
         default_overlay_routing_protocol = self.node_type_key_data.default_overlay_routing_protocol
-        if self.is_wan_router and not self.inputs.wan_use_evpn_node_settings_for_lan:
-            # For WAN routers without the knob, overlay_routing_protocol should be ignored.
-            return "none"
         return (self.inputs.overlay_routing_protocol or default_overlay_routing_protocol).lower()
 
     @cached_property
@@ -100,6 +97,42 @@ class RoutingMixin(Protocol):
         return None
 
     @cached_property
+    def bgp_as_notation(self: SharedUtilsProtocol) -> Literal["asdot", "asplain"]:
+        bgp_as_notation = self.inputs.bgp_as_notation
+        if bgp_as_notation == "asdot" or (bgp_as_notation == "auto" and "." in str(self.bgp_as)):
+            return "asdot"
+        return "asplain"
+
+    def get_asn(self: SharedUtilsProtocol, asn: str | int | None) -> str | None:
+        if asn is None:
+            return None
+        # TODO: This calculation would not work for -12345.12234 type of input.
+        # Need to handle in schema probably.
+        if self.bgp_as_notation == "asdot" and "." not in str(asn):
+            try:
+                if (prefix := int(asn) // 65536) != 0:
+                    return f"{prefix}.{int(asn) % 65536}"
+                return f"{int(asn) % 65536}"
+            except ValueError as e:
+                msg = f"Failed to convert '{asn}' to an integer when converting the BGP AS asdot notation`."
+                raise AristaAvdInvalidInputsError(msg) from e
+
+        if self.bgp_as_notation == "asplain" and "." in str(asn):
+            prefix, suffix = str(asn).split(".")
+            try:
+                return str(int(prefix) * 65536 + int(suffix))
+            except ValueError as e:
+                msg = f"Failed to convert '{prefix}' or '{suffix} to an integer when converting the BGP AS '{asn}' to asplain notation`."
+                raise AristaAvdInvalidInputsError(msg) from e
+
+        return str(asn)
+
+    @cached_property
+    def formatted_bgp_as(self: SharedUtilsProtocol) -> str | None:
+        """To reduce the recomputation of properly formatted BGP AS numbers."""
+        return self.get_asn(self.bgp_as)
+
+    @cached_property
     def bgp_as(self: SharedUtilsProtocol) -> str | None:
         """
         Get global bgp_as or fabric_topology bgp_as.
@@ -121,7 +154,7 @@ class RoutingMixin(Protocol):
 
         if self.node_config.bgp_as is None:
             msg = "bgp_as"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
         bgp_as_range_expanded = range_expand(self.node_config.bgp_as)
         try:
@@ -135,8 +168,8 @@ class RoutingMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
             return bgp_as_range_expanded[self.id - 1]
         except IndexError as exc:
-            msg = f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device"
-            raise AristaAvdError(msg) from exc
+            msg = f"Unable to allocate BGP AS: bgp_as range '{self.node_config.bgp_as}' is too small ({len(bgp_as_range_expanded)}) for the id '{self.id}'."
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname) from exc
 
     def get_bgp_password(
         self: SharedUtilsProtocol,

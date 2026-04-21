@@ -1,0 +1,12 @@
+{
+    "payload": {
+        "value": {
+            "key": {
+                "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+            },
+            "displayName": "MOCKED_WS_NAME",
+            "description": "MOCKED_WS_DESCRIPTION"
+        },
+        "time": "2025-05-06T06:38:20.561937314"
+    }
+}

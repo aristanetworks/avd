@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -11,6 +11,9 @@
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.defaults.link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.link_tracking.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.defaults.link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "<node_type_keys.key>.defaults.link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
@@ -19,13 +22,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.defaults.uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.defaults.uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "<node_type_keys.key>.defaults.uplink_switches") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.uplink_switches.[]") | String | Required |  |  | Hostname of uplink switch.<br>If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.<br>e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.defaults.uplink_interface_speed") | String |  |  |  | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.defaults.uplink_switch_interface_speed") | String |  |  |  | Set point-to-Point interface speed for the uplink switch interface only.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.defaults.uplink_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.defaults.uplink_switch_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed for the uplink switch interface only.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_mtu</samp>](## "<node_type_keys.key>.defaults.uplink_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;max_uplink_switches</samp>](## "<node_type_keys.key>.defaults.max_uplink_switches") | Integer |  |  |  | Maximum number of uplink switches.<br>Changing this value may change IP Addressing on uplinks.<br>Can be used to reserve IP space for future expansions.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;max_parallel_uplinks</samp>](## "<node_type_keys.key>.defaults.max_parallel_uplinks") | Integer |  | `1` |  | Number of parallel links towards uplink switches.<br>Changing this value may change interface naming on uplinks (and corresponding downlinks).<br>Can be used to reserve interfaces for future parallel uplinks.<br> |
@@ -37,8 +40,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<node_type_keys.key>.defaults.uplink_macsec.profile") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_id</samp>](## "<node_type_keys.key>.defaults.uplink_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink Port-channel ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the local Port-channel ID.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_id</samp>](## "<node_type_keys.key>.defaults.uplink_switch_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink switch Port-channel ID will be set to the number of the first interface defined under `uplink_switch_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the Port-channel ID on the uplink switch.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.defaults.uplink_structured_config") | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ethernet_structured_config</samp>](## "<node_type_keys.key>.defaults.uplink_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_structured_config</samp>](## "<node_type_keys.key>.defaults.uplink_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the uplink Port-Channel when using port-channel uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_ethernet_structured_config</samp>](## "<node_type_keys.key>.defaults.uplink_switch_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_structured_config</samp>](## "<node_type_keys.key>.defaults.uplink_switch_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<node_type_keys.key>.defaults.short_esi") | String |  |  |  | short_esi only valid for l2leaf devices using port-channel uplink.<br>Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.<br>< 0000:0000:0000 | auto >.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.defaults.uplink_structured_config") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
@@ -50,6 +57,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].downlink_pools.[].downlink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
@@ -58,13 +68,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switches") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switches.[]") | String | Required |  |  | Hostname of uplink switch.<br>If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.<br>e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interface_speed") | String |  |  |  | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_interface_speed") | String |  |  |  | Set point-to-Point interface speed for the uplink switch interface only.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed for the uplink switch interface only.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_mtu</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_uplink_switches</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].max_uplink_switches") | Integer |  |  |  | Maximum number of uplink switches.<br>Changing this value may change IP Addressing on uplinks.<br>Can be used to reserve IP space for future expansions.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_parallel_uplinks</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].max_parallel_uplinks") | Integer |  | `1` |  | Number of parallel links towards uplink switches.<br>Changing this value may change interface naming on uplinks (and corresponding downlinks).<br>Can be used to reserve interfaces for future parallel uplinks.<br> |
@@ -76,10 +86,17 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_macsec.profile") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink Port-channel ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the local Port-channel ID.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink switch Port-channel ID will be set to the number of the first interface defined under `uplink_switch_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the Port-channel ID on the uplink switch.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_structured_config") | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ethernet_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the uplink Port-Channel when using port-channel uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_ethernet_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].short_esi") | String |  |  |  | short_esi only valid for l2leaf devices using port-channel uplink.<br>Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.<br>< 0000:0000:0000 | auto >.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_structured_config") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
@@ -88,13 +105,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switches") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switches.[]") | String | Required |  |  | Hostname of uplink switch.<br>If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.<br>e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interface_speed") | String |  |  |  | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_interface_speed") | String |  |  |  | Set point-to-Point interface speed for the uplink switch interface only.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed for the uplink switch interface only.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_mtu</samp>](## "<node_type_keys.key>.node_groups.[].uplink_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_uplink_switches</samp>](## "<node_type_keys.key>.node_groups.[].max_uplink_switches") | Integer |  |  |  | Maximum number of uplink switches.<br>Changing this value may change IP Addressing on uplinks.<br>Can be used to reserve IP space for future expansions.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_parallel_uplinks</samp>](## "<node_type_keys.key>.node_groups.[].max_parallel_uplinks") | Integer |  | `1` |  | Number of parallel links towards uplink switches.<br>Changing this value may change interface naming on uplinks (and corresponding downlinks).<br>Can be used to reserve interfaces for future parallel uplinks.<br> |
@@ -106,8 +123,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<node_type_keys.key>.node_groups.[].uplink_macsec.profile") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].uplink_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink Port-channel ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the local Port-channel ID.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink switch Port-channel ID will be set to the number of the first interface defined under `uplink_switch_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the Port-channel ID on the uplink switch.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].uplink_structured_config") | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ethernet_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].uplink_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].uplink_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the uplink Port-Channel when using port-channel uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_ethernet_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<node_type_keys.key>.node_groups.[].short_esi") | String |  |  |  | short_esi only valid for l2leaf devices using port-channel uplink.<br>Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.<br>< 0000:0000:0000 | auto >.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].uplink_structured_config") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlink_pools</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools") | List, items: Dictionary |  |  |  | IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch. |
@@ -117,6 +138,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools.[].downlink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.nodes.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
@@ -125,13 +149,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.nodes.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "<node_type_keys.key>.nodes.[].uplink_switches") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].uplink_switches.[]") | String | Required |  |  | Hostname of uplink switch.<br>If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.<br>e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.nodes.[].uplink_interface_speed") | String |  |  |  | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_interface_speed") | String |  |  |  | Set point-to-Point interface speed for the uplink switch interface only.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "<node_type_keys.key>.nodes.[].uplink_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed for the uplink switch interface only.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_mtu</samp>](## "<node_type_keys.key>.nodes.[].uplink_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_uplink_switches</samp>](## "<node_type_keys.key>.nodes.[].max_uplink_switches") | Integer |  |  |  | Maximum number of uplink switches.<br>Changing this value may change IP Addressing on uplinks.<br>Can be used to reserve IP space for future expansions.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_parallel_uplinks</samp>](## "<node_type_keys.key>.nodes.[].max_parallel_uplinks") | Integer |  | `1` |  | Number of parallel links towards uplink switches.<br>Changing this value may change interface naming on uplinks (and corresponding downlinks).<br>Can be used to reserve interfaces for future parallel uplinks.<br> |
@@ -143,8 +167,95 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<node_type_keys.key>.nodes.[].uplink_macsec.profile") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_id</samp>](## "<node_type_keys.key>.nodes.[].uplink_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink Port-channel ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the local Port-channel ID.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_id</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink switch Port-channel ID will be set to the number of the first interface defined under `uplink_switch_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the Port-channel ID on the uplink switch.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.nodes.[].uplink_structured_config") | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ethernet_structured_config</samp>](## "<node_type_keys.key>.nodes.[].uplink_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_structured_config</samp>](## "<node_type_keys.key>.nodes.[].uplink_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the uplink Port-Channel when using port-channel uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_ethernet_structured_config</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_structured_config</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<node_type_keys.key>.nodes.[].short_esi") | String |  |  |  | short_esi only valid for l2leaf devices using port-channel uplink.<br>Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.<br>< 0000:0000:0000 | auto >.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.nodes.[].uplink_structured_config") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config</samp> instead.</span> |
+    | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "device_profiles.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "device_profiles.[].link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "device_profiles.[].link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "device_profiles.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "device_profiles.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "device_profiles.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "device_profiles.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "device_profiles.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "device_profiles.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "device_profiles.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "device_profiles.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "device_profiles.[].uplink_switches") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].uplink_switches.[]") | String | Required |  |  | Hostname of uplink switch.<br>If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.<br>e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "device_profiles.[].uplink_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "device_profiles.[].uplink_switch_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed for the uplink switch interface only.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_mtu</samp>](## "device_profiles.[].uplink_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;max_uplink_switches</samp>](## "device_profiles.[].max_uplink_switches") | Integer |  |  |  | Maximum number of uplink switches.<br>Changing this value may change IP Addressing on uplinks.<br>Can be used to reserve IP space for future expansions.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;max_parallel_uplinks</samp>](## "device_profiles.[].max_parallel_uplinks") | Integer |  | `1` |  | Number of parallel links towards uplink switches.<br>Changing this value may change interface naming on uplinks (and corresponding downlinks).<br>Can be used to reserve interfaces for future parallel uplinks.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_bfd</samp>](## "device_profiles.[].uplink_bfd") | Boolean |  | `False` |  | Enable bfd on uplink interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_native_vlan</samp>](## "device_profiles.[].uplink_native_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Only applicable to switches with layer-2 port-channel uplinks.<br>A suspended (disabled) vlan will be created in both ends of the link unless the vlan is defined under network services.<br>By default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ptp</samp>](## "device_profiles.[].uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "device_profiles.[].uplink_ptp.enable") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_macsec</samp>](## "device_profiles.[].uplink_macsec") | Dictionary |  |  |  | Enable MacSec on all uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "device_profiles.[].uplink_macsec.profile") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_id</samp>](## "device_profiles.[].uplink_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink Port-channel ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the local Port-channel ID.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_id</samp>](## "device_profiles.[].uplink_switch_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink switch Port-channel ID will be set to the number of the first interface defined under `uplink_switch_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the Port-channel ID on the uplink switch.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ethernet_structured_config</samp>](## "device_profiles.[].uplink_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_structured_config</samp>](## "device_profiles.[].uplink_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the uplink Port-Channel when using port-channel uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_ethernet_structured_config</samp>](## "device_profiles.[].uplink_switch_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_structured_config</samp>](## "device_profiles.[].uplink_switch_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "device_profiles.[].short_esi") | String |  |  |  | short_esi only valid for l2leaf devices using port-channel uplink.<br>Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.<br>< 0000:0000:0000 | auto >.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "device_profiles.[].uplink_structured_config") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config</samp> instead.</span> |
+    | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;downlink_pools</samp>](## "devices.[].downlink_pools") | List, items: Dictionary |  |  |  | IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv4_pool</samp>](## "devices.[].downlink_pools.[].ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_pool</samp>](## "devices.[].downlink_pools.[].ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlink_interfaces</samp>](## "devices.[].downlink_pools.[].downlink_interfaces") | List, items: String |  |  |  | List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].downlink_pools.[].downlink_interfaces.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "devices.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlinks</samp>](## "devices.[].link_tracking.downlinks") | Dictionary |  |  |  | Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.<br>If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group<br>i.e. either the default `LT_GROUP1` or the first from the configured list.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].link_tracking.downlinks.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "devices.[].link_tracking.downlinks.group") | String |  |  |  | Link Tracking Group Name.<br>Group name should be any one of the groups defined under "link_tracking.groups".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "devices.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "devices.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "devices.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "devices.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "devices.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "devices.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "devices.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "devices.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet.*` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "devices.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].uplink_switch_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switches</samp>](## "devices.[].uplink_switches") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].uplink_switches.[]") | String | Required |  |  | Hostname of uplink switch.<br>If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.<br>e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "devices.[].uplink_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed and will apply to uplink interfaces on both ends.<br>(Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interface_speed</samp>](## "devices.[].uplink_switch_interface_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Set point-to-Point interface speed for the uplink switch interface only.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_mtu</samp>](## "devices.[].uplink_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;max_uplink_switches</samp>](## "devices.[].max_uplink_switches") | Integer |  |  |  | Maximum number of uplink switches.<br>Changing this value may change IP Addressing on uplinks.<br>Can be used to reserve IP space for future expansions.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;max_parallel_uplinks</samp>](## "devices.[].max_parallel_uplinks") | Integer |  | `1` |  | Number of parallel links towards uplink switches.<br>Changing this value may change interface naming on uplinks (and corresponding downlinks).<br>Can be used to reserve interfaces for future parallel uplinks.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_bfd</samp>](## "devices.[].uplink_bfd") | Boolean |  | `False` |  | Enable bfd on uplink interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_native_vlan</samp>](## "devices.[].uplink_native_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Only applicable to switches with layer-2 port-channel uplinks.<br>A suspended (disabled) vlan will be created in both ends of the link unless the vlan is defined under network services.<br>By default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ptp</samp>](## "devices.[].uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "devices.[].uplink_ptp.enable") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_macsec</samp>](## "devices.[].uplink_macsec") | Dictionary |  |  |  | Enable MacSec on all uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "devices.[].uplink_macsec.profile") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_id</samp>](## "devices.[].uplink_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink Port-channel ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the local Port-channel ID.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_id</samp>](## "devices.[].uplink_switch_port_channel_id") | Integer |  |  | Min: 1<br>Max: 999999 | Only applicable for L2 switches with `uplink_type: port-channel`.<br>By default the uplink switch Port-channel ID will be set to the number of the first interface defined under `uplink_switch_interfaces`.<br>For example:<br>  member ports [ Eth22, Eth23 ] -> ID 22<br>  member ports [ Eth11/1, Eth22/1 ] -> ID 111<br>For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.<br>This option overrides the default behavior and statically sets the Port-channel ID on the uplink switch.<br>Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.<br>Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ethernet_structured_config</samp>](## "devices.[].uplink_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_structured_config</samp>](## "devices.[].uplink_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the uplink Port-Channel when using port-channel uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_ethernet_structured_config</samp>](## "devices.[].uplink_switch_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_structured_config</samp>](## "devices.[].uplink_switch_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "devices.[].short_esi") | String |  |  |  | short_esi only valid for l2leaf devices using port-channel uplink.<br>Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.<br>< 0000:0000:0000 | auto >.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "devices.[].uplink_structured_config") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config</samp> instead.</span> |
 
 === "YAML"
 
@@ -158,6 +269,16 @@
         # Useful in EVPN multhoming designs.
         link_tracking:
           enabled: <bool; default=False>
+
+          # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+          # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+          # i.e. either the default `LT_GROUP1` or the first from the configured list.
+          downlinks:
+            enabled: <bool; default=False>
+
+            # Link Tracking Group Name.
+            # Group name should be any one of the groups defined under "link_tracking.groups".
+            group: <str>
 
           # Link Tracking Groups.
           # By default a single group named "LT_GROUP1" is defined with default values.
@@ -205,11 +326,10 @@
         # Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
         # (Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).
         # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-        uplink_interface_speed: <str>
+        uplink_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
 
         # Set point-to-Point interface speed for the uplink switch interface only.
-        # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-        uplink_switch_interface_speed: <str>
+        uplink_switch_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
 
         # Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
         uplink_mtu: <int; 68-65535>
@@ -262,12 +382,17 @@
         # Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
         uplink_switch_port_channel_id: <int; 1-999999>
 
-        # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-        # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.
-        # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
-        # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
-        # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-        uplink_structured_config: <dict>
+        # Custom structured config applied to `uplink_interfaces`.
+        uplink_ethernet_structured_config: <dict>
+
+        # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+        uplink_port_channel_structured_config: <dict>
+
+        # Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+        uplink_switch_ethernet_structured_config: <dict>
+
+        # Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks.
+        uplink_switch_port_channel_structured_config: <dict>
 
         # short_esi only valid for l2leaf devices using port-channel uplink.
         # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
@@ -306,6 +431,16 @@
               # Useful in EVPN multhoming designs.
               link_tracking:
                 enabled: <bool; default=False>
+
+                # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+                # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+                # i.e. either the default `LT_GROUP1` or the first from the configured list.
+                downlinks:
+                  enabled: <bool; default=False>
+
+                  # Link Tracking Group Name.
+                  # Group name should be any one of the groups defined under "link_tracking.groups".
+                  group: <str>
 
                 # Link Tracking Groups.
                 # By default a single group named "LT_GROUP1" is defined with default values.
@@ -353,11 +488,10 @@
               # Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
               # (Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).
               # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-              uplink_interface_speed: <str>
+              uplink_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
 
               # Set point-to-Point interface speed for the uplink switch interface only.
-              # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-              uplink_switch_interface_speed: <str>
+              uplink_switch_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
 
               # Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
               uplink_mtu: <int; 68-65535>
@@ -410,12 +544,17 @@
               # Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
               uplink_switch_port_channel_id: <int; 1-999999>
 
-              # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-              # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.
-              # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
-              # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
-              # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-              uplink_structured_config: <dict>
+              # Custom structured config applied to `uplink_interfaces`.
+              uplink_ethernet_structured_config: <dict>
+
+              # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+              uplink_port_channel_structured_config: <dict>
+
+              # Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+              uplink_switch_ethernet_structured_config: <dict>
+
+              # Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks.
+              uplink_switch_port_channel_structured_config: <dict>
 
               # short_esi only valid for l2leaf devices using port-channel uplink.
               # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
@@ -426,6 +565,16 @@
           # Useful in EVPN multhoming designs.
           link_tracking:
             enabled: <bool; default=False>
+
+            # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+            # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+            # i.e. either the default `LT_GROUP1` or the first from the configured list.
+            downlinks:
+              enabled: <bool; default=False>
+
+              # Link Tracking Group Name.
+              # Group name should be any one of the groups defined under "link_tracking.groups".
+              group: <str>
 
             # Link Tracking Groups.
             # By default a single group named "LT_GROUP1" is defined with default values.
@@ -473,11 +622,10 @@
           # Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
           # (Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).
           # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-          uplink_interface_speed: <str>
+          uplink_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
 
           # Set point-to-Point interface speed for the uplink switch interface only.
-          # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-          uplink_switch_interface_speed: <str>
+          uplink_switch_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
 
           # Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
           uplink_mtu: <int; 68-65535>
@@ -530,12 +678,17 @@
           # Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
           uplink_switch_port_channel_id: <int; 1-999999>
 
-          # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-          # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.
-          # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
-          # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
-          # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-          uplink_structured_config: <dict>
+          # Custom structured config applied to `uplink_interfaces`.
+          uplink_ethernet_structured_config: <dict>
+
+          # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+          uplink_port_channel_structured_config: <dict>
+
+          # Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+          uplink_switch_ethernet_structured_config: <dict>
+
+          # Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks.
+          uplink_switch_port_channel_structured_config: <dict>
 
           # short_esi only valid for l2leaf devices using port-channel uplink.
           # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
@@ -568,6 +721,16 @@
           link_tracking:
             enabled: <bool; default=False>
 
+            # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+            # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+            # i.e. either the default `LT_GROUP1` or the first from the configured list.
+            downlinks:
+              enabled: <bool; default=False>
+
+              # Link Tracking Group Name.
+              # Group name should be any one of the groups defined under "link_tracking.groups".
+              group: <str>
+
             # Link Tracking Groups.
             # By default a single group named "LT_GROUP1" is defined with default values.
             # Any groups defined under "groups" will replace the default.
@@ -614,11 +777,10 @@
           # Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
           # (Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).
           # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-          uplink_interface_speed: <str>
+          uplink_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
 
           # Set point-to-Point interface speed for the uplink switch interface only.
-          # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-          uplink_switch_interface_speed: <str>
+          uplink_switch_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
 
           # Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
           uplink_mtu: <int; 68-65535>
@@ -671,15 +833,315 @@
           # Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
           uplink_switch_port_channel_id: <int; 1-999999>
 
-          # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-          # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.
-          # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
-          # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
-          # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-          uplink_structured_config: <dict>
+          # Custom structured config applied to `uplink_interfaces`.
+          uplink_ethernet_structured_config: <dict>
+
+          # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+          uplink_port_channel_structured_config: <dict>
+
+          # Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+          uplink_switch_ethernet_structured_config: <dict>
+
+          # Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks.
+          uplink_switch_port_channel_structured_config: <dict>
 
           # short_esi only valid for l2leaf devices using port-channel uplink.
           # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
           # < 0000:0000:0000 | auto >.
           short_esi: <str>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_profiles:
+
+        # Profile Name
+      - name: <str; required; unique>
+
+        # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
+        # Useful in EVPN multhoming designs.
+        link_tracking:
+          enabled: <bool; default=False>
+
+          # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+          # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+          # i.e. either the default `LT_GROUP1` or the first from the configured list.
+          downlinks:
+            enabled: <bool; default=False>
+
+            # Link Tracking Group Name.
+            # Group name should be any one of the groups defined under "link_tracking.groups".
+            group: <str>
+
+          # Link Tracking Groups.
+          # By default a single group named "LT_GROUP1" is defined with default values.
+          # Any groups defined under "groups" will replace the default.
+          groups: # default=[{'name': 'LT_GROUP1'}]
+
+              # Tracking group name.
+            - name: <str; required; unique>
+
+              # default -> platform_settings_mlag_reload_delay -> 300.
+              recovery_delay: <int; 0-3600>
+              links_minimum: <int; 1-100000>
+
+        # Override the default `uplink_type` set at the `node_type_key` level.
+        # `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition.
+        uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan">
+
+        # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+        # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+        # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+        uplink_ipv4_pool: <str>
+
+        # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        # IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+        # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+        uplink_ipv6_pool: <str>
+
+        # Local uplink interfaces.
+        # Each list item supports range syntax that can be expanded into a list of interfaces.
+        # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+        # Please note that default_interfaces are not defined by default, you should define these yourself.
+        uplink_interfaces:
+          - <str>
+
+        # Interfaces located on uplink switches.
+        uplink_switch_interfaces:
+          - <str>
+        uplink_switches:
+
+            # Hostname of uplink switch.
+            # If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.
+            # e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].
+          - <str; required>
+
+        # Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
+        # (Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).
+        # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+        uplink_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
+
+        # Set point-to-Point interface speed for the uplink switch interface only.
+        uplink_switch_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
+
+        # Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
+        uplink_mtu: <int; 68-65535>
+
+        # Maximum number of uplink switches.
+        # Changing this value may change IP Addressing on uplinks.
+        # Can be used to reserve IP space for future expansions.
+        max_uplink_switches: <int>
+
+        # Number of parallel links towards uplink switches.
+        # Changing this value may change interface naming on uplinks (and corresponding downlinks).
+        # Can be used to reserve interfaces for future parallel uplinks.
+        max_parallel_uplinks: <int; default=1>
+
+        # Enable bfd on uplink interfaces.
+        uplink_bfd: <bool; default=False>
+
+        # Only applicable to switches with layer-2 port-channel uplinks.
+        # A suspended (disabled) vlan will be created in both ends of the link unless the vlan is defined under network services.
+        # By default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+        uplink_native_vlan: <int; 1-4094>
+
+        # Enable PTP on all infrastructure links.
+        uplink_ptp:
+          enable: <bool; default=False>
+
+        # Enable MacSec on all uplinks.
+        uplink_macsec:
+          profile: <str>
+
+        # Only applicable for L2 switches with `uplink_type: port-channel`.
+        # By default the uplink Port-channel ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.
+        # For example:
+        #   member ports [ Eth22, Eth23 ] -> ID 22
+        #   member ports [ Eth11/1, Eth22/1 ] -> ID 111
+        # For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.
+        # This option overrides the default behavior and statically sets the local Port-channel ID.
+        # Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.
+        # Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
+        uplink_port_channel_id: <int; 1-999999>
+
+        # Only applicable for L2 switches with `uplink_type: port-channel`.
+        # By default the uplink switch Port-channel ID will be set to the number of the first interface defined under `uplink_switch_interfaces`.
+        # For example:
+        #   member ports [ Eth22, Eth23 ] -> ID 22
+        #   member ports [ Eth11/1, Eth22/1 ] -> ID 111
+        # For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.
+        # This option overrides the default behavior and statically sets the Port-channel ID on the uplink switch.
+        # Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.
+        # Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
+        uplink_switch_port_channel_id: <int; 1-999999>
+
+        # Custom structured config applied to `uplink_interfaces`.
+        uplink_ethernet_structured_config: <dict>
+
+        # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+        uplink_port_channel_structured_config: <dict>
+
+        # Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+        uplink_switch_ethernet_structured_config: <dict>
+
+        # Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks.
+        uplink_switch_port_channel_structured_config: <dict>
+
+        # short_esi only valid for l2leaf devices using port-channel uplink.
+        # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
+        # < 0000:0000:0000 | auto >.
+        short_esi: <str>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    devices:
+
+        # The Node Name is used as "hostname".
+        name: <str; required; unique>
+
+        # IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch.
+        downlink_pools:
+
+            # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+            # IPv4 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
+          - ipv4_pool: <str>
+
+            # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+            # IPv6 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
+            ipv6_pool: <str>
+
+            # List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool.
+            downlink_interfaces:
+              - <str>
+
+        # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
+        # Useful in EVPN multhoming designs.
+        link_tracking:
+          enabled: <bool; default=False>
+
+          # Add all underlay downlinks of the switch as the downstream interfaces of the configured Link Tracking Group.
+          # If enabled and no `group` is specified for downlinks, the downlinks will be linked to the first available tracking group
+          # i.e. either the default `LT_GROUP1` or the first from the configured list.
+          downlinks:
+            enabled: <bool; default=False>
+
+            # Link Tracking Group Name.
+            # Group name should be any one of the groups defined under "link_tracking.groups".
+            group: <str>
+
+          # Link Tracking Groups.
+          # By default a single group named "LT_GROUP1" is defined with default values.
+          # Any groups defined under "groups" will replace the default.
+          groups: # default=[{'name': 'LT_GROUP1'}]
+
+              # Tracking group name.
+            - name: <str; required; unique>
+
+              # default -> platform_settings_mlag_reload_delay -> 300.
+              recovery_delay: <int; 0-3600>
+              links_minimum: <int; 1-100000>
+
+        # Override the default `uplink_type` set at the `node_type_key` level.
+        # `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition.
+        uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs" | "lan">
+
+        # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+        # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+        # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+        uplink_ipv4_pool: <str>
+
+        # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        # IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+        # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+        uplink_ipv6_pool: <str>
+
+        # Local uplink interfaces.
+        # Each list item supports range syntax that can be expanded into a list of interfaces.
+        # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+        # Please note that default_interfaces are not defined by default, you should define these yourself.
+        uplink_interfaces:
+          - <str>
+
+        # Interfaces located on uplink switches.
+        uplink_switch_interfaces:
+          - <str>
+        uplink_switches:
+
+            # Hostname of uplink switch.
+            # If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.
+            # e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].
+          - <str; required>
+
+        # Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
+        # (Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).
+        # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+        uplink_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
+
+        # Set point-to-Point interface speed for the uplink switch interface only.
+        uplink_switch_interface_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
+
+        # Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
+        uplink_mtu: <int; 68-65535>
+
+        # Maximum number of uplink switches.
+        # Changing this value may change IP Addressing on uplinks.
+        # Can be used to reserve IP space for future expansions.
+        max_uplink_switches: <int>
+
+        # Number of parallel links towards uplink switches.
+        # Changing this value may change interface naming on uplinks (and corresponding downlinks).
+        # Can be used to reserve interfaces for future parallel uplinks.
+        max_parallel_uplinks: <int; default=1>
+
+        # Enable bfd on uplink interfaces.
+        uplink_bfd: <bool; default=False>
+
+        # Only applicable to switches with layer-2 port-channel uplinks.
+        # A suspended (disabled) vlan will be created in both ends of the link unless the vlan is defined under network services.
+        # By default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+        uplink_native_vlan: <int; 1-4094>
+
+        # Enable PTP on all infrastructure links.
+        uplink_ptp:
+          enable: <bool; default=False>
+
+        # Enable MacSec on all uplinks.
+        uplink_macsec:
+          profile: <str>
+
+        # Only applicable for L2 switches with `uplink_type: port-channel`.
+        # By default the uplink Port-channel ID will be set to the number of the lowest member interface defined under `uplink_interfaces`.
+        # For example:
+        #   member ports [ Eth22, Eth23 ] -> ID 22
+        #   member ports [ Eth11/1, Eth22/1 ] -> ID 111
+        # For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.
+        # This option overrides the default behavior and statically sets the local Port-channel ID.
+        # Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.
+        # Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
+        uplink_port_channel_id: <int; 1-999999>
+
+        # Only applicable for L2 switches with `uplink_type: port-channel`.
+        # By default the uplink switch Port-channel ID will be set to the number of the first interface defined under `uplink_switch_interfaces`.
+        # For example:
+        #   member ports [ Eth22, Eth23 ] -> ID 22
+        #   member ports [ Eth11/1, Eth22/1 ] -> ID 111
+        # For MLAG port-channels ID will be based on the lowest member interface on the first MLAG switch.
+        # This option overrides the default behavior and statically sets the Port-channel ID on the uplink switch.
+        # Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network Services.
+        # Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
+        uplink_switch_port_channel_id: <int; 1-999999>
+
+        # Custom structured config applied to `uplink_interfaces`.
+        uplink_ethernet_structured_config: <dict>
+
+        # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+        uplink_port_channel_structured_config: <dict>
+
+        # Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+        uplink_switch_ethernet_structured_config: <dict>
+
+        # Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks.
+        uplink_switch_port_channel_structured_config: <dict>
+
+        # short_esi only valid for l2leaf devices using port-channel uplink.
+        # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
+        # < 0000:0000:0000 | auto >.
+        short_esi: <str>
     ```

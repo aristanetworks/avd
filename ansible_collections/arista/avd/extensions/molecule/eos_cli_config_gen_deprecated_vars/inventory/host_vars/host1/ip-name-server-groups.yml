@@ -1,0 +1,13 @@
+---
+# Test for deprecated key ip_name_server_groups[].name_servers
+ip_name_server_groups:
+  - name: mynameserver1
+    name_servers:
+      - ip_address: 8.8.8.8
+        vrf: vrf1
+      - ip_address: 1.1.1.1
+        vrf: default
+        priority: 1
+      - ip_address: 2.2.2.4
+        vrf: vrf1
+        priority: 4

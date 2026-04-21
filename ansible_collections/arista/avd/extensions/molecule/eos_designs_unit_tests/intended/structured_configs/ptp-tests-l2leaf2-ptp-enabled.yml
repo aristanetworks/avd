@@ -1,0 +1,96 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_ptp-tests-leaf1_Ethernet12
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: ptp-tests-leaf1
+    peer_interface: Ethernet12
+    peer_type: l3leaf
+- name: Ethernet2
+  description: L2_ptp-tests-leaf2_Ethernet12
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: ptp-tests-leaf2
+    peer_interface: Ethernet12
+    peer_type: l3leaf
+hostname: ptp-tests-l2leaf2-ptp-enabled
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: PTP_TESTS
+  validate_hardware:
+    enabled: false
+port_channel_interfaces:
+- name: Port-Channel1
+  description: L2_ptp-test-leaf_Port-Channel12
+  shutdown: false
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '11'
+ptp:
+  mode: boundary
+  clock_identity: 00:1C:73:7f:00:02
+  priority1: 127
+  priority2: 2
+  domain: 127
+  monitor:
+    enabled: true
+    threshold:
+      offset_from_master: 250
+      mean_path_delay: 1500
+    missing_message:
+      sequence_ids:
+        enabled: true
+        announce: 3
+        delay_resp: 3
+        follow_up: 3
+        sync: 3
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 32768
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VLAN11
+  metadata:
+    tenants:
+    - PTP
+vrfs:
+- name: MGMT
+  ip_routing: false

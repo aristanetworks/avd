@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -54,6 +54,12 @@ class DigitalTwinMixin(Protocol):
                         " 'mgmt_ip' attribute must be set in the node configuration settings using either the 'digital_twin.mgmt_ip' or 'mgmt_ip' key."
                     )
                     raise AristaAvdError(msg)
+                if ip_addr == "dhcp":
+                    msg = (
+                        f"'mgmt_ip: dhcp' is not supported for Digital Twin. "
+                        f"A static management IP address is required for host '{self.shared_utils.hostname}'."
+                    )
+                    raise AristaAvdError(msg)
                 version = default(
                     self.shared_utils.node_config.digital_twin.act_os_version,
                     self.inputs.digital_twin.fabric.act_os_version,
@@ -70,4 +76,14 @@ class DigitalTwinMixin(Protocol):
                     username=username,
                     password=password,
                 )
+                # Set internet_access flag if node_type is cloudeos or veos
+                if (
+                    act_internet_access := default(
+                        self.shared_utils.node_config.digital_twin.act_internet_access,
+                        self.inputs.digital_twin.fabric.act_internet_access,
+                    )
+                ) and digital_twin_node_type in ["cloudeos", "veos"]:
+                    self.structured_config.metadata.digital_twin._update(
+                        internet_access=act_internet_access,
+                    )
                 return

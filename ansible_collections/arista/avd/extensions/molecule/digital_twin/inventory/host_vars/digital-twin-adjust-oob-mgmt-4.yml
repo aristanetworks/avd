@@ -1,0 +1,17 @@
+---
+# OOB MGMT is Ma0 but ACT node type is third-party. ACT Digital Twin version of the config keeps it as is.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-adjust-oob-mgmt-4
+      id: 1
+      platform: custom-platform
+      mgmt_ip: 192.168.1.4/32
+      mgmt_interface: Management0
+
+custom_platform_settings:
+  - platforms:
+      - custom-platform
+    digital_twin:
+      act_node_type: third-party

@@ -1,0 +1,46 @@
+---
+fabric_name: SINGLE_LINK_TO_MLAG_PAIR
+
+type: l2leaf
+
+mlag_on_orphan_port_channel_downlink: true
+
+l2leaf:
+  defaults:
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    platform: vEOS-LAB
+    mlag_interfaces: [Ethernet25, Ethernet26]
+  node_groups:
+    - group: SL-LEAF0
+      nodes:
+        - name: sl-leaf0a
+          id: 1
+        - name: sl-leaf0b
+          id: 2
+    - group: SL-LEAF1
+      uplink_interfaces: ['Ethernet27']
+      uplink_switches: ['sl-leaf0b']
+      nodes:
+        - name: sl-leaf1a
+          id: 3
+          uplink_switch_interfaces: ['Ethernet27']
+        - name: sl-leaf1b
+          id: 4
+          uplink_switch_interfaces: ['Ethernet28']
+    - group: sl-mleaf1
+      nodes:
+        - name: sl-mleaf1
+          id: 5
+          uplink_interfaces: ['Ethernet16']
+          uplink_switches: ['sl-leaf1a']
+          uplink_switch_interfaces: ['Ethernet28']
+    - group: SL-LEAF2
+      uplink_interfaces: [Ethernet41, Ethernet42]
+      uplink_switches: [sl-leaf0b, sl-leaf0b]
+      nodes:
+        - name: sl-leaf2a
+          id: 6
+          uplink_switch_interfaces: [Ethernet41, Ethernet42]
+        - name: sl-leaf2b
+          id: 7
+          uplink_switch_interfaces: [Ethernet43, Ethernet44]

@@ -1,0 +1,39 @@
+---
+ipv6_neighbor:
+  static_entries:
+    - ipv6_address: 11:22:33:44:55:66:77:88
+      interface: Ethernet1
+      mac_address: 11:22:33:44:55:66
+      vrf: MGMT
+    - ipv6_address: ::ffff:192.1.56.10
+      interface: Loopback99
+      mac_address: aa:af:12:34:bc:bf
+    - ipv6_address: "11:11:11:11:11:11:11:11"
+      interface: Ethernet3
+      mac_address: "11:11:11:11:11:11"
+      vrf: MGMT
+    - ipv6_address: ::ffff:192.1.56.10
+      interface: Ethernet2
+      mac_address: "22:22:22:22:22:22"
+    - ipv6_address: 11:22:33:44:55:66:77:77
+      interface: Ethernet2
+      mac_address: "22:22:22:22:22:22"
+    - ipv6_address: "11:11:11:11:11:11:11:11"
+      interface: Ethernet4
+      mac_address: "00:00:00:00:00:00"
+      vrf: MGMT
+    - ipv6_address: "11:22:33:44:55:66:77:88"
+      interface: Ethernet1
+      mac_address: "11:22:33:44:55:66"
+      vrf: MGMT
+    - ipv6_address: "11:11:11:11:11:11:11:11"
+      interface: Ethernet4
+      mac_address: "00:00:00:00:00:00"
+      vrf: guest
+    - ipv6_address: "11:22:33:44:55:66:77:77"
+      interface: Ethernet2
+      mac_address: "22:22:22:22:22:22"
+      vrf: data
+  persistent:
+    enabled: true
+    refresh_delay: 1000

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -25,7 +25,7 @@ class InventoryMixin(Protocol):
     @GRPCRequestHandler()
     async def get_inventory_devices(
         self: CVClientProtocol,
-        devices: list[tuple[str, str, str]] | None = None,
+        devices: set[tuple[str | None, str | None, str | None]] | None = None,
         time: datetime | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[Device]:
@@ -35,7 +35,7 @@ class InventoryMixin(Protocol):
         If 'devices' is set to None, all devices will be returned.
 
         Parameters:
-            devices: List of tuples where each tuple is in the format (serial number, system_mac_address, hostname)
+            devices: Set of tuples where each tuple is in the format (serial number, system_mac_address, hostname)
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 

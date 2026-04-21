@@ -1,10 +1,9 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
-from re import search
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
@@ -26,12 +25,15 @@ class PlatformMixin(Protocol):
     def platform(self: SharedUtilsProtocol) -> str | None:
         if self.digital_twin:
             return self.digital_twin_platform
+        return self.original_platform
+
+    @cached_property
+    def original_platform(self: SharedUtilsProtocol) -> str | None:
         return default(self.node_config.platform, self.cv_topology_platform)
 
     @cached_property
     def digital_twin_platform(self: SharedUtilsProtocol) -> str | None:
-        original_platform = default(self.node_config.platform, self.cv_topology_platform)
-        return default(self.get_platform_settings(original_platform).digital_twin.platform, original_platform)
+        return default(self.get_platform_settings(self.original_platform).digital_twin.platform, self.original_platform)
 
     @cached_property
     def platform_settings(self: SharedUtilsProtocol) -> EosDesigns.PlatformSettingsItem | EosDesigns.CustomPlatformSettingsItem:
@@ -41,10 +43,10 @@ class PlatformMixin(Protocol):
         # First look for a matching platform setting specifying our platform
         if platform is not None:
             for platform_setting in self.inputs.custom_platform_settings:
-                if platform in platform_setting.platforms:
+                if self.match_regexes(platform_setting.platforms, platform):
                     return platform_setting
             for platform_setting in self.inputs.platform_settings:
-                if platform in platform_setting.platforms:
+                if self.match_regexes(platform_setting.platforms, platform):
                     return platform_setting
 
         # If not found, then look for a default platform setting
@@ -60,18 +62,19 @@ class PlatformMixin(Protocol):
     @cached_property
     def default_interfaces(self: SharedUtilsProtocol) -> EosDesigns.DefaultInterfacesItem:
         """default_interfaces set based on default_interfaces."""
-        device_platform = self.platform or "default"
+        if self.digital_twin and self.inputs.digital_twin.use_default_interfaces_of_digital_twin_platform:
+            device_platform = self.platform or "default"
+        else:
+            device_platform = self.original_platform or "default"
 
         # First look for a matching default interface set that matches our platform and type
         for default_interface in self.inputs.default_interfaces:
-            for platform in default_interface.platforms:
-                if search(f"^{platform}$", device_platform) and self.type in default_interface.types:
-                    return default_interface
+            if self.match_regexes(default_interface.platforms, device_platform) and self.type in default_interface.types:
+                return default_interface
 
         # If not found, then look for a default default_interface that matches our type
         for default_interface in self.inputs.default_interfaces:
-            for platform in default_interface.platforms:
-                if search(f"^{platform}$", "default") and self.type in default_interface.types:
-                    return default_interface
+            if "default" in default_interface.platforms and self.type in default_interface.types:
+                return default_interface
 
         return EosDesigns.DefaultInterfacesItem()

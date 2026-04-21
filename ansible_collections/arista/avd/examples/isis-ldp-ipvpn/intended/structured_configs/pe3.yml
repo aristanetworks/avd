@@ -7,7 +7,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_p3_Ethernet1
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.3.22/31
   isis_enable: CORE
   isis_metric: 50
@@ -24,15 +24,16 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: p3
-  peer_interface: Ethernet1
-  peer_type: p
+  metadata:
+    peer: p3
+    peer_interface: Ethernet1
+    peer_type: p
   switchport:
     enabled: false
 - name: Ethernet3
   description: P2P_p4_Ethernet3
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.3.24/31
   isis_enable: CORE
   isis_metric: 50
@@ -49,9 +50,10 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: p4
-  peer_interface: Ethernet3
-  peer_type: p
+  metadata:
+    peer: p4
+    peer_interface: Ethernet3
+    peer_type: p
   switchport:
     enabled: false
 - name: Ethernet2
@@ -61,7 +63,8 @@ ethernet_interfaces:
   ip_address: 10.0.1.9/30
   ospf_network_point_to_point: false
   ospf_area: 0.0.0.0
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet4
@@ -69,7 +72,8 @@ ethernet_interfaces:
   shutdown: false
   vrf: C2_VRF1
   ip_address: 10.1.1.9/30
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: pe3
@@ -77,7 +81,6 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:00
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -113,8 +116,11 @@ management_security:
   password:
     encryption_key_common: true
 metadata:
-  platform: vEOS-lab
+  is_deployed: true
+  platform: cEOSLab
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 mpls:
   ip: true
   ldp:
@@ -136,13 +142,13 @@ router_bgp:
     local_routes: 200
   maximum_paths:
     paths: 4
-    ecmp: 4
   bgp:
     default:
       ipv4_unicast: false
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '65001'
     update_source: Loopback0
     bfd: true
@@ -152,11 +158,13 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.2.1
     peer_group: MPLS-OVERLAY-PEERS
-    peer: rr1
+    metadata:
+      peer: rr1
     description: rr1_Loopback0
   - ip_address: 10.255.2.2
     peer_group: MPLS-OVERLAY-PEERS
-    peer: rr2
+    metadata:
+      peer: rr2
     description: rr2_Loopback0
   address_family_ipv4:
     peer_groups:
@@ -250,7 +258,11 @@ vrfs:
   ip_routing: false
 - name: C1_VRF1
   ip_routing: true
-  tenant: CUSTOMER1
+  metadata:
+    tenants:
+    - CUSTOMER1
 - name: C2_VRF1
   ip_routing: true
-  tenant: CUSTOMER2
+  metadata:
+    tenants:
+    - CUSTOMER2

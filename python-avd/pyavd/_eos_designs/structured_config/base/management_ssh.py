@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -26,15 +26,18 @@ class ManagementSshMixin(Protocol):
         if not (ssh_settings := self.inputs.ssh_settings):
             return
 
-        if ssh_settings.idle_timeout:
+        if ssh_settings.idle_timeout is not None:
             self.structured_config.management_ssh.idle_timeout = ssh_settings.idle_timeout
+
+        if ssh_settings.enabled is not None:
+            self.structured_config.management_ssh.enable = ssh_settings.enabled
 
         self._set_vrfs_and_acls(ssh_settings)
 
     def _set_vrfs_and_acls(self: AvdStructuredConfigBaseProtocol, ssh_settings: EosDesigns.SshSettings) -> None:
         """SSH IPv4/IPv6 ACLs with VRFs. Resolves VRF from management VRFs."""
         for vrf in ssh_settings.vrfs._natural_sorted():
-            vrf_name = self.get_vrf(vrf.name, context=f"ssh_settings.vrfs[name={vrf.name}]")
+            vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"ssh_settings.vrfs[name={vrf.name}]")
 
             if vrf_name == "default":
                 self.structured_config.management_ssh.vrfs.append_new(name=vrf_name, enable=vrf.enabled)

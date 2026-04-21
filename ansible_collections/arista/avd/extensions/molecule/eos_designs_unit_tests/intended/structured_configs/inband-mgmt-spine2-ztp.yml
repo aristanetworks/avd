@@ -1,0 +1,168 @@
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /tmp/cv-onboarding-token
+  cvvrf: MGMT
+  disable_aaa: false
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+dhcp_servers:
+- vrf: default
+  dns_servers_ipv4:
+  - 1.1.1.1
+  - 8.8.8.8
+  tftp_server:
+    file_ipv4: spine2_file
+  ipv4_vendor_options:
+  - vendor_id: NTP
+    sub_options:
+    - code: 42
+      array_ipv4_address:
+      - 2.2.2.55
+  ipv4_subnets:
+  - subnet: 172.16.255.2/31
+    default_gateway: 172.16.255.2
+    name: inband ztp for inband-mgmt-parent-Ethernet2
+    ranges:
+    - start: 172.16.255.3
+      end: 172.16.255.3
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_inband-mgmt-parent_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.16.255.2/31
+  dhcp_server_ipv4: true
+  metadata:
+    peer: inband-mgmt-parent
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+hostname: inband-mgmt-spine2-ztp
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 1.1.1.1
+    - ip_address: 8.8.8.8
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.0.254.2/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.100.2/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 2.2.2.55
+    preferred: true
+  - name: pool.ntp.org
+  vrf: MGMT
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.254.0/24 eq 32
+- name: PL-P2P-LINKS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.16.255.2/31
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 70
+    type: permit
+    match:
+    - ip address prefix-list PL-P2P-LINKS
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '64999'
+  router_id: 10.0.254.2
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 256000
+  - name: EVPN-OVERLAY-PEERS
+    metadata:
+      type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 172.16.255.3
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    metadata:
+      peer: inband-mgmt-parent
+    description: inband-mgmt-parent_Ethernet2
+  - ip_address: 10.0.255.1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65000'
+    metadata:
+      peer: inband-mgmt-parent
+    description: inband-mgmt-parent_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -8,13 +8,10 @@ type: dict
 keys:
   ip_ssh_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: Interface Name.
-          type: str
-        vrf:
-          type: str
-          convert_types:
-            - int
+    documentation_options:
+      table: ip-ssh-client
+    deprecation:
+      removed: true
+      warning: true
+      new_key: ip_ssh_client
+      remove_in_version: 6.0.0

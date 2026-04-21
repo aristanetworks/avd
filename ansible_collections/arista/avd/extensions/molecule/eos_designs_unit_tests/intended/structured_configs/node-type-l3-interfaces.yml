@@ -1,0 +1,146 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: peer1_eth1
+  shutdown: false
+  speed: forced 10000full
+  ip_address: 192.168.1.2/31
+  service_profile: TEST-QOS-PROFILE
+  service_policy:
+    qos:
+      input: TEST_POLICY
+  metadata:
+    peer: peer1
+    peer_interface: eth1
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+  eos_cli: '! TEST RAW_EOS_CLI
+
+    '
+- name: Ethernet2/2
+  description: peer2
+  shutdown: false
+  ip_address: dhcp
+  dhcp_client_accept_default_route: true
+  metadata:
+    peer: peer2
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet42
+  description: This is a custom description
+  shutdown: true
+  ip_address: dhcp
+  dhcp_client_accept_default_route: true
+  metadata:
+    peer: peer3
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet43
+  shutdown: true
+  ip_address: 192.168.42.42/24
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet44
+  description: Telecom_10220
+  shutdown: false
+  ip_address: 192.168.44.44/24
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet44.10
+  description: Telecom
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 10
+  ip_address: 192.168.44.45/24
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: true
+- name: Ethernet45
+  description: Main interface without ip address
+  shutdown: false
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+hostname: node-type-l3-interfaces
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 1.2.3.1/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 1.2.3.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bgp:
+  as: '65000'
+  router_id: 1.2.3.1
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+service_routing_protocols_model: multi-agent
+sflow:
+  vrfs:
+  - name: sflow_vrf
+    destinations:
+    - destination: 10.10.10.12
+      port: 1234
+  run: true
+spanning_tree:
+  mode: none
+static_routes:
+- prefix: 0.0.0.0/0
+  next_hop: 192.168.1.3
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

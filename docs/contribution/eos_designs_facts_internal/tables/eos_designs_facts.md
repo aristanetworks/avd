@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -56,6 +56,9 @@
     | [<samp>mlag_switch_ids</samp>](## "mlag_switch_ids") | Dictionary |  |  |  | The switch ids of both primary and secondary switches for a this node group. |
     | [<samp>&nbsp;&nbsp;primary</samp>](## "mlag_switch_ids.primary") | Integer | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;secondary</samp>](## "mlag_switch_ids.secondary") | Integer | Required |  |  |  |
+    | [<samp>mlag_underlay_multicast</samp>](## "mlag_underlay_multicast") | Dictionary |  |  |  | Should multicast be enabled on the mlag peer-l3-vlan. |
+    | [<samp>&nbsp;&nbsp;pim_sm</samp>](## "mlag_underlay_multicast.pim_sm") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;static</samp>](## "mlag_underlay_multicast.static") | Boolean | Required |  |  |  |
     | [<samp>evpn_role</samp>](## "evpn_role") | String |  |  |  |  |
     | [<samp>mpls_overlay_role</samp>](## "mpls_overlay_role") | String |  |  |  |  |
     | [<samp>evpn_route_servers</samp>](## "evpn_route_servers") | List, items: String |  |  |  | For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere.<br>For all other evpn roles there is no default. |
@@ -77,14 +80,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_is_deployed</samp>](## "uplinks.[].peer_is_deployed") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_bgp_as</samp>](## "uplinks.[].peer_bgp_as") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "uplinks.[].type") | String | Required |  | Valid Values:<br>- <code>underlay_p2p</code><br>- <code>underlay_l2</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "uplinks.[].speed") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "uplinks.[].speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Interface Speed. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "uplinks.[].bfd") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_speed</samp>](## "uplinks.[].peer_speed") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_speed</samp>](## "uplinks.[].peer_speed") | String |  |  | Valid Values:<br>- <code>100full</code><br>- <code>100g</code><br>- <code>100g-1</code><br>- <code>100g-2</code><br>- <code>100g-4</code><br>- <code>100half</code><br>- <code>10full</code><br>- <code>10g</code><br>- <code>10half</code><br>- <code>1g</code><br>- <code>200g</code><br>- <code>200g-2</code><br>- <code>200g-4</code><br>- <code>25g</code><br>- <code>400g</code><br>- <code>400g-4</code><br>- <code>400g-8</code><br>- <code>40g</code><br>- <code>50g</code><br>- <code>50g-1</code><br>- <code>50g-2</code><br>- <code>800g-8</code><br>- <code>sfp-1000baset auto 100full</code><br>- <code>1.6t-8</code><br>- <code>100mfull</code><br>- <code>100mhalf</code><br>- <code>10mfull</code><br>- <code>10mhalf</code><br>- <code>200g-1</code><br>- <code>400g-2</code><br>- <code>40g-4</code><br>- <code>800g-4</code><br>- <code>auto</code><br>- <code>auto 10000full</code><br>- <code>auto 1000full</code><br>- <code>auto 100full</code><br>- <code>auto 100g-1</code><br>- <code>auto 100g-2</code><br>- <code>auto 100g-4</code><br>- <code>auto 100gfull</code><br>- <code>auto 100half</code><br>- <code>auto 10full</code><br>- <code>auto 10gfull</code><br>- <code>auto 10half</code><br>- <code>auto 1gfull</code><br>- <code>auto 2.5gfull</code><br>- <code>auto 200g-2</code><br>- <code>auto 200g-4</code><br>- <code>auto 25gfull</code><br>- <code>auto 400g-4</code><br>- <code>auto 400g-8</code><br>- <code>auto 40gfull</code><br>- <code>auto 50g-1</code><br>- <code>auto 50g-2</code><br>- <code>auto 50gfull</code><br>- <code>auto 5gfull</code><br>- <code>auto 800g-8</code><br>- <code>auto 1.6t-8</code><br>- <code>auto 100mfull</code><br>- <code>auto 100mhalf</code><br>- <code>auto 10g</code><br>- <code>auto 10mfull</code><br>- <code>auto 10mhalf</code><br>- <code>auto 1g</code><br>- <code>auto 2.5g</code><br>- <code>auto 200g-1</code><br>- <code>auto 25g</code><br>- <code>auto 400g-2</code><br>- <code>auto 40g-4</code><br>- <code>auto 5g</code><br>- <code>auto 800g-4</code><br>- <code>forced 10000full</code><br>- <code>forced 1000full</code><br>- <code>forced 1000half</code><br>- <code>forced 100full</code><br>- <code>forced 100gfull</code><br>- <code>forced 100half</code><br>- <code>forced 10full</code><br>- <code>forced 10half</code><br>- <code>forced 25gfull</code><br>- <code>forced 40gfull</code><br>- <code>forced 50gfull</code> | Interface Speed. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "uplinks.[].ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "uplinks.[].ptp.enable") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_security</samp>](## "uplinks.[].mac_security") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "uplinks.[].mac_security.profile") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "uplinks.[].underlay_multicast") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_pim_sm</samp>](## "uplinks.[].underlay_multicast_pim_sm") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_static</samp>](## "uplinks.[].underlay_multicast_static") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "uplinks.[].ipv6_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "uplinks.[].prefix_length") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "uplinks.[].ip_address") | String |  |  |  |  |
@@ -115,7 +119,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_ztp_vlan</samp>](## "uplinks.[].inband_ztp_vlan") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_ztp_lacp_fallback_delay</samp>](## "uplinks.[].inband_ztp_lacp_fallback_delay") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_server</samp>](## "uplinks.[].dhcp_server") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "uplinks.[].structured_config") | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ethernet_structured_config</samp>](## "uplinks.[].ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_channel_structured_config</samp>](## "uplinks.[].port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the uplink Port-Channel when using port-channel uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_ethernet_structured_config</samp>](## "uplinks.[].peer_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_port_channel_structured_config</samp>](## "uplinks.[].peer_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the uplink Port-Channel when using port-channel uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "uplinks.[].subinterfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;interface</samp>](## "uplinks.[].subinterfaces.[].interface") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "uplinks.[].subinterfaces.[].peer_interface") | String | Required |  |  |  |
@@ -128,7 +135,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "uplinks.[].subinterfaces.[].ipv6_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip_address</samp>](## "uplinks.[].subinterfaces.[].peer_ip_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6_address</samp>](## "uplinks.[].subinterfaces.[].peer_ipv6_address") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "uplinks.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethernet_structured_config</samp>](## "uplinks.[].subinterfaces.[].ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
     | [<samp>uplink_peers</samp>](## "uplink_peers") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "uplink_peers.[]") | String |  |  |  |  |
     | [<samp>uplink_switch_vrfs</samp>](## "uplink_switch_vrfs") | List, items: String |  |  |  |  |
@@ -248,6 +255,11 @@
     mlag_switch_ids:
       primary: <int; required>
       secondary: <int; required>
+
+    # Should multicast be enabled on the mlag peer-l3-vlan.
+    mlag_underlay_multicast:
+      pim_sm: <bool; required>
+      static: <bool; required>
     evpn_role: <str>
     mpls_overlay_role: <str>
 
@@ -284,16 +296,21 @@
         peer_is_deployed: <bool; required>
         peer_bgp_as: <str>
         type: <str; "underlay_p2p" | "underlay_l2"; required>
-        speed: <str>
+
+        # Interface Speed.
+        speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
         bfd: <bool>
-        peer_speed: <str>
+
+        # Interface Speed.
+        peer_speed: <str; "100full" | "100g" | "100g-1" | "100g-2" | "100g-4" | "100half" | "10full" | "10g" | "10half" | "1g" | "200g" | "200g-2" | "200g-4" | "25g" | "400g" | "400g-4" | "400g-8" | "40g" | "50g" | "50g-1" | "50g-2" | "800g-8" | "sfp-1000baset auto 100full" | "1.6t-8" | "100mfull" | "100mhalf" | "10mfull" | "10mhalf" | "200g-1" | "400g-2" | "40g-4" | "800g-4" | "auto" | "auto 10000full" | "auto 1000full" | "auto 100full" | "auto 100g-1" | "auto 100g-2" | "auto 100g-4" | "auto 100gfull" | "auto 100half" | "auto 10full" | "auto 10gfull" | "auto 10half" | "auto 1gfull" | "auto 2.5gfull" | "auto 200g-2" | "auto 200g-4" | "auto 25gfull" | "auto 400g-4" | "auto 400g-8" | "auto 40gfull" | "auto 50g-1" | "auto 50g-2" | "auto 50gfull" | "auto 5gfull" | "auto 800g-8" | "auto 1.6t-8" | "auto 100mfull" | "auto 100mhalf" | "auto 10g" | "auto 10mfull" | "auto 10mhalf" | "auto 1g" | "auto 2.5g" | "auto 200g-1" | "auto 25g" | "auto 400g-2" | "auto 40g-4" | "auto 5g" | "auto 800g-4" | "forced 10000full" | "forced 1000full" | "forced 1000half" | "forced 100full" | "forced 100gfull" | "forced 100half" | "forced 10full" | "forced 10half" | "forced 25gfull" | "forced 40gfull" | "forced 50gfull">
 
         # Enable PTP on all infrastructure links.
         ptp:
           enable: <bool; default=False>
         mac_security:
           profile: <str; required>
-        underlay_multicast: <bool>
+        underlay_multicast_pim_sm: <bool>
+        underlay_multicast_static: <bool>
         ipv6_enable: <bool>
         prefix_length: <int>
         ip_address: <str>
@@ -329,12 +346,17 @@
         inband_ztp_lacp_fallback_delay: <int>
         dhcp_server: <bool>
 
-        # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-        # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.
-        # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
-        # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
-        # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-        structured_config: <dict>
+        # Custom structured config applied to `uplink_interfaces`.
+        ethernet_structured_config: <dict>
+
+        # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+        port_channel_structured_config: <dict>
+
+        # Custom structured config applied to `uplink_interfaces`.
+        peer_ethernet_structured_config: <dict>
+
+        # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+        peer_port_channel_structured_config: <dict>
         subinterfaces:
           - interface: <str; required; unique>
             peer_interface: <str; required>
@@ -348,12 +370,8 @@
             peer_ip_address: <str>
             peer_ipv6_address: <str>
 
-            # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
-            # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.
-            # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
-            # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
-            # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-            structured_config: <dict>
+            # Custom structured config applied to `uplink_interfaces`.
+            ethernet_structured_config: <dict>
     uplink_peers:
       - <str>
     uplink_switch_vrfs:

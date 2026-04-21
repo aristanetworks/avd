@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -13,18 +13,15 @@
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{#  Below if condition is added to keep the existing support for rendering switchport attributes on the basis of port_channel_interface.type == switched #}
-{#  TODO: AVD6.0 this if condition should be removed once the port_channel_interface.type key is removed in AVD6.0 #}
-{%         if (port_channel_interface.switchport.mode is arista.avd.defined or
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
+{%         if port_channel_interface.switchport.mode is arista.avd.defined or
             port_channel_interface.switchport.access_vlan is arista.avd.defined or
             port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined or
             port_channel_interface.switchport.trunk.native_vlan_tag is arista.avd.defined(true) or
             port_channel_interface.switchport.trunk.native_vlan is arista.avd.defined or
             port_channel_interface.switchport.trunk.groups is arista.avd.defined or
-            port_channel_interface.switchport.enabled is arista.avd.defined(true)) and
-            (port_channel_interface.type is not arista.avd.defined or (port_channel_interface.type is arista.avd.defined and port_channel_interface.type not in ["switched", "routed"])) %}
+            port_channel_interface.switchport.enabled is arista.avd.defined(true) %}
 {%             set description = port_channel_interface.description | arista.avd.default("-") %}
 {%             set mode = port_channel_interface.switchport.mode | arista.avd.default('-') %}
 {%             if port_channel_interface.switchport.access_vlan is arista.avd.defined or
@@ -53,22 +50,6 @@
 {%             set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
 {%             set esi = port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default("-") %}
 | {{ port_channel_interface.name }} | {{ description }} | {{ mode }} | {{ switchport_vlans | arista.avd.default('-') }} | {{ native_vlan }} | {{ trunk_groups }} | {{ lacp_fallback_timeout }} | {{ lacp_fallback_mode }} | {{ mlag }} | {{ esi }} |
-{# TODO: AVD6.0 Below elif block should be removed once the deprecated keys are removed in AVD6.0 #}
-{%         elif port_channel_interface.type is arista.avd.defined("switched") %}
-{%             set description = port_channel_interface.description | arista.avd.default("-") %}
-{%             set mode = port_channel_interface.mode | arista.avd.default('-') %}
-{%             set switchport_vlans = port_channel_interface.vlans | arista.avd.default('-') %}
-{%             if  port_channel_interface.native_vlan_tag is arista.avd.defined(true) %}
-{%                 set native_vlan = "tag" %}
-{%             else %}
-{%                 set native_vlan = port_channel_interface.native_vlan | arista.avd.default('-') %}
-{%             endif %}
-{%             set trunk_groups = port_channel_interface.trunk_groups | arista.avd.default(['-']) | join(', ') %}
-{%             set lacp_fallback_timeout = port_channel_interface.lacp_fallback_timeout | arista.avd.default("-") %}
-{%             set lacp_fallback_mode = port_channel_interface.lacp_fallback_mode | arista.avd.default("-") %}
-{%             set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
-{%             set esi = port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default("-") %}
-| {{ port_channel_interface.name }} | {{ description }} | {{ mode }} | {{ switchport_vlans }} | {{ native_vlan }} | {{ trunk_groups }} | {{ lacp_fallback_timeout }} | {{ lacp_fallback_mode }} | {{ mlag }} | {{ esi }} |
 {%         endif %}
 {%     endfor %}
 {# Encapsulation #}
@@ -79,12 +60,6 @@
 {%             do encapsulation_dot1q_interfaces.append(port_channel_interface) %}
 {%         elif port_channel_interface.encapsulation_vlan.client.encapsulation is arista.avd.defined %}
 {%             do flexencap_interfaces.append(port_channel_interface) %}
-{%         elif port_channel_interface.type | arista.avd.default in ['l3dot1q', 'l2dot1q'] %}
-{%             if port_channel_interface.encapsulation_dot1q_vlan is arista.avd.defined %}
-{%                 do encapsulation_dot1q_interfaces.append(port_channel_interface) %}
-{%             elif port_channel_interface.encapsulation_vlan is arista.avd.defined %}
-{%                 do flexencap_interfaces.append(port_channel_interface) %}
-{%             endif %}
 {%         endif %}
 {%     endfor %}
 {%     if encapsulation_dot1q_interfaces | length > 0 %}
@@ -93,10 +68,10 @@
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
 | --------- | ----------- | ------- | -------------- | -------------------- |
-{%         for port_channel_interface in encapsulation_dot1q_interfaces | arista.avd.natural_sort('name') %}
+{%         for port_channel_interface in encapsulation_dot1q_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%             set description = port_channel_interface.description | arista.avd.default('-') %}
 {%             set vlan_id = port_channel_interface.vlan_id | arista.avd.default('-') %}
-{%             set encapsulation_dot1q_vlan = port_channel_interface.encapsulation_dot1q.vlan | arista.avd.default(port_channel_interface.encapsulation_dot1q_vlan, '-') %}
+{%             set encapsulation_dot1q_vlan = port_channel_interface.encapsulation_dot1q.vlan | arista.avd.default('-') %}
 {%             set encapsulation_dot1q_inner_vlan = port_channel_interface.encapsulation_dot1q.inner_vlan | arista.avd.default('-') %}
 | {{ port_channel_interface.name }} | {{ description }} | {{ vlan_id }} | {{ encapsulation_dot1q_vlan }} | {{ encapsulation_dot1q_inner_vlan }} |
 {%         endfor %}
@@ -106,41 +81,23 @@
 ##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
 {%         for port_channel_interface in flexencap_interfaces %}
 {%             set description = port_channel_interface.description | arista.avd.default("-") %}
 {%             set vlan_id = port_channel_interface.vlan_id | arista.avd.default('-') %}
 {%             set client_encapsulation = port_channel_interface.encapsulation_vlan.client.encapsulation | arista.avd.default('-') %}
-{# The below if condition is to get client encapsulation from deprecated keys #}
-{# TODO: AVD6.0 below if block should be removed once the 'port_channel_interface.encapsulation_vlan.client.dot1q' and 'port_channel_interface.encapsulation_vlan.client.unmatched' are removed in AVD6.0 #}
-{%             if client_encapsulation == '-' %}
-{%                 if port_channel_interface.encapsulation_vlan.client.dot1q is arista.avd.defined %}
-{%                     set client_encapsulation = 'dot1q' %}
-{%                 elif port_channel_interface.encapsulation_vlan.client.unmatched is arista.avd.defined(true) %}
-{%                     set client_encapsulation = 'unmatched' %}
-{%                 endif %}
-{%             endif %}
 {%             if client_encapsulation in ['dot1q', 'dot1ad'] %}
 {%                 set client_inner_encapsulation = port_channel_interface.encapsulation_vlan.client.inner_encapsulation | arista.avd.default('-') %}
-{%                 set client_vlan = port_channel_interface.encapsulation_vlan.client.vlan | arista.avd.default(port_channel_interface.encapsulation_vlan.client.dot1q.vlan) %}
-{%                 set client_outer_vlan = port_channel_interface.encapsulation_vlan.client.outer_vlan | arista.avd.default(port_channel_interface.encapsulation_vlan.client.dot1q.outer) %}
-{%                 set client_inner_vlan = port_channel_interface.encapsulation_vlan.client.inner_vlan | arista.avd.default(port_channel_interface.encapsulation_vlan.client.dot1q.inner) %}
+{%                 set client_vlan = port_channel_interface.encapsulation_vlan.client.vlan %}
+{%                 set client_outer_vlan = port_channel_interface.encapsulation_vlan.client.outer_vlan %}
+{%                 set client_inner_vlan = port_channel_interface.encapsulation_vlan.client.inner_vlan %}
 {%             endif %}
 {%             set network_encapsulation = port_channel_interface.encapsulation_vlan.network.encapsulation | arista.avd.default('-') %}
-{# The below if condition is to get network encapsulation from deprecated keys #}
-{# TODO: AVD6.0 below if block should be removed once the 'port_channel_interface.encapsulation_vlan.network.dot1q' and 'port_channel_interface.encapsulation_vlan.network.client' are removed in AVD6.0 #}
-{%             if network_encapsulation == '-' %}
-{%                 if port_channel_interface.encapsulation_vlan.network.dot1q is arista.avd.defined %}
-{%                     set network_encapsulation = 'dot1q' %}
-{%                 elif port_channel_interface.encapsulation_vlan.network.client is arista.avd.defined(true) %}
-{%                     set network_encapsulation = 'client' %}
-{%                 endif %}
-{%             endif %}
 {%             if network_encapsulation in ['dot1q', 'dot1ad'] %}
 {%                 set network_inner_encapsulation = port_channel_interface.encapsulation_vlan.network.inner_encapsulation | arista.avd.default('-') %}
-{%                 set network_vlan = port_channel_interface.encapsulation_vlan.network.vlan | arista.avd.default(port_channel_interface.encapsulation_vlan.network.dot1q.vlan) %}
-{%                 set network_outer_vlan = port_channel_interface.encapsulation_vlan.network.outer_vlan | arista.avd.default(port_channel_interface.encapsulation_vlan.network.dot1q.outer) %}
-{%                 set network_inner_vlan = port_channel_interface.encapsulation_vlan.network.inner_vlan | arista.avd.default(port_channel_interface.encapsulation_vlan.network.dot1q.inner) %}
+{%                 set network_vlan = port_channel_interface.encapsulation_vlan.network.vlan %}
+{%                 set network_outer_vlan = port_channel_interface.encapsulation_vlan.network.outer_vlan %}
+{%                 set network_inner_vlan = port_channel_interface.encapsulation_vlan.network.inner_vlan %}
 {%             endif %}
 | {{ port_channel_interface.name }} | {{ description }} | {{ vlan_id }} | {{ client_encapsulation }} | {{ client_inner_encapsulation | arista.avd.default('-') }} | {{ client_vlan | arista.avd.default('-') }} | {{ client_outer_vlan | arista.avd.default('-') }} | {{ client_inner_vlan | arista.avd.default('-') }} | {{ network_encapsulation }} | {{ network_inner_encapsulation | arista.avd.default('-') }} | {{ network_vlan | arista.avd.default('-') }} | {{ network_outer_vlan | arista.avd.default('-') }} | {{ network_inner_vlan | arista.avd.default('-') }} |
 {%         endfor %}
@@ -148,10 +105,8 @@
 {# PVLAN #}
 {%     set port_channel_interface_pvlan = namespace() %}
 {%     set port_channel_interface_pvlan.configured = false %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%         if port_channel_interface.pvlan_mapping is arista.avd.defined or
-            port_channel_interface.trunk_private_vlan_secondary is arista.avd.defined or
-            port_channel_interface.switchport.pvlan_mapping is arista.avd.defined or
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
+{%         if port_channel_interface.switchport.pvlan_mapping is arista.avd.defined or
             port_channel_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined %}
 {%             set port_channel_interface_pvlan.configured = true %}
 {%             break %}
@@ -162,10 +117,10 @@
 ##### Private VLAN
 
 | Interface | PVLAN Mapping | Secondary Trunk |
-| --------- | ------------- | ----------------|
-{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%             set row_pvlan_mapping = port_channel_interface.switchport.pvlan_mapping | arista.avd.default(port_channel_interface.pvlan_mapping, '-') %}
-{%             set row_trunk_private_vlan_secondary = port_channel_interface.switchport.trunk.private_vlan_secondary | arista.avd.default(port_channel_interface.trunk_private_vlan_secondary, '-') %}
+| --------- | ------------- | --------------- |
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
+{%             set row_pvlan_mapping = port_channel_interface.switchport.pvlan_mapping | arista.avd.default('-') %}
+{%             set row_trunk_private_vlan_secondary = port_channel_interface.switchport.trunk.private_vlan_secondary | arista.avd.default('-') %}
 {%             if row_pvlan_mapping != '-' or row_trunk_private_vlan_secondary != '-' %}
 | {{ port_channel_interface.name }} | {{ row_pvlan_mapping }} | {{ row_trunk_private_vlan_secondary }} |
 {%             endif %}
@@ -174,9 +129,8 @@
 {# VLAN Translations #}
 {%     set port_channel_interface_vlan_xlate = namespace() %}
 {%     set port_channel_interface_vlan_xlate.configured = false %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%         if port_channel_interface.switchport.vlan_translations is arista.avd.defined or
-            port_channel_interface.vlan_translations is arista.avd.defined %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
+{%         if port_channel_interface.switchport.vlan_translations is arista.avd.defined %}
 {%             set port_channel_interface_vlan_xlate.configured = true %}
 {%             break %}
 {%         endif %}
@@ -185,17 +139,17 @@
 
 ##### VLAN Translations
 
-| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
-| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
-{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
+| Interface | Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
+| --------- | --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%             if port_channel_interface.switchport.vlan_translations is arista.avd.defined %}
-{%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_both | arista.avd.natural_sort('from') %}
+{%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_both | arista.avd.natural_sort(sort_key='from') %}
 | {{ port_channel_interface.name }} | both | {{ vlan_translation.from }} | {{ vlan_translation.to }} | {{ vlan_translation.inner_vlan_from | arista.avd.default('-') }} | - | {{ vlan_translation.network | arista.avd.default('-') }} | {{ vlan_translation.dot1q_tunnel | arista.avd.default('-') }} |
 {%                 endfor %}
-{%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_in | arista.avd.natural_sort('from') %}
+{%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_in | arista.avd.natural_sort(sort_key='from') %}
 | {{ port_channel_interface.name }} | in | {{ vlan_translation.from }} | {{ vlan_translation.to }} | - | {{ vlan_translation.inner_vlan_from | arista.avd.default('-') }} | {{ vlan_translation.network | arista.avd.default('-') }} | {{ vlan_translation.dot1q_tunnel | arista.avd.default('-') }} |
 {%                 endfor %}
-{%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_out | arista.avd.natural_sort('from') %}
+{%                 for vlan_translation in port_channel_interface.switchport.vlan_translations.direction_out | arista.avd.natural_sort(sort_key='from') %}
 {%                     if vlan_translation.dot1q_tunnel_to is arista.avd.defined %}
 {%                         set dot1q_tunnel = "True" %}
 {%                         set to_vlan_id = vlan_translation.dot1q_tunnel_to %}
@@ -203,13 +157,6 @@
 {%                         set to_vlan_id = vlan_translation.to | arista.avd.default("-") %}
 {%                     endif %}
 | {{ port_channel_interface.name }} | out | {{ vlan_translation.from }} | {{ to_vlan_id }} | - | {{ vlan_translation.inner_vlan_to | arista.avd.default('-') }} | {{ vlan_translation.network | arista.avd.default('-') }} | {{ dot1q_tunnel | arista.avd.default('-') }} |
-{%                 endfor %}
-{%             elif port_channel_interface.vlan_translations is arista.avd.defined %}
-{%                 for vlan_translation in port_channel_interface.vlan_translations | arista.avd.natural_sort %}
-{%                     if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
-{%                         set row_direction = vlan_translation.direction | arista.avd.default('both') %}
-| {{ port_channel_interface.name }} | {{ row_direction }} | {{ vlan_translation.from }} | {{ vlan_translation.to }} | - | - | - | - |
-{%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
@@ -219,7 +166,7 @@
 {%     set evpn_dfe_po_interfaces = [] %}
 {%     set evpn_mpls_po_interfaces = [] %}
 {%     set link_tracking_interfaces = [] %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%         if port_channel_interface.evpn_ethernet_segment is arista.avd.defined %}
 {%             do evpn_es_po_interfaces.append(port_channel_interface) %}
 {%             if port_channel_interface.evpn_ethernet_segment.designated_forwarder_election is arista.avd.defined %}
@@ -242,7 +189,7 @@
 
 | Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
 | --------- | --------------------------- | --------------------------- | ------------ |
-{%         for evpn_es_po_interface in evpn_es_po_interfaces | arista.avd.natural_sort('name') %}
+{%         for evpn_es_po_interface in evpn_es_po_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%             set esi = evpn_es_po_interface.evpn_ethernet_segment.identifier | arista.avd.default(evpn_es_po_interface.esi, "-") %}
 {%             set redundancy = evpn_es_po_interface.evpn_ethernet_segment.redundancy | arista.avd.default("all-active") %}
 {%             set rt = evpn_es_po_interface.evpn_ethernet_segment.route_target | arista.avd.default("-") %}
@@ -254,7 +201,7 @@
 
 | Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
 | --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
-{%             for evpn_dfe_po_interface in evpn_dfe_po_interfaces | arista.avd.natural_sort('name') %}
+{%             for evpn_dfe_po_interface in evpn_dfe_po_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%                 set df_po_settings = evpn_dfe_po_interface.evpn_ethernet_segment.designated_forwarder_election %}
 {%                 set algorithm = df_po_settings.algorithm | arista.avd.default("modulus") %}
 {%                 set pref_value = df_po_settings.preference_value | arista.avd.default("-") %}
@@ -271,7 +218,7 @@
 
 | Interface | Shared Index | Tunnel Flood Filter Time |
 | --------- | ------------ | ------------------------ |
-{%             for evpn_mpls_po_interface in evpn_mpls_po_interfaces | arista.avd.natural_sort %}
+{%             for evpn_mpls_po_interface in evpn_mpls_po_interfaces | arista.avd.natural_sort(sort_key="name") %}
 {%                 set shared_index = evpn_mpls_po_interface.evpn_ethernet_segment.mpls.shared_index | arista.avd.default("-") %}
 {%                 set tff_time = evpn_mpls_po_interface.evpn_ethernet_segment.mpls.tunnel_flood_filter_time | arista.avd.default("-") %}
 | {{ evpn_mpls_po_interface.name }} | {{ shared_index }} | {{ tff_time }} |
@@ -285,8 +232,8 @@
 
 | Interface | Group Name | Direction |
 | --------- | ---------- | --------- |
-{%         for link_tracking_interface in link_tracking_interfaces | arista.avd.natural_sort('name') %}
-{%             for link_tracking_group in link_tracking_interface.link_tracking_groups | arista.avd.natural_sort('name') %}
+{%         for link_tracking_interface in link_tracking_interfaces | arista.avd.natural_sort(sort_key='name') %}
+{%             for link_tracking_group in link_tracking_interface.link_tracking_groups | arista.avd.natural_sort(sort_key='name') %}
 {%                 if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}
 | {{ link_tracking_interface.name }} | {{ link_tracking_group.name }} | {{ link_tracking_group.direction }} |
 {%                 endif %}
@@ -297,75 +244,158 @@
 {%         endfor %}
 {%     endif %}
 {# IPv4 #}
-{%     set port_channel_interface_ipv4 = namespace() %}
-{%     set port_channel_interface_ipv4.configured = false %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%         if port_channel_interface.ip_address is defined %}
-{%             set port_channel_interface_ipv4.configured = true %}
-{%             break %}
+{%     set port_channel_interfaces_ipv4 = [] %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
+{%         if port_channel_interface.ip_address is arista.avd.defined %}
+{%             do port_channel_interfaces_ipv4.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     if port_channel_interface_ipv4.configured %}
+{%     if port_channel_interfaces_ipv4 | length > 0 %}
 
 ##### IPv4
 
 | Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%             if port_channel_interface.ip_address is arista.avd.defined %}
-{%                 set description = port_channel_interface.description | arista.avd.default("-") %}
-{%                 set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
-{%                 set ip_address = port_channel_interface.ip_address | arista.avd.default("-") %}
-{%                 set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
-{%                 set mtu = port_channel_interface.mtu | arista.avd.default("-") %}
-{%                 set shutdown = port_channel_interface.shutdown | arista.avd.default("-") %}
-{%                 set acl_in = port_channel_interface.access_group_in | arista.avd.default("-") %}
-{%                 set acl_out = port_channel_interface.access_group_out | arista.avd.default("-") %}
+{%         for port_channel_interface in port_channel_interfaces_ipv4 | arista.avd.natural_sort(sort_key='name') %}
+{%             set description = port_channel_interface.description | arista.avd.default("-") %}
+{%             set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
+{%             set ip_address = port_channel_interface.ip_address | arista.avd.default("-") %}
+{%             set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
+{%             set mtu = port_channel_interface.mtu | arista.avd.default("-") %}
+{%             set shutdown = port_channel_interface.shutdown | arista.avd.default("-") %}
+{%             set acl_in = port_channel_interface.access_group_in | arista.avd.default("-") %}
+{%             set acl_out = port_channel_interface.access_group_out | arista.avd.default("-") %}
 | {{ port_channel_interface.name }} | {{ description }} | {{ mlag }} | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ acl_in }} | {{ acl_out }} |
-{%             endif %}
 {%         endfor %}
 {%     endif %}
 {# IP NAT Documentation #}
 {%     set ip_nat_interfaces = port_channel_interfaces %}
 {%     include 'documentation/interfaces-ip-nat.j2' %}
 {# IPv6 #}
-{%     set port_channel_interface_ipv6 = namespace() %}
-{%     set port_channel_interface_ipv6.configured = false %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%         if port_channel_interface.ipv6_address is defined %}
-{%             set port_channel_interface_ipv6.configured = true %}
-{%             break %}
+{%     set port_channel_interfaces_ipv6 = [] %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
+{%         if port_channel_interface.ipv6_addresses is arista.avd.defined or port_channel_interface.ipv6_address is arista.avd.defined or port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%             do port_channel_interfaces_ipv6.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     if port_channel_interface_ipv6.configured %}
+{%     if port_channel_interfaces_ipv6 | length > 0 %}
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | -------------| --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%             if port_channel_interface.ipv6_address is arista.avd.defined %}
-{%                 set description = port_channel_interface.description | arista.avd.default("-") %}
-{%                 set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
-{%                 set ipv6_address = port_channel_interface.ipv6_address | arista.avd.default("-") %}
-{%                 set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
-{%                 set mtu = port_channel_interface.mtu | arista.avd.default("-") %}
-{%                 set shutdown = port_channel_interface.shutdown | arista.avd.default("-") %}
-{%                 set ipv6_nd_ra_disabled = port_channel_interface.ipv6_nd_ra_disabled | arista.avd.default("-") %}
-{%                 if port_channel_interface.ipv6_nd_managed_config_flag is arista.avd.defined %}
-{%                     set ipv6_nd_managed_config_flag = port_channel_interface.ipv6_nd_managed_config_flag %}
-{%                 else %}
-{%                     set ipv6_nd_managed_config_flag = '-' %}
-{%                 endif %}
-{%                 set ipv6_acl_in = port_channel_interface.ipv6_access_group_in | arista.avd.default("-") %}
-{%                 set ipv6_acl_out = port_channel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ port_channel_interface.name }} | {{ description }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ ipv6_nd_managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+{%         for port_channel_interface in port_channel_interfaces_ipv6 | arista.avd.natural_sort(sort_key='name') %}
+{%             set description = port_channel_interface.description | arista.avd.default("-") %}
+{%             set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
+{%             if port_channel_interface.ipv6_addresses is arista.avd.defined %}
+{%                 set ipv6_address = port_channel_interface.ipv6_addresses | arista.avd.natural_sort | join(', ') %}
+{%             elif port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%                 set ipv6_address = "auto-config" %}
+{%             elif port_channel_interface.ipv6_address is arista.avd.defined %}
+{%                 set ipv6_address = port_channel_interface.ipv6_address %}
+{%             else %}
+{%                 set ipv6_address = "-" %}
 {%             endif %}
+{%             set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
+{%             set mtu = port_channel_interface.mtu | arista.avd.default("-") %}
+{%             set shutdown = port_channel_interface.shutdown | arista.avd.default("-") %}
+{%             set ipv6_nd_ra_disabled = port_channel_interface.ipv6_nd.ra.disabled | arista.avd.default(port_channel_interface.ipv6_nd_ra_disabled, "-") %}
+{%             if port_channel_interface.ipv6_nd.managed_config_flag is arista.avd.defined %}
+{%                 set ipv6_nd_managed_config_flag = port_channel_interface.ipv6_nd.managed_config_flag %}
+{%             elif port_channel_interface.ipv6_nd_managed_config_flag is arista.avd.defined %}
+{%                 set ipv6_nd_managed_config_flag = port_channel_interface.ipv6_nd_managed_config_flag %}
+{%             else %}
+{%                 set ipv6_nd_managed_config_flag = '-' %}
+{%             endif %}
+{%             set ipv6_nd_other_config_flag = port_channel_interface.ipv6_nd.other_config_flag | arista.avd.default("-") %}
+{%             set nd_ra_rx_accept = [] %}
+{%             if port_channel_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
+{%                 do nd_ra_rx_accept.append("default-route") %}
+{%             endif %}
+{%             if port_channel_interface.ipv6_nd.ra.rx_accept.route_preference is arista.avd.defined(true) %}
+{%                 do nd_ra_rx_accept.append("route-preference") %}
+{%             endif %}
+{%             if nd_ra_rx_accept %}
+{%                 set nd_ra_rx_accept = nd_ra_rx_accept | join(", ") %}
+{%             else %}
+{%                 set nd_ra_rx_accept = "-" %}
+{%             endif %}
+{%             set nd_cache_settings = [] %}
+{%             if port_channel_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
+{%                 do nd_cache_settings.append("capacity: " ~ port_channel_interface.ipv6_nd.cache.dynamic_capacity) %}
+{%             endif %}
+{%             if port_channel_interface.ipv6_nd.cache.expire is arista.avd.defined %}
+{%                 do nd_cache_settings.append("expire: " ~ port_channel_interface.ipv6_nd.cache.expire) %}
+{%             endif %}
+{%             if port_channel_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
+{%                 do nd_cache_settings.append("refresh-always") %}
+{%             endif %}
+{%             if nd_cache_settings %}
+{%                 set nd_cache = nd_cache_settings | join(", ") %}
+{%             else %}
+{%                 set nd_cache = "-" %}
+{%             endif %}
+{%             set ipv6_acl_in = port_channel_interface.ipv6_access_group_in | arista.avd.default("-") %}
+{%             set ipv6_acl_out = port_channel_interface.ipv6_access_group_out | arista.avd.default("-") %}
+| {{ port_channel_interface.name }} | {{ description }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ nd_ra_rx_accept }} | {{ ipv6_nd_managed_config_flag }} | {{ ipv6_nd_other_config_flag }} | {{ nd_cache }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+{%         endfor %}
+{%     endif %}
+{# VRRP #}
+{%     set port_channel_interfaces_vrrp_details = [] %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.default([]) %}
+{%         if port_channel_interface.vrrp_ids is arista.avd.defined %}
+{%             do port_channel_interfaces_vrrp_details.append(port_channel_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if port_channel_interfaces_vrrp_details | length > 0 %}
+
+##### VRRP Details
+
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+{%         for port_channel_interface in port_channel_interfaces_vrrp_details | arista.avd.natural_sort(sort_key='name') %}
+{%             for vrid in port_channel_interface.vrrp_ids | arista.avd.natural_sort(sort_key='id') %}
+{%                 set row_id = vrid.id %}
+{%                 set row_prio_level = vrid.priority_level | arista.avd.default('-') %}
+{%                 set row_ad_interval = vrid.advertisement.interval | arista.avd.default('-') %}
+{%                 set row_preempt = "Enabled" %}
+{%                 if vrid.preempt.enabled is arista.avd.defined(false) %}
+{%                     set row_preempt = "Disabled" %}
+{%                 endif %}
+{%                 if vrid.tracked_object is arista.avd.defined %}
+{%                     set row_tracked_object_name = [] %}
+{%                     set row_tracked_object_action = [] %}
+{%                     for tracked_obj in vrid.tracked_object | arista.avd.natural_sort(sort_key='name') %}
+{%                         do row_tracked_object_name.append(tracked_obj.name) %}
+{%                         if tracked_obj.shutdown is arista.avd.defined(true) %}
+{%                             do row_tracked_object_action.append("Shutdown") %}
+{%                         elif tracked_obj.decrement is arista.avd.defined %}
+{%                             do row_tracked_object_action.append("Decrement " ~ tracked_obj.decrement) %}
+{%                         endif %}
+{%                     endfor %}
+{%                     set row_tracked_object_name = row_tracked_object_name | join(", ") %}
+{%                     set row_tracked_object_action = row_tracked_object_action | join(", ") %}
+{%                 endif %}
+{%                 set peer_auth_mode = vrid.peer_authentication.mode | arista.avd.default('-') %}
+{%                 set row_ipv4_virtual_ips = [] %}
+{%                 if vrid.ipv4.address is arista.avd.defined %}
+{%                     do row_ipv4_virtual_ips.append(vrid.ipv4.address) %}
+{%                 endif %}
+{%                 if vrid.ipv4.secondary_addresses is arista.avd.defined %}
+{%                     do row_ipv4_virtual_ips.extend(vrid.ipv4.secondary_addresses) %}
+{%                 endif %}
+{%                 if row_ipv4_virtual_ips | length == 0 %}
+{%                     set row_ipv4_virtual_ips = ["-"] %}
+{%                 endif %}
+{%                 set row_ipv4_version = vrid.ipv4.version | arista.avd.default('2') %}
+{%                 set row_ipv6_virtual_ips = vrid.ipv6.addresses | arista.avd.default(vrid.ipv6.address, '-') | join(', ') %}
+| {{ port_channel_interface.name }} | {{ row_id }} | {{ row_prio_level }} | {{ row_ad_interval }} | {{ row_preempt }} | {{ row_tracked_object_name | arista.avd.default('-') }} | {{ row_tracked_object_action | arista.avd.default('-') }} | {{ row_ipv4_virtual_ips | join(", ") | arista.avd.default("-") }} | {{ row_ipv4_version }} | {{ row_ipv6_virtual_ips }} | {{ peer_auth_mode }} |
+{%             endfor %}
 {%         endfor %}
 {%     endif %}
 {# ISIS #}
 {%     set port_channel_interfaces_isis = [] %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%         if port_channel_interface.isis_enable is arista.avd.defined or
                port_channel_interface.isis_bfd is arista.avd.defined or
                port_channel_interface.isis_metric is arista.avd.defined or
@@ -373,7 +403,6 @@
                port_channel_interface.isis_network_point_to_point is arista.avd.defined or
                port_channel_interface.isis_passive is arista.avd.defined or
                port_channel_interface.isis_hello_padding is arista.avd.defined or
-               port_channel_interface.isis_authentication_mode is arista.avd.defined or
                port_channel_interface.isis_authentication is arista.avd.defined %}
 {%             do port_channel_interfaces_isis.append(port_channel_interface) %}
 {%         endif %}
@@ -384,7 +413,7 @@
 
 | Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
 | --------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
-{%         for port_channel_interface in port_channel_interfaces_isis | arista.avd.natural_sort('name') %}
+{%         for port_channel_interface in port_channel_interfaces_isis | arista.avd.natural_sort(sort_key='name') %}
 {%             set isis_instance = port_channel_interface.isis_enable | arista.avd.default("-") %}
 {%             set isis_bfd = port_channel_interface.isis_bfd | arista.avd.default("-") %}
 {%             set isis_metric = port_channel_interface.isis_metric | arista.avd.default("-") %}
@@ -399,7 +428,7 @@
 {%             elif port_channel_interface.isis_authentication.level_2.mode is arista.avd.defined %}
 {%                 set isis_authentication_mode = "Level-2: " ~ port_channel_interface.isis_authentication.level_2.mode %}
 {%             else %}
-{%                 set isis_authentication_mode = port_channel_interface.isis_authentication_mode | arista.avd.default("-") %}
+{%                 set isis_authentication_mode = '-' %}
 {%             endif %}
 {%             if port_channel_interface.isis_network_point_to_point is arista.avd.defined(true) %}
 {%                 set mode = "point-to-point" %}
@@ -412,7 +441,7 @@
 {%         endfor %}
 {%     endif %}
 {%     set port_channel_te_interfaces = [] %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%         if port_channel_interface.traffic_engineering.enabled is arista.avd.defined(true) %}
 {%             do port_channel_te_interfaces.append(port_channel_interface) %}
 {%         endif %}
@@ -426,13 +455,7 @@
 {%         for po_te_interface in port_channel_te_interfaces %}
 {%             set admin_groups = po_te_interface.traffic_engineering.administrative_groups | arista.avd.default (["-"]) | join(",") %}
 {%             set te_enabled = po_te_interface.traffic_engineering.enabled | arista.avd.default("-") %}
-{%             if po_te_interface.traffic_engineering.srlgs is arista.avd.defined %}
-{%                 set te_srlgs = po_te_interface.traffic_engineering.srlgs %}
-{%             elif po_te_interface.traffic_engineering.srlg is arista.avd.defined %}
-{%                 set te_srlgs = [ po_te_interface.traffic_engineering.srlg ] %}
-{%             else %}
-{%                 set te_srlgs = ["-"] %}
-{%             endif %}
+{%             set te_srlgs = po_te_interface.traffic_engineering.srlgs | arista.avd.default(['-']) %}
 {%             set te_metric = po_te_interface.traffic_engineering.metric | arista.avd.default("-") %}
 {%             if po_te_interface.traffic_engineering.bandwidth is arista.avd.defined %}
 {%                 set te_bandwidth = po_te_interface.traffic_engineering.bandwidth.number ~ " " ~ po_te_interface.traffic_engineering.bandwidth.unit %}

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import sys
@@ -14,6 +14,7 @@ from tests.models import MoleculeScenario
 
 
 @pytest.mark.molecule_scenarios(
+    "digital_twin",
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",
@@ -31,7 +32,7 @@ from tests.models import MoleculeScenario
     "example-single-dc-l3ls",
     "example-single-dc-l3ls-ipv6",
 )
-@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")
+@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos", "digital_twin")
 def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
     """Test get_fabric_documentation."""
     with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):

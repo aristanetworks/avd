@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """AVD eos_designs base module to generate interface descriptions."""
@@ -9,7 +9,7 @@ from collections import ChainMap
 from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.avdfacts import AvdFacts
-from pyavd._utils import AvdStringFormatter, default, strip_null_from_data
+from pyavd._utils import AvdStringFormatter, strip_null_from_data
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
@@ -18,9 +18,6 @@ if TYPE_CHECKING:
 class AvdInterfaceDescriptions(AvdFacts):
     """
     Class used to render Interface Descriptions either from custom Jinja2 templates or using default Python Logic.
-
-    Since some templates might contain certain legacy variables (switch_*),
-    those are mapped from the switch.* model
 
     This class is imported adhoc based on the variable `templates.interface_descriptions.python_module` so it can
     be overridden by a custom python class.
@@ -45,6 +42,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         If a jinja template is configured, use it.
 
         Available data:
+            - interface
             - link_type
             - description
             - peer
@@ -65,6 +63,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                 data.description,
                 **strip_null_from_data(
                     {
+                        "interface": data.interface,
                         "peer": data.peer,
                         "peer_interface": data.peer_interface,
                         "vrf": data.vrf,
@@ -77,6 +76,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                 template_path,
                 link={
                     "type": data.link_type,
+                    "interface": data.interface,
                     "peer": data.peer,
                     "peer_interface": data.peer_interface,
                     "wan_carrier": data.wan_carrier,
@@ -100,6 +100,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             description,
             **strip_null_from_data(
                 {
+                    "interface": data.interface,
                     "peer": data.peer,
                     "peer_interface": data.peer_interface,
                     "vrf": data.vrf,
@@ -117,6 +118,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         If a jinja template is configured, use it.
 
         Available data:
+            - interface
             - peer
             - peer_interface
             - peer_channel_group_id
@@ -138,8 +140,8 @@ class AvdInterfaceDescriptions(AvdFacts):
                 data.port_channel_description,
                 **strip_null_from_data(
                     {
-                        "peer": data.peer,
                         "interface": data.interface,
+                        "peer": data.peer,
                         "peer_interface": data.peer_interface,
                         "port_channel_id": data.port_channel_id,
                         "peer_port_channel_id": data.peer_channel_group_id,
@@ -154,6 +156,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             return self._template(
                 template_path,
                 link={
+                    "interface": data.interface,
                     "peer": data.peer,
                     "channel_group_id": data.port_channel_id,
                     "peer_channel_group_id": data.peer_channel_group_id,
@@ -181,8 +184,8 @@ class AvdInterfaceDescriptions(AvdFacts):
             description,
             **strip_null_from_data(
                 {
-                    "peer": data.peer,
                     "interface": data.interface,
+                    "peer": data.peer,
                     "peer_interface": data.peer_interface,
                     "port_channel_id": data.port_channel_id,
                     "peer_port_channel_id": data.peer_channel_group_id,
@@ -217,6 +220,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.mlag_ethernet_interfaces:
             return self._template(
                 template_path,
+                # TODO: AVD 7.0.0 - Change this to interface=data.interface for consistency.
                 mlag_interface=data.interface,
                 mlag_peer=data.mlag_peer,
             )
@@ -255,6 +259,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.mlag_port_channel_interfaces:
             return self._template(
                 template_path,
+                interface=data.interface,
                 mlag_interfaces=data.mlag_interfaces,
                 mlag_peer=data.mlag_peer,
                 mlag_port_channel_id=data.mlag_port_channel_id,
@@ -356,6 +361,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         Finally fall back to default templates depending on this being a network_port or not.
 
         Available data:
+            - interface
             - peer
             - peer_type
             - peer_interface
@@ -368,6 +374,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.connected_endpoints_ethernet_interfaces:
             return self._template(
                 template_path,
+                interface=data.interface,
                 peer=data.peer,
                 peer_interface=data.peer_interface,
                 adapter_description=data.description,
@@ -385,6 +392,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             description,
             **strip_null_from_data(
                 {
+                    "interface": data.interface,
                     "endpoint": data.peer,
                     "endpoint_port": data.peer_interface,
                     "endpoint_type": data.peer_type,
@@ -402,6 +410,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         Finally fall back to default templates depending on this being a network_port or not.
 
         Available data:
+            - interface
             - peer
             - peer_interface
             - peer_type
@@ -416,6 +425,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.connected_endpoints_port_channel_interfaces:
             return self._template(
                 template_path,
+                interface=data.interface,
                 peer=data.peer,
                 peer_interface=data.peer_interface,
                 adapter_port_channel_id=data.port_channel_id,
@@ -436,6 +446,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                 data.description,
                 **strip_null_from_data(
                     {
+                        "interface": data.interface,
                         "endpoint": data.peer,
                         "endpoint_port": data.peer_interface,
                         "endpoint_type": data.peer_type,
@@ -450,6 +461,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             port_channel_description,
             **strip_null_from_data(
                 {
+                    "interface": data.interface,
                     "endpoint": data.peer,
                     "endpoint_port_channel": data.peer_interface,
                     "endpoint_type": data.peer_type,
@@ -460,30 +472,29 @@ class AvdInterfaceDescriptions(AvdFacts):
             ),
         )
 
-    def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str:
+    def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str | None:
         """
         Build Router ID loopback interface description.
 
         Available data:
+            - interface
             - description
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
             - type.
         """
-        if template_path := default(
-            self.shared_utils.node_type_key_data.interface_descriptions.router_id_loopback_interface,
-            self.shared_utils.node_type_key_data.interface_descriptions.overlay_loopback_interface,
-        ):
-            return self._template(template_path, overlay_loopback_description=data.description, router_id_loopback_description=data.description)
+        if template_path := self.shared_utils.node_type_key_data.interface_descriptions.router_id_loopback_interface:
+            return self._template(template_path, interface=data.interface, router_id_loopback_description=data.description)
 
         return data.description
 
-    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:
+    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str | None:
         """
         Build VTEP loopback interface description.
 
         Available data:
+            - interface
             - description
             - mpls_overlay_role
             - mpls_lsr
@@ -491,7 +502,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             - type
         """
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.vtep_loopback_interface:
-            return self._template(template_path, vtep_loopback_description=data.description)
+            return self._template(template_path, interface=data.interface, vtep_loopback_description=data.description)
 
         return data.description
 
@@ -607,6 +618,10 @@ class InterfaceDescriptionData:
         self.wan_carrier = wan_carrier
         self.wan_circuit_id = wan_circuit_id
         self.main_interface_wan_carrier = main_interface_wan_carrier
+
+    @property
+    def hostname(self) -> str:
+        return self._shared_utils.hostname
 
     @property
     def mpls_overlay_role(self) -> str | None:

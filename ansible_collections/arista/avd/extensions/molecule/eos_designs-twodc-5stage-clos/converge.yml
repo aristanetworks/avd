@@ -1,0 +1,34 @@
+---
+- name: Converge
+  hosts: TWODC_5STAGE_CLOS
+  gather_facts: false
+  connection: local
+  tasks:
+
+    - name: Generate intended variables
+      delegate_to: 127.0.0.1
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+- name: Clear facts between plays
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Clear facts between runs.
+      # Clear facts to avoid mixing deprecated 'local_users' with new 'aaa_settings.local_users' between runs.
+      ansible.builtin.meta: clear_facts
+
+- name: Converge
+  hosts: TWODC_5STAGE_CLOS
+  gather_facts: false
+  connection: local
+  vars:
+    output_dir_name: "digital_twin/intended"
+    documentation_dir_name: "digital_twin/documentation"
+    avd_digital_twin_mode: true
+  tasks:
+
+    - name: Generate intended variables in ACT Digital Twin mode
+      delegate_to: 127.0.0.1
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs

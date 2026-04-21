@@ -1,10 +1,11 @@
 [project]
 name="pyavd"
 dynamic = ["version"]
-authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
+authors=[{ name = "Arista Networks", email = "avd-dev@arista.com"}]
 description="Arista AVD"
 readme = "README.md"
-license = { file = "pyavd/LICENSE" }
+license = "Apache-2.0"
+license-files = ["pyavd/LICENSE"]
 classifiers = [
     "Operating System :: OS Independent",
     "Development Status :: 5 - Production/Stable",
@@ -14,17 +15,23 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Testing",
 ]
 keywords = ["pyavd"]
 requires-python = ">=3.10"
 dependencies = [
+    "anta>=1.8.0",
     "aristaproto>=0.1.1",
-    "cryptography>=38.0.4",
+    "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
-    "Jinja2>=3.0",
-    "PyYAML>=6.0.0",
+    # we patch the connection code in grpclib to get proxy support, so we need to carefully monitor and test new versions
+    "grpclib>=0.4.8",
+    "jinja2>=3.0",
+    "pyavd-utils==0.0.4",
+    "python-socks[asyncio]>=2.7.2",
+    "pyyaml>=6.0.0",
     "requests>=2.27.0",
 ]
 
@@ -32,49 +39,28 @@ dependencies = [
 homepage = "https://avd.arista.com"
 repository = "https://github.com/aristanetworks/avd"
 
-[dependency-groups]
-pytest = [
-    "ansible-core>=2.16.0,<2.19.0",
-    "anta>=1.4.0",
-    "pytest",
-    "pytest-asyncio",
-    "pydantic>=2.3.0",
-    "referencing>=0.35.0",
-]
-coverage = [
-    "coverage[toml]",
-]
-
 [project.optional-dependencies]
 ansible = [
-    "ansible-core>=2.16.0,<2.19.0",
+    "ansible-core>=2.16.0,<2.21.0",
     "pyavd[ansible-collection]",
 ]
 ansible-collection = [
-    "anta>=1.4.0",
-    "cvprac>=1.4.0",
     "netaddr>=0.7.19",
-    "treelib>=1.5.5",
-    # jsonschema is required for the arista.cvp Ansible collection
-    "jsonschema>=3.2.0",
     # distlib is required to install the collection from source as it is using manifest
     "distlib>=0.3.9",
 ]
 
 [build-system]
 requires = [
-    "setuptools>=66.1",
-    "wheel",
+    "cryptography>=43.0.0",
+    "deepmerge>=1.1.0",
     "jinja2>=3.0",
     "jsonschema-rs>=0.24",
-    "referencing>=0.35.0",
-    "deepmerge>=1.1.0",
-    "pyyaml>=6.0.0",
-    "mkdocstrings[python]",
     "pydantic>=2.3.0",
-    "cryptography>=38.0.4",
-    "aristaproto>=0.1.1",
-    "ruff==0.12.3",
+    "pyyaml>=6.0.0",
+    "referencing>=0.35.0",
+    "ruff==0.15.10",
+    "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
@@ -85,8 +71,10 @@ include-package-data = true
 [tool.setuptools.package-data]
 "*" = [
     "avd_meta_schema.pickle",
+    "cv_deploy.schema.pickle",
     "eos_cli_config_gen.schema.pickle",
     "eos_designs.schema.pickle",
+    "schemas.json.gz",
 ]
 
 [tool.setuptools.packages.find]
@@ -94,6 +82,12 @@ include = ["pyavd*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "pyavd.__version__"}
+
+[dependency-groups]
+# helping pdm generate the flat list of requirements in pre-commit
+self = [
+  "pyavd==6.2.0.dev1"
+]
 
 [tool.black]
 # Black has been replaced with Ruff.
@@ -114,57 +108,10 @@ extend_skip_glob = [
   "pyavd/_cv/api/**/*"
 ]
 
-[tool.coverage.run]
-branch = true
-
-[tool.coverage.report]
-show_missing = true
-fail_under = 85
-include = [
-  "pyavd/*"
-]
-omit = [
-  "pyavd/_cv/api/*"
-]
-# Regexes for lines to exclude from consideration
-exclude_also = [
-    # Have to re-enable the standard pragma
-    "pragma: no cover",
-    # Don't complain about missing debug-only code:
-    "def __repr__",
-    "if self\\.debug",
-    # Don't complain if tests don't hit defensive assertion code:
-    "raise AssertionError",
-    "raise NotImplementedError",
-    # Don't complain if non-runnable code isn't run:
-    "if 0:",
-    "if __name__ == .__main__.:",
-    # Don't complain about abstract methods, they aren't run:
-    "@(abc\\.)?abstractmethod",
-    # Don't complain about TYPE_CHECKING blocks
-    "if TYPE_CHECKING:",
-    # Ignore typing overloads
-    "@overload",
-    # Don't complain about Jinja2 internalcode
-    # Note that except KeyError is a bit sad but this is the pattern
-    "except KeyError:",
-    "@internalcode",
-    "raise TemplateRuntimeError",
-    "^blocks = {}",
-    "^debug_info =.*",
-]
-
 [tool.ruff]
 # Extend the `pyproject.toml` file in the parent directory...
 # Should not be needed, but the ruff vscode extension does not seem to respect the ruff behavior of ignoring files without tool.ruff
 extend = "../pyproject.toml"
-
-[tool.pytest.ini_options]
-markers = [
-    "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
-    "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
-]
-asyncio_default_fixture_loop_scope = "function"
 
 [tool.pyright]
 # Pyright stops at the first parent pyproject.toml it finds so as documented adding base config

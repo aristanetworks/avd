@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -31,6 +31,13 @@
     | [<samp>&nbsp;&nbsp;maximum_paths</samp>](## "router_bgp.maximum_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;paths</samp>](## "router_bgp.maximum_paths.paths") | Integer | Required |  | Min: 1<br>Max: 600 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.maximum_paths.ecmp") | Integer |  |  | Min: 1<br>Max: 600 |  |
+    | [<samp>&nbsp;&nbsp;route_distinguisher</samp>](## "router_bgp.route_distinguisher") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;assignment_auto</samp>](## "router_bgp.route_distinguisher.assignment_auto") | Dictionary |  |  |  | Automatic Route Distinguisher (auto RD) feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;range</samp>](## "router_bgp.route_distinguisher.assignment_auto.range") | Dictionary |  |  |  | Range for the 2-byte assigned number field of RD.<br>The range is inclusive of start and end values. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start</samp>](## "router_bgp.route_distinguisher.assignment_auto.range.start") | Integer | Required |  | Min: 1<br>Max: 65535 | Start of range. EOS default is 4096. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end</samp>](## "router_bgp.route_distinguisher.assignment_auto.range.end") | Integer | Required |  | Min: 1<br>Max: 65535 | End of range. Must be greater than or equal to `start`.<br>EOS default is 65535. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "router_bgp.route_distinguisher.assignment_auto.address_families") | List, items: String |  |  | Min Length: 1 | Address families for which to enable automatic RD assignment.<br>Each address family has its own range allocation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.route_distinguisher.assignment_auto.address_families.[]") | String |  |  | Valid Values:<br>- <code>l2-evpn</code><br>- <code>l3-vrf</code> | l2-evpn: L2 EVPN VXLAN, VPWS, VLAN-aware-bundle, VNI-aware-bundle.<br>l3-vrf: L3 EVPN and MPLS VPN. |
     | [<samp>&nbsp;&nbsp;updates</samp>](## "router_bgp.updates") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wait_for_convergence</samp>](## "router_bgp.updates.wait_for_convergence") | Boolean |  |  |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wait_install</samp>](## "router_bgp.updates.wait_install") | Boolean |  |  |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br> |
@@ -51,6 +58,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;labeled_unicast</samp>](## "router_bgp.bgp.labeled_unicast") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rib</samp>](## "router_bgp.bgp.labeled_unicast.rib") | Dictionary |  |  |  | Configure LU RIB behavior for ip and/or tunnel. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "router_bgp.bgp.labeled_unicast.rib.ip") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.bgp.labeled_unicast.rib.ip.enabled") | Boolean | Required |  |  | Install LU routes into IP RIB. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.bgp.labeled_unicast.rib.ip.route_map") | String |  |  |  | Route-map applied to IP RIB. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel</samp>](## "router_bgp.bgp.labeled_unicast.rib.tunnel") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.bgp.labeled_unicast.rib.tunnel.enabled") | Boolean | Required |  |  | Install LU routes into Tunnel RIB. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.bgp.labeled_unicast.rib.tunnel.route_map") | String |  |  |  | Route-map applied to tunnel RIB. |
     | [<samp>&nbsp;&nbsp;listen_ranges</samp>](## "router_bgp.listen_ranges") | List, items: Dictionary |  |  |  | Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.listen_ranges.[].prefix") | String |  |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_id_include_router_id</samp>](## "router_bgp.listen_ranges.[].peer_id_include_router_id") | Boolean |  |  |  | Include router ID as part of peer filter. |
@@ -61,7 +76,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;send_community</samp>](## "router_bgp.neighbor_default.send_community") | String |  |  | Valid Values:<br>- <code>all</code><br>- <code>large</code><br>- <code>extended</code><br>- <code>standard</code><br>- <code>extended large</code><br>- <code>standard large</code><br>- <code>standard extended</code><br>- <code>standard extended large</code> |  |
     | [<samp>&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "router_bgp.peer_groups.[].type") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.peer_groups.[].metadata") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "router_bgp.peer_groups.[].metadata.type") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "router_bgp.peer_groups.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "router_bgp.peer_groups.[].local_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_bgp.peer_groups.[].description") | String |  |  |  |  |
@@ -88,6 +104,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_peer</samp>](## "router_bgp.peer_groups.[].next_hop_peer") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self</samp>](## "router_bgp.peer_groups.[].next_hop_self") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "router_bgp.peer_groups.[].password") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "router_bgp.peer_groups.[].password_type") | String |  | `7` | Valid Values:<br>- <code>7</code><br>- <code>8a</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive</samp>](## "router_bgp.peer_groups.[].passive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_originate</samp>](## "router_bgp.peer_groups.[].default_originate") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.peer_groups.[].default_originate.enabled") | Boolean |  |  |  |  |
@@ -121,13 +138,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "router_bgp.peer_groups.[].rib_in_pre_policy_retain.all") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session_tracker</samp>](## "router_bgp.peer_groups.[].session_tracker") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "router_bgp.peer_groups.[].shared_secret") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "router_bgp.peer_groups.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "router_bgp.peer_groups.[].shared_secret.hash_algorithm") | String | Required |  | Valid Values:<br>- <code>aes-128-cmac-96</code><br>- <code>hmac-sha-256</code><br>- <code>hmac-sha1-96</code> | Note: Algorithm hmac-sha-256 requires EOS version 4.31.1F and above. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "router_bgp.peer_groups.[].ttl_maximum_hops") | Integer |  |  | Min: 0<br>Max: 254 | Maximum number of hops. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_filter</samp>](## "router_bgp.peer_groups.[].peer_filter") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>router_bgp.listen_ranges[].peer_filter</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_listen_range_prefix</samp>](## "router_bgp.peer_groups.[].bgp_listen_range_prefix") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>router_bgp.listen_ranges[].bgp_listen_range_prefix</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;neighbors</samp>](## "router_bgp.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_group</samp>](## "router_bgp.neighbors.[].peer_group") | String |  |  |  |  |
@@ -136,10 +153,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as_path</samp>](## "router_bgp.neighbors.[].as_path") | Dictionary |  |  |  | BGP AS-PATH options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as_replace_out</samp>](## "router_bgp.neighbors.[].as_path.remote_as_replace_out") | Boolean |  |  |  | Replace AS number with local AS number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prepend_own_disabled</samp>](## "router_bgp.neighbors.[].as_path.prepend_own_disabled") | Boolean |  |  |  | Disable prepending own AS number to AS path. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "router_bgp.neighbors.[].peer") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.neighbors.[].metadata") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "router_bgp.neighbors.[].metadata.peer") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "router_bgp.neighbors.[].metadata.validate_state") | Boolean |  | `True` |  | Used for validation by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_bgp.neighbors.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_reflector_client</samp>](## "router_bgp.neighbors.[].route_reflector_client") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "router_bgp.neighbors.[].password") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "router_bgp.neighbors.[].password_type") | String |  | `7` | Valid Values:<br>- <code>7</code><br>- <code>8a</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive</samp>](## "router_bgp.neighbors.[].passive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "router_bgp.neighbors.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update_source</samp>](## "router_bgp.neighbors.[].update_source") | String |  |  |  | Source Interface. |
@@ -152,6 +172,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "router_bgp.neighbors.[].timers") | String |  |  |  | BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_originate</samp>](## "router_bgp.neighbors.[].default_originate") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.neighbors.[].default_originate.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "router_bgp.neighbors.[].default_originate.always") | Boolean |  |  |  |  |
@@ -198,7 +220,9 @@
     | [<samp>&nbsp;&nbsp;neighbor_interfaces</samp>](## "router_bgp.neighbor_interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.neighbor_interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "router_bgp.neighbor_interfaces.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "router_bgp.neighbor_interfaces.[].peer") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.neighbor_interfaces.[].metadata") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "router_bgp.neighbor_interfaces.[].metadata.peer") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "router_bgp.neighbor_interfaces.[].metadata.validate_state") | Boolean |  | `True` |  | Used for validation by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_group</samp>](## "router_bgp.neighbor_interfaces.[].peer_group") | String |  | `Peer-group name` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_bgp.neighbor_interfaces.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_filter</samp>](## "router_bgp.neighbor_interfaces.[].peer_filter") | String |  |  |  | Peer-filter name. |
@@ -209,6 +233,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;summary_only</samp>](## "router_bgp.aggregate_addresses.[].summary_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attribute_map</samp>](## "router_bgp.aggregate_addresses.[].attribute_map") | String |  |  |  | Route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_map</samp>](## "router_bgp.aggregate_addresses.[].match_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attribute</samp>](## "router_bgp.aggregate_addresses.[].attribute") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.aggregate_addresses.[].attribute.rcf") | String |  |  |  | RCF name with parenthesis. Example "AGG-ADD-RCF()". |
     | [<samp>&nbsp;&nbsp;redistribute</samp>](## "router_bgp.redistribute") | Dictionary |  |  |  | Redistribute routes in to BGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;attached_host</samp>](## "router_bgp.redistribute.attached_host") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.redistribute.attached_host.enabled") | Boolean | Required |  |  |  |
@@ -276,16 +302,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;user</samp>](## "router_bgp.redistribute.user") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.redistribute.user.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.redistribute.user.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
-    | [<samp>&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.redistribute_routes.[].source_protocol") | String | Required |  | Valid Values:<br>- <code>attached-host</code><br>- <code>bgp</code><br>- <code>connected</code><br>- <code>dynamic</code><br>- <code>isis</code><br>- <code>ospf</code><br>- <code>ospfv3</code><br>- <code>rip</code><br>- <code>static</code><br>- <code>user</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.redistribute_routes.[].route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.redistribute_routes.[].include_leaked") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_bgp.redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- <code>external</code><br>- <code>internal</code><br>- <code>nssa-external</code><br>- <code>nssa-external 1</code><br>- <code>nssa-external 2</code> | Routes learned by the OSPF protocol.<br>The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.<br> |
     | [<samp>&nbsp;&nbsp;vlan_aware_bundles</samp>](## "router_bgp.vlan_aware_bundles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.vlan_aware_bundles.[].name") | String | Required, Unique |  |  | VLAN aware bundle name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "router_bgp.vlan_aware_bundles.[].tenant") | String |  |  |  | Key only used for documentation or validation purposes. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_bgp.vlan_aware_bundles.[].description") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.vlan_aware_bundles.[].metadata") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenants</samp>](## "router_bgp.vlan_aware_bundles.[].metadata.tenants") | List, items: String |  |  |  | List of tenants where this bundle is defined. Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.vlan_aware_bundles.[].metadata.tenants.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_bgp.vlan_aware_bundles.[].metadata.description") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "router_bgp.vlan_aware_bundles.[].rd") | String |  |  |  | Route distinguisher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_evpn_domain</samp>](## "router_bgp.vlan_aware_bundles.[].rd_evpn_domain") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain</samp>](## "router_bgp.vlan_aware_bundles.[].rd_evpn_domain.domain") | String |  |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
@@ -314,7 +336,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_bgp.vlan_aware_bundles.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the Router BGP, VLAN-aware-bundle definition in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;vlans</samp>](## "router_bgp.vlans") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "router_bgp.vlans.[].id") | Integer | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "router_bgp.vlans.[].tenant") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.vlans.[].metadata") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenants</samp>](## "router_bgp.vlans.[].metadata.tenants") | List, items: String |  |  |  | List of tenants where this VLAN is defined. Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.vlans.[].metadata.tenants.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "router_bgp.vlans.[].rd") | String |  |  |  | Route distinguisher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_evpn_domain</samp>](## "router_bgp.vlans.[].rd_evpn_domain") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain</samp>](## "router_bgp.vlans.[].rd_evpn_domain.domain") | String |  |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
@@ -369,6 +393,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_evpn.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_evpn.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_evpn.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_evpn.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_evpn.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.address_family_evpn.neighbors.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_evpn.neighbors.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "router_bgp.address_family_evpn.neighbors.[].default_route") | Dictionary |  |  |  |  |
@@ -386,6 +412,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_evpn.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_evpn.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_evpn.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_evpn.peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_evpn.peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.address_family_evpn.peer_groups.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_evpn.peer_groups.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "router_bgp.address_family_evpn.peer_groups.[].default_route") | Dictionary |  |  |  |  |
@@ -424,14 +452,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;domain</samp>](## "router_bgp.address_family_evpn.evpn_ethernet_segment.[].domain") | String | Required, Unique |  | Valid Values:<br>- <code>all</code><br>- <code>local</code><br>- <code>remote</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "router_bgp.address_family_evpn.evpn_ethernet_segment.[].identifier") | String |  |  |  | EVPN Ethernet Segment Identifier (Type 1 format). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_target_import</samp>](## "router_bgp.address_family_evpn.evpn_ethernet_segment.[].route_target_import") | String |  |  |  | Low-order 6 bytes of ES-Import Route Target. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_additional_paths</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths") <span style="color:red">deprecated</span> | Dictionary |  |  |  | BGP additional-paths commands.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>bgp.additional_paths</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.receive") | Boolean |  |  |  | Receive multiple paths. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send") | Dictionary |  |  |  | Send multiple paths. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.any") | Boolean |  |  |  | Any eligible path. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.backup") | Boolean |  |  |  | Best path and installed backup path. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp") | Boolean |  |  |  | All paths in best path ECMP group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_additional_paths</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>bgp.additional_paths</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;address_family_rtc</samp>](## "router_bgp.address_family_rtc") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_rtc.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_rtc.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
@@ -443,6 +464,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.address_family_ipv4.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.address_family_ipv4.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4.networks.[].route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4.networks.[].rcf") | String |  |  |  | RCF name with parenthesis. Example "NETWORK-RCF()".<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_ipv4.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4.bgp.additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_ipv4.bgp.additional_paths.install") | Boolean |  |  |  | Install BGP backup path. |
@@ -456,6 +478,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_originate</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].default_originate") | Dictionary |  |  |  |  |
@@ -472,12 +496,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].next_hop.address_family_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].next_hop.address_family_ipv6.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;originate</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].next_hop.address_family_ipv6.originate") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6_originate</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].next_hop.address_family_ipv6_originate") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>address_family_ipv6</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_ipv4.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv4.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv4.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv4.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv4.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv4.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.address_family_ipv4.neighbors.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_ipv4.neighbors.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.address_family_ipv4.neighbors.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
@@ -561,12 +586,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user</samp>](## "router_bgp.address_family_ipv4.redistribute.user") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4.redistribute.user.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4.redistribute.user.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv4.redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].source_protocol") | String | Required |  | Valid Values:<br>- <code>attached-host</code><br>- <code>bgp</code><br>- <code>connected</code><br>- <code>dynamic</code><br>- <code>isis</code><br>- <code>ospf</code><br>- <code>ospfv3</code><br>- <code>rip</code><br>- <code>static</code><br>- <code>user</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].include_leaked") | Boolean |  |  |  | Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- <code>external</code><br>- <code>internal</code><br>- <code>nssa-external</code><br>- <code>nssa-external 1</code><br>- <code>nssa-external 2</code> | Routes learned by the OSPF protocol.<br>The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv4.redistribute_routes") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;address_family_ipv4_labeled_unicast</samp>](## "router_bgp.address_family_ipv4_labeled_unicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;aigp_session</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.aigp_session") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;confederation</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.aigp_session.confederation") | Boolean |  |  |  |  |
@@ -619,7 +639,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].missing_policy.direction_out.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].missing_policy.direction_out.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_path</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].multi_path") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_resolution</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].next_hop_resolution") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].next_hop_self") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_source_interface</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].next_hop_self_source_interface") | String |  |  |  | Source interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_v4_mapped_v6_source_interface</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].next_hop_self_v4_mapped_v6_source_interface") | String |  |  |  | v4-mapped-v6 source interface name. Takes precedence over the next_hop_self_source_interface. |
@@ -628,6 +647,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].activate") | Boolean |  |  |  |  |
@@ -653,7 +674,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_out.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_out.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_path</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].multi_path") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_resolution</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_resolution") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_self") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_source_interface</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_self_source_interface") | String |  |  |  | Source interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_v4_mapped_v6_source_interface</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_self_v4_mapped_v6_source_interface") | String |  |  |  | v4-mapped-v6 source interface name. Takes precedence over the next_hop_self_source_interface. |
@@ -662,9 +682,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks.[].route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks.[].rcf") | String |  |  |  | RCF name with parenthesis. Example "NETWORK-RCF()".<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hops</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lfib_backup_ip_forwarding</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops.[].lfib_backup_ip_forwarding") | Boolean |  |  |  |  |
@@ -684,6 +707,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors") | List, items: Dictionary |  |  |  |  |
@@ -691,6 +716,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute") | Dictionary |  |  |  | Redistribute routes in to BGP. |
@@ -735,27 +762,27 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.static") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.static.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.static.route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes.[].source_protocol") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes.[].route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes.[].include_leaked") | Boolean |  |  |  | Only applicable if `source_protocol` is `isis`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only applicable if `source_protocol` is `isis`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- <code>external</code><br>- <code>internal</code><br>- <code>nssa-external</code><br>- <code>nssa-external 1</code><br>- <code>nssa-external 2</code> | Routes learned by the OSPF protocol.<br>The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;address_family_ipv4_sr_te</samp>](## "router_bgp.address_family_ipv4_sr_te") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_ipv4_sr_te.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv4_sr_te.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_sr_te.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv4_sr_te.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv4_sr_te.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv4_sr_te.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv4_sr_te.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_ipv4_sr_te.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_ipv4_sr_te.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_sr_te.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv4_sr_te.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv4_sr_te.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv4_sr_te.peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv4_sr_te.peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;address_family_ipv6</samp>](## "router_bgp.address_family_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.address_family_ipv6.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.address_family_ipv6.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.networks.[].route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6.networks.[].rcf") | String |  |  |  | RCF name with parenthesis. Example "NETWORK-RCF()".<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_ipv6.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.address_family_ipv6.bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv6.bgp.additional_paths") | Dictionary |  |  |  |  |
@@ -769,6 +796,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
@@ -778,11 +807,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_originate</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].default_originate") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].default_originate.always") | Boolean |  |  |  | Always advertise a default route to this peer. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].default_originate.route_map") | String |  |  |  | Route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_ipv6.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv6.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv6.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv6.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv6.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv6.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv6.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.address_family_ipv6.neighbors.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_ipv6.neighbors.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.address_family_ipv6.neighbors.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
@@ -842,12 +876,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user</samp>](## "router_bgp.address_family_ipv6.redistribute.user") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.user.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6.redistribute.user.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv6.redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].source_protocol") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].include_leaked") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- <code>external</code><br>- <code>internal</code><br>- <code>nssa-external</code><br>- <code>nssa-external 1</code><br>- <code>nssa-external 2</code> | Routes learned by the OSPF protocol.<br>The `ospf_route_type` is valid for source_protocols 'ospfv3'.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv6.redistribute_routes") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;address_family_ipv6_multicast</samp>](## "router_bgp.address_family_ipv6_multicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_ipv6_multicast.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_ipv6_multicast.bgp.missing_policy") | Dictionary |  |  |  |  |
@@ -860,6 +889,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_ipv6_multicast.peer_groups") | List, items: Dictionary |  |  |  |  |
@@ -909,23 +940,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "router_bgp.address_family_ipv6_multicast.redistribute.static") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6_multicast.redistribute.static.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6_multicast.redistribute.static.route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv6_multicast.redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.address_family_ipv6_multicast.redistribute_routes.[].source_protocol") | String | Required |  | Valid Values:<br>- <code>connected</code><br>- <code>isis</code><br>- <code>ospf</code><br>- <code>ospfv3</code><br>- <code>static</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6_multicast.redistribute_routes.[].include_leaked") | Boolean |  |  |  | Only applicable if `source_protocol` is `isis`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6_multicast.redistribute_routes.[].route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6_multicast.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only applicable if `source_protocol` is `isis`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_bgp.address_family_ipv6_multicast.redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- <code>external</code><br>- <code>internal</code><br>- <code>nssa-external</code><br>- <code>nssa-external 1</code><br>- <code>nssa-external 2</code> | Routes learned by the OSPF protocol.<br>The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv6_multicast.redistribute_routes") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;address_family_ipv6_sr_te</samp>](## "router_bgp.address_family_ipv6_sr_te") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_ipv6_sr_te.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv6_sr_te.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv6_sr_te.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv6_sr_te.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv6_sr_te.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv6_sr_te.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv6_sr_te.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_ipv6_sr_te.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_ipv6_sr_te.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv6_sr_te.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv6_sr_te.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv6_sr_te.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_ipv6_sr_te.peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_ipv6_sr_te.peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;address_family_link_state</samp>](## "router_bgp.address_family_link_state") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_link_state.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_link_state.bgp.missing_policy") | Dictionary |  |  |  |  |
@@ -997,6 +1027,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_vpn_ipv4.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_vpn_ipv4.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_vpn_ipv4.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_vpn_ipv4.peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_vpn_ipv4.peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.address_family_vpn_ipv4.peer_groups.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_vpn_ipv4.peer_groups.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "router_bgp.address_family_vpn_ipv4.peer_groups.[].default_route") | Dictionary |  |  |  |  |
@@ -1010,6 +1042,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_vpn_ipv4.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_vpn_ipv4.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_vpn_ipv4.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_vpn_ipv4.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_vpn_ipv4.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.address_family_vpn_ipv4.neighbors.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_vpn_ipv4.neighbors.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "router_bgp.address_family_vpn_ipv4.neighbors.[].default_route") | Dictionary |  |  |  |  |
@@ -1025,6 +1059,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_vpn_ipv6.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_vpn_ipv6.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_vpn_ipv6.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_vpn_ipv6.peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_vpn_ipv6.peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.address_family_vpn_ipv6.peer_groups.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_vpn_ipv6.peer_groups.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "router_bgp.address_family_vpn_ipv6.peer_groups.[].default_route") | Dictionary |  |  |  |  |
@@ -1038,6 +1074,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_vpn_ipv6.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_vpn_ipv6.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_vpn_ipv6.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.address_family_vpn_ipv6.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.address_family_vpn_ipv6.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.address_family_vpn_ipv6.neighbors.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_vpn_ipv6.neighbors.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "router_bgp.address_family_vpn_ipv6.neighbors.[].default_route") | Dictionary |  |  |  |  |
@@ -1057,6 +1095,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.vrfs.[].bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "router_bgp.vrfs.[].rd") | String |  |  |  | Route distinguisher. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_evpn_domain</samp>](## "router_bgp.vrfs.[].rd_evpn_domain") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain</samp>](## "router_bgp.vrfs.[].rd_evpn_domain.domain") | String | Required |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "router_bgp.vrfs.[].rd_evpn_domain.rd") | String | Required |  |  | Route distinguisher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_multicast</samp>](## "router_bgp.vrfs.[].evpn_multicast") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_multicast_address_family</samp>](## "router_bgp.vrfs.[].evpn_multicast_address_family") | Dictionary |  |  |  | Enable per-AF EVPN multicast settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "router_bgp.vrfs.[].evpn_multicast_address_family.ipv4") | Dictionary |  |  |  |  |
@@ -1084,6 +1125,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].route_targets.export.[].route_map") | String |  |  |  | Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].route_targets.export.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf_route_filter_rcf</samp>](## "router_bgp.vrfs.[].route_targets.export.[].vrf_route_filter_rcf") | String |  |  |  | RCF function name with parenthesis for filtering VRF routes. Also requires `rcf` to be set.<br>Example: MyFunction(myarg).<br>Only applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import_evpn_domains</samp>](## "router_bgp.vrfs.[].route_targets.import_evpn_domains") | List, items: Dictionary |  |  |  | List of EVPN domains from which to import routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;route_target</samp>](## "router_bgp.vrfs.[].route_targets.import_evpn_domains.[].route_target") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain</samp>](## "router_bgp.vrfs.[].route_targets.import_evpn_domains.[].domain") | String | Required |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;export_evpn_domains</samp>](## "router_bgp.vrfs.[].route_targets.export_evpn_domains") | List, items: Dictionary |  |  |  | List of EVPN domains to which local routes should be exported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;route_target</samp>](## "router_bgp.vrfs.[].route_targets.export_evpn_domains.[].route_target") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain</samp>](## "router_bgp.vrfs.[].route_targets.export_evpn_domains.[].domain") | String | Required |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_bgp.vrfs.[].router_id") | String |  |  |  | in IP address format A.B.C.D. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "router_bgp.vrfs.[].timers") | String |  |  |  | BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.vrfs.[].graceful_restart") | Dictionary |  |  |  |  |
@@ -1110,6 +1157,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_group</samp>](## "router_bgp.vrfs.[].neighbors.[].peer_group") | String |  |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "router_bgp.vrfs.[].neighbors.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "router_bgp.vrfs.[].neighbors.[].password") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "router_bgp.vrfs.[].neighbors.[].password_type") | String |  | `7` | Valid Values:<br>- <code>7</code><br>- <code>8a</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive</samp>](## "router_bgp.vrfs.[].neighbors.[].passive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remove_private_as</samp>](## "router_bgp.vrfs.[].neighbors.[].remove_private_as") | Dictionary |  |  |  | Remove private AS numbers in outbound AS path. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].neighbors.[].remove_private_as.enabled") | Boolean |  |  |  |  |
@@ -1152,18 +1200,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update_source</samp>](## "router_bgp.vrfs.[].neighbors.[].update_source") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.vrfs.[].neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.vrfs.[].neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.vrfs.[].neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.vrfs.[].neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].neighbors.[].additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.vrfs.[].neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.vrfs.[].neighbors.[].prefix_list_in") <span style="color:red">removed</span> | String |  |  |  | Inbound prefix-list name.<span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.vrfs.[].neighbors.[].prefix_list_out") <span style="color:red">removed</span> | String |  |  |  | Outbound prefix-list name.<span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.vrfs.[].neighbors.[].metadata") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "router_bgp.vrfs.[].neighbors.[].metadata.validate_state") | Boolean |  | `False` |  | Used for validation by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor_interfaces</samp>](## "router_bgp.vrfs.[].neighbor_interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_group</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].peer_group") | String |  |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_filter</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].peer_filter") | String |  |  |  | Peer-filter name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].description") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].metadata") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].metadata.validate_state") | Boolean |  | `False` |  | Used for validation by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_bgp.vrfs.[].redistribute") | Dictionary |  |  |  | Redistribute routes in to BGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attached_host</samp>](## "router_bgp.vrfs.[].redistribute.attached_host") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.attached_host.enabled") | Boolean | Required |  |  |  |
@@ -1231,12 +1283,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user</samp>](## "router_bgp.vrfs.[].redistribute.user") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.user.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].redistribute.user.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.vrfs.[].redistribute_routes.[].source_protocol") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute_routes.[].route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute_routes.[].include_leaked") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_bgp.vrfs.[].redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- <code>external</code><br>- <code>internal</code><br>- <code>nssa-external</code><br>- <code>nssa-external 1</code><br>- <code>nssa-external 2</code> | Routes learned by the OSPF protocol.<br>The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aggregate_addresses</samp>](## "router_bgp.vrfs.[].aggregate_addresses") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.vrfs.[].aggregate_addresses.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertise_only</samp>](## "router_bgp.vrfs.[].aggregate_addresses.[].advertise_only") | Boolean |  |  |  |  |
@@ -1244,6 +1290,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;summary_only</samp>](## "router_bgp.vrfs.[].aggregate_addresses.[].summary_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attribute_map</samp>](## "router_bgp.vrfs.[].aggregate_addresses.[].attribute_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_map</samp>](## "router_bgp.vrfs.[].aggregate_addresses.[].match_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attribute</samp>](## "router_bgp.vrfs.[].aggregate_addresses.[].attribute") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].aggregate_addresses.[].attribute.rcf") | String |  |  |  | RCF name with parenthesis. Example "AGG-ADD-RCF()". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "router_bgp.vrfs.[].address_family_ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.missing_policy") | Dictionary |  |  |  |  |
@@ -1261,6 +1309,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
@@ -1276,6 +1326,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.vrfs.[].address_family_ipv4.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.vrfs.[].address_family_ipv4.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv4.networks.[].route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].address_family_ipv4.networks.[].rcf") | String |  |  |  | RCF name with parenthesis. Example "NETWORK-RCF()".<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes in to BGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attached_host</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute.attached_host") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute.attached_host.enabled") | Boolean | Required |  |  |  |
@@ -1343,12 +1394,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute.user") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute.user.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute.user.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute_routes.[].source_protocol") | String | Required |  | Valid Values:<br>- <code>attached-host</code><br>- <code>bgp</code><br>- <code>connected</code><br>- <code>dynamic</code><br>- <code>isis</code><br>- <code>ospf</code><br>- <code>ospfv3</code><br>- <code>rip</code><br>- <code>static</code><br>- <code>user</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute_routes.[].route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute_routes.[].include_leaked") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- <code>external</code><br>- <code>internal</code><br>- <code>nssa-external</code><br>- <code>nssa-external 1</code><br>- <code>nssa-external 2</code> | Routes learned by the OSPF protocol.<br>The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute_routes") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "router_bgp.vrfs.[].address_family_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.missing_policy") | Dictionary |  |  |  |  |
@@ -1366,6 +1412,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_in</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].rcf_in") | String |  |  |  | Inbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
@@ -1377,6 +1425,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.vrfs.[].address_family_ipv6.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.vrfs.[].address_family_ipv6.networks.[].prefix") | String | Required, Unique |  |  | IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv6.networks.[].route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].address_family_ipv6.networks.[].rcf") | String |  |  |  | RCF name with parenthesis. Example "NETWORK-RCF()".<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute") | Dictionary |  |  |  | Redistribute routes in to BGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attached_host</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute.attached_host") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute.attached_host.enabled") | Boolean | Required |  |  |  |
@@ -1427,12 +1476,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute.user") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute.user.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute.user.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute_routes.[].source_protocol") | String | Required |  | Valid Values:<br>- <code>attached-host</code><br>- <code>bgp</code><br>- <code>connected</code><br>- <code>dhcp</code><br>- <code>dynamic</code><br>- <code>isis</code><br>- <code>ospfv3</code><br>- <code>static</code><br>- <code>user</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute_routes.[].route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute_routes.[].include_leaked") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- <code>external</code><br>- <code>internal</code><br>- <code>nssa-external</code><br>- <code>nssa-external 1</code><br>- <code>nssa-external 2</code> | Routes learned by the OSPF protocol.<br>The `ospf_route_type` is valid for source_protocols 'ospfv3'.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute_routes") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4_multicast</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.bgp.missing_policy") | Dictionary |  |  |  |  |
@@ -1445,6 +1489,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.networks") | List, items: Dictionary |  |  |  |  |
@@ -1496,12 +1542,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.redistribute.static") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.redistribute.static.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.redistribute.static.route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.redistribute_routes.[].source_protocol") | String | Required |  | Valid Values:<br>- <code>attached-host</code><br>- <code>connected</code><br>- <code>isis</code><br>- <code>ospf</code><br>- <code>ospfv3</code><br>- <code>static</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.redistribute_routes.[].route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.redistribute_routes.[].include_leaked") | Boolean |  |  |  | Only applicable if `source_protocol` is `isis`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only applicable if `source_protocol` is `isis`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- <code>external</code><br>- <code>internal</code><br>- <code>nssa-external</code><br>- <code>nssa-external 1</code><br>- <code>nssa-external 2</code> | Routes learned by the OSPF protocol.<br>The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.redistribute_routes") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6_multicast</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.bgp.missing_policy") | Dictionary |  |  |  |  |
@@ -1514,6 +1555,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.networks") | List, items: Dictionary |  |  |  |  |
@@ -1558,12 +1601,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.redistribute.static") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.redistribute.static.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.redistribute.static.route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.redistribute_routes.[].source_protocol") | String | Required |  | Valid Values:<br>- <code>connected</code><br>- <code>isis</code><br>- <code>ospf</code><br>- <code>ospfv3</code><br>- <code>static</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.redistribute_routes.[].route_map") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.redistribute_routes.[].include_leaked") | Boolean |  |  |  | Only applicable if `source_protocol` is `isis`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.redistribute_routes.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.<br>Only applicable if `source_protocol` is `isis`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf_route_type</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.redistribute_routes.[].ospf_route_type") | String |  |  | Valid Values:<br>- <code>external</code><br>- <code>internal</code><br>- <code>nssa-external</code><br>- <code>nssa-external 1</code><br>- <code>nssa-external 2</code> | Routes learned by the OSPF protocol.<br>The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.redistribute_routes") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_flow_spec_ipv4</samp>](## "router_bgp.vrfs.[].address_family_flow_spec_ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.vrfs.[].address_family_flow_spec_ipv4.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.vrfs.[].address_family_flow_spec_ipv4.bgp.missing_policy") | Dictionary |  |  |  |  |
@@ -1580,11 +1618,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.vrfs.[].address_family_flow_spec_ipv6.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.vrfs.[].address_family_flow_spec_ipv6.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.vrfs.[].address_family_flow_spec_ipv6.neighbors.[].activate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].redistribute_routes") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_bgp.vrfs.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "router_bgp.vrfs.[].address_families") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>address_family_*</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;session_trackers</samp>](## "router_bgp.session_trackers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.session_trackers.[].name") | String | Required, Unique |  |  | Name of session tracker. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "router_bgp.session_trackers.[].recovery_delay") | Integer |  |  | Min: 1<br>Max: 3600 | Recovery delay in seconds. |
+    | [<samp>&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.redistribute_routes") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;eos_cli</samp>](## "router_bgp.eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the Router BGP in the final EOS configuration. |
 
 === "YAML"
@@ -1643,6 +1682,29 @@
       maximum_paths:
         paths: <int; 1-600; required>
         ecmp: <int; 1-600>
+      route_distinguisher:
+
+        # Automatic Route Distinguisher (auto RD) feature.
+        assignment_auto:
+
+          # Range for the 2-byte assigned number field of RD.
+          # The range is inclusive of start and end values.
+          range:
+
+            # Start of range. EOS default is 4096.
+            start: <int; 1-65535; required>
+
+            # End of range. Must be greater than or equal to `start`.
+            # EOS default is 65535.
+            end: <int; 1-65535; required>
+
+          # Address families for which to enable automatic RD assignment.
+          # Each address family has its own range allocation.
+          address_families: # >=1 items
+
+              # l2-evpn: L2 EVPN VXLAN, VPWS, VLAN-aware-bundle, VNI-aware-bundle.
+              # l3-vrf: L3 EVPN and MPLS VPN.
+            - <str; "l2-evpn" | "l3-vrf">
       updates:
 
         # Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
@@ -1689,6 +1751,24 @@
 
         # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
         redistribute_internal: <bool>
+        labeled_unicast:
+
+          # Configure LU RIB behavior for ip and/or tunnel.
+          rib:
+            ip:
+
+              # Install LU routes into IP RIB.
+              enabled: <bool; required>
+
+              # Route-map applied to IP RIB.
+              route_map: <str>
+            tunnel:
+
+              # Install LU routes into Tunnel RIB.
+              enabled: <bool; required>
+
+              # Route-map applied to tunnel RIB.
+              route_map: <str>
 
       # Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities.
       listen_ranges:
@@ -1716,9 +1796,10 @@
 
           # Peer-group name.
         - name: <str; required; unique>
+          metadata:
 
-          # Key only used for documentation or validation purposes.
-          type: <str>
+            # Key only used for documentation or validation purposes.
+            type: <str>
 
           # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
           # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
@@ -1771,6 +1852,7 @@
           next_hop_peer: <bool>
           next_hop_self: <bool>
           password: <str>
+          password_type: <str; "7" | "8a"; default="7">
           passive: <bool>
           default_originate:
             enabled: <bool>
@@ -1845,6 +1927,12 @@
 
           # Outbound route-map name.
           route_map_out: <str>
+
+          # Inbound peer tag name.
+          peer_tag_in: <str>
+
+          # Outbound discard peer tag name.
+          peer_tag_out_discard: <str>
           session_tracker: <str>
           shared_secret:
 
@@ -1876,12 +1964,17 @@
 
             # Disable prepending own AS number to AS path.
             prepend_own_disabled: <bool>
+          metadata:
 
-          # Key only used for documentation or validation purposes.
-          peer: <str>
+            # Key only used for documentation or validation purposes.
+            peer: <str>
+
+            # Used for validation by the `anta_runner` role.
+            validate_state: <bool; default=True>
           description: <str>
           route_reflector_client: <bool>
           password: <str>
+          password_type: <str; "7" | "8a"; default="7">
           passive: <bool>
           shutdown: <bool>
 
@@ -1910,6 +2003,12 @@
 
           # Outbound route-map name.
           route_map_out: <str>
+
+          # Inbound peer tag name.
+          peer_tag_in: <str>
+
+          # Outbound discard peer tag name.
+          peer_tag_out_discard: <str>
           default_originate:
             enabled: <bool>
             always: <bool>
@@ -2004,9 +2103,13 @@
           # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
           # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
           remote_as: <str>
+          metadata:
 
-          # Key only used for documentation or validation purposes.
-          peer: <str>
+            # Key only used for documentation or validation purposes.
+            peer: <str>
+
+            # Used for validation by the `anta_runner` role.
+            validate_state: <bool; default=True>
           peer_group: <str; default="Peer-group name">
           description: <str>
 
@@ -2025,6 +2128,10 @@
 
           # Route-map name.
           match_map: <str>
+          attribute:
+
+            # RCF name with parenthesis. Example "AGG-ADD-RCF()".
+            rcf: <str>
 
       # Redistribute routes in to BGP.
       redistribute:
@@ -2158,33 +2265,18 @@
           # Example: MyFunction(myarg).
           # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
           rcf: <str>
-      # This key is deprecated.
-      # Support will be removed in AVD version 6.0.0.
-      # Use `redistribute` instead.
-      redistribute_routes:
-        - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required>
-          route_map: <str>
-
-          # RCF function name with parenthesis.
-          # Example: MyFunction(myarg).
-          # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-          # Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
-          rcf: <str>
-          include_leaked: <bool>
-
-          # Routes learned by the OSPF protocol.
-          # The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
-          ospf_route_type: <str; "external" | "internal" | "nssa-external" | "nssa-external 1" | "nssa-external 2">
       vlan_aware_bundles:
 
           # VLAN aware bundle name.
         - name: <str; required; unique>
+          metadata:
 
-          # Key only used for documentation or validation purposes.
-          tenant: <str>
+            # List of tenants where this bundle is defined. Key only used for documentation or validation purposes.
+            tenants:
+              - <str>
 
-          # Key only used for documentation or validation purposes.
-          description: <str>
+            # Key only used for documentation or validation purposes.
+            description: <str>
 
           # Route distinguisher.
           rd: <str>
@@ -2221,9 +2313,11 @@
           eos_cli: <str>
       vlans:
         - id: <int; required; unique>
+          metadata:
 
-          # Key only used for documentation or validation purposes.
-          tenant: <str>
+            # List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+            tenants:
+              - <str>
 
           # Route distinguisher.
           rd: <str>
@@ -2311,6 +2405,12 @@
             # Outbound route-map name.
             route_map_out: <str>
 
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
+
             # Inbound RCF function name with parenthesis.
             # Example: MyFunction(myarg).
             rcf_in: <str>
@@ -2357,6 +2457,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
 
             # Inbound RCF function name with parenthesis.
             # Example: MyFunction(myarg).
@@ -2444,33 +2550,6 @@
 
             # Low-order 6 bytes of ES-Import Route Target.
             route_target_import: <str>
-
-        # BGP additional-paths commands.
-        # This key is deprecated.
-        # Support will be removed in AVD version 6.0.0.
-        # Use `bgp.additional_paths` instead.
-        bgp_additional_paths:
-
-          # Receive multiple paths.
-          receive: <bool>
-
-          # Send multiple paths.
-          send:
-
-            # Any eligible path.
-            any: <bool>
-
-            # Best path and installed backup path.
-            backup: <bool>
-
-            # All paths in best path ECMP group.
-            ecmp: <bool>
-
-            # Amount of ECMP paths to send.
-            ecmp_limit: <int; 2-64>
-
-            # Amount of paths to send.
-            limit: <int; 2-64>
       address_family_rtc:
         peer_groups:
 
@@ -2488,6 +2567,10 @@
 
             # Route-map name.
             route_map: <str>
+
+            # RCF name with parenthesis. Example "NETWORK-RCF()".
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
         bgp:
           additional_paths:
 
@@ -2524,6 +2607,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
 
             # Inbound RCF function name with parenthesis.
             # Example: MyFunction(myarg).
@@ -2574,6 +2663,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
 
             # Inbound RCF function name with parenthesis.
             # Example: MyFunction(myarg).
@@ -2748,25 +2843,6 @@
             # Example: MyFunction(myarg).
             # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
             rcf: <str>
-        # This key is deprecated.
-        # Support will be removed in AVD version 6.0.0.
-        # Use `redistribute` instead.
-        redistribute_routes:
-          - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required>
-            route_map: <str>
-
-            # Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`.
-            include_leaked: <bool>
-
-            # RCF function name with parenthesis.
-            # Example: MyFunction(myarg).
-            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-            # Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
-            rcf: <str>
-
-            # Routes learned by the OSPF protocol.
-            # The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
-            ospf_route_type: <str; "external" | "internal" | "nssa-external" | "nssa-external 1" | "nssa-external 2">
       address_family_ipv4_labeled_unicast:
         aigp_session:
           confederation: <bool>
@@ -2916,6 +2992,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
         neighbors:
           - ip_address: <str; required; unique>
             activate: <bool>
@@ -3001,6 +3083,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
         networks: # >=1 items
 
             # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
@@ -3008,6 +3096,10 @@
 
             # Route-map name.
             route_map: <str>
+
+            # RCF name with parenthesis. Example "NETWORK-RCF()".
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
         next_hops: # >=1 items
           - ip_address: <str; required; unique>
             lfib_backup_ip_forwarding: <bool>
@@ -3044,6 +3136,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
             additional_paths:
               receive: <bool>
         neighbors:
@@ -3055,6 +3153,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
             additional_paths:
               receive: <bool>
 
@@ -3129,25 +3233,6 @@
           static:
             enabled: <bool; required>
             route_map: <str>
-        # This key is deprecated.
-        # Support will be removed in AVD version 6.0.0.
-        # Use `redistribute` instead.
-        redistribute_routes:
-          - source_protocol: <str; required>
-            route_map: <str>
-
-            # Only applicable if `source_protocol` is `isis`.
-            include_leaked: <bool>
-
-            # RCF function name with parenthesis.
-            # Example: MyFunction(myarg).
-            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-            # Only applicable if `source_protocol` is `isis`.
-            rcf: <str>
-
-            # Routes learned by the OSPF protocol.
-            # The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
-            ospf_route_type: <str; "external" | "internal" | "nssa-external" | "nssa-external 1" | "nssa-external 2">
       address_family_ipv4_sr_te:
         neighbors:
           - ip_address: <str; required; unique>
@@ -3158,6 +3243,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
         peer_groups:
 
             # Peer-group name.
@@ -3169,6 +3260,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
       address_family_ipv6:
         networks:
 
@@ -3177,6 +3274,10 @@
 
             # Route-map name.
             route_map: <str>
+
+            # RCF name with parenthesis. Example "NETWORK-RCF()".
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
         bgp:
 
           # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
@@ -3214,6 +3315,12 @@
             # Outbound route-map name.
             route_map_out: <str>
 
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
+
             # Inbound RCF function name with parenthesis.
             # Example: MyFunction(myarg).
             rcf_in: <str>
@@ -3245,6 +3352,13 @@
 
               # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
               send_limit: <int; 2-64>
+            default_originate:
+
+              # Always advertise a default route to this peer.
+              always: <bool>
+
+              # Route-map name.
+              route_map: <str>
         neighbors:
           - ip_address: <str; required; unique>
             activate: <bool>
@@ -3254,6 +3368,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
 
             # Inbound RCF function name with parenthesis.
             # Example: MyFunction(myarg).
@@ -3384,23 +3504,6 @@
             # Example: MyFunction(myarg).
             # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
             rcf: <str>
-        # This key is deprecated.
-        # Support will be removed in AVD version 6.0.0.
-        # Use `redistribute` instead.
-        redistribute_routes:
-          - source_protocol: <str; required>
-            route_map: <str>
-            include_leaked: <bool>
-
-            # RCF function name with parenthesis.
-            # Example: MyFunction(myarg).
-            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-            # Only used if `source_protocol` is one of `connected`, `static`, `isis`, `user`, `dynamic`.
-            rcf: <str>
-
-            # Routes learned by the OSPF protocol.
-            # The `ospf_route_type` is valid for source_protocols 'ospfv3'.
-            ospf_route_type: <str; "external" | "internal" | "nssa-external" | "nssa-external 1" | "nssa-external 2">
       address_family_ipv6_multicast:
         bgp:
           missing_policy:
@@ -3417,6 +3520,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
             additional_paths:
               receive: <bool>
         peer_groups:
@@ -3500,25 +3609,6 @@
           static:
             enabled: <bool; required>
             route_map: <str>
-        # This key is deprecated.
-        # Support will be removed in AVD version 6.0.0.
-        # Use `redistribute` instead.
-        redistribute_routes:
-          - source_protocol: <str; "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
-
-            # Only applicable if `source_protocol` is `isis`.
-            include_leaked: <bool>
-            route_map: <str>
-
-            # RCF function name with parenthesis.
-            # Example: MyFunction(myarg).
-            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-            # Only applicable if `source_protocol` is `isis`.
-            rcf: <str>
-
-            # Routes learned by the OSPF protocol.
-            # The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
-            ospf_route_type: <str; "external" | "internal" | "nssa-external" | "nssa-external 1" | "nssa-external 2">
       address_family_ipv6_sr_te:
         neighbors:
           - ip_address: <str; required; unique>
@@ -3529,6 +3619,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
         peer_groups:
 
             # Peer-group name.
@@ -3540,6 +3636,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
       address_family_link_state:
         bgp:
           missing_policy:
@@ -3659,6 +3761,12 @@
             # Outbound route-map name.
             route_map_out: <str>
 
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
+
             # Inbound RCF function name with parenthesis.
             # Example: MyFunction(myarg).
             rcf_in: <str>
@@ -3684,6 +3792,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
 
             # Inbound RCF function name with parenthesis.
             # Example: MyFunction(myarg).
@@ -3715,6 +3829,12 @@
             # Outbound route-map name.
             route_map_out: <str>
 
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
+
             # Inbound RCF function name with parenthesis.
             # Example: MyFunction(myarg).
             rcf_in: <str>
@@ -3740,6 +3860,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
 
             # Inbound RCF function name with parenthesis.
             # Example: MyFunction(myarg).
@@ -3789,6 +3915,11 @@
 
           # Route distinguisher.
           rd: <str>
+          rd_evpn_domain:
+            domain: <str; "remote" | "all"; required>
+
+            # Route distinguisher.
+            rd: <str; required>
           evpn_multicast: <bool>
 
           # Enable per-AF EVPN multicast settings.
@@ -3853,6 +3984,16 @@
                 # Only applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`.
                 vrf_route_filter_rcf: <str>
 
+            # List of EVPN domains from which to import routes.
+            import_evpn_domains:
+              - route_target: <str; required; unique>
+                domain: <str; "remote" | "all"; required>
+
+            # List of EVPN domains to which local routes should be exported.
+            export_evpn_domains:
+              - route_target: <str; required; unique>
+                domain: <str; "remote" | "all"; required>
+
           # in IP address format A.B.C.D.
           router_id: <str>
 
@@ -3913,6 +4054,7 @@
               # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
               remote_as: <str>
               password: <str>
+              password_type: <str; "7" | "8a"; default="7">
               passive: <bool>
 
               # Remove private AS numbers in outbound AS path.
@@ -3989,6 +4131,12 @@
 
               # Outbound route-map name.
               route_map_out: <str>
+
+              # Inbound peer tag name.
+              peer_tag_in: <str>
+
+              # Outbound discard peer tag name.
+              peer_tag_out_discard: <str>
               additional_paths:
 
                 # Enable or disable reception of additional-paths.
@@ -4004,6 +4152,10 @@
 
                 # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
                 send_limit: <int; 2-64>
+              metadata:
+
+                # Used for validation by the `anta_runner` role.
+                validate_state: <bool; default=False>
           neighbor_interfaces:
 
               # Interface name.
@@ -4019,6 +4171,10 @@
               # Peer-filter name.
               peer_filter: <str>
               description: <str>
+              metadata:
+
+                # Used for validation by the `anta_runner` role.
+                validate_state: <bool; default=False>
 
           # Redistribute routes in to BGP.
           redistribute:
@@ -4152,23 +4308,6 @@
               # Example: MyFunction(myarg).
               # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
               rcf: <str>
-          # This key is deprecated.
-          # Support will be removed in AVD version 6.0.0.
-          # Use `redistribute` instead.
-          redistribute_routes:
-            - source_protocol: <str; required>
-              route_map: <str>
-              include_leaked: <bool>
-
-              # RCF function name with parenthesis.
-              # Example: MyFunction(myarg).
-              # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-              # Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
-              rcf: <str>
-
-              # Routes learned by the OSPF protocol.
-              # The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
-              ospf_route_type: <str; "external" | "internal" | "nssa-external" | "nssa-external 1" | "nssa-external 2">
           aggregate_addresses:
 
               # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
@@ -4178,6 +4317,10 @@
               summary_only: <bool>
               attribute_map: <str>
               match_map: <str>
+              attribute:
+
+                # RCF name with parenthesis. Example "AGG-ADD-RCF()".
+                rcf: <str>
           address_family_ipv4:
             bgp:
               missing_policy:
@@ -4217,6 +4360,12 @@
                 # Outbound route-map name.
                 route_map_out: <str>
 
+                # Inbound peer tag name.
+                peer_tag_in: <str>
+
+                # Outbound discard peer tag name.
+                peer_tag_out_discard: <str>
+
                 # Inbound RCF function name with parenthesis.
                 # Example: MyFunction(myarg).
                 rcf_in: <str>
@@ -4254,6 +4403,10 @@
                 # IPv4 prefix "A.B.C.D/E".
               - prefix: <str; required; unique>
                 route_map: <str>
+
+                # RCF name with parenthesis. Example "NETWORK-RCF()".
+                # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                rcf: <str>
 
             # Redistribute routes in to BGP.
             redistribute:
@@ -4387,23 +4540,6 @@
                 # Example: MyFunction(myarg).
                 # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                 rcf: <str>
-            # This key is deprecated.
-            # Support will be removed in AVD version 6.0.0.
-            # Use `redistribute` instead.
-            redistribute_routes:
-              - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required>
-                route_map: <str>
-                include_leaked: <bool>
-
-                # RCF function name with parenthesis.
-                # Example: MyFunction(myarg).
-                # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                # Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
-                rcf: <str>
-
-                # Routes learned by the OSPF protocol.
-                # The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
-                ospf_route_type: <str; "external" | "internal" | "nssa-external" | "nssa-external 1" | "nssa-external 2">
           address_family_ipv6:
             bgp:
               missing_policy:
@@ -4443,6 +4579,12 @@
                 # Outbound route-map name.
                 route_map_out: <str>
 
+                # Inbound peer tag name.
+                peer_tag_in: <str>
+
+                # Outbound discard peer tag name.
+                peer_tag_out_discard: <str>
+
                 # Inbound RCF function name with parenthesis.
                 # Example: MyFunction(myarg).
                 rcf_in: <str>
@@ -4476,6 +4618,10 @@
                 # IPv6 prefix "A:B:C:D:E:F:G:H/I".
               - prefix: <str; required; unique>
                 route_map: <str>
+
+                # RCF name with parenthesis. Example "NETWORK-RCF()".
+                # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                rcf: <str>
 
             # Redistribute routes in to BGP.
             redistribute:
@@ -4574,23 +4720,6 @@
                 # Example: MyFunction(myarg).
                 # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                 rcf: <str>
-            # This key is deprecated.
-            # Support will be removed in AVD version 6.0.0.
-            # Use `redistribute` instead.
-            redistribute_routes:
-              - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dhcp" | "dynamic" | "isis" | "ospfv3" | "static" | "user"; required>
-                route_map: <str>
-                include_leaked: <bool>
-
-                # RCF function name with parenthesis.
-                # Example: MyFunction(myarg).
-                # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                # Only applicable if `source_protocol` is one of `connected`, `dynamic`, `isis`, `static` and `user`.
-                rcf: <str>
-
-                # Routes learned by the OSPF protocol.
-                # The `ospf_route_type` is valid for source_protocols 'ospfv3'.
-                ospf_route_type: <str; "external" | "internal" | "nssa-external" | "nssa-external 1" | "nssa-external 2">
           address_family_ipv4_multicast:
             bgp:
               missing_policy:
@@ -4607,6 +4736,12 @@
 
                 # Outbound route-map name.
                 route_map_out: <str>
+
+                # Inbound peer tag name.
+                peer_tag_in: <str>
+
+                # Outbound discard peer tag name.
+                peer_tag_out_discard: <str>
                 additional_paths:
                   receive: <bool>
             networks:
@@ -4698,25 +4833,6 @@
               static:
                 enabled: <bool; required>
                 route_map: <str>
-            # This key is deprecated.
-            # Support will be removed in AVD version 6.0.0.
-            # Use `redistribute` instead.
-            redistribute_routes:
-              - source_protocol: <str; "attached-host" | "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
-                route_map: <str>
-
-                # Only applicable if `source_protocol` is `isis`.
-                include_leaked: <bool>
-
-                # RCF function name with parenthesis.
-                # Example: MyFunction(myarg).
-                # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                # Only applicable if `source_protocol` is `isis`.
-                rcf: <str>
-
-                # Routes learned by the OSPF protocol.
-                # The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
-                ospf_route_type: <str; "external" | "internal" | "nssa-external" | "nssa-external 1" | "nssa-external 2">
           address_family_ipv6_multicast:
             bgp:
               missing_policy:
@@ -4733,6 +4849,12 @@
 
                 # Outbound route-map name.
                 route_map_out: <str>
+
+                # Inbound peer tag name.
+                peer_tag_in: <str>
+
+                # Outbound discard peer tag name.
+                peer_tag_out_discard: <str>
                 additional_paths:
                   receive: <bool>
             networks:
@@ -4809,25 +4931,6 @@
               static:
                 enabled: <bool; required>
                 route_map: <str>
-            # This key is deprecated.
-            # Support will be removed in AVD version 6.0.0.
-            # Use `redistribute` instead.
-            redistribute_routes:
-              - source_protocol: <str; "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
-                route_map: <str>
-
-                # Only applicable if `source_protocol` is `isis`.
-                include_leaked: <bool>
-
-                # RCF function name with parenthesis.
-                # Example: MyFunction(myarg).
-                # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-                # Only applicable if `source_protocol` is `isis`.
-                rcf: <str>
-
-                # Routes learned by the OSPF protocol.
-                # The `ospf_route_type` is valid for source_protocols 'ospf' and 'ospfv3'.
-                ospf_route_type: <str; "external" | "internal" | "nssa-external" | "nssa-external 1" | "nssa-external 2">
           address_family_flow_spec_ipv4:
             bgp:
               missing_policy:

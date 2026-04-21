@@ -1,0 +1,96 @@
+---
+# Custom interface structured_config with shutdown key missing to make sure the defaults are handled properly
+# Keeping tests for deprecated data models to ensure tests are still generated for them
+# Deprecated keys: type, mode, vlans, native_vlan, native_vlan_tag, trunk_groups, phone
+custom_structured_configuration_ethernet_interfaces:
+  - name: Ethernet11
+    metadata:
+      peer: dc2-leaf3-fw1
+      peer_interface: e1
+      peer_type: firewall
+    description: dc2-leaf3-fw1_e1
+    # shutdown: false
+    channel_group:
+      id: 11
+      mode: active
+  - name: Ethernet16
+    description: Test_dhcp_interface_connectivity
+    ip_address: dhcp
+    metadata:
+      peer: dc2-leaf3a.arista.com
+      peer_interface: Ethernet16
+    # Test to skip the VerifyLLDPNeighbors test case for a peer with shutdown interface
+    shutdown: true
+    switchport:
+      enabled: false
+  - name: Ethernet17
+    description: Test_ip_unnumbered_interface_connectivity
+    ip_address: unnumbered Loopback0
+    metadata:
+      peer: dc2-leaf3a.arista.com
+      peer_interface: Ethernet17
+    switchport:
+      enabled: false
+  - name: Ethernet18
+    description: Test_peer_dhcp_interface_connectivity
+    ip_address: dhcp
+    metadata:
+      peer: dc2-leaf3a.arista.com
+      peer_interface: Ethernet18
+    switchport:
+      enabled: false
+  - name: Ethernet19
+    description: Test_peer_ip_unnumbered_interface_connectivity
+    ip_address: unnumbered Loopback0
+    metadata:
+      peer: dc2-leaf3a.arista.com
+      peer_interface: Ethernet19
+    switchport:
+      enabled: false
+  # Test to skip the VerifyReachability test case for a peer with shutdown interface
+  - name: Ethernet20
+    description: Test_peer_shutdown_interface_connectivity
+    ip_address: 10.19.20.1/31
+    metadata:
+      peer: dc2-leaf3a.arista.com
+      peer_interface: Ethernet20
+    switchport:
+      enabled: false
+    shutdown: true
+
+custom_structured_configuration_port_channel_interfaces:
+  - name: Port-Channel11
+    description: dc2-leaf3-fw1_PortChannel
+    # shutdown: false
+    switchport:
+      mode: trunk
+      trunk:
+        allowed_vlan: 11-12,21-22
+        native_vlan: 4092
+    spanning_tree_portfast: edge
+    mlag: 11
+
+custom_structured_configuration_interface_defaults:
+  ethernet:
+    shutdown: true
+
+# Custom BGP strucutred_config to validate that RFC5549 interfaces are skipped
+custom_structured_configuration_router_bgp:
+  neighbor_interfaces:
+    - name: Vlan4093
+      remote_as: 65133
+      metadata:
+        peer: dc1-svc-leaf1a
+        validate_state: false
+
+# Custom VXLAN interface with Dps1 source interface to validate the WAN DPS reachability test
+# This host will now be considered as a WAN router because of the DPS VXLAN source interface
+custom_structured_configuration_vxlan_interface:
+  vxlan1:
+    vxlan:
+      source_interface: Dps1
+
+custom_structured_configuration_dps_interfaces:
+  - name: Dps1
+    description: WAN_DPS
+    ip_address: 10.99.99.1/24

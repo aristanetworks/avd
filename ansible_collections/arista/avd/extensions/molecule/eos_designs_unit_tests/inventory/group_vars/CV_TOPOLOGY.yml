@@ -1,0 +1,123 @@
+---
+underlay_routing_protocol: ospf
+underlay_ospf_graceful_restart: false
+underlay_ospf_authentication:
+  enabled: true
+  message_digest_keys:
+    - id: 1
+      cleartext_key: arista123arista
+    - id: 2
+      cleartext_key: please_vault_me
+
+type: l3leaf
+use_cv_topology: true
+cv_topology:
+  - hostname: cv-mlag-ospf-l3leaf1a
+    platform: vEOS-LAB
+    interfaces:
+      - name: Management66
+      - name: Management66/1 # Ignored since we only use the first managemetn interface.
+      - name: Ethernet1
+        neighbor: dc1-spine4
+        neighbor_interface: Ethernet20
+      - name: Ethernet5
+        neighbor: cv-mlag-ospf-l3leaf1b
+        neighbor_interface: Ethernet5
+      - name: Ethernet6
+        neighbor: cv-mlag-ospf-l3leaf1b
+        neighbor_interface: Ethernet6
+      - name: Ethernet100
+        neighbor: some-device-not-in-inventory-getting-ignored
+        neighbor_interface: Ethernet100
+      - name: Ethernet101
+        # Ignoring when missing neighbor and/or neighbor_interface
+        neighbor: some-device-not-in-inventory-getting-ignored
+      - name: Ethernet102
+        # Ignoring when missing neighbor and/or neighbor_interface
+        neighbor_interface: Ethernet100
+      - name: Ethernet103
+        # Ignoring when missing neighbor and/or neighbor_interface
+
+  - hostname: cv-mlag-ospf-l3leaf1b
+    platform: vEOS-LAB
+    interfaces:
+      - name: Management67
+      - name: Ethernet1
+        neighbor: dc1-spine4
+        neighbor_interface: Ethernet21
+      - name: Ethernet5
+        neighbor: cv-mlag-ospf-l3leaf1a
+        neighbor_interface: Ethernet5
+      - name: Ethernet6
+        neighbor: cv-mlag-ospf-l3leaf1a
+        neighbor_interface: Ethernet6
+  - hostname: cv-topology-leaf3a
+    platform: vEOS-LAB
+    interfaces:
+      - name: Ethernet1
+        neighbor: dc1-spine4
+        neighbor_interface: Ethernet16
+      - name: Ethernet5
+        neighbor: cv-topology-leaf3b
+        neighbor_interface: Ethernet5
+  - hostname: cv-topology-leaf3b # Same level, not MLAG so this is ignored.
+    platform: vEOS-LAB
+    interfaces:
+      - name: Ethernet1
+        neighbor: dc1-spine4
+        neighbor_interface: Ethernet17
+      - name: Ethernet5
+        neighbor: cv-topology-leaf3a
+        neighbor_interface: Ethernet5
+
+cv_topology_levels:
+  - type: core_router
+    level: 0
+  - type: super-spine
+    level: 1
+  - type: spine
+    level: 2
+  - type: l3leaf
+    level: 3
+  - type: l2leaf
+    level: 4
+
+platform_settings:
+  - platforms: [vEOS-LAB]
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+l3leaf:
+  defaults:
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+  node_groups:
+    - group: CV-MLAG_OSPF_L3LEAF1
+      spanning_tree_mst_pvst_boundary: true
+      uplink_interface_speed: forced 40gfull
+      nodes:
+        - name: cv-mlag-ospf-l3leaf1a
+          id: 4
+          bgp_as: 65161
+          mgmt_ip: 192.168.201.114/24
+        - name: cv-mlag-ospf-l3leaf1b
+          id: 5
+          bgp_as: 65161
+          mgmt_ip: 192.168.201.115/24
+    - group: CV-NON-MLAG
+      mlag: false
+      nodes:
+        - name: cv-topology-leaf3a
+          id: 2
+          mgmt_ip: 192.168.201.109/24
+          bgp_as: 65161
+        - name: cv-topology-leaf3b
+          id: 3
+          mgmt_ip: 192.168.201.110/24
+          bgp_as: 65161

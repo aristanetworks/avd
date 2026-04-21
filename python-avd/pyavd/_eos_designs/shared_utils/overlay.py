@@ -1,11 +1,10 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 from ipaddress import ip_address
-from re import fullmatch
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
@@ -33,9 +32,6 @@ class OverlayMixin(Protocol):
     def evpn_role(self: SharedUtilsProtocol) -> str | None:
         if self.underlay_router:
             default_evpn_role = self.node_type_key_data.default_evpn_role
-            if self.is_wan_router and not self.inputs.wan_use_evpn_node_settings_for_lan:
-                # For WAN routers without the knob, evpn_role should be ignored.
-                return None
             return default(self.node_config.evpn_role, default_evpn_role)
         return None
 
@@ -66,7 +62,7 @@ class OverlayMixin(Protocol):
             return self.vtep_ip
 
         if admin_subfield == "bgp_as":
-            return cast("str", self.bgp_as)
+            return cast("str", self.formatted_bgp_as)
 
         if admin_subfield == "vrf_router_id":
             return "vrf_router_id"
@@ -78,13 +74,18 @@ class OverlayMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
             return str(self.id + admin_subfield_offset)
 
-        if fullmatch(r"\d+", str(admin_subfield)):
+        if admin_subfield.isdigit():
             return str(int(admin_subfield) + admin_subfield_offset)
 
         try:
             ip_address(admin_subfield)
         except ValueError:
-            return cast("str", self.router_id)
+            msg = (
+                f"Invalid value '{admin_subfield}' for 'overlay_rd_type.admin_subfield'. "
+                "Expected 'router_id', 'vtep_loopback', 'bgp_as', 'switch_id', a valid IPv4 address, or a numeric value from 0 to 4294967295."
+            )
+
+            raise AristaAvdInvalidInputsError(msg) from None
 
         return admin_subfield
 
@@ -132,6 +133,9 @@ class OverlayMixin(Protocol):
 
             peer_fact = self.get_peer_facts(cast("str", self.wan_ha_peer))
             return f"{peer_fact.router_id}:{self.wan_site.id}"
+
+        if self.vtep_loopback.lower() == "loopback0":
+            return f"{self.router_id}:1"
 
         return f"{self.vtep_ip}:1"
 

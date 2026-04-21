@@ -11,18 +11,6 @@ __pycache__/
 coverage.xml
 *.so
 
-# Python source
-/python/**/build/
-/python/**/dist/
-/python/**/*.egg-info/
-/python/**/.tox/
-
-# pyavd ignores
-/python-avd/build/
-/python-avd/dist/
-/python-avd/pyavd.egg-info/
-/python-avd/.tox/
-
 # Ignore cloned cloudvision-python repo created during generation of _cv/api
 /python-avd/pyavd/_cv/cloudvision-apis/
 
@@ -36,12 +24,21 @@ coverage.xml
 # mkdocs
 /site
 
-# ansible-lint ignores
-ansible_collections/arista/avd/.ansible
+# ansible-lint cache and .ansible/.lock file
+.ansible/
 
 # Development
+build/
+dist/
+*.egg-info/
+.tox/
+.pytest_cache/
 ## pyenv
 .python-version
+## direnv
+.envrc
+## pyenv
+uv.lock
 ## .vscode/*
 .vscode/
 
@@ -57,9 +54,13 @@ ansible_collections/arista/avd/.ansible
 # Hash files created when running pyavd from source
 python-avd/pyavd/*/j2templates/.hash
 python-avd/pyavd/*/schema/schema_fragments/.hash
+schemas/*/schema_fragments/.hash
+
+# gz of schema store
+python-avd/pyavd/_schema/schemas.json.gz
 
 # Dynamically-created molecule artifacts
-ansible_collections/arista/avd/molecule/cv_deploy/intended/structured_configs/test_duplicated_devices_configs/
+ansible_collections/arista/avd/extensions/molecule/cv_deploy/intended/structured_configs/test_duplicated_devices_configs/
 
 ### Rust development
 
@@ -79,3 +80,9 @@ Cargo.lock
 
 # Coverage
 /lcov.info
+
+# AI configs, skills, etc.
+.codex/*
+.claude/*
+!.claude/skills
+!.agents/skills

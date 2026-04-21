@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -7,8 +7,7 @@
 type: dict
 keys:
   custom_connected_endpoints_keys:
-    $ref: eos_designs#/keys/connected_endpoints_keys
-    default: null
+    $ref: eos_designs#/$defs/connected_endpoints_keys
     type: list
     documentation_options:
       table: connected-endpoints-keys
@@ -17,6 +16,8 @@ keys:
       The values defined in `custom_connected_endpoints_keys`, are prepended to the ones in `connected_endpoint_keys`, taking precedence over any values in `connected_endpoint_keys`.
       This approach helps preserving the default `connected_endpoints_keys`, unlike directly overriding it.
   connected_endpoints_keys:
+    $ref: eos_designs#/$defs/connected_endpoints_keys
+    type: list
     documentation_options:
       table: connected-endpoints-keys
     description: |
@@ -26,19 +27,6 @@ keys:
       The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
       If you need to add custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys`.
       Entries under `custom_connected_endpoint_keys` will take precedence over entries in `connected_endpoint_keys`.
-    type: list
-    primary_key: key
-    items:
-      type: dict
-      keys:
-        key:
-          type: str
-        type:
-          type: str
-          description: Type used for documentation.
-        description:
-          type: str
-          description: Description used for documentation.
     default:
       - key: servers
         type: server

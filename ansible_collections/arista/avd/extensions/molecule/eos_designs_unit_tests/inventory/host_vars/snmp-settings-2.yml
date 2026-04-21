@@ -1,0 +1,60 @@
+---
+# Minimum config to only test the specific feature.
+# This tests the VRFs and SNMP hosts only using inband management VRF.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-settings-2
+      id: 43
+      inband_mgmt_ip: 192.168.0.1/24
+      inband_mgmt_interface: Vlan123
+      # inband_mgmt_vrf: default ("default" by default)
+
+default_mgmt_method: inband
+
+snmp_settings:
+  vrfs:
+    - name: SNMPVRF
+      enable: true
+    # Testing automatically picking up the inband VRF with the 'use_inband_mgmt_vrf' keyword.
+    # This errors if inband management is not configured.
+    - name: use_inband_mgmt_vrf
+      enable: true
+      ipv4_acl: acl-for-vrf-default
+      ipv6_acl: acl-for-vrf-default
+    - name: ACLS-IN-NON-ENABLED-VRF
+      # These ACLs should not be rendered
+      ipv4_acl: acl-for-vrf-blah
+      ipv6_acl: acl-for-vrf-blah
+  hosts:
+    - host: 10.6.75.125
+      vrf: SNMPVRF
+      version: 2c
+      community: SNMP-COMMUNITY-2
+    - host: 10.6.75.126
+      version: 3
+      users:
+        - username: USER-WRITE
+          authentication_level: auth
+    - host: 10.6.75.127
+      vrf: SNMPVRF
+      version: 2c
+      community: SNMP-COMMUNITY-2
+    # Testing automatically picking up the inband VRF with the 'use_inband_mgmt_vrf' keyword.
+    # This errors if inband management is not configured.
+    - host: 10.6.75.129
+      vrf: use_inband_mgmt_vrf
+      version: 2c
+      community: SNMP-COMMUNITY-2
+    # Testing automatically picking up the inband VRF with the 'use_default_mgmt_method_vrf' keyword.
+    # This errors if inband management is not configured.
+    - host: 10.6.75.130
+      vrf: use_default_mgmt_method_vrf
+      version: 2c
+      community: SNMP-COMMUNITY-2
+
+  traps:
+    snmp_traps:
+      - name: foo
+        enabled: true

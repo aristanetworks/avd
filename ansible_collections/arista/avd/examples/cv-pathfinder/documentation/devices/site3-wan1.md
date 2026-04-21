@@ -3,7 +3,6 @@
 ## Table of Contents
 
 - [Management](#management)
-  - [Agents](#agents)
   - [Management Interfaces](#management-interfaces)
   - [DNS Domain](#dns-domain)
   - [IP Name Servers](#ip-name-servers)
@@ -19,6 +18,9 @@
   - [Management Security SSL Profiles](#management-security-ssl-profiles)
   - [SSL profile STUN-DTLS Certificates Summary](#ssl-profile-stun-dtls-certificates-summary)
   - [Management Security Device Configuration](#management-security-device-configuration)
+- [Kernel Settings](#kernel-settings)
+  - [Kernel Device Summary](#kernel-device-summary)
+  - [Kernel Device configuration](#kernel-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Flow Tracking](#flow-tracking)
@@ -68,23 +70,6 @@
 
 ## Management
 
-### Agents
-
-#### Agent KernelFib
-
-##### Environment Variables
-
-| Name | Value |
-| ---- | ----- |
-| KERNELFIB_PROGRAM_ALL_ECMP | 1 |
-
-#### Agents Device Configuration
-
-```eos
-!
-agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=1
-```
-
 ### Management Interfaces
 
 #### Management Interfaces Summary
@@ -97,9 +82,9 @@ agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=1
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -165,9 +150,11 @@ ip domain lookup vrf MGMT source-interface Management1
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | MGMT | True | - | - | - | - | - | - | - |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 0.pool.ntp.org | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -181,9 +168,9 @@ ntp server vrf MGMT 0.pool.ntp.org prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -272,8 +259,21 @@ management security
    !
    ssl profile STUN-DTLS
       tls versions 1.2
-      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
       certificate STUN-DTLS.crt key STUN-DTLS.key
+      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
+```
+
+## Kernel Settings
+
+### Kernel Device Summary
+
+- Kernel software forwarding ECMP enabled
+
+### Kernel Device configuration
+
+```eos
+!
+kernel software forwarding ecmp
 ```
 
 ## Monitoring
@@ -309,7 +309,7 @@ daemon TerminAttr
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-| FLOW-TRACKER | CV-TELEMETRY | - | - | Loopback0 |
+| FLOW-TRACKER | CV-TELEMETRY | 127.0.0.1 | - | Loopback0 |
 
 #### Flow Tracking Device Configuration
 
@@ -356,7 +356,7 @@ spanning-tree mode none
 ### IPSec profiles
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
-| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
+| ------------ | ---------- | --------- | ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
 | CP-PROFILE | CP-IKE-POLICY | CP-SA-POLICY | start | - | - | - | transport | - |
 | DP-PROFILE | - | DP-SA-POLICY | start | - | - | - | transport | - |
 
@@ -407,9 +407,9 @@ ip security
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.11/32 | - | 9194 | Hardware: FLOW-TRACKER |  |
+| Interface | IP address | IPv6 addresses | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | -------------- | -------- | --- | --------------- | --------------- |
+| Dps1 | 192.168.42.11/32 | - | - | 9194 | Hardware: FLOW-TRACKER | - |
 
 #### DPS Interfaces Device Configuration
 
@@ -442,8 +442,8 @@ interface Dps1
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1.42 | RED-TEST | - | 10.42.3.1/24 | RED | - | False | - | - |
 | Ethernet1.666 | BLUE-TEST | - | 10.66.3.1/24 | BLUE | - | False | - | - |
 | Ethernet4 | inet-cloud_Ethernet8 | 4 | *dhcp | *default | *- | *False | *ACL-INTERNET-IN_Port-Channel4 | *- |
@@ -495,7 +495,7 @@ interface Ethernet5
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 
 ##### IPv4
 
@@ -529,8 +529,8 @@ interface Port-Channel4
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
@@ -554,8 +554,8 @@ interface Loopback0
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 | BLUE | 100 | - |
 | default | 1 | - |
 | RED | 101 | - |
@@ -780,15 +780,15 @@ router adaptive-virtual-topology
       avt profile BLUE-POLICY-VIDEO id 2
       avt profile BLUE-POLICY-VOICE id 3
    !
-   vrf default
-      avt policy DEFAULT-POLICY-WITH-CP
-      avt profile DEFAULT-POLICY-DEFAULT id 1
-      avt profile DEFAULT-POLICY-CONTROL-PLANE id 254
-   !
    vrf RED
       avt policy RED-POLICY
       avt profile RED-POLICY-NORMAL-DATA id 3
       avt profile RED-POLICY-NOT-SO-IMPORTANT-DATA id 4
+   !
+   vrf default
+      avt policy DEFAULT-POLICY-WITH-CP
+      avt profile DEFAULT-POLICY-CONTROL-PLANE id 254
+      avt profile DEFAULT-POLICY-DEFAULT id 1
 ```
 
 ### Router Traffic-Engineering
@@ -843,17 +843,17 @@ ASN Notation: asplain
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| WAN-OVERLAY-PEERS | True |  RM-EVPN-SOO-IN | RM-EVPN-SOO-OUT | path-selection | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| WAN-OVERLAY-PEERS | True | RM-EVPN-SOO-IN | RM-EVPN-SOO-OUT | - | - | path-selection | - |
 
 #### Router BGP IPv4 SR-TE Address Family
 
 ##### IPv4 SR-TE Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| WAN-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| WAN-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP Link-State Address Family
 
@@ -1048,7 +1048,6 @@ route-map RM-EVPN-SOO-OUT permit 10
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.11:203
 ```
 
@@ -1209,7 +1208,7 @@ application traffic recognition
 ##### Path Group INTERNET
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 102 |
 | IPSec profile | CP-PROFILE |
 
@@ -1222,7 +1221,7 @@ application traffic recognition
 ###### Dynamic Peers Settings
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | IP Local | - |
 | IPSec | - |
 

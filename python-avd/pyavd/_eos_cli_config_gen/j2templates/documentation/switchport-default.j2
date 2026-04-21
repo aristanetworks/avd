@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -21,6 +21,9 @@
 {%     endif %}
 {%     if switchport_default.phone.trunk is arista.avd.defined %}
 - Default Switchport Phone Trunk: {{ switchport_default.phone.trunk }}
+{%     endif %}
+{%     if switchport_default.phone.qos_trust is arista.avd.defined %}
+- Default Switchport Phone QOS trust mode: {{ switchport_default.phone.qos_trust }}
 {%     endif %}
 {%     if switchport_default.phone.vlan is arista.avd.defined %}
 - Default Switchport Phone VLAN: {{ switchport_default.phone.vlan }}

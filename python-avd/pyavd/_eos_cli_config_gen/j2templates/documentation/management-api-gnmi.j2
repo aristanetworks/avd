@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -14,16 +14,14 @@
 | Transport | SSL Profile | VRF | Notification Timestamp | ACL | Port | Authorization Requests |
 | --------- | ----------- | --- | ---------------------- | --- | ---- | ---------------------- |
 {%         for transport in management_api_gnmi.transport.grpc %}
-{%             if transport.name is arista.avd.defined %}
-{%                 set transport_name = transport.name %}
-{%                 set ssl_profile = transport.ssl_profile | arista.avd.default('-') %}
-{%                 set vrf = transport.vrf | arista.avd.default('-') %}
-{%                 set notif = transport.notification_timestamp | arista.avd.default('last-change-time') %}
-{%                 set acl = transport.ip_access_group | arista.avd.default('-') %}
-{%                 set port = transport.port | arista.avd.default('6030') %}
-{%                 set autho_requests = transport.authorization_requests | arista.avd.default("-") %}
+{%             set transport_name = transport.name %}
+{%             set ssl_profile = transport.ssl_profile | arista.avd.default('-') %}
+{%             set vrf = transport.vrf | arista.avd.default('-') %}
+{%             set notif = transport.notification_timestamp | arista.avd.default('last-change-time') %}
+{%             set acl = transport.ip_access_group | arista.avd.default('-') %}
+{%             set port = transport.port | arista.avd.default('6030') %}
+{%             set autho_requests = transport.authorization_requests | arista.avd.default("-") %}
 | {{ transport_name }} | {{ ssl_profile }} | {{ vrf }} | {{ notif }} | {{ acl }} | {{ port }} | {{ autho_requests }} |
-{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if management_api_gnmi.transport.grpc_tunnels is arista.avd.defined %}
@@ -44,7 +42,11 @@
 {%                 do target_ids.append("Serial-Number") %}
 {%             endif %}
 {%             do target_ids.extend(transport.target.target_ids | arista.avd.default([])) %}
-{%             set target_id = target_ids | join(' ') | arista.avd.default('-') %}
+{%             if target_ids | length == 0 %}
+{%                 set target_id = "-" %}
+{%             else %}
+{%                 set target_id = target_ids | join(' ') %}
+{%             endif %}
 | {{ transport_name }} | {{ destination }} | {{ port }} | {{ gnmi_ssl_profile }} | {{ tunnel_ssl_profile }} | {{ vrf }} | {{ local_interface }} | {{ local_port }} | {{ target_id }} |
 {%         endfor %}
 {%     endif %}

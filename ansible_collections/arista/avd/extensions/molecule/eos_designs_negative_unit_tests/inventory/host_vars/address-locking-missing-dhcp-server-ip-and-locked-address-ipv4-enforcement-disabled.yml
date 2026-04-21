@@ -1,0 +1,25 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: address-locking-missing-dhcp-server-ip-and-locked-address-ipv4-enforcement-disabled
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 101
+        name: test-address-locking-1
+        address_locking:
+          ipv4: true
+
+expected_error_message: >-
+  To configure address locking ipv4 for vlan 101 in Tenant 'TENANT1' either `address_locking_settings.dhcp_servers_ipv4` or
+  `address_locking_settings.locked_address.ipv4_enforcement_disabled` is required.

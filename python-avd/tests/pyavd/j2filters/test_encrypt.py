@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -36,11 +36,16 @@ from pyavd.j2filters import encrypt
         pytest.param("arista", "ospf_message_digest", "Ethernet1", {"hash_algorithm": "sha512", "key_id": 66}, does_not_raise(), id="Implemented Type OSPF MD"),
         pytest.param("arista", "ntp", None, {"salt": 13}, does_not_raise(), id="NTP with salt"),
         pytest.param(
-            "arista", "ntp", None, {"salt": 42}, pytest.raises(ValueError, match="Salt MUST be an integer within the range 0-15."), id="NTP with bad salt"
+            "arista", "ntp", None, {"salt": 42}, pytest.raises(ValueError, match=r"Salt MUST be an integer within the range 0-15."), id="NTP with bad salt"
         ),
         pytest.param("arista", "tacacs", None, {"salt": 15}, does_not_raise(), id="TACACS with salt"),
         pytest.param(
-            "arista", "tacacs", None, {"salt": 42}, pytest.raises(ValueError, match="Salt MUST be an integer within the range 0-15."), id="TACACS with bad salt"
+            "arista",
+            "tacacs",
+            None,
+            {"salt": 42},
+            pytest.raises(ValueError, match=r"Salt MUST be an integer within the range 0-15."),
+            id="TACACS with bad salt",
         ),
     ],
 )

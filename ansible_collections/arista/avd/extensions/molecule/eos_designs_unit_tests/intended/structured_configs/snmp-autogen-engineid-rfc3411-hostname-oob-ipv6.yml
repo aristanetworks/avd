@@ -1,0 +1,34 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: snmp-autogen-engineid-rfc3411-hostname-oob-ipv6
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ipv6_enable: true
+  ipv6_addresses:
+  - 2001:db8::dead:beef:cafe/64
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+snmp_server:
+  engine_ids:
+    local: 8000757105e5546932ca5436e7781c8ccd90b65095c88ba601
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+  ipv6_routing: false

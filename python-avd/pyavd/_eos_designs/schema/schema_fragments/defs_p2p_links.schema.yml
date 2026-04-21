@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -11,7 +11,6 @@ $defs:
     items:
       type: dict
       keys:
-        # TODO: AVD 6.0.0 add a min_length of 2 and max_length of 2 to the lists (description, ip, nodes and interfaces).
         id:
           type: int
           convert_types:
@@ -21,17 +20,18 @@ $defs:
             Required with ip_pool. ID starting from 1.
         speed:
           type: str
-          description: |-
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         ip_pool:
           type: str
-          description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.
+          description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will be taken from the pool per P2P link.
         subnet:
           type: str
           description: IPv4 address/Mask. Subnet used on this P2P link.
         ip:
           type: list
           description: Specific IP addresses used on this P2P link.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: Node IPv4 address/Mask.
@@ -39,9 +39,22 @@ $defs:
           type: bool
           default: false
           description: Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).
+        ipv6_prefix:
+          type: str
+          description: IPv6 address/Mask. Prefix used on this P2P link.
+        ipv6:
+          type: list
+          description: Specific IPv6 addresses used on this P2P link.
+          min_length: 2
+          max_length: 2
+          items:
+            type: str
+            description: Node IPv6 address/Mask.
         nodes:
           type: list
           description: Nodes where this link should be configured.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: |
@@ -50,6 +63,8 @@ $defs:
         interfaces:
           type: list
           description: Interfaces where this link should be configured and Required unless using port-channels.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: |
@@ -68,6 +83,8 @@ $defs:
         descriptions:
           type: list
           description: Interface descriptions.
+          min_length: 2
+          max_length: 2
           items:
             type: str
             description: |-
@@ -83,7 +100,17 @@ $defs:
         include_in_underlay_protocol:
           type: bool
           default: true
-          description: Add this interface to underlay routing protocol.
+          description: |-
+            Add this interface to the underlay routing protocols.
+            This is currently not supported when IPv6 addresses are used.
+        use_underlay_ospf_authentication:
+          type: bool
+          # TODO: AVD7.0 change the key name use_underlay_authentication with default true.
+          default: false
+          description: |-
+            Enable OSPF authentication on this P2P link when underlay is OSPF.
+            Requires `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled: true`.
+            When enabled, the message digest keys defined under `underlay_ospf_authentication.message_digest_keys` are applied to the interface.
         isis_hello_padding:
           type: bool
           default: true
@@ -163,10 +190,22 @@ $defs:
         sflow:
           type: bool
           description: Enable sFlow. Overrides `fabric_sflow` setting.
-        underlay_multicast:
+        multicast_pim_sm:
           type: bool
-          description: Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
-          default: false
+          description: |-
+            Configure PIM sparse-mode on the P2P links.
+            Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+            The default value depends on the value of `include_in_underlay_protocol`:
+            * when `include_in_underlay_protocol: true`, the default value is `true`
+            * when `include_in_underlay_protocol: false`, the default value is `false`.
+        multicast_static:
+          type: bool
+          description: |-
+            Configure static multicast on the P2P links.
+            Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+            The default value depends on the value of `include_in_underlay_protocol`:
+            * when `include_in_underlay_protocol: true`, the default value is `true`
+            * when `include_in_underlay_protocol: false`, the default value is `false`.
         flow_tracking:
           type: dict
           $ref: "eos_designs#/$defs/flow_tracking_link"
@@ -245,13 +284,31 @@ $defs:
           description: |-
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if configured.
-        structured_config:
+        ethernet_structured_config:
           type: dict
           relaxed_validation: true
+          $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
+          description: Custom structured config for ethernet interfaces.
           documentation_options:
             hide_keys: true
-          description: |-
-            Custom structured config for interfaces.
-            Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-          # Schema ref not implemented since we do not know which of the schemas to look at.
-          # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
+        port_channel_structured_config:
+          type: dict
+          relaxed_validation: true
+          $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
+          description: Custom structured config for port-channel links.
+          documentation_options:
+            hide_keys: true
+        underlay_multicast:
+          type: bool
+          deprecation:
+            removed: true
+            warning: true
+            new_key: multicast_pim_sm
+            remove_in_version: 6.0.0
+        structured_config:
+          type: dict
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: ethernet_structured_config or port_channel_structured_config

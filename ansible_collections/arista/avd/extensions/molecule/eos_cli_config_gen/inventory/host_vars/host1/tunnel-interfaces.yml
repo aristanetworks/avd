@@ -1,0 +1,117 @@
+---
+### Tunnel Interfaces ###
+tunnel_interfaces:
+  - name: Tunnel1
+    description: test ipv4 only
+    shutdown: false
+    vrf: Tunnel-VRF
+    underlay_vrf: Underlay-VRF
+    mtu: 1500
+    ip_address: 42.42.42.42/24
+    ipv6_address_auto_config: true
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: 2345:ABCD:3FE0::1/96
+          valid_lifetime: infinite
+          preferred_lifetime: 50
+          no_autoconfig_flag: true
+        - ipv6_prefix: 2345:ABCD:3FE0::2/96
+          valid_lifetime: 50
+          preferred_lifetime: infinite
+          no_autoconfig_flag: false
+        - ipv6_prefix: 2345:ABCD:3FE0::3/96
+          valid_lifetime: 100000
+          no_autoconfig_flag: true
+    access_group_in: test-in
+    access_group_out: test-out
+    tcp_mss_ceiling:
+      ipv4: 666
+      direction: ingress
+    tunnel_mode: ipsec
+    source_interface: Ethernet42
+    destination: 6.6.6.6
+    path_mtu_discovery: true
+    eos_cli: |
+      comment
+      Comment created from eos_cli under tunnel_interfaces.Tunnel1
+      EOF
+  - name: Tunnel2
+    description: test ipv6 only
+    shutdown: true
+    ipv6_enable: true
+    ipv6_addresses:
+      - cafe::1/64
+    ipv6_access_group_in: test-in
+    ipv6_access_group_out: test-out
+    tcp_mss_ceiling:
+      ipv6: 666
+      direction: egress
+    tunnel_mode: gre
+    source_interface: Ethernet42
+    destination: dead:beef::1
+    path_mtu_discovery: false
+    ipsec_profile: Profile-2
+    nat_profile: NAT-PROFILE-NO-VRF-2
+
+  - name: Tunnel3
+    description: test dual stack
+    mtu: 1500
+    ip_address: 64.64.64.64/24
+    ipv6_enable: true
+    ipv6_addresses:
+      - beef::64/64
+    # no direction this time
+    tunnel_mode: ipsec
+    tcp_mss_ceiling:
+      ipv4: 666
+      ipv6: 666
+    source_interface: Ethernet42
+    destination: 1.1.1.1
+    ipsec_profile: Profile-3
+    # no PMTU
+
+  - name: Tunnel4
+    description: test no tcp_mss
+    mtu: 1500
+    ip_address: 64.64.64.64/24
+    ipv6_enable: true
+    ipv6_addresses:
+      - beef::64/64
+    # no tcp_mss_ceiling
+    nat_profile: NAT-PROFILE-NO-VRF-1
+    source: 10.10.10.10
+    destination: 1.1.1.1
+  # IPv6 ND new structure with cache and other_config_flag
+  - name: Tunnel5
+    description: IPv6 ND new structure test
+    shutdown: false
+    mtu: 1500
+    vrf: default
+    ipv6_enable: true
+    ipv6_addresses:
+      - 2001:db8:200::1/64
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      other_config_flag: true
+      cache:
+        dynamic_capacity: 1800
+        expire: 380
+        refresh_always: true
+      prefixes:
+        - ipv6_prefix: 2001:db8:200::/64
+          valid_lifetime: 250
+          preferred_lifetime: 125
+          no_autoconfig_flag: true
+    source: 20.20.20.20
+    destination: 2.2.2.2

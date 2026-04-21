@@ -4,10 +4,6 @@
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp # (1)!
 
-# Enable usage of EVPN settings to configure LAN. This is required to enable EVPN Gateway on Site4.
-# This is a PREVIEW key
-wan_use_evpn_node_settings_for_lan: true
-
 l3leaf:
   defaults:
     platform: vEOS-lab

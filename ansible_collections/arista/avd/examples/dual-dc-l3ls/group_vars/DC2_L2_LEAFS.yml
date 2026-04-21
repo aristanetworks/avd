@@ -1,0 +1,24 @@
+---
+### group_vars/DC2_L2_LEAFS.yml
+
+type: l2leaf
+
+l2leaf:
+  defaults:
+    platform: cEOSLab
+    spanning_tree_mode: mstp
+
+  node_groups:
+    - group: DC2_L2_LEAF1
+      uplink_switches: [dc2-leaf1a, dc2-leaf1b]
+      nodes:
+        - name: dc2-leaf1c
+          id: 1
+          mgmt_ip: 172.16.1.161/24
+
+    - group: DC2_L2_LEAF2
+      uplink_switches: [dc2-leaf2a, dc2-leaf2b]
+      nodes:
+        - name: dc2-leaf2c
+          id: 1
+          mgmt_ip: 172.16.1.162/24

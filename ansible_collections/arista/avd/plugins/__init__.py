@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -8,7 +8,7 @@ from os import environ
 from pathlib import Path
 
 PYTHON_AVD_PATH = (
-    Path(molecule).parents[4] / "python-avd"
+    Path(molecule).parents[5] / "python-avd"
     if (molecule := environ.get("MOLECULE_SCENARIO_DIRECTORY")) is not None
     else Path(__file__).parents[4] / "python-avd"
 )

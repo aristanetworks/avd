@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -7,7 +7,7 @@ import json
 from copy import deepcopy
 from functools import cached_property
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Literal
 
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
@@ -18,6 +18,7 @@ from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._utils import get
 from pyavd.api.pool_manager import PoolManager
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from ansible.inventory.host import Host as AnsibleHost
@@ -25,7 +26,7 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 
 REPO_ROOT = Path(__file__).parents[2]
-MOLECULE_PATH = REPO_ROOT / "ansible_collections/arista/avd/molecule"
+MOLECULE_PATH = REPO_ROOT / "ansible_collections/arista/avd/extensions/molecule"
 EXAMPLE_PATH = REPO_ROOT / "ansible_collections/arista/avd/examples"
 
 
@@ -42,13 +43,34 @@ class MoleculeHost:
         self.scenario = scenario
 
     @cached_property
-    def structured_config(self) -> dict:
+    def structured_config(self) -> dict[str, Any]:
         """The intended structured config for the host, as read from the YAML file in the molecule scenario."""
         structured_config_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "intended/structured_configs", f"{self.name}.yml")
         if not structured_config_path.exists():
             return {}
 
         return load(structured_config_path.read_text(), CSafeLoader)
+
+    def get_test_catalog(self, run_name: Literal["default_run", "default_run_filtered_report", "filtered_run", "default_run_sorted_report"]) -> dict[str, Any]:
+        """
+        Gets the expected ANTA test catalog for a specific run.
+
+        Args:
+            run_name: The subdirectory name for the test run.
+
+        Returns:
+            The test catalog as a dictionary, or an empty dict if not found.
+        """
+        test_catalog_path = self.scenario.path.joinpath(
+            self.scenario.artifacts_path_offset,
+            f"anta/avd_catalogs/{run_name}",
+            f"{self.name}.json",
+        )
+
+        if not test_catalog_path.exists():
+            return {}
+
+        return load(test_catalog_path.read_text(), CSafeLoader)
 
     @cached_property
     def config(self) -> str | None:
@@ -69,7 +91,7 @@ class MoleculeHost:
         return doc_path.read_text()
 
     @cached_property
-    def hostvars(self) -> dict:
+    def hostvars(self) -> dict[str, Any]:
         """The input vars for the host, as read from the Ansible inventory in the molecule scenario."""
         hostvars = json.loads(json.dumps(self.scenario._vars.get_vars(host=self.ansible_host)))
 
@@ -123,14 +145,16 @@ class MoleculeScenario:
         self._inventory = InventoryManager(loader=DataLoader(), sources=[inventory_path.as_posix()])
         self._vars = VariableManager(loader=DataLoader(), inventory=self._inventory)
         self.hosts = []
-        for host in self._inventory.get_hosts():
-            if self.name.startswith("example-") and host.name in ["cvp", "cloudvision"]:
+        inventory_hosts: dict[str, AnsibleHost] = self._inventory.hosts
+        for hostname in natural_sort(inventory_hosts, ignore_case=False):
+            if hostname.startswith("example-") and hostname in ["cvp", "cloudvision"]:
                 # Ignore CVP devices in examples without bloating the example without test groups.
                 continue
+            host: AnsibleHost = inventory_hosts[hostname]
             if "IGNORE_IN_PYTEST" in [group.name for group in host.groups]:
                 # Ignore members of the group IGNORE_IN_PYTEST from Molecule scenarios.
                 continue
-            self.hosts.append(MoleculeHost(name=host.name, ansible_host=host, scenario=self))
+            self.hosts.append(MoleculeHost(name=hostname, ansible_host=host, scenario=self))
         self.pool_manager = PoolManager(self.path / "intended")
 
         self.extra_python_paths = []
@@ -143,7 +167,7 @@ class MoleculeScenario:
         """The AVD facts calculated from the full Ansible inventory in the molecule scenario."""
         all_hostvars = {host.name: deepcopy(host.hostvars) for host in self.hosts}
         all_inputs = {hostname: EosDesigns._from_dict(hostvars) for hostname, hostvars in all_hostvars.items()}
-        return get_facts(all_inputs=all_inputs, pool_manager=self.pool_manager, all_hostvars=all_hostvars, digital_twin=self.digital_twin)
+        return get_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=self.pool_manager, digital_twin=self.digital_twin)
 
     @cached_property
     def fabric_documentation(self) -> str | None:
@@ -198,3 +222,12 @@ class MoleculeScenario:
             raise LookupError(msg, files)
 
         return files[0].read_text("UTF-8")
+
+    @property
+    def structured_configs(self) -> dict[str, dict[str, Any]]:
+        """
+        A dictionary of intended structured configs for all hosts in the scenario, keyed by hostname.
+
+        This property collects the `structured_config` from each host object in the inventory.
+        """
+        return {host.name: host.structured_config for host in self.hosts}

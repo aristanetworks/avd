@@ -1,7 +1,7 @@
 # inventory.yml
-DC1:
+FABRIC:
   children:
-    DC1_FABRIC:
+    DC1:
       children:
         DC1_SPINES:
           hosts:
@@ -23,7 +23,7 @@ DC1:
       children:
         DC1_LEAFS:
         DC1_SPINES:
-    DC1_NETWORK_PORTS:
+    DC1_ENDPOINTS:
       children:
         DC1_LEAFS:
         DC1_SPINES:

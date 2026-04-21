@@ -1,37 +1,27 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - static routes #}
 {% if static_routes is arista.avd.defined %}
 !
-{%     if static_routes is arista.avd.defined %}
-{%         set with_vrf_non_default = static_routes | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort | arista.avd.natural_sort('vrf') %}
-{%         set without_vrf = static_routes | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort %}
-{%         set with_vrf_default = static_routes | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort %}
-{%         set sorted_static_routes =  without_vrf | list + with_vrf_default | list + with_vrf_non_default | list %}
-{%     endif %}
-{%     for static_route in sorted_static_routes | arista.avd.default([]) %}
+{%     set default_routes = static_routes | rejectattr('vrf', 'arista.avd.defined') | list + static_routes | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | list %}
+{%     set vrf_routes = static_routes | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | list %}
+{%     for static_route in (
+    (default_routes | arista.avd.natural_sort('next_hop', default_value='') | arista.avd.natural_sort('prefix')) +
+    (vrf_routes | arista.avd.natural_sort('next_hop', default_value='') | arista.avd.natural_sort('prefix') | arista.avd.natural_sort('vrf', ignore_case=false))
+) %}
 {%         set static_route_cli = "ip route" %}
 {%         if static_route.vrf is arista.avd.defined and static_route.vrf != 'default' %}
 {%             set static_route_cli = static_route_cli ~ " vrf " ~ static_route.vrf %}
 {%         endif %}
-{%         if static_route.prefix is arista.avd.defined %}
-{%             set static_route_cli = static_route_cli ~ " " ~ static_route.prefix %}
-{%         elif static_route.destination_address_prefix is arista.avd.defined %}
-{%             set static_route_cli = static_route_cli ~ " " ~ static_route.destination_address_prefix %}
-{%         endif %}
+{%         set static_route_cli = static_route_cli ~ " " ~ static_route.prefix %}
 {%         if  static_route.interface is arista.avd.defined %}
 {%             set static_route_cli = static_route_cli ~ " " ~ static_route.interface | capitalize %}
 {%         endif %}
 {%         if static_route.next_hop is arista.avd.defined %}
 {%             set static_route_cli = static_route_cli ~ " " ~ static_route.next_hop %}
-{%             if static_route.track_bfd is arista.avd.defined(true) %}
-{%                 set static_route_cli = static_route_cli ~ " track bfd" %}
-{%             endif %}
-{%         elif static_route.gateway is arista.avd.defined %}
-{%             set static_route_cli = static_route_cli ~ " " ~ static_route.gateway %}
 {%             if static_route.track_bfd is arista.avd.defined(true) %}
 {%                 set static_route_cli = static_route_cli ~ " track bfd" %}
 {%             endif %}

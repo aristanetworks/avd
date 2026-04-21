@@ -1,0 +1,274 @@
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvsourceintf: Management1
+  cvvrf: MGMT
+  disable_aaa: true
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_DC1-LEAF1A_Ethernet1
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.0/31
+  isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  metadata:
+    peer: DC1-LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_DC1-LEAF2A_Ethernet1
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.8/31
+  isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  metadata:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet3
+  description: P2P_DC1-LEAF2B_Ethernet1
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.16/31
+  isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  metadata:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet4
+  description: P2P_DC1-SVC3A_Ethernet1
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.24/31
+  isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  metadata:
+    peer: DC1-SVC3A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet5
+  description: P2P_DC1-SVC3B_Ethernet1
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.32/31
+  isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  metadata:
+    peer: DC1-SVC3B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet6
+  description: P2P_DC1-BL1A_Ethernet1
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.40/31
+  isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  metadata:
+    peer: DC1-BL1A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: P2P_DC1-BL1B_Ethernet1
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.31.255.48/31
+  isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  metadata:
+    peer: DC1-BL1B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+hostname: DC1-SPINE1
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
+ip_routing: true
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.1/32
+  isis_enable: EVPN_UNDERLAY
+  isis_passive: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.101/24
+  type: oob
+  gateway: 192.168.200.5
+metadata:
+  is_deployed: true
+  platform: vEOS-LAB
+  fabric_name: DC1_FABRIC
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+  vrf: MGMT
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+router_bgp:
+  as: '65000'
+  router_id: 192.168.255.1
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp_cluster_id: 192.168.255.1
+  bgp_defaults:
+  - distance bgp 20 200 200
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: OVERLAY-PEERS
+    metadata:
+      type: evpn
+    remote_as: '65000'
+    update_source: Loopback0
+    route_reflector_client: true
+    bfd: true
+    password: 64fqSH5CFUNLRHErezMrRg==
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.10
+    peer_group: OVERLAY-PEERS
+    metadata:
+      peer: DC1-BL1A
+    description: DC1-BL1A_Loopback0
+  - ip_address: 192.168.255.11
+    peer_group: OVERLAY-PEERS
+    metadata:
+      peer: DC1-BL1B
+    description: DC1-BL1B_Loopback0
+  - ip_address: 192.168.255.5
+    peer_group: OVERLAY-PEERS
+    metadata:
+      peer: DC1-LEAF1A
+    description: DC1-LEAF1A_Loopback0
+  - ip_address: 192.168.255.6
+    peer_group: OVERLAY-PEERS
+    metadata:
+      peer: DC1-LEAF2A
+    description: DC1-LEAF2A_Loopback0
+  - ip_address: 192.168.255.7
+    peer_group: OVERLAY-PEERS
+    metadata:
+      peer: DC1-LEAF2B
+    description: DC1-LEAF2B_Loopback0
+  - ip_address: 192.168.255.8
+    peer_group: OVERLAY-PEERS
+    metadata:
+      peer: DC1-SVC3A
+    description: DC1-SVC3A_Loopback0
+  - ip_address: 192.168.255.9
+    peer_group: OVERLAY-PEERS
+    metadata:
+      peer: DC1-SVC3B
+    description: DC1-SVC3B_Loopback0
+  address_family_evpn:
+    peer_groups:
+    - name: OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: OVERLAY-PEERS
+      activate: false
+router_isis:
+  instance: EVPN_UNDERLAY
+  net: 49.0001.1921.6825.5001.00
+  router_id: 192.168.255.1
+  is_type: level-2
+  log_adjacency_changes: true
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.5
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

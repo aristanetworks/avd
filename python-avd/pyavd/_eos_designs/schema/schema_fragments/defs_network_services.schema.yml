@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -114,8 +114,9 @@ $defs:
                 items:
                   type: str
                 description: |
-                  Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                  If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                  List of node names or regular expressions to match against hostnames to configure the peer-group.
+                  The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                  The peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
               address_family_ipv4:
                 type: dict
                 keys:
@@ -176,6 +177,41 @@ $defs:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+        igmp_snooping:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: dict
+          keys:
+            querier:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                source_address:
+                  type: str
+                  description: |-
+                    The value of `source_address` will be interpreted according to these rules:
+                    - `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                    - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
+                    - `main_router_id` will configure the Loopback0 IP address.
+                    - An IPv4 address will be used directly as the source address.
+                  default: main_router_id
+                version:
+                  type: int
+                  description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                  convert_types:
+                    - str
+                  valid_values:
+                    - 1
+                    - 2
+                    - 3
+            fast_leave:
+              type: bool
+              description: |-
+                Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the Tenant.
+                On EOS, IGMP fast-leave is enabled on all VLANs by default.
+
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -204,6 +240,11 @@ $defs:
                 - str
             fast_leave:
               type: bool
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 7.0.0
+                new_key: igmp_snooping.fast_leave under the Tenant
               description: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
             always_redistribute_igmp:
               type: bool
@@ -325,14 +366,24 @@ $defs:
             Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
             When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: igmp_snooping.querier
           keys:
             enabled:
               type: bool
               description: Will be enabled automatically if "evpn_l2_multicast" is enabled.
             source_address:
               type: str
-              format: ipv4
-              description: Default IP address of Loopback0.
+              description: |-
+                The value of `source_address` will be interpreted according to these rules:
+                - `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
+                - `main_router_id` will configure the Loopback0 IP address.
+                - An IPv4 address will be used directly as the source address.
+              default: main_router_id
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -422,6 +473,40 @@ $defs:
                   rt_override supports two formats:
                     - A single number will be used in the RT assigned number subfield (second part of the RT).
                     - A full RT string with colon separator which will override the full RT.
+              rt_import:
+                type: bool
+                description: |
+                  Enable or disable route target import for the VRF for all address families.
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_export:
+                type: bool
+                description: |
+                  Enable or disable route target export for the VRF for all address families.
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_import_evpn_remote:
+                type: bool
+                description: |-
+                  Enable or disable route target import for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_export_evpn_remote:
+                type: bool
+                description: |-
+                  Enable or disable route target export for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              evpn_vlan_bundle:
+                type: str
+                description: |
+                  Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
+                  This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this option.
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: |-
@@ -505,19 +590,21 @@ $defs:
                     type: str
                     description: |
                       IPv4_address/Mask.
-                      Loopback IPv4 range, a unique ip is derived from this range and assigned to each l3 leaf based on it's unique id.
+                      Loopback IPv4 range, a unique ip is derived from this range and assigned to each l3 leaf based on its unique id.
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name` of the device, and is configured with an `ipv4_pool`, it takes precedence over `loopback_ipv4_range`.
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
                   loopback_ipv6_range:
                     type: str
                     description: |
                       IPv6_address/Mask.
-                      Loopback IPv6 range, a unique IPv6 address is derived from this range and assigned to each L3 leaf based on it's unique ID.
+                      Loopback IPv6 range, a unique IPv6 address is derived from this range and assigned to each L3 leaf based on its unique ID.
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name` of the device, and is configured with an `ipv6_pool`, it takes precedence over `loopback_ipv6_range`.
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
                   loopback_ip_pools:
                     type: list
                     description: |
                       For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
-                      `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range` takes precedence for IPV6.
+                      POD level pools take precedence over `loopback_ip_range` and `loopback_ipv6_range`.
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
                     primary_key: pod
                     items:
@@ -645,7 +732,7 @@ $defs:
                   structured_config:
                     type: dict
                     relaxed_validation: true
-                    description: Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for eos_cli_config_gen.
+                    description: Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for the EOS Config schema.
                     documentation_options:
                       hide_keys: true
                     $ref: "eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items"
@@ -751,6 +838,11 @@ $defs:
                       type: str
                       description: VLAN name.
                       required: true
+                    address_locking:
+                      type: dict
+                      $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family"
+                      description: |-
+                        To configure `address_locking.ipv4/v6`, you must define either `address_locking_settings.dhcp_servers_ipv4` or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
                     profile:
                       type: str
                       description: |
@@ -772,7 +864,7 @@ $defs:
                       type: str
                       description: |
                         Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                        This setting overrides "evpn_vlan_bundle" set at tenant level.
+                        This setting overrides "evpn_vlan_bundle" set at the VRF or tenant level.
                         The common option "evpn_vlan_aware_bundles" is disregarded for this option.
                     nodes:
                       type: list
@@ -809,7 +901,9 @@ $defs:
                       type: list
                       items:
                         type: str
-                        description: Interface name.
+                        description: |-
+                          Interface name.
+                          For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.
                     encapsulation_dot1q_vlan:
                       type: list
                       description: For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
@@ -827,12 +921,20 @@ $defs:
                     static_routes:
                       type: list
                       $ref: "eos_designs#/$defs/static_routes"
-                      description: Static routes to be configured on every device when this interface is configured.
+                      description: Static routes to be configured on every device where this interface is configured.
+                    ipv6_static_routes:
+                      type: list
+                      # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
+                      $ref: "eos_designs#/$defs/static_routes"
+                      description: IPv6 static routes to be configured on every device where this interface is configured.
                     nodes:
                       type: list
                       items:
                         type: str
                         description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                     descriptions:
@@ -897,7 +999,7 @@ $defs:
                           max_length: 8
                         message_digest_keys:
                           type: list
-                          # TODO: AVD 6.0.0: Make id primary_key and key required.
+                          primary_key: id
                           items:
                             type: dict
                             keys:
@@ -942,13 +1044,20 @@ $defs:
                       $ref: "eos_designs#/$defs/flow_tracking_link"
                       description: |-
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                    sflow:
+                      type: bool
+                      description: |-
+                        Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces` setting.
+                    monitor_sessions:
+                      type: list
+                      $ref: "eos_designs#/$defs/monitor_sessions"
                     campus_link_type:
                       type: list
                       $ref: "eos_designs#/$defs/campus_link_type"
                     structured_config:
                       type: dict
                       relaxed_validation: true
-                      description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+                      description: Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config schema.
                       documentation_options:
                         hide_keys: true
                       $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
@@ -977,6 +1086,9 @@ $defs:
                       type: str
                       required: true
                       description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                       description: |-
@@ -1024,8 +1136,7 @@ $defs:
                               The peer device interface. Used for description and documentation.
                           speed:
                             type: str
-                            description: |-
-                              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
                           structured_config:
                             type: dict
                             relaxed_validation: true
@@ -1037,6 +1148,11 @@ $defs:
                     ip_address:
                       type: str
                       description: IPv4 address/Mask.
+                    ip_address_secondaries:
+                      type: list
+                      items:
+                        type: str
+                        description: IPv4 address/Mask.
                     encapsulation_dot1q_vlan:
                       description: For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                       type: int
@@ -1075,8 +1191,13 @@ $defs:
                         - int
                     static_routes:
                       type: list
-                      description: Static routes to be configured on the device when this Port-channel is configured.
+                      description: Static routes to be configured on the device where this Port-channel interface is configured.
                       $ref: "eos_designs#/$defs/static_routes"
+                    ipv6_static_routes:
+                      type: list
+                      # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
+                      $ref: "eos_designs#/$defs/static_routes"
+                      description: IPv6 static routes to be configured on the device where this Port-channel interface is configured.
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -1118,7 +1239,7 @@ $defs:
                           max_length: 8
                         message_digest_keys:
                           type: list
-                          # TODO: AVD 6.0.0: Make id primary_key and key required.
+                          primary_key: id
                           items:
                             type: dict
                             keys:
@@ -1157,7 +1278,7 @@ $defs:
                     structured_config:
                       type: dict
                       relaxed_validation: true
-                      description: Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                      description: Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                       documentation_options:
                         hide_keys: true
                       $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
@@ -1224,11 +1345,16 @@ $defs:
                 items:
                   type: dict
                   keys:
+                    nodes:
+                      type: list
+                      items:
+                        type: str
                     destination_address_prefix:
                       type: str
                       description: IPv4_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: prefix
                     gateway:
@@ -1236,35 +1362,33 @@ $defs:
                       description: IPv4_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    nodes:
-                      type: list
-                      items:
-                        type: str
               ipv6_static_routes:
                 type: list
                 $ref: "eos_designs#/$defs/static_routes"
                 items:
                   type: dict
                   keys:
+                    nodes:
+                      type: list
+                      items:
+                        type: str
                     destination_address_prefix:
                       type: str
-                      description: IPv6_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: prefix
                     gateway:
                       type: str
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    nodes:
-                      type: list
-                      items:
-                        type: str
               redistribute_static:
                 type: bool
                 description: Enable or disable the redistribution of all static routes to BGP in the VRF.
@@ -1272,6 +1396,30 @@ $defs:
                 type: bool
                 default: true
                 description: Enable or disable the redistribution of all connected routes to BGP in the VRF. Note this is not applicable to VRF `default`.
+              static_arp_entries:
+                type: list
+                description: |
+                  List of static ARP entries for the tenant VRF.
+                  Entries are configured on all devices carrying the VRF unless filtered using the nodes key.
+                items:
+                  type: dict
+                  keys:
+                    ipv4_address:
+                      type: str
+                      required: true
+                      description: ARP entry IPv4 address.
+                    mac_address:
+                      type: str
+                      description: ARP entry MAC address.
+                      required: true
+                      pattern: "[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}"
+                    nodes:
+                      type: list
+                      items:
+                        type: str
+                      description: |
+                        List of nodes where the ARP static entry should be configured.
+                        If not set, the entry will be configured on all devices carrying the VRF.
               bgp_peers:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
@@ -1283,7 +1431,7 @@ $defs:
                   This will configure BGP neighbors inside the tenant VRF for peering with external devices.
                   The configured peer will automatically be activated for ipv4 or ipv6 address family based on the ip address.
                   Note, only ipv4 and ipv6 address families are currently supported in eos_designs.
-                  For other address families, use custom_structured configuration with eos_cli_config_gen.
+                  For other address families, use custom_structured configuration with EOS Config schema.
                 items:
                   type: dict
                   keys:
@@ -1348,7 +1496,10 @@ $defs:
                       type: list
                       items:
                         type: str
-                      description: Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                      description: |-
+                        List of node names or regular expressions to match against hostnames.
+                        The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                     set_ipv4_next_hop:
                       type: str
                       description: |
@@ -1424,7 +1575,7 @@ $defs:
                   structured_config:
                     type: dict
                     relaxed_validation: true
-                    description: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for eos_cli_config_gen.
+                    description: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
                     documentation_options:
                       hide_keys: true
                     $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items"
@@ -1450,8 +1601,9 @@ $defs:
                       items:
                         type: str
                       description: |
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                        If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                        List of node names or regular expressions to match against hostnames to configure the peer-group.
+                        The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        The peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
                     password:
                       type: str
                       description: |-
@@ -1535,32 +1687,56 @@ $defs:
                       valid_values:
                         - import
                         - export
+                      required: true
                     address_family:
                       type: str
+                      required: true
                     route_target:
                       type: str
+                      required: true
                     nodes:
                       type: list
                       items:
                         type: str
                       description: Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+              aggregate_addresses:
+                type: list
+                items:
+                  type: dict
+                  $ref: "eos_cli_config_gen#/keys/router_bgp/keys/aggregate_addresses/items"
+                  keys:
+                    nodes:
+                      type: list
+                      description: |-
+                        Nodes where the aggregate should be configured.
+                        By default the aggregate will be configured all on all devices where the VRF is configured.
+                      items:
+                        type: str
+                        description: Node name or regex pattern matching the full hostname.
+              validate_bgp_peers:
+                documentation_options:
+                  table: network-services-vrfs-bgp-settings
+                type: bool
+                description: Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
+                default: false
               raw_eos_cli:
                 type: str
                 description: EOS CLI rendered directly on the root level of the final EOS configuration.
               structured_config:
                 type: dict
                 relaxed_validation: true
-                description: Custom structured config for eos_cli_config_gen.
+                description: Custom structured config for the EOS Config schema.
                 documentation_options:
                   hide_keys: true
                 $ref: "eos_cli_config_gen#"
         l2vlans:
+          type: list
+          $ref: "eos_designs#/$defs/l2vlans"
           documentation_options:
             table: network-services-l2vlans-settings
-          type: list
+          description: Define L2 network services organized by VLAN ID.
           primary_key: id
           allow_duplicate_primary_key: true
-          description: Define L2 network services organized by vlan id.
           items:
             type: dict
             keys:
@@ -1571,43 +1747,15 @@ $defs:
                 min: 1
                 max: 4094
                 description: VLAN ID.
-              vni_override:
-                type: int
-                convert_types:
-                  - str
-                min: 1
-                max: 16777215
-                description: |
-                  By default the VNI will be derived from mac_vrf_vni_base.
-                  The vni_override, allows to override this value and statically define it.
-              rt_override:
-                type: str
-                convert_types:
-                  - int
-                description: |
-                  By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
-                  The rt_override allows us to override this value and statically define it.
-                  rt_override will default to vni_override if set.
-
-                  rt_override supports two formats:
-                    - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
-                    - A full RT string with colon separator which will override the full RT.
-              rd_override:
-                type: str
-                convert_types:
-                  - int
-                description: |
-                  By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
-                  The rt_override allows us to override this value and statically define it.
-                  rd_override will default to rt_override or vni_override if set.
-
-                  rd_override supports two formats:
-                    - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-                    - A full RD string with colon separator which will override the full RD.
               name:
                 type: str
                 required: true
                 description: VLAN name.
+              profile:
+                type: str
+                description: |-
+                  L2VLAN profile name.
+                  The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
               tags:
                 type: list
                 description: |
@@ -1618,118 +1766,28 @@ $defs:
                 items:
                   type: str
                   default: all
-              vxlan:
-                type: bool
-                default: true
-                description: Extend this L2VLAN over VXLAN.
-              spanning_tree_priority:
-                type: int
-                convert_types:
-                  - str
-                description: |-
-                  Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.
-                  The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).
-              evpn_vlan_bundle:
-                type: str
-                description: |
-                  Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                  This setting overrides "evpn_vlan_bundle" set at tenant level.
-                  The common option "evpn_vlan_aware_bundles" is disregarded for this option.
-              trunk_groups:
-                type: list
-                items:
-                  type: str
-                  description: |
-                    Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.
-                    Requires enable_trunk_groups: true.
-              evpn_l2_multi_domain:
-                type: bool
-                description: |
-                  Explicitly extend this VLAN to remote EVPN domains.
-                  Overrides `<network_services_key>[].evpn_l2_multi_domain`.
-              evpn_l2_multicast:
-                documentation_options:
-                  table: network-services-multicast-settings
-                type: dict
-                description: |
-                  Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
-                  When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding those individual settings.
-                  Requires `evpn_multicast` to also be set to `true`.
-                keys:
-                  enabled:
-                    type: bool
-              vxlan_flood_multicast:
-                documentation_options:
-                  table: network-services-multicast-settings
-                type: dict
-                keys:
-                  enabled:
-                    type: bool
-                    description: |-
-                      Explicitly enable or disable vxlan_flood_multicast to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
-                  underlay_multicast_group:
-                    description: Specific multicast group to use for this VLAN.
-                    type: str
-              igmp_snooping_enabled:
-                documentation_options:
-                  table: network-services-multicast-settings
-                type: bool
-                description: Enable or disable IGMP snooping (Enabled by default on EOS).
-              igmp_snooping_querier:
-                documentation_options:
-                  table: network-services-multicast-settings
-                type: dict
-                description: |
-                  Enable igmp snooping querier, by default using IP address of Loopback 0.
-                  When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
-                keys:
-                  enabled:
-                    type: bool
-                    description: Will be enabled automatically if evpn_l2_multicast is enabled.
-                  source_address:
-                    type: str
-                    description: |
-                      IPv4_address
-                      If not set, IP address of "Loopback0" will be used.
-                  version:
-                    type: int
-                    description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
-                    convert_types:
-                      - str
-                    valid_values:
-                      - 1
-                      - 2
-                      - 3
-                  fast_leave:
-                    type: bool
-                    description: Enable IGMP snooping fast-leave feature.
-              bgp:
-                type: dict
-                keys:
-                  structured_config:
-                    type: dict
-                    relaxed_validation: true
-                    description: |
-                      Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
-                      This configuration will not be applied to vlan aware bundles.
-                    documentation_options:
-                      hide_keys: true
-                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vlans/items"
-                  raw_eos_cli:
-                    type: str
-                    description: |
-                      EOS cli commands rendered on router_bgp.vlans.
-                      This configuration will not be applied to vlan aware bundles.
-              private_vlan:
-                type: dict
-                $ref: eos_cli_config_gen#/keys/vlans/items/keys/private_vlan
-                keys:
-                  type:
-                    type: str
-                    required: true
-                  primary_vlan:
-                    type: int
-                    required: true
+        vpws:
+          type: dict
+          description: |-
+            VPWS pseudowire settings for the tenant.
+            To render `mpls_control_word`, `mtu`, and `label_flow` in the BGP VPWS configuration,
+            both `point_to_point_services` and `pseudowire_rt_base` must be set under the tenant.
+          keys:
+            # TODO: AVD 7.0.0 Change default value true
+            mpls_control_word:
+              type: bool
+              default: false
+              description: |-
+                Enable or disable MPLS control word for VPWS pseudowires.
+            mtu:
+              type: int
+              convert_types:
+                - str
+              description: MTU for VPWS pseudowires.
+            label_flow:
+              type: bool
+              description: |-
+                Enable or disable MPLS label flow for VPWS pseudowires.
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings
@@ -1738,7 +1796,7 @@ $defs:
           description: |
             Point to point services (pseudowires).
             Only supported for node types with "network_services.l1: true".
-            By default this is only set for node type "pe" with "design.type: mpls"
+            By default this is only set for node type "pe".
           items:
             type: dict
             keys:
@@ -1770,7 +1828,7 @@ $defs:
                           type: dict
                           relaxed_validation: true
                           description: |
-                            Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen.
+                            Custom structured config added on the Port-Channel subinterface for the EOS Config schema.
                           documentation_options:
                             hide_keys: true
                           $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
@@ -1782,7 +1840,7 @@ $defs:
                       type: dict
                       relaxed_validation: true
                       description: |
-                        Custom structured config added on the Ethernet subinterface for eos_cli_config_gen.
+                        Custom structured config added on the Ethernet subinterface for the EOS Config schema.
                       documentation_options:
                         hide_keys: true
                       $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
@@ -1816,6 +1874,7 @@ $defs:
                       description: |
                         Interfaces patched to the pseudowire on this endpoints.
                         The list of interfaces is mapped to the list of nodes, so they must have the same length.
+                        For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.
                       required: true
                       min_length: 1
                       items:

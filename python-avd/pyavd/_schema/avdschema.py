@@ -1,18 +1,13 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from pyavd._errors import AristaAvdError, AvdSchemaError
 
-from .avddataconverter import AvdDataConverter
-from .avdvalidator import AvdValidator
 from .store import create_store
-
-if TYPE_CHECKING:
-    from collections.abc import Generator
 
 DEFAULT_SCHEMA = {
     "type": "dict",
@@ -37,11 +32,11 @@ class AvdSchema:
         Force loading the YAML schema files into the store. By default schemas are loaded from pickled files.
     """
 
-    def __init__(self, schema: dict | None = None, schema_id: str | None = None, load_store_from_yaml: bool = False) -> None:
+    def __init__(self, schema: dict[str, Any] | None = None, schema_id: str | None = None, load_store_from_yaml: bool = False) -> None:
         self.store = create_store(load_from_yaml=load_store_from_yaml)
         self.load_schema(schema, schema_id)
 
-    def load_schema(self, schema: dict | None = None, schema_id: str | None = None) -> None:
+    def load_schema(self, schema: dict[str, Any] | None = None, schema_id: str | None = None) -> None:
         """
         Load schema from dict or the ID of a builtin schema.
 
@@ -65,20 +60,8 @@ class AvdSchema:
             schema = DEFAULT_SCHEMA
 
         self._schema = schema
-        try:
-            self._validator = AvdValidator(schema)
-            self._dataconverter = AvdDataConverter(schema)
-        except Exception as e:
-            msg = "An error occurred during creation of the validator"
-            raise AristaAvdError(msg) from e
 
-    def validate(self, data: Any) -> Generator:
-        yield from self._validator.validate(data)
-
-    def convert(self, data: Any) -> Generator:
-        yield from self._dataconverter.convert_data(data)
-
-    def subschema(self, datapath: list) -> dict:
+    def subschema(self, datapath: list[str]) -> dict[str, Any]:
         """
         Takes datapath elements as a list and returns the subschema for this datapath.
 
@@ -130,7 +113,7 @@ class AvdSchema:
 
         schema = self._schema
 
-        def recursive_function(datapath: list, schema: dict) -> dict:
+        def recursive_function(datapath: list[str], schema: dict[str, Any]) -> dict[str, Any]:
             """Walk through schema following the datapath."""
             if len(datapath) == 0:
                 return schema
@@ -156,13 +139,15 @@ class AvdSchema:
 
         return recursive_function(datapath, schema)
 
-    def get_default_value(self, datapath: list) -> Any:
+    def get_default_value(self, datapath: list[str]) -> Any:
         """
         Return the default value of a key given the datapath as a list.
 
         Raises:
         -------
           AvdSchemaError if no default value is defined.
+
+        TODO: Remove this method since it seems like it is not used any longer.
         """
         if "default" not in (subschema := self.subschema(datapath)):
             msg = f"The datapath '{datapath}' does not have a default value"

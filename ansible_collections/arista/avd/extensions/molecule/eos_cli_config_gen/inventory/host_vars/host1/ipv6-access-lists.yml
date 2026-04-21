@@ -1,0 +1,165 @@
+---
+# eos - extended access-lists - improved data model, ipv6-access-lists.j2
+ipv6_access_lists:
+  - name: acl_qos_tc0_v6
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: any
+        destination: any
+        dscp: cs1
+  - name: acl_qos_tc5_v6
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: any
+        destination: 2001:db8::/48
+  - name: TEST1
+    entries:
+      - sequence: 5
+        action: deny
+        protocol: ipv6
+        source: fe80::/64
+        destination: any
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: fe90::/64
+        destination: any
+  - name: TEST2
+    counters_per_entry: true
+    entries:
+      - sequence: 5
+        action: permit
+        protocol: ipv6
+        source: 2001:db8::/64
+        destination: any
+      - sequence: 10
+        action: deny
+        protocol: ipv6
+        source: 2001:db8::/32
+        destination: any
+  - name: TEST3
+    counters_per_entry: false
+    entries:
+      - sequence: 5
+        action: deny
+        protocol: ipv6
+        source: 2001:db8:1000::/64
+        destination: any
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: 2001:db8::/32
+        destination: any
+  - name: ACL_SEQUENCE_AND_COUNTERS
+    counters_per_entry: true
+    entries:
+      - sequence: 10
+        remark: test acl with sequence numbers
+      - sequence: 20
+        action: permit
+        protocol: ipv6
+        source: fe81::1
+        destination: any
+      - sequence: 30
+        action: permit
+        protocol: tcp
+        source: fe82::/64
+        destination: any
+        tcp_flags: ["established"]
+      - sequence: 40
+        action: permit
+        protocol: tcp
+        source: any
+        source_ports_match: gt
+        source_ports: [1023]
+        destination: fe83::1
+        destination_ports: [22]
+      # test port range
+      - sequence: 50
+        action: permit
+        protocol: tcp
+        source: any
+        source_ports_match: range
+        source_ports: [1000, 1100]
+        destination: any
+        destination_ports_match: range
+        destination_ports: [10, 20]
+      # verify issue 4423 where a protocol was missing
+      # and an entry with only the sequence number was rendered.
+      - sequence: 60
+        source: any
+        destination: any
+      - sequence: 4294967295
+        action: deny
+        protocol: ipv6
+        source: any
+        destination: any
+  - name: ACL_NO_SEQUENCE
+    entries:
+      - remark: test acl without sequence numbers
+      - action: deny
+        protocol: udp
+        source: any
+        destination: any
+        log: true
+      - action: permit
+        protocol: icmpv6
+        source: any
+        destination: any
+        icmp_type: 3
+        icmp_code: 4
+      - action: permit
+        protocol: icmpv6
+        source: any
+        destination: any
+        icmp_type: unreachable
+      - action: permit
+        protocol: ipv6
+        source: any
+        destination: any
+        dscp: 46
+        dscp_mask: 3
+      - action: permit
+        protocol: ipv6
+        source: any
+        destination: any
+        tracked: true
+        dscp: ef
+        hop_limit: 3
+        hop_limit_match: gt
+      - action: permit
+        protocol: ipv6
+        source: any
+        destination: any
+        nexthop_group: NH_TEST
+        hop_limit: 254
+      - action: permit
+        inner_vlan_number: 124
+        inner_vlan_mask: "0x001"
+        vlan_number: 235
+        vlan_mask: "0x1FF"
+        protocol: ipv6
+        source: any
+        destination: any
+      - action: permit
+        inner_vlan_number: 123
+        inner_vlan_mask: "0x000"
+        protocol: ipv6
+        source: any
+        destination: any
+      - action: permit
+        vlan_number: 234
+        vlan_mask: "0xFFF"
+        protocol: ipv6
+        source: any
+        destination: any
+      - action: permit
+        protocol: icmpv6
+        source: any
+        destination: any
+  - name: ACL_WITHOUT_ENTRIES
+    counters_per_entry: false

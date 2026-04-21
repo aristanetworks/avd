@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -41,16 +41,15 @@ Authorization for serial console is enabled.
 {%         if aaa_authorization.commands.all_default is arista.avd.defined %}
 | all | {{ aaa_authorization.commands.all_default }} |
 {%         endif %}
-{%         for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
-{%             if command_level.level is arista.avd.defined and command_level.default is arista.avd.defined %}
+{%         for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort(sort_key="level") %}
 | {{ command_level.level }} | {{ command_level.default }} |
-{%             endif %}
 {%         endfor %}
 {%     endif %}
 
 #### AAA Authorization Device Configuration
 
 ```eos
+{%     include 'eos/aaa-authorization-default-role.j2' %}
 {%     include 'eos/aaa-authorization.j2' %}
 !
 ```

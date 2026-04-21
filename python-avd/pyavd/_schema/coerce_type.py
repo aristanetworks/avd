@@ -1,20 +1,19 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from pyavd._schema.models.avd_base import AvdBase
 
 from .constants import ACCEPTED_COERCION_MAP
 
 if TYPE_CHECKING:
-    from typing import NoReturn, TypeVar
-
     from pyavd._schema.models.input_path import InputPath
 
     T = TypeVar("T")
+    from typing import NoReturn
 
 
 def coerce_type(value: Any, target_type: type[T], data_source: InputPath | None = None) -> T:
@@ -52,7 +51,7 @@ def coerce_type(value: Any, target_type: type[T], data_source: InputPath | None 
         raise_coerce_error(value, target_type)
 
     # All the pass brings us here to return the original value.
-    return value
+    return cast("T", value)
 
 
 def raise_coerce_error(value: Any, target_type: type, exception: Exception | None = None) -> NoReturn:

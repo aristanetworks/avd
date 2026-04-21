@@ -1,0 +1,3 @@
+---
+# MLAG peer is using asdot
+bgp_as_notation: asplain

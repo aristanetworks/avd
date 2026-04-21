@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -16,45 +16,86 @@ keys:
             type: list
             items:
               type: str
+              description: |-
+                Specifies the events that should trigger this action.
+                The list of supported causes depends on both the EOS version and the hardware platform.
               valid_values:
-              - "acl"
-              - "arp-inspection"
-              - "dot1x"
-              - "link-change"
-              - "tapagg"
-              - "xcvr-misconfigured"
-              - "xcvr-overheat"
-              - "xcvr-power-unsupported"
+                - "acl"
+                - "arp-inspection"
+                - "dot1x"
+                - "dot1x-coa"
+                - "dot1x-phone-classification"
+                - "dot1x-session-replace"
+                - "error-correction-encoding"
+                - "hardware-speed-group"
+                - "interface-speed"
+                - "internal-error"
+                - "link-change"
+                - "port-breakout"
+                - "storm-control"
+                - "switchcard-unreachable"
+                - "tapagg"
+                - "transceiver-adapter"
+                - "xcvr-misconfigured"
+                - "xcvr-overheat"
+                - "xcvr-power-unsupported"
       recovery:
         type: dict
         keys:
           causes:
             type: list
+            primary_key: name
             items:
-              type: str
-              valid_values:
-              - "arp-inspection"
-              - "bpduguard"
-              - "dot1x"
-              - "hitless-reload-down"
-              - "lacp-rate-limit"
-              - "link-flap"
-              - "no-internal-vlan"
-              - "portchannelguard"
-              - "portsec"
-              - "speed-misconfigured"
-              - "tap-port-init"
-              - "tapagg"
-              - "uplink-failure-detection"
-              - "xcvr-misconfigured"
-              - "xcvr-overheat"
-              - "xcvr-power-unsupported"
-              - "xcvr-unsupported"
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: |-
+                    Specifies the type of event that can trigger recovery actions.
+                    The list of supported causes depends on both the EOS version and the hardware platform.
+                  valid_values:
+                    - "acl"
+                    - "arp-inspection"
+                    - "bpduguard"
+                    - "dot1x"
+                    - "dot1x-coa"
+                    - "dot1x-phone-classification"
+                    - "dot1x-session-replace"
+                    - "error-correction-encoding"
+                    - "hardware-speed-group"
+                    - "hitless-reload-down"
+                    - "interface-speed"
+                    - "internal-error"
+                    - "lacp-rate-limit"
+                    - "link-flap"
+                    - "no-internal-vlan"
+                    - "port-breakout"
+                    - "portchannelguard"
+                    - "portsec"
+                    - "speed-misconfigured"
+                    - "storm-control"
+                    - "stuck-queue"
+                    - "switchcard-unreachable"
+                    - "tap-port-init"
+                    - "tapagg"
+                    - "transceiver-adapter"
+                    - "uplink-failure-detection"
+                    - "xcvr-misconfigured"
+                    - "xcvr-overheat"
+                    - "xcvr-power-unsupported"
+                    - "xcvr-unsupported"
+                interval:
+                  type: int
+                  description: |-
+                    Interval for each recovery cause in seconds.
+                  min: 30
+                  max: 86400
+                  convert_types:
+                    - str
           interval:
             type: int
             convert_types:
-            - "str"
+              - "str"
             description: Interval in seconds.
-            default: 300
             min: 30
             max: 86400

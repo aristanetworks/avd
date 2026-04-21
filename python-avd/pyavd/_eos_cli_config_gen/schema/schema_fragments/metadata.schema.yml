@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -12,6 +12,9 @@ keys:
       The data under `metadata` is used for documentation, validation or integration purposes.
       It will not affect the generated EOS configuration.
     keys:
+      is_deployed:
+        description: Key only used for documentation or validation purposes.
+        type: bool
       platform:
         type: str
       system_mac_address:
@@ -24,6 +27,59 @@ keys:
         type: str
       fabric_name:
         type: str
+      serial_number:
+        description: |-
+          Serial Number of the device.
+          Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
+        type: str
+        convert_types:
+          - int
+      validate_hardware:
+        type: dict
+        description: |-
+          Settings for hardware validation performed by the `anta_runner` role.
+          If `enabled` is set to `false`, all other keys in this dictionary are ignored.
+
+          For the `min_*` keys:
+          - Undefined (Default): Validate that all available slots are populated.
+          - Positive Integer: Validate that the number of components inserted is at least the specified minimum.
+          - 0: Skip the validation for this specific component.
+        keys:
+          enabled:
+            type: bool
+            description: |-
+              Enable hardware validation for the device.
+              If `false`, all hardware tests are skipped, therefore the other keys in `validate_hardware` are ignored.
+            default: true
+          min_power_supplies:
+            type: int
+            description: |-
+              Minimum number of power supplies required for the device. Set to 0 to skip validation.
+          min_fans:
+            type: int
+            description: |-
+              Minimum number of fans required for the device. Set to 0 to skip validation.
+          min_supervisors:
+            type: int
+            description: |-
+              Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
+          min_line_cards:
+            type: int
+            description: |-
+              Minimum number of line cards required for the device. Set to 0 to skip validation.
+          min_fabric_cards:
+            type: int
+            description: |-
+              Minimum number of fabric cards required for the device. Set to 0 to skip validation.
+          transceiver_manufacturers:
+            type: list
+            description: |-
+              List of approved transceiver manufacturers for the device.
+            items:
+              type: str
+            default:
+              - 'Arista Networks'
+              - 'Arastra, Inc.'
       cv_tags:
         type: dict
         keys:
@@ -381,3 +437,33 @@ keys:
           password:
             type: str
             description: Local password assigned to a replica of the fabric device within the Digital Twin environment.
+          internet_access:
+            type: bool
+            description: |-
+              Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+              This option applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node types.
+              ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
+      validate_no_errors_period:
+        type: int
+        convert_types:
+          - str
+        description: Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role.
+      exclude_as_extra_fabric_validation_target:
+        type: bool
+        description: |
+          Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.
+      interfaces:
+        type: dict
+        description: |-
+          Interface validation settings.
+        keys:
+          errdisable:
+            type: dict
+            description: |-
+              Settings for the VerifyInterfaceErrDisabled test.
+            keys:
+              only_avd_interfaces:
+                type: bool
+                description: |-
+                  Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+                default: false

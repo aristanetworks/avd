@@ -1,0 +1,303 @@
+---
+# Testing with oob management
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: aaa-settings-1
+      mgmt_ip: 192.168.0.2/24
+
+# TODO 7.0: Remove the eos_config_future settings
+custom_structured_configuration_eos_config_future:
+  new_ip_tacacs_cli_order: true
+  new_ip_radius_cli_order: true
+
+aaa_settings:
+  # adding test for enable_password.password
+  enable_password:
+    password: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
+    # Test to verify that password takes precedence over cleartext_password
+    cleartext_password: admin
+  tacacs:
+    servers:
+      - host: 10.10.10.11
+        vrf: default
+        timeout: 30
+        key: 071B245F5A
+        # key take precedence over cleartext_key
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      - host: 10.10.10.1
+        vrf: use_mgmt_interface_vrf
+        timeout: 60
+        key: 071B245F5A
+        groups:
+          - TACACS1
+          - TACACS2
+
+      - host: 10.10.10.2
+        vrf: MGMT
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      # Test with duplicate host/VRF data to ensure only the first entry is processed.
+      - host: 10.10.10.2
+        vrf: MGMT
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # No VRF, so it should honor default_mgmt_method which is oob in this case
+      - host: 10.10.10.3
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      # Duplicate host with different vrf
+      - host: 10.10.10.2
+        vrf: MGMT1
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
+      - host: nodomain.co
+        vrf: use_mgmt_interface_vrf
+        key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # Test with host as IPv6 address and cleartext_key to AVD type-7 encrypt key
+      - host: "1:1:1:1:1:1:1:1"
+        vrf: MGMT
+        key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # Test with default groups tacacs+
+      - host: 10.10.10.42
+        vrf: default
+        key: 071B245F5A
+
+    vrfs:
+      # Testing override of source for VRF default - no VRF in output source interface model.
+      - name: default
+        source_interface: Vlan123
+      - name: MGMT1
+        source_interface: Vlan125
+
+    policy:
+      ignore_unknown_mandatory_attribute: true
+
+  radius:
+    servers:
+      - host: 11.10.10.11
+        vrf: default
+        timeout: 10
+        retransmit: 3
+        key: 071B245F5A
+        # key take precedence over cleartext_key
+        cleartext_key: arista
+        groups:
+          - RADIUS1
+
+      # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
+      - host: 11.10.10.1
+        vrf: use_mgmt_interface_vrf
+        timeout: 20
+        key: 071B245F5A
+        groups:
+          - RADIUS1
+          - RADIUS2
+
+      - host: 11.10.10.2
+        vrf: MGMT
+        key: 071B245F5A
+        groups:
+          - RADIUS1
+
+      # Test case for TLS configuration. The 'key' field should be ignored during processing
+      - host: 11.10.10.5
+        vrf: MGMT
+        key: 071B245F5A
+        tls:
+          enabled: true
+          ssl_profile: HOST_SSL_PROFILE
+          port: 2080
+        groups:
+          - RADIUS1
+
+      # No VRF, so it should honor default_mgmt_method which is oob in this case
+      - host: 11.10.10.3
+        vrf: MGMT
+        cleartext_key: arista
+        groups:
+          - RADIUS1
+
+      # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
+      - host: nodomain.co
+        vrf: use_mgmt_interface_vrf
+        key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - RADIUS1
+
+      # Test with host as IPv6 address and cleartext_key to AVD type-7 encrypt key
+      - host: "1:1:1:1:1:1:1:1"
+        vrf: MGMT
+        key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - RADIUS1
+
+      # Test with default groups radius
+      - host: 10.10.10.42
+        vrf: default
+        key: 071B245F5A
+
+      # Test TLS server in VRF default and default group radius
+      - host: 11.10.10.12
+        vrf: default
+        tls:
+          enabled: true
+          ssl_profile: HOST_SSL_PROFILE
+          port: 2080
+
+    vrfs:
+      - name: default
+        source_interface: Vlan123
+      - name: MGMT
+        source_interface: Vlan125
+
+  ## AAA Accounting
+  accounting:
+    exec:
+      console:
+        type: start-stop
+        methods:
+          - method: group
+            group: TACACS1
+          - method: group
+            group: RADIUS1
+          - method: logging
+      default:
+        type: start-stop
+        methods:
+          - method: group
+            group: TACACS1
+          - method: group
+            group: RADIUS1
+          - method: group
+            group: tacacs+
+          - method: logging
+    system:
+      default:
+        type: start-stop
+        methods:
+          - method: group
+            group: TACACS1
+          - method: group
+            group: RADIUS1
+          - method: logging
+    commands:
+      console:
+        - commands: all
+          type: start-stop
+          methods:
+            - method: group
+              group: TACACS1
+            - method: group
+              group: RADIUS1
+            - method: group
+              group: tacacs+
+            - method: logging
+        - commands: 0
+          type: start-stop
+          methods:
+            - method: group
+              group: RADIUS1
+            - method: group
+              group: TACACS1
+            - method: logging
+        - commands: 1
+          type: start-stop
+          methods:
+            - method: group
+              group: TACACS1
+            - method: group
+              group: RADIUS1
+        # As type is none hence logging will not render in config as per actual EOS
+        - commands: 2
+          type: none
+          methods:
+            - method: logging
+        - commands: 3
+          type: start-stop
+      default:
+        - commands: all
+          type: start-stop
+          methods:
+            - method: group
+              group: TACACS1
+            - method: group
+              group: RADIUS1
+            - method: logging
+        - commands: 0
+          type: start-stop
+          methods:
+            - method: logging
+        - commands: 1
+          type: start-stop
+          methods:
+            - method: group
+              group: TACACS1
+            - method: group
+              group: RADIUS1
+        - commands: 2
+          type: none
+          methods:
+            - method: logging
+        - commands: 3
+          type: start-stop
+          methods:
+            - method: logging
+  ## AAA Authentication
+  authentication:
+    login:
+      default: group TACACS1 local
+      command_api: local
+      console: local
+    enable:
+      default: group TACACS1 local
+    policies:
+      on_failure_log: true
+      on_success_log: true
+      local:
+        allow_nopassword: true
+      lockout:
+        failure: 3
+        duration: 300
+        window: 900
+  ## AAA Authorization
+  authorization:
+    policy:
+      local_default_role: network-admin
+    exec:
+      default: group TACACS1 local
+    config_commands: true
+    serial_console: true
+    commands:
+      all_default: group TACACS1
+      privilege:
+        - level: "10,15"
+          default: "group tacacs+ local"
+        - level: "5"
+          default: "group radius"
+  root_login:
+    enabled: true
+    sha512_password: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -8,7 +8,7 @@
 {% if flow_tracking.hardware is arista.avd.defined %}
 !
 flow tracking hardware
-{%     for tracker in flow_tracking.hardware.trackers | arista.avd.natural_sort %}
+{%     for tracker in flow_tracking.hardware.trackers | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%         if not loop.first %}
    !
 {%         endif %}
@@ -22,20 +22,87 @@ flow tracking hardware
 {%         if tracker.record_export.mpls is arista.avd.defined(true) %}
       record export mpls
 {%         endif %}
-{%         for exporter in tracker.exporters | arista.avd.natural_sort("name") %}
+{%         for exporter in tracker.exporters | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%             if not loop.first %}
       !
 {%             endif %}
       exporter {{ exporter.name }}
-{%             if exporter.collector.host is arista.avd.defined %}
-{%                 set collector_cli = 'collector ' ~ exporter.collector.host %}
-{%                 if exporter.collector.port is arista.avd.defined %}
-{%                     set collector_cli = collector_cli ~ ' port ' ~ exporter.collector.port %}
-{%                 endif %}
-         {{ collector_cli }}
-{%             endif %}
 {%             if exporter.format.ipfix_version is arista.avd.defined %}
          format ipfix version {{ exporter.format.ipfix_version }}
+{%             endif %}
+{%             for collector in exporter.collectors | arista.avd.natural_sort(sort_key="host") %}
+{%                 set collector_cli = "collector " ~ collector.host %}
+{%                 if collector.port is arista.avd.defined %}
+{%                     set collector_cli =  collector_cli ~ " port " ~ collector.port %}
+{%                 endif %}
+         {{ collector_cli }}
+{%             endfor %}
+{%             if exporter.local_interface is arista.avd.defined %}
+         local interface {{ exporter.local_interface }}
+{%             endif %}
+{%             if exporter.template_interval is arista.avd.defined %}
+         template interval {{ exporter.template_interval }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{%     if flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters is arista.avd.defined(true) %}
+   record format ipfix standard timestamps counters
+{%     endif %}
+{%     if flow_tracking.hardware.shutdown is arista.avd.defined(false) %}
+   no shutdown
+{%     endif %}
+{% endif %}
+{# mirror-on-drop #}
+{% if flow_tracking.mirror_on_drop is arista.avd.defined %}
+!
+flow tracking mirror-on-drop
+{%     set tracker_ns = namespace(tracker_exclamation=false) %}
+{%     if flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6 is arista.avd.defined(true) or low_tracking.mirror_on_drop.encapsulation.mpls is arista.avd.defined(true) %}
+{%         set tracker_ns.tracker_exclamation = true %}
+{%         set encapsulation = "encapsulation" %}
+{%         if flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6 is arista.avd.defined(true) %}
+{%             set  encapsulation =  encapsulation ~ ' ipv4 ipv6' %}
+{%         endif %}
+{%         if flow_tracking.mirror_on_drop.encapsulation.mpls is arista.avd.defined(true) %}
+{%             set  encapsulation =  encapsulation ~ ' mpls' %}
+{%         endif %}
+   {{ encapsulation }}
+{%     endif %}
+{%     if flow_tracking.mirror_on_drop.sample_limit is arista.avd.defined %}
+{%         set tracker_ns.tracker_exclamation = true %}
+   sample limit {{ flow_tracking.mirror_on_drop.sample_limit }} pps
+{%     endif %}
+{%     for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+{%         if not loop.first or tracker_ns.tracker_exclamation == true %}
+   !
+{%         endif %}
+{%         set exporter_ns = namespace(exporter_exclamation=false) %}
+   tracker {{ tracker.name }}
+{%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
+{%             set exporter_ns.exporter_exclamation = true %}
+      record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
+{%         endif %}
+{%         if tracker.record_export.on_interval is arista.avd.defined %}
+{%             set exporter_ns.exporter_exclamation = true %}
+      record export on interval {{ tracker.record_export.on_interval }}
+{%         endif %}
+{%         for exporter in tracker.exporters | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+{%             if not loop.first or exporter_ns.exporter_exclamation == true %}
+      !
+{%             endif %}
+      exporter {{ exporter.name }}
+{%             if exporter.format is arista.avd.defined %}
+         format {{ exporter.format }}
+{%             endif %}
+{%             for collector in exporter.collectors | arista.avd.natural_sort(sort_key="host") %}
+{%                 set collector_cli = "collector " ~ collector.host %}
+{%                 if collector.port is arista.avd.defined %}
+{%                     set collector_cli =  collector_cli ~ " port " ~ collector.port %}
+{%                 endif %}
+         {{ collector_cli }}
+{%             endfor %}
+{%             if exporter.dscp is arista.avd.defined %}
+         dscp {{ exporter.dscp }}
 {%             endif %}
 {%             if exporter.local_interface is arista.avd.defined %}
          local interface {{ exporter.local_interface }}
@@ -44,14 +111,8 @@ flow tracking hardware
          template interval {{ exporter.template_interval }}
 {%             endif %}
 {%         endfor %}
-{%         if tracker.table_size is arista.avd.defined %}
-      flow table size {{ tracker.table_size }} entries
-{%         endif %}
 {%     endfor %}
-{%     if flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters is arista.avd.defined(true) %}
-   record format ipfix standard timestamps counters
-{%     endif %}
-{%     if flow_tracking.hardware.shutdown is arista.avd.defined(false) %}
+{%     if flow_tracking.mirror_on_drop.shutdown is arista.avd.defined(false) %}
    no shutdown
 {%     endif %}
 {% endif %}
@@ -87,7 +148,7 @@ flow tracking sampled
    hardware offload threshold minimum {{ flow_tracking.sampled.hardware_offload.threshold_minimum }} samples
 {%         endif %}
 {%     endif %}
-{%     for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort %}
+{%     for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%         if not loop.first %}
    !
 {%         endif %}
@@ -104,18 +165,18 @@ flow tracking sampled
 {%         if tracker.record_export.mpls is arista.avd.defined(true) %}
       record export mpls
 {%         endif %}
-{%         for exporter in tracker.exporters | arista.avd.natural_sort("name") %}
+{%         for exporter in tracker.exporters | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%             if not loop.first %}
       !
 {%             endif %}
       exporter {{ exporter.name }}
-{%             if exporter.collector.host is arista.avd.defined %}
-{%                 set collector_cli = 'collector ' ~ exporter.collector.host %}
-{%                 if exporter.collector.port is arista.avd.defined %}
-{%                     set collector_cli = collector_cli ~ ' port ' ~ exporter.collector.port %}
+{%             for collector in exporter.collectors | arista.avd.natural_sort(sort_key="host") %}
+{%                 set collector_cli = "collector " ~ collector.host %}
+{%                 if collector.port is arista.avd.defined %}
+{%                     set collector_cli =  collector_cli ~ " port " ~ collector.port %}
 {%                 endif %}
          {{ collector_cli }}
-{%             endif %}
+{%             endfor %}
 {%             if exporter.format.ipfix_version is arista.avd.defined %}
          format ipfix version {{ exporter.format.ipfix_version }}
 {%             endif %}
@@ -128,70 +189,6 @@ flow tracking sampled
 {%         endfor %}
 {%     endfor %}
 {%     if flow_tracking.sampled.shutdown is arista.avd.defined(false) %}
-   no shutdown
-{%     endif %}
-{% endif %}
-{# mirror-on-drop #}
-{% if flow_tracking.mirror_on_drop is arista.avd.defined %}
-!
-flow tracking mirror-on-drop
-{%     set tracker_ns = namespace(tracker_exclamation=false) %}
-{%     if flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6 is arista.avd.defined(true) or low_tracking.mirror_on_drop.encapsulation.mpls is arista.avd.defined(true) %}
-{%         set tracker_ns.tracker_exclamation = true %}
-{%         set encapsulation = "encapsulation" %}
-{%         if flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6 is arista.avd.defined(true) %}
-{%             set  encapsulation =  encapsulation ~ ' ipv4 ipv6' %}
-{%         endif %}
-{%         if flow_tracking.mirror_on_drop.encapsulation.mpls is arista.avd.defined(true) %}
-{%             set  encapsulation =  encapsulation ~ ' mpls' %}
-{%         endif %}
-   {{ encapsulation }}
-{%     endif %}
-{%     if flow_tracking.mirror_on_drop.sample_limit is arista.avd.defined %}
-{%         set tracker_ns.tracker_exclamation = true %}
-   sample limit {{ flow_tracking.mirror_on_drop.sample_limit }} pps
-{%     endif %}
-{%     for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort %}
-{%         if not loop.first or tracker_ns.tracker_exclamation == true %}
-   !
-{%         endif %}
-{%         set exporter_ns = namespace(exporter_exclamation=false) %}
-   tracker {{ tracker.name }}
-{%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
-{%             set exporter_ns.exporter_exclamation = true %}
-      record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
-{%         endif %}
-{%         if tracker.record_export.on_interval is arista.avd.defined %}
-{%             set exporter_ns.exporter_exclamation = true %}
-      record export on interval {{ tracker.record_export.on_interval }}
-{%         endif %}
-{%         for exporter in tracker.exporters | arista.avd.natural_sort("name") %}
-{%             if not loop.first or exporter_ns.exporter_exclamation == true %}
-      !
-{%             endif %}
-      exporter {{ exporter.name }}
-{%             if exporter.format is arista.avd.defined %}
-         format {{ exporter.format }}
-{%             endif %}
-{%             for collector in exporter.collectors | arista.avd.natural_sort %}
-{%                 set collector_cli = "collector " ~ collector.host %}
-{%                 if collector.port is arista.avd.defined %}
-{%                     set collector_cli =  collector_cli ~ " port " ~ collector.port %}
-{%                 endif %}
-         {{ collector_cli }}
-{%             endfor %}
-{%             if exporter.dscp is arista.avd.defined %}
-         dscp {{ exporter.dscp }}
-{%             endif %}
-{%             if exporter.local_interface is arista.avd.defined %}
-         local interface {{ exporter.local_interface }}
-{%             endif %}
-{%             if exporter.template_interval is arista.avd.defined %}
-         template interval {{ exporter.template_interval }}
-{%             endif %}
-{%         endfor %}
-{%     endfor %}
-{%     if flow_tracking.mirror_on_drop.shutdown is arista.avd.defined(false) %}
    no shutdown
 {%     endif %}
 {% endif %}

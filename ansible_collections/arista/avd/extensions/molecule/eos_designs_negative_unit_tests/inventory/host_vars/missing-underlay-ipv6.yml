@@ -1,0 +1,21 @@
+---
+fabric_name: FABRIC_MISSING_UNDERLAY_IPV6
+# Testing missing underlay_ipv6
+# underlay_ipv6: true
+underlay_ipv6_numbered: true
+underlay_routing_protocol: ebgp
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv6_pool: 2001:DB8:1::/48
+    platform: vEOS-LAB
+  nodes:
+    - name: missing-underlay-ipv6
+      bgp_as: 923
+      id: 1
+      mgmt_ip: 192.168.201.116/24
+
+expected_error_message: >-
+  'underlay_ipv6: true' is required but was not found for host 'missing-underlay-ipv6'.

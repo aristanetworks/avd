@@ -1,14 +1,11 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - ip extcommunity lists regexp #}
-{% for ip_extcommunity_list in ip_extcommunity_lists_regexp | arista.avd.natural_sort('name') %}
-!
-{%     for entry in ip_extcommunity_list.entries | arista.avd.default([]) %}
-{%         if entry.type is arista.avd.defined and entry.regexp is arista.avd.defined %}
+{% for ip_extcommunity_list in ip_extcommunity_lists_regexp | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%     for entry in ip_extcommunity_list.entries %}
 ip extcommunity-list regexp {{ ip_extcommunity_list.name }} {{ entry.type }} {{ entry.regexp }}
-{%         endif %}
 {%     endfor %}
 {% endfor %}

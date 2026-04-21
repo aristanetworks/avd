@@ -1,0 +1,41 @@
+---
+fabric_name: FABRIC_MULTIPLE_UPLINK_INTERFACES_FOR_UPLINK_TYPE_LAN
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - uplink-switch-1
+      - uplink-switch-2
+  - node_type: l3leaf
+    match_hostnames:
+      - multiple-uplink-interfaces-for-uplink-type-lan
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+    bgp_as: 65000
+  nodes:
+    - name: uplink-switch-1
+      id: 10
+      downlink_pools:
+        - ipv4_pool: 10.0.0.0/24
+    - name: uplink-switch-2
+      id: 10
+      downlink_pools:
+        - ipv4_pool: 10.0.0.0/24
+
+l3leaf:
+  nodes:
+    - name: multiple-uplink-interfaces-for-uplink-type-lan
+      loopback_ipv4_pool: 192.168.255.0/24
+      vtep_loopback_ipv4_pool: 192.168.2.0/24
+      id: 1
+      bgp_as: 65000
+      uplink_type: lan
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      uplink_switches: [uplink-switch-1, uplink-switch-2]
+      uplink_switch_interfaces: [Ethernet3, Ethernet4]
+
+expected_error_message: >-
+  'uplink_type: lan' only supports a single uplink interface.
+  Got ['Ethernet1', 'Ethernet2'] for host 'multiple-uplink-interfaces-for-uplink-type-lan'.

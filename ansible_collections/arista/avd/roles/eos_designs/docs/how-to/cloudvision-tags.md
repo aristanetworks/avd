@@ -3,7 +3,7 @@
 title: Generate Cloudvision Tags with eos_designs
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -122,13 +122,13 @@ Providing these input variables will lead to the automatic generation of the fol
 
 | Campus Tag Name | Tag type | Description | Source of information |
 | --------------- | -------- | ----------- | --------------------- |
-| `topology_hint_network_type`| Device | Identifies associated CloudVision Topology hierarchy type. | Always set to `campusV2`. |
+| `topology_hint_network_type` | Device | Identifies associated CloudVision Topology hierarchy type. | Always set to `campusV2`. |
 | `topology_hint_type` | Device | Identifies role of the device in CloudVision Campus Topology. | `<node_type_keys.key>.nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].cv_tags_topology_type`, else `<node_type_keys.key>.defaults.cv_tags_topology_type`, else `cv_tags_topology_type`, else `custom_node_type_keys.[].cv_tags_topology_type`, else `node_type_keys.[].cv_tags_topology_type`. |
 | `Role` | Device | Identifies role of the device in CloudVision Campus Topology. Used in CV Dashboards. | `<node_type_keys.key>.nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].cv_tags_topology_type`, else `<node_type_keys.key>.defaults.cv_tags_topology_type`, else `cv_tags_topology_type`, else `custom_node_type_keys.[].cv_tags_topology_type`, else `node_type_keys.[].cv_tags_topology_type`. |
 | `Campus` | Device | Identifies Campus fabric. | `<node_type_keys.key>.nodes.[].campus`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus`, else `<node_type_keys.key>.node_groups.[].campus`, else `<node_type_keys.key>.defaults.campus`, else `campus`. |
 | `Campus-Pod` | Device | Identifies Campus pod (spine devices and associated access pods). | `<node_type_keys.key>.nodes.[].campus_pod`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus_pod`, else `<node_type_keys.key>.node_groups.[].campus_pod`, else `<node_type_keys.key>.defaults.campus_pod`, else `campus_pod`. |
 | `Access-Pod` | Device | Identifies Campus access pod (Leaf and Member-Leaf devices). | `<node_type_keys.key>.nodes.[].campus_access_pod`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus_access_pod`, else `<node_type_keys.key>.node_groups.[].campus_access_pod`, else `<node_type_keys.key>.defaults.campus_access_pod`, else `campus_access_pod`. |
-| `Link-Type` | Interface | Identifies system responsible for managing interface (AVD/Studio) and it's purpose (fabric/edge/endpoint/etc.). | `ethernet_interfaces.[].peer_type`. |
+| `Link-Type` | Interface | Identifies system responsible for managing interface (AVD/Studio) and it's purpose (fabric/edge/endpoint/etc.). | `ethernet_interfaces.[].metadata.peer_type`. |
 
 !!! warning
     If `cv_deploy` is targeting Campus devices that are not yet registered with CloudVision `Inventory and Topology` studio - `cv_deploy` will currently register those devices skipping their `Model` and `Interfaces`. This will by default not allow `Quick Actions` feature of the `Access Interface Configuration` CloudVision Studio to manage such devices until all `Network Updates` related to these devices are `Accepted` in CloudVision UI.

@@ -1,3 +1,4 @@
+---
 ### REQUIRED
 
 # The namespace of the collection. This can be a company/brand/organization or product namespace under which all
@@ -9,7 +10,7 @@ namespace: arista
 name: avd
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 5.6.0-dev0
+version: 6.2.0-dev1
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
 
@@ -17,7 +18,6 @@ readme: README.md
 # @nicks:irc/im.site#channel'
 authors:
   - Arista Ansible Team <ansible@arista.com>
-
 ### OPTIONAL but strongly recommended
 
 # A short summary description of the collection
@@ -36,9 +36,7 @@ tags: ["arista", "network", "networking", "eos", "avd", "cloudvision", "cvp"]
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
 dependencies:
-  "arista.cvp": ">=3.11.0"
   "arista.eos": ">=7.0.0"
-  "ansible.utils": ">=3.0.0"
 
 # The URL of the originating SCM repository
 repository: https://github.com/aristanetworks/avd
@@ -66,17 +64,19 @@ manifest:
     - recursive-include plugins **.py **.yml **.yaml
     - recursive-exclude changelogs/fragments_backup **
     - recursive-include examples **
-    - recursive-exclude molecule **
-    - include collections.yml # TODO: remove collections.yml in 6.0.0
+    # Excluding intended and documentation from examples in the collection
+    - recursive-exclude examples/**/intended **
+    - recursive-exclude examples/**/documentation **
+    - recursive-exclude extensions **
     - include requirements.yml
-    - include pylintrc
-    - include pytest.ini
     - exclude galaxy.yml galaxy.yaml MANIFEST.json FILES.json <namespace>-<name>-*.tar.gz
     - recursive-exclude tests/output **
     - global-exclude /.* /__pycache__ *.pyc *.pyo *.bak *~ *.swp
     # Adding dotfiles
     - include examples/cv-pathfinder/.vault
-    - include .ansible-lint
-    - include .yamllint
     - include tests/integration/targets/vars_global_vars/zz_global_vars/.03.yml
+    # TODO: see how we can reduce the two following dotfiles to avoid including them in the future
+    #       There may not be a way forward.
+    - include .ansible-lint
+    - include .ansible-lint-ignore
   omit_default_directives: true

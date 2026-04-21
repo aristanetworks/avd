@@ -66,9 +66,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -121,9 +121,11 @@ ip domain lookup vrf MGMT source-interface Management1
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | MGMT | True | - | - | - | - | - | - | - |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 0.pool.ntp.org | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
@@ -137,9 +139,9 @@ ntp server vrf MGMT 0.pool.ntp.org prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -254,7 +256,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -339,10 +341,10 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 10.255.255.9/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 10.255.255.11/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 10.255.255.9/31 | default | 9214 | False | - | - |
+| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 10.255.255.11/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -351,14 +353,14 @@ vlan 4094
 interface Ethernet1
    description P2P_dc1-spine1_Ethernet3
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 10.255.255.9/31
 !
 interface Ethernet2
    description P2P_dc1-spine2_Ethernet3
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 10.255.255.11/31
 !
@@ -390,7 +392,7 @@ interface Ethernet8
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_dc1-leaf2b_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel5 | SERVER_dc1-leaf2-server1 | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
 | Port-Channel8 | L2_dc1-leaf2c_Port-Channel1 | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
@@ -440,8 +442,8 @@ interface Port-Channel8
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback10 | DIAG_VRF_VRF10 | VRF10 | - |
@@ -478,29 +480,29 @@ interface Loopback11
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan11 | VRF10_VLAN11 | VRF10 | - | False |
 | Vlan12 | VRF10_VLAN12 | VRF10 | - | False |
 | Vlan21 | VRF11_VLAN21 | VRF11 | - | False |
 | Vlan22 | VRF11_VLAN22 | VRF11 | - | False |
-| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 1500 | False |
-| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 1500 | False |
-| Vlan4093 | MLAG_L3 | default | 1500 | False |
-| Vlan4094 | MLAG | default | 1500 | False |
+| Vlan3009 | MLAG_L3_VRF_VRF10 | VRF10 | 9214 | False |
+| Vlan3010 | MLAG_L3_VRF_VRF11 | VRF11 | 9214 | False |
+| Vlan4093 | MLAG_L3 | default | 9214 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan11 |  VRF10  |  -  |  10.10.11.1/24  |  -  |  -  |  -  |
-| Vlan12 |  VRF10  |  -  |  10.10.12.1/24  |  -  |  -  |  -  |
-| Vlan21 |  VRF11  |  -  |  10.10.21.1/24  |  -  |  -  |  -  |
-| Vlan22 |  VRF11  |  -  |  10.10.22.1/24  |  -  |  -  |  -  |
-| Vlan3009 |  VRF10  |  10.255.1.100/31  |  -  |  -  |  -  |  -  |
-| Vlan3010 |  VRF11  |  10.255.1.100/31  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.1.100/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.1.68/31  |  -  |  -  |  -  |  -  |
+| Vlan11 | VRF10 | - | 10.10.11.1/24 | - | - | - |
+| Vlan12 | VRF10 | - | 10.10.12.1/24 | - | - | - |
+| Vlan21 | VRF11 | - | 10.10.21.1/24 | - | - | - |
+| Vlan22 | VRF11 | - | 10.10.22.1/24 | - | - | - |
+| Vlan3009 | VRF10 | 10.255.1.100/31 | - | - | - | - |
+| Vlan3010 | VRF11 | 10.255.1.100/31 | - | - | - | - |
+| Vlan4093 | default | 10.255.1.100/31 | - | - | - | - |
+| Vlan4094 | default | 10.255.1.68/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -533,27 +535,27 @@ interface Vlan22
 interface Vlan3009
    description MLAG_L3_VRF_VRF10
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF10
    ip address 10.255.1.100/31
 !
 interface Vlan3010
    description MLAG_L3_VRF_VRF11
    no shutdown
-   mtu 1500
+   mtu 9214
    vrf VRF11
    ip address 10.255.1.100/31
 !
 interface Vlan4093
    description MLAG_L3
    no shutdown
-   mtu 1500
+   mtu 9214
    ip address 10.255.1.100/31
 !
 interface Vlan4094
    description MLAG
    no shutdown
-   mtu 1500
+   mtu 9214
    no autostate
    ip address 10.255.1.68/31
 ```
@@ -581,8 +583,8 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 | VRF10 | 10 | - |
 | VRF11 | 11 | - |
 
@@ -689,7 +691,7 @@ ASN Notation: asplain
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -710,7 +712,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### MLAG-IPv4-UNDERLAY-PEER
 
@@ -720,7 +722,7 @@ ASN Notation: asplain
 | Remote AS | 65102 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -738,9 +740,9 @@ ASN Notation: asplain
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| EVPN-OVERLAY-PEERS | True |  - | - | default | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - | default | - |
 
 #### Router BGP VLANs
 
@@ -767,7 +769,7 @@ ASN Notation: asplain
 router bgp 65102
    router-id 10.255.0.5
    no bgp default ipv4-unicast
-   maximum-paths 4 ecmp 4
+   maximum-paths 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -778,7 +780,7 @@ router bgp 65102
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65102
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
@@ -786,7 +788,7 @@ router bgp 65102
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 <removed>
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
-   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
+   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 256000
    neighbor 10.255.0.1 peer group EVPN-OVERLAY-PEERS
    neighbor 10.255.0.1 remote-as 65100
    neighbor 10.255.0.1 description dc1-spine1_Loopback0

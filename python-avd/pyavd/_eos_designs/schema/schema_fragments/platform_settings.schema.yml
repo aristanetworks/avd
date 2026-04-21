@@ -1,4 +1,5 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+---
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -7,333 +8,28 @@
 type: dict
 keys:
   custom_platform_settings:
-    $ref: eos_designs#/keys/platform_settings
-    default: null
+    $ref: eos_designs#/$defs/platform_settings
+    type: list
     documentation_options:
-      table: platform-settings
-    description:
+      table: custom-platform-settings
+    description: |-
       Custom Platform settings to override the default `platform_settings`.
       This list will be prepended to the list of `platform_settings`.
-      The first entry containing `platforms` matching the `platform` node setting will be chosen.
+      The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.
       If no matches are found, the first entry containing a platform `default` will be chosen.
-    type: list
   platform_settings:
+    $ref: eos_designs#/$defs/platform_settings
     type: list
     documentation_options:
       table: platform-settings
-    description:
+    description: |-
       Platform settings.
-      The first entry containing `platforms` matching the `platform` node setting will be chosen.
+      The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.
       If no matches are found, the first entry containing a platform `default` will be chosen.
       The default values will be overridden if `platform_settings` is defined.
       If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.
       If you need to add custom platforms, create them under `custom_platform_settings`.
       Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
-    items:
-      type: dict
-      keys:
-        platforms:
-          type: list
-          items:
-            type: str
-            convert_types:
-              - int
-        trident_forwarding_table_partition:
-          type: str
-          description: Only applied when evpn_multicast is true.
-        reload_delay:
-          type: dict
-          keys:
-            mlag:
-              type: int
-              convert_types:
-                - str
-              min: 0
-              max: 86400
-              description: In seconds.
-            non_mlag:
-              type: int
-              convert_types:
-                - str
-              min: 0
-              max: 86400
-              description: In seconds.
-        tcam_profile:
-          type: str
-        lag_hardware_only:
-          type: bool
-        default_interface_mtu:
-          type: int
-          convert_types:
-            - str
-          description: |
-            Default interface MTU configured on EOS under "interface defaults".
-            Takes precedence over the root key "default_interface_mtu".
-          min: 68
-          max: 65535
-        p2p_uplinks_mtu:
-          type: int
-          convert_types:
-            - str
-          description: |
-            Set MTU on point to point uplink interfaces.
-            Takes precedence over the root key "p2p_uplinks_mtu".
-            <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-          min: 68
-          max: 65535
-        feature_support:
-          type: dict
-          keys:
-            queue_monitor:
-              type: bool
-              description: |-
-                Support for LANZ.
-                The feature will be ignored on platforms where this is false.
-              default: true
-            queue_monitor_length_notify:
-              type: bool
-              description: |-
-                Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
-                The feature will be ignored on platforms where this is false.
-              default: true
-            interface_storm_control:
-              type: bool
-              default: true
-              description: |-
-                Support for storm-control.
-                The feature will be ignored on platforms where this is false.
-            poe:
-              type: bool
-              default: false
-              description: |-
-                Support for PoE.
-                The feature will be ignored on platforms where this is false.
-            subinterface_mtu:
-              type: bool
-              default: true
-              description: |
-                Support for MTU configuration under sub-interfaces.
-                When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.
-            per_interface_mtu:
-              type: bool
-              default: true
-              description: |
-                Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
-                Effectively this means that all settings regarding interface MTU will be ignored if this is false.
-                Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"
-            per_interface_l2_mtu:
-              type: bool
-              default: true
-              description: |
-                Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
-                The feature will be ignored on platforms where this is false.
-            per_interface_l2_mru:
-              type: bool
-              default: true
-              description: |
-                Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.
-                The feature will be ignored on platforms where this is false.
-            bgp_update_wait_install:
-              type: bool
-              default: true
-              description: |
-                Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
-                Can be overridden by setting "bgp_update_wait_install" host/group_vars.
-                The feature will be ignored on platforms where this is false.
-            bgp_update_wait_for_convergence:
-              type: bool
-              default: true
-              description: |
-                Do not advertise reachability to a prefix until that prefix has been installed in hardware.
-                This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
-                Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
-                The feature will be ignored on platforms where this is false.
-            platform_sfe_interface_profile:
-              type: dict
-              description: Support for Platform SFE Interface Profiles.
-              keys:
-                supported:
-                  type: bool
-                  default: false
-                  description: Capability flag for generation of SFE interface profile.
-                max_rx_queues:
-                  type: int
-                  default: 6
-                  convert_types:
-                    - str
-                  description: Maximum rx_queue count supported on any interface.
-            evpn_gateway_all_active_multihoming:
-              type: bool
-              default: false
-              description: |-
-                Support for all-active EVPN gateway redundancy.
-                An error will be raised if the feature is enabled and this is false.
-            hardware_counters:
-              type: bool
-              description: |-
-                Support for enabling counters using programmable hardware counter resources.
-                Setting this key to `false` for the specific platform will ignore all hardware counter features for this platform.
-              default: true
-            hardware_counter_features:
-              type: dict
-              description:  |-
-                Per-feature support for the hardware counters.
-                Features set to `false` will be ignored for this platform.
-              keys:
-                acl:
-                  type: bool
-                  default: true
-                decap_group:
-                  type: bool
-                  default: true
-                directflow:
-                  type: bool
-                  default: true
-                ecn:
-                  type: bool
-                  default: true
-                flow_spec:
-                  type: bool
-                  default: true
-                gre_tunnel_interface:
-                  type: bool
-                  default: true
-                ip:
-                  type: bool
-                  default: true
-                mpls_interface:
-                  type: bool
-                  default: true
-                mpls_lfib:
-                  type: bool
-                  default: true
-                mpls_tunnel:
-                  type: bool
-                  default: true
-                multicast:
-                  type: bool
-                  default: true
-                nexthop:
-                  type: bool
-                  default: true
-                pbr:
-                  type: bool
-                  default: true
-                pdp:
-                  type: bool
-                  default: true
-                policing_interface:
-                  type: bool
-                  default: true
-                qos:
-                  type: bool
-                  default: true
-                qos_dual_rate_policer:
-                  type: bool
-                  default: true
-                route:
-                  type: bool
-                  default: true
-                routed_port:
-                  type: bool
-                  default: true
-                segment_security:
-                  type: bool
-                  default: true
-                subinterface:
-                  type: bool
-                  default: true
-                tapagg:
-                  type: bool
-                  default: true
-                traffic_class:
-                  type: bool
-                  default: true
-                traffic_policy:
-                  type: bool
-                  default: true
-                vlan:
-                  type: bool
-                  default: true
-                vlan_interface:
-                  type: bool
-                  default: true
-                vni_decap:
-                  type: bool
-                  default: true
-                vni_encap:
-                  type: bool
-                  default: true
-                vtep_decap:
-                  type: bool
-                  default: true
-                vtep_encap:
-                  type: bool
-                  default: true
-            hardware_speed_group:
-              type: bool
-              description: |-
-                Support for configurable speeds per speed-group.
-                The feature will be ignored on platforms where this is false.
-              default: true
-            private_vlan:
-              type: bool
-              default: true
-              description: |
-                Support for PVLAN feature.
-                On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3 set this via "private_vlan" in the specific platform settings.
-                See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
-        management_interface:
-          type: str
-          default: Management1
-        security_entropy_sources:
-          description: Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
-          type: dict
-          keys:
-            hardware:
-              type: bool
-              description: Use a hardware based source.
-            haveged:
-              type: bool
-              description: Use the HAVEGE algorithm.
-            cpu_jitter:
-              type: bool
-              description: Use the Jitter RNG algorithm of a CPU based source.
-            hardware_exclusive:
-              type: bool
-              description: Only use entropy from the hardware source.
-        digital_twin:
-          type: dict
-          description: |-
-            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
-            Digital Twin settings applied when `avd_digital_twin_mode` is `true`.
-          keys:
-            platform:
-              type: str
-              description: |-
-                Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
-                The `platform_settings` for the regular `platform` is used if this is not set.
-            act_node_type:
-              type: str
-              description: |-
-                ACT node type.
-              valid_values:
-                - cloudeos
-                - cvp
-                - generic
-                - third-party
-                - tools-server
-                - veos
-        structured_config:
-          type: dict
-          relaxed_validation: true
-          documentation_options:
-            hide_keys: true
-          description: Custom structured config for eos_cli_config_gen.
-          $ref: "eos_cli_config_gen#"
-        raw_eos_cli:
-          type: str
-          description: EOS CLI rendered directly on the root level of the final EOS configuration.
     default:
       # Campus platforms are separated out by their ability to support "trident_forwarding_table_partition".
       # This is required for EVPN multicast, currently only supported on all 720XP platforms.
@@ -353,6 +49,9 @@ keys:
           - 7050X3
         feature_support:
           queue_monitor_length_notify: false
+          sflow_subinterfaces: false
+          subinterface_mtu: false
+          per_interface_l2_mru: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -364,6 +63,9 @@ keys:
         feature_support:
           poe: true
           queue_monitor_length_notify: false
+          sflow_subinterfaces: false
+          subinterface_mtu: false
+          per_interface_l2_mru: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -378,6 +80,10 @@ keys:
         feature_support:
           poe: true
           queue_monitor_length_notify: false
+          subinterface_mtu: false
+          per_interface_mtu: false
+          per_interface_l2_mru: false
+          sflow_subinterfaces: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -390,16 +96,85 @@ keys:
         feature_support:
           poe: true
           queue_monitor_length_notify: false
+          subinterface_mtu: false
+          per_interface_mtu: false
+          per_interface_l2_mru: false
+          sflow_subinterfaces: false
         reload_delay:
           mlag: 300
           non_mlag: 330
         digital_twin:
           platform: vEOS-lab
       - platforms:
+          - 720DP-24ZS
+          - 720DP-48ZS
+        feature_support:
+          queue_monitor_length_notify: false
+          poe: true
+          subinterface_mtu: false
+          per_interface_l2_mru: false
+          sflow_subinterfaces: false
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+        digital_twin:
+          platform: vEOS-lab
+      - platforms:
+          - 720DF
+        feature_support:
+          queue_monitor_length_notify: false
+          subinterface_mtu: false
+          per_interface_l2_mru: false
+          sflow_subinterfaces: false
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+        digital_twin:
+          platform: vEOS-lab
+      - platforms:
+          - 720DT
           - 7010TX
         feature_support:
           queue_monitor_length_notify: false
+          subinterface_mtu: false
           per_interface_mtu: false
+          per_interface_l2_mru: false
+          sflow_subinterfaces: false
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+        digital_twin:
+          platform: vEOS-lab
+      - platforms:
+          - 7060X5
+        feature_support:
+          queue_monitor_length_notify: false
+          subinterface_mtu: false
+          per_interface_l2_mru: false
+          hardware_counter_features:
+            acl: false
+            decap_group: false
+            directflow: false
+            ecn: false
+            flow_spec: false
+            mpls_interface: false
+            mpls_lfib: false
+            mpls_tunnel: false
+            multicast: false
+            nexthop: false
+            pbr: false
+            pdp: false
+            policing_interface: false
+            qos: false
+            qos_dual_rate_policer: false
+            route: false
+            routed_port: false
+            segment_security: false
+            tapagg: false
+            traffic_class: false
+            traffic_policy: false
+            vlan: false
+          sflow_subinterfaces: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -415,6 +190,8 @@ keys:
           non_mlag: 1020
         tcam_profile: vxlan-routing
         feature_support:
+          subinterface_mtu: false
+          per_interface_l2_mtu: false
           private_vlan: false
         digital_twin:
           platform: vEOS-lab
@@ -426,7 +203,45 @@ keys:
         tcam_profile: vxlan-routing
         feature_support:
           evpn_gateway_all_active_multihoming: true
+          evpn_gateway_rd_rt_rewrite: true
+          per_interface_l2_mtu: false
           private_vlan: false
+        digital_twin:
+          platform: vEOS-lab
+      - platforms:
+          - 7388X5
+        feature_support:
+          queue_monitor_length_notify: false
+          subinterface_mtu: false
+          per_interface_l2_mru: false
+          hardware_counter_features:
+            acl: false
+            decap_group: false
+            directflow: false
+            ecn: false
+            flow_spec: false
+            mpls_interface: false
+            mpls_lfib: false
+            mpls_tunnel: false
+            multicast: false
+            nexthop: false
+            pbr: false
+            pdp: false
+            policing_interface: false
+            qos: false
+            qos_dual_rate_policer: false
+            route: false
+            routed_port: false
+            segment_security: false
+            tapagg: false
+            traffic_class: false
+            traffic_policy: false
+            vlan: false
+          sflow_subinterfaces: false
+        management_interface: Management0
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
         digital_twin:
           platform: vEOS-lab
       - platforms:
@@ -439,11 +254,26 @@ keys:
           non_mlag: 1020
         tcam_profile: vxlan-routing
         feature_support:
+          subinterface_mtu: false
+          per_interface_l2_mtu: false
           private_vlan: false
         digital_twin:
           platform: vEOS-lab
       - platforms:
           - 7500R3
+        management_interface: Management0
+        reload_delay:
+          mlag: 900
+          non_mlag: 1020
+        tcam_profile: vxlan-routing
+        feature_support:
+          per_interface_l2_mtu: false
+          evpn_gateway_all_active_multihoming: true
+          evpn_gateway_rd_rt_rewrite: true
+          private_vlan: false
+        digital_twin:
+          platform: vEOS-lab
+      - platforms:
           - 7800R3
         management_interface: Management0
         reload_delay:
@@ -451,7 +281,9 @@ keys:
           non_mlag: 1020
         tcam_profile: vxlan-routing
         feature_support:
+          per_interface_l2_mtu: false
           evpn_gateway_all_active_multihoming: true
+          evpn_gateway_rd_rt_rewrite: true
           private_vlan: false
         digital_twin:
           platform: vEOS-lab
@@ -464,8 +296,11 @@ keys:
         feature_support:
           queue_monitor_length_notify: false
           interface_storm_control: true
+          subinterface_mtu: false
+          per_interface_l2_mru: false
           bgp_update_wait_for_convergence: true
-          bgp_update_wait_install: false
+          bgp_update_wait_install: true
+          sflow_subinterfaces: false
         digital_twin:
           platform: vEOS-lab
       - platforms:
@@ -474,6 +309,10 @@ keys:
         reload_delay:
           mlag: 300
           non_mlag: 330
+        feature_support:
+          subinterface_mtu: false
+          per_interface_l2_mru: false
+          sflow_subinterfaces: false
         digital_twin:
           platform: vEOS-lab
       - platforms:
@@ -482,6 +321,10 @@ keys:
         reload_delay:
           mlag: 1200
           non_mlag: 1320
+        feature_support:
+          subinterface_mtu: false
+          per_interface_l2_mru: false
+          sflow_subinterfaces: false
         trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared 131072
         digital_twin:
           platform: vEOS-lab
@@ -495,7 +338,13 @@ keys:
           bgp_update_wait_install: false
           interface_storm_control: false
           queue_monitor_length_notify: false
+          subinterface_mtu: false
+          per_interface_l2_mtu: false
+          per_interface_l2_mru: false
           evpn_gateway_all_active_multihoming: true
+          evpn_gateway_rd_rt_rewrite: true
+          sflow_subinterfaces: false
+          hardware_validation: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -511,8 +360,14 @@ keys:
           bgp_update_wait_install: false
           interface_storm_control: false
           queue_monitor_length_notify: false
+          subinterface_mtu: false
+          per_interface_l2_mtu: false
+          per_interface_l2_mru: false
           evpn_gateway_all_active_multihoming: true
-        management_interface: Management0
+          evpn_gateway_rd_rt_rewrite: true
+          sflow_subinterfaces: false
+          hardware_validation: false
+        management_interface: Management1
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -523,7 +378,10 @@ keys:
         feature_support:
           bgp_update_wait_install: false
           interface_storm_control: false
+          per_interface_l2_mru: false
           queue_monitor_length_notify: false
+          sflow: false
+          hardware_validation: false
         p2p_uplinks_mtu: 9194
         digital_twin:
           act_node_type: cloudeos
@@ -535,9 +393,12 @@ keys:
           bgp_update_wait_install: false
           interface_storm_control: false
           queue_monitor_length_notify: false
+          subinterface_mtu: false
+          per_interface_l2_mru: false
           platform_sfe_interface_profile:
             supported: true
             max_rx_queues: 6
+          sflow: false
         management_interface: Management1/1
         p2p_uplinks_mtu: 9194
         digital_twin:
@@ -550,9 +411,12 @@ keys:
           bgp_update_wait_install: false
           interface_storm_control: false
           queue_monitor_length_notify: false
+          subinterface_mtu: false
+          per_interface_l2_mru: false
           platform_sfe_interface_profile:
             supported: true
             max_rx_queues: 16
+          sflow: false
         management_interface: Management1/1
         p2p_uplinks_mtu: 9194
         digital_twin:
@@ -565,6 +429,8 @@ keys:
           interface_storm_control: false
           queue_monitor_length_notify: false
           poe: true
+          per_interface_l2_mru: false
+          sflow: false
         management_interface: Management1
         p2p_uplinks_mtu: 9194
         digital_twin:

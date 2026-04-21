@@ -1,9 +1,10 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 from logging import getLogger
+from typing import TYPE_CHECKING
 
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
@@ -11,6 +12,7 @@ from pyavd._cv.client.exceptions import CVClientException
 from .create_workspace_on_cv import create_workspace_on_cv
 from .deploy_configs_to_cv import deploy_configs_to_cv
 from .deploy_cv_pathfinder_metadata_to_cv import deploy_cv_pathfinder_metadata_to_cv
+from .deploy_static_config_studio_manifest_to_cv import deploy_static_config_studio_manifest_to_cv
 from .deploy_studio_inputs_to_cv import deploy_studio_inputs_to_cv
 from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
@@ -30,6 +32,9 @@ from .models import (
 from .verify_devices_on_cv import verify_devices_on_cv
 from .verify_inputs import verify_device_inputs
 
+if TYPE_CHECKING:
+    from .models import AvdManifest
+
 LOGGER = getLogger(__name__)
 
 
@@ -38,6 +43,7 @@ async def deploy_to_cv(
     workspace: CVWorkspace | None = None,
     change_control: CVChangeControl | None = None,
     configs: list[CVEosConfig] | None = None,
+    static_config_manifest: AvdManifest | None = None,
     device_tags: list[CVDeviceTag] | None = None,
     interface_tags: list[CVInterfaceTag] | None = None,
     studio_inputs: list[CVStudioInputs] | None = None,
@@ -131,15 +137,30 @@ async def deploy_to_cv(
     if cv_pathfinder_metadata is None:
         cv_pathfinder_metadata = []
     try:
-        async with CVClient(servers=cloudvision.servers, token=cloudvision.token, verify_certs=cloudvision.verify_certs) as cv_client:
+        async with CVClient(
+            servers=cloudvision.servers,
+            token=cloudvision.token,
+            username=cloudvision.username,
+            password=cloudvision.password,
+            verify_certs=cloudvision.verify_certs,
+            proxy_host=cloudvision.proxy_host,
+            proxy_port=cloudvision.proxy_port,
+            proxy_username=cloudvision.proxy_username,
+            proxy_password=cloudvision.proxy_password,
+        ) as cv_client:
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
-            # Form the list of targeted CVDevices (list may contain duplicated items)
-            devices = (
-                [tag.device for tag in device_tags if tag.device is not None]
-                + [tag.device for tag in interface_tags if tag.device is not None]
-                + [config.device for config in configs if config.device is not None]
+            # Form deduplicated list of targeted CVDevices
+            devices = list(
+                {
+                    id(device): device
+                    for device in (
+                        [tag.device for tag in device_tags if tag.device is not None]
+                        + [tag.device for tag in interface_tags if tag.device is not None]
+                        + [config.device for config in configs if config.device is not None]
+                    )
+                }.values()
             )
             # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
             verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
@@ -147,8 +168,6 @@ async def deploy_to_cv(
             try:
                 # Verify devices exist and update CVDevice objects with _exists_on_cv.
                 # Depending on skip_missing_devices we will raise or skip missing devices.
-                # Since verify_devices will silently return if _exists_on_cv is already set,
-                # we can just send all the items even if we have duplicate device objects.
                 await verify_devices_on_cv(
                     devices=devices,
                     workspace_id=result.workspace.id,
@@ -180,11 +199,22 @@ async def deploy_to_cv(
                 )
 
                 # Deploy configs
+                # TODO: Check if we want to consolidate and use the new deploy_static_config_studio_manifest_to_cv
+                #       by building a hierarchy from the CVEosConfig objects.
                 await deploy_configs_to_cv(
                     configs=configs,
                     result=result,
                     cv_client=cv_client,
                 )
+
+                # Deploy Static Configuration Studio manifest
+                # TODO: Update function docstring workflow to reflect this
+                if static_config_manifest:
+                    await deploy_static_config_studio_manifest_to_cv(
+                        manifest=static_config_manifest,
+                        deployment_result=result,
+                        cv_client=cv_client,
+                    )
 
                 # Deploy Studio Inputs
                 await deploy_studio_inputs_to_cv(
@@ -210,7 +240,7 @@ async def deploy_to_cv(
                 result.workspace.state = "abandoned"
                 return result
 
-            await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
+            await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=result.warnings)
 
             # Create/update CVChangeControl object with ID created by workspace.
             if result.workspace.change_control_id is not None:

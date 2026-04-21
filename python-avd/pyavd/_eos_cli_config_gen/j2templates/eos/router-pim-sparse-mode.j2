@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -57,12 +57,18 @@ router pim sparse-mode
       {{ other_anycast_rp_addresses_cli }}
 {%             endfor %}
 {%         endfor %}
+{%         if router_pim_sparse_mode.ipv4.register_local_interface is arista.avd.defined %}
+      register local-interface {{ router_pim_sparse_mode.ipv4.register_local_interface }}
+{%         endif %}
 {%     endif %}
-{%     for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
+{%     for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    vrf {{ vrf.name }}
 {%         if vrf.ipv4 is arista.avd.defined %}
       ipv4
+{%             if vrf.ipv4.ssm_range is arista.avd.defined %}
+         ssm range {{ vrf.ipv4.ssm_range }}
+{%             endif %}
 {%             if vrf.ipv4.bfd is arista.avd.defined(true) %}
          bfd
 {%             endif %}
@@ -99,6 +105,18 @@ router pim sparse-mode
          rp address {{ rp_address.address }}{{ rp_options_cli }}
 {%                 endif %}
 {%             endfor %}
+{%             for anycast_rp in vrf.ipv4.anycast_rps | arista.avd.natural_sort('address') %}
+{%                 for other_anycast_rp_address in anycast_rp.other_anycast_rp_addresses | arista.avd.natural_sort('address') %}
+{%                     set other_anycast_rp_addresses_cli = "anycast-rp " ~ anycast_rp.address ~ " " ~ other_anycast_rp_address.address %}
+{%                     if other_anycast_rp_address.register_count is arista.avd.defined %}
+{%                         set other_anycast_rp_addresses_cli = other_anycast_rp_addresses_cli ~ " register-count " ~ other_anycast_rp_address.register_count %}
+{%                     endif %}
+         {{ other_anycast_rp_addresses_cli }}
+{%                 endfor %}
+{%             endfor %}
+{%             if vrf.ipv4.register_local_interface is arista.avd.defined %}
+         register local-interface {{ vrf.ipv4.register_local_interface }}
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 {% endif %}

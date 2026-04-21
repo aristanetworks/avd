@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -8,6 +8,4 @@
 no aaa root
 {% elif aaa_root.secret.sha512_password is arista.avd.defined %}
 aaa root secret sha512 {{ aaa_root.secret.sha512_password | arista.avd.hide_passwords(hide_passwords) }}
-{% elif generate_default_config is arista.avd.defined(true) %}
-no aaa root
 {% endif %}

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -7,12 +7,18 @@
 type: dict
 keys:
   ip_radius_source_interfaces:
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 7.0.0
+      new_key: ip_radius
     type: list
     items:
       type: dict
       keys:
         name:
           type: str
+          required: true
           description: Interface Name.
         vrf:
           type: str

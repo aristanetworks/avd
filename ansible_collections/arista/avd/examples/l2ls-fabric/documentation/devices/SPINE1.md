@@ -50,19 +50,19 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.101/24 | 172.16.100.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.101/24 | 172.16.100.1 |
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
-interface Management0
+interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
@@ -91,12 +91,12 @@ ip name-server vrf MGMT 8.8.8.8
 
 | Source interface | vrf |
 | ---------------- | --- |
-| Management0 | MGMT |
+| Management1 | MGMT |
 
 #### DNS Domain Lookup Device Configuration
 
 ```eos
-ip domain lookup vrf MGMT source-interface Management0
+ip domain lookup vrf MGMT source-interface Management1
 ```
 
 ### NTP
@@ -107,20 +107,22 @@ ip domain lookup vrf MGMT source-interface Management0
 
 | Interface | VRF |
 | --------- | --- |
-| Management0 | MGMT |
+| Management1 | MGMT |
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| pool.ntp.org | MGMT | - | - | - | - | - | - | - | - |
-| time.google.com | MGMT | True | - | - | - | - | - | - | - |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| pool.ntp.org | - | - | - | - | - | - | - | - |
+| time.google.com | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
 ```eos
 !
-ntp local-interface vrf MGMT Management0
+ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT pool.ntp.org
 ntp server vrf MGMT time.google.com prefer
 ```
@@ -129,9 +131,9 @@ ntp server vrf MGMT time.google.com prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -260,7 +262,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -366,7 +368,7 @@ interface Ethernet48
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_RACK1_Port-Channel1 | trunk | 10,20 | - | - | - | - | 1 | - |
 | Port-Channel3 | L2_RACK2_Port-Channel1 | trunk | 10,30 | - | - | - | - | 3 | - |
 | Port-Channel5 | FIREWALL_FIREWALL | trunk | 10,20,30 | - | - | - | - | 5 | - |
@@ -412,15 +414,15 @@ interface Port-Channel47
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 | MLAG | default | 1500 | False |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan4094 |  default  |  192.168.0.0/31  |  -  |  -  |  -  |  -  |
+| Vlan4094 | default | 192.168.0.0/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -429,7 +431,7 @@ interface Port-Channel47
 interface Vlan4094
    description MLAG
    no shutdown
-   mtu 1500
+   mtu 9214
    no autostate
    ip address 192.168.0.0/31
 ```

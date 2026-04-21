@@ -1,0 +1,440 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet1
+  shutdown: false
+  speed: forced 1000full
+  mtu: 1500
+  ip_address: unnumbered loopback0
+  ipv6_enable: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet1
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet2
+  shutdown: false
+  speed: 100full
+  mtu: 1601
+  ip_address: 100.123.123.3/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  service_profile: test_qos_profile
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet2
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet3
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet3
+  shutdown: false
+  speed: forced 1000full
+  mtu: 1500
+  ip_address: 100.64.48.5/31
+  ipv6_enable: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet3
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet4
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet4
+  shutdown: false
+  speed: forced 1000full
+  mtu: 1500
+  ip_address: 100.64.48.7/31
+  ipv6_enable: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet4
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet5
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet5
+  shutdown: false
+  speed: forced 1000full
+  mtu: 1500
+  ip_address: 100.64.48.9/31
+  ipv6_enable: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  mpls:
+    ip: true
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet5
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet6
+  description: Custom description on core-2-ospf-ldp eth6
+  shutdown: false
+  speed: 100full
+  mtu: 1602
+  ip_address: unnumbered loopback0
+  ipv6_enable: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  service_profile: test_qos_profile
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet6
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet10
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet10
+  shutdown: false
+  speed: forced 1000full
+  mtu: 1500
+  l2_mtu: 2222
+  l2_mru: 2222
+  ip_address: 100.64.48.13/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet10
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet12
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet12
+  shutdown: false
+  speed: forced 1000full
+  channel_group:
+    id: 12
+    mode: active
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet12
+    peer_type: core_router
+- name: Ethernet13
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet13
+  shutdown: false
+  speed: forced 1000full
+  channel_group:
+    id: 12
+    mode: active
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet13
+    peer_type: core_router
+- name: Ethernet14
+  description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
+  shutdown: false
+  speed: forced 1000full
+  channel_group:
+    id: 9
+    mode: active
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet14
+    peer_type: core_router
+- name: Ethernet15
+  description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
+  shutdown: false
+  speed: forced 1000full
+  channel_group:
+    id: 9
+    mode: active
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet15
+    peer_type: core_router
+- name: Ethernet16
+  description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B_Ethernet16
+  shutdown: false
+  speed: forced 1000full
+  channel_group:
+    id: 109
+    mode: active
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet16
+    peer_type: core_router
+- name: Ethernet17
+  description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B_Ethernet17
+  shutdown: false
+  speed: forced 1000full
+  channel_group:
+    id: 109
+    mode: active
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet17
+    peer_type: core_router
+- name: Ethernet18
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet18
+  shutdown: false
+  speed: forced 1000full
+  channel_group:
+    id: 18
+    mode: active
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet18
+    peer_type: core_router
+- name: Ethernet19
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet19
+  shutdown: false
+  speed: forced 1000full
+  channel_group:
+    id: 18
+    mode: active
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet19
+    peer_type: core_router
+- name: Ethernet20
+  description: Description set via ethernet_structured_config(core_interfaces)
+  shutdown: false
+  channel_group:
+    id: 20
+    mode: active
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet20
+    peer_type: core_router
+- name: Ethernet21
+  description: Description set via ethernet_structured_config(core_interfaces)
+  shutdown: false
+  channel_group:
+    id: 20
+    mode: active
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet21
+    peer_type: core_router
+hostname: core-2-ospf-ldp
+ip_routing: true
+ipv6_unicast_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.0.0.2/32
+  ipv6_addresses:
+  - 2000:1234:ffff:ffff::2/128
+  ospf_area: 0.0.0.0
+  mpls:
+    ldp:
+      interface: true
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+mpls:
+  ip: true
+  ldp:
+    interface_disabled_default: true
+    shutdown: false
+    transport_address_interface: Loopback0
+port_channel_interfaces:
+- name: Port-Channel12
+  description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
+  shutdown: false
+  mtu: 1500
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  ip_address: 100.64.48.17/31
+  ipv6_enable: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel12
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Port-Channel9
+  description: CUSTOM_DESCRIPTION_ON_P2P_PORT_CHANNEL_Port-Channel9_PCID-9
+  shutdown: false
+  mtu: 1500
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  ip_address: 100.64.48.17/31
+  ipv6_enable: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel14
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Port-Channel109
+  description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B_Port-Channel109
+  shutdown: false
+  mtu: 1500
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  ip_address: 100.64.48.17/31
+  ipv6_enable: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel16
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Port-Channel18
+  description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12345
+  shutdown: false
+  mtu: 1500
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  ip_address: 100.64.48.25/31
+  ipv6_enable: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel12345
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Port-Channel20
+  description: Description set via port_channel_structured_config(core_interfaces)
+  shutdown: false
+  mtu: 1600
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Port-Channel12346
+    peer_type: core_router
+  switchport:
+    enabled: false
+ptp:
+  mode: boundary
+  clock_identity: 00:1C:73:7f:00:02
+  priority1: 127
+  priority2: 2
+  domain: 127
+  monitor:
+    enabled: true
+    threshold:
+      offset_from_master: 250
+      mean_path_delay: 1500
+    missing_message:
+      sequence_ids:
+        enabled: true
+        announce: 3
+        delay_resp: 3
+        follow_up: 3
+        sync: 3
+router_general:
+  router_id:
+    ipv4: 10.0.0.2
+    ipv6: 2000:1234:ffff:ffff::2
+router_ospf:
+  process_ids:
+  - id: 101
+    passive_interface_default: true
+    bfd_enable: true
+    no_passive_interfaces:
+    - Ethernet1
+    - Ethernet2
+    - Ethernet3
+    - Ethernet4
+    - Ethernet5
+    - Ethernet6
+    - Ethernet10
+    - Port-Channel12
+    - Port-Channel9
+    - Port-Channel109
+    - Port-Channel18
+    - Port-Channel20
+    max_lsa: 12000
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -56,7 +56,7 @@ Developing with your local Python environment requires you to configure and inst
 Recommended steps with Python virtual environment:
 
 1. Create and activate a Python virtual environment.
-2. Install Python requirements located in the AVD repository: [requirements-dev.txt](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/requirements-dev.txt).
+2. Install Python dev requirements located in the AVD repository: [pyproject.toml](https://github.com/aristanetworks/avd/blob/devel/pyproject.toml).
 
 !!! note
     Ensure the virtual environment is located outside of the AVD project directory.
@@ -68,12 +68,15 @@ python3 -m venv avd-venv
 # Activate Python virtual environment `source <virtual-environment-name>/bin/activate`.
 source avd-venv/bin/activate
 
-# Install AVD project requirements-dev.txt and requirements.txt in your Python Virtual environment.
+# Install AVD project dev requirements and `pyavd` in your Python Virtual environment.
 # The installation _must_ be performed from the root of the cloned avd repository.
 cd avd
-# Requirements files are located in `ansible_collections/arista/avd` of the avd repository.
-pip3 install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+pip3 install --group dev --upgrade
+make pyavd-editable-install
 ```
+
+!!! note
+    Make sure your pip version is above 25.1 to get support for `--group`
 
 !!! note
     It is important to confirm the Python interpreter Ansible is using.
@@ -142,22 +145,20 @@ The [Molecule](https://ansible.readthedocs.io/projects/molecule/) project is des
 The AVD project leverages Molecule for:
 
 - Static integration test on the following Ansible roles:
+  - `anta_runner`
   - `eos_designs`
   - `eos_cli_config_gen`
-  - `eos_validate_state`
-  - `eos_config_deploy_cvp`
-  - `dhcp_provisioner` (requires docker)
 - End-to-end systems integration tests on the following CloudVision role and module:
   - `cv_deploy`
   - `cv_workflow`
 
-The Molecule scenarios are located under the `molecule` directory at the root of the collection (`ansible_collections/arista/avd/molecule`).
+The Molecule scenarios are located under the `molecule` directory at the root of the collection (`ansible_collections/arista/avd/extensions/molecule`).
 
 The directory name of each Molecule scenario folder is used as the `--scenario-name` when executing Molecule, i.e: `eos_cli_config_gen`, `eos_designs_unit_tests`.
 
 ### Executing Molecule with makefile method
 
-To run the Molecule tests locally to generate the new expected configuration and documentation leverage Makefile located in the `ansible_collections/arista/avd/molecule` directory.
+To run the Molecule tests locally to generate the new expected configuration and documentation leverage Makefile located in the `ansible_collections/arista/avd/extensions/molecule` directory.
 
 The Makefile supports the following targets:
 
@@ -166,7 +167,7 @@ The Makefile supports the following targets:
   - This is the recommended way for development, as it is quicker and does not execute idempotency checks.
 - `test`: Execute molecule "test" sequence. Specify scenario name with `MOLECULE=<scenario_name>` (default: `eos_cli_config_gen`) and Ansible options with `ANSIBLE_OPTIONS=<options>` (default: `--forks 5`).
   - This is executed as part of the CI and tests for idempotency.
-- `refresh-facts`: Run all "eos_designs" and "eos_cli_config_gen" [molecule scenarios](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/molecule/MOLECULE_SCENARIOS.txt).
+- `refresh-facts`: Run all "eos_designs" and "eos_cli_config_gen" [molecule scenarios](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/extensions/molecule/MOLECULE_SCENARIOS.txt).
 
 !!! info
     `make refresh-facts` can be useful when you change common template or structured configuration output.
@@ -180,7 +181,7 @@ In the majority of new features or bug fixes, the process is the following:
 
     ```shell
     # Change to molecule directory
-    cd ansible_collections/arista/avd/molecule
+    cd ansible_collections/arista/avd/extensions/molecule
 
     # Run eos_designs_unit_tests scenario to generate artifacts
     make converge MOLECULE=eos_designs_unit_tests

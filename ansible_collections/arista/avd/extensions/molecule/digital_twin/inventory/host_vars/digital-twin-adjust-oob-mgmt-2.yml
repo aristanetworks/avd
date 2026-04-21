@@ -1,0 +1,11 @@
+---
+# OOB MGMT is Ma0. ACT Digital Twin version of the config swaps it for Ma1. Code emits info message.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-adjust-oob-mgmt-2
+      id: 1
+      mgmt_ip: 192.168.1.2/32
+      # Force OOB MGMT interface to be Ma0
+      mgmt_interface: Management0

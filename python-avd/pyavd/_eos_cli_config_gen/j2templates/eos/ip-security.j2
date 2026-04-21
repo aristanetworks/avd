@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -7,7 +7,7 @@
 {% if ip_security is arista.avd.defined %}
 !
 ip security
-{%     for ike_policy in ip_security.ike_policies | arista.avd.natural_sort('name') %}
+{%     for ike_policy in ip_security.ike_policies | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%         if not loop.first %}
    !
 {%         endif %}
@@ -30,7 +30,7 @@ ip security
       local-id {{ ike_policy.local_id }}
 {%         endif %}
 {%     endfor %}
-{%     for sa_policy in ip_security.sa_policies | arista.avd.natural_sort('name') %}
+{%     for sa_policy in ip_security.sa_policies | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    sa policy {{ sa_policy.name }}
 {%         if sa_policy.esp.encryption is arista.avd.defined %}
@@ -54,7 +54,7 @@ ip security
       pfs dh-group {{ sa_policy.pfs_dh_group }}
 {%         endif %}
 {%     endfor %}
-{%     for profile in ip_security.profiles | arista.avd.natural_sort('name') %}
+{%     for profile in ip_security.profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    profile {{ profile.name }}
 {%         if profile.ike_policy is arista.avd.defined %}

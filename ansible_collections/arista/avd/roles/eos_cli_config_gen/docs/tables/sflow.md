@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>sflow</samp>](## "sflow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;sample</samp>](## "sflow.sample") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;sample_truncate_size</samp>](## "sflow.sample_truncate_size") | Integer |  |  | Min: 128<br>Max: 512 | Maximum sample size, in bytes. |
     | [<samp>&nbsp;&nbsp;sample_input_subinterface</samp>](## "sflow.sample_input_subinterface") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;sample_output_subinterface</samp>](## "sflow.sample_output_subinterface") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;dangerous</samp>](## "sflow.dangerous") | Boolean |  |  |  |  |
@@ -32,7 +33,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disable</samp>](## "sflow.interface.disable") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "sflow.interface.disable.default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;egress</samp>](## "sflow.interface.egress") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_default</samp>](## "sflow.interface.egress.enable_default") | Boolean |  |  |  | Enable egress sFlow by default.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_default</samp>](## "sflow.interface.egress.enable_default") | Boolean | Required |  |  | Enable egress sFlow by default.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmodified</samp>](## "sflow.interface.egress.unmodified") | Boolean |  |  |  | Enable egress sFlow unmodified.<br>Platform dependent feature.<br> |
     | [<samp>&nbsp;&nbsp;run</samp>](## "sflow.run") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;hardware_acceleration</samp>](## "sflow.hardware_acceleration") | Dictionary |  |  |  |  |
@@ -47,6 +48,9 @@
     ```yaml
     sflow:
       sample: <int>
+
+      # Maximum sample size, in bytes.
+      sample_truncate_size: <int; 128-512>
       sample_input_subinterface: <bool>
       sample_output_subinterface: <bool>
       dangerous: <bool>
@@ -96,7 +100,7 @@
         egress:
 
           # Enable egress sFlow by default.
-          enable_default: <bool>
+          enable_default: <bool; required>
 
           # Enable egress sFlow unmodified.
           # Platform dependent feature.

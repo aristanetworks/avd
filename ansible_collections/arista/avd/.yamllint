@@ -3,25 +3,39 @@
 extends: default
 
 rules:
+  comments:
+    # https://github.com/prettier/prettier/issues/6780
+    min-spaces-from-content: 1
+    level: error
+  # https://github.com/adrienverge/yamllint/issues/384
+  comments-indentation: false
+  document-start: disable
+  # We are adding an extra space inside braces as that's how prettier does it
+  # and we are trying not to fight other linters.
+  line-length:
+    max: 160
+    # TODO: See how we can fix this going forward
+    ignore:
+      - /extensions/molecule/**/intended/structured_configs/
+      - /changelogs/fragments_backup/
   braces:
-    min-spaces-inside: 0
-    max-spaces-inside: 1
+    min-spaces-inside: 0 # yamllint defaults to 0
+    max-spaces-inside: 1 # yamllint defaults to 0
     level: error
-  brackets:
-    max-spaces-inside: 1
-    level: error
+  octal-values:
+    forbid-implicit-octal: true # yamllint defaults to false
+    forbid-explicit-octal: true # yamllint defaults to false
+  #######################################################################
+  # AVD Extra checks as compared to default ansible-lint configuration  #
+  #     in most cases we are stricter so this is not conflicting except #
+  #     for the indentation rule where we are more flexible.            #
+  #######################################################################
   colons:
     max-spaces-after: -1
     level: error
   commas:
     max-spaces-after: -1
     level: error
-  comments:
-    # prettier compatibility
-    min-spaces-from-content: 1
-    level: error
-  comments-indentation: false
-  document-start: disable
   empty-lines:
     max: 1
     level: error
@@ -29,19 +43,15 @@ rules:
     level: error
   key-duplicates:
     forbid-duplicated-merge-keys: true
-  line-length:
-    max: 160
-    ignore:
-      - /molecule/**/intended/structured_configs/
-      - /molecule/**/intended/structured_configs/cvp/
-      - /examples/**/intended/structured_configs/cvp/
-      - /changelogs/fragments_backup/
-      - /tests/inventory/**/expected_output
   new-lines:
     type: unix
   indentation:
     level: error
+    # TODO: Here we diverge from the ansible-lint default configuration
+    #       and this is causing issues when running ansible-lint without
+    #       out custom configuration.
+    #       because the .yamllint is not included in the collection manifest
+    #       this could lead to errors in CI that would be unobservable locally
     indent-sequences: consistent
-  octal-values:
-    forbid-implicit-octal: true
-    forbid-explicit-octal: true
+    ignore:
+      - /tests/output/**

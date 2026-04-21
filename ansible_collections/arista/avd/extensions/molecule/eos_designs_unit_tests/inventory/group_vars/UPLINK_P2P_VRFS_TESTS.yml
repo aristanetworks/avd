@@ -1,0 +1,145 @@
+---
+overlay_routing_protocol: none
+
+node_type_keys:
+  # modify spine to get l3 network_services
+  - key: spine
+    type: spine
+    default_evpn_role: server
+    default_ptp_priority1: 20
+    network_services:
+      l3: true
+  - key: l3leaf
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    default_ptp_priority1: 30
+    cv_tags_topology_type: leaf
+  - key: l2leaf
+    type: l2leaf
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+    underlay_router: false
+    uplink_type: port-channel
+    cv_tags_topology_type: leaf
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - ".*spine.*"
+  # Order matters
+  - node_type: l2leaf
+    match_hostnames:
+      - ".*l2leaf.*"
+  - node_type: l3leaf
+    match_hostnames:
+      - ".*leaf.*"
+
+bgp_as: 65000
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 172.16.0.0/24
+    virtual_router_mac_address: cafe:cafe:cafe
+    uplink_ipv4_pool: 10.42.42.0/24
+    uplink_switches: [uplink-p2p-vrfs-tests-spine1, uplink-p2p-vrfs-tests-spine2]
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_type: p2p-vrfs
+    uplink_macsec:
+      profile: TEST
+    # Adding uplink_ethernet_structured_config to improve coverage.
+    uplink_ethernet_structured_config:
+      pim:
+        ipv4:
+          sparse_mode: true
+    uplink_switch_ethernet_structured_config:
+      pim:
+        ipv4:
+          sparse_mode: true
+    filter:
+      always_include_vrfs_in_tenants: [TenantA, TenantB]
+  nodes:
+    - name: uplink-p2p-vrfs-tests-leaf1
+      id: 3
+      uplink_switch_interfaces: [Ethernet1, Ethernet2]
+
+    # Test leaf with underlay_ipv6_numbered (set in hostvars) and p2p_uplinks_vrf
+    - name: uplink-p2p-vrfs-tests-leaf2
+      id: 5
+      loopback_ipv6_pool: 2001:db8:1:0::1/56
+      vtep_loopback_ipv6_pool: 2001:db8:2:0::1/56
+      uplink_ipv6_pool: 2001:db8:3:0::1/56
+      router_id_pool: 192.168.43.0/24
+      uplink_switch_interfaces: [Ethernet2, Ethernet1]
+
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    uplink_switches: [uplink-p2p-vrfs-tests-leaf1, uplink-p2p-vrfs-tests-leaf1]
+    uplink_interfaces: [Ethernet1, Ethernet2]
+  nodes:
+    - name: uplink-p2p-vrfs-tests-l2leaf1
+      id: 4
+      uplink_switch_interfaces: [Ethernet51, Ethernet52]
+      filter:
+        tags: [not-on-spine-2]
+
+spine:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.42.0/24
+  nodes:
+    - name: uplink-p2p-vrfs-tests-spine1
+      id: 1
+      filter:
+        # TenantC to check that the VRF attracted from L2LEAF1 on LEAF1 makes it
+        # to the uplink
+        always_include_vrfs_in_tenants: [TenantB, TenantC]
+        tags: [not-on-spine-2]
+    - name: uplink-p2p-vrfs-tests-spine2
+      id: 2
+      filter:
+        always_include_vrfs_in_tenants: [TenantA]
+        # to exclude `not-on-spine-2`
+        tags: [none]
+
+tenants:
+  - name: TenantA
+    vrfs:
+      # Testing VRF default is not added as subinterface.
+      - name: default
+        vrf_id: 1
+      - name: PROD
+        vrf_id: 42
+      - name: IT
+        vrf_id: 100
+  - name: TenantB
+    vrfs:
+      # Testing duplicate VRF with consistent ID. Silently ignored since it leads to the same subinterface config.
+      - name: PROD
+        vrf_id: 42
+  - name: TenantC
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: ONLY-ON-L2LEAF
+        vrf_id: 66
+        svis:
+          - id: 66
+            tags: [not-on-spine-2]
+            name: TEST-L2VLAN-ATTRACTION
+            enabled: true
+            ip_address_virtual: 172.16.0.1/24
+
+network_ports:
+  - switches: [uplink-p2p-vrfs-tests-l2leaf1]
+    switch_ports: [Ethernet10]
+    vlans: 66

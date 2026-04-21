@@ -45,7 +45,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 | l3leaf | site1-border1 | Ethernet3 | wan_router | site1-wan1 | Ethernet1 |
 | l3leaf | site1-border1 | Ethernet3.100 | wan_router | site1-wan1 | Ethernet1.100 |
 | l3leaf | site1-border1 | Ethernet3.101 | wan_router | site1-wan1 | Ethernet1.101 |
@@ -68,10 +68,10 @@
 | l3leaf | site2-leaf2 | Ethernet3 | wan_router | site2-wan2 | Ethernet1 |
 | l3leaf | site2-leaf2 | Ethernet3.100 | wan_router | site2-wan2 | Ethernet1.100 |
 | l3leaf | site2-leaf2 | Ethernet3.101 | wan_router | site2-wan2 | Ethernet1.101 |
+| l2leaf | site3-leaf1 | Ethernet1 | wan_router | site3-wan1 | Ethernet1 |
+| l2leaf | site3-leaf1 | Ethernet1 | wan_router | site3-wan1 | Ethernet1 |
 | l2leaf | site3-leaf1 | Ethernet1 VLAN 42 | wan_router | site3-wan1 | Ethernet1.42 |
 | l2leaf | site3-leaf1 | Ethernet1 VLAN 666 | wan_router | site3-wan1 | Ethernet1.666 |
-| l2leaf | site3-leaf1 | Ethernet1 | wan_router | site3-wan1 | Ethernet1 |
-| l2leaf | site3-leaf1 | Ethernet1 | wan_router | site3-wan1 | Ethernet1 |
 | l3leaf | site4-border1 | Ethernet3 | wan_router | site4-wan1 | Ethernet1 |
 | l3leaf | site4-border1 | Ethernet5 | mlag_peer | site4-border2 | Ethernet5 |
 | l3leaf | site4-border1 | Ethernet6 | mlag_peer | site4-border2 | Ethernet6 |

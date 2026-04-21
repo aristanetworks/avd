@@ -1,0 +1,92 @@
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /tmp/cv-onboarding-token
+  cvvrf: default
+  disable_aaa: false
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: INBAND-MGMT-PARENT_Ethernet21
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: inband-mgmt-parent
+    peer_interface: Ethernet21
+    peer_type: l3leaf
+- name: Ethernet2
+  description: INBAND-MGMT-PARENT-VRF_Ethernet21
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: inband-mgmt-parent-vrf
+    peer_interface: Ethernet21
+    peer_type: l3leaf
+hostname: inband-mgmt-subnet
+ip_igmp_snooping:
+  globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 1.1.1.1
+    - ip_address: 8.8.8.8
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+ntp:
+  local_interface:
+    name: Vlan101
+    vrf: default
+  servers:
+  - name: 2.2.2.55
+    preferred: true
+  - name: pool.ntp.org
+  vrf: default
+port_channel_interfaces:
+- name: Port-Channel1
+  description: INBAND-MGMT-PARENT_Po21
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '101'
+service_routing_protocols_model: multi-agent
+static_routes:
+- prefix: 0.0.0.0/0
+  next_hop: 192.168.101.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan101
+  description: Inband Management
+  shutdown: false
+  ip_address: 192.168.101.7/24
+  mtu: 1500
+  metadata:
+    type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 101
+  name: INBAND_MGMT
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false

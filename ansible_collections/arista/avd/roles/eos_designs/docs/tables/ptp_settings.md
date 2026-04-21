@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -7,7 +7,6 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ptp</samp>](## "ptp") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version v5.0.0. Use <samp>ptp_settings</samp> instead.</span> |
     | [<samp>ptp_profiles</samp>](## "ptp_profiles") | List, items: Dictionary |  | See (+) on YAML tab |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "ptp_profiles.[].profile") | String | Required, Unique |  |  | PTP profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;announce</samp>](## "ptp_profiles.[].announce") | Dictionary |  |  |  | PTP announce interval. |
@@ -22,6 +21,10 @@
     | [<samp>&nbsp;&nbsp;profile</samp>](## "ptp_settings.profile") | String |  | `aes67-r16-2016` |  | Default available profiles are:<br>  - "aes67"<br>  - "aes67-r16-2016"<br>  - "smpte2059-2" |
     | [<samp>&nbsp;&nbsp;domain</samp>](## "ptp_settings.domain") | Integer |  | `127` | Min: 0<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;auto_clock_identity</samp>](## "ptp_settings.auto_clock_identity") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;forward_v1</samp>](## "ptp_settings.forward_v1") | Boolean |  | `False` |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;free_running</samp>](## "ptp_settings.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ptp_settings.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "ptp_settings.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
 
 === "YAML"
 
@@ -53,33 +56,45 @@
       profile: <str; default="aes67-r16-2016">
       domain: <int; 0-255; default=127>
       auto_clock_identity: <bool; default=True>
+
+      # Forward dataplane PTP V1 packets.
+      forward_v1: <bool; default=False>
+      free_running:
+
+        # Enables PTP configuration in free-running mode.
+        # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+        # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+        enabled: <bool; required>
+
+        # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+        source_clock_hardware: <bool>
     ```
 
     1. Default Value
 
         ```yaml
         ptp_profiles:
-        - announce:
+        - profile: aes67-r16-2016
+          announce:
             interval: 0
             timeout: 3
           delay_req: -3
-          profile: aes67-r16-2016
           sync_message:
             interval: -3
           transport: ipv4
-        - announce:
+        - profile: smpte2059-2
+          announce:
             interval: -2
             timeout: 3
           delay_req: -4
-          profile: smpte2059-2
           sync_message:
             interval: -4
           transport: ipv4
-        - announce:
+        - profile: aes67
+          announce:
             interval: 2
             timeout: 3
           delay_req: 0
-          profile: aes67
           sync_message:
             interval: 0
           transport: ipv4

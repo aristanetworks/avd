@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -36,7 +36,7 @@ keys:
                   type: str
                   description: |-
                     Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters.
-                  pattern: "^[a-zA-Z1-9-_]+$"
+                  pattern: "[a-zA-Z0-9-_]+"
                 region:
                   type: str
                   description: |-
@@ -96,7 +96,7 @@ keys:
               type: str
               description: |-
                 Short name for the cluster. Required here, but only used when configuring multiple clusters.
-              pattern: "^[a-zA-Z1-9-_]+$"
+              pattern: "[a-zA-Z0-9-_]+"
             servers:
               type: list
               required: true
@@ -109,7 +109,9 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Server FQDN or IP address.
+                    description: |-
+                      Server IP address or FQDN.
+                      Note: It is currently recommended to use IP address because of limitations with Image transfers from CloudVision.
                   port:
                     type: int
                     convert_types:

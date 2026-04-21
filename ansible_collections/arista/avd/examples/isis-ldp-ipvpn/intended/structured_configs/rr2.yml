@@ -7,7 +7,7 @@ ethernet_interfaces:
 - name: Ethernet4
   description: P2P_rr1_Ethernet4
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.3.15/31
   isis_enable: CORE
   isis_metric: 50
@@ -24,15 +24,16 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: rr1
-  peer_interface: Ethernet4
-  peer_type: rr
+  metadata:
+    peer: rr1
+    peer_interface: Ethernet4
+    peer_type: rr
   switchport:
     enabled: false
 - name: Ethernet3
   description: P2P_p2_Ethernet3
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.3.16/31
   isis_enable: CORE
   isis_metric: 50
@@ -49,15 +50,16 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: p2
-  peer_interface: Ethernet3
-  peer_type: p
+  metadata:
+    peer: p2
+    peer_interface: Ethernet3
+    peer_type: p
   switchport:
     enabled: false
 - name: Ethernet2
   description: P2P_p4_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.3.18/31
   isis_enable: CORE
   isis_metric: 50
@@ -74,14 +76,14 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  peer: p4
-  peer_interface: Ethernet2
-  peer_type: p
+  metadata:
+    peer: p4
+    peer_interface: Ethernet2
+    peer_type: p
   switchport:
     enabled: false
 hostname: rr2
 ip_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -117,8 +119,11 @@ management_security:
   password:
     encryption_key_common: true
 metadata:
-  platform: vEOS-lab
+  is_deployed: true
+  platform: cEOSLab
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 mpls:
   ip: true
   ldp:
@@ -140,14 +145,14 @@ router_bgp:
     local_routes: 200
   maximum_paths:
     paths: 4
-    ecmp: 4
   bgp_cluster_id: 10.255.2.2
   bgp:
     default:
       ipv4_unicast: false
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '65001'
     update_source: Loopback0
     route_reflector_client: true
@@ -156,7 +161,8 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   - name: RR-OVERLAY-PEERS
-    type: mpls
+    metadata:
+      type: mpls
     remote_as: '65001'
     update_source: Loopback0
     bfd: true
@@ -166,19 +172,23 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.1.1
     peer_group: MPLS-OVERLAY-PEERS
-    peer: pe1
+    metadata:
+      peer: pe1
     description: pe1_Loopback0
   - ip_address: 10.255.1.2
     peer_group: MPLS-OVERLAY-PEERS
-    peer: pe2
+    metadata:
+      peer: pe2
     description: pe2_Loopback0
   - ip_address: 10.255.1.3
     peer_group: MPLS-OVERLAY-PEERS
-    peer: pe3
+    metadata:
+      peer: pe3
     description: pe3_Loopback0
   - ip_address: 10.255.2.1
     peer_group: RR-OVERLAY-PEERS
-    peer: rr1
+    metadata:
+      peer: rr1
     description: rr1_Loopback0
   address_family_ipv4:
     peer_groups:

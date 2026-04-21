@@ -1,10 +1,11 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 from typing import Protocol
 
+from pyavd._eos_designs.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGenerator,
     StructuredConfigGeneratorProtocol,
@@ -14,27 +15,44 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
 from .cv_pathfinder import CvPathfinderMixin
 from .cv_tags import CvTagsMixin
 from .digital_twin import DigitalTwinMixin
+from .utils import UtilsMixin
 
 
-class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, DigitalTwinMixin, StructuredConfigGeneratorProtocol, Protocol):
+class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, DigitalTwinMixin, UtilsMixin, StructuredConfigGeneratorProtocol, Protocol):
     """Protocol for the AvdStructuredConfigMetadata Class."""
-
-    ignore_avd_eos_designs_enforce_duplication_checks_across_all_models = True
 
     @structured_config_contributor
     def metadata(self) -> None:
         self.structured_config.metadata._update(
             platform=self.shared_utils.platform,
+            is_deployed=self.inputs.is_deployed,
             system_mac_address=self.shared_utils.system_mac_address,
             rack=self.shared_utils.node_config.rack,
             pod_name=self.inputs.pod_name,
             dc_name=self.inputs.dc_name,
             fabric_name=self.shared_utils.fabric_name,
+            serial_number=self.shared_utils.serial_number,
         )
         self._set_cv_tags()
         self._set_cv_pathfinder()
         if self.shared_utils.digital_twin:
             self._set_digital_twin()
+
+        # Logic for validate hardware
+        if not self.shared_utils.platform_settings.feature_support.hardware_validation:
+            self.structured_config.metadata.validate_hardware.enabled = False
+        if not self.shared_utils.node_config.validation_profile:
+            return
+        resolved_profile = self.get_resolved_validation_profile(self.shared_utils.node_config.validation_profile)
+        if self.shared_utils.platform_settings.feature_support.hardware_validation:
+            self.structured_config.metadata.validate_hardware = resolved_profile.hardware._cast_as(
+                EosCliConfigGen.Metadata.ValidateHardware, ignore_extra_keys=True
+            )
+        self.structured_config.metadata.validate_no_errors_period = resolved_profile.logging.validate_no_errors_period
+        if resolved_profile.exclude_as_extra_fabric_validation_target:
+            self.structured_config.metadata.exclude_as_extra_fabric_validation_target = resolved_profile.exclude_as_extra_fabric_validation_target
+        if resolved_profile.interfaces.errdisable.only_avd_interfaces:
+            self.structured_config.metadata.interfaces.errdisable.only_avd_interfaces = True
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):

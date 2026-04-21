@@ -1,11 +1,11 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
 from collections.abc import Iterable, Iterator, Sequence
-from typing import TYPE_CHECKING, ClassVar, Generic, Literal, cast
+from typing import TYPE_CHECKING, ClassVar, Generic, Literal, cast, overload
 
 from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
@@ -26,7 +26,7 @@ if TYPE_CHECKING:
 NATURAL_SORT_PATTERN = re.compile(r"(\d+)")
 
 
-class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
+class AvdIndexedList(Sequence[T_AvdModel], AvdBase, Generic[T_PrimaryKey, T_AvdModel]):  # noqa: PLW1641 - __hash__ will be set to None.
     """
     Base class used for schema-based data classes holding lists-of-dictionaries-with-primary-key loaded from AVD inputs.
 
@@ -113,6 +113,12 @@ class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], Av
 
     def __eq__(self, other: object) -> bool:
         return self._compare(other)
+
+    @overload
+    def get(self, key: T_PrimaryKey) -> T_AvdModel | UndefinedType: ...
+
+    @overload
+    def get(self, key: T_PrimaryKey, default: T) -> T_AvdModel | T: ...
 
     def get(self, key: T_PrimaryKey, default: T | UndefinedType = Undefined) -> T_AvdModel | T | UndefinedType:
         return self._items.get(key, default)
@@ -326,3 +332,26 @@ class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], Av
             return False
 
         return all(item._compare(other[key]) for key, item in self.items())
+
+    def _combine(self, other: Self) -> None:
+        """
+        Update instance by combining the other instance in.
+
+        Combining is different from merging in the sense that it will raise if there is a conflict
+        between one of our elements and the other elements.
+
+        For AvdIndexedList this is simply an append, if any conflict occurs a duplicate error will be raised.
+
+        Args:
+            other: The other instance of the same type to combine into this instance.
+
+        Raises:
+            AristaAvdDuplicateDataError: If any item from other is conflicting with an item from self when appending.
+        """
+        cls = type(self)
+        if not isinstance(other, cls):
+            msg = f"Unable to combine type '{type(other)}' into '{cls}'"
+            raise TypeError(msg)
+
+        for item in other:
+            self.append(item)

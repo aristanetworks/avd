@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -7,8 +7,6 @@
 type: dict
 keys:
   dns_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     description: |-
       DNS settings
@@ -16,11 +14,13 @@ keys:
       domain:
         type: str
         description: DNS domain name like 'fabric.local'
+      domain_list:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/domain_list"
       servers:
         type: list
         required: true
         min_length: 1
-        $ref: eos_cli_config_gen#/keys/ip_name_servers
         items:
           type: dict
           keys:
@@ -37,6 +37,17 @@ keys:
                 - Any other string will be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
               convert_types:
                 - int
+            ip_address:
+              type: str
+              required: true
+              description: IPv4 or IPv6 address for DNS server.
+            priority:
+              description: Priority value (lower is first).
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 4
       vrfs:
         type: list
         primary_key: name

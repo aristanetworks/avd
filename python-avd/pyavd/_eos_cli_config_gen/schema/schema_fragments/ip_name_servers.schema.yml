@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -8,23 +8,10 @@ type: dict
 keys:
   ip_name_servers:
     type: list
-    items:
-      type: dict
-      keys:
-        ip_address:
-          type: str
-          required: true
-          description: IPv4 or IPv6 address for DNS server.
-        # TODO: AVD 6.0 Make vrf key required(issue 4788)
-        vrf:
-          description: VRF Name.
-          type: str
-          convert_types:
-            - int
-        priority:
-          description: Priority value (lower is first).
-          type: int
-          convert_types:
-            - str
-          min: 0
-          max: 4
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_name_server
+    documentation_options:
+      table: ip-name-server

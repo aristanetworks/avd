@@ -1,0 +1,21 @@
+---
+
+custom_platform_settings:
+  - platforms:
+      - vEOS
+    feature_support:
+      wan: false
+
+fabric_name: FABRIC_WAN_UNSUPPORTED_PLATFORM
+
+type: wan_router
+
+wan_router:
+  defaults:
+    platform: vEOS
+    loopback_ipv4_pool: 192.168.66.0/24
+  nodes:
+    - name: wan-unsupported-platform
+
+expected_error_message: >-
+  The WAN features are not compatible with the 'vEOS' platform for host 'wan-unsupported-platform'.

@@ -1,3 +1,20 @@
+---
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+  check_mode: false
+  run_once: true
+
 - name: Test with dest (changing) - Remove test file to force change in template action
   ansible.builtin.file:
     path: "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
@@ -8,14 +25,25 @@
   register: result
   arista.avd.eos_designs_structured_config:
     dest: "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
+    return_structured_config: true
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+
+- name: Load expected output YAML
+  ansible.builtin.include_vars:
+    name: expected_output
+    file: "{{ expected_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
+
+- name: Load actual output YAML
+  ansible.builtin.include_vars:
+    name: actual_output
+    file: "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
 
 - name: Compare actual output with expected output
-  ansible.builtin.shell: >-
-    diff "{{ expected_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
-    "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
-  failed_when: diff_output.rc
-  register: diff_output
-  delegate_to: localhost
+  ansible.builtin.assert:
+    that:
+      - actual_output == expected_output
+    fail_msg: "Actual output does not match expected output"
+    success_msg: "Actual output matches expected output"
 
 - name: Set expected_ansible_facts variable
   ansible.builtin.include_vars:

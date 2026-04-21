@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -29,7 +29,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: '^[A-Za-z0-9_.:{}\[\]-]+$'
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -44,7 +44,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: '^[A-Za-z0-9_.:{}\[\]-]+$'
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -59,7 +59,7 @@ keys:
           name:
             type: str
             required: true
-            pattern: '^[A-Za-z0-9_.:{}\[\]-]+$'
+            pattern: '[A-Za-z0-9_.:{}\[\]-]+'
           id:
             type: int
             convert_types:
@@ -181,7 +181,7 @@ keys:
               description: AVT Policy name.
             profiles:
               type: list
-              primary_key: id
+              primary_key: name
               description: AVT profiles in this VRF.
               items:
                 type: dict
@@ -191,7 +191,7 @@ keys:
                     description: AVT profile name.
                   id:
                     type: int
-                    description: Unique ID for this AVT (per VRF).
+                    description: ID for this AVT (per VRF).
                     required: true
                     convert_types:
                       - str

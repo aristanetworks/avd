@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -21,7 +21,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints.loss_rate") | String |  |  | Pattern: `^\d+(\.\d{1,2})?$` | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints.loss_rate") | String |  |  | Pattern: `\d+(\.\d{1,2})?` | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;outlier_elimination</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.outlier_elimination") | Dictionary |  |  |  | AVT path outlier elimination. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.outlier_elimination.disabled") | Boolean |  |  |  | Set true to disable the AVT path outlier elimination. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.outlier_elimination.threshold") | Dictionary |  |  |  | Change the threshold values for path comparison. |
@@ -49,7 +49,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints.loss_rate") | String |  |  | Pattern: `^\d+(\.\d{1,2})?$` | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints.loss_rate") | String |  |  | Pattern: `\d+(\.\d{1,2})?` | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outlier_elimination</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].outlier_elimination") | Dictionary |  |  |  | AVT path outlier elimination. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].outlier_elimination.disabled") | Boolean |  |  |  | Set true to disable the AVT path outlier elimination. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].outlier_elimination.threshold") | Dictionary |  |  |  | Change the threshold values for path comparison. |
@@ -74,7 +74,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints.loss_rate") | String |  |  | Pattern: `^\d+(\.\d{1,2})?$` | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss_rate</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints.loss_rate") | String |  |  | Pattern: `\d+(\.\d{1,2})?` | Loss Rate requirement in percentage for this load balance policy.<br>Value between 0.00 and 100.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outlier_elimination</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.outlier_elimination") | Dictionary |  |  |  | AVT path outlier elimination. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.outlier_elimination.disabled") | Boolean |  |  |  | Set true to disable the AVT path outlier elimination. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.outlier_elimination.threshold") | Dictionary |  |  |  | Change the threshold values for path comparison. |

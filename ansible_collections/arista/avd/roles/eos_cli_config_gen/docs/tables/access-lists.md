@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>access_lists</samp>](## "access_lists") | List, items: Dictionary |  |  |  |  |
+    | [<samp>access_lists</samp>](## "access_lists") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ip_access_lists</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "access_lists.[].name") | String | Required, Unique |  |  | Access-list Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;permit_response_traffic</samp>](## "access_lists.[].permit_response_traffic") | String |  |  | Valid Values:<br>- <code>nat</code> | Permit response traffic automatically based on NAT translations.<br>Minimum EOS version requirement 4.32.2F. |
@@ -18,6 +18,9 @@
 === "YAML"
 
     ```yaml
+    # This key is deprecated.
+    # Support will be removed in AVD version 7.0.0.
+    # Use `ip_access_lists` instead.
     access_lists:
 
         # Access-list Name.

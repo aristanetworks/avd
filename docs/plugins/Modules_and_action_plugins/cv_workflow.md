@@ -3,7 +3,7 @@
 title: arista.avd.cv_workflow
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -23,7 +23,8 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 - Verify Devices are in the Inventory &amp; Topology Studio.
 - Update the Device hostname in the Inventory &amp; Topology Studio as needed.
 - Create Workspace and build, submit, abandon as needed.
-- Deploy EOS configurations using &#34;Static Configlet Studio&#34;.
+- Deploy device-specific EOS configurations using Static Configuration Studio.
+- Deploy a full hierarchy of containers and configlets using Static Configuration Studio.
 - Create and associate Device and Interface Tags.
 - Approve, run, cancel Change Controls as needed.
 
@@ -31,36 +32,52 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>cv_servers</samp> | list | True | None |  | List of hostnames or IP addresses for CloudVision instance to deploy to. |
-| <samp>cv_token</samp> | str | True | None |  | Service account token. It is strongly recommended to use Vault for this. |
-| <samp>cv_verify_certs</samp> | bool | optional | True |  | Verifies CloudVison server certificates. |
-| <samp>configuration_dir</samp> | str | True | None |  | Path to directory containing .cfg files with EOS configurations. |
-| <samp>structured_config_dir</samp> | str | False | None |  | Path to directory containing files with AVD structured configurations.<br>If found, the `serial_number` or `system_mac_address` will be used to identify the Device on CloudVision.<br>Any tags found in the structured configuration metadata will be applied to the Device and/or Interfaces. |
-| <samp>structured_config_suffix</samp> | str | optional | yml |  | File suffix for AVD structured configuration files. |
-| <samp>device_list</samp> | list | True | None |  | List of devices to deploy. The names are used to find AVD structured configuration and EOS configuration files. |
-| <samp>strict_tags</samp> | bool | optional | False |  | If `true` other tags associated with the devices will get removed. Otherwise other tags will be left as-is. |
-| <samp>skip_missing_devices</samp> | bool | optional | False |  | If `true` anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue. |
-| <samp>strict_system_mac_address</samp> | bool | optional | False |  | If `true`, raise an exception if the input data contains devices with a duplicated system_mac_address but unique serial_number values.<br>Otherwise, just issue a warning. |
-| <samp>configlet_name_template</samp> | str | optional | AVD-${hostname} |  | Python String Template to use for creating the configlet name for each device configuration. |
-| <samp>workspace</samp> | dict | optional | None |  | CloudVision Workspace to create or use for the deployment. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None |  | Optional name to use for the created Workspace. By default the name will be `AVD &lt;timestamp&gt;`. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp> | str | optional | None |  | Optional description to use for the created Workspace. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp> | str | optional | None |  | Optional ID to use for the created Workspace. If there is already a workspace with the same ID, it must be in the &#39;pending&#39; state. |
+| <samp>cv_servers</samp> | list | True | None | - | List of hostnames or IP addresses for CloudVision instance to deploy to. |
+| <samp>cv_token</samp> | str | False | None | - | Service account token. It is strongly recommended to use Vault for this. |
+| <samp>cv_username</samp> | str | False | None | - | Username to use if `cv_token` is missing. Not supported for CVaaS. |
+| <samp>cv_password</samp> | str | False | None | - | Password to use if `cv_token` is missing. Not supported for CVaaS. It is strongly recommended to use Vault for this. |
+| <samp>cv_verify_certs</samp> | bool | optional | True | - | Verifies CloudVison server certificates. |
+| <samp>proxy_host</samp> | str | False | None | - | FQDN/IP of the HTTP CONNECT proxy server. |
+| <samp>proxy_port</samp> | int | optional | 8080 | - | TCP port of the HTTP CONNECT proxy server. |
+| <samp>proxy_username</samp> | str | False | None | - | Authentication username for the HTTP CONNECT proxy server. |
+| <samp>proxy_password</samp> | str | False | None | - | Authentication password for the HTTP CONNECT proxy server. It is strongly recommended to use Vault for this. |
+| <samp>configuration_dir</samp> | str | True | None | - | Path to directory containing .cfg files with EOS configurations. |
+| <samp>structured_config_dir</samp> | str | False | None | - | Path to directory containing files with AVD structured configurations.<br>If found, the `serial_number` or `system_mac_address` will be used to identify the Device on CloudVision.<br>Any tags found in the structured configuration metadata will be applied to the Device and/or Interfaces. |
+| <samp>structured_config_suffix</samp> | str | optional | yml | - | File suffix for AVD structured configuration files. |
+| <samp>device_list</samp> | list | False | None | - | List of devices to deploy. The names are used to find AVD structured configuration and EOS configuration files. |
+| <samp>strict_tags</samp> | bool | optional | False | - | If `true` other tags associated with the devices will get removed. Otherwise other tags will be left as-is. |
+| <samp>skip_missing_devices</samp> | bool | optional | False | - | If `true` anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue. |
+| <samp>strict_system_mac_address</samp> | bool | optional | False | - | If `true`, raise an exception if the input data contains devices with a duplicated system_mac_address but unique serial_number values.<br>Otherwise, just issue a warning. |
+| <samp>configlet_name_template</samp> | str | optional | AVD-${hostname} | - | Python String Template to use for creating the configlet name for each device configuration. |
+| <samp>static_config_manifest</samp> | dict | optional | None | - | Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;configlets</samp> | list | optional | None | - | A list of dictionaries defining configlets to be pushed to the Configlet Library.<br><br>Each dictionary in the list must follow this data model:<br>- **name** (`str`, required): Unique name for the configlet.<br>- **file** (`str`, required): Filesystem path to the text file containing the configlet body. Relative to the current working directory. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;containers</samp> | list | optional | None | - | A list of dictionaries defining the root containers in the hierarchy.<br><br>Each dictionary in the list must follow this data model:<br>- **name** (`str`, required): Name for the container. Sibling containers must have unique names.<br>- **tag_query** (`str`, required): A query string used to match devices based on their assigned tags.<br>- **description** (`str`, optional): An optional description for the container.<br>- **match_policy** (`str`, optional, default: &#34;match_all&#34;): The match policy to determine how devices with a matching tag inherit<br>    a child container configlets. Valid choices are `match_all` or `match_first`.<br>- **configlets** (`list` of `str`, optional): A list of configlet names to apply to this container. Must be defined in the `configlets` section.<br>- **sub_containers** (`list` of `dict`, optional): A nested list of container dictionaries that follow this same data model,<br>    allowing for a full hierarchy. |
+| <samp>workspace</samp> | dict | optional | None | - | CloudVision Workspace to create or use for the deployment. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None | - | Optional name to use for the created Workspace. By default the name will be `AVD &lt;timestamp&gt;`. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp> | str | optional | None | - | Optional description to use for the created Workspace. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp> | str | optional | None | - | Optional ID to use for the created Workspace. If there is already a workspace with the same ID, it must be in the &#39;pending&#39; state. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;requested_state</samp> | str | optional | built | Valid values:<br>- <code>pending</code><br>- <code>built</code><br>- <code>submitted</code><br>- <code>abandoned</code><br>- <code>deleted</code> | The requested state for the Workspace.<br><br>- `pending`: Leave the Workspace in pending state.<br>- `built`: Build the Workspace but do not submit.<br>- `submitted` (default): Build and submit the Workspace.<br>- `abandoned`: Build and then abandon the Workspace.<br>    Used for dry-run where no changes will be committed to CloudVision.<br>- `deleted`: Build, abort and then delete the Workspace.<br>    Used for dry-run where no changes will be committed to CloudVision and the temporary Workspace will be removed to avoid &#34;clutter&#34;. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;force</samp> | bool | optional | False |  | Force submit the workspace even if some devices are not actively streaming to CloudVision. |
-| <samp>change_control</samp> | dict | optional | None |  | CloudVision Change Control to create for the deployment. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None |  | Optional name to use for the created Change Control. By default the name generated by CloudVision will be kept. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp> | str | optional | None |  | Optional description to use for the created Change Control. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;force</samp> | bool | optional | False | - | Force submit the workspace even if some devices are not actively streaming to CloudVision. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;build_warnings</samp> | dict | optional | None | - | Configuration for Workspace build warnings handling. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp> | bool | optional | True | - | Fetch and expose Workspace build warnings. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suppress_patterns</samp> | list | optional | [] | - | Arbitrary list of regex patterns used with fullmatch to suppress EOS CLI warnings. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suppress_portfast</samp> | bool | optional | False | - | Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports. |
+| <samp>change_control</samp> | dict | optional | None | - | CloudVision Change Control to create for the deployment. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None | - | Optional name to use for the created Change Control. By default the name generated by CloudVision will be kept. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp> | str | optional | None | - | Optional description to use for the created Change Control. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;requested_state</samp> | str | optional | pending approval | Valid values:<br>- <code>pending approval</code><br>- <code>approved</code><br>- <code>running</code><br>- <code>completed</code> | The requested state for the Change Control.<br><br>- `pending approval` (default): Leave the Change Control in &#34;pending approval&#34; state.<br>- `approved`: Approve the Change Control but do not start.<br>- `running`: Approve and start the Change Control. Do not wait for the Change Control to be completed or failed.<br>- `completed`: Approve and start the Change Control. Wait for the Change Control to be completed. |
-| <samp>timeouts</samp> | dict | optional | None |  | Timeouts for long running operations. May need to be adjusted for large inventories. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;workspace_build_timeout</samp> | float | optional | 300.0 |  | Time to wait for Workspace build before failing. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;change_control_creation_timeout</samp> | float | optional | 300.0 |  | Time to wait for Change Control creation before failing. |
-| <samp>return_details</samp> | bool | optional | False |  | If `true` all details will be returned to Ansible and can be registered.<br>For large inventories this can affect performance, so it is disabled by default. |
+| <samp>timeouts</samp> | dict | optional | None | - | Timeouts for long running operations. May need to be adjusted for large inventories. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;workspace_build_timeout</samp> | float | optional | 300.0 | - | Time to wait for Workspace build before failing. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;change_control_creation_timeout</samp> | float | optional | 300.0 | - | Time to wait for Change Control creation before failing. |
+| <samp>return_details</samp> | bool | optional | False | - | If `true` all details will be returned to Ansible and can be registered.<br>For large inventories this can affect performance, so it is disabled by default. |
+| <samp>preview_features</samp> | dict | optional | None | - | Enable preview features of the plugin.<br>Preview features may change or be removed without notice. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;read_from_validated_inputs</samp> | bool | optional | False | - | When enabled, structured configurations are loaded from validated JSON files in `tmp_dir` instead of `structured_config_dir`.<br>This requires the `arista.avd.validate_inputs` plugin to run first in the same playbook to generate the validated files. |
+| <samp>tmp_dir</samp> | str | False | None | - | Path to the AVD temporary directory containing validated input files.<br>Must be the same path as used for the `arista.avd.validate_inputs` plugin.<br>Required when `preview_features.read_from_validated_inputs` is `true`. |
 
 ## Notes
 
 - When interacting with CVaaS the regional URL where the tenant is deployed should be used, e.g:
-  `cv_servers: [ www.cv-prod-euwest-2.arista.io ]`
+  `cv_servers: [www.cv-prod-euwest-2.arista.io]`
   To see the full list of regional URLs, please visit the
   [cv_deploy](../../../ansible_collections/arista/avd/roles/cv_deploy/README.md#overview)
   role documentation.
@@ -81,9 +98,13 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
       run_once: true
       delegate_to: localhost
       arista.avd.cv_workflow:
-        cv_servers: [ "www.arista.io" ]
+        cv_servers: ["www.arista.io"]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
+        # proxy_host: "proxy.local.domain"
+        # proxy_port: "8080"
+        # proxy_username: "avd_user"
+        # proxy_password: "avd_password"
         configuration_dir: "{{ inventory_dir }}/intended/configs"
         structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
         # structured_config_suffix: "yml"
@@ -92,12 +113,33 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
         # skip_missing_devices: false
         # strict_system_mac_address: false
         # configlet_name_template: "AVD-${hostname}"
+        # static_config_manifest:
+        #   configlets:
+        #     - name: "GLOBAL_NTP_SERVERS"
+        #       file: "configlets/global_ntp.txt"
+        #     - name: "CORP_BANNER"
+        #       file: "configlets/corp_banner.txt"
+        #   containers:
+        #     - name: "Global"
+        #       tag_query: "device:*"
+        #       match_policy: "match_all"
+        #       configlets:
+        #         - name: "GLOBAL_NTP_SERVERS"
+        #       sub_containers:
+        #         - name: "Data Centers"
+        #           tag_query: "topology_network_type:datacenter"
+        #           configlets:
+        #             - name: "CORP_BANNER"
         workspace:
         #   name:
         #   description:
         #   id: <uuid or similar>
           requested_state: submitted
           force: true
+          build_warnings:
+            # enabled: true
+            suppress_patterns: [".*/32 IPv4 address is not configured on the interface.*"]
+            # suppress_portfast: false
         change_control:
         #   name:
         #   description:

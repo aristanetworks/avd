@@ -10,25 +10,29 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  peer: dc1-leaf1a
-  peer_interface: Ethernet8
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf1a
+    peer_interface: Ethernet8
+    peer_type: l3leaf
 - name: Ethernet2
   description: L2_dc1-leaf1b_Ethernet8
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: dc1-leaf1b
-  peer_interface: Ethernet8
-  peer_type: l3leaf
+  metadata:
+    peer: dc1-leaf1b
+    peer_interface: Ethernet8
+    peer_type: l3leaf
 - name: Ethernet5
   description: SERVER_dc1-leaf1-server1_iLO
   shutdown: false
   spanning_tree_portfast: edge
-  peer: dc1-leaf1-server1
-  peer_interface: iLO
-  peer_type: server
+  metadata:
+    peer: dc1-leaf1-server1
+    peer_interface: iLO
+    peer_type: server
+    peer_key: servers
   switchport:
     enabled: true
     mode: access
@@ -36,7 +40,6 @@ ethernet_interfaces:
 hostname: dc1-leaf1c
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -59,8 +62,11 @@ management_interfaces:
   type: oob
   gateway: 172.16.1.1
 metadata:
-  platform: vEOS-lab
+  is_deployed: true
+  platform: cEOSLab
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC1_L3_LEAF1_Port-Channel8
@@ -89,22 +95,34 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VRF10_VLAN11
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 12
   name: VRF10_VLAN12
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 21
   name: VRF11_VLAN21
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 22
   name: VRF11_VLAN22
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3401
   name: L2_VLAN3401
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3402
   name: L2_VLAN3402
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false

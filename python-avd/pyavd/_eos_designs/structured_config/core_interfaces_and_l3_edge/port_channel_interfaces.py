@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -33,6 +33,14 @@ class PortChannelInterfacesMixin(Protocol):
             self._update_common_interface_cfg(p2p_link, p2p_link_data, port_channel_interface)
             port_channel_interface.ptp = self._get_ptp_config_interface(p2p_link, output_type=EosCliConfigGen.PortChannelInterfacesItem.Ptp)
             port_channel_interface.description = self._p2p_link_port_channel_description(p2p_link_data)
+
+            if p2p_link.port_channel_structured_config:
+                self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
+                    p2p_link.port_channel_structured_config,
+                    list_merge=self.custom_structured_configs.list_merge_strategy,
+                )
+
+            self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(port_channel_interface.name)
 
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
 

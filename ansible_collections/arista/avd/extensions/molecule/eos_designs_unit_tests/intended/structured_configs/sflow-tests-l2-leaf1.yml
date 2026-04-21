@@ -1,0 +1,102 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_sflow-tests-leaf3_Ethernet16
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: sflow-tests-leaf3
+    peer_interface: Ethernet16
+    peer_type: l3leaf
+- name: Ethernet2
+  description: L2_sflow-tests-leaf4_Ethernet16
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: sflow-tests-leaf4
+    peer_interface: Ethernet16
+    peer_type: l3leaf
+hostname: sflow-tests-l2-leaf1
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.201/24
+  type: oob
+  gateway: 192.168.0.1
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: SFLOW_TESTS
+  validate_hardware:
+    enabled: false
+port_channel_interfaces:
+- name: Port-Channel1
+  description: L2_sflow-tests-leaf-mlag_Port-Channel16
+  shutdown: false
+  sflow:
+    enable: true
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
+service_routing_protocols_model: multi-agent
+sflow:
+  sample: 10
+  polling_interval: 1
+  vrfs:
+  - name: MGMT
+    destinations:
+    - destination: 10.10.10.12
+    source_interface: Management1
+  destinations:
+  - destination: 10.10.10.10
+  - destination: 10.10.10.11
+  source_interface: Vlan4092
+  run: true
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
+- prefix: 0.0.0.0/0
+  next_hop: 10.254.254.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  ip_address: 10.254.254.4/24
+  mtu: 1500
+  metadata:
+    type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VLAN11
+  metadata:
+    tenants:
+    - SFLOW
+- id: 4092
+  name: INBAND_MGMT
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false

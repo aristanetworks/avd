@@ -1,10 +1,13 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# Custom template generating extra yaml data which will be merged onto the eos_designs generated vars #}
-custom_template1_var: {{ switch.id }}
+custom_template1_var: {{ (l2leaf.nodes | selectattr("name", "eq", "testhost") | first).id }}
 custom_template1_list:
   - custom_template1_item
 custom_template1_none_var: {# Nothing here on purpose. Means "null" #}
+
+{# Testing access to structured config #}
+my_is_deployed: {{ metadata.is_deployed }}

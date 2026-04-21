@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -15,25 +15,12 @@ keys:
           type: str
           convert_types:
             - int
-        destination_address_prefix:
-          type: str
-          description: IPv6 Network/Mask.
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: prefix
         prefix:
           type: str
           description: IPv6 Network/Mask.
+          required: true
         interface:
           type: str
-        gateway:
-          type: str
-          description: IPv6 Address.
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: next_hop
         next_hop:
           type: str
           description: IPv6 Address.
@@ -61,3 +48,17 @@ keys:
             - str
           min: 0
           max: 4294967295
+        destination_address_prefix:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: prefix
+        gateway:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: next_hop

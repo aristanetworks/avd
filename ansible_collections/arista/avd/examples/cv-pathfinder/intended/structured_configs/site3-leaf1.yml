@@ -24,9 +24,10 @@ ethernet_interfaces:
   flow_tracker:
     sampled: FLOW-TRACKER
   spanning_tree_portfast: edge
-  peer: site3-wan1
-  peer_interface: Ethernet1
-  peer_type: wan_router
+  metadata:
+    peer: site3-wan1
+    peer_interface: Ethernet1
+    peer_type: wan_router
   switchport:
     enabled: true
     mode: trunk
@@ -36,14 +37,14 @@ flow_tracking:
   sampled:
     sample: 10000
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 5000
-      name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
     shutdown: false
 hostname: site3-leaf1
@@ -53,10 +54,11 @@ ip_domain_lookup:
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.17.1
-  vrf: MGMT
-is_deployed: true
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.17.1
 local_users:
 - name: admin
   privilege: 15
@@ -86,8 +88,11 @@ management_interfaces:
     transmit: false
     receive: false
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management1
@@ -95,7 +100,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: MGMT
@@ -110,10 +115,14 @@ vlan_internal_order:
 vlans:
 - id: 666
   name: BLUE-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 42
   name: RED-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vrfs:
 - name: MGMT
   ip_routing: false

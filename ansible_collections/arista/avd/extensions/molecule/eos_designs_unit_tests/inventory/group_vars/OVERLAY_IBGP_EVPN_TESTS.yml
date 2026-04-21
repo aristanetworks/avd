@@ -1,0 +1,43 @@
+type: l3leaf
+
+fabric_evpn_encapsulation: mpls
+overlay_routing_protocol: ibgp
+evpn_overlay_bgp_rtc: true
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    bgp_as: 65233
+    platform: vEOS
+  nodes:
+    # RR peer with mpls_overlay_role:server and evpn_role:client
+    - name: evpn-overlay-mpls-route-reflectors-ibgp
+      id: 1
+      mgmt_ip: 192.168.0.204/24
+      evpn_role: client
+      mpls_overlay_role: server
+      overlay_address_families: [evpn]
+      mpls_route_reflectors: [evpn-overlay-mpls-route-reflectors2-ibgp]
+    - name: evpn-overlay-mpls-route-reflectors2-ibgp
+      id: 2
+      mgmt_ip: 192.168.0.205/24
+      evpn_role: server
+      mpls_overlay_role: server
+      overlay_address_families: [evpn]
+      # Test when the peer is mpls server but not evpn server - no neighbor created.
+      mpls_route_reflectors: [evpn-overlay-mpls-route-reflectors-ibgp]
+    - name: evpn-role-server-overlay-vxlan-ibgp
+      id: 3
+      mgmt_ip: 192.168.0.206/24
+      evpn_role: server
+      overlay_address_families: [evpn]
+      evpn_route_servers: [evpn-overlay-mpls-route-reflectors-ibgp, evpn-overlay-mpls-route-reflectors2-ibgp]
+    - name: evpn-overlay-mpls-route-reflectors3-ibgp
+      id: 4
+      evpn_role: server
+      mpls_overlay_role: server
+      overlay_address_families: [evpn]
+      # Test when the peer is mpls server and evpn server - neighbor created with RR peer group.
+      mpls_route_reflectors: [evpn-overlay-mpls-route-reflectors2-ibgp]

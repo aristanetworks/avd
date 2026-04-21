@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -28,7 +28,7 @@ class RouterMsdpMixin(Protocol):
 
         Used for to configure multicast anycast RPs for the underlay
         """
-        if not self.shared_utils.underlay_multicast or not self.inputs.underlay_multicast_rps:
+        if not self.shared_utils.underlay_multicast_pim_sm_enabled or not self.inputs.underlay_multicast_rps:
             return
 
         if self.inputs.underlay_multicast_anycast_rp.mode != "msdp":

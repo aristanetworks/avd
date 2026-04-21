@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -19,14 +19,13 @@
 {%         else %}
 {%             set passive_interface_default = 'disabled' %}
 {%         endif %}
-{%         set no_passive_interfaces = namespace() %}
-{%         set no_passive_interfaces.list = '' %}
+{%         set no_passive_interfaces = [] %}
 {%         if process_id.no_passive_interfaces is arista.avd.defined %}
 {%             for interface in process_id.no_passive_interfaces %}
-{%                 set no_passive_interfaces.list = no_passive_interfaces.list ~ ' ' ~ interface ~ ' <br>' %}
+{%                 do no_passive_interfaces.append(interface) %}
 {%             endfor %}
 {%         else %}
-{%             set no_passive_interfaces.list = '-' %}
+{%             set no_passive_interfaces = ['-'] %}
 {%         endif %}
 {%         if process_id.bfd_enable is arista.avd.defined(true) %}
 {%             set bfd_enable = 'enabled' %}
@@ -59,7 +58,7 @@
 {%         else %}
 {%             set distribute_list_in = '-' %}
 {%         endif %}
-| {{ process_id.id }} | {{ router_id }} | {{ passive_interface_default }} |{{ no_passive_interfaces.list }} | {{ bfd_enable }} | {{ max_lsa }} | {{ default_information_originate }} | {{ log_adjacency_changes_detail }} | {{ auto_cost_reference_bandwidth }} | {{ maximum_paths }} | {{ mpls_ldp_sync_default }} | {{ distribute_list_in }} |
+| {{ process_id.id }} | {{ router_id }} | {{ passive_interface_default }} | {{ no_passive_interfaces | join("<br>") }} | {{ bfd_enable }} | {{ max_lsa }} | {{ default_information_originate }} | {{ log_adjacency_changes_detail }} | {{ auto_cost_reference_bandwidth }} | {{ maximum_paths }} | {{ mpls_ldp_sync_default }} | {{ distribute_list_in }} |
 {%     endfor %}
 {# OSPF Distance #}
 {%     set ospf_distance_process_ids = [] %}
@@ -219,7 +218,7 @@
 #### Router OSPF Route Summary
 
 | Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
-|------------|--------|-----|---------------------|----------------|
+| ---------- | ------ | --- | ------------------- | -------------- |
 {%         for process_id in router_ospf.process_ids | arista.avd.natural_sort('id') %}
 {%             if process_id.summary_addresses is arista.avd.defined %}
 {%                 for summary_address in process_id.summary_addresses %}
@@ -270,6 +269,9 @@
 {%                 endif %}
 {%                 if area.nssa_only is arista.avd.defined(true) %}
 {%                     do additional_cfg_options_list.append('nssa-only') %}
+{%                 endif %}
+{%                 if additional_cfg_options_list | length == 0 %}
+{%                     set additional_cfg_options_list = ["-"] %}
 {%                 endif %}
 | {{ process_id.id }} | {{ area.id }} | {{ area_type }} | {{ network_filter }} | {{ prefix_list_filter }} | {{ additional_cfg_options_list | join(', ') }} |
 {%             endfor %}

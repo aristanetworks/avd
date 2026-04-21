@@ -1,0 +1,104 @@
+---
+type: wan_router
+
+overlay_routing_protocol: ibgp
+
+wan_router:
+  defaults:
+    cv_pathfinder_region: Global
+    cv_pathfinder_site: DC1
+    loopback_ipv4_pool: 10.255.2.0/27
+    vtep_loopback_ipv4_pool: 10.255.1.0/27
+    uplink_ipv4_pool: 10.255.255.0/26
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: [dc1-leaf1a, dc1-leaf1b]
+    uplink_type: p2p-vrfs
+    wan_ha:
+      enabled: true # TODO: AVD 4.8.0 Remove this once WAN HA is out of preview
+  node_groups:
+    - group: DC1-WAN
+      bgp_as: 65101
+      nodes:
+        - name: dc1-wan1
+          id: 1
+          mgmt_ip: 172.16.1.15/24
+          uplink_switch_interfaces: [Ethernet6, Ethernet6]
+          l3_interfaces:
+            - name: Ethernet3
+              ip_address: 172.18.3.2/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: DC1-MPLS-3
+              peer_ip: 172.18.3.1
+              static_routes:
+                - prefix: 172.18.0.0/16
+            - name: Ethernet4
+              ip_address: 100.64.3.2/24
+              wan_carrier: isp-1
+              wan_circuit_id: DC1-INET-3
+              peer_ip: 100.64.3.1
+              static_routes:
+                - prefix: 100.64.0.0/16
+            # Added to cover the skip static_peers case for anta test VerifyAVTSpecificPath.
+            - name: Ethernet5
+              ip_address: 100.64.3.2/24
+              wan_carrier: TAC
+              wan_circuit_id: DC1-INET-3
+        - name: dc1-wan2
+          id: 2
+          mgmt_ip: 172.16.1.16/24
+          uplink_switch_interfaces: [Ethernet7, Ethernet7]
+          # Test for collect the source ip_address for local interface from port_channel_interfaces
+          l3_port_channels:
+            - name: Port-Channel1
+              ip_address: 170.18.4.2/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: DC1-MPLS-4
+              peer_ip: 170.18.4.1
+              static_routes:
+                - prefix: 170.18.0.0/16
+          l3_interfaces:
+            - name: Ethernet3
+              ip_address: 172.18.4.2/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: DC1-MPLS-4
+              peer_ip: 172.18.4.1
+              static_routes:
+                - prefix: 172.18.0.0/16
+            - name: Ethernet4
+              ip_address: 100.64.4.2/24
+              wan_carrier: isp-1
+              wan_circuit_id: DC1-INET-4
+              peer_ip: 100.64.4.1
+              static_routes:
+                - prefix: 100.64.0.0/16
+            # Test for skip the anta test VerifySpecificPath when ip_address on interface is dhcp.
+            - name: Ethernet5
+              ip_address: dhcp
+              wan_carrier: Phone
+              wan_circuit_id: DC1-INET-4
+              peer_ip: 100.64.5.1
+              static_routes:
+                - prefix: 100.64.0.0/16
+    # EVPN WAN gateway: WAN router also participating in EVPN on the DC side.
+    # Must be in its own node_group (single-node constraint for evpn_wan_gateway).
+    - group: DC1-EVPN-WAN-GW
+      bgp_as: 65101
+      wan_ha:
+        enabled: false
+      # Separate pool to avoid conflicts with the WAN route server vtep_ips
+      # (10.255.255.10, 10.255.255.20) that fall within the shared 10.255.255.0/26 pool.
+      uplink_ipv4_pool: 10.255.253.0/26
+      nodes:
+        - name: dc1-wan3
+          id: 3
+          mgmt_ip: 172.16.1.17/24
+          evpn_role: client
+          uplink_switch_interfaces: [Ethernet18, Ethernet18]
+          l3_interfaces:
+            - name: Ethernet13
+              ip_address: 172.18.5.12/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: DC1-MPLS-5
+              peer_ip: 172.18.5.11
+              static_routes:
+                - prefix: 172.18.0.0/16

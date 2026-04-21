@@ -1,0 +1,22 @@
+{
+    "payload": {
+        "value": {
+            "key": {
+                "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c128560001"
+            },
+            "createdAt": "2025-05-14T19:39:48.699759895",
+            "createdBy": "agorbunov",
+            "lastModifiedAt": "2025-05-14T19:39:48.699759895",
+            "lastModifiedBy": "agorbunov",
+            "state": "ROLLED_BACK",
+            "lastBuildId": "",
+            "responses": {},
+            "ccIds": {},
+            "needsBuild": false,
+            "needsRebase": false,
+            "displayName": "exisating_ws_in_rolled_back_state",
+            "description": "exisating_ws_in_rolled_back_state"
+        },
+        "time": "2025-05-14T19:39:48.699759895"
+    }
+}

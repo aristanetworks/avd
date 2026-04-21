@@ -1,4 +1,0 @@
-# name_servers is deprecated. To be removed in 6.0.0
-name_servers:
-  - 192.168.200.5
-  - 8.8.8.8

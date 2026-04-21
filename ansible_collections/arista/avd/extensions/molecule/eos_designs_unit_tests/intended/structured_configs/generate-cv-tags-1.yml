@@ -1,0 +1,98 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: Test interface
+  shutdown: false
+  ip_address: 10.20.30.40/24
+  metadata:
+    peer: Someotherdevice
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+hostname: generate-cv-tags-1
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.10.255.1/32
+metadata:
+  is_deployed: true
+  rack: ABC567
+  pod_name: POD1
+  dc_name: DC23
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  cv_tags:
+    device_tags:
+    - name: topology_hint_datacenter
+      value: DC23
+    - name: topology_hint_fabric
+      value: EOS_DESIGNS_UNIT_TESTS
+    - name: topology_hint_pod
+      value: POD1
+    - name: topology_hint_type
+      value: spine
+    - name: topology_hint_rack
+      value: ABC567
+    - name: static-device-tag
+      value: myvalue
+    - name: dynamic_device_tag
+      value: '65000'
+    - name: UPPERCASE_DEVICE_TAG
+      value: something with spaces
+    - name: Role
+      value: DC23
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: static-interface-tag
+        value: myinterfacevalue
+      - name: UPPERCASE_INTERFACE_TAG
+        value: something else with spaces
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.255.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65000'
+  router_id: 10.10.255.1
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

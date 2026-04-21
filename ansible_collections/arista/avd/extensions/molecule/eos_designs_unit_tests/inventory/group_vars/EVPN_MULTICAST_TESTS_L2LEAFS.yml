@@ -1,0 +1,18 @@
+# EVPN_MULTICAST_TESTS
+
+type: l2leaf
+
+  # Tests:
+  # - L2Leaf in topology
+  # Expected results:
+  # - No multicast/igmp configuration
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
+  nodes:
+    - name: evpn-multicast-l2leaf1a
+      id: 1
+      mgmt_ip: 192.168.200.109/24
+      uplink_switch_interfaces: [Ethernet6, Ethernet6]

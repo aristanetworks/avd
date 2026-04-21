@@ -22,42 +22,48 @@ ethernet_interfaces:
   description: pf1-Ethernet1
   shutdown: false
   ip_address: 172.18.100.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet2
   description: pf2-Ethernet1
   shutdown: false
   ip_address: 172.18.200.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet5
   description: site1-wan1-Ethernet3
   shutdown: false
   ip_address: 172.18.10.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet6
   description: site1-wan2-Ethernet3
   shutdown: false
   ip_address: 172.18.11.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet7
   description: site2-wan1-Ethernet3
   shutdown: false
   ip_address: 172.18.20.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet8
   description: site4-wan1-Ethernet3
   shutdown: false
   ip_address: 172.18.40.1/24
-  peer_type: l3_interface
+  metadata:
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: mpls-cloud
@@ -65,11 +71,12 @@ ip_domain_lookup:
   source_interfaces:
   - name: Management1
     vrf: MGMT
-ip_name_servers:
-- ip_address: 192.168.17.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.17.1
 ip_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -104,8 +111,11 @@ management_interfaces:
     transmit: false
     receive: false
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management1
@@ -113,7 +123,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -136,37 +146,13 @@ router_bgp:
   router_id: 172.31.255.22
   maximum_paths:
     paths: 4
-    ecmp: 4
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    type: evpn
-    next_hop_unchanged: true
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

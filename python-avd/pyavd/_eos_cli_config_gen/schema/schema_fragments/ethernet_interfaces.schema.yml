@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -30,7 +30,16 @@ keys:
           description: Interval in seconds for updating interface counters.
         speed:
           type: str
-          description: Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          description: Interface Speed.
+          valid_values: [
+            "100full", "100g", "100g-1", "100g-2", "100g-4", "100half", "10full", "10g", "10half", "1g", "200g", "200g-2", "200g-4", "25g", "400g", "400g-4",
+            "400g-8", "40g", "50g", "50g-1", "50g-2", "800g-8", "sfp-1000baset auto 100full", "1.6t-8", "100mfull", "100mhalf", "10mfull",
+            "10mhalf", "200g-1", "400g-2", "40g-4", "800g-4", "auto", "auto 10000full", "auto 1000full", "auto 100full", "auto 100g-1", "auto 100g-2",
+            "auto 100g-4", "auto 100gfull", "auto 100half", "auto 10full", "auto 10gfull", "auto 10half", "auto 1gfull", "auto 2.5gfull", "auto 200g-2",
+            "auto 200g-4", "auto 25gfull", "auto 400g-4", "auto 400g-8", "auto 40gfull", "auto 50g-1", "auto 50g-2", "auto 50gfull", "auto 5gfull",
+            "auto 800g-8", "auto 1.6t-8", "auto 100mfull", "auto 100mhalf", "auto 10g", "auto 10mfull", "auto 10mhalf", "auto 1g", "auto 2.5g",
+            "auto 200g-1", "auto 25g", "auto 400g-2", "auto 40g-4", "auto 5g", "auto 800g-4", "forced 10000full", "forced 1000full", "forced 1000half",
+            "forced 100full", "forced 100gfull", "forced 100half", "forced 10full", "forced 10half", "forced 25gfull", "forced 40gfull", "forced 50gfull" ]
         mtu:
           type: int
           min: 68
@@ -53,61 +62,12 @@ keys:
             - str
           description: |
             "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
-        vlans:
-          type: str
-          convert_types:
-            - int
-          description: |
-            List of switchport vlans as string.
-            For a trunk port this would be a range like "1-200,300".
-            For an access port this would be a single vlan "123".
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.access_vlan or switchport.trunk.allowed_vlan
-        native_vlan:
-          type: int
-          convert_types:
-            - str
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.trunk.native_vlan
-        native_vlan_tag:
+        loop_protection:
           type: bool
-          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.trunk.native_vlan_tag
-        mode:
-          type: str
-          valid_values: ["access", "dot1q-tunnel", "trunk", "trunk phone"]
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.mode
-        phone:
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.phone
-          type: dict
-          keys:
-            trunk:
-              type: str
-              valid_values: ["tagged", "tagged phone", "untagged", "untagged phone"]
-            vlan:
-              type: int
-              min: 1
-              max: 4094
-              convert_types:
-                - str
+          description: Enable/disable loop protection.
+        arp_gratuitous_accept:
+          type: bool
+          description: Accept gratuitous ARP.
         l2_protocol:
           type: dict
           keys:
@@ -126,25 +86,6 @@ keys:
             header: Insert timestamp in ethernet header. Supported on platforms like 7500E/R and 7280E/R.
             before-fcs: Insert timestamp before fcs field. Supported on platforms like 7150.
             replace-fcs: Replace fcs field with timestamp.
-        trunk_groups:
-          type: list
-          items:
-            type: str
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.trunk.groups
-        type:
-          type: str
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
-          valid_values: ["routed", "switched", "l3dot1q", "l2dot1q", "port-channel-member"]
-          description: |
-            l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
-            The `type = switched/routed` should not be combined with `switchport`.
         snmp_trap_link_change:
           type: bool
         address_locking:
@@ -217,16 +158,20 @@ keys:
                 description: Group name.
               direction:
                 type: str
+                required: true
                 valid_values: ["upstream", "downstream"]
         link_tracking:
           type: dict
           keys:
             direction:
               type: str
+              required: true
               valid_values: ["upstream", "downstream"]
             groups:
               type: list
               description: Link state group(s) an interface belongs to.
+              required: true
+              min_length: 1
               items:
                 type: str
                 description: Group names.
@@ -281,19 +226,7 @@ keys:
             route_target:
               type: str
               description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
-        encapsulation_dot1q_vlan:
-          type: int
-          convert_types:
-            - str
-          description: VLAN tag to configure on sub-interface.
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: encapsulation_dot1q.vlan
         encapsulation_dot1q:
-          # TODO: AVD 6.0 below warning should be removed when the `ethernet_interfaces[].type` key is removed in AVD 6.0
-          description: |-
-            Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.
           type: dict
           keys:
             vlan:
@@ -313,47 +246,15 @@ keys:
               description: Inner VLAN ID. This setting can only be applied to sub-interfaces on EOS.
         encapsulation_vlan:
           type: dict
-          # TODO: AVD 6.0 below warning should be removed when the `ethernet_interfaces[].type` key is removed in AVD 6.0
           description: |-
             This setting can only be applied to sub-interfaces on EOS.
-            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.
           keys:
             client:
               type: dict
               keys:
-                dot1q:
-                  deprecation:
-                    warning: true
-                    remove_in_version: 6.0.0
-                  type: dict
-                  keys:
-                    vlan:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 1
-                      max: 4094
-                      description: Client VLAN ID.
-                    outer:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 1
-                      max: 4094
-                      description: Client Outer VLAN ID.
-                    inner:
-                      type: int
-                      convert_types:
-                        - str
-                      description: Client Inner VLAN ID.
-                unmatched:
-                  type: bool
-                  deprecation:
-                    warning: true
-                    remove_in_version: 6.0.0
-                # TODO: AVD6.0 the `encapsulation` key should be made required once the deprecated keys are removed in AVD6.0
                 encapsulation:
                   type: str
+                  required: true
                   valid_values:
                     - dot1q
                     - dot1ad
@@ -388,48 +289,30 @@ keys:
                   valid_values:
                     - dot1q
                     - dot1ad
+                dot1q:
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
+                    new_key: encapsulation
+                  type: dict
+                unmatched:
+                  type: bool
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
+                    new_key: encapsulation
             network:
               type: dict
               description: Network encapsulations are all optional and skipped if using client unmatched.
               keys:
-                dot1q:
-                  deprecation:
-                    warning: true
-                    remove_in_version: 6.0.0
-                  type: dict
-                  keys:
-                    vlan:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 1
-                      max: 4094
-                      description: Network VLAN ID.
-                    outer:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 1
-                      max: 4094
-                      description: Network outer VLAN ID.
-                    inner:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 1
-                      max: 4094
-                      description: Network inner VLAN ID.
-                client:
-                  type: bool
-                  deprecation:
-                    warning: true
-                    remove_in_version: 6.0.0
-                # TODO: AVD6.0 the `encapsulation` key should be made required once the deprecated keys are removed in AVD6.0
                 encapsulation:
                   description: |-
                     `untagged` (no encapsulation) is applicable for `untagged` client only.
                     `client` and `client inner` (retain client encapsulation) is not applicable for `untagged` client.
                   type: str
+                  required: true
                   valid_values:
                     - dot1q
                     - dot1ad
@@ -465,11 +348,23 @@ keys:
                   valid_values:
                     - dot1q
                     - dot1ad
+                dot1q:
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
+                    new_key: encapsulation
+                  type: dict
+                client:
+                  type: bool
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
+                    new_key: encapsulation
         vlan_id:
-          # TODO: AVD 6.0 below warning should be removed when the `ethernet_interfaces[].type` key is removed in AVD 6.0
           description: |-
             This setting can only be applied to sub-interfaces on EOS.
-            Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type == l2dot1q`.
           type: int
           min: 1
           max: 4094
@@ -524,16 +419,50 @@ keys:
           type: bool
         ipv6_address:
           type: str
+          description: |-
+            IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: |-
+              IPv6 address with prefix length.
+              This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
+        ipv6_address_auto_config:
+          type: bool
+          description: |-
+            Use SLAAC to automatically configure the IPv6 address.
+            This option is mutually exclusive with `ipv6_addresses`.
         ipv6_address_link_local:
           type: str
           description: Link local IPv6 address/mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -551,15 +480,18 @@ keys:
                 description: Infinite or lifetime in seconds.
               no_autoconfig_flag:
                 type: bool
+        ipv6_nd:
+          type: dict
+          $ref: "eos_cli_config_gen#/$defs/ipv6_nd"
         ipv6_dhcp_relay_destinations:
           type: list
-          primary_key: address
           items:
             type: dict
             keys:
               address:
                 type: str
                 description: DHCP server's IPv6 address.
+                required: true
               vrf:
                 type: str
                 convert_types:
@@ -638,7 +570,16 @@ keys:
           valid_values: ["none", "simple", "message-digest"]
         ospf_authentication_key:
           type: str
-          description: Encrypted password - only type 7 supported.
+          description: Encrypted password.
+        ospf_authentication_key_type:
+          type: str
+          convert_types:
+            - int
+          description: Authentication key type.
+          default: "7"
+          valid_values:
+            - "7"
+            - "8a"
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -654,7 +595,16 @@ keys:
                 valid_values: ["md5", "sha1", "sha256", "sha384", "sha512"]
               key:
                 type: str
-                description: Encrypted password - only type 7 supported.
+                description: Encrypted password.
+              key_type:
+                type: str
+                convert_types:
+                  - int
+                description: Authentication key type.
+                default: "7"
+                valid_values:
+                  - "7"
+                  - "8a"
         pim:
           type: dict
           keys:
@@ -712,32 +662,12 @@ keys:
             The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header
             of TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.
           keys:
-            ipv4_segment_size:
-              type: int
-              convert_types:
-                - str
-              min: 64
-              max: 65475
-              deprecation:
-                warning: true
-                remove_in_version: 6.0.0
-                new_key: ipv4
             ipv4:
               type: int
               convert_types:
                 - str
               min: 64
               max: 65475
-            ipv6_segment_size:
-              type: int
-              convert_types:
-                - str
-              min: 64
-              max: 65475
-              deprecation:
-                warning: true
-                remove_in_version: 6.0.0
-                new_key: ipv6
             ipv6:
               type: int
               convert_types:
@@ -749,6 +679,28 @@ keys:
               valid_values:
                 - egress
                 - ingress
+            ipv4_segment_size:
+              type: int
+              convert_types:
+                - str
+              min: 64
+              max: 65475
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: ipv4
+            ipv6_segment_size:
+              type: int
+              convert_types:
+                - str
+              min: 64
+              max: 65475
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: ipv6
         channel_group:
           type: dict
           keys:
@@ -778,24 +730,8 @@ keys:
           valid_values: ["level-1-2", "level-1", "level-2"]
         isis_hello_padding:
           type: bool
-        isis_authentication_mode:
-          type: str
-          deprecation:
-            warning: true
-            remove_in_version: v6.0.0
-            new_key: isis_authentication.both.mode or isis_authentication.level_1.mode or isis_authentication.level_2.mode
-          valid_values: ["text", "md5"]
-        isis_authentication_key:
-          type: str
-          deprecation:
-            warning: true
-            remove_in_version: v6.0.0
-            new_key: isis_authentication.both.key or isis_authentication.level_1.key or isis_authentication.level_2.key
-          description: Type-7 encrypted password.
         isis_authentication:
           type: dict
-          description: This key should not be mixed with ethernet_interfaces[].isis_authentication_mode or ethernet_interfaces[].isis_authentication_key.
-          # TODO: AVD 6.0 Update the description
           $ref: "eos_cli_config_gen#/keys/router_isis/keys/authentication"
         poe:
           type: dict
@@ -933,7 +869,7 @@ keys:
                 unit:
                   type: str
                   default: "percent"
-                  valid_values: [ "percent", "pps" ]
+                  valid_values: ["percent", "pps"]
                   description: Optional field and is hardware dependent.
             broadcast:
               type: dict
@@ -975,7 +911,7 @@ keys:
                 unit:
                   type: str
                   default: "percent"
-                  valid_values: [ "percent", "pps" ]
+                  valid_values: ["percent", "pps"]
                   description: Optional field and is hardware dependent.
         logging:
           type: dict
@@ -1005,47 +941,6 @@ keys:
               convert_types:
                 - str
               description: ZTP vlan number.
-        trunk_private_vlan_secondary:
-          type: bool
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.trunk.private_vlan_secondary
-        pvlan_mapping:
-          type: str
-          convert_types:
-            - int
-          description: List of vlans as string.
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.pvlan_mapping
-        vlan_translations:
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.vlan_translations
-          type: list
-          items:
-            type: dict
-            keys:
-              from:
-                type: str
-                convert_types:
-                  - int
-                description: List of vlans as string (only one vlan if direction is "both").
-              to:
-                type: int
-                convert_types:
-                  - str
-                description: VLAN ID.
-              direction:
-                type: str
-                valid_values: ["in", "out", "both"]
-                default: "both"
         dot1x:
           type: dict
           description: 802.1x
@@ -1062,7 +957,10 @@ keys:
               keys:
                 mode:
                   type: str
-                  valid_values: ["authenticator"]
+                  valid_values: ["authenticator", "supplicant"]
+                supplicant_profile:
+                  type: str
+                  description: Supplicant profile name.
             authentication_failure:
               type: dict
               keys:
@@ -1210,12 +1108,14 @@ keys:
           type: str
           convert_types:
             - bool
-          valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
+          valid_values:
+            ["enabled", "disabled", "True", "False", "true", "false"]
         spanning_tree_bpduguard:
           type: str
           convert_types:
             - bool
-          valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
+          valid_values:
+            ["enabled", "disabled", "True", "False", "true", "false"]
         spanning_tree_bpduguard_rate_limit:
           type: dict
           keys:
@@ -1242,6 +1142,9 @@ keys:
         spanning_tree_portfast:
           type: str
           valid_values: ["edge", "network"]
+        spanning_tree_link_type:
+          type: str
+          valid_values: ["shared", "point-to-point"]
         vmtracer:
           type: bool
         priority_flow_control:
@@ -1351,6 +1254,82 @@ keys:
                 override:
                   type: str
                   description: Transceiver type.
+            application_override:
+              type: str
+              description: |-
+                Set CMIS transceiver application.
+                '100gbase-srbd' should not be used in conjunction with `application_override_lanes`.
+              valid_values:
+                [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "11",
+                  "12",
+                  "13",
+                  "14",
+                  "15",
+                  "100gbase-srbd",
+                ]
+              convert_types:
+                - int
+            application_override_lanes:
+              type: list
+              description: Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
+              items:
+                type: dict
+                keys:
+                  override:
+                    min: 0
+                    max: 15
+                    type: int
+                    required: true
+                    convert_types:
+                      - str
+                  first_lane:
+                    type: int
+                    description: |-
+                      Set the start value of host lanes for which overrides should be applied.
+                    required: true
+                    min: 1
+                    max: 8
+                    convert_types:
+                      - str
+                  last_lane:
+                    type: int
+                    description: |-
+                      Set the last value of host lanes for which overrides should be applied.
+                    min: 1
+                    max: 8
+                    convert_types:
+                      - str
+            power:
+              type: dict
+              keys:
+                ignore:
+                  type: bool
+                  description: Ignore advertised transceiver power consumption.
+            transmitter:
+              type: dict
+              keys:
+                signal_power:
+                  type: str
+                  description: Optical signal power between < -30 and 10 > (dBm).
+                  convert_types:
+                    - int
+                    - float
+                disabled:
+                  type: bool
+                  description: Disable the optical transmitter.
+
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -1423,15 +1402,35 @@ keys:
               min: 1
               max: 3
               description: IGMP version on IGMP host-proxy interface.
-        peer:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_interface:
-          type: str
-          description: Key only used for documentation or validation purposes.
-        peer_type:
-          type: str
-          description: Key only used for documentation or validation purposes.
+        metadata:
+          type: dict
+          keys:
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_interface:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_type:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            peer_key:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            port_profile:
+              type: str
+              description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: |-
+                Controls LLDP topology validation performed by the `anta_runner` role.
+                - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+                and the peer interface is not administratively shutdown.
+                - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+                - `false`: Disables validation for the interface.
         sflow:
           type: dict
           keys:
@@ -1454,9 +1453,6 @@ keys:
               description: The priority is used to influence the reference clock selection. The EOS default priority is 127. The priority can be configured to any integer between 1-255, or set to `disabled`.
               convert_types:
                 - int
-        port_profile:
-          type: str
-          description: Key only used for documentation or validation purposes.
         uc_tx_queues:
           type: list
           primary_key: id
@@ -1485,7 +1481,14 @@ keys:
                           units:
                             required: true
                             type: str
-                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                            valid_values:
+                              [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "milliseconds",
+                              ]
                             description: Indicate the units to be used for the threshold values.
                           min:
                             type: int
@@ -1529,6 +1532,9 @@ keys:
                   - str
                 required: true
                 description: TX-Queue ID.
+              scheduler_profile_responsive:
+                type: bool
+                description: Set scheduler profile to optimize latency at the expense of burstiness.
               random_detect:
                 type: dict
                 keys:
@@ -1545,10 +1551,18 @@ keys:
                           units:
                             type: str
                             required: true
-                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                            valid_values:
+                              [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "milliseconds",
+                              ]
                             description: Indicate the units to be used for the threshold values.
                           min:
                             type: int
+                            required: true
                             min: 1
                             max: 256000000
                             convert_types:
@@ -1667,6 +1681,11 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv4 address.
+                  secondary_addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
                     convert_types:
@@ -1677,10 +1696,20 @@ keys:
               ipv6:
                 type: dict
                 keys:
+                  addresses:
+                    type: list
+                    required: true
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
                   address:
                     type: str
-                    required: true
                     description: Virtual IPv6 address.
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: addresses
               peer_authentication:
                 type: dict
                 keys:
@@ -1706,37 +1735,32 @@ keys:
                       - "0"
                       - "7"
                       - "8a"
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
         switchport:
           type: dict
           description: This should not be combined with `ethernet_interfaces[].type = switched/routed`.
           keys:
             enabled:
               type: bool
-              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].type` is removed in AVD6.0
-              description: |-
-                Warning: This should not be combined with `ethernet_interfaces[].type = routed`.
             mode:
               type: str
-              valid_values: ["access", "dot1q-tunnel", "trunk", "trunk phone", "tap", "tool", "tap-tool"]
-              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].mode` is removed in AVD6.0
-              description: |-
-                Warning: This should not be combined with `ethernet_interfaces[].mode`.
+              valid_values:
+                [
+                  "access",
+                  "dot1q-tunnel",
+                  "trunk",
+                  "trunk phone",
+                  "tap",
+                  "tool",
+                  "tap-tool",
+                ]
             access_vlan:
               type: int
               convert_types:
                 - str
               min: 1
               max: 4094
-              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].mode` and `ethernet_interface[].vlans` are removed in AVD6.0
               description: |-
                 Set VLAN when interface is in access mode.
-                Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel` and `ethernet_interface[].vlans`.
             trunk:
               type: dict
               keys:
@@ -1744,36 +1768,25 @@ keys:
                   type: str
                   convert_types:
                     - int
-                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].mode` and `ethernet_interface[].vlans` are removed in AVD6.0
                   description: |-
                     VLAN ID or range(s) of VLAN IDs.
-                    Warning: This should not be combined with `ethernet_interfaces[].mode = trunk` and `ethernet_interface[].vlans`.
                 native_vlan:
                   type: int
                   convert_types:
                     - str
-                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].native_vlan` is removed in AVD6.0
                   description: |-
                     Set native VLAN when interface is in trunking mode.
-                    Warning: This should not be combined with `ethernet_interfaces[].native_vlan`.
                   min: 1
                   max: 4094
                 native_vlan_tag:
                   type: bool
-                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].native_vlan_tag` is removed in AVD6.0
                   description: |-
                     If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
-                    Warning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`.
                 private_vlan_secondary:
                   type: bool
-                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_ineterfaces[].trunk_private_vlan_secondary` is removed in AVD6.0
                   description: |-
                     Enable secondary VLAN mapping for a private vlan.
-                    Warning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.
                 groups:
-                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_ineterfaces[].trunk_groups` is removed in AVD6.0
-                  description: |
-                    Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.
                   type: list
                   items:
                     type: str
@@ -1782,9 +1795,6 @@ keys:
                     description: Trunk group name.
             phone:
               type: dict
-              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].phone` is removed in AVD6.0
-              description: |-
-                Warning: This should not be combined with `ethernet_interfaces[].phone`.
               keys:
                 vlan:
                   type: int
@@ -1792,23 +1802,16 @@ keys:
                   max: 4094
                   convert_types:
                     - str
-                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].phone.vlan` is removed in AVD6.0
-                  description: |-
-                    Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`.
                 trunk:
                   type: str
-                  # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].phone.trunk` is removed in AVD6.0
-                  description: |-
-                    Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`.
-                  valid_values: ["tagged", "tagged phone", "untagged", "untagged phone"]
+                  valid_values:
+                    ["tagged", "tagged phone", "untagged", "untagged phone"]
             pvlan_mapping:
               type: str
               convert_types:
                 - int
-              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].pvlan_mapping` is removed in AVD6.0
               description: |-
                 Secondary VLAN IDs of the private VLAN mapping.
-                Warning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`.
             dot1q:
               type: dict
               keys:
@@ -1834,10 +1837,8 @@ keys:
                 - tx
                 - tx multicast
             vlan_translations:
-              # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].vlan_translations` is removed in AVD6.0
               description: |-
                 VLAN Translation mappings.
-                Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.
               type: dict
               keys:
                 in_required:
@@ -2129,11 +2130,11 @@ keys:
                   keys:
                     source:
                       type: str
-                      pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
+                      pattern: "([0-9a-f]{2}:){5}[0-9a-f]{2}"
                       description: MAC address for the source.
                     destination:
                       type: str
-                      pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
+                      pattern: "([0-9a-f]{2}:){5}[0-9a-f]{2}"
                       description: MAC address for the destination.
                 encapsulation:
                   type: dict
@@ -2300,16 +2301,6 @@ keys:
                 description: SRLG name or number.
                 convert_types:
                   - int
-            srlg:
-              description: SRLG name or number.
-              type: str
-              deprecation:
-                warning: true
-                removed: false
-                remove_in_version: 6.0.0
-                new_key: srlgs
-              convert_types:
-                - int
             metric:
               type: int
               convert_types:
@@ -2371,6 +2362,136 @@ keys:
                       valid_values:
                         - microseconds
                         - milliseconds
+            srlg:
+              description: SRLG name or number.
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: srlgs
+              convert_types:
+                - int
+        vlans:
+          type: str
+          convert_types:
+            - int
+          description: |
+            List of switchport vlans as string.
+            For a trunk port this would be a range like "1-200,300".
+            For an access port this would be a single vlan "123".
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.access_vlan or switchport.trunk.allowed_vlan
+        native_vlan:
+          type: int
+          convert_types:
+            - str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.native_vlan
+        native_vlan_tag:
+          type: bool
+          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.native_vlan_tag
+        mode:
+          type: str
+          valid_values: ["access", "dot1q-tunnel", "trunk", "trunk phone"]
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.mode
+        phone:
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.phone
+          type: dict
+        trunk_groups:
+          type: list
+          items:
+            type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.groups
+        type:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
+          valid_values:
+            ["routed", "switched", "l3dot1q", "l2dot1q", "port-channel-member"]
+          description: |
+            l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
+            The `type = switched/routed` should not be combined with `switchport`.
+        encapsulation_dot1q_vlan:
+          type: int
+          convert_types:
+            - str
+          description: VLAN tag to configure on sub-interface.
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: encapsulation_dot1q.vlan
+        isis_authentication_mode:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: v6.0.0
+            new_key: isis_authentication.both.mode or isis_authentication.level_1.mode or isis_authentication.level_2.mode
+          valid_values: ["text", "md5"]
+        isis_authentication_key:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: v6.0.0
+            new_key: isis_authentication.both.key or isis_authentication.level_1.key or isis_authentication.level_2.key
+          description: Type-7 encrypted password.
+        trunk_private_vlan_secondary:
+          type: bool
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.private_vlan_secondary
+        pvlan_mapping:
+          type: str
+          convert_types:
+            - int
+          description: List of vlans as string.
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.pvlan_mapping
+        vlan_translations:
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.vlan_translations
+          type: list
+        monitor_link_flap_profiles:
+          type: list
+          items:
+            type: str
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration.

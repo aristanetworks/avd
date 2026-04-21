@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -11,8 +11,9 @@ $defs:
     keys:
       speed:
         type: str
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
         description: |
-          Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          Set adapter speed.
           If not specified speed will be auto.
       description:
         type: str
@@ -20,7 +21,7 @@ $defs:
           Description or description template to be used on all ports.
           This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
           The available template fields are:
-            - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+            - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
             - `endpoint` - The name of the connected endpoint
             - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.
 
@@ -94,7 +95,12 @@ $defs:
           Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.
       vlans:
         type: str
-        description: Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.
+        description: |
+          Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+          The value will be interpreted according to these rules:
+          - `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.
+          - Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+          If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
         convert_types:
           - int
       spanning_tree_portfast:
@@ -112,6 +118,9 @@ $defs:
         convert_types:
           - bool
         valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
+      spanning_tree_link_type:
+        type: str
+        valid_values: ["shared", "point-to-point"]
       flowcontrol:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/flowcontrol
@@ -211,100 +220,7 @@ $defs:
             $ref: "eos_designs#/$defs/adapter_config/keys/storm_control/keys/all"
       monitor_sessions:
         type: list
-        description: Used to define switchports as source or destination for monitoring sessions.
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              required: true
-              description: Session name.
-            role:
-              type: str
-              valid_values:
-                - "source"
-                - "destination"
-            source_settings:
-              type: dict
-              keys:
-                direction:
-                  type: str
-                  valid_values:
-                    - "rx"
-                    - "tx"
-                    - "both"
-                access_group:
-                  type: dict
-                  description: This can only be set when `session_settings.access_group` is not set.
-                  keys:
-                    type:
-                      type: str
-                      valid_values:
-                        - "ip"
-                        - "ipv6"
-                        - "mac"
-                    name:
-                      description: ACL name.
-                      type: str
-                    priority:
-                      type: int
-                      convert_types:
-                        - str
-            session_settings:
-              type: dict
-              description: |
-                Session settings are defined per session name.
-                Different session_settings for the same session name will be combined/merged.
-              keys:
-                encapsulation_gre_metadata_tx:
-                  type: bool
-                header_remove_size:
-                  type: int
-                  description: Number of bytes to remove from header.
-                  convert_types:
-                    - str
-                access_group:
-                  type: dict
-                  keys:
-                    type:
-                      type: str
-                      valid_values:
-                        - "ip"
-                        - "ipv6"
-                        - "mac"
-                    name:
-                      description: ACL name.
-                      type: str
-                rate_limit_per_ingress_chip:
-                  type: str
-                  description: |
-                    Ratelimit and unit as string.
-                    Examples:
-                      "100000 bps"
-                      "100 kbps"
-                      "10 mbps"
-                rate_limit_per_egress_chip:
-                  type: str
-                  description: |
-                    Ratelimit and unit as string.
-                    Examples:
-                      "100000 bps"
-                      "100 kbps"
-                      "10 mbps"
-                sample:
-                  type: int
-                  convert_types:
-                    - str
-                truncate:
-                  type: dict
-                  keys:
-                    enabled:
-                      type: bool
-                    size:
-                      type: int
-                      description: Size in bytes.
-                      convert_types:
-                        - str
+        $ref: "eos_designs#/$defs/monitor_sessions"
       ethernet_segment:
         type: dict
         description: Settings for all or single-active EVPN multihoming.
@@ -372,7 +288,7 @@ $defs:
               Description or description template to be used on the port-channel interface.
               This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
               The available template fields are:
-                - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+                - `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
                 - `endpoint` - The name of the connected endpoint
                 - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
                 - `port_channel_id` - The port-channel number for the switch.
@@ -410,7 +326,7 @@ $defs:
                   - individual
                 description: |
                   Either static or individual mode is supported.
-                  If the mode is set to "individual" the "individual.profile" setting must be defined.
+                  If the mode is set to "individual" either 'profile' or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
               individual:
                 type: dict
                 description: Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to "individual".
@@ -418,6 +334,24 @@ $defs:
                   profile:
                     type: str
                     description: Port-profile name to inherit configuration.
+                  vlans:
+                    type: str
+                    description: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                    convert_types:
+                      - int
+                  native_vlan:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Native VLAN on the port-channel member interfaces when in fallback individual.
+                  mode:
+                    type: str
+                    valid_values:
+                      - "access"
+                      - "dot1q-tunnel"
+                      - "trunk"
+                      - "trunk phone"
+                    description: Interface mode on the port-channel member interfaces when in fallback individual.
               timeout:
                 type: int
                 convert_types:
@@ -444,6 +378,7 @@ $defs:
             description: |
               Port-Channel L2 Subinterfaces
               Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+              The parent Port-Channel interface is automatically created if not defined elsewhere.
               Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
               Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
             items:
@@ -486,7 +421,7 @@ $defs:
                 structured_config:
                   type: dict
                   relaxed_validation: true
-                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>] for eos_cli_config_gen.
+                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema.
                   documentation_options:
                     hide_keys: true
                   $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
@@ -496,24 +431,21 @@ $defs:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+            description: Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              removed: true
-              warning: true
-              remove_in_version: "5.0.0"
-              new_key: ethernet_segment.short_esi
       validate_state:
         type: bool
-        description: Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role.
+        description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
       validate_lldp:
         type: bool
-        description: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+        description: |-
+          Controls LLDP topology validation performed by the `anta_runner` role.
+          - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+          and the peer interface is not administratively shutdown.
+          - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+          - `false`: Disables validation for the interface.
       campus_link_type:
         type: list
         $ref: "eos_designs#/$defs/campus_link_type"
@@ -530,7 +462,7 @@ $defs:
       structured_config:
         type: dict
         relaxed_validation: true
-        description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+        description: Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config schema.
         documentation_options:
           hide_keys: true
         $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"

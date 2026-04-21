@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -6,6 +6,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from ansible.vars.hostvars import HostVarsVars
+
+from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBLE_ABOVE_2_19
 
 if TYPE_CHECKING:  # pragma: no cover
     from ansible.inventory.manager import InventoryManager
@@ -47,7 +49,12 @@ class ActionPluginVars:
             KeyError: If the hostname is not found.
         """
         variables = self._get_raw_variables(hostname)
-        return HostVarsVars(variables=variables, loader=self.loader)
+
+        # TODO: Cleanup once our oldest supported ansible-core version is 2.19. Gotta love breaking signatures.
+        if not ANSIBLE_ABOVE_2_19:
+            return HostVarsVars(variables=variables, loader=self.loader)  # pyright: ignore[reportCallIssue]
+
+        return HostVarsVars(variables=variables, loader=self.loader, host=hostname)  # pyright: ignore[reportCallIssue]
 
     def _get_raw_variables(self, hostname: str) -> dict[str, Any]:
         """

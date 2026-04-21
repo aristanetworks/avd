@@ -1,0 +1,316 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet15
+  description: P2P_ptp-tests-leaf3_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.1.2/31
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  metadata:
+    peer: ptp-tests-leaf3
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet16
+  description: P2P_ptp-tests-leaf4_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.1.6/31
+  metadata:
+    peer: ptp-tests-leaf4
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet17
+  description: P2P_ptp-tests-leaf5_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.1.10/31
+  metadata:
+    peer: ptp-tests-leaf5
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet18
+  description: P2P_ptp-tests-leaf6_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.1.14/31
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  metadata:
+    peer: ptp-tests-leaf6
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet6
+  description: P2P_ptp-tests-spine1_Ethernet6
+  shutdown: false
+  mtu: 9214
+  ptp:
+    enable: true
+    announce:
+      interval: 2
+      timeout: 10
+    delay_req: 2
+    sync_message:
+      interval: 2
+    transport: ipv4
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet6
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: P2P_ptp-tests-spine1_Ethernet7
+  shutdown: false
+  mtu: 9214
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet7
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet8
+  description: P2P_ptp-tests-spine1_Ethernet8
+  shutdown: false
+  mtu: 9214
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet8
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet9
+  description: P2P_ptp-tests-spine1_Ethernet9
+  shutdown: false
+  mtu: 9214
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  metadata:
+    peer: ptp-tests-spine1
+    peer_interface: Ethernet9
+    peer_type: spine
+  switchport:
+    enabled: false
+hostname: ptp-tests-spine2
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.255.0.2/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.21/24
+  type: oob
+  gateway: 192.168.0.1
+metadata:
+  is_deployed: true
+  platform: vEOS-LAB
+  fabric_name: PTP_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.0.0/27 eq 32
+ptp:
+  mode: boundary
+  mode_one_step: true
+  forward_unicast: true
+  clock_identity: 01:02:03:14:00:0a
+  source:
+    ip: 10.255.0.2
+  priority1: 20
+  priority2: 10
+  ttl: 128
+  domain: 127
+  message_type:
+    general:
+      dscp: 46
+    event:
+      dscp: 48
+  monitor:
+    enabled: true
+    threshold:
+      offset_from_master: 1234
+      mean_path_delay: 4567
+    missing_message:
+      intervals:
+        announce: 10
+        follow_up: 9
+        sync: 8
+      sequence_ids:
+        enabled: true
+        announce: 11
+        delay_resp: 12
+        follow_up: 13
+        sync: 14
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65200'
+  router_id: 10.255.0.2
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 256000
+  - name: EVPN-OVERLAY-PEERS
+    metadata:
+      type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.1.3
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65010'
+    metadata:
+      peer: ptp-tests-leaf3
+    description: ptp-tests-leaf3_Ethernet2
+  - ip_address: 192.168.1.7
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65010'
+    metadata:
+      peer: ptp-tests-leaf4
+    description: ptp-tests-leaf4_Ethernet2
+  - ip_address: 192.168.1.11
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65010'
+    metadata:
+      peer: ptp-tests-leaf5
+    description: ptp-tests-leaf5_Ethernet2
+  - ip_address: 192.168.1.15
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65010'
+    metadata:
+      peer: ptp-tests-leaf6
+    description: ptp-tests-leaf6_Ethernet2
+  - ip_address: 192.168.3.1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65010'
+    metadata:
+      peer: ptp-tests-leaf3
+    description: ptp-tests-leaf3_Loopback0
+  - ip_address: 192.168.3.2
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65010'
+    metadata:
+      peer: ptp-tests-leaf4
+    description: ptp-tests-leaf4_Loopback0
+  - ip_address: 192.168.3.3
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65010'
+    metadata:
+      peer: ptp-tests-leaf5
+    description: ptp-tests-leaf5_Loopback0
+  - ip_address: 192.168.3.4
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65010'
+    metadata:
+      peer: ptp-tests-leaf6
+    description: ptp-tests-leaf6_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

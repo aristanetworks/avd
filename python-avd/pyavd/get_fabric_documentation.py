@@ -1,9 +1,9 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from pyavd._utils import get
 from pyavd.api.fabric_documentation import (
@@ -15,13 +15,14 @@ from pyavd.api.fabric_documentation import (
 )
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-    from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
+    from ._eos_designs.eos_designs_facts.schema import EosDesignsFacts
+    from ._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
+    from .api.schemas import EOSConfig
 
 
 def get_fabric_documentation(
     avd_facts: dict[str, EosDesignsFacts],
-    structured_configs: dict[str, dict],
+    structured_configs: dict[str, dict] | dict[str, EOSConfig],
     fabric_name: str,
     fabric_documentation: bool = True,
     include_connected_endpoints: bool = False,
@@ -40,7 +41,9 @@ def get_fabric_documentation(
 
     Args:
         avd_facts: Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
-        structured_configs: Dictionary of structured configurations for all devices, keyed by hostname.
+        structured_configs:
+            Dictionary of structured configurations for all devices, keyed by hostname.
+            The structured configuration can either be given as a dictionary or as an EOSConfig instance and they must all be of the same type.
         fabric_name: Name of the fabric. Only used for the main heading in the Markdown documentation.
         fabric_documentation: Returns fabric documentation when set to True.
         include_connected_endpoints: Includes connected endpoints in the fabric documentation when set to True.
@@ -52,11 +55,21 @@ def get_fabric_documentation(
     Returns:
         FabricDocumentation object containing the requested documentation areas.
     """
-    from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFacts  # noqa: PLC0415
-    from pyavd.j2filters import add_md_toc  # noqa: PLC0415
-
+    from ._eos_designs.fabric_documentation_facts import FabricDocumentationFacts  # noqa: PLC0415
+    from .api.schemas import EOSConfig  # noqa: PLC0415
     from .constants import EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH  # noqa: PLC0415
+    from .j2filters import add_md_toc  # noqa: PLC0415
     from .templater import Templar  # noqa: PLC0415
+
+    # TODO: Fix FabricDocumentationFacts to take EOSConfig instances directly and reverse this logic.
+    for hostname, structured_config in structured_configs.items():
+        if isinstance(structured_config, EOSConfig):
+            structured_configs[hostname] = structured_config._as_dict()  # pyright: ignore[reportArgumentType]
+        else:
+            # We expect all entries to be of the same type.
+            break
+
+    structured_configs = cast("dict[str, dict]", structured_configs)
 
     fabric_documentation_facts = FabricDocumentationFacts(avd_facts, structured_configs, fabric_name, include_connected_endpoints, toc)
     result = FabricDocumentation()
@@ -85,7 +98,9 @@ def _get_topology_csv(fabric_documentation_facts: FabricDocumentationFacts) -> s
 
     csv_content = StringIO()
     csv_writer = writer(csv_content, lineterminator="\n")
-    csv_writer.writerow(("Node Type", "Node", "Node Interface", "Peer Type", "Peer Node", "Peer Interface", "Node Interface Enabled"))
+    csv_writer.writerow(
+        ("Node Type", "Node", "Serial Number", "Node Interface", "Peer Type", "Peer Node", "Peer Serial Number", "Peer Interface", "Node Interface Enabled")
+    )
     csv_writer.writerows(fabric_documentation_facts.get_physical_links())
     csv_content.seek(0)
     return csv_content.read()
@@ -97,15 +112,30 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
 
     csv_content = StringIO()
     csv_writer = writer(csv_content, lineterminator="\n")
-    csv_writer.writerow(("Type", "Node", "Node Interface", "Leaf IP Address", "Peer Type", "Peer Node", "Peer Interface", "Peer IP Address"))
+    csv_writer.writerow(
+        (
+            "Type",
+            "Node",
+            "Serial Number",
+            "Node Interface",
+            "Leaf IP Address",
+            "Peer Type",
+            "Peer Node",
+            "Peer Serial Number",
+            "Peer Interface",
+            "Peer IP Address",
+        )
+    )
     csv_writer.writerows(
         (
             topology_link["type"],
             topology_link["node"],
+            topology_link["serial_number"],
             topology_link["node_interface"],
             topology_link["node_ip_address"],
             topology_link["peer_type"],
             topology_link["peer"],
+            topology_link["peer_serial_number"],
             topology_link["peer_interface"],
             topology_link["peer_ip_address"],
         )
@@ -188,6 +218,17 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                     node_type=digital_twin_node_type,
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
+                    # Set internet_access to None unless it is a cloudeos or veos node and its metadata.digital_twin.internet_access is True
+                    internet_access=internet_access
+                    if (
+                        (
+                            internet_access := get(
+                                fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..internet_access", separator=".."
+                            )
+                        )
+                        and digital_twin_node_type in ["cloudeos", "veos"]
+                    )
+                    else None,
                 )
             }
         )
@@ -204,10 +245,12 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                 isinstance(topology_link["node"], str)
                 and topology_link["node"]
                 and isinstance(topology_link["node_interface"], str)
+                and "." not in topology_link["node_interface"]
                 and topology_link["node_interface"]
                 and isinstance(topology_link["peer"], str)
                 and topology_link["peer"]
                 and isinstance(topology_link["peer_interface"], str)
+                and "." not in topology_link["peer_interface"]
                 and topology_link["peer_interface"]
             )
         ),

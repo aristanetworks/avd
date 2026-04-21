@@ -1,0 +1,69 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: dns-settings-3
+ip_domain_lookup:
+  source_interfaces:
+  - name: Ma1/1
+    vrf: MGMT
+  - name: Vlan123
+    vrf: INBAND_MGMT
+ip_igmp_snooping:
+  globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+  - name: MGMT
+    servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+    - ip_address: 10.10.10.3
+  - name: INBAND_MGMT
+    servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+    - ip_address: 10.10.10.2
+  - name: other_vrf
+    servers:
+    - ip_address: 10.10.10.2
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  vrf: INBAND_MGMT
+  ip_address: 192.168.1.2/24
+  mtu: 1500
+  metadata:
+    type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4092
+  name: INBAND_MGMT
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: INBAND_MGMT

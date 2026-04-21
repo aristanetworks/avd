@@ -1,0 +1,27 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: ospf-enabled-on-svi-not-on-vrf
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: Tenant-A
+    vrfs:
+      - name: no-ospf-vrf
+        vrf_id: 2
+        svis:
+          - id: 42
+            name: ospf-enabled
+            ospf:
+              enabled: true
+            nodes:
+              - node: ospf-on-svi-not-on-vrf
+
+expected_error_message: >-
+  OSPF is enabled on SVI 'ospf-enabled' but not under 'tenants[name=Tenant-A].vrfs[name=no-ospf-vrf]'.

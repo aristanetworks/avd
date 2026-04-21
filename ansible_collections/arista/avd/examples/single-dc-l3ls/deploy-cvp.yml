@@ -1,13 +1,13 @@
 ---
-- name: Deploy Configurations to Devices Using CloudVision Portal # (1)!
-  hosts: CLOUDVISION
+- name: Deploy Configurations via CloudVision
+  hosts: FABRIC # (1)!
   gather_facts: false
   connection: local
   tasks:
 
-    - name: Deploy Configurations to CloudVision # (2)!
+    - name: Deploy Configurations via CloudVision # (2)!
       ansible.builtin.import_role:
-        name: arista.avd.eos_config_deploy_cvp
+        name: arista.avd.cv_deploy
       vars:
-        cv_collection: v3 # (3)!
-        fabric_name: FABRIC # (4)!
+        cv_server: 192.168.1.12 # (3)!
+        cv_token: <insert service_account token here - use Ansible Vault> # (4)!

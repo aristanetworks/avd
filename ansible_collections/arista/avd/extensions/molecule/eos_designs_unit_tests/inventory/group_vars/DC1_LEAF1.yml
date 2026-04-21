@@ -1,0 +1,22 @@
+---
+bgp_default_ipv4_unicast: true
+
+# Test for bgp_default_ipv4_unicast as true to deactivate the peer group on IPv4 address family
+# even if remove_redundant_ipv4_unicast_for_peer_groups set as true
+avd_design_future:
+  remove_redundant_ipv4_unicast_for_peer_groups: true
+
+# Test to honor platform settings of vEOS-LAB
+bgp_update_wait_install: true
+bgp_update_wait_for_convergence: true
+
+# test updating graceful restart timers
+bgp_graceful_restart:
+  enabled: true
+  restart_time: 500
+
+overlay_rd_type:
+  admin_subfield: 1.1.1.1
+
+overlay_rt_type:
+  admin_subfield: 1234

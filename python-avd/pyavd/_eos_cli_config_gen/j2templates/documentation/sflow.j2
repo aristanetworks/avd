@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -43,6 +43,10 @@
 {%     if sflow.sample is arista.avd.defined %}
 
 sFlow Sample Rate: {{ sflow.sample }}
+{%     endif %}
+{%     if sflow.sample_truncate_size is arista.avd.defined %}
+
+sFlow Sample Truncation Size: {{ sflow.sample_truncate_size }} bytes.
 {%     endif %}
 {%     if sflow.sample_input_subinterface is arista.avd.defined(true) %}
 

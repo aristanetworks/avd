@@ -1,19 +1,24 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import importlib
+import importlib.util
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
+from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined, TemplateNotFound
+from jinja2.compiler import generate
 
 from .constants import JINJA2_EXTENSIONS, RUNNING_FROM_SRC
 
 if TYPE_CHECKING:
     import os
-    from collections.abc import Sequence
+    from collections.abc import MutableMapping, Sequence
+
+    from jinja2 import Template
 
 LOGGER = logging.getLogger(__name__)
 
@@ -44,15 +49,59 @@ class Undefined(StrictUndefined):
         return self
 
 
+class CustomModuleLoader(ModuleLoader):
+    """Custom ModuleLoader that handles readable module names."""
+
+    def __init__(self, path: str | Path) -> None:
+        self.path = Path(path).resolve()
+        super().__init__(path)
+
+    def load(self, environment: Environment, name: str, globals: MutableMapping[str, Any] | None = None) -> Template:  # noqa: A002
+        """Load template using the module name conversion."""
+        # Convert template name to module name
+        module_name = self._template_name_to_module_name(name)
+
+        # Check if the module is already loaded/cached
+        mod = getattr(self.module, module_name, None)
+
+        if mod is None:
+            # Build the file path directly
+            module_file = self.path / f"{module_name}.py"
+
+            if not module_file.exists():
+                raise TemplateNotFound(name)
+
+            # Load module directly from file path (no sys.path needed!)
+            spec = importlib.util.spec_from_file_location(module_name, module_file)
+            if spec is None or spec.loader is None:
+                raise TemplateNotFound(name)
+
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+
+            # Cache the loaded module for future use
+            setattr(self.module, module_name, mod)
+
+        # Create template from module dict
+        return environment.template_class.from_module_dict(environment, mod.__dict__, globals if globals is not None else {})
+
+    @staticmethod
+    def _template_name_to_module_name(template_name: str) -> str:
+        """Convert a template name to a module name."""
+        normalized = Path(template_name.replace("\\", "/")).as_posix()
+        return normalized.replace("/", "__").removesuffix(".j2").replace(".", "_").replace("-", "_")
+
+
 class Templar:
     def __init__(self, precompiled_templates_path: str | Path, searchpaths: list[str | Path] | None = None) -> None:
         if not RUNNING_FROM_SRC:
-            self.loader = ModuleLoader(precompiled_templates_path)
+            self.loader = CustomModuleLoader(precompiled_templates_path)
+
         else:
             searchpaths = searchpaths or []
             self.loader = ChoiceLoader(
                 [
-                    ModuleLoader(precompiled_templates_path),
+                    CustomModuleLoader(precompiled_templates_path),
                     FileSystemLoader(searchpaths),
                 ],
             )
@@ -81,6 +130,7 @@ class Templar:
             list_compress,
             natural_sort,
             range_expand,
+            secure_hash,
             snmp_hash,
             status_render,
         )
@@ -100,6 +150,7 @@ class Templar:
                 "arista.avd.range_expand": range_expand,
                 "arista.avd.snmp_hash": snmp_hash,
                 "arista.avd.status_render": status_render,
+                "arista.avd.secure_hash": secure_hash,
             },
         )
         self.environment.tests.update(
@@ -109,12 +160,12 @@ class Templar:
             },
         )
 
-    def render_template_from_file(self, template_file: str, template_vars: dict) -> str:
+    def render_template_from_file(self, template_file: str, template_vars: dict[str, Any]) -> str:
         return self.environment.get_template(template_file).render(template_vars)
 
     def compile_templates_in_paths(self, precompiled_templates_path: str | Path, searchpaths: list[str | Path]) -> None:
         """
-        Compile the Jinja2 templates in the path.
+        Compile the Jinja2 templates in the path with readable module names.
 
         The FileSystemLoader tries to compile any file in the path no matter the extension so
         this uses a custom one.
@@ -123,13 +174,55 @@ class Templar:
         ----------
             searchpaths: The list of path to search templates in.
         """
+        precompiled_path = Path(precompiled_templates_path)
+        precompiled_path.mkdir(parents=True, exist_ok=True)
+
         self.environment.loader = ExtensionFileSystemLoader(searchpaths)
-        self.environment.compile_templates(
-            zip=None,
-            log_function=LOGGER.debug,
-            target=precompiled_templates_path,
-            ignore_errors=False,
-        )
+
+        # Get all templates
+        templates = self.environment.loader.list_templates()
+
+        # Track module names to detect collisions
+        module_name_map: dict[str, str] = {}
+
+        # Compile each template with a readable name
+        for template_name in templates:
+            # Get the template source
+            source, filename, _uptodate = self.environment.loader.get_source(self.environment, template_name)
+
+            # Parse and compile to Python source code
+            try:
+                code = self.environment.parse(source, template_name, filename)
+                module_code = generate(code, self.environment, template_name, filename, defer_init=True)
+            except Exception as exc:
+                msg = f"Failed to compile template {template_name}"
+                raise RuntimeError(msg) from exc
+
+            if module_code is None:
+                msg = f"Failed to generate code for template {template_name}"
+                raise RuntimeError(msg)
+
+            # Create a readable module name from template path
+            module_name = CustomModuleLoader._template_name_to_module_name(template_name)
+
+            # Check for module name collision
+            if module_name in module_name_map:
+                msg = (
+                    f"Module name collision detected: templates '{module_name_map[module_name]}' and '{template_name}' "
+                    f"both resolve to module name '{module_name}'. "
+                    "Template names must be unique after normalization (replacing '/', '\\', '.', '-' with '_')."
+                )
+                raise ValueError(msg)
+            module_name_map[module_name] = template_name
+
+            # Write to file with proper module structure for ModuleLoader
+            output_file = precompiled_path / f"{module_name}.py"
+            output_file.parent.mkdir(parents=True, exist_ok=True)
+
+            with output_file.open("w", encoding="utf-8") as f:
+                # Write the generated code (already includes necessary imports and name)
+                f.write(module_code)
+
         self.environment.loader = self.loader
 
 

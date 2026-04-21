@@ -15,12 +15,10 @@ keys:
     type: list
     items:
       type: int
-  some_object:
+  some_dict:
     type: dict
     keys:
-      name:
+      some_nested_key:
         type: str
-      some_int:
-        type: int
-      some_str:
-        type: str
+  some_key:
+    type: int

@@ -1,0 +1,25 @@
+---
+ansible:
+  executor:
+    backend: ansible-playbook
+    args:
+      ansible_playbook:
+        - --inventory=${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/single-dc-l3ls/inventory.yml
+  env:
+    ANSIBLE_FORCE_COLOR: true
+  cfg:
+    defaults:
+      gathering: explicit
+  playbooks:
+    converge: '${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/single-dc-l3ls/build.yml'
+dependency:
+  name: galaxy
+  enabled: false
+scenario:
+  test_sequence:
+    - converge
+    - idempotence
+  cleanup_sequence:
+    - cleanup
+verifier:
+  name: ansible

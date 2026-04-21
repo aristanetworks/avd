@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 if TYPE_CHECKING:
@@ -36,14 +35,14 @@ class LoopbackInterfacesMixin(Protocol):
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
                     interface="Loopback0",
-                    description=default(self.inputs.overlay_loopback_description, self.inputs.router_id_loopback_description),
+                    description=self.inputs.router_id_loopback_description,
                 ),
             ),
             shutdown=False,
         )
 
         if self.shared_utils.ipv6_router_id:
-            loopback0.ipv6_address = f"{self.shared_utils.ipv6_router_id}/{self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length}"
+            loopback0.ipv6_addresses.append(f"{self.shared_utils.ipv6_router_id}/{self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length}")
 
         if not self.shared_utils.underlay_ipv6_numbered:
             loopback0.ip_address = f"{self.shared_utils.router_id}/32"
@@ -81,7 +80,7 @@ class LoopbackInterfacesMixin(Protocol):
             )
 
             if self.shared_utils.underlay_ipv6_numbered:
-                vtep_loopback.ipv6_address = f"{self.shared_utils.vtep_ipv6}/{self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length}"
+                vtep_loopback.ipv6_addresses.append(f"{self.shared_utils.vtep_ipv6}/{self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length}")
             else:
                 vtep_loopback.ip_address = f"{self.shared_utils.vtep_ip}/32"
                 if self.shared_utils.network_services_l3 is True and self.inputs.vtep_vvtep_ip is not None:
@@ -95,10 +94,8 @@ class LoopbackInterfacesMixin(Protocol):
 
             self.structured_config.loopback_interfaces.append(vtep_loopback)
 
-        # Underlay Multicast RP Loopbacks
-        if self.shared_utils.underlay_multicast_rp_interfaces is not None:
-            for underlay_multicast_rp_interface in self.shared_utils.underlay_multicast_rp_interfaces:
-                self.structured_config.loopback_interfaces.append(underlay_multicast_rp_interface)
+        # Add Underlay Multicast RP Loopbacks if any
+        self.structured_config.loopback_interfaces.extend(self.shared_utils.underlay_multicast_rp_interfaces)
 
     @cached_property
     def _node_sid(self: AvdStructuredConfigUnderlayProtocol) -> int:

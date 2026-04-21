@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -14,6 +14,8 @@ from pyavd._utils import merge
 
 if TYPE_CHECKING:
     from collections.abc import Generator
+
+    from referencing._core import Resolver
 
 
 class AvdSchemaResolver:
@@ -77,7 +79,7 @@ class AvdSchemaResolver:
         resolved_schema.pop("$ref")
         merge(resolved_schema, ref_schema, same_key_strategy="use_existing", list_merge="replace")
 
-    def create_resolver(self, store: dict, base_uri: str = "") -> object:
+    def create_resolver(self, store: dict, base_uri: str = "") -> Resolver:
         """
         Returns a resolver which can resolve "$ref" references across all AVD schemas.
 

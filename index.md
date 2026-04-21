@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -53,13 +53,13 @@ pip3 install pyavd
 
 ## Examples
 
-- [Getting started](docs/getting-started/intro-to-ansible-and-avd.md)
+- [Getting started](docs/user-manual/intro-to-ansible-and-avd.md)
 - [Arista NetDevOps GitHub repository](https://github.com/aristanetworks/netdevops-examples)
 
 ## Additional resources
 
 - Ansible [EOS modules](https://docs.ansible.com/ansible/latest/collections/arista/eos/index.html) on Ansible documentation
-- Ansible [CloudVision modules](https://cvp.avd.sh/en/stable/)
+- Ansible [CloudVision modules](https://aristanetworks.github.io/ansible-cvp)
 - [CloudVision Portal](https://www.arista.com/en/products/eos/eos-cloudvision)
 - [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides)
 

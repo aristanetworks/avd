@@ -1,8 +1,0 @@
----
-### ptp
-ptp:
-  monitor:
-    enabled: true
-    missing_message:
-      sequence_ids:
-        enabled: false

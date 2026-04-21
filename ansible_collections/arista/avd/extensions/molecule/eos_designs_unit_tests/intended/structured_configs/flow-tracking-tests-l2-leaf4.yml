@@ -1,0 +1,134 @@
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /tmp/cv-onboarding-token
+  cvsourceintf: Vlan4092
+  cvvrf: default
+  disable_aaa: false
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ipfixaddr: default/127.0.0.1:4739
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_flow-tracking-tests-leaf3_Ethernet34
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: flow-tracking-tests-leaf3
+    peer_interface: Ethernet34
+    peer_type: l3leaf
+- name: Ethernet2
+  description: L2_flow-tracking-tests-leaf4_Ethernet34
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: flow-tracking-tests-leaf4
+    peer_interface: Ethernet34
+    peer_type: l3leaf
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER-11
+      record_export:
+        on_inactive_timeout: 50020
+        on_interval: 300321
+      exporters:
+      - name: ayush_exporter
+        collectors:
+        - host: 127.0.2.1
+        local_interface: Management1
+        template_interval: 40020
+      - name: CLOUDVISION
+        collectors:
+        - host: 127.0.0.1
+        local_interface: Vlan4092
+    shutdown: false
+hostname: flow-tracking-tests-l2-leaf4
+ip_domain_lookup:
+  source_interfaces:
+  - name: Vlan4092
+ip_igmp_snooping:
+  globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 192.168.200.5
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.204/24
+  type: oob
+  gateway: 192.168.0.1
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: FLOW_TRACKING_TESTS
+  validate_hardware:
+    enabled: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+  vrf: MGMT
+port_channel_interfaces:
+- name: Port-Channel1
+  description: L2_flow-tracking-tests-leaf-mlag_Port-Channel34
+  shutdown: false
+  flow_tracker:
+    hardware: FLOW-TRACKER-11
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
+- prefix: 0.0.0.0/0
+  next_hop: 10.254.254.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  ip_address: 10.254.254.6/24
+  mtu: 1500
+  metadata:
+    type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VLAN11
+  metadata:
+    tenants:
+    - FLOW_TRACKING
+- id: 4092
+  name: INBAND_MGMT
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false

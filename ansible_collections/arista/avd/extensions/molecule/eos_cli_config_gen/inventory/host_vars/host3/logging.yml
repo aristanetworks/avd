@@ -1,0 +1,15 @@
+---
+logging:
+  local_interface: Ethernet1
+  format:
+    timestamp: traditional year timezone
+  synchronous:
+    level:
+  vrfs:
+    - name: check_source_interface_table_created
+      source_interface: Ethernet1
+      hosts:
+        - name: 1.2.3.4
+          protocol: udp
+        - name: 2001:db8::1:2:3:4
+          protocol: udp

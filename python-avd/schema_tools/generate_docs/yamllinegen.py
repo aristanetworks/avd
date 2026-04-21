@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -204,7 +204,7 @@ class YamlLineGenBase:
 
     def get_annotation(self) -> str | None:
         if self.needs_annotation_for_default_value:
-            return yaml.dump({self.schema._key: self.schema.default}, indent=2)
+            return yaml.dump({self.schema._key: self.schema.default}, sort_keys=False, indent=2)
         return None
 
     def render_restrictions(self) -> str | None:

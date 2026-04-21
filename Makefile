@@ -27,7 +27,7 @@ uv-pyavd-build: ## Build PyAVD Python package locally.
 
 .PHONY: pyavd-test
 pyavd-test: ## Test PyAVD Python code with tox.
-	cd python-avd && $(MAKE) && tox -r
+	tox run -r
 
 .PHONY: pyavd-publish
 pyavd-publish: ## Build and publish PyAVD Python package.
@@ -45,7 +45,6 @@ pyavd-install: pyavd-build ## Build and install PyAVD Python package.
 .PHONY: pyavd-editable-install
 pyavd-editable-install: ## Build and install PyAVD as editable
 	pip install -e python-avd --config-settings editable_mode=compat --force-reinstall
-
 
 .PHONY: uv-pyavd-install
 uv-pyavd-install: pyavd-build ## Build and install PyAVD Python package.
@@ -100,6 +99,30 @@ unit-tests: ## Run unit test cases using ansible-test. Specify `ANSIBLE_TEST_MOD
 integration-tests: ## Run integration test cases using ansible-test. Specify `ANSIBLE_TEST_MODE=<venv|docker>` (default: `venv`).
 	cd ansible_collections/arista/avd/ ; \
 	ansible-test integration --requirements --$(ANSIBLE_TEST_MODE)
+
+################
+# Bump version #
+################
+
+.PHONY: bump-dev
+bump-dev: ## Bump dev release. 6.0.0-dev0 -> 6.0.0-dev1
+	bump-my-version bump pre_n
+
+.PHONY: bump-release
+bump-release: ## Bump from dev to final release. 6.2.0-dev2 -> 6.2.0
+	bump-my-version bump pre_l
+
+.PHONY: bump-minor
+bump-minor: ## Bump minor release. 6.1.4 -> 6.2.0-dev0
+	bump-my-version bump minor
+
+.PHONY: bump-major
+bump-major: ## Bump major release. 6.2.4 -> 7.0.0-dev0
+	bump-my-version bump major
+
+.PHONY: bump-patch
+bump-patch: ## Bump patch release. 6.2.4 -> 6.2.5-dev0
+	bump-my-version bump patch
 
 ####################
 # Random shortcuts #

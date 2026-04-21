@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -18,3 +18,7 @@ keys:
        During validation, messages will generated with information about the host(s) and key(s) which failed validation.
        "error" will produce error messages and fail the task.
        "warning" will produce warning messages.
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0

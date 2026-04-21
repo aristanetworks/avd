@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -165,3 +165,18 @@ class AvdBase(ABC):
         new_instance = deepcopy(self)
         new_instance._deepmerge(other=other, list_merge=list_merge)
         return new_instance
+
+    @abstractmethod
+    def _combine(self, other: Self) -> None:
+        """
+        Update instance by combining the other instance in.
+
+        Combining is different from merging in the sense that it will raise if there is a conflict
+        between one of our elements and the other elements.
+
+        Args:
+            other: The other instance of the same type to combine into this instance.
+
+        Raises:
+            AristaAvdDuplicateDataError: When conflicting information is found when combining.
+        """

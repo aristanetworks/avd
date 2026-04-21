@@ -1,0 +1,225 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_sflow-tests-spine1_Ethernet3
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.254.2.5/31
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet3
+    peer_type: spine
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_sflow-tests-spine1_Ethernet4
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.254.2.7/31
+  metadata:
+    peer: sflow-tests-spine1
+    peer_interface: Ethernet4
+    peer_type: spine
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+hostname: sflow-tests-leaf2
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:11:22:33:44:55
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.254.1.2/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.254.11.2/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.102/24
+  type: oob
+  gateway: 192.168.0.1
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: SFLOW_TESTS
+  validate_hardware:
+    enabled: false
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.254.1.0/27 eq 32
+  - sequence: 20
+    action: permit 10.254.11.0/27 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65102'
+  router_id: 10.254.1.2
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 256000
+  - name: EVPN-OVERLAY-PEERS
+    metadata:
+      type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 10.254.2.4
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65200'
+    metadata:
+      peer: sflow-tests-spine1
+    description: sflow-tests-spine1_Ethernet3
+  - ip_address: 10.254.2.6
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65200'
+    metadata:
+      peer: sflow-tests-spine1
+    description: sflow-tests-spine1_Ethernet4
+  - ip_address: 10.255.0.1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65200'
+    metadata:
+      peer: sflow-tests-spine1
+    description: sflow-tests-spine1_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 11
+    metadata:
+      tenants:
+      - SFLOW
+    rd: 10.254.1.2:10011
+    route_targets:
+      both:
+      - 10011:10011
+    redistribute_routes:
+    - learned
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  vrfs:
+  - name: VRF1
+    rd: 10.254.1.2:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+    router_id: 10.254.1.2
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+sflow:
+  vrfs:
+  - name: MGMT
+    destinations:
+    - destination: 10.10.10.10
+    - destination: 10.10.10.11
+    source_interface: Management1
+  - name: sflowvrf
+    destinations:
+    - destination: 10.10.10.12
+      port: 1234
+    source_interface: Loopback321
+  run: true
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 4096
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan11
+  description: VLAN11
+  shutdown: false
+  vrf: VRF1
+  ip_address: 172.17.11.1/24
+  metadata:
+    tenants:
+    - SFLOW
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VLAN11
+  metadata:
+    tenants:
+    - SFLOW
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF1
+  ip_routing: true
+  metadata:
+    tenants:
+    - SFLOW
+vxlan_interface:
+  vxlan1:
+    description: sflow-tests-leaf2_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 11
+        vni: 10011
+      vrfs:
+      - name: VRF1
+        vni: 1

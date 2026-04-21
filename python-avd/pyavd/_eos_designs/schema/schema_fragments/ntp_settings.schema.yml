@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -8,21 +8,22 @@ type: dict
 keys:
   ntp_settings:
     documentation_options:
-      table: management-settings
+      table: time-configuration
     type: dict
     description: |-
       NTP settings
     keys:
       server_vrf:
         type: str
+        default: use_default_mgmt_method_vrf
         description: |-
           EOS only supports NTP servers in one VRF, so this VRF is used for all NTP servers and one local-interface.
           - `use_mgmt_interface_vrf` will configure the NTP server(s) under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as NTP local-interface.
             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
           - `use_inband_mgmt_vrf` will configure the NTP server(s) under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as NTP local-interface.
             An error will be raised if inband management is not configured for the device.
+          - `use_default_mgmt_method_vrf` will configure the VRF for NTP server(s) and local-interface for NTP depending on the value of `default_mgmt_method`.
           - Any other string will be used directly as the VRF name but local interface must be set with `custom_structured_configuration_ntp` if needed.
-          If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
       servers:
         type: list
         description: |-
@@ -66,7 +67,7 @@ keys:
                 Authentication provided using the `key_type` format.
                 Will be rendered as such.
                 Takes precedence over `cleartext_key`.
-              # Need to overwrite required: true from eos_cli_config_gen to allow cleartext_key only
+              # Need to overwrite required: true from the EOS Config schema to allow cleartext_key only
               required: false
             cleartext_key:
               type: str

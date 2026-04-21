@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -17,6 +17,7 @@ keys:
           description: Role name.
         sequence_numbers:
           type: list
+          primary_key: sequence
           items:
             type: dict
             keys:
@@ -27,6 +28,7 @@ keys:
                 description: Sequence number.
               action:
                 type: str
+                required: true
                 valid_values: ["permit", "deny"]
               mode:
                 type: str
@@ -34,4 +36,5 @@ keys:
                   "config", "config-all", "exec" or mode key as string.
               command:
                 type: str
+                required: true
                 description: Command as string.

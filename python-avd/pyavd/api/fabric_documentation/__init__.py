@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -21,6 +21,8 @@ class ActNodeSettings:
     node_type: str
     ip_addr: str
     version: str
+    # internet_access attribute is only applicable to cloudeos and veos node types and is ignored by ACT for all other node types
+    internet_access: bool | None
 
 
 @dataclass(frozen=True)

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -20,7 +20,7 @@ from .vlans import VlansMixin
 from .wan import WanMixin
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import MutableMapping
 
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
@@ -42,6 +42,9 @@ class EosDesignsFactsGeneratorProtocol(
     _downlink_switches: EosDesignsFactsProtocol.DownlinkSwitches
     _evpn_route_server_clients: EosDesignsFactsProtocol.EvpnRouteServerClients
     _mpls_route_reflector_clients: EosDesignsFactsProtocol.MplsRouteReflectorClients
+
+    # Dict of mlag_groups shared between all devices.
+    _mlag_groups: dict[str, set[str]]
 
     @remove_cached_property_type
     @cached_property
@@ -108,8 +111,11 @@ class EosDesignsFactsGeneratorProtocol(
         if "evpn" not in self.shared_utils.overlay_address_families:
             return None
         if self.inputs.evpn_multicast and self.shared_utils.vtep:
-            if not (self.shared_utils.underlay_multicast and self.shared_utils.igmp_snooping_enabled):
-                msg = "'evpn_multicast: True' is only supported in combination with 'underlay_multicast: True' and 'igmp_snooping_enabled : True'"
+            if not (self.shared_utils.underlay_multicast_pim_sm_enabled and self.shared_utils.igmp_snooping_enabled):
+                msg = (
+                    "'evpn_multicast: True' is only supported in combination with and 'igmp_snooping_enabled : true' "
+                    "and either node_settings 'underlay_multicast.pim_sm.enabled: true' or 'underlay_multicast_pim_sm: true'."
+                )
                 raise AristaAvdError(msg)
 
             if (
@@ -182,6 +188,8 @@ class EosDesignsFactsGeneratorProtocol(
     def vtep_loopback_ipv4_pool(self) -> str | None:
         """Exposed in avd_switch_facts."""
         if self.shared_utils.underlay_ipv6_numbered:
+            return None
+        if self.shared_utils.node_config.vtep_loopback == "Loopback0":
             return None
         if self.shared_utils.vtep is True:
             return self.shared_utils.vtep_loopback_ipv4_pool
@@ -292,9 +300,9 @@ class EosDesignsFactsGeneratorProtocol(
         Used for fabric docs
         """
         connected_endpoints_keys = EosDesignsFactsProtocol.ConnectedEndpointsKeys()
-        for connected_endpoint in self.shared_utils.all_connected_endpoints:
+        for connected_endpoints in self.shared_utils.all_connected_endpoints:
             connected_endpoints_keys.append_new(
-                key=connected_endpoint.key, type=connected_endpoint._internal_data.type, description=connected_endpoint._internal_data.description
+                key=connected_endpoints.key, type=connected_endpoints._internal_data.type, description=connected_endpoints._internal_data.description
             )
 
         return connected_endpoints_keys
@@ -383,7 +391,14 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
     which is a dict of `EosDesignsfactsGenerator` instances covering all devices.
     """
 
-    def __init__(self, hostvars: Mapping, inputs: EosDesigns, peer_generators: dict[str, EosDesignsFactsGenerator], shared_utils: SharedUtilsProtocol) -> None:
+    def __init__(
+        self,
+        hostvars: MutableMapping,
+        inputs: EosDesigns,
+        peer_generators: dict[str, EosDesignsFactsGenerator],
+        shared_utils: SharedUtilsProtocol,
+        mlag_groups: dict[str, set[str]],
+    ) -> None:
         super().__init__(hostvars, inputs, shared_utils)
         self.peer_generators = peer_generators
 
@@ -391,6 +406,12 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
         self._downlink_switches = EosDesignsFactsProtocol.DownlinkSwitches()
         self._evpn_route_server_clients = EosDesignsFactsProtocol.EvpnRouteServerClients()
         self._mpls_route_reflector_clients = EosDesignsFactsProtocol.MplsRouteReflectorClients()
+        self._mlag_groups = mlag_groups
+
+    def update_mlag_groups(self) -> None:
+        """Update the shared dict of MLAG groups. Used to deduct the MLAG pairs from the mlag_group set on each device."""
+        if self.shared_utils.mlag and self.shared_utils.device_config and (mlag_group := self.shared_utils.device_config.mlag_group):
+            self._mlag_groups.setdefault(mlag_group, set()).add(self.shared_utils.hostname)
 
     def cross_pollinate(self) -> None:
         """

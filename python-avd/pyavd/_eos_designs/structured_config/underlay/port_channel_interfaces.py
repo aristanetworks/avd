@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -10,7 +10,6 @@ from pyavd._eos_designs.structured_config.structured_config_generator import str
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import default, short_esi_to_route_target
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
-from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -70,7 +69,7 @@ class PortChannelInterfacesMixin(Protocol):
             elif link.vlans is not None:
                 port_channel_interface.switchport.trunk.allowed_vlan = link.vlans
 
-            port_channel_interface.sflow.enable = link.sflow_enabled
+            port_channel_interface.sflow.enable = self.shared_utils.get_interface_sflow(port_channel_interface.name, link.sflow_enabled)
 
             for link_tracking_group in link.link_tracking_groups:
                 port_channel_interface.link_tracking_groups.append_new(
@@ -105,46 +104,16 @@ class PortChannelInterfacesMixin(Protocol):
                 port_channel_interface._update(lacp_fallback_mode="individual", lacp_fallback_timeout=link.inband_ztp_lacp_fallback_delay)
 
             # Structured Config
-            if structured_config := link.structured_config:
+            if link.port_channel_structured_config:
                 self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_name)._deepmerge(
-                    EosCliConfigGen.PortChannelInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
+                    link.port_channel_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                 )
+
+            self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(port_channel_name)
 
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
         # Support l3_port_channels including sub-interfaces
-        subif_parent_port_channel_names = set()
-        regular_l3_port_channel_names = set()
-        for l3_port_channel in self.shared_utils.node_config.l3_port_channels:
-            interface_name = l3_port_channel.name
-            is_subinterface = "." in interface_name
-            if not is_subinterface:
-                # This is a regular Port-Channel (not sub-interface)
-                regular_l3_port_channel_names.add(interface_name)
-                continue
-            # This is a subinterface for a port-channel interface.
-            # We need to ensure that parent port-channel interface is also included explicitly
-            # within list of Port-Channel interfaces.
-            parent_port_channel_name = interface_name.split(".", maxsplit=1)[0]
-            subif_parent_port_channel_names.add(parent_port_channel_name)
-            if l3_port_channel.member_interfaces:
-                msg = f"L3 Port-Channel sub-interface '{interface_name}' has 'member_interfaces' set. This is not a valid setting."
-                raise AristaAvdInvalidInputsError(msg)
-            if l3_port_channel._get("mode"):
-                # implies 'mode' is set when not applicable for a sub-interface
-                msg = f"L3 Port-Channel sub-interface '{interface_name}' has 'mode' set. This is not a valid setting."
-                raise AristaAvdInvalidInputsError(msg)
-
-        # Sanity check if there are any sub-interfaces for which parent Port-channel is not explicitly specified
-        if missing_parent_port_channels := subif_parent_port_channel_names.difference(regular_l3_port_channel_names):
-            msg = (
-                f"One or more L3 Port-Channels '{', '.join(natural_sort(missing_parent_port_channels))}' "
-                "need to be specified as they have sub-interfaces referencing them."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-
-        # Now that validation is complete, we can make another pass at all l3_port_channels
-        # (subinterfaces or otherwise) and generate their structured config.
         for l3_port_channel in self.shared_utils.node_config.l3_port_channels:
             self._set_l3_port_channel(l3_port_channel)
 
@@ -155,32 +124,46 @@ class PortChannelInterfacesMixin(Protocol):
         self: AvdStructuredConfigUnderlayProtocol, l3_port_channel: EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
     ) -> None:
         """Set structured_configuration for one L3 Port-Channel."""
+        if "." in l3_port_channel.name:
+            # Validation for l3_port_channel subinterface
+            if l3_port_channel.member_interfaces:
+                msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'member_interfaces' set. This is not a valid setting."
+                raise AristaAvdInvalidInputsError(msg)
+            if l3_port_channel._get("mode"):
+                # Implies 'mode' is set when not applicable for a sub-interface.
+                msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mode' set. This is not a valid setting."
+                raise AristaAvdInvalidInputsError(msg)
+        # Validation: Non-subinterface port-channels must have at least one member interface
+        elif self.inputs.avd_design_future.raise_for_port_channels_without_members and not l3_port_channel.member_interfaces:
+            msg = f"L3 Port-Channel '{l3_port_channel.name}' must have at least one member interface defined."
+            raise AristaAvdInvalidInputsError(msg)
+
         # build common portion of the interface cfg
         interface = self._get_l3_common_interface_cfg(l3_port_channel)
 
         if "." in l3_port_channel.name:
             parent_port_channel_name = l3_port_channel.name.split(".", maxsplit=1)[0]
-            main_interface_wan_carrier = self.shared_utils.node_config.l3_port_channels[parent_port_channel_name].wan_carrier
+            parent_port_channel = self.shared_utils.node_config.l3_port_channels.get(parent_port_channel_name)
+            main_interface_wan_carrier = parent_port_channel.wan_carrier if parent_port_channel else None
         else:
             main_interface_wan_carrier = None
 
-        interface_description = self.shared_utils.interface_descriptions.underlay_port_channel_interface(
-            InterfaceDescriptionData(
-                shared_utils=self.shared_utils,
-                interface=l3_port_channel.name,
-                port_channel_description=l3_port_channel.description,
-                peer=l3_port_channel.peer,
-                peer_interface=l3_port_channel.peer_port_channel,
-                wan_carrier=l3_port_channel.wan_carrier,
-                wan_circuit_id=l3_port_channel.wan_circuit_id,
-                main_interface_wan_carrier=main_interface_wan_carrier,
-            ),
+        interface.description = (
+            self.shared_utils.interface_descriptions.underlay_port_channel_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=l3_port_channel.name,
+                    port_channel_description=l3_port_channel.description,
+                    peer=l3_port_channel.peer,
+                    peer_interface=l3_port_channel.peer_port_channel,
+                    wan_carrier=l3_port_channel.wan_carrier,
+                    wan_circuit_id=l3_port_channel.wan_circuit_id,
+                    main_interface_wan_carrier=main_interface_wan_carrier,
+                ),
+            )
+            or None
         )
-        interface._update(
-            description=interface_description or None,
-            peer_type="l3_port_channel",
-            peer_interface=l3_port_channel.peer_port_channel,
-        )
+        interface.metadata._update(peer_interface=l3_port_channel.peer_port_channel, peer_type="l3_port_channel")
 
         if l3_port_channel.ipv4_acl_in:
             acl = self._get_acl_for_l3_generic_interface(l3_port_channel.ipv4_acl_in, l3_port_channel)
@@ -209,6 +192,11 @@ class PortChannelInterfacesMixin(Protocol):
             )
             raise AristaAvdError(msg)
 
+        if "." in l3_port_channel.name:
+            self.structured_config_utils.parent_interfaces_tracker.register_port_channel_subinterface(l3_port_channel.name)
+        else:
+            self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(l3_port_channel.name)
+
         self.structured_config.port_channel_interfaces.append(interface)
 
     def _set_direct_ha_port_channel_interface(self: AvdStructuredConfigUnderlayProtocol) -> None:
@@ -229,13 +217,17 @@ class PortChannelInterfacesMixin(Protocol):
             ),
         )
 
+        self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(port_channel_name)
+
         self.structured_config.port_channel_interfaces.append_new(
             name=port_channel_name,
             switchport=EosCliConfigGen.PortChannelInterfacesItem.Switchport(enabled=False),
-            peer_type="l3_interface",
-            # TODO: if different interfaces used across nodes it will fail just like for mlag.
-            peer_interface=port_channel_name,
-            peer=self.shared_utils.wan_ha_peer,
+            metadata=EosCliConfigGen.PortChannelInterfacesItem.Metadata(
+                # TODO: if different interfaces used across nodes it will fail just like for mlag.
+                peer_interface=port_channel_name,
+                peer_type="l3_interface",
+                peer=self.shared_utils.wan_ha_peer,
+            ),
             shutdown=False,
             description=description or None,
             ip_address=self.shared_utils.wan_ha_ip_addresses[0],

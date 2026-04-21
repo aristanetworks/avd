@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -8,12 +8,23 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>metadata</samp>](## "metadata") | Dictionary |  |  |  | The data under `metadata` is used for documentation, validation or integration purposes.<br>It will not affect the generated EOS configuration. |
+    | [<samp>&nbsp;&nbsp;is_deployed</samp>](## "metadata.is_deployed") | Boolean |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;platform</samp>](## "metadata.platform") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;system_mac_address</samp>](## "metadata.system_mac_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;rack</samp>](## "metadata.rack") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;pod_name</samp>](## "metadata.pod_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;dc_name</samp>](## "metadata.dc_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;fabric_name</samp>](## "metadata.fabric_name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;serial_number</samp>](## "metadata.serial_number") | String |  |  |  | Serial Number of the device.<br>Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role. |
+    | [<samp>&nbsp;&nbsp;validate_hardware</samp>](## "metadata.validate_hardware") | Dictionary |  |  |  | Settings for hardware validation performed by the `anta_runner` role.<br>If `enabled` is set to `false`, all other keys in this dictionary are ignored.<br><br>For the `min_*` keys:<br>- Undefined (Default): Validate that all available slots are populated.<br>- Positive Integer: Validate that the number of components inserted is at least the specified minimum.<br>- 0: Skip the validation for this specific component. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "metadata.validate_hardware.enabled") | Boolean |  | `True` |  | Enable hardware validation for the device.<br>If `false`, all hardware tests are skipped, therefore the other keys in `validate_hardware` are ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "metadata.validate_hardware.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "metadata.validate_hardware.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "metadata.validate_hardware.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "metadata.validate_hardware.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "metadata.validate_hardware.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. Set to 0 to skip validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "metadata.validate_hardware.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "metadata.validate_hardware.transceiver_manufacturers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;cv_tags</samp>](## "metadata.cv_tags") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;device_tags</samp>](## "metadata.cv_tags.device_tags") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_tags.device_tags.[].name") | String | Required |  |  |  |
@@ -129,7 +140,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "metadata.digital_twin.version") | String |  |  |  | OS version used for deploying a replica of the fabric device within the Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "metadata.digital_twin.username") | String |  |  |  | Local username assigned to a replica of the fabric device within the Digital Twin environment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "metadata.digital_twin.password") | String |  |  |  | Local password assigned to a replica of the fabric device within the Digital Twin environment. |
-    | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used only for documentation and deployment purposes. It is used by the 'eos_config_deploy_cvp' and 'cv_deploy' roles. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;internet_access</samp>](## "metadata.digital_twin.internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default. |
+    | [<samp>&nbsp;&nbsp;validate_no_errors_period</samp>](## "metadata.validate_no_errors_period") | Integer |  |  |  | Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "metadata.exclude_as_extra_fabric_validation_target") | Boolean |  |  |  | Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.<br> |
+    | [<samp>&nbsp;&nbsp;interfaces</samp>](## "metadata.interfaces") | Dictionary |  |  |  | Interface validation settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;errdisable</samp>](## "metadata.interfaces.errdisable") | Dictionary |  |  |  | Settings for the VerifyInterfaceErrDisabled test. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_avd_interfaces</samp>](## "metadata.interfaces.errdisable.only_avd_interfaces") | Boolean |  | `False` |  | Only validate interfaces defined in the AVD structured configuration for errdisabled state. |
 
 === "YAML"
 
@@ -137,12 +153,51 @@
     # The data under `metadata` is used for documentation, validation or integration purposes.
     # It will not affect the generated EOS configuration.
     metadata:
+
+      # Key only used for documentation or validation purposes.
+      is_deployed: <bool>
       platform: <str>
       system_mac_address: <str>
       rack: <str>
       pod_name: <str>
       dc_name: <str>
       fabric_name: <str>
+
+      # Serial Number of the device.
+      # Used only for documentation and deployment purposes. It is used by the 'cv_deploy' role.
+      serial_number: <str>
+
+      # Settings for hardware validation performed by the `anta_runner` role.
+      # If `enabled` is set to `false`, all other keys in this dictionary are ignored.
+      #
+      # For the `min_*` keys:
+      # - Undefined (Default): Validate that all available slots are populated.
+      # - Positive Integer: Validate that the number of components inserted is at least the specified minimum.
+      # - 0: Skip the validation for this specific component.
+      validate_hardware:
+
+        # Enable hardware validation for the device.
+        # If `false`, all hardware tests are skipped, therefore the other keys in `validate_hardware` are ignored.
+        enabled: <bool; default=True>
+
+        # Minimum number of power supplies required for the device. Set to 0 to skip validation.
+        min_power_supplies: <int>
+
+        # Minimum number of fans required for the device. Set to 0 to skip validation.
+        min_fans: <int>
+
+        # Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
+        min_supervisors: <int>
+
+        # Minimum number of line cards required for the device. Set to 0 to skip validation.
+        min_line_cards: <int>
+
+        # Minimum number of fabric cards required for the device. Set to 0 to skip validation.
+        min_fabric_cards: <int>
+
+        # List of approved transceiver manufacturers for the device.
+        transceiver_manufacturers: # (1)!
+          - <str>
       cv_tags:
         device_tags:
           - name: <str; required>
@@ -276,7 +331,31 @@
         # Local password assigned to a replica of the fabric device within the Digital Twin environment.
         password: <str>
 
-    # Serial Number of the device.
-    # Used only for documentation and deployment purposes. It is used by the 'eos_config_deploy_cvp' and 'cv_deploy' roles.
-    serial_number: <str>
+        # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+        # This option applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node types.
+        # ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
+        internet_access: <bool>
+
+      # Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role.
+      validate_no_errors_period: <int>
+
+      # Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.
+      exclude_as_extra_fabric_validation_target: <bool>
+
+      # Interface validation settings.
+      interfaces:
+
+        # Settings for the VerifyInterfaceErrDisabled test.
+        errdisable:
+
+          # Only validate interfaces defined in the AVD structured configuration for errdisabled state.
+          only_avd_interfaces: <bool; default=False>
     ```
+
+    1. Default Value
+
+        ```yaml
+        transceiver_manufacturers:
+        - Arista Networks
+        - Arastra, Inc.
+        ```

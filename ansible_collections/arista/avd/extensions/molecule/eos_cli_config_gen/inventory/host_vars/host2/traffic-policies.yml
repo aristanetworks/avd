@@ -1,0 +1,14 @@
+---
+### Traffic Policies to cover IPv6 field and none policy case
+traffic_policies:
+  field_sets:
+    ipv6:
+      - name: IPv6-DEMO-1
+        prefixes:
+          - dead::/64
+          - 11:22:33:44:55:66:77:88/128
+        except:
+          - cafe::/32
+          - 22:33:44:55:66:77:88:11/128
+          - dead::/64
+      - name: IPv6-DEMO-2

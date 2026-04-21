@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -16,13 +16,14 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_general.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.vrfs.[].name") | String | Required, Unique |  |  | Destination-VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leak_routes</samp>](## "router_general.vrfs.[].leak_routes") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_vrf</samp>](## "router_general.vrfs.[].leak_routes.[].source_vrf") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_vrf</samp>](## "router_general.vrfs.[].leak_routes.[].source_vrf") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subscribe_policy</samp>](## "router_general.vrfs.[].leak_routes.[].subscribe_policy") | String |  |  |  | Route-Map Policy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subscribe_rcf</samp>](## "router_general.vrfs.[].leak_routes.[].subscribe_rcf") | String |  |  |  | RCF Policy name with parenthesis.<br>Example: MyFunction(myarg).<br>Mutually exclusive with `subscribe_policy`, if both are defined `subscribe_policy` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routes</samp>](## "router_general.vrfs.[].routes") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic_prefix_lists</samp>](## "router_general.vrfs.[].routes.dynamic_prefix_lists") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.vrfs.[].routes.dynamic_prefix_lists.[].name") | String |  |  |  | Dynamic Prefix List Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;software_forwarding_hardware_offload_mtu</samp>](## "router_general.vrfs.[].software_forwarding_hardware_offload_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | MTU value for software-forwarded packets within a specific VRF that use hardware offload.<br>This setting overrides the global config for a specific vrf. |
-    | [<samp>&nbsp;&nbsp;control_functions</samp>](## "router_general.control_functions") | Dictionary |  |  |  | Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.<br>Warning:<br>This configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.<br>The configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`. |
+    | [<samp>&nbsp;&nbsp;control_functions</samp>](## "router_general.control_functions") | Dictionary |  |  |  | Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.<br>Warning:<br>This configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.<br>The configuration can be pushed via CloudVision with the `cv_deploy` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;code_units</samp>](## "router_general.control_functions.code_units") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.control_functions.code_units.[].name") | String | Required, Unique |  |  | Name of the code unit. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content</samp>](## "router_general.control_functions.code_units.[].content") | String | Required |  |  | Content of route control function.<br>e.g.<br>function ACCEPT_ALL() {<br>  return true;<br>  }<br>EOF |
@@ -47,10 +48,15 @@
           # Destination-VRF.
         - name: <str; required; unique>
           leak_routes:
-            - source_vrf: <str>
+            - source_vrf: <str; required>
 
               # Route-Map Policy.
               subscribe_policy: <str>
+
+              # RCF Policy name with parenthesis.
+              # Example: MyFunction(myarg).
+              # Mutually exclusive with `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
+              subscribe_rcf: <str>
           routes:
             dynamic_prefix_lists:
 
@@ -64,7 +70,7 @@
       # Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.
       # Warning:
       # This configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.
-      # The configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.
+      # The configuration can be pushed via CloudVision with the `cv_deploy` role.
       control_functions:
         code_units:
 

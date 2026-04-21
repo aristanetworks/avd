@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -28,7 +28,7 @@
 #### VRF Software Forwarding Hardware Offload MTU
 
 | VRF | MTU |
-|-----|-----|
+| --- | --- |
 {%         for vrf in router_general.vrfs | selectattr('software_forwarding_hardware_offload_mtu', 'arista.avd.defined') %}
 | {{ vrf.name }} | {{ vrf.software_forwarding_hardware_offload_mtu }} |
 {%         endfor %}
@@ -37,12 +37,12 @@
 
 #### VRF Route leaking
 
-| VRF | Source VRF | Route Map Policy |
-|-----|------------|------------------|
+| VRF | Source VRF | Route Map Policy | RCF Policy |
+| --- | ---------- | ---------------- | ---------- |
 {%         for vrf in router_general.vrfs %}
-{%             for leak_route in vrf.leak_routes | arista.avd.natural_sort %}
-{%                 if leak_route.source_vrf is arista.avd.defined and leak_route.subscribe_policy is arista.avd.defined %}
-| {{ vrf.name }} | {{ leak_route.source_vrf }} | {{ leak_route.subscribe_policy }} |
+{%             for leak_route in vrf.leak_routes | arista.avd.natural_sort(sort_key="source_vrf") %}
+{%                 if leak_route.subscribe_policy is arista.avd.defined or leak_route.subscribe_rcf is arista.avd.defined %}
+| {{ vrf.name }} | {{ leak_route.source_vrf }} | {{ leak_route.subscribe_policy | arista.avd.default("-") }} | {{ leak_route.subscribe_rcf | arista.avd.default("-") }} |
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
@@ -52,7 +52,7 @@
 #### VRF Routes Dynamic Prefix-lists
 
 | VRF | Dynamic Prefix-list |
-|-----|---------------------|
+| --- | ------------------- |
 {%         for vrf in router_general.vrfs %}
 {%             for dynamic_prefix_list in vrf.routes.dynamic_prefix_lists | arista.avd.natural_sort('name') %}
 {%                 if dynamic_prefix_list.name is arista.avd.defined %}

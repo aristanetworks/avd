@@ -1,14 +1,14 @@
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
 
 # PyAVD
 
-Generate Arista AVD with Python.
+PyAVD is a Python package that serves as the foundation for the Arista AVD project.
 
-See [avd.arista.com](https://avd.arista.com/stable/docs/pyavd.html) for details.
+See [avd.arista.com](https://avd.arista.com/stable/docs/pyavd/pyavd.html) for details.
 
 ## License
 

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -14,10 +14,13 @@
 {%         set sample_cli = sample_cli ~ sflow.sample %}
 {{ sample_cli }}
 {%     endif %}
+{%     if sflow.sample_truncate_size is arista.avd.defined %}
+sflow sample truncate size {{ sflow.sample_truncate_size }}
+{%     endif %}
 {%     if sflow.polling_interval is arista.avd.defined %}
 sflow polling-interval {{ sflow.polling_interval }}
 {%     endif %}
-{%     for vrf in sflow.vrfs | arista.avd.natural_sort('name') %}
+{%     for vrf in sflow.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%         for destination in vrf.destinations | arista.avd.natural_sort('destination') %}
 {%             set vrf_cli = "sflow vrf " ~ vrf.name ~ " destination " ~ destination.destination %}
 {%             if destination.port is arista.avd.defined %}
@@ -49,22 +52,22 @@ sflow sample input subinterface
 {%     if sflow.sample_output_subinterface is arista.avd.defined(true) %}
 sflow sample output subinterface
 {%     endif %}
-{%     if sflow.extensions is arista.avd.defined %}
-{%         for extension in sflow.extensions | arista.avd.natural_sort('name') if extension.name is arista.avd.defined and extension.enabled is arista.avd.defined %}
-{%             if extension.enabled is arista.avd.defined(true) %}
+{%     for extension in sflow.extensions | arista.avd.natural_sort('name') %}
+{%         if extension.enabled is arista.avd.defined(true) %}
 sflow extension {{ extension.name }}
-{%             else %}
+{%         else %}
 no sflow extension {{ extension.name }}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
+{%         endif %}
+{%     endfor %}
 {%     if sflow.interface.disable.default is arista.avd.defined(true) %}
 sflow interface disable default
 {%     endif %}
-{%     if sflow.interface.egress.enable_default is arista.avd.defined(true) and sflow.interface.egress.unmodified is arista.avd.defined(false) %}
-sflow interface egress enable default
-{%     elif sflow.interface.egress.enable_default is arista.avd.defined(true) and sflow.interface.egress.unmodified is arista.avd.defined(true) %}
+{%     if sflow.interface.egress.enable_default is arista.avd.defined(true) %}
+{%         if sflow.interface.egress.unmodified is arista.avd.defined(true) %}
 sflow interface egress unmodified enable default
+{%         else %}
+sflow interface egress enable default
+{%         endif %}
 {%     endif %}
 {%     if sflow.run is arista.avd.defined(true) %}
 sflow run
@@ -76,13 +79,11 @@ sflow hardware acceleration
 sflow hardware acceleration sample {{ sflow.hardware_acceleration.sample }}
 {%     endif %}
 {%     for module in sflow.hardware_acceleration.modules | arista.avd.natural_sort('name') %}
-{%         if module.name is arista.avd.defined %}
-{%             if module.enabled is arista.avd.defined(false) %}
-{%                 set module_cli = "no sflow hardware acceleration module " ~ module.name %}
-{%             else %}
-{%                 set module_cli = "sflow hardware acceleration module " ~ module.name %}
-{%             endif %}
-{{ module_cli }}
+{%         if module.enabled is arista.avd.defined(false) %}
+{%             set module_cli = "no sflow hardware acceleration module " ~ module.name %}
+{%         else %}
+{%             set module_cli = "sflow hardware acceleration module " ~ module.name %}
 {%         endif %}
+{{ module_cli }}
 {%     endfor %}
 {% endif %}

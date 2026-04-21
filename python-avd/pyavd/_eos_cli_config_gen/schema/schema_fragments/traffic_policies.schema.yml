@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -9,11 +9,52 @@ keys:
   traffic_policies:
     type: dict
     keys:
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+              convert_types:
+                - int
+            cpu:
+              type: dict
+              keys:
+                traffic_policy:
+                  type: dict
+                  required: true
+                  keys:
+                    name:
+                      type: str
+                      convert_types:
+                        - int
+                      required: true
+                      description: |-
+                        Traffic-policy name.
+                        Currently this is always configured with "fallback traffic-policy none".
+                    enforcement_management:
+                      type: bool
+                      description: Enforce CPU traffic-policy on management ports.
+            traffic_policy_input_physical:
+              type: str
+              convert_types:
+                - int
+              description: Name of the Traffic Policy applied to traffic arriving on physical interfaces within VRF.
       options:
         type: dict
         keys:
           counter_per_interface:
             type: bool
+          counter_interface_poll_interval:
+            type: int
+            convert_types:
+              - str
+            min: 2
+            max: 60
+            description: Interval between consecutive polls in seconds.
       field_sets:
         type: dict
         keys:
@@ -31,6 +72,11 @@ keys:
                   items:
                     type: str
                     description: IPv4 Prefix.
+                except:
+                  type: list
+                  items:
+                    type: str
+                    description: IPv4 prefix to exclude. Added in 4.30.2F.
           ipv6:
             type: list
             primary_key: name
@@ -45,6 +91,11 @@ keys:
                   items:
                     type: str
                     description: IPv6 Prefix.
+                except:
+                  type: list
+                  items:
+                    type: str
+                    description: IPv6 prefix to exclude. Added in 4.30.2F.
           ports:
             type: list
             primary_key: name
@@ -66,6 +117,13 @@ keys:
             name:
               type: str
               description: Traffic Policy Name.
+            counters:
+              type: list
+              items:
+                type: str
+                convert_types:
+                  - int
+              description: List of named counters.
             matches:
               type: list
               primary_key: name
@@ -146,11 +204,24 @@ keys:
                             valid_values: ["established", "initial"]
                         icmp_type:
                           type: list
+                          description: |-
+                            List of ICMP message types to match.
+                            This field is applicable only when the protocol is set to `icmp` or `icmpv6`.
                           items:
                             type: str
                         enforce_gtsm:
                           type: bool
                           description: Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'.
+                  packet_type:
+                    type: dict
+                    keys:
+                      vxlan:
+                        type: str
+                        valid_values: ["decap", "decap exclude"]
+                        description: Configure VXLAN decapsulation match.
+                      multicast:
+                        type: bool
+                        description: Configure multicast packet type match.
                   actions:
                     type: dict
                     keys:
@@ -165,12 +236,78 @@ keys:
                         description: Traffic class ID.
                       count:
                         type: str
-                        description: Counter name.
+                        convert_types:
+                          - int
+                        description: |-
+                          Named counter.
+                          Must also be defined under `policies[].counters` to be active.
+                          If not defined, the counter is inactive on EOS.
                       drop:
                         type: bool
                       log:
                         type: bool
                         description: Only supported when action is set to drop.
+                      redirect:
+                        type: dict
+                        keys:
+                          aggregation_groups:
+                            type: list
+                            description: Redirect to aggregation groups in Tap Aggregation mode.
+                            items:
+                              type: str
+                          interface:
+                            type: str
+                            description: |-
+                              The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.
+                              Ex:
+                                1. Ethernet1
+                                2. Et1,2
+                                3. Po2-4
+                          next_hop:
+                            type: dict
+                            description: |-
+                              Redirect to next-hop.
+                              This option is mutually exclusive with `aggregation_groups` and `interface`.
+                              If all three are defined, aggregation_groups and interface take precedence over next-hop.
+                              Only one of the below keys can be specified, in the order of precedence: ipv4_addresses, ipv6_addresses, groups, recursive_ipv4_addresses, recursive_ipv6_addresses.
+                            keys:
+                              ipv4_addresses:
+                                type: list
+                                min_length: 1
+                                items:
+                                  type: str
+                                  description: Next hop IPv4 address.
+                              ipv6_addresses:
+                                type: list
+                                min_length: 1
+                                items:
+                                  type: str
+                                  description: Next hop IPv6 address.
+                              vrf:
+                                type: str
+                                convert_types:
+                                  - int
+                                description: |-
+                                  Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses` or `recursive_ipv6_addresses`.
+                              groups:
+                                type: list
+                                items:
+                                  type: str
+                                description: Set groups to redirect flow.
+                              recursive_ipv4_addresses:
+                                type: list
+                                $ref: "eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv4_addresses"
+                              recursive_ipv6_addresses:
+                                type: list
+                                $ref: "eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv6_addresses"
+                              ttl:
+                                type: int
+                                min: 1
+                                max: 255
+                                convert_types:
+                                  - str
+                                description: |-
+                                  Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses`, `recursive_ipv6_addresses` or `groups`.
             default_actions:
               type: dict
               keys:
@@ -188,7 +325,12 @@ keys:
                       description: Traffic class ID.
                     count:
                       type: str
-                      description: Counter name.
+                      convert_types:
+                        - int
+                      description: |-
+                        Named counter.
+                        Must also be defined under `policies[].counters` to be active.
+                        If not defined, the counter is inactive on EOS.
                     drop:
                       type: bool
                     log:
@@ -208,7 +350,12 @@ keys:
                       description: Traffic class ID.
                     count:
                       type: str
-                      description: Counter name.
+                      convert_types:
+                        - int
+                      description: |-
+                        Named counter.
+                        Must also be defined under `policies[].counters` to be active.
+                        If not defined, the counter is inactive on EOS.
                     drop:
                       type: bool
                     log:

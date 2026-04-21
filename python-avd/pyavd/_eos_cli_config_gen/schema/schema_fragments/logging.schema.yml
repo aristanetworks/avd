@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -70,6 +70,13 @@ keys:
       source_interface:
         type: str
         description: Source Interface Name.
+      local_interface:
+        type: str
+        description: |-
+          Source Interface Name.
+          `logging source-interface <interface>` is deprecated in latest EOS versions(4.35.1).
+          This key sets the new command `logging local-interface <interface>`.
+          `source_interface` takes precedence over `local_interface`.
       vrfs:
         type: list
         primary_key: name
@@ -84,6 +91,13 @@ keys:
             source_interface:
               type: str
               description: Source interface name.
+            local_interface:
+              type: str
+              description: |-
+                Source Interface Name.
+                `logging vrf <vrf> source-interface <interface>` is deprecated in latest EOS versions(4.35.1).
+                This key sets the new command `logging vrf <vrf> local-interface <interface>`.
+                `source_interface` takes precedence over `local_interface`.
             hosts:
               type: list
               primary_key: name
@@ -123,6 +137,7 @@ keys:
                       description: Match list.
                     action:
                       type: str
+                      required: true
                       valid_values: ["discard"]
       event:
         type: dict
@@ -162,6 +177,7 @@ keys:
               type: str
             severity:
               type: str
+              required: true
               convert_types:
                 - int
               description: |-

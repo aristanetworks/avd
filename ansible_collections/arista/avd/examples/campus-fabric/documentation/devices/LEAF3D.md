@@ -11,7 +11,11 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
+  - [RADIUS Server](#radius-server)
+  - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
+  - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
+  - [AAA Accounting](#aaa-accounting)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -48,19 +52,19 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.109/24 | 172.16.100.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.109/24 | 172.16.100.1 |
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
-interface Management0
+interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
@@ -89,12 +93,12 @@ ip name-server vrf MGMT 8.8.8.8
 
 | Source interface | vrf |
 | ---------------- | --- |
-| Management0 | MGMT |
+| Management1 | MGMT |
 
 #### DNS Domain Lookup Device Configuration
 
 ```eos
-ip domain lookup vrf MGMT source-interface Management0
+ip domain lookup vrf MGMT source-interface Management1
 ```
 
 ### NTP
@@ -105,20 +109,22 @@ ip domain lookup vrf MGMT source-interface Management0
 
 | Interface | VRF |
 | --------- | --- |
-| Management0 | MGMT |
+| Management1 | MGMT |
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| pool.ntp.org | MGMT | - | - | - | - | - | - | - | - |
-| time.google.com | MGMT | True | - | - | - | - | - | - | - |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| pool.ntp.org | - | - | - | - | - | - | - | - |
+| time.google.com | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
 ```eos
 !
-ntp local-interface vrf MGMT Management0
+ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT pool.ntp.org
 ntp server vrf MGMT time.google.com prefer
 ```
@@ -127,9 +133,9 @@ ntp server vrf MGMT time.google.com prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -172,6 +178,50 @@ username arista privilege 15 role network-admin secret sha512 <removed>
 
 Enable password has been disabled
 
+### RADIUS Server
+
+#### RADIUS Server Hosts
+
+| VRF | RADIUS Servers | TLS | TLS Port | SSL Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ---- | ----------- | ------- | ---------- |
+| MGMT | agni.arista.com | - | - | - | - | - |
+
+#### RADIUS Server Device Configuration
+
+```eos
+!
+radius-server host agni.arista.com vrf MGMT key 7 <removed>
+```
+
+### IP RADIUS Source Interfaces
+
+#### IP RADIUS Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+| MGMT | Management1 |
+
+#### IP RADIUS Source Interfaces Device Configuration
+
+```eos
+!
+ip radius vrf MGMT source-interface Management1
+```
+
+### AAA Authentication
+
+#### AAA Authentication Summary
+
+| Type | Sub-type | User Stores |
+| ---- | -------- | ---------- |
+
+#### AAA Authentication Device Configuration
+
+```eos
+aaa authentication dot1x default group radius
+!
+```
+
 ### AAA Authorization
 
 #### AAA Authorization Summary
@@ -187,6 +237,20 @@ Authorization for configuration commands is disabled.
 ```eos
 aaa authorization exec default local
 !
+```
+
+### AAA Accounting
+
+#### AAA Accounting Summary
+
+| Type | Commands | Record type | Groups | Logging |
+| ---- | -------- | ----------- | ------ | ------- |
+| Dot1x - Default | - | start-stop | radius(multicast) | False |
+
+#### AAA Accounting Device Configuration
+
+```eos
+aaa accounting dot1x default start-stop group radius
 ```
 
 ## Spanning Tree
@@ -214,7 +278,7 @@ spanning-tree mst 0 priority 16384
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -2406,7 +2470,7 @@ interface Ethernet97/2
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel971 | L2_IDF3_AGG_Port-Channel974 | trunk | 10,310,320,330 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -2425,15 +2489,15 @@ interface Port-Channel971
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan10 |  default  |  10.10.10.12/24  |  -  |  -  |  -  |  -  |
+| Vlan10 | default | 10.10.10.12/24 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -2487,8 +2551,8 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 172.16.100.1 | - | 1 | - | - | - |
 | default | 0.0.0.0/0 | 10.10.10.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 172.16.100.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
@@ -2517,106 +2581,122 @@ ip route vrf MGMT 0.0.0.0/0 172.16.100.1
 
 ### 802.1X Summary
 
+#### 802.1X Global
+
+| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
+| ------------------- | -------------------- | --------------------- | -------------------------- |
+| True | True | True | - |
+
 #### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
-| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ |
-| Ethernet1 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet2 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet3 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet4 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet5 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet6 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet7 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet8 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet9 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet10 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet11 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet12 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet13 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet14 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet15 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet16 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet17 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet18 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet19 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet20 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet21 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet22 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet23 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet24 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet25 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet26 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet27 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet28 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet29 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet30 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet31 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet32 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet33 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet34 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet35 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet36 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet37 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet38 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet39 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet40 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet41 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet42 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet43 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet44 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet45 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet46 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet47 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet48 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet49 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet50 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet51 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet52 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet53 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet54 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet55 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet56 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet57 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet58 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet59 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet60 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet61 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet62 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet63 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet64 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet65 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet66 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet67 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet68 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet69 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet70 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet71 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet72 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet73 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet74 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet75 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet76 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet77 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet78 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet79 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet80 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet81 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet82 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet83 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet84 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet85 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet86 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet87 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet88 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet89 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet90 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet91 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet92 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet93 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet94 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet95 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
-| Ethernet96 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Interface | PAE Mode | Supplicant Profile | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
+| --------- | -------- | ------------------ | ----- | ---------------------- | ---------------- | ------------------- | --------- | -------------- | ----- |
+| Ethernet1 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet2 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet3 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet4 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet5 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet6 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet7 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet8 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet9 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet10 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet11 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet12 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet13 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet14 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet15 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet16 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet17 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet18 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet19 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet20 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet21 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet22 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet23 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet24 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet25 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet26 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet27 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet28 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet29 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet30 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet31 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet32 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet33 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet34 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet35 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet36 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet37 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet38 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet39 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet40 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet41 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet42 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet43 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet44 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet45 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet46 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet47 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet48 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet49 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet50 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet51 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet52 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet53 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet54 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet55 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet56 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet57 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet58 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet59 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet60 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet61 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet62 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet63 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet64 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet65 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet66 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet67 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet68 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet69 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet70 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet71 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet72 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet73 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet74 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet75 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet76 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet77 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet78 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet79 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet80 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet81 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet82 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet83 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet84 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet85 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet86 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet87 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet88 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet89 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet90 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet91 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet92 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet93 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet94 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet95 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+| Ethernet96 | authenticator | - | auto | - | True | allow vlan 330 | multi-host | True | - |
+
+#### Dot1x Configuration
+
+```eos
+!
+dot1x system-auth-control
+dot1x protocol lldp bypass
+dot1x protocol bpdu bypass
+dot1x dynamic-authorization
+```
 
 ## VRF Instances
 

@@ -1,0 +1,104 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_flow-tracking-tests-leaf3_Ethernet32
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: flow-tracking-tests-leaf3
+    peer_interface: Ethernet32
+    peer_type: l3leaf
+- name: Ethernet2
+  description: L2_flow-tracking-tests-leaf4_Ethernet32
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: flow-tracking-tests-leaf4
+    peer_interface: Ethernet32
+    peer_type: l3leaf
+flow_tracking:
+  sampled:
+    sample: 10000
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collectors:
+        - host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
+hostname: flow-tracking-tests-l2-leaf2
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.202/24
+  type: oob
+  gateway: 192.168.0.1
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: FLOW_TRACKING_TESTS
+  validate_hardware:
+    enabled: false
+port_channel_interfaces:
+- name: Port-Channel1
+  description: L2_flow-tracking-tests-leaf-mlag_Port-Channel32
+  shutdown: false
+  flow_tracker:
+    sampled: FLOW-TRACKER
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
+- prefix: 0.0.0.0/0
+  next_hop: 10.254.254.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  ip_address: 10.254.254.5/24
+  mtu: 1500
+  metadata:
+    type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VLAN11
+  metadata:
+    tenants:
+    - FLOW_TRACKING
+- id: 4092
+  name: INBAND_MGMT
+  metadata:
+    tenants:
+    - system
+vrfs:
+- name: MGMT
+  ip_routing: false

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import warnings
@@ -8,6 +8,7 @@ import pytest
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
+from pyavd._errors import AristaAvdModelDeprecationWarning
 from pyavd._schema.store import create_store
 from tests.models import MoleculeHost
 
@@ -62,6 +63,7 @@ def test_eos_designs_custom_structured_configuration(prefix: str | None, expecte
 
 # eos_cli_config_gen inputs are validated by `validate_structured_config` in another file.
 @pytest.mark.molecule_scenarios(
+    "digital_twin",
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",
@@ -90,12 +92,14 @@ def test_eos_designs_initialize_kwargs_with_valid_data(molecule_host: MoleculeHo
 
     # If nothing raises, the model is accepted.
     with warnings.catch_warnings():
+        warnings.simplefilter("always", category=AristaAvdModelDeprecationWarning)
         warnings.simplefilter("error")
         EosDesigns(**inputs)
 
 
 # eos_cli_config_gen inputs are validated by `validate_structured_config` in another file.
 @pytest.mark.molecule_scenarios(
+    "digital_twin",
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",
@@ -119,5 +123,9 @@ def test_eos_designs_initialize_dict_with_valid_data(molecule_host: MoleculeHost
 
     # If nothing raises, the model is accepted.
     with warnings.catch_warnings():
+        # simplefilter is prepended to the list
         warnings.simplefilter("error")
+        # ignore the AristaAvdModelDeprecationWarning - cf pyavd._schema.models.eos_designs_root_model.py
+        # this is being tested in eos_designs_deprecated_vars.
+        warnings.simplefilter("ignore", category=AristaAvdModelDeprecationWarning)
         EosDesigns._from_dict(inputs)

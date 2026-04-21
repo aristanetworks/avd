@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -24,14 +24,16 @@ class NodeTypeMixin(Protocol):
 
     @cached_property
     def type(self: SharedUtilsProtocol) -> str:
-        """Type fact set based on type variable."""
-        if (node_type := self.inputs.type) is not None:
+        """Type fact set based on the type variable or default_node_type."""
+        type_from_device_config = self.device_config.type if self.device_config is not None else None
+        if (node_type := default(type_from_device_config, self.inputs.type)) is not None:
             return node_type
+
         if self.default_node_type:
             return self.default_node_type
 
-        msg = f"'type' for host {self.hostname}"
-        raise AristaAvdInvalidInputsError(msg)
+        msg = "No device type found. Either set 'type' or 'default_node_types'."
+        raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
     @cached_property
     def default_node_type(self: SharedUtilsProtocol) -> str | None:
@@ -137,9 +139,6 @@ class NodeTypeMixin(Protocol):
         <node_type_key>.nodes.[].vtep and
         node_type_keys.<node_type_key>.vtep.
         """
-        if self.is_wan_router and not self.inputs.wan_use_evpn_node_settings_for_lan:
-            # For WAN routers without the knob, vtep should be ignored.
-            return False
         return default(self.node_config.vtep, self.node_type_key_data.vtep)
 
     @cached_property

@@ -1,0 +1,10 @@
+---
+## IP TELNET CLIENT SOURCE INTERFACES ##
+
+ip_telnet_client:
+  vrfs:
+    - name: data
+      source_interface: Loopback0
+    - name: MGMT
+      source_interface: Management0
+  source_interface: Ethernet10

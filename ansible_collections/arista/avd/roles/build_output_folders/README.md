@@ -3,7 +3,7 @@
 title: Ansible Collection Role build_output_folders
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -37,8 +37,6 @@ documentation_dir_name: 'documentation'
 fabric_dir_name: 'fabric'
 # Device documentation
 devices_dir_name: 'devices'
-# EOS state validation directory name
-eos_validate_state_name: 'reports'
 # EOS config deploy eapi running config backup directory
 post_running_config_backup_dir_name: 'config_backup'
 pre_running_config_backup_dir_name: 'config_backup'

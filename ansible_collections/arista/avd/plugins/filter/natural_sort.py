@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 #
@@ -22,6 +22,11 @@ except ImportError as e:
         ),
     )
 
+try:
+    from ansible.template import accept_args_markers
+except ImportError:
+    accept_args_markers = None
+
 DOCUMENTATION = r"""
 ---
 name: natural_sort
@@ -33,7 +38,7 @@ description:
   - |-
       Provides the capability to sort a list or a dictionary of integers and strings that contain alphanumeric characters naturally.
       When leveraged on a dictionary, only the key value will be returned.
-      An optional `sort_key` can be specified, to sort on content of certain key if the items are dictionaries.
+      If the items are dictionaries, a `sort_key` must be specified, to sort on the content of the key.
   - The filter will return an empty list if the value parsed to `arista.avd.natural_sort` is `None` or `undefined`.
 positional: _input
 options:
@@ -76,6 +81,9 @@ _value:
 
 class FilterModule:
     def filters(self) -> dict:
+        wrapped_filter = wrap_filter(PLUGIN_NAME)(natural_sort)
+        if accept_args_markers is not None:
+            wrapped_filter = accept_args_markers(wrapped_filter)
         return {
-            "natural_sort": wrap_filter(PLUGIN_NAME)(natural_sort),
+            "natural_sort": wrapped_filter,
         }

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -29,3 +29,10 @@ keys:
       auto_clock_identity:
         type: bool
         default: true
+      forward_v1:
+        type: bool
+        default: false
+        $ref: "eos_cli_config_gen#/keys/ptp/keys/forward_v1"
+      free_running:
+        type: dict
+        $ref: "eos_cli_config_gen#/keys/ptp/keys/free_running"

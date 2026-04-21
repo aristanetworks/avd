@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -34,13 +34,16 @@ class RouterBgpMixin(Protocol):
                 msg = f"{self.data_model}.p2p_links.[].as or {self.data_model}.p2p_links_profiles.[].as"
                 raise AristaAvdInvalidInputsError(msg)
 
+            if p2p_link.include_in_underlay_protocol:
+                self.structured_config_utils.set_once_peer_group_ipv4_underlay_peers()
+
             # RFC5549
             # When routing protocol is not set, we just add the neighbor_interface and continue.
             if self.inputs.underlay_rfc5549 and p2p_link.include_in_underlay_protocol and p2p_link.routing_protocol != "ebgp":
                 self.structured_config.router_bgp.neighbor_interfaces.append_new(
                     name=p2p_link_data["interface"],
-                    remote_as=p2p_link_data["peer_bgp_as"],
-                    peer=p2p_link_data["peer"],
+                    remote_as=self.shared_utils.get_asn(p2p_link_data["peer_bgp_as"]),
+                    metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=p2p_link_data["peer"]),
                     description=p2p_link_data["peer"],
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                 )
@@ -53,12 +56,14 @@ class RouterBgpMixin(Protocol):
 
             self.structured_config.router_bgp.neighbors.append_new(
                 ip_address=get_ip_from_ip_prefix(p2p_link_data["peer_ip"]),
-                remote_as=p2p_link_data["peer_bgp_as"],
-                peer=p2p_link_data["peer"],
+                remote_as=self.shared_utils.get_asn(p2p_link_data["peer_bgp_as"]),
+                metadata=EosCliConfigGen.RouterBgp.NeighborsItem.Metadata(peer=p2p_link_data["peer"]),
                 description=p2p_link_data["peer"],
                 peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name if p2p_link.include_in_underlay_protocol else Undefined,
                 bfd=p2p_link.bfd,
-                local_as=p2p_link_data["bgp_as"] if p2p_link_data["bgp_as"] != self.shared_utils.bgp_as else None,
+                local_as=self.shared_utils.get_asn(p2p_link_data["bgp_as"])
+                if self.shared_utils.get_asn(p2p_link_data["bgp_as"]) != self.shared_utils.formatted_bgp_as
+                else None,
             )
 
             # For the combination of underlay-routing, rfc5549 and ebgp we will add the neighbor using the regular logic above,

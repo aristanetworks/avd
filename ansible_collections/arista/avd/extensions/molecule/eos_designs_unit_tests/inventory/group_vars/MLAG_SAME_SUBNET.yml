@@ -1,0 +1,51 @@
+---
+fabric_ip_addressing:
+  mlag:
+    algorithm: "same_subnet"
+    ipv4_prefix_length: 30
+l3leaf:
+  defaults:
+    mlag_peer_ipv4_pool: 10.10.255.0/30
+    mlag_peer_l3_ipv4_pool: 10.10.224.0/30
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+  node_groups:
+    - group: MLAG_SAME_SUBNET_L3LEAF1
+      bgp_as: 923
+      nodes:
+        - name: mlag-same-subnet-l3leaf1a
+          id: 0
+          mgmt_ip: 192.168.201.116/24
+        - name: mlag-same-subnet-l3leaf1b
+          id: 1
+          mgmt_ip: 192.168.201.117/24
+    - group: MLAG_SAME_SUBNET_L3LEAF2
+      bgp_as: 923
+      nodes:
+        - name: mlag-same-subnet-l3leaf2a
+          id: 2
+          mgmt_ip: 192.168.201.118/24
+        - name: mlag-same-subnet-l3leaf2b
+          id: 3
+          mgmt_ip: 192.168.201.119/24
+tenants:
+  - name: TEST_MLAG_SAME_SUBNET_ON_VRF
+    mac_vrf_vni_base: 0
+    vrfs:
+      - name: TEST
+        vrf_id: 1
+        svis:
+          - id: 10
+            name: VLAN10
+            ip_address_virtual: 10.10.10.1/24
+      - name: TEST_COMMA_SEPERATED_MLAG_IBGP_PEERING_POOL
+        vrf_id: 2
+        mlag_ibgp_peering_ipv4_pool: 10.255.240.0/24, 10.255.241.0/24
+        svis:
+          - id: 101
+            name: VLAN101
+            ip_address_virtual: 10.10.11.1/24

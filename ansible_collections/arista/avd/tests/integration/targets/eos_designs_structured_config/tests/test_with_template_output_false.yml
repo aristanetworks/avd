@@ -1,17 +1,39 @@
+---
 - name: Test with template_output false
-  ignore_errors: false
-  register: result
+  when: ansible_version.major == 2 and ansible_version.minor < 19
   vars:
-    custom_structured_configuration_inline_jinja_value_1: "test"
-    custom_structured_configuration_inline_jinja: "{{ inline_jinja_value_1 }}"
+    custom_structured_configuration__inline_jinja_value_1: "test"
+    custom_structured_configuration__inline_jinja: "{{ _inline_jinja_value_1 }}"
+  block:
+    - name: Validate inputs with inline jinja vars
+      arista.avd.validate_inputs:
+        schema_name: avd_design
+        tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+      delegate_to: localhost
+      check_mode: false
+      run_once: true
 
-  arista.avd.eos_designs_structured_config:
-    template_output: false
+    - name: Set eos_designs facts
+      arista.avd.eos_designs_facts:
+        template_output: true
+        output_dir: "{{ actual_output_dir }}"
+        tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+      check_mode: false
+      run_once: true
 
-- assert:
-    that:
-      - result is success
-      - result.ansible_facts is defined
-      - result.ansible_facts.inline_jinja_value_1 == "test"
-      - result.ansible_facts.inline_jinja is defined
-      - result.ansible_facts.inline_jinja[2:] == ' inline_jinja_value_1 }}'
+    - name: Test with template_output false
+      ignore_errors: false
+      register: result
+      arista.avd.eos_designs_structured_config:
+        template_output: false
+        return_structured_config: true
+        tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+
+    - ansible.builtin.assert:
+        that:
+          - result is success
+          - result.ansible_facts is defined
+          - result.ansible_facts._inline_jinja_value_1 == "test"
+          - result.ansible_facts._inline_jinja is defined
+          # Verifying that the template has not been rendered
+          - result.ansible_facts._inline_jinja == "{{'{{ _inline_jinja_value_1 }}'}}"

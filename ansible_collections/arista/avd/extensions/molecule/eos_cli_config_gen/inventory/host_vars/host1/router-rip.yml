@@ -1,0 +1,18 @@
+---
+router_rip:
+  vrfs:
+    - enabled: true
+      vrf: VRF1
+      metric_default: 10
+      networks:
+        - 192.168.1.0/24
+        - 192.168.2.0/24
+        - 10.0.0.0/8
+    - enabled: true
+      vrf: default
+      networks:
+        - 192.168.1.0/24
+        - 192.168.2.0/24
+        - 10.0.0.0/8
+    - enabled: false
+      vrf: vrf2

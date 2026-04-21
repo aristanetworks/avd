@@ -3,11 +3,6 @@ aaa_authorization:
     default: local
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   field_sets:
     l4_ports:
@@ -69,7 +64,7 @@ as_path:
   - name: ASPATH-WAN
     entries:
     - type: permit
-      match: '65000'
+      match: _65000_
 config_end: true
 daemon_terminattr:
   cvaddrs:
@@ -99,9 +94,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.1.9/31
-  peer: site1-border1
-  peer_interface: Ethernet3
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border1
+    peer_interface: Ethernet3
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet1.100
@@ -114,9 +110,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.0.1.9/31
-  peer: site1-border1
-  peer_interface: Ethernet3.100
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border1
+    peer_interface: Ethernet3.100
+    peer_type: l3leaf
 - name: Ethernet1.101
   description: P2P_site1-border1_Ethernet3.101_VRF_RED
   shutdown: false
@@ -127,9 +124,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 101
   ip_address: 10.0.1.9/31
-  peer: site1-border1
-  peer_interface: Ethernet3.101
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border1
+    peer_interface: Ethernet3.101
+    peer_type: l3leaf
 - name: Ethernet2
   description: P2P_site1-border2_Ethernet3
   shutdown: false
@@ -137,9 +135,10 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.1.11/31
-  peer: site1-border2
-  peer_interface: Ethernet3
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border2
+    peer_interface: Ethernet3
+    peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2.100
@@ -152,9 +151,10 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.0.1.11/31
-  peer: site1-border2
-  peer_interface: Ethernet3.100
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border2
+    peer_interface: Ethernet3.100
+    peer_type: l3leaf
 - name: Ethernet2.101
   description: P2P_site1-border2_Ethernet3.101_VRF_RED
   shutdown: false
@@ -165,18 +165,20 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 101
   ip_address: 10.0.1.11/31
-  peer: site1-border2
-  peer_interface: Ethernet3.101
-  peer_type: l3leaf
+  metadata:
+    peer: site1-border2
+    peer_interface: Ethernet3.101
+    peer_type: l3leaf
 - name: Ethernet3
   description: ACME-MPLS-INC_mpls-site1-wan1_mpls-cloud_Ethernet5
   shutdown: false
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 172.18.10.2/24
-  peer: mpls-cloud
-  peer_interface: Ethernet5
-  peer_type: l3_interface
+  metadata:
+    peer: mpls-cloud
+    peer_interface: Ethernet5
+    peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet4
@@ -186,9 +188,10 @@ ethernet_interfaces:
     hardware: FLOW-TRACKER
   ip_address: 100.64.10.2/24
   access_group_in: ACL-INTERNET-IN_Ethernet4
-  peer: inet-cloud
-  peer_interface: Ethernet5
-  peer_type: l3_interface
+  metadata:
+    peer: inet-cloud
+    peer_interface: Ethernet5
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:
@@ -200,8 +203,8 @@ flow_tracking:
         on_interval: 5000
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
     shutdown: false
 hostname: site1-wan1
@@ -237,9 +240,11 @@ ip_extcommunity_lists:
   entries:
   - type: permit
     extcommunities: soo 192.168.255.3:101
-ip_name_servers:
-- ip_address: 192.168.17.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.17.1
 ip_routing: true
 ip_security:
   ike_policies:
@@ -279,7 +284,8 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
-is_deployed: true
+kernel:
+  software_forwarding_ecmp: true
 local_users:
 - name: admin
   privilege: 15
@@ -324,8 +330,11 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  is_deployed: true
   platform: CloudEOS
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
   cv_tags:
     device_tags:
     - name: Role
@@ -403,7 +412,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -597,16 +606,18 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     allowas_in:
       enabled: true
       times: 1
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65000'
     update_source: Dps1
     bfd: true
@@ -622,24 +633,29 @@ router_bgp:
   - ip_address: 10.0.1.8
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: site1-border1
+    metadata:
+      peer: site1-border1
     description: site1-border1_Ethernet3
   - ip_address: 10.0.1.10
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
-    peer: site1-border2
+    metadata:
+      peer: site1-border2
     description: site1-border2_Ethernet3
   - ip_address: 192.168.42.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: pf1
+    metadata:
+      peer: pf1
     description: pf1_Dps1
   - ip_address: 192.168.42.2
     peer_group: WAN-OVERLAY-PEERS
-    peer: pf2
+    metadata:
+      peer: pf2
     description: pf2_Dps1
   - ip_address: 192.168.42.4
     remote_as: '65000'
-    peer: site1-wan2
+    metadata:
+      peer: site1-wan2
     description: site1-wan2
     route_reflector_client: true
     update_source: Dps1
@@ -887,10 +903,14 @@ vrfs:
   ip_routing: false
 - name: BLUE
   ip_routing: true
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: RED
   ip_routing: true
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vxlan_interface:
   vxlan1:
     description: site1-wan1_VTEP

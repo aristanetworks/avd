@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -14,14 +14,12 @@
 | ---- | ------ | -------------------- |
 {%     for community_list in ip_community_lists %}
 {%         if community_list.name is arista.avd.defined %}
-{%             for entry in community_list.entries | arista.avd.default([]) %}
+{%             for entry in community_list.entries %}
 {%                 if entry.action is arista.avd.defined %}
 {%                     if entry.regexp is arista.avd.defined %}
 | {{ community_list.name }} | {{ entry.action }} | {{ entry.regexp }} |
 {%                     elif entry.communities is arista.avd.defined %}
-{%                         if entry.communities | length > 0 %}
 | {{ community_list.name }} | {{ entry.action }} | {{ entry.communities | join(', ') }} |
-{%                         endif %}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}
