@@ -15224,6 +15224,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "dscp": {"type": str},
                 "vlan_number": {"type": int},
                 "vlan_mask": {"type": str},
+                "inner_vlan_number": {"type": int},
+                "inner_vlan_mask": {"type": str},
             }
             sequence: int | None
             """ACL entry sequence number."""
@@ -15261,7 +15263,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ttl_match: TtlMatch
             """Default value: `"eq"`"""
             vlan_inner: bool
-            """Default value: `False`"""
+            """
+            Render vlan and mask as inner vlan.
+            Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
+            migrating to the new keys.
+
+            Default value: `False`
+            """
             source_ports_match: SourcePortsMatch
             """Default value: `"eq"`"""
             source_ports: SourcePorts
@@ -15287,6 +15295,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vlan_number: int | None
             vlan_mask: str | None
             """0x000-0xFFF VLAN mask."""
+            inner_vlan_number: int | None
+            inner_vlan_mask: str | None
+            """0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set."""
 
             if TYPE_CHECKING:
 
@@ -15316,6 +15327,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     dscp: str | None | UndefinedType = Undefined,
                     vlan_number: int | None | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -15345,7 +15358,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match
-                        vlan_inner: vlan_inner
+                        vlan_inner:
+                           Render vlan and mask as inner vlan.
+                           Both 'inner_vlan_number' and 'inner_vlan_mask' are required when
+                           migrating to the new keys.
                         source_ports_match: source_ports_match
                         source_ports: Subclass of AvdList with `str` items.
                         destination_ports_match: destination_ports_match
@@ -15359,6 +15375,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         dscp: DSCP value or name.
                         vlan_number: vlan_number
                         vlan_mask: 0x000-0xFFF VLAN mask.
+                        inner_vlan_number: inner_vlan_number
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set.
 
                     """
 
@@ -18368,8 +18386,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "hop_limit": {"type": int},
                 "hop_limit_match": {"type": str, "default": "eq"},
                 "dscp_mask": {"type": str},
-                "inner_vlan_number": {"type": int},
-                "inner_vlan_mask": {"type": str},
                 "sequence": {"type": int},
                 "remark": {"type": str},
                 "action": {"type": str},
@@ -18386,6 +18402,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "dscp": {"type": str},
                 "vlan_number": {"type": int},
                 "vlan_mask": {"type": str},
+                "inner_vlan_number": {"type": int},
+                "inner_vlan_mask": {"type": str},
             }
             protocol: str | None
             """
@@ -18410,9 +18428,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Default value: `"eq"`"""
             dscp_mask: str | None
             """DSCP mask ranges from 0x00 to 0x3F."""
-            inner_vlan_number: int | None
-            inner_vlan_mask: str | None
-            """0x000-0xFFF inner VLAN mask."""
             sequence: int | None
             """ACL entry sequence number."""
             remark: str | None
@@ -18450,6 +18465,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vlan_number: int | None
             vlan_mask: str | None
             """0x000-0xFFF VLAN mask."""
+            inner_vlan_number: int | None
+            inner_vlan_mask: str | None
+            """0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set."""
 
             if TYPE_CHECKING:
 
@@ -18462,8 +18480,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     hop_limit: int | None | UndefinedType = Undefined,
                     hop_limit_match: HopLimitMatch | UndefinedType = Undefined,
                     dscp_mask: str | None | UndefinedType = Undefined,
-                    inner_vlan_number: int | None | UndefinedType = Undefined,
-                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                     sequence: int | None | UndefinedType = Undefined,
                     remark: str | None | UndefinedType = Undefined,
                     action: Action | None | UndefinedType = Undefined,
@@ -18480,6 +18496,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     dscp: str | None | UndefinedType = Undefined,
                     vlan_number: int | None | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -18502,8 +18520,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         hop_limit: Match Hop Limit value.
                         hop_limit_match: hop_limit_match
                         dscp_mask: DSCP mask ranges from 0x00 to 0x3F.
-                        inner_vlan_number: inner_vlan_number
-                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask.
                         sequence: ACL entry sequence number.
                         remark:
                            Comment up to 100 characters.
@@ -18524,6 +18540,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         dscp: DSCP value or name.
                         vlan_number: vlan_number
                         vlan_mask: 0x000-0xFFF VLAN mask.
+                        inner_vlan_number: inner_vlan_number
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set.
 
                     """
 
