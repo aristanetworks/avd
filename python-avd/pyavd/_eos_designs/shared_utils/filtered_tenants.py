@@ -509,10 +509,9 @@ class FilteredTenantsMixin(Protocol):
         ip_helpers = svi.ip_helpers or vrf.ip_helpers
         if ip_helpers:
             for svi_ip_helper in ip_helpers:
-                source_vrf = svi_ip_helper.source_vrf
                 source_interface = self.get_source_interface_for_ip_helpers(svi_ip_helper.source_interface)
                 source_vrf = (
-                    self.get_vrf(svi_ip_helper.source_vrf, context=f"{vrf.name}.source_vrf or {vrf.name}.svis[{svi.name}].source_vrf") if source_vrf else None
+                    self.get_vrf(svi_ip_helper.source_vrf, context=f"{vrf.name}.source_vrf or {vrf.name}.svis[{svi.name}].source_vrf") if svi_ip_helper.source_vrf else None
                 )
                 config.ip_helpers.append_new(
                     ip_helper=svi_ip_helper.ip_helper,
