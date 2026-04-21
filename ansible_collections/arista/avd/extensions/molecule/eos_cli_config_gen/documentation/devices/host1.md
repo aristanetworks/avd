@@ -10266,6 +10266,7 @@ router bgp 65101
       no neighbor 2001:db8::21 activate
       neighbor 2001:db8::21 default-originate
       no neighbor 2001:db8::21 additional-paths send
+      neighbor 2001:db8::22 default-originate route-map RM-FOO-MATCH3
       neighbor 2001:db8::22 additional-paths send limit 5
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
