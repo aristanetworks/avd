@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 from copy import deepcopy
 from typing import TYPE_CHECKING, Literal
 
-from .input_path import InputPath
+from .input_path import InputPath, _EMPTY_PATH
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
@@ -77,7 +77,7 @@ class AvdBase(ABC):
         """Setting default values since these are slots."""
         self._created_from_null = False
         self._block_inheritance = False
-        self._source = InputPath()
+        self._source = _EMPTY_PATH
 
     def _deepcopy(self) -> Self:
         """Return a copy including all nested models."""
@@ -103,7 +103,7 @@ class AvdBase(ABC):
         """Returns a new instance with all attributes set to None. This represents the YAML input '<key>: null'."""
         new_instance = cls()
         new_instance._created_from_null = True
-        new_instance._source = data_source or InputPath()
+        new_instance._source = data_source or _EMPTY_PATH
         return new_instance
 
     @abstractmethod

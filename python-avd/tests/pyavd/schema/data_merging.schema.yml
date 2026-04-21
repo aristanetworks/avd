@@ -20,5 +20,14 @@ keys:
     keys:
       some_nested_key:
         type: str
+  some_object:
+    type: dict
+    keys:
+      name:
+        type: str
+      some_int:
+        type: int
+      some_str:
+        type: str
   some_key:
     type: int

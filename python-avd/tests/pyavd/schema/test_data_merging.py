@@ -304,3 +304,28 @@ def test_data_source_indexed_list_append_new(data_merging_schema_class: DataMerg
     a.some_indexed_list.append_new(name="blah", some_int=42)
     assert str(a.some_indexed_list["blah"]._source) == "a.some_indexed_list[name=blah]"
     assert str(a.some_indexed_list["blah"]._get_field_source("some_int")) == "a.some_indexed_list[name=blah].some_int"
+
+
+def test_data_source_list_mutations_keep_sources(data_merging_schema_class: DataMergingTestSchema) -> None:
+    data = data_merging_schema_class._from_dict({"some_list": [10, 2]}, data_source=InputPath("a"))
+
+    data.some_list.append_unique(3)
+    data.some_list.extend([1])
+    data.some_list[1] = 20
+
+    assert [str(source) for source in data.some_list._items_source] == ["a.some_list[0]", "a.some_list[1]", "a.some_list[2]", "a.some_list[3]"]
+
+    filtered = data.some_list._filtered(lambda item: item != 20)
+    assert filtered._dump() == [10, 3, 1]
+    assert [str(source) for source in filtered._items_source] == ["a.some_list[0]", "a.some_list[2]", "a.some_list[3]"]
+
+    sorted_list = data.some_list._natural_sorted()
+    assert sorted_list._dump() == [1, 3, 10, 20]
+    assert [str(source) for source in sorted_list._items_source] == ["a.some_list[3]", "a.some_list[2]", "a.some_list[0]", "a.some_list[1]"]
+
+
+def test_data_source_model_tracks_only_schema_fields(data_merging_schema_class: DataMergingTestSchema) -> None:
+    data = data_merging_schema_class._from_dict({"some_dict": {"some_nested_key": "one"}}, data_source=InputPath("a"))
+
+    assert set(data._field_source).issubset(data._fields)
+    assert set(data.some_dict._field_source).issubset(data.some_dict._fields)

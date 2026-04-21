@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -30,9 +30,9 @@ class PathIndexedListKey:
 class InputPath:
     """Representation of a Path in the AVD data tree."""
 
-    path_elements: list[int | str | PathIndexedListKey]
+    path_elements: tuple[int | str | PathIndexedListKey, ...]
 
-    def __init__(self, *args: int | str | PathIndexedListKey, schema: str | None = None) -> None:
+    def __init__(self, *args: int | str | PathIndexedListKey) -> None:
         """
         An ordered list of path elements.
 
@@ -42,8 +42,7 @@ class InputPath:
         * an int following a PathIndexedListKey
         * a PathIndexedListKey following an int
         """
-        self.path_elements = list(args)
-        self.schema = schema
+        self.path_elements = args
 
     def __str__(self) -> str:
         """String representation."""
@@ -72,12 +71,12 @@ class InputPath:
     def parent(self) -> InputPath:
         """Returns a new InputPath object representing the parent path."""
         if len(self.path_elements) > 0:
-            return InputPath(*self.path_elements[:-1], schema=self.schema)
-        # root
-        return InputPath(schema=self.schema)
+            return InputPath(*self.path_elements[:-1])
+        return _EMPTY_PATH
 
     def create_descendant(self, *args: int | str | PathIndexedListKey) -> InputPath:
         """Creates a descendant of this InputPath instance."""
-        new_path_elements = self.path_elements.copy()
-        new_path_elements.extend(args)
-        return InputPath(*new_path_elements)
+        return InputPath(*self.path_elements, *args)
+
+
+_EMPTY_PATH = InputPath()

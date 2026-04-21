@@ -40,6 +40,12 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
     _items_source: list[InputPath]
     """Source based on index."""
 
+    def _get_item_source(self, item: T_ItemType, index: int, default: InputPath | None = None) -> InputPath:
+        """Return the best known source for one list item."""
+        if isinstance(item, AvdBase):
+            return item._source
+        return default or self._source.create_descendant(index)
+
     @classmethod
     def _load(cls, data: Sequence, data_source: InputPath | None = None) -> Self:
         """Returns a new instance loaded with the data from the given list."""
@@ -62,20 +68,27 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
 
         return cls(cls_items, source=data_source)
 
-    def __init__(self, items: Iterable[T_ItemType] = (), source: InputPath | None = None) -> None:
+    def __init__(self, items: Iterable[T_ItemType] = (), source: InputPath | None = None, items_source: Iterable[InputPath] | None = None) -> None:
         """
         AvdList subclass.
 
         Args:
             items: Iterable holding items of the correct type to be loaded into the list.
             source: The InputPath to use as source for this list.
+            items_source: Optional explicit sources for each item.
         """
         super().__init__()
 
         self._items = list(items)
         if source:
             self._source = source
-        self._items_source = [self._source.create_descendant(index) for index in range(len(self._items))]
+        if items_source is not None:
+            self._items_source = list(items_source)
+            if len(self._items_source) != len(self._items):
+                msg = f"items_source length {len(self._items_source)} does not match items length {len(self._items)}"
+                raise ValueError(msg)
+        else:
+            self._items_source = [self._get_item_source(item, index) for index, item in enumerate(self._items)]
 
     def __repr__(self) -> str:
         """Returns a repr with all the items including any nested models."""
@@ -104,6 +117,7 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
     # TODO: If need source to be changed for item then need a wrapper
     def __setitem__(self, index: int, value: T_ItemType) -> None:
         self._items[index] = value
+        self._items_source[index] = self._get_item_source(value, index)
 
     def __eq__(self, other: object) -> bool:
         return self._compare(other)
@@ -113,12 +127,12 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
 
     def append(self, item: T_ItemType) -> None:
         self._items.append(item)
-        self._items_source.append(self._source.create_descendant(len(self._items_source)))
+        self._items_source.append(self._get_item_source(item, len(self._items_source)))
 
     def append_unique(self, item: T_ItemType) -> None:
         """Append the item if not there already. Otherwise ignore."""
         if item not in self._items:
-            self._items.append(item)
+            self.append(item)
 
     if TYPE_CHECKING:
         append_new: type[T_ItemType]
@@ -131,17 +145,22 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
             return new_item
 
     def extend(self, items: Iterable[T_ItemType]) -> None:
-        self._items.extend(items)
+        for item in items:
+            self.append(item)
 
     def _strip_empties(self) -> None:
         """In-place update the instance to remove data matching the given strip_values."""
         if self._item_type is not Any and issubclass(self._item_type, AvdBase):
             items = cast("list[AvdBase]", self._items)
             [item._strip_empties() for item in items]
-            self._items = [item for item in self._items if item]
+            kept_items_with_sources = [(item, self._items_source[index]) for index, item in enumerate(self._items) if item]
+            self._items = [item for item, _source in kept_items_with_sources]
+            self._items_source = [source for _item, source in kept_items_with_sources]
             return
 
-        self._items = [item for item in self._items if item is not None]
+        kept_items_with_sources = [(item, self._items_source[index]) for index, item in enumerate(self._items) if item is not None]
+        self._items = [item for item, _source in kept_items_with_sources]
+        self._items_source = [source for _item, source in kept_items_with_sources]
 
     def _as_list(self, include_default_values: bool = False) -> list:
         """Returns a list with all the data from this model and any nested models."""
@@ -173,11 +192,21 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
             return [convert(c) for c in re.split(NATURAL_SORT_PATTERN, sort_value)]
 
         cls = type(self)
-        return cls(sorted(self._items, key=key))
+        sorted_items_with_sources = sorted(zip(self._items, self._items_source, strict=True), key=lambda item_and_source: key(item_and_source[0]))
+        return cls(
+            [item for item, _source in sorted_items_with_sources],
+            source=self._source,
+            items_source=[source for _item, source in sorted_items_with_sources],
+        )
 
     def _filtered(self, function: Callable[[T_ItemType], bool]) -> Self:
         cls = type(self)
-        return cls(filter(function, self._items))
+        filtered_items_with_sources = [(item, self._items_source[index]) for index, item in enumerate(self._items) if function(item)]
+        return cls(
+            [item for item, _source in filtered_items_with_sources],
+            source=self._source,
+            items_source=[source for _item, source in filtered_items_with_sources],
+        )
 
     def _deepmerge(self, other: Self, list_merge: Literal["append_unique", "append", "replace", "keep", "prepend", "prepend_unique"] = "append_unique") -> None:
         """
@@ -257,18 +286,21 @@ class AvdList(Sequence[T_ItemType], AvdBase, Generic[T_ItemType]):  # noqa: PLW1
         # In the case that _item_type is Any, issubclass will raise a TypeError.
         if self._item_type is not Any and issubclass(self._item_type, AvdBase):
             items = cast("list[AvdBase]", self._items)
-            return new_type([item._cast_as(new_type._item_type, ignore_extra_keys=ignore_extra_keys) for item in items])
+            new_items = [item._cast_as(new_type._item_type, ignore_extra_keys=ignore_extra_keys) for item in items]
+            return new_type(
+                new_items,
+                source=self._source,
+                items_source=[self._get_item_source(item, index, self._items_source[index]) for index, item in enumerate(new_items)],
+            )
 
         if self._item_type != new_type._item_type:
             msg = f"Unable to cast '{cls}' as type '{new_type}' since they have incompatible item types."
             raise TypeError(msg)
 
-        new_instance = new_type(self._items)
+        new_instance = new_type(self._items, source=self._source, items_source=self._items_source)
 
         # Pass along the _created_from_null flag
         new_instance._created_from_null = self._created_from_null
-        # Copy the source
-        new_instance._source = self._source
 
         return new_instance
 

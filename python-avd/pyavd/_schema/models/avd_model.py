@@ -13,7 +13,7 @@ from pyavd._utils import Undefined, UndefinedType, merge
 
 from .avd_base import AvdBase
 from .avd_indexed_list import AvdIndexedList
-from .input_path import InputPath
+from .input_path import InputPath, _EMPTY_PATH
 
 if TYPE_CHECKING:
     from collections.abc import ItemsView
@@ -110,7 +110,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
         field_name = self._key_to_field_map.get(key, key)
         if (source := self._field_source.get(field_name, None)) is not None:
             return str(source)
-        return str(self._source.create_descendant(field_name))
+        return str(self._source.create_descendant(self._field_to_key_map.get(field_name, field_name)))
 
     @classmethod
     def _get_field_default_value(cls, name: str) -> Any:
@@ -148,20 +148,24 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
         This method is typically overridden when TYPE_CHECKING is True, to provide proper suggestions and type hints for the arguments.
         """
-        self._custom_data = {}
-        self._skipped_keys = set()
-        [setattr(self, arg, arg_value) for arg, arg_value in kwargs.items() if arg_value is not Undefined]
-
+        custom_data = kwargs.pop("_custom_data", {})
+        skipped_keys = kwargs.pop("_skipped_keys", set())
+        source = kwargs.pop("_source", _EMPTY_PATH)
         super().__init__()
 
-        self._custom_data = {}
+        self._custom_data = custom_data
+        self._skipped_keys = skipped_keys
         self._field_source = {}
-        self._source: InputPath = kwargs.pop("_source", InputPath())
-        for arg, arg_value in kwargs.items():
-            if arg_value is Undefined:
+        self._source = source
+        for field, field_value in kwargs.items():
+            if field_value is Undefined:
                 continue
-            setattr(self, arg, arg_value)
-            self._field_source[arg] = arg._source if isinstance(arg, AvdBase) else self._source.create_descendant(arg)
+            setattr(self, field, field_value)
+            self._field_source[field] = (
+                field_value._source
+                if isinstance(field_value, AvdBase)
+                else self._source.create_descendant(self._field_to_key_map.get(field, field))
+            )
 
     def __getattr__(self, name: str) -> Any:
         """
@@ -387,7 +391,8 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
             if old_value is Undefined:
                 setattr(self, field, new_value)
                 # Keep the source of the inherited field
-                self._field_source[field] = other._field_source[field]
+                yaml_key = other._field_to_key_map.get(field, field)
+                self._field_source[field] = other._field_source.get(field, other._source.create_descendant(yaml_key))
                 continue
 
             # Merge new value if it is a class with inheritance support.
