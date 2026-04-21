@@ -244,7 +244,7 @@ keys:
             min: 1
             max: 32
             convert_types:
-            - str
+              - str
           encryption_key_common:
             type: bool
           encryption_reversible:
@@ -265,31 +265,31 @@ keys:
                       min: 1
                       max: 65535
                       convert_types:
-                      - str
+                        - str
                     length:
                       type: int
                       min: 1
                       max: 65535
                       convert_types:
-                      - str
+                        - str
                     lower:
                       type: int
                       min: 1
                       max: 65535
                       convert_types:
-                      - str
+                        - str
                     special:
                       type: int
                       min: 1
                       max: 65535
                       convert_types:
-                      - str
+                        - str
                     upper:
                       type: int
                       min: 1
                       max: 65535
                       convert_types:
-                      - str
+                        - str
                 maximum:
                   type: dict
                   keys:
@@ -298,13 +298,13 @@ keys:
                       min: 1
                       max: 65535
                       convert_types:
-                      - str
+                        - str
                     sequential:
                       type: int
                       min: 1
                       max: 65535
                       convert_types:
-                      - str
+                        - str
       ssl_profiles:
         type: list
         primary_key: name
@@ -324,7 +324,7 @@ keys:
                   - "1.0"
                   - "1.0 1.1"
               convert_types:
-              - float
+                - float
             cipher_list:
               type: str
               description: |
@@ -429,7 +429,7 @@ keys:
                     default: "7"
                     valid_values: [ "0", "7", "8a" ]
                     convert_types:
-                    - int
+                      - int
                   receive_lifetime:
                     type: dict
                     required: true
