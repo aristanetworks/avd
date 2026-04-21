@@ -96,7 +96,7 @@ def get_avd_log_level(logger_name: str) -> int:
 
 
 @dataclass(frozen=True)
-class AvdLoggingConfig:
+class AVDLoggingConfig:
     """Configuration for the logging environment in AVD Ansible action plugins."""
 
     add_role_context: bool = False
