@@ -202,7 +202,7 @@ class VlanInterfacesMixin(Protocol):
         if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
             vlan_interface_config.ipv6_enable = True
         elif self.shared_utils.underlay_ipv6_numbered:
-            vlan_interface_config.ipv6_addresses = EosCliConfigGen.VlanInterfacesItem.Ipv6Addresses([self._get_vlan_ip_config_for_mlag_peering(vrf)])
+            vlan_interface_config.ipv6_addresses.append_new(self._get_vlan_ip_config_for_mlag_peering(vrf))
         else:
             vlan_interface_config.ip_address = self._get_vlan_ip_config_for_mlag_peering(vrf)
 
