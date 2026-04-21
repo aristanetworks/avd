@@ -378,23 +378,6 @@ class RouterBgpMixin(Protocol):
         if evpn_multicast_transit_mode := getattr(vrf._internal_data, "evpn_l3_multicast_evpn_peg_transit", False):
             bgp_vrf.evpn_multicast_address_family.ipv4.transit = evpn_multicast_transit_mode
 
-    def _set_router_bgp_listen_ranges(self: AvdStructuredConfigNetworkServicesProtocol, bgp_peer_group) -> None:
-        for tenant in self.shared_utils.filtered_tenants:
-            for bgp_peer_group in tenant.bgp_peer_groups:
-                if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
-                    for listen_range in bgp_peer_group.listen_ranges:
-                        self.structured_config.router_bgp.listen_ranges.append_new(
-                            prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined
-                        )
-            for vrf in tenant.vrfs:
-                for bgp_peer_group in vrf.bgp_peer_groups:
-                    if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
-                        for listen_range in bgp_peer_group.listen_ranges:
-                            vrf_config = self.structured_config.router_bgp.vrfs.obtain(vrf.name)
-                            vrf_config.listen_ranges.append_new(
-                                prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined
-                            )
-
     def _update_router_bgp_vrf_mlag_neighbor_cfg(
         self: AvdStructuredConfigNetworkServicesProtocol,
         bgp_vrf: EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp,
