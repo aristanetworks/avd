@@ -33,6 +33,7 @@ The `arista.avd.eos_designs_documentation` module is an Ansible Action Plugin pr
 | <samp>mode</samp> | str | optional | 0o664 | - | Mode of output files. |
 | <samp>fabric_documentation</samp> | bool | optional | True | - | Generate fabric documentation. |
 | <samp>include_connected_endpoints</samp> | bool | optional | False | - | Include connected endpoints in fabric documentation. |
+| <samp>fabric_topology_details</samp> | bool | optional | True | - | Render the `VRF Summary` and `BGP Peer Groups` sections in fabric documentation.<br>Set to false on large fabrics where these sections become unreadable; per-device<br>documentation still covers the same data. |
 | <samp>topology_csv_file</samp> | str | True | None | - | Path to output topology CSV file. |
 | <samp>topology_csv</samp> | bool | optional | False | - | Generate Topology CSV with all interfaces towards other devices. |
 | <samp>p2p_links_csv_file</samp> | str | True | None | - | Path to output P2P links CSV file. |
@@ -53,6 +54,7 @@ The `arista.avd.eos_designs_documentation` module is an Ansible Action Plugin pr
     fabric_documentation_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
     fabric_documentation: "{{ eos_designs_documentation.enable | arista.avd.default(true) }}"
     include_connected_endpoints: "{{ eos_designs_documentation.connected_endpoints | arista.avd.default(false) }}"
+    fabric_topology_details: "{{ eos_designs_documentation.fabric_topology_details | arista.avd.default(true) }}"
     topology_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
     topology_csv: "{{ eos_designs_documentation.topology_csv | arista.avd.default(true) }}"
     p2p_links_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
