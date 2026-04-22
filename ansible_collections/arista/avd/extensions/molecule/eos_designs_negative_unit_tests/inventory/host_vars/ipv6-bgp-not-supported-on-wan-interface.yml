@@ -26,5 +26,6 @@ wan_path_groups:
     name: INTERNET
 
 expected_error_message: >-
-  IPv6 BGP peering ('peer_ipv6_address' with 'bgp') is not supported on WAN interfaces ('wan_carrier' is set).
-  WAN path-group integration only supports IPv4 BGP peering. Use 'peer_ip' with 'bgp' instead.
+  IPv6 BGP peering is not supported on WAN interfaces for
+  'wan_router.nodes[name=ipv6-bgp-not-supported-on-wan-interface].l3_interfaces[Ethernet1]'.
+  WAN path-group integration only supports IPv4 BGP peering.

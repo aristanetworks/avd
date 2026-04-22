@@ -397,6 +397,7 @@ class MiscMixin(Protocol):
             | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
         ),
         description: str | None,
+        context: str,
         ipv6_neighbors: EosCliConfigGen.RouterBgp.Neighbors,
     ) -> None:
         """Creates an IPv6 BGP neighbor entry for an L3 interface or L3 Port-Channel if peer_ipv6_address and bgp are configured."""
@@ -405,10 +406,11 @@ class MiscMixin(Protocol):
 
         if bool(interface.wan_carrier):
             msg = (
-                "IPv6 BGP peering ('peer_ipv6_address' with 'bgp') is not supported on WAN interfaces ('wan_carrier' is set). "
-                "WAN path-group integration only supports IPv4 BGP peering. Use 'peer_ip' with 'bgp' instead."
+                f"IPv6 BGP peering is not supported on WAN interfaces for "
+                f"'{self.node_type_key_data.key}.nodes[name={self.hostname}].{context}'. "
+                "WAN path-group integration only supports IPv4 BGP peering."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
             ip_address=interface.peer_ipv6_address,
@@ -435,7 +437,7 @@ class MiscMixin(Protocol):
                 else None
             )
             self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_interfaces[{interface.name}]", neighbors, prefix_lists, route_maps)
-            self._update_l3_generic_interface_ipv6_bgp(interface, description, ipv6_neighbors)
+            self._update_l3_generic_interface_ipv6_bgp(interface, description, f"l3_interfaces[{interface.name}]", ipv6_neighbors)
 
         for interface in self.node_config.l3_port_channels:
             has_bgp = bool(interface.bgp and (interface.peer_ip or interface.peer_ipv6_address))
@@ -447,7 +449,7 @@ class MiscMixin(Protocol):
                 else None
             )
             self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_port_channels[{interface.name}]", neighbors, prefix_lists, route_maps)
-            self._update_l3_generic_interface_ipv6_bgp(interface, description, ipv6_neighbors)
+            self._update_l3_generic_interface_ipv6_bgp(interface, description, f"l3_port_channels[{interface.name}]", ipv6_neighbors)
 
         return neighbors, prefix_lists, route_maps, ipv6_neighbors
 
