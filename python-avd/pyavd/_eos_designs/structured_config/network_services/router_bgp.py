@@ -143,7 +143,7 @@ class RouterBgpMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for bgp_peer_group in tenant.bgp_peer_groups:
                 bgp_vrf = self.structured_config.router_bgp
-                self._set_listen_ranges(bgp_peer_group, bgp_vrf)
+                self._update_listen_ranges(bgp_peer_group, bgp_vrf)
                 if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
                     for listen_range in bgp_peer_group.listen_ranges:
                         self.structured_config.router_bgp.listen_ranges.append_new(
@@ -822,7 +822,7 @@ class RouterBgpMixin(Protocol):
                     label_flow=tenant.vpws.label_flow or None,  # Using 'or None' to only render True in structured config.
                 )
 
-    def _set_listen_ranges(
+    def _update_listen_ranges(
         self: AvdStructuredConfigNetworkServicesProtocol,
         bgp_peer_group: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.BgpPeerGroupsItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.BgpPeerGroupsItem,
