@@ -12,7 +12,6 @@
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [VRF Summary](#vrf-summary)
   - [BGP Peer Groups](#bgp-peer-groups)
-  - [BGP Neighbors](#bgp-neighbors)
   - [VRF Routing Protocols](#vrf-routing-protocols)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
@@ -95,47 +94,6 @@
 | EVPN-OVERLAY-PEERS | - | Loopback0 | Yes | all | dc1-leaf1a, dc1-leaf1b, dc1-leaf2a, dc1-leaf2b, dc1-spine1, dc1-spine2 |
 | IPv6-UNDERLAY-PEERS | - | - | No | all | dc1-leaf1a, dc1-leaf1b, dc1-leaf2a, dc1-leaf2b, dc1-spine1, dc1-spine2 |
 | MLAG-IPv6-UNDERLAY-PEER | - | - | No | all | dc1-leaf1a, dc1-leaf1b, dc1-leaf2a, dc1-leaf2b |
-
-### BGP Neighbors
-
-| Node | Type | Neighbor IP | Peer Group | Remote AS | Description |
-| ---- | ---- | ----------- | ---------- | --------- | ----------- |
-| dc1-leaf1a | l3leaf | 2001:db8:4::2 | MLAG-IPv6-UNDERLAY-PEER | - | dc1-leaf1b_Vlan4093 |
-| dc1-leaf1a | l3leaf | 2001:db8:2::1 | IPv6-UNDERLAY-PEERS | 65100 | dc1-spine1_Ethernet1 |
-| dc1-leaf1a | l3leaf | 2001:db8:2:1::1 | IPv6-UNDERLAY-PEERS | 65100 | dc1-spine2_Ethernet1 |
-| dc1-leaf1a | l3leaf | 2001:db8:0:1::1 | EVPN-OVERLAY-PEERS | 65100 | dc1-spine1_Loopback0 |
-| dc1-leaf1a | l3leaf | 2001:db8:0:2::1 | EVPN-OVERLAY-PEERS | 65100 | dc1-spine2_Loopback0 |
-| dc1-leaf1b | l3leaf | 2001:db8:4::1 | MLAG-IPv6-UNDERLAY-PEER | - | dc1-leaf1a_Vlan4093 |
-| dc1-leaf1b | l3leaf | 2001:db8:2:2::1 | IPv6-UNDERLAY-PEERS | 65100 | dc1-spine1_Ethernet2 |
-| dc1-leaf1b | l3leaf | 2001:db8:2:3::1 | IPv6-UNDERLAY-PEERS | 65100 | dc1-spine2_Ethernet2 |
-| dc1-leaf1b | l3leaf | 2001:db8:0:1::1 | EVPN-OVERLAY-PEERS | 65100 | dc1-spine1_Loopback0 |
-| dc1-leaf1b | l3leaf | 2001:db8:0:2::1 | EVPN-OVERLAY-PEERS | 65100 | dc1-spine2_Loopback0 |
-| dc1-leaf2a | l3leaf | 2001:db8:4:2::2 | MLAG-IPv6-UNDERLAY-PEER | - | dc1-leaf2b_Vlan4093 |
-| dc1-leaf2a | l3leaf | 2001:db8:2:4::1 | IPv6-UNDERLAY-PEERS | 65100 | dc1-spine1_Ethernet3 |
-| dc1-leaf2a | l3leaf | 2001:db8:2:5::1 | IPv6-UNDERLAY-PEERS | 65100 | dc1-spine2_Ethernet3 |
-| dc1-leaf2a | l3leaf | 2001:db8:0:1::1 | EVPN-OVERLAY-PEERS | 65100 | dc1-spine1_Loopback0 |
-| dc1-leaf2a | l3leaf | 2001:db8:0:2::1 | EVPN-OVERLAY-PEERS | 65100 | dc1-spine2_Loopback0 |
-| dc1-leaf2b | l3leaf | 2001:db8:4:2::1 | MLAG-IPv6-UNDERLAY-PEER | - | dc1-leaf2a_Vlan4093 |
-| dc1-leaf2b | l3leaf | 2001:db8:2:6::1 | IPv6-UNDERLAY-PEERS | 65100 | dc1-spine1_Ethernet4 |
-| dc1-leaf2b | l3leaf | 2001:db8:2:7::1 | IPv6-UNDERLAY-PEERS | 65100 | dc1-spine2_Ethernet4 |
-| dc1-leaf2b | l3leaf | 2001:db8:0:1::1 | EVPN-OVERLAY-PEERS | 65100 | dc1-spine1_Loopback0 |
-| dc1-leaf2b | l3leaf | 2001:db8:0:2::1 | EVPN-OVERLAY-PEERS | 65100 | dc1-spine2_Loopback0 |
-| dc1-spine1 | spine | 2001:db8:2::2 | IPv6-UNDERLAY-PEERS | 65101 | dc1-leaf1a_Ethernet1 |
-| dc1-spine1 | spine | 2001:db8:2:2::2 | IPv6-UNDERLAY-PEERS | 65101 | dc1-leaf1b_Ethernet1 |
-| dc1-spine1 | spine | 2001:db8:2:4::2 | IPv6-UNDERLAY-PEERS | 65102 | dc1-leaf2a_Ethernet1 |
-| dc1-spine1 | spine | 2001:db8:2:6::2 | IPv6-UNDERLAY-PEERS | 65102 | dc1-leaf2b_Ethernet1 |
-| dc1-spine1 | spine | 2001:db8:1:1::1 | EVPN-OVERLAY-PEERS | 65101 | dc1-leaf1a_Loopback0 |
-| dc1-spine1 | spine | 2001:db8:1:2::1 | EVPN-OVERLAY-PEERS | 65101 | dc1-leaf1b_Loopback0 |
-| dc1-spine1 | spine | 2001:db8:1:3::1 | EVPN-OVERLAY-PEERS | 65102 | dc1-leaf2a_Loopback0 |
-| dc1-spine1 | spine | 2001:db8:1:4::1 | EVPN-OVERLAY-PEERS | 65102 | dc1-leaf2b_Loopback0 |
-| dc1-spine2 | spine | 2001:db8:2:1::2 | IPv6-UNDERLAY-PEERS | 65101 | dc1-leaf1a_Ethernet2 |
-| dc1-spine2 | spine | 2001:db8:2:3::2 | IPv6-UNDERLAY-PEERS | 65101 | dc1-leaf1b_Ethernet2 |
-| dc1-spine2 | spine | 2001:db8:2:5::2 | IPv6-UNDERLAY-PEERS | 65102 | dc1-leaf2a_Ethernet2 |
-| dc1-spine2 | spine | 2001:db8:2:7::2 | IPv6-UNDERLAY-PEERS | 65102 | dc1-leaf2b_Ethernet2 |
-| dc1-spine2 | spine | 2001:db8:1:1::1 | EVPN-OVERLAY-PEERS | 65101 | dc1-leaf1a_Loopback0 |
-| dc1-spine2 | spine | 2001:db8:1:2::1 | EVPN-OVERLAY-PEERS | 65101 | dc1-leaf1b_Loopback0 |
-| dc1-spine2 | spine | 2001:db8:1:3::1 | EVPN-OVERLAY-PEERS | 65102 | dc1-leaf2a_Loopback0 |
-| dc1-spine2 | spine | 2001:db8:1:4::1 | EVPN-OVERLAY-PEERS | 65102 | dc1-leaf2b_Loopback0 |
 
 ### VRF Routing Protocols
 

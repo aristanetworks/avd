@@ -35,19 +35,27 @@ class FabricDocumentationFacts(AvdFacts):
     _fabric_name: str
     _include_connected_endpoints: bool
     """Avoid building data for connected endpoints unless we need it."""
+    _fabric_topology_details: bool
 
     # Overriding class vars from AvdFacts, since fabric documentation covers all devices.
     _hostvars = NotImplemented
     shared_utils = NotImplemented
 
     def __init__(  # pylint: disable=super-init-not-called
-        self, avd_facts: dict[str, EosDesignsFacts], structured_configs: dict[str, dict], fabric_name: str, include_connected_endpoints: bool, toc: bool
+        self,
+        avd_facts: dict[str, EosDesignsFacts],
+        structured_configs: dict[str, dict],
+        fabric_name: str,
+        include_connected_endpoints: bool,
+        toc: bool,
+        fabric_topology_details: bool = True,
     ) -> None:
         self.avd_facts = avd_facts
         self._fabric_name = fabric_name
         self.structured_configs = structured_configs
         self._include_connected_endpoints = include_connected_endpoints
         self._toc = toc
+        self._fabric_topology_details = fabric_topology_details
 
     def render(self) -> dict[str, Any]:
         return {key: value for key in self.keys() if (value := getattr(self, key)) is not None}
@@ -61,6 +69,11 @@ class FabricDocumentationFacts(AvdFacts):
     def toc(self) -> bool:
         """Generate the table of content(TOC) on fabric documentation."""
         return self._toc
+
+    @cached_property
+    def fabric_topology_details(self) -> bool:
+        """Render `VRF Summary` and `BGP Peer Groups` sections in the fabric documentation."""
+        return self._fabric_topology_details
 
     @cached_property
     def fabric_switches(self) -> list[dict]:
@@ -265,33 +278,6 @@ class FabricDocumentationFacts(AvdFacts):
     def has_bgp_peer_groups(self) -> bool:
         """At least one BGP peer group is configured."""
         return len(self.bgp_peer_groups) > 0
-
-    @cached_property
-    def bgp_neighbors(self) -> list[dict]:
-        """List of BGP neighbors across the fabric."""
-        neighbors = []
-        for hostname, structured_config in self.structured_configs.items():
-            router_bgp = get(structured_config, "router_bgp", default={})
-            for neighbor in get(router_bgp, "neighbors", default=[]):
-                ip_address = get(neighbor, "ip_address")
-                if not ip_address:
-                    continue
-                neighbors.append(
-                    {
-                        "node": hostname,
-                        "type": self.avd_facts[hostname].type,
-                        "neighbor_ip": ip_address,
-                        "peer_group": get(neighbor, "peer_group", default="-"),
-                        "remote_as": get(neighbor, "remote_as", default="-"),
-                        "description": get(neighbor, "description", default="-"),
-                    }
-                )
-        return natural_sort(neighbors, sort_key="node")
-
-    @cached_property
-    def has_bgp_neighbors(self) -> bool:
-        """At least one BGP neighbor is configured."""
-        return len(self.bgp_neighbors) > 0
 
     @cached_property
     def vrf_routing_protocols(self) -> list[dict]:

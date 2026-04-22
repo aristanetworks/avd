@@ -20,6 +20,7 @@
     | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  | Control fabric documentation generation.<br> |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_designs_documentation.enable") | Boolean |  | `True` |  | Generate fabric-wide documentation. |
     | [<samp>&nbsp;&nbsp;connected_endpoints</samp>](## "eos_designs_documentation.connected_endpoints") | Boolean |  | `False` |  | Include connected endpoints in the fabric-wide documentation.<br>This is `false` by default to avoid cluttering documentation for projects with thousands of endpoints. |
+    | [<samp>&nbsp;&nbsp;fabric_topology_details</samp>](## "eos_designs_documentation.fabric_topology_details") | Boolean |  | `True` |  | Include the `VRF Summary` and `BGP Peer Groups` sections in the fabric-wide documentation.<br>Both sections list every node where each VRF or peer group is present, which can become<br>unreadable on large fabrics. Set to `false` to omit both sections; per-device documentation<br>still covers the same data. |
     | [<samp>&nbsp;&nbsp;topology_csv</samp>](## "eos_designs_documentation.topology_csv") | Boolean |  | `False` |  | Generate Topology CSV with all interfaces towards other devices. |
     | [<samp>&nbsp;&nbsp;p2p_links_csv</samp>](## "eos_designs_documentation.p2p_links_csv") | Boolean |  | `False` |  | Generate P2P links CSV with all routed point-to-point links between devices. |
     | [<samp>&nbsp;&nbsp;toc</samp>](## "eos_designs_documentation.toc") | Boolean |  | `True` |  | Generate the table of content(TOC) on fabric documentation. |
@@ -66,6 +67,12 @@
       # Include connected endpoints in the fabric-wide documentation.
       # This is `false` by default to avoid cluttering documentation for projects with thousands of endpoints.
       connected_endpoints: <bool; default=False>
+
+      # Include the `VRF Summary` and `BGP Peer Groups` sections in the fabric-wide documentation.
+      # Both sections list every node where each VRF or peer group is present, which can become
+      # unreadable on large fabrics. Set to `false` to omit both sections; per-device documentation
+      # still covers the same data.
+      fabric_topology_details: <bool; default=True>
 
       # Generate Topology CSV with all interfaces towards other devices.
       topology_csv: <bool; default=False>

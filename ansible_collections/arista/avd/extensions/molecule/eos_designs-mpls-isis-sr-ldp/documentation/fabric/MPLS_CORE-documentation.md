@@ -17,7 +17,6 @@
   - [MPLS Route Reflectors](#mpls-route-reflectors)
   - [VRF Summary](#vrf-summary)
   - [BGP Peer Groups](#bgp-peer-groups)
-  - [BGP Neighbors](#bgp-neighbors)
   - [VRF Routing Protocols](#vrf-routing-protocols)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
@@ -182,31 +181,6 @@
 | ---------- | --------- | ------------- | --- | -------------- | ----- |
 | MPLS-OVERLAY-PEERS | 65000 | Loopback0 | Yes | all | SITE1-LER1, SITE1-LER2, SITE1-RR1, SITE2-LER1, SITE2-RR1 |
 | RR-OVERLAY-PEERS | 65000 | Loopback0 | Yes | all | SITE1-RR1, SITE2-RR1, SITE3-RR1 |
-
-### BGP Neighbors
-
-| Node | Type | Neighbor IP | Peer Group | Remote AS | Description |
-| ---- | ---- | ----------- | ---------- | --------- | ----------- |
-| SITE1-LER1 | pe | 100.70.0.8 | MPLS-OVERLAY-PEERS | - | SITE1-RR1_Loopback0 |
-| SITE1-LER1 | pe | 100.70.0.9 | MPLS-OVERLAY-PEERS | - | SITE2-RR1_Loopback0 |
-| SITE1-LER2 | pe | 100.70.0.8 | MPLS-OVERLAY-PEERS | - | SITE1-RR1_Loopback0 |
-| SITE1-LER2 | pe | 100.70.0.9 | MPLS-OVERLAY-PEERS | - | SITE2-RR1_Loopback0 |
-| SITE1-LER2 | pe | 100.70.0.5 | MPLS-OVERLAY-PEERS | - | SITE1-LER1_Loopback0 |
-| SITE1-LER2 | pe | 100.70.0.7 | MPLS-OVERLAY-PEERS | - | SITE2-LER1_Loopback0 |
-| SITE1-RR1 | rr | 100.70.0.5 | MPLS-OVERLAY-PEERS | - | SITE1-LER1_Loopback0 |
-| SITE1-RR1 | rr | 100.70.0.6 | MPLS-OVERLAY-PEERS | - | SITE1-LER2_Loopback0 |
-| SITE1-RR1 | rr | 100.70.0.7 | MPLS-OVERLAY-PEERS | - | SITE2-LER1_Loopback0 |
-| SITE1-RR1 | rr | 100.70.0.9 | RR-OVERLAY-PEERS | - | SITE2-RR1_Loopback0 |
-| SITE1-RR1 | rr | 100.70.0.12 | RR-OVERLAY-PEERS | - | SITE3-RR1_Loopback0 |
-| SITE2-LER1 | pe | 100.70.0.8 | MPLS-OVERLAY-PEERS | - | SITE1-RR1_Loopback0 |
-| SITE2-LER1 | pe | 100.70.0.9 | MPLS-OVERLAY-PEERS | - | SITE2-RR1_Loopback0 |
-| SITE2-RR1 | rr | 100.70.0.5 | MPLS-OVERLAY-PEERS | - | SITE1-LER1_Loopback0 |
-| SITE2-RR1 | rr | 100.70.0.6 | MPLS-OVERLAY-PEERS | - | SITE1-LER2_Loopback0 |
-| SITE2-RR1 | rr | 100.70.0.7 | MPLS-OVERLAY-PEERS | - | SITE2-LER1_Loopback0 |
-| SITE2-RR1 | rr | 100.70.0.8 | RR-OVERLAY-PEERS | - | SITE1-RR1_Loopback0 |
-| SITE2-RR1 | rr | 100.70.0.12 | RR-OVERLAY-PEERS | - | SITE3-RR1_Loopback0 |
-| SITE3-RR1 | rr | 100.70.0.8 | RR-OVERLAY-PEERS | - | SITE1-RR1_Loopback0 |
-| SITE3-RR1 | rr | 100.70.0.9 | RR-OVERLAY-PEERS | - | SITE2-RR1_Loopback0 |
 
 ### VRF Routing Protocols
 
