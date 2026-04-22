@@ -4,7 +4,6 @@
 # when generating molecule artifacts.
 dev = [
     "anta==1.8.0",
-    "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
     "pyavd-utils==0.0.4",

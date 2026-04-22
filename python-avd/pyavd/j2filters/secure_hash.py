@@ -2,6 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+from pyavd_utils.passwords import sha512_crypt
 
 HASH_INPUT_TYPE = ["sha512_password"]
 
@@ -21,11 +22,7 @@ def sha512_password(clear_password: str, salt: str) -> str:
         TypeError: If the password is not of type 'str'.
         ValueError: If sha512_crypt fails for any reason.
     """
-    # Importing inside the function to avoid neeedind pyavd-utils in the build dependencies.
-    from pyavd_utils.passwords import sha512_crypt  # noqa: PLC0415
-
     try:
-        # setting the rounds parameter to 5000 to omit rounds from the hash string, similar to EOS implementation
         return sha512_crypt(clear_password, salt)
     except Exception as exc:
         msg = f"SHA-512 password hashing failed - check the input parameters of arista.avd.secure_hash: {exc}"
