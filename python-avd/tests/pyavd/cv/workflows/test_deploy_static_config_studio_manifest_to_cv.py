@@ -324,3 +324,92 @@ class TestDeployStaticConfigStudio:
         assert len(deployment_result.skipped_static_config_containers) == 1  # CNT_LEAF1 was skipped
         assert deployment_result.removed_static_config_containers == ["CNT_LEAF2"]
         assert not deployment_result.removed_static_config_configlets
+
+    async def test_flexible_root_policy_preserves_existing_roots(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that root_policy='flexible' only adds new roots and preserves existing ones in their original order."""
+        avd_root1_id = generate_id("AVD_ROOT1")
+        avd_root2_id = generate_id("AVD_ROOT2")
+        avd_root3_id = generate_id("AVD_ROOT3")
+        manual_root_id = "manual-root-container-123"
+
+        existing_containers = [
+            create_grpc_container(container_id=avd_root1_id, name="AVD_ROOT1", description="", query="device:*"),
+            create_grpc_container(container_id=avd_root2_id, name="AVD_ROOT2", description="", query="device:*"),
+            create_grpc_container(container_id=manual_root_id, name="MANUAL_ROOT", description="", query="device:*"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        # Existing order: AVD_ROOT1, MANUAL, AVD_ROOT2
+        mock_cv_client.get_studio_inputs_with_path.return_value = [avd_root1_id, manual_root_id, avd_root2_id]
+
+        # Desired: AVD_ROOT3 (new), AVD_ROOT2 (already exists). AVD_ROOT1 is not declared but should be kept.
+        avd_root2 = AvdContainer(name="AVD_ROOT2", tag_query="device:*")
+        avd_root3 = AvdContainer(name="AVD_ROOT3", tag_query="device:*")
+        manifest = AvdManifest(root_policy="flexible", configlets=(), containers=(avd_root3, avd_root2))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Studio roots should be updated: new root (AVD_ROOT3) added at top, existing roots keep their positions.
+        mock_cv_client.set_studio_inputs.assert_called_once()
+        final_root_ids = mock_cv_client.set_studio_inputs.call_args[1]["inputs"]
+        assert final_root_ids == [avd_root3_id, avd_root1_id, manual_root_id, avd_root2_id]
+
+        # Note: AVD_ROOT1 container is still deleted by _sync_containers since it's an undeclared AVD-managed container.
+        # The flexible root_policy only affects the root list ordering, not container deletion.
+        # Container deletion policy (sub_container_policy) is a separate concern.
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=avd_root1_id)
+
+    async def test_controlled_root_policy_removes_undeclared_avd_roots(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that root_policy='controlled' (default) removes undeclared AVD roots but keeps manual ones."""
+        avd_root1_id = generate_id("AVD_ROOT1")
+        avd_root2_id = generate_id("AVD_ROOT2")
+        manual_root_id = "manual-root-container-123"
+
+        existing_containers = [
+            create_grpc_container(container_id=avd_root1_id, name="AVD_ROOT1", description="", query="device:*"),
+            create_grpc_container(container_id=avd_root2_id, name="AVD_ROOT2", description="", query="device:*"),
+            create_grpc_container(container_id=manual_root_id, name="MANUAL_ROOT", description="", query="device:*"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [avd_root1_id, manual_root_id, avd_root2_id]
+
+        # Only declare AVD_ROOT2. AVD_ROOT1 is undeclared and should be removed from roots.
+        avd_root2 = AvdContainer(name="AVD_ROOT2", tag_query="device:*")
+        manifest = AvdManifest(configlets=(), containers=(avd_root2,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Studio roots: declared AVD roots first, then manual roots. AVD_ROOT1 removed.
+        mock_cv_client.set_studio_inputs.assert_called_once()
+        final_root_ids = mock_cv_client.set_studio_inputs.call_args[1]["inputs"]
+        assert final_root_ids == [avd_root2_id, manual_root_id]
+
+        # AVD_ROOT1 container should be deleted as it's an undeclared AVD-managed container.
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=avd_root1_id)
+
+    async def test_flexible_root_policy_idempotent(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that pushing the same manifest twice in flexible mode doesn't change the root order."""
+        avd_root1_id = generate_id("AVD_ROOT1")
+        avd_root2_id = generate_id("AVD_ROOT2")
+        manual_root_id = "manual-root-container-123"
+
+        existing_containers = [
+            create_grpc_container(container_id=avd_root1_id, name="AVD_ROOT1", description="", query="device:*"),
+            create_grpc_container(container_id=avd_root2_id, name="AVD_ROOT2", description="", query="device:*"),
+            create_grpc_container(container_id=manual_root_id, name="MANUAL_ROOT", description="", query="device:*"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        # All roots already exist in this order.
+        mock_cv_client.get_studio_inputs_with_path.return_value = [avd_root1_id, manual_root_id, avd_root2_id]
+
+        # Declare both AVD roots — they already exist, so nothing should change.
+        avd_root1 = AvdContainer(name="AVD_ROOT1", tag_query="device:*")
+        avd_root2 = AvdContainer(name="AVD_ROOT2", tag_query="device:*")
+        manifest = AvdManifest(root_policy="flexible", configlets=(), containers=(avd_root1, avd_root2))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Studio roots should NOT be updated — all declared roots already exist.
+        mock_cv_client.set_studio_inputs.assert_not_called()

@@ -404,6 +404,7 @@ class TestAvdManifestFromDict:
         manifest = AvdManifest.from_dict(full_manifest_dict)
         assert len(manifest.configlets) == 2
         assert len(manifest.containers) == 1
+        assert manifest.root_policy == "controlled"  # Default
         assert manifest.configlets[0].name == "global_cfg"
         assert manifest.containers[0].name == "ROOT"
         assert len(manifest.containers[0].sub_containers) == 1
@@ -434,6 +435,26 @@ class TestAvdManifestFromDict:
         manifest_empty_lists = AvdManifest.from_dict({"configlets": [], "containers": []})
         assert not manifest_empty_lists.configlets
         assert not manifest_empty_lists.containers
+
+    def test_root_policy_defaults_to_controlled(self) -> None:
+        """Tests that the manifest root_policy defaults to 'controlled' when omitted."""
+        manifest = AvdManifest.from_dict({})
+        assert manifest.root_policy == "controlled"
+
+    def test_root_policy_explicit_flexible(self) -> None:
+        """Tests that the manifest root_policy can be set to 'flexible'."""
+        manifest = AvdManifest.from_dict({"root_policy": "flexible"})
+        assert manifest.root_policy == "flexible"
+
+    def test_root_policy_propagates_to_cv_manifest(self) -> None:
+        """Tests that the root_policy propagates from AvdManifest to CVManifest."""
+        avd_manifest_controlled = AvdManifest(root_policy="controlled", configlets=(), containers=())
+        cv_manifest_controlled = CVManifest.from_avd_manifest(avd_manifest_controlled)
+        assert cv_manifest_controlled.root_policy == "controlled"
+
+        avd_manifest_flexible = AvdManifest(root_policy="flexible", configlets=(), containers=())
+        cv_manifest_flexible = CVManifest.from_avd_manifest(avd_manifest_flexible)
+        assert cv_manifest_flexible.root_policy == "flexible"
 
     @pytest.mark.parametrize(
         ("invalid_data", "match_str"),

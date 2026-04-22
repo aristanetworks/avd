@@ -99,6 +99,16 @@ options:
     description: Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio.
     type: dict
     suboptions:
+      root_policy:
+        description: |-
+          Policy for managing root containers in the Studio.
+
+          - **controlled** (default): Remove undeclared AVD-managed root containers.
+            Declared root containers first, manual root containers preserved at the end.
+          - **flexible**: Don't remove any root containers. Only add new root containers at the top.
+        type: str
+        default: "controlled"
+        choices: ["controlled", "flexible"]
       configlets:
         description: |-
           A list of dictionaries defining configlets to be pushed to the Configlet Library.
