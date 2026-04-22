@@ -145,18 +145,13 @@ async def _sync_studio_roots(cv_manifest: CVManifest, deployment_result: DeployT
         default_value=[],
     )
 
-    # Calculate which desired roots are missing.
     desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
-    desired_root_ids_set = set(desired_root_ids)
-    existing_root_ids_set = set(existing_root_ids)
-    missing_ids = desired_root_ids_set - existing_root_ids_set
+    manual_ids = [container_id for container_id in existing_root_ids if not container_id.startswith(AVD_ENTITY_PREFIX)]
 
     # Update the Studio root container list if necessary, preserving any manually added (non-AVD) root containers.
-    if missing_ids:
+    new_ordered_ids = desired_root_ids + manual_ids
+    if new_ordered_ids != existing_root_ids:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Updating Studio root container assignment list...")
-        manual_ids = [container_id for container_id in existing_root_ids if not container_id.startswith(AVD_ENTITY_PREFIX)]
-        new_ordered_ids = desired_root_ids + manual_ids
-
         await cv_client.set_studio_inputs(
             studio_id=STATIC_CONFIGURATION_STUDIO_ID,
             workspace_id=workspace_id,
