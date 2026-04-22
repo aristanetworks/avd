@@ -6284,7 +6284,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class EosConfigFuture(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"new_ip_radius_cli_order": {"type": bool, "default": False}, "new_ip_tacacs_cli_order": {"type": bool, "default": False}}
+        _fields: ClassVar[dict] = {
+            "new_ip_radius_cli_order": {"type": bool, "default": False},
+            "new_ip_tacacs_cli_order": {"type": bool, "default": False},
+            "new_ip_routing_vrfs_separator": {"type": bool, "default": False},
+        }
         new_ip_radius_cli_order: bool
         """
         When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
@@ -6303,10 +6307,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        new_ip_routing_vrfs_separator: bool
+        """
+        When `true`, renders a `!` separator before the first VRF-scoped `ip routing` /
+        `ip routing ipv6
+        interfaces` / `no ip routing` line when no global `ip_routing`
+        or `ip_routing_ipv6_interfaces`
+        directive is rendered.
+        When `false` (default), preserves the legacy output without the leading
+        separator.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, new_ip_radius_cli_order: bool | UndefinedType = Undefined, new_ip_tacacs_cli_order: bool | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                new_ip_radius_cli_order: bool | UndefinedType = Undefined,
+                new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
+                new_ip_routing_vrfs_separator: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
                 EosConfigFuture.
 
@@ -6324,6 +6346,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        When `false`
                        (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
                        interface name.
+                    new_ip_routing_vrfs_separator:
+                       When `true`, renders a `!` separator before the first VRF-scoped `ip routing` /
+                       `ip routing ipv6
+                       interfaces` / `no ip routing` line when no global `ip_routing`
+                       or `ip_routing_ipv6_interfaces`
+                       directive is rendered.
+                       When `false` (default), preserves the legacy output without the leading
+                       separator.
 
                 """
 

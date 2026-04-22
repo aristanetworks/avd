@@ -1,0 +1,3 @@
+---
+eos_config_future:
+  new_ip_routing_vrfs_separator: true

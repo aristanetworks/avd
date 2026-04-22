@@ -23,3 +23,11 @@ keys:
         description: |-
           When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.
           When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source interface name.
+      new_ip_routing_vrfs_separator:
+        type: bool
+        default: false
+        description: |-
+          When `true`, renders a `!` separator before the first VRF-scoped `ip routing` /
+          `ip routing ipv6 interfaces` / `no ip routing` line when no global `ip_routing`
+          or `ip_routing_ipv6_interfaces` directive is rendered.
+          When `false` (default), preserves the legacy output without the leading separator.
