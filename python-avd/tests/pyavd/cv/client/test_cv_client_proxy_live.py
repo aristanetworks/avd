@@ -16,15 +16,8 @@ from .helpers import form_proxy_string, unset_proxy_related_env_vars
 
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 
-USER: str = "user1"
-PASS: str = "pass1"  # noqa: S105
-USER_SS: str = "u:s@e/r.1"
-PASS_SS: str = "p:a@s/s.1"  # noqa: S105
-USER_SS_QUOTED: str = "u%3As%40e%2Fr.1"
-PASS_SS_QUOTED: str = "p%3Aa%40s%2Fs.1"  # noqa: S105
 
-
-@pytest.mark.skipif(environ.get("CV_LIVE_PROXY_TEST") is None, reason="CV_LIVE_PROXY_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
+@pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("targeted_cv"),
@@ -92,11 +85,11 @@ async def test_cvclient_with_cvaas_via_proxy(
             proxy_username=proxy_auth["proxy_username"],
             proxy_password=proxy_auth["proxy_password"],
         ) as cvclient_via_proxy:
-            result = await cvclient_via_proxy.get_inventory_devices(devices={(None, None, "nonexisting-avd-ci-hostname")})
+            result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
         assert result == []
 
 
-@pytest.mark.skipif(environ.get("CV_LIVE_PROXY_TEST") is None, reason="CV_LIVE_PROXY_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
+@pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("targeted_cv"),
@@ -181,11 +174,11 @@ async def test_cvclient_with_cvaas_via_proxy_env_vars(
             token=targeted_cv["cv_access_token"],
             verify_certs=verify_certs,
         ) as cvclient_via_proxy:
-            result = await cvclient_via_proxy.get_inventory_devices(devices={(None, None, "nonexisting-avd-ci-hostname")})
+            result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
         assert result == []
 
 
-@pytest.mark.skipif(environ.get("CV_LIVE_PROXY_TEST") is None, reason="CV_LIVE_PROXY_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
+@pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("targeted_cv"),
@@ -244,11 +237,11 @@ async def test_cvclient_with_onprem_via_proxy(
             proxy_username=proxy_auth["proxy_username"],
             proxy_password=proxy_auth["proxy_password"],
         ) as cvclient_via_proxy:
-            result = await cvclient_via_proxy.get_inventory_devices(devices={(None, None, "nonexisting-avd-ci-hostname")})
+            result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
         assert result == []
 
 
-@pytest.mark.skipif(environ.get("CV_LIVE_PROXY_TEST") is None, reason="CV_LIVE_PROXY_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
+@pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("targeted_cv"),
@@ -327,5 +320,5 @@ async def test_cvclient_with_onprem_via_proxy_env_vars(
             token=targeted_cv["cv_access_token"],
             verify_certs=verify_certs,
         ) as cvclient_via_proxy:
-            result = await cvclient_via_proxy.get_inventory_devices(devices={(None, None, "nonexisting-avd-ci-hostname")})
+            result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
         assert result == []

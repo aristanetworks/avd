@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import ssl
 from contextlib import AbstractContextManager
 from unittest.mock import patch
 
@@ -25,9 +26,42 @@ USER_SS_QUOTED: str = "u%3As%40e%2Fr.1"
 PASS_SS_QUOTED: str = "p%3Aa%40s%2Fs.1"  # noqa: S105
 
 
-## Offline proxy tests ##
 @pytest.mark.asyncio
 async def test_cv_client_proxy_socket_error() -> None:
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+    proxy_host = "127.0.0.1"
+    proxy_username = "avd_user"
+    proxy_password = "avd_password"  # noqa: S105
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(
+            servers=servers,
+            token=token,
+            proxy_host=proxy_host,
+            proxy_username=proxy_username,
+            proxy_password=proxy_password,
+        ) as cvclient:
+            with pytest.raises(CVClientException) as exception_info:
+                await cvclient.get_inventory_devices([(None, None, "spine1")])
+
+            assert "Failed to create proxy connection" in str(exception_info.value)
+
+
+@pytest.mark.asyncio
+async def test_cv_client_no_verify_certs() -> None:
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(servers=servers, token=token, verify_certs=False) as cvclient:
+            ssl_context = cvclient._cv_connection_manager.get_ssl_context(cvclient._verify_certs)
+            assert ssl_context.check_hostname is False
+            assert ssl_context.verify_mode == ssl.CERT_NONE
+
+
+@pytest.mark.asyncio
+async def test_cv_client_unauthenticated_proxy() -> None:
     servers = "www.arista.io"
     token = "secret_access_token"  # noqa: S105
     proxy_host = "127.0.0.1"
@@ -38,10 +72,10 @@ async def test_cv_client_proxy_socket_error() -> None:
             token=token,
             proxy_host=proxy_host,
         ) as cvclient:
-            with pytest.raises(CVClientException) as exception_info:
-                await cvclient.get_inventory_devices({(None, None, "spine1")})
-
-            assert "Failed to create proxy connection" in str(exception_info.value)
+            assert (
+                cvclient._cv_connection_manager.cv_proxy_manager.get_proxy_url()
+                == f"http://{proxy_host}:{cvclient._cv_connection_manager.cv_proxy_manager._proxy_port}"
+            )
 
 
 @pytest.mark.parametrize(
