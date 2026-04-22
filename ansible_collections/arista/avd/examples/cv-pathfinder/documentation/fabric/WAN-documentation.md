@@ -12,7 +12,6 @@
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [VRF Summary](#vrf-summary)
   - [BGP Peer Groups](#bgp-peer-groups)
-  - [BGP Neighbors](#bgp-neighbors)
   - [VRF Routing Protocols](#vrf-routing-protocols)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
@@ -162,54 +161,6 @@
 | WAN-OVERLAY-PEERS | 65000 | Dps1 | Yes | all | pf1, pf2, site1-wan1, site1-wan2, site2-wan1, site2-wan2, site3-wan1, site4-wan1 |
 | WAN-RR-OVERLAY-PEERS | 65000 | Dps1 | Yes | all | pf1, pf2 |
 
-### BGP Neighbors
-
-| Node | Type | Neighbor IP | Peer Group | Remote AS | Description |
-| ---- | ---- | ----------- | ---------- | --------- | ----------- |
-| inet-cloud | spine | 100.64.21.2 | - | 65000 | - |
-| pf1 | wan_rr | 192.168.42.2 | WAN-RR-OVERLAY-PEERS | - | pf2_Dps1 |
-| pf2 | wan_rr | 192.168.42.1 | WAN-RR-OVERLAY-PEERS | - | pf1_Dps1 |
-| site1-border1 | l3leaf | 10.255.251.9 | MLAG-IPv4-UNDERLAY-PEER | - | site1-border2_Vlan4093 |
-| site1-border1 | l3leaf | 10.0.1.9 | IPv4-UNDERLAY-PEERS | 65000 | site1-wan1_Ethernet1 |
-| site1-border1 | l3leaf | 10.0.1.13 | IPv4-UNDERLAY-PEERS | 65000 | site1-wan2_Ethernet1 |
-| site1-border2 | l3leaf | 10.255.251.8 | MLAG-IPv4-UNDERLAY-PEER | - | site1-border1_Vlan4093 |
-| site1-border2 | l3leaf | 10.0.1.11 | IPv4-UNDERLAY-PEERS | 65000 | site1-wan1_Ethernet2 |
-| site1-border2 | l3leaf | 10.0.1.15 | IPv4-UNDERLAY-PEERS | 65000 | site1-wan2_Ethernet2 |
-| site1-wan1 | wan_router | 10.0.1.8 | IPv4-UNDERLAY-PEERS | 65101 | site1-border1_Ethernet3 |
-| site1-wan1 | wan_router | 10.0.1.10 | IPv4-UNDERLAY-PEERS | 65101 | site1-border2_Ethernet3 |
-| site1-wan1 | wan_router | 192.168.42.1 | WAN-OVERLAY-PEERS | - | pf1_Dps1 |
-| site1-wan1 | wan_router | 192.168.42.2 | WAN-OVERLAY-PEERS | - | pf2_Dps1 |
-| site1-wan1 | wan_router | 192.168.42.4 | - | 65000 | site1-wan2 |
-| site1-wan2 | wan_router | 10.0.1.12 | IPv4-UNDERLAY-PEERS | 65101 | site1-border1_Ethernet4 |
-| site1-wan2 | wan_router | 10.0.1.14 | IPv4-UNDERLAY-PEERS | 65101 | site1-border2_Ethernet4 |
-| site1-wan2 | wan_router | 192.168.42.1 | WAN-OVERLAY-PEERS | - | pf1_Dps1 |
-| site1-wan2 | wan_router | 192.168.42.2 | WAN-OVERLAY-PEERS | - | pf2_Dps1 |
-| site1-wan2 | wan_router | 192.168.42.3 | - | 65000 | site1-wan1 |
-| site2-leaf1 | l3leaf | 10.255.251.17 | MLAG-IPv4-UNDERLAY-PEER | - | site2-leaf2_Vlan4093 |
-| site2-leaf1 | l3leaf | 10.0.2.13 | IPv4-UNDERLAY-PEERS | 65000 | site2-wan1_Ethernet1 |
-| site2-leaf2 | l3leaf | 10.255.251.16 | MLAG-IPv4-UNDERLAY-PEER | - | site2-leaf1_Vlan4093 |
-| site2-leaf2 | l3leaf | 10.0.2.15 | IPv4-UNDERLAY-PEERS | 65000 | site2-wan2_Ethernet1 |
-| site2-wan1 | wan_router | 10.0.2.12 | IPv4-UNDERLAY-PEERS | 65102 | site2-leaf1_Ethernet3 |
-| site2-wan1 | wan_router | 192.168.42.1 | WAN-OVERLAY-PEERS | - | pf1_Dps1 |
-| site2-wan1 | wan_router | 192.168.42.2 | WAN-OVERLAY-PEERS | - | pf2_Dps1 |
-| site2-wan1 | wan_router | 192.168.42.8 | - | 65000 | site2-wan2 |
-| site2-wan2 | wan_router | 100.64.21.1 | - | 65666 | REGION2-INTERNET-CORP_inet-site2-wan2_inet-cloud_Ethernet7 |
-| site2-wan2 | wan_router | 10.0.2.14 | IPv4-UNDERLAY-PEERS | 65102 | site2-leaf2_Ethernet3 |
-| site2-wan2 | wan_router | 192.168.42.1 | WAN-OVERLAY-PEERS | - | pf1_Dps1 |
-| site2-wan2 | wan_router | 192.168.42.2 | WAN-OVERLAY-PEERS | - | pf2_Dps1 |
-| site2-wan2 | wan_router | 192.168.42.7 | - | 65000 | site2-wan1 |
-| site3-wan1 | wan_router | 192.168.42.1 | WAN-OVERLAY-PEERS | - | pf1_Dps1 |
-| site3-wan1 | wan_router | 192.168.42.2 | WAN-OVERLAY-PEERS | - | pf2_Dps1 |
-| site4-border1 | l3leaf | 10.255.251.25 | MLAG-IPv4-UNDERLAY-PEER | - | site4-border2_Vlan4093 |
-| site4-border1 | l3leaf | 10.0.4.57 | IPv4-UNDERLAY-PEERS | 65000 | site4-wan1_Ethernet1 |
-| site4-border1 | l3leaf | 192.168.255.15 | EVPN-OVERLAY-PEERS | 65000 | site4-wan1_Loopback0 |
-| site4-border2 | l3leaf | 10.255.251.24 | MLAG-IPv4-UNDERLAY-PEER | - | site4-border1_Vlan4093 |
-| site4-border2 | l3leaf | 10.0.4.59 | IPv4-UNDERLAY-PEERS | 65000 | site4-wan1_Ethernet2 |
-| site4-wan1 | wan_router | 10.0.4.56 | IPv4-UNDERLAY-PEERS | 65104 | site4-border1_Ethernet3 |
-| site4-wan1 | wan_router | 10.0.4.58 | IPv4-UNDERLAY-PEERS | 65104 | site4-border2_Ethernet3 |
-| site4-wan1 | wan_router | 192.168.255.13 | EVPN-OVERLAY-PEERS | 65104 | site4-border1_Loopback0 |
-| site4-wan1 | wan_router | 192.168.42.1 | WAN-OVERLAY-PEERS | - | pf1_Dps1 |
-| site4-wan1 | wan_router | 192.168.42.2 | WAN-OVERLAY-PEERS | - | pf2_Dps1 |
 
 ### VRF Routing Protocols
 
