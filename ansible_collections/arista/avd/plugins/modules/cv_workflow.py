@@ -103,11 +103,12 @@ options:
         description: |-
           Policy for managing configlets in the Configlet Library.
 
-          - **controlled** (default): Delete AVD-managed configlets not declared in this manifest push. Manual configlets are preserved.
-          - **flexible**: Don't delete any configlets. Only create or update declared configlets.
+          - **avd-controlled** (default): Delete AVD-managed configlets not declared in this manifest push or not referenced by any container.
+            Other configlets are preserved.
+          - **additive**: Don't delete any configlets. Only create or update declared configlets.
         type: str
-        default: "controlled"
-        choices: ["controlled", "flexible"]
+        default: "avd-controlled"
+        choices: ["avd-controlled", "additive"]
       configlets:
         description: |-
           A list of dictionaries defining configlets to be pushed to the Configlet Library.

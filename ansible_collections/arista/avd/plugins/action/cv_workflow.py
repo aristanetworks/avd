@@ -115,8 +115,8 @@ ARGUMENT_SPEC = {
         "options": {
             "configlet_policy": {
                 "type": "str",
-                "default": "controlled",
-                "choices": ["controlled", "flexible"],
+                "default": "avd-controlled",
+                "choices": ["avd-controlled", "additive"],
             },
             "containers": {"type": "list", "elements": "dict", "required": False},
             "configlets": {"type": "list", "elements": "dict", "required": False},

@@ -325,8 +325,8 @@ class TestDeployStaticConfigStudio:
         assert deployment_result.removed_static_config_containers == ["CNT_LEAF2"]
         assert not deployment_result.removed_static_config_configlets
 
-    async def test_flexible_configlet_policy_skips_deletion(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
-        """Test that configlet_policy='flexible' skips deletion of unused AVD-managed configlets."""
+    async def test_additive_configlet_policy_skips_deletion(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that configlet_policy='additive' skips deletion of unused AVD-managed configlets."""
         cf_leaf1_id = generate_id("CF_LEAF1")
         cf_unused_id = generate_id("CF_UNUSED")
 
@@ -340,20 +340,20 @@ class TestDeployStaticConfigStudio:
 
         # Only declare CF_LEAF1, CF_UNUSED is not declared but should be kept.
         cfl1 = AvdConfiglet(name="CF_LEAF1", file=Path("/path/to/cfl1.cfg"))
-        manifest = AvdManifest(configlet_policy="flexible", configlets=(cfl1,), containers=())
+        manifest = AvdManifest(configlet_policy="additive", configlets=(cfl1,), containers=())
 
         await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
 
         # Configlets should be pushed.
         mock_cv_client.set_configlets_from_files.assert_called_once()
 
-        # No configlets should be deleted (flexible mode).
+        # No configlets should be deleted (additive mode).
         mock_cv_client.get_configlets.assert_not_called()
         mock_cv_client.delete_configlets.assert_not_called()
         assert not deployment_result.removed_static_config_configlets
 
-    async def test_controlled_configlet_policy_deletes_unused(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
-        """Test that configlet_policy='controlled' (default) deletes unused AVD-managed configlets but keeps manual ones."""
+    async def test_avd_controlled_configlet_policy_deletes_unused(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that configlet_policy='avd-controlled' (default) deletes unused AVD-managed configlets but keeps manual ones."""
         cf_leaf1_id = generate_id("CF_LEAF1")
         cf_unused_avd_id = generate_id("CF_UNUSED_AVD")
         cf_manual_id = "manual-configlet-123"  # Does not have the AVD prefix
