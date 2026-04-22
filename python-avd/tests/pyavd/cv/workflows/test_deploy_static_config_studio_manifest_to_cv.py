@@ -324,3 +324,35 @@ class TestDeployStaticConfigStudio:
         assert len(deployment_result.skipped_static_config_containers) == 1  # CNT_LEAF1 was skipped
         assert deployment_result.removed_static_config_containers == ["CNT_LEAF2"]
         assert not deployment_result.removed_static_config_configlets
+
+    async def test_root_container_removal_only(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that removing an AVD root container updates the Studio even if no new roots are added."""
+        avd_root_keep_id, avd_root_remove_id = generate_id("ROOT_KEEP"), generate_id("ROOT_REMOVE")
+
+        existing_containers = [
+            create_grpc_container(container_id=avd_root_keep_id, name="ROOT_KEEP", description="Kept Root", query="device:*"),
+            create_grpc_container(container_id=avd_root_remove_id, name="ROOT_REMOVE", description="Removed Root", query="device:*"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [avd_root_keep_id, avd_root_remove_id]
+
+        # Desired state: Only ROOT_KEEP remains. ROOT_REMOVE is omitted.
+        root_keep = AvdContainer(name="ROOT_KEEP", tag_query="device:*", description="Kept Root")
+        manifest = AvdManifest(containers=(root_keep,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Verify the Studio inputs were updated to remove the orphaned root.
+        mock_cv_client.set_studio_inputs.assert_called_once_with(
+            studio_id="studio-static-configlet",
+            workspace_id=deployment_result.workspace.id,
+            input_path=["configletAssignmentRoots"],
+            inputs=[avd_root_keep_id],
+        )
+
+        # Verify the container itself was deleted.
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=avd_root_remove_id)
+
+        # Verify deployment result object.
+        assert deployment_result.removed_static_config_containers == ["ROOT_REMOVE"]
