@@ -44,6 +44,13 @@ options:
     description: Include connected endpoints in fabric documentation.
     default: false
     type: bool
+  fabric_topology_details:
+    description: |-
+      Render the `VRF Summary` and `BGP Peer Groups` sections in fabric documentation.
+      Set to false on large fabrics where these sections become unreadable; per-device
+      documentation still covers the same data.
+    default: true
+    type: bool
   topology_csv_file:
     description: Path to output topology CSV file.
     required: true
@@ -85,6 +92,7 @@ EXAMPLES = r"""
     fabric_documentation_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
     fabric_documentation: "{{ eos_designs_documentation.enable | arista.avd.default(true) }}"
     include_connected_endpoints: "{{ eos_designs_documentation.connected_endpoints | arista.avd.default(false) }}"
+    fabric_topology_details: "{{ eos_designs_documentation.fabric_topology_details | arista.avd.default(true) }}"
     topology_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
     topology_csv: "{{ eos_designs_documentation.topology_csv | arista.avd.default(true) }}"
     p2p_links_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"

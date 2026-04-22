@@ -16,7 +16,6 @@
   - [MPLS Route Reflectors](#mpls-route-reflectors)
   - [VRF Summary](#vrf-summary)
   - [BGP Peer Groups](#bgp-peer-groups)
-  - [BGP Neighbors](#bgp-neighbors)
   - [VRF Routing Protocols](#vrf-routing-protocols)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
@@ -165,25 +164,6 @@
 | ---------- | --------- | ------------- | --- | -------------- | ----- |
 | MPLS-OVERLAY-PEERS | 65001 | Loopback0 | Yes | all | pe1, pe2, pe3, rr1, rr2 |
 | RR-OVERLAY-PEERS | 65001 | Loopback0 | Yes | all | rr1, rr2 |
-
-### BGP Neighbors
-
-| Node | Type | Neighbor IP | Peer Group | Remote AS | Description |
-| ---- | ---- | ----------- | ---------- | --------- | ----------- |
-| pe1 | pe | 10.255.2.1 | MPLS-OVERLAY-PEERS | - | rr1_Loopback0 |
-| pe1 | pe | 10.255.2.2 | MPLS-OVERLAY-PEERS | - | rr2_Loopback0 |
-| pe2 | pe | 10.255.2.1 | MPLS-OVERLAY-PEERS | - | rr1_Loopback0 |
-| pe2 | pe | 10.255.2.2 | MPLS-OVERLAY-PEERS | - | rr2_Loopback0 |
-| pe3 | pe | 10.255.2.1 | MPLS-OVERLAY-PEERS | - | rr1_Loopback0 |
-| pe3 | pe | 10.255.2.2 | MPLS-OVERLAY-PEERS | - | rr2_Loopback0 |
-| rr1 | rr | 10.255.1.1 | MPLS-OVERLAY-PEERS | - | pe1_Loopback0 |
-| rr1 | rr | 10.255.1.2 | MPLS-OVERLAY-PEERS | - | pe2_Loopback0 |
-| rr1 | rr | 10.255.1.3 | MPLS-OVERLAY-PEERS | - | pe3_Loopback0 |
-| rr1 | rr | 10.255.2.2 | RR-OVERLAY-PEERS | - | rr2_Loopback0 |
-| rr2 | rr | 10.255.1.1 | MPLS-OVERLAY-PEERS | - | pe1_Loopback0 |
-| rr2 | rr | 10.255.1.2 | MPLS-OVERLAY-PEERS | - | pe2_Loopback0 |
-| rr2 | rr | 10.255.1.3 | MPLS-OVERLAY-PEERS | - | pe3_Loopback0 |
-| rr2 | rr | 10.255.2.1 | RR-OVERLAY-PEERS | - | rr1_Loopback0 |
 
 ### VRF Routing Protocols
 
