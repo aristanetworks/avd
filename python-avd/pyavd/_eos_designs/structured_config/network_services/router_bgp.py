@@ -824,6 +824,7 @@ class RouterBgpMixin(Protocol):
         self: AvdStructuredConfigNetworkServicesProtocol,
         bgp_peer_group: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.BgpPeerGroupsItem,
         bgp_vrf: EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp,
-    ):
+    ) -> EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp:
         for listen_range in bgp_peer_group.listen_ranges:
             bgp_vrf.listen_ranges.append_new(prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined)
+        return bgp_vrf
