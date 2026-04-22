@@ -2,19 +2,21 @@
 
 ## Table of Contents
 
-- [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
-  - [Fabric Switches with inband Management IP](#fabric-switches-with-inband-management-ip)
-- [Fabric Topology](#fabric-topology)
-- [Fabric IP Allocation](#fabric-ip-allocation)
-  - [Fabric Point-To-Point Links](#fabric-point-to-point-links)
-  - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
-  - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
-  - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
-  - [VRF Summary](#vrf-summary)
-  - [BGP Peer Groups](#bgp-peer-groups)
-  - [VRF Routing Protocols](#vrf-routing-protocols)
-  - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
-  - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
+- [WAN](#wan)
+  - [Table of Contents](#table-of-contents)
+  - [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
+    - [Fabric Switches with inband Management IP](#fabric-switches-with-inband-management-ip)
+  - [Fabric Topology](#fabric-topology)
+  - [Fabric IP Allocation](#fabric-ip-allocation)
+    - [Fabric Point-To-Point Links](#fabric-point-to-point-links)
+    - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
+    - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
+    - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
+    - [VRF Summary](#vrf-summary)
+    - [BGP Peer Groups](#bgp-peer-groups)
+    - [VRF Routing Protocols](#vrf-routing-protocols)
+    - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
+    - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
 ## Fabric Switches and Management IP
 
@@ -160,7 +162,6 @@
 | MLAG-IPv4-UNDERLAY-PEER | - | - | No | all | site1-border1, site1-border2, site2-leaf1, site2-leaf2, site4-border1, site4-border2 |
 | WAN-OVERLAY-PEERS | 65000 | Dps1 | Yes | all | pf1, pf2, site1-wan1, site1-wan2, site2-wan1, site2-wan2, site3-wan1, site4-wan1 |
 | WAN-RR-OVERLAY-PEERS | 65000 | Dps1 | Yes | all | pf1, pf2 |
-
 
 ### VRF Routing Protocols
 
