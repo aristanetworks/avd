@@ -143,26 +143,6 @@ Example of a valid string containing all supported item types:
 export no_proxy='*,www.arista.io,www.arista.io:443,.arista.io,.arista.io:443,34.67.65.165,34.67.65.165/32,34.67.65.0/24,2a06:98c1:58::1f6,2a06:98c1:58::1f6/128,2a06:98c1:58::/64'
 ```
 
-Table below explains how each of the items in the environment variable above would impact an AVD decision tree of selecting proxy bypass settings:
-
-!!! Note
-
-    Convention `<fqdn/ip>:<port>` used in `Matching CloudVision destinations` and `Non-matching CloudVision destinations` columns of the table below means that AVD is instructed to run deployment against CloudVision / CVaaS `<fqdn/ip>` over port `<port>`. Non-standard port assumes usage of an intermediate proxy/load-balancer.
-
-| Item | Comment | Matching CloudVision destinations | Non-matching CloudVision destinations |
-| ---- | ------- | ----------------- | --------------------- |
-| `*` | Matches all destination.<br>Effectively disables proxy server for AVD. | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 | |
-| `www.arista.io` | Full FQDN match. | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
-| `www.arista.io:443` | Full FQDN + port match | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
-| `.arista.io` | Wildcard domain match | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
-| `.arista.io:443` | Wildcard domain + port match | `www.arista.io`:443 | `cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
-| `34.67.65.165` | IPv4 address match | `34.67.65.165`:443<br>`34.67.65.165`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
-| `34.67.65.165/32` | IPv4 CIDR match | `34.67.65.165`:443<br>`34.67.65.165`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
-| `34.67.65.0/24` | IPv4 CIDR match | `34.67.65.165`:443<br>`34.67.65.165`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443<br>`2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 |
-| `2a06:98c1:58::1f6` | IPv6 address match | `2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443 |
-| `2a06:98c1:58::1f6/128` | IPv6 CIDR match | `2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443 |
-| `2a06:98c1:58::/64` | IPv6 CIDR match | `2a06:98c1:58::1f6`:443<br>`2a06:98c1:58::1f6`:9443 | `www.arista.io`:443<br>`cvp1.local.domain`:443<br>`cvp1.local.domain`:9443<br>`34.67.65.165`:443<br>`34.67.65.165`:9443<br>`192.168.100.20`:443<br>`192.168.100.20`:9443 |
-
 ## Troubleshooting
 
 !!! Note
