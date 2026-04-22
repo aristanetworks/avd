@@ -186,7 +186,7 @@ Sections below contain examples of errors that may be seen when trying to run AV
 **Symptoms**: Attempt to run `cv_deploy` immediately returns the following exception:
 
 ```code
-pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError('HTTPSConnectionPool(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by NewConnectionError("HTTPSConnection(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Failed to establish a new connection: [Errno 111] Connection refused"))'),).
+Unable to get version from CloudVision server due to the following error: (MaxRetryError('HTTPSConnectionPool(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by NewConnectionError("HTTPSConnection(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Failed to establish a new connection: [Errno 111] Connection refused"))'),).
 ```
 
 **Solution**:
@@ -216,7 +216,7 @@ curl: (7) Failed to connect to www.cv-prod-us-central1-c.arista.io port 443 afte
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception after a variable delay (actual time depends on the TCP stack of your environment and its TCP SYN retransmit logic):
 
 ```code
-pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.cv-prod-us-central1-c.arista.io', port=443) at 0xffffb13de660>, 'Connection to www.cv-prod-us-central1-c.arista.io timed out. (connect timeout=None)'))"),).
+Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.cv-prod-us-central1-c.arista.io', port=443) at 0xffffb13de660>, 'Connection to www.cv-prod-us-central1-c.arista.io timed out. (connect timeout=None)'))"),).
 ```
 
 **Solution**:
@@ -246,7 +246,7 @@ curl: (28) Failed to connect to www.cv-prod-us-central1-c.arista.io port 443 aft
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
 ```code
-pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError('HTTPSConnectionPool(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError(\'Unable to connect to proxy\', NewConnectionError("HTTPSConnection(host=\'10.10.10.100\', port=9876): Failed to establish a new connection: [Errno 111] Connection refused")))'),).
+Unable to get version from CloudVision server due to the following error: (MaxRetryError('HTTPSConnectionPool(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError(\'Unable to connect to proxy\', NewConnectionError("HTTPSConnection(host=\'10.10.10.100\', port=9876): Failed to establish a new connection: [Errno 111] Connection refused")))'),).
 ```
 
 **Solution**:
@@ -271,7 +271,7 @@ curl: (7) Failed to connect to 10.10.10.100 port 9876 after 7108 ms: Could not c
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
 ```code
-pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError('HTTPSConnectionPool(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError(\'Unable to connect to proxy\', NewConnectionError("HTTPSConnection(host=\'10.10.10.100\', port=9876): Failed to establish a new connection: [Errno 111] Connection refused")))'),).
+Unable to get version from CloudVision server due to the following error: (MaxRetryError('HTTPSConnectionPool(host=\'www.cv-prod-us-central1-c.arista.io\', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError(\'Unable to connect to proxy\', NewConnectionError("HTTPSConnection(host=\'10.10.10.100\', port=9876): Failed to establish a new connection: [Errno 111] Connection refused")))'),).
 ```
 
 **Solution**:
@@ -296,7 +296,7 @@ curl: (7) Failed to connect to 10.10.10.100 port 9876 after 35 ms: Could not con
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
 ```code
-pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 407 Proxy Authentication Required')))"),).
+Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 407 Proxy Authentication Required')))"),).
 ```
 
 **Solution**:
@@ -344,7 +344,7 @@ curl: (56) CONNECT tunnel failed, response 407
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
 ```code
-pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 407 Proxy Authentication Required')))"),).
+Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 407 Proxy Authentication Required')))"),).
 ```
 
 **Solution**:
@@ -394,7 +394,7 @@ curl: (56) CONNECT tunnel failed, response 407
 **Symptoms**: Attempt to run `cv_deploy` returns the following exception:
 
 ```code
-pyavd._cv.client.exceptions.CVClientException: Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"),)
+Unable to get version from CloudVision server due to the following error: (MaxRetryError("HTTPSConnectionPool(host='www.cv-prod-us-central1-c.arista.io', port=443): Max retries exceeded with url: /cvpservice/cvpInfo/getCvpInfo.do (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"),)
 ```
 
 **Solution**:
