@@ -29,9 +29,6 @@ class RouterBgpMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    need_mlag_peer_group: bool = False
-    """Flag set during configuration of BGP VRFs if they have MLAG enabled. Used later to decide if we need to configure the MLAG peer group or not."""
-
     @structured_config_contributor
     def router_bgp(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -55,11 +52,6 @@ class RouterBgpMixin(Protocol):
         self._router_bgp_vlan_aware_bundles(tenant_svis_l2vlans_dict)
         self._router_bgp_redistribute_routes()
         self._router_bgp_vpws()
-
-        # Configure MLAG iBGP peer-group if needed. The function updates structured config directly.
-        # Catches cases where underlay is not BGP but we still need MLAG iBGP peering.
-        if not self.shared_utils.underlay_bgp and self.need_mlag_peer_group:
-            self.shared_utils.update_router_bgp_with_mlag_peer_group(self.structured_config.router_bgp, self.custom_structured_configs)
 
     def _router_bgp_peer_groups(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -228,7 +220,10 @@ class RouterBgpMixin(Protocol):
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                     self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
-                    self.need_mlag_peer_group = True
+                    if self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
+                        self.structured_config_utils.set_once_peer_group_mlag_ipv4_vrfs_peer()
+                    else:
+                        self.structured_config_utils.set_once_peer_group_mlag_ipv4_underlay_peer()
 
                 for bgp_peer in vrf.bgp_peers:
                     peer_ip = bgp_peer.ip_address
@@ -561,6 +556,12 @@ class RouterBgpMixin(Protocol):
 
         if self.inputs.dot1x_settings.enabled and self.inputs.dot1x_settings.redistribute_in_evpn:
             bgp_vlan.redistribute_routes.append("dot1x")
+
+        if (
+            isinstance(vlan, EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem)
+            and vlan.evpn_redistribute_router_mac_system
+        ):
+            bgp_vlan.redistribute_routes.append("router-mac system")
 
         return bgp_vlan
 

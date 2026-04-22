@@ -17,6 +17,7 @@
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
   - [Extended Access-lists](#extended-access-lists)
+  - [IP Access-lists](#ip-access-lists)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 
 ## Management
@@ -400,6 +401,16 @@ ip access-list acl_qos_tc0_v4
 !
 ip access-list acl_qos_tc5_v4
    10 permit ip any any dscp ef
+```
+
+### IP Access-lists
+
+#### IP Access-lists Device Configuration
+
+```eos
+!
+ip access-list ACL_SEQUENCE_AND_COUNTERS
+   permit vlan inner 235 0x1FF ip any any
 ```
 
 ### IPv6 Extended Access-lists
