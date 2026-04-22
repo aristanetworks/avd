@@ -135,12 +135,8 @@ class RouterBgpMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for bgp_peer_group in tenant.bgp_peer_groups:
                 bgp_vrf = self.structured_config.router_bgp
-                self._update_listen_ranges(bgp_peer_group, bgp_vrf)
-                if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
-                    for listen_range in bgp_peer_group.listen_ranges:
-                        self.structured_config.router_bgp.listen_ranges.append_new(
-                            prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined
-                        )
+                if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
+                    self._update_listen_ranges(bgp_peer_group, bgp_vrf)
 
             for vrf in tenant.vrfs:
                 if not self.shared_utils.bgp_enabled_for_vrf(vrf):
@@ -169,7 +165,7 @@ class RouterBgpMixin(Protocol):
                     bgp_vrf.router_id = self.get_protocol_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
 
                     for bgp_peer_group in vrf.bgp_peer_groups:
-                        if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
+                        if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
                             self._update_listen_ranges(bgp_peer_group, bgp_vrf)
 
                     if vrf.redistribute_connected:
@@ -207,7 +203,7 @@ class RouterBgpMixin(Protocol):
                         bgp_vrf.redistribute.connected.enabled = True
 
                     for bgp_peer_group in vrf.bgp_peer_groups:
-                        if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
+                        if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
                             self._update_listen_ranges(bgp_peer_group, bgp_vrf)
 
                     # Common things but need it repeated between default and non-default since type checker gets too confused
