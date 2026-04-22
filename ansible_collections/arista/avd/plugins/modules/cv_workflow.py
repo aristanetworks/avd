@@ -103,7 +103,7 @@ options:
         description: |-
           Policy for managing configlets in the Configlet Library.
 
-          - **avd-controlled** (default): Delete AVD-managed configlets not declared in this manifest push or not referenced by any container.
+          - **avd-controlled** (default): Delete AVD-managed configlets not declared in this manifest push and not referenced by any container.
             Other configlets are preserved.
           - **additive**: Don't delete any configlets. Only create or update declared configlets.
         type: str

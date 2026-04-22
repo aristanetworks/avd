@@ -326,7 +326,7 @@ In addition to deploying device-specific configurations, the role allows for the
 cv_static_config_manifest:
 
   # Policy for managing configlets in the Configlet Library.
-  # - "avd-controlled" (default): Delete AVD-managed configlets not declared in this manifest push or not referenced by any container.
+  # - "avd-controlled" (default): Delete AVD-managed configlets not declared in this manifest push and not referenced by any container.
   #   Other configlets are preserved.
   # - "additive": Don't delete any configlets. Only create or update declared configlets.
   configlet_policy: <str, default="avd-controlled", choices=["avd-controlled", "additive"]>
