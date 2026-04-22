@@ -216,8 +216,7 @@ class CVProxyManager:
             self._proxy_host_format = self._identify_host_format(proxy_host)
 
             # Verify that all mandatory settings comply with validity requirements
-            # Raise an exception if any of the explicitly provided settings does not pass validity checks
-            if self._proxy_candidate_is_valid(proxy_scheme, proxy_host, proxy_port, "explicit", raise_on_failure=True):
+            if self._proxy_candidate_is_valid(proxy_scheme, proxy_host, proxy_port, "explicit"):
                 LOGGER.debug("<CVProxyManager>: Explicitly passed proxy server information passed all validations.")
                 self.use_proxy = True
                 self._proxy_configuration_source = "explicit"
@@ -278,7 +277,6 @@ class CVProxyManager:
             self._parsed_env_var_proxy_content.hostname,
             self._parsed_env_var_proxy_content.port,
             self._env_var_proxy_name,
-            raise_on_failure=True,
         ):
             # Identify format of the proxy host
             self._proxy_host_format = self._identify_host_format(self._parsed_env_var_proxy_content.hostname)
@@ -326,14 +324,13 @@ class CVProxyManager:
         proxy_host_candidate: str | None,
         proxy_port_candidate: int | None,
         candidate_source: T_ProxyConfigurationSource | None,
-        raise_on_failure: bool = False,
     ) -> bool:
-        """Verify that all mandatory proxy server settings are set and valid for the proxy server candidate."""
+        """Verify that all mandatory proxy server sub-settings are set and valid for the proxy server candidate."""
         return all(
             [
-                self._proxy_scheme_is_valid(proxy_scheme_candidate, candidate_source, raise_on_failure),
-                self._proxy_host_is_valid(proxy_host_candidate, candidate_source, raise_on_failure),
-                self._proxy_port_is_valid(proxy_port_candidate, candidate_source, raise_on_failure),
+                self._proxy_scheme_is_valid(proxy_scheme_candidate, candidate_source),
+                self._proxy_host_is_valid(proxy_host_candidate, candidate_source),
+                self._proxy_port_is_valid(proxy_port_candidate, candidate_source),
             ]
         )
 
@@ -392,33 +389,42 @@ class CVProxyManager:
             return "fqdn"
 
     @staticmethod
-    def _proxy_scheme_is_valid(
-        proxy_scheme_candidate: str | None, candidate_source: T_ProxyConfigurationSource | None, raise_on_failure: bool = False
-    ) -> TypeGuard[str]:
-        """Verifies validity of the requested proxy server scheme."""
-        if not (result := proxy_scheme_candidate == "http") and raise_on_failure:
+    def _proxy_scheme_is_valid(proxy_scheme_candidate: str | None, candidate_source: T_ProxyConfigurationSource | None) -> TypeGuard[str]:
+        """
+        Verifies validity of the requested proxy server scheme.
+
+        Raises:
+            AristaAvdInvalidInputsError if provided proxy_scheme_candidate is not compliant with AVD requirements.
+        """
+        if not (result := proxy_scheme_candidate == "http"):
             msg = f"Scheme '{proxy_scheme_candidate}' of the proxy server requested via '{candidate_source}' is not supported by AVD."
             raise AristaAvdInvalidInputsError(msg)
 
         return result
 
     @staticmethod
-    def _proxy_host_is_valid(
-        proxy_host_candidate: str | None, candidate_source: T_ProxyConfigurationSource | None, raise_on_failure: bool = False
-    ) -> TypeGuard[str]:
-        """Verifies validity of the requested proxy server host."""
-        if not (result := isinstance(proxy_host_candidate, str) and len(proxy_host_candidate) > 0) and raise_on_failure:
+    def _proxy_host_is_valid(proxy_host_candidate: str | None, candidate_source: T_ProxyConfigurationSource | None) -> TypeGuard[str]:
+        """
+        Verifies validity of the requested proxy server host.
+
+        Raises:
+            AristaAvdInvalidInputsError if provided proxy_host_candidate is not compliant with AVD requirements.
+        """
+        if not (result := isinstance(proxy_host_candidate, str) and len(proxy_host_candidate) > 0):
             msg = f"Host '{proxy_host_candidate}' of the proxy server requested via '{candidate_source}' is not supported by AVD."
             raise AristaAvdInvalidInputsError(msg)
 
         return result
 
     @staticmethod
-    def _proxy_port_is_valid(
-        proxy_port_candidate: int | None, candidate_source: T_ProxyConfigurationSource | None, raise_on_failure: bool = False
-    ) -> TypeGuard[int]:
-        """Verifies validity of the requested proxy server port."""
-        if not (result := isinstance(proxy_port_candidate, int) and 1 <= proxy_port_candidate <= 65535) and raise_on_failure:
+    def _proxy_port_is_valid(proxy_port_candidate: int | None, candidate_source: T_ProxyConfigurationSource | None) -> TypeGuard[int]:
+        """
+        Verifies validity of the requested proxy server port.
+
+        Raises:
+            AristaAvdInvalidInputsError if provided proxy_port_candidate is not compliant with AVD requirements.
+        """
+        if not (result := isinstance(proxy_port_candidate, int) and 1 <= proxy_port_candidate <= 65535):
             msg = f"Port '{proxy_port_candidate!s}' of the proxy server requested via '{candidate_source}' is not supported by AVD."
             raise AristaAvdInvalidInputsError(msg)
 
