@@ -99,6 +99,15 @@ options:
     description: Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio.
     type: dict
     suboptions:
+      configlet_policy:
+        description: |-
+          Policy for managing configlets in the Configlet Library.
+
+          - **controlled** (default): Delete AVD-managed configlets not declared in this manifest push. Manual configlets are preserved.
+          - **flexible**: Don't delete any configlets. Only create or update declared configlets.
+        type: str
+        default: "controlled"
+        choices: ["controlled", "flexible"]
       configlets:
         description: |-
           A list of dictionaries defining configlets to be pushed to the Configlet Library.
