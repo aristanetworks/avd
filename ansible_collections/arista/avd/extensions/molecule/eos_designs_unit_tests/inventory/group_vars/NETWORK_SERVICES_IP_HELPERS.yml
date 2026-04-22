@@ -1,41 +1,56 @@
 ---
-type: l3spine
+default_node_types:
+  - match_hostnames:
+      - .*l2leaf.*
+    node_type: l2leaf
+  - match_hostnames:
+      - network-services-ip-helpers-leaf.*
+    node_type: l3leaf
 
-l3spine:
+l2leaf:
+  defaults:
+    uplink_switches: [network-services-ip-helpers-leaf3, network-services-ip-helpers-leaf3]
+  nodes:
+    - name: network-services-ip-helpers-l2leaf
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      uplink_switch_interfaces: [Ethernet1, Ethernet2]
+      inband_mgmt_vlan: 100
+      inband_mgmt_subnet: 192.168.101.0/24
+      inband_mgmt_vrf: INBANDMGMT
+      id: 3
+
+l3leaf:
   defaults:
     bgp_as: 65001
     spanning_tree_mode: none
     loopback_ipv4_pool: 192.0.255.0/24
     uplink_ipv4_pool: 10.255.1.0/24
-    mlag_interfaces: [Ethernet10]
-    mlag_peer_ipv4_pool: "10.10.10.0/24"
-    mlag_peer_l3_ipv4_pool: "10.10.20.0/24"
-  node_groups:
-    - group: GROUP1
+    vtep_loopback_ipv4_pool: 10.255.2.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+  nodes:
+    - name: network-services-ip-helpers-leaf1
+      id: 1
+      mgmt_ip: 10.1.1.1/24
       filter:
         tenants: ["TEST1"]
         always_include_vrfs_in_tenants: ["TEST1"]
-      nodes:
-        - name: network-services-ip-helpers-1
-          id: 1
-          mgmt_ip: 10.1.1.1/24
-        - name: network-services-ip-helpers-2
-          id: 2
-          mgmt_ip: 10.1.1.2/24
-    - group: GROUP2
+    - name: network-services-ip-helpers-leaf2
+      id: 2
+      mgmt_ip: 10.1.1.2/24
+      filter:
+        tenants: ["TEST1"]
+        always_include_vrfs_in_tenants: ["TEST1"]
+    - name: network-services-ip-helpers-leaf3
+      id: 11
+      inband_mgmt_vrf: INBANDMGMT
+      inband_mgmt_interface: vlan100
       filter:
         tenants: ["TEST2"]
         always_include_vrfs_in_tenants: ["TEST2"]
-      nodes:
-        - name: network-services-ip-helpers-3
-          id: 11
-          inband_mgmt_vlan: 102
-          inband_mgmt_interface: vlan100
-          inband_mgmt_vrf: INBANDMGMT
-          inband_mgmt_subnet: 192.168.102.0/24
 
 tenants:
   - name: TEST1
+    mac_vrf_vni_base: 1000
     vrfs:
       - name: IP_HELPERS1
         vrf_id: 100
@@ -58,6 +73,7 @@ tenants:
                 source_interface: use_mgmt_interface
                 source_vrf: use_mgmt_interface_vrf
   - name: TEST2
+    mac_vrf_vni_base: 1000
     vrfs:
       - name: IP_HELPERS3
         vrf_id: 102

@@ -6,34 +6,26 @@ enable_password:
 hostname: network-services-ip-helpers-3
 ip_igmp_snooping:
   globally_enabled: true
-ip_routing: true
-loopback_interfaces:
-- name: Loopback0
-  description: ROUTER_ID
-  shutdown: false
-  ip_address: 192.0.255.11/32
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
+static_routes:
+- vrf: INBANDMGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.102.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
-- name: Vlan11
-  description: SVI2
-  shutdown: true
-  vrf: IP_HELPERS3
-  ip_helpers:
-  - ip_helper: 1.1.1.4
-    source_interface: vlan100
-    vrf: INBANDMGMT
-  - ip_helper: 1.1.1.5
-    source_interface: vlan100
-    vrf: INBANDMGMT
+- name: vlan100
+  description: Inband Management
+  shutdown: false
+  vrf: INBANDMGMT
+  ip_address: 192.168.102.14/24
+  mtu: 1500
   metadata:
-    tenants:
-    - TEST2
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -45,11 +37,12 @@ vlans:
   metadata:
     tenants:
     - TEST2
+- id: 102
+  name: INBAND_MGMT
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: IP_HELPERS3
-  ip_routing: true
-  metadata:
-    tenants:
-    - TEST2
+- name: INBANDMGMT

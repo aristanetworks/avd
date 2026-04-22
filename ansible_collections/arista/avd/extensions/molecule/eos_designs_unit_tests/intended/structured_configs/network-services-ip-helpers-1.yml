@@ -3,26 +3,9 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-ethernet_interfaces:
-- name: Ethernet10
-  description: MLAG_network-services-ip-helpers-2_Ethernet10
-  shutdown: false
-  channel_group:
-    id: 10
-    mode: active
-  metadata:
-    peer: network-services-ip-helpers-2
-    peer_interface: Ethernet10
-    peer_type: mlag_peer
 hostname: network-services-ip-helpers-1
 ip_igmp_snooping:
   globally_enabled: true
-ip_routing: true
-loopback_interfaces:
-- name: Loopback0
-  description: ROUTER_ID
-  shutdown: false
-  ip_address: 192.0.255.1/32
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -33,106 +16,21 @@ management_interfaces:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-mlag_configuration:
-  domain_id: GROUP1
-  local_interface: Vlan4094
-  peer_address: 10.10.10.1
-  peer_link: Port-Channel10
-  reload_delay_mlag: '300'
-  reload_delay_non_mlag: '330'
-port_channel_interfaces:
-- name: Port-Channel10
-  description: MLAG_network-services-ip-helpers-2_Port-Channel10
-  shutdown: false
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      groups:
-      - MLAG
-prefix_lists:
-- name: PL-MLAG-PEER-VRFS
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.10.20.0/31
-route_maps:
-- name: RM-CONN-2-BGP-VRFS
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - ip address prefix-list PL-MLAG-PEER-VRFS
-  - sequence: 20
-    type: permit
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
-  no_spanning_tree_vlan: 4093-4094
 transceiver_qsfp_default_mode_4x10: true
-vlan_interfaces:
-- name: Vlan4094
-  description: MLAG
-  shutdown: false
-  ip_address: 10.10.10.0/31
-  mtu: 9214
-  no_autostate: true
-- name: Vlan10
-  description: SVI1
-  shutdown: true
-  vrf: IP_HELPERS1
-  ip_helpers:
-  - ip_helper: 1.1.1.1
-    source_interface: Management1
-    vrf: MGMT
-  - ip_helper: 1.1.1.2
-    source_interface: Management1
-    vrf: MGMT
-  - ip_helper: 1.1.1.3
-    source_interface: Management1
-    vrf: MGMT
-  metadata:
-    tenants:
-    - TEST1
-- name: Vlan3099
-  description: MLAG_L3_VRF_IP_HELPERS1
-  shutdown: false
-  vrf: IP_HELPERS1
-  ip_address: 10.10.20.0/31
-  mtu: 9214
-  metadata:
-    tenants:
-    - TEST1
-    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 4094
-  name: MLAG
-  trunk_groups:
-  - MLAG
-  metadata:
-    tenants:
-    - system
 - id: 10
   name: SVI1
-  metadata:
-    tenants:
-    - TEST1
-- id: 3099
-  name: MLAG_L3_VRF_IP_HELPERS1
-  trunk_groups:
-  - MLAG
   metadata:
     tenants:
     - TEST1
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: IP_HELPERS1
-  ip_routing: true
-  metadata:
-    tenants:
-    - TEST1
