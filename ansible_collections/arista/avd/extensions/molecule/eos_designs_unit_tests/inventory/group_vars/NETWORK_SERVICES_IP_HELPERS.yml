@@ -43,7 +43,7 @@ l3leaf:
     - name: network-services-ip-helpers-leaf3
       id: 11
       inband_mgmt_vrf: INBANDMGMT
-      # inband_mgmt_interface: vlan100
+      inband_mgmt_interface: vlan100
       filter:
         tenants: ["TEST2"]
         always_include_vrfs_in_tenants: ["TEST2"]
