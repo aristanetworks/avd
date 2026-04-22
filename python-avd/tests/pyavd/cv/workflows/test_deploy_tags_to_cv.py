@@ -3,12 +3,17 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from logging import getLogger
+from contextlib import nullcontext as does_not_raise
+from logging import INFO, getLogger
+from os import environ
 from typing import TYPE_CHECKING, Any
+from unittest.mock import MagicMock
 
 import pytest
 
+from pyavd._cv.client import CVClient
 from pyavd._cv.client.models import CVTag, CVTagAssignment
+from pyavd._cv.workflows.create_workspace_on_cv import create_workspace_on_cv
 from pyavd._cv.workflows.deploy_tags_to_cv import deploy_tags_to_cv
 from pyavd._cv.workflows.models import CVDevice, CVDeviceTag, CVInterfaceTag, CVWorkspace
 
@@ -23,17 +28,17 @@ WORKSPACE = CVWorkspace()
 
 
 @pytest.fixture
-def cv_tags_fixture() -> set[CVTag]:
+def cv_tags_fixture() -> list[CVTag]:
     """Return 20K 'CVTag' objects to test message size limits of the CloudVision Tag-related APIs."""
     tags_qty = 20000
-    return {CVTag(element_type="device", label=f"pytest-label-{tag_index}", value=f"pytest-value-{tag_index}") for tag_index in range(1, tags_qty + 1)}
+    return [CVTag(element_type="device", label=f"pytest-label-{tag_index}", value=f"pytest-value-{tag_index}") for tag_index in range(1, tags_qty + 1)]
 
 
 @pytest.fixture
-def cv_tag_assignments_fixture(cv_tags_fixture: set[CVTag]) -> set[CVTagAssignment]:
+def cv_tag_assignments_fixture(cv_tags_fixture: list[CVTag]) -> list[CVTagAssignment]:
     """Return 20K 'CVTagAssignment' objects to test message size limits of the CloudVision Tag-related APIs."""
     device_id = "ABCDEFGHIGKLMNOP"
-    return {CVTagAssignment(element_type=cv_tag.element_type, label=cv_tag.label, value=cv_tag.value, device_id=device_id) for cv_tag in cv_tags_fixture}
+    return [CVTagAssignment(element_type=cv_tag.element_type, label=cv_tag.label, value=cv_tag.value, device_id=device_id) for cv_tag in cv_tags_fixture]
 
 
 ## Offline TAGs tests ##
@@ -156,7 +161,8 @@ async def test_deploy_tags_to_cv_new_device_tags(
         },
     }
     for arg_key, arg_value in set_tags_call_args.items():
-        assert mock_cv_client.set_tags.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.set_tags.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
 
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
@@ -176,7 +182,8 @@ async def test_deploy_tags_to_cv_new_device_tags(
         },
     }
     for arg_key, arg_value in set_tag_assignments_call_args.items():
-        assert mock_cv_client.set_tag_assignments.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.set_tag_assignments.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
 
     # Assert that no calls were made to delete Tag assignments
     mock_cv_client.delete_tag_assignments.assert_not_called()
@@ -249,7 +256,8 @@ async def test_deploy_tags_to_cv_unassigned_device_tags(
         },
     }
     for arg_key, arg_value in set_tag_assignments_call_args.items():
-        assert mock_cv_client.set_tag_assignments.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.set_tag_assignments.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
 
     # Assert that no calls were made to delete Tag assignments
     mock_cv_client.delete_tag_assignments.assert_not_called()
@@ -410,7 +418,8 @@ async def test_deploy_tags_to_cv_all_device_tags(
         },
     }
     for arg_key, arg_value in set_tags_call_args.items():
-        assert mock_cv_client.set_tags.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.set_tags.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
 
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
@@ -430,12 +439,14 @@ async def test_deploy_tags_to_cv_all_device_tags(
         },
     }
     for arg_key, arg_value in set_tag_assignments_call_args.items():
-        assert mock_cv_client.set_tag_assignments.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.set_tag_assignments.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
 
     # Assert that in 'strict' mode we unassign all other user Tags and in 'non-strict' mode we only unassign Tags sharing the same label with designed Tags
     assert mock_cv_client.delete_tag_assignments.call_count == delete_tag_assignments_call_count
     for arg_key, arg_value in delete_tag_assignments_call_args.items():
-        assert mock_cv_client.delete_tag_assignments.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.delete_tag_assignments.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
 
 
 ### interface tags ###
@@ -498,7 +509,8 @@ async def test_deploy_tags_to_cv_new_interface_tags(
         },
     }
     for arg_key, arg_value in set_tags_call_args.items():
-        assert mock_cv_client.set_tags.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.set_tags.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
 
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
@@ -520,7 +532,8 @@ async def test_deploy_tags_to_cv_new_interface_tags(
         },
     }
     for arg_key, arg_value in set_tag_assignments_call_args.items():
-        assert mock_cv_client.set_tag_assignments.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.set_tag_assignments.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
 
     # Assert that no calls were made to delete Tag assignments
     mock_cv_client.delete_tag_assignments.assert_not_called()
@@ -595,7 +608,8 @@ async def test_deploy_tags_to_cv_unassigned_interface_tags(
         },
     }
     for arg_key, arg_value in set_tag_assignments_call_args.items():
-        assert mock_cv_client.set_tag_assignments.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.set_tag_assignments.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
 
     # Assert that no calls were made to delete Tag assignments
     mock_cv_client.delete_tag_assignments.assert_not_called()
@@ -764,7 +778,8 @@ async def test_deploy_tags_to_cv_all_interface_tags(
         },
     }
     for arg_key, arg_value in set_tags_call_args.items():
-        assert mock_cv_client.set_tags.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.set_tags.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
 
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
@@ -786,9 +801,85 @@ async def test_deploy_tags_to_cv_all_interface_tags(
         },
     }
     for arg_key, arg_value in set_tag_assignments_call_args.items():
-        assert mock_cv_client.set_tag_assignments.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.set_tag_assignments.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
 
     # Assert that in 'strict' mode we unassign all other user Tags and in 'non-strict' mode we only unassign Tags sharing the same label with designed Tags
     assert mock_cv_client.delete_tag_assignments.call_count == delete_tag_assignments_call_count
     for arg_key, arg_value in delete_tag_assignments_call_args.items():
-        assert mock_cv_client.delete_tag_assignments.call_args[1][arg_key] == arg_value
+        actual_arg_value = mock_cv_client.delete_tag_assignments.call_args[1][arg_key]
+        assert (set(actual_arg_value) if isinstance(actual_arg_value, list) else actual_arg_value) == arg_value
+
+
+## Live TAGs tests ##
+@pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy tests are skipped.")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("targeted_cv", "verify_certs"),
+    [
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_PRD_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_PRD_SERVER", default=""),
+            },
+            True,
+            id="CVAAS_PRD",
+        ),
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_STG_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_STG_SERVER", default=""),
+            },
+            True,
+            id="CVAAS_STG",
+        ),
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_ONPREM_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_ONPREM_SERVER", default=""),
+            },
+            False,
+            id="CV_ONPREM",
+        ),
+    ],
+)
+@pytest.mark.filterwarnings("ignore:Unverified HTTPS request is being made to host")
+async def test_deploy_tags_to_cv_message_splitting(
+    caplog: pytest.LogCaptureFixture,
+    targeted_cv: dict[str, str],
+    verify_certs: bool,
+    cv_tags_fixture: list[CVTag],
+    cv_tag_assignments_fixture: list[CVTagAssignment],
+) -> None:
+    """Test ability to gracefully push amount of Tags and Assignments which exceeds the message limit (1837788 Bytes vs. 1048576 Bytes max)."""
+    with does_not_raise(), caplog.at_level(INFO):
+        async with CVClient(
+            servers=targeted_cv["cv_server"],
+            token=targeted_cv["cv_access_token"],
+            verify_certs=verify_certs,
+        ) as cv_client:
+            cv_tags = cv_tags_fixture
+            cv_tag_assignments = cv_tag_assignments_fixture
+            workspace = CVWorkspace(name="AVD_CI_PYTEST_TEST_DEPLOY_TAGS_TO_CV_MESSAGE_SPLITTING", requested_state="pending")
+            try:
+                # Create Workspace in pending state
+                await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
+                # Set tags
+                await cv_client.set_tags(workspace_id=workspace.id, tags=cv_tags)
+                # Confirm MAX message size
+                assert "exceeded the max of 1048576 for" in next(iter(msg.message for msg in caplog.records if "Message size" in msg.message))
+                # Clear logs before next async call
+                caplog.clear()
+                # Set tags assignments. Without building a Workspace it's OK that assignments reference non-existing device
+                await cv_client.set_tag_assignments(workspace_id=workspace.id, tag_assignments=cv_tag_assignments)
+                # Confirm MAX message size
+                assert "exceeded the max of 1048576 for" in next(iter(msg.message for msg in caplog.records if "Message size" in msg.message))
+            finally:
+                try:
+                    # Try to clean Workspace on all CVs to leave no traces
+                    await cv_client.abandon_workspace(workspace_id=workspace.id)
+                    await cv_client.delete_workspace(workspace_id=workspace.id)
+                except Exception as e:
+                    LOGGER.warning(
+                        "The following exception faced while trying to abandon/clean Workspace %s on %s: %s", workspace.id, targeted_cv["cv_server"], e
+                    )

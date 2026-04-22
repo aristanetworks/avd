@@ -16,7 +16,7 @@ pe:
     is_type: level-2
     isis_system_id_prefix: '0000.0001'
     loopback_ipv4_pool: 172.28.4.0/22
-    overlay_address_families: [ "evpn" ]
+    overlay_address_families: ["evpn"]
   nodes:
     - name: "isis-system-id-format-using-node-id"
       id: 99

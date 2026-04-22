@@ -64,7 +64,25 @@ ethernet_interfaces:
     peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet1
+  shutdown: false
+  ip_address: 172.16.0.2/30
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 hostname: host1
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet1
+  entries:
+  - action: permit
+    protocol: ip
+    source: 172.16.0.1/30
+    destination: 172.16.0.2
+    vlan_inner: true
+    vlan_number: 123
+    vlan_mask: '0x000'
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
