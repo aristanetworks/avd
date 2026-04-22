@@ -121,8 +121,8 @@ vlan_interfaces:
   vrf: IP_HELPERS3
   ip_helpers:
   - ip_helper: 1.1.1.4
-    source_interface: vlan100
-    vrf: INBANDMGMT
+    source_interface: Ethernet1
+    vrf: VRFS
   - ip_helper: 1.1.1.5
     source_interface: vlan100
     vrf: INBANDMGMT
