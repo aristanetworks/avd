@@ -117,6 +117,33 @@ tenants:
               - name: Ethernet24
                 peer_interface: Ethernet24
                 peer: inet-cloud
+          # IPv6-only in default VRF: tests that ipv6_unicast_routing is set globally
+          - name: Port-Channel33
+            mode: active
+            peer: ipv6-cloud
+            peer_port_channel: Po33
+            enabled: true
+            node: network-services-l3-port-channels
+            ipv6_addresses:
+              - 2001:db8:1::1/64
+            member_interfaces:
+              - name: Ethernet33
+                peer_interface: Ethernet33
+                peer: ipv6-cloud
+          # Dual-stack (IPv4 + IPv6) in default VRF
+          - name: Port-Channel44
+            mode: active
+            peer: dual-stack-cloud
+            peer_port_channel: Po44
+            enabled: true
+            node: network-services-l3-port-channels
+            ip_address: 10.10.30.2/29
+            ipv6_addresses:
+              - 2001:db8:2::1/64
+            member_interfaces:
+              - name: Ethernet45
+                peer_interface: Ethernet45
+                peer: dual-stack-cloud
       - name: TESTING
         vrf_id: 2
         ospf:
@@ -223,6 +250,19 @@ tenants:
             ospf:
               enabled: true
               authentication: "message-digest"
+          # IPv6-only in non-default VRF: tests that VRF-level ipv6_routing is set but NOT global ipv6_unicast_routing
+          - name: Port-Channel2000
+            mode: active
+            peer: ipv6-cloud-testing
+            peer_port_channel: Po2000
+            enabled: true
+            node: network-services-l3-port-channels
+            ipv6_addresses:
+              - 2001:db8:3::1/64
+            member_interfaces:
+              - name: Ethernet46
+                peer_interface: Ethernet46
+                peer: ipv6-cloud-testing
 
   - name: Subinterface
     mac_vrf_vni_base: 20000

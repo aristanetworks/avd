@@ -101,12 +101,15 @@ class EthernetInterfacesMixin(Protocol):
             nodes_length = len(l3_interface.nodes)
             if (
                 len(l3_interface.interfaces) != nodes_length
-                or len(l3_interface.ip_addresses) != nodes_length
+                or (l3_interface.ip_addresses and len(l3_interface.ip_addresses) != nodes_length)
+                or (l3_interface.ipv6_addresses and len(l3_interface.ipv6_addresses) != nodes_length)
                 or (l3_interface.descriptions and len(l3_interface.descriptions) != nodes_length)
+                or (not l3_interface.ip_addresses and not l3_interface.ipv6_addresses)
             ):
                 msg = (
-                    "Length of lists 'interfaces', 'nodes', 'ip_addresses' and 'descriptions' (if used) must match for l3_interfaces for"
-                    f" {vrf.name} in {tenant.name}"
+                    "Length of lists 'interfaces', 'nodes', 'ip_addresses'/'ipv6_addresses' and 'descriptions' (if used) must match"
+                    f" for l3_interfaces for {vrf.name} in {tenant.name}."
+                    " At least one of 'ip_addresses' or 'ipv6_addresses' must be set."
                 )
                 raise AristaAvdError(msg)
 
@@ -115,14 +118,15 @@ class EthernetInterfacesMixin(Protocol):
                     continue
 
                 interface_name = l3_interface.interfaces[node_index]
-                interface_ip = l3_interface.ip_addresses[node_index]
-                if "/" in interface_ip:
+                ip_address = l3_interface.ip_addresses[node_index] if l3_interface.ip_addresses else None
+                interface_ip = ip_address
+                if interface_ip and "/" in interface_ip:
                     interface_ip = get_ip_from_ip_prefix(interface_ip)
                 # if 'descriptions' is set, it is preferred
                 interface_description = l3_interface.descriptions[node_index] if l3_interface.descriptions else l3_interface.description
                 interface = EosCliConfigGen.EthernetInterfacesItem(
                     name=interface_name,
-                    ip_address=l3_interface.ip_addresses[node_index],
+                    ip_address=ip_address,
                     mtu=self.shared_utils.get_interface_mtu(interface_name, l3_interface.mtu),
                     shutdown=not l3_interface.enabled,
                     arp_gratuitous_accept=l3_interface.arp_gratuitous_accept,
@@ -131,6 +135,10 @@ class EthernetInterfacesMixin(Protocol):
                     flow_tracker=self.shared_utils.get_flow_tracker(l3_interface.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                 )
                 interface.metadata.peer_type = "l3_interface"
+
+                if l3_interface.ipv6_addresses and (ipv6_address := l3_interface.ipv6_addresses[node_index]):
+                    interface.ipv6_addresses.append(ipv6_address)
+                    self.structured_config.ipv6_unicast_routing = True
 
                 if l3_interface.structured_config:
                     self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface_name)._deepmerge(

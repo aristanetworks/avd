@@ -96,6 +96,9 @@ class PortChannelInterfacesMixin(Protocol):
                     ),
                     vrf=vrf.name if vrf.name != "default" else None,
                 )
+                if l3_port_channel.ipv6_addresses:
+                    port_channel_interface.ipv6_addresses.extend(l3_port_channel.ipv6_addresses)
+                    self.structured_config.ipv6_unicast_routing = True
                 port_channel_interface.metadata._update(
                     peer_interface=l3_port_channel.peer_port_channel or None,
                     peer=l3_port_channel.peer,
@@ -136,9 +139,11 @@ class PortChannelInterfacesMixin(Protocol):
                     port_channel_interface.encapsulation_dot1q.vlan = default(
                         l3_port_channel.encapsulation_dot1q_vlan, int(l3_port_channel.name.split(".", maxsplit=1)[-1])
                     )
-                    if not l3_port_channel.ip_address:
-                        msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels"
-                        msg += f"[name={l3_port_channel.name}].ip_address"
+                    if not l3_port_channel.ip_address and not l3_port_channel.ipv6_addresses:
+                        msg = (
+                            f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels"
+                            f"[name={l3_port_channel.name}].ip_address or .ipv6_addresses"
+                        )
                         raise AristaAvdMissingVariableError(msg)
                 else:
                     self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(l3_port_channel.name)

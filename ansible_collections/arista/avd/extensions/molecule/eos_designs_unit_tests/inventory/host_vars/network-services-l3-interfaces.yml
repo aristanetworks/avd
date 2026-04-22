@@ -1,0 +1,44 @@
+---
+# This yml file is being used to test ipv6_addresses support for l3_interfaces under network_services
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.200.0/24
+    vtep_loopback_ipv4_pool: 192.168.201.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0b
+  nodes:
+    - name: network-services-l3-interfaces
+      id: 1
+      bgp_as: 200
+
+tenants:
+  - name: L3INTF
+    mac_vrf_vni_base: 30000
+    vrfs:
+      - name: default
+        vrf_id: 1
+        bgp:
+          enabled: false
+        l3_interfaces:
+          # IPv6-only in default VRF: tests that ipv6_unicast_routing global flag is set
+          - interfaces: [Ethernet10]
+            nodes: [network-services-l3-interfaces]
+            ipv6_addresses: ["2001:db8:10::1/64"]
+            enabled: true
+            description: "ipv6-only-default-vrf"
+          # Dual-stack (IPv4 + IPv6) in default VRF
+          - interfaces: [Ethernet11]
+            nodes: [network-services-l3-interfaces]
+            ip_addresses: ["10.0.11.1/31"]
+            ipv6_addresses: ["2001:db8:11::1/64"]
+            enabled: true
+            description: "dual-stack-default-vrf"
+      - name: L3INTF_TEST
+        vrf_id: 2
+        l3_interfaces:
+          # IPv6-only in non-default VRF: tests VRF-level ipv6_routing set and ipv6_unicast_routing global flag also set
+          - interfaces: [Ethernet12]
+            nodes: [network-services-l3-interfaces]
+            ipv6_addresses: ["2001:db8:12::1/64"]
+            enabled: true
+            description: "ipv6-only-non-default-vrf"
