@@ -77,9 +77,7 @@ def get_fabric_documentation(
 
     structured_configs = cast("dict[str, dict]", structured_configs)
 
-    fabric_documentation_facts = FabricDocumentationFacts(
-        avd_facts, structured_configs, fabric_name, include_connected_endpoints, toc, fabric_topology_details
-    )
+    fabric_documentation_facts = FabricDocumentationFacts(avd_facts, structured_configs, fabric_name, include_connected_endpoints, toc, fabric_topology_details)
     result = FabricDocumentation()
     doc_templar = Templar(precompiled_templates_path=EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH)
     if fabric_documentation:
