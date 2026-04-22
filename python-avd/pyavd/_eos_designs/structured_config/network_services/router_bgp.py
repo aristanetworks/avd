@@ -170,7 +170,7 @@ class RouterBgpMixin(Protocol):
 
                     for bgp_peer_group in vrf.bgp_peer_groups:
                         if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
-                            self._set_listen_ranges(bgp_peer_group, bgp_vrf)
+                            self._update_listen_ranges(bgp_peer_group, bgp_vrf)
 
                     if vrf.redistribute_connected:
                         bgp_vrf.redistribute.connected.enabled = True
@@ -208,7 +208,7 @@ class RouterBgpMixin(Protocol):
 
                     for bgp_peer_group in vrf.bgp_peer_groups:
                         if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
-                            self._set_listen_ranges(bgp_peer_group, bgp_vrf)
+                            self._update_listen_ranges(bgp_peer_group, bgp_vrf)
 
                     # Common things but need it repeated between default and non-default since type checker gets too confused
                     # about the type of bgp_vrf vs. bgp_peer_config.
