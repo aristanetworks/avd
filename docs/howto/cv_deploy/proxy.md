@@ -14,7 +14,7 @@ The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [H
 
     It is important to note that AVD uses plain HTTP only for the initial CONNECT request to establish a tunnel to CloudVision through the proxy server. After the TCP tunnel to CloudVision through the proxy server is active, all subsequent AVD communication — including both REST and gRPC calls — is protected within a secure TLS session(s) established between AVD and CloudVision ***inside*** the TCP proxy tunnel.
 
-There are two ways to enable proxy server for `cv_deploy`: explicit and via environment variables.
+There are two ways to enable a proxy server for `cv_deploy`: explicit and via environment variables. Note that explicit settings take precedence and will completely override environment variables if both are present.
 
 ## Configure proxy settings explicitly
 
