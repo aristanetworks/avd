@@ -250,10 +250,6 @@ def _validate_isis_args(password: str, key: str, mode: str) -> None:
         raise ValueError(msg)
 
 
-def _get_isis_key(key: str, mode: str) -> str:
-    return f"{key}_{_ISIS_MODE_MAP[mode]}"
-
-
 def isis_encrypt(password: str, key: str, mode: str) -> str:
     """
     Encrypt a password for ISIS authentication.
@@ -267,7 +263,7 @@ def isis_encrypt(password: str, key: str, mode: str) -> str:
         str: The encrypted password as a string.
     """
     _validate_isis_args(password, key, mode)
-    return cbc_encrypt(_get_isis_key(key, mode), password)
+    return cbc_encrypt(f"{key}_{_ISIS_MODE_MAP[mode]}", password)
 
 
 def isis_decrypt(password: str, key: str, mode: str) -> str:
@@ -293,7 +289,7 @@ def isis_decrypt(password: str, key: str, mode: str) -> str:
     _validate_isis_args(password, key, mode)
 
     try:
-        return cbc_decrypt(_get_isis_key(key, mode), password)
+        return cbc_decrypt(f"{key}_{_ISIS_MODE_MAP[mode]}", password)
     except Exception as exc:
         msg = "ISIS password decryption failed - check the input parameters"
         raise ValueError(msg) from exc

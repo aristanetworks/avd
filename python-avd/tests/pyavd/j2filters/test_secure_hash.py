@@ -60,7 +60,7 @@ class TestSecureHashFilter:
     def test_secure_hash_uncaught_exception(self) -> None:
         """Test when an uncaught exception is returned by pyavd-utils."""
         with (
-            patch("pyavd_utils.passwords.sha512_crypt", side_effect=Exception("foo")),
+            patch("pyavd.j2filters.secure_hash.sha512_crypt", side_effect=Exception("foo")),
             pytest.raises(Exception, match=r"SHA-512 password hashing failed - check the input parameters of arista.avd.secure_hash"),
         ):
             secure_hash("aaaaaa", salt="AAAAAAAAAAAA")
