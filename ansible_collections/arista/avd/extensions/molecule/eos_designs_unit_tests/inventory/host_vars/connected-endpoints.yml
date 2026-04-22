@@ -262,6 +262,13 @@ servers:
         switch_ports: [Ethernet41]
         mode: trunk
         vlans: none
+  - name: ADDRESS_LOCKING_SERVER
+    adapters:
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet42]
+        profile: ADDRESS_LOCKING_PROFILE
+        mode: access
+        vlans: 111
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
@@ -293,6 +300,12 @@ port_profiles:
       pae:
         mode: supplicant
         supplicant_profile: test_profile_port_profile
+
+  - profile: ADDRESS_LOCKING_PROFILE
+    address_locking:
+      address_family:
+        ipv4: true
+        ipv6: true
 
 monitor:
   - name: custom_connected_endpoint

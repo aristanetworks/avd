@@ -100,6 +100,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "network_ports.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "network_ports.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "network_ports.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>For EOS version 4.31 and above, the `address_family.ipv4` parameter should be used instead. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "network_ports.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For EOS version 4.31 and above, the `address_family.ipv6` parameter should be used instead. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family</samp>](## "network_ports.[].address_locking.address_family") | Dictionary |  |  |  | Configure address locking per address family.<br>The `address_locking.ipv4/ipv6` and `address_locking.address_family.ipv4/ipv6` are mutually exclusive and `address_locking.address_family.ipv4/ipv6` take precedence.<br>Introduced in EOS 4.31.0F. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "network_ports.[].address_locking.address_family.ipv4") | Boolean |  |  |  | Enable/disable address locking for IPv4. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "network_ports.[].address_locking.address_family.ipv6") | Boolean |  |  |  | Enable/disable address locking for IPv6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_enforcement_disabled</samp>](## "network_ports.[].address_locking.ipv4_enforcement_disabled") | Boolean |  |  |  | Disable enforcement for IPv4 locked addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "network_ports.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "network_ports.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "network_ports.[].poe.priority") | String |  |  | Valid Values:<br>- <code>critical</code><br>- <code>high</code><br>- <code>medium</code><br>- <code>low</code> | Prioritize a port's power in the event that one of the switch's power supplies loses power. |
@@ -431,6 +438,31 @@
 
                 # Set action for supplicant traffic when AAA times out.
                 traffic_allow: <bool>
+
+        # Address locking settings applied on the port.
+        address_locking:
+
+          # Enable address locking for IPv4.
+          # For EOS version 4.31 and above, the `address_family.ipv4` parameter should be used instead.
+          ipv4: <bool>
+
+          # Enable address locking for IPv6.
+          # For EOS version 4.31 and above, the `address_family.ipv6` parameter should be used instead.
+          ipv6: <bool>
+
+          # Configure address locking per address family.
+          # The `address_locking.ipv4/ipv6` and `address_locking.address_family.ipv4/ipv6` are mutually exclusive and `address_locking.address_family.ipv4/ipv6` take precedence.
+          # Introduced in EOS 4.31.0F.
+          address_family:
+
+            # Enable/disable address locking for IPv4.
+            ipv4: <bool>
+
+            # Enable/disable address locking for IPv6.
+            ipv6: <bool>
+
+          # Disable enforcement for IPv4 locked addresses.
+          ipv4_enforcement_disabled: <bool>
 
         # Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
         poe:

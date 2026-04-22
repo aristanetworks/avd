@@ -3272,6 +3272,7 @@ class EosDesigns(EosDesignsRootModel):
                 "flow_tracking": {"type": FlowTracking},
                 "link_tracking": {"type": LinkTracking},
                 "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                "address_locking": {"type": EosCliConfigGen.EthernetInterfacesItem.AddressLocking},
                 "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                 "storm_control": {"type": StormControl},
                 "monitor_sessions": {"type": MonitorSessions},
@@ -3450,6 +3451,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
             """802.1x"""
+            address_locking: EosCliConfigGen.EthernetInterfacesItem.AddressLocking
+            """Address locking settings applied on the port."""
             poe: EosCliConfigGen.EthernetInterfacesItem.Poe
             """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
             storm_control: StormControl
@@ -3550,6 +3553,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     link_tracking: LinkTracking | UndefinedType = Undefined,
                     dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                    address_locking: EosCliConfigGen.EthernetInterfacesItem.AddressLocking | UndefinedType = Undefined,
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                     storm_control: StormControl | UndefinedType = Undefined,
                     monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -3695,6 +3699,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         dot1x: 802.1x
+                        address_locking: Address locking settings applied on the port.
                         poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                         storm_control:
                            Storm control settings applied on port toward the endpoint.
@@ -24808,6 +24813,7 @@ class EosDesigns(EosDesignsRootModel):
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
             "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "address_locking": {"type": EosCliConfigGen.EthernetInterfacesItem.AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
             "monitor_sessions": {"type": MonitorSessions},
@@ -24987,6 +24993,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
         """802.1x"""
+        address_locking: EosCliConfigGen.EthernetInterfacesItem.AddressLocking
+        """Address locking settings applied on the port."""
         poe: EosCliConfigGen.EthernetInterfacesItem.Poe
         """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
         storm_control: StormControl
@@ -25087,6 +25095,7 @@ class EosDesigns(EosDesignsRootModel):
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
                 dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                address_locking: EosCliConfigGen.EthernetInterfacesItem.AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
                 monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -25234,6 +25243,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     dot1x: 802.1x
+                    address_locking: Address locking settings applied on the port.
                     poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                     storm_control:
                        Storm control settings applied on port toward the endpoint.
@@ -29703,6 +29713,7 @@ class EosDesigns(EosDesignsRootModel):
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
             "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "address_locking": {"type": EosCliConfigGen.EthernetInterfacesItem.AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
             "monitor_sessions": {"type": MonitorSessions},
@@ -29839,6 +29850,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
         """802.1x"""
+        address_locking: EosCliConfigGen.EthernetInterfacesItem.AddressLocking
+        """Address locking settings applied on the port."""
         poe: EosCliConfigGen.EthernetInterfacesItem.Poe
         """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
         storm_control: StormControl
@@ -29936,6 +29949,7 @@ class EosDesigns(EosDesignsRootModel):
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
                 dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                address_locking: EosCliConfigGen.EthernetInterfacesItem.AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
                 monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -30045,6 +30059,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     dot1x: 802.1x
+                    address_locking: Address locking settings applied on the port.
                     poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                     storm_control:
                        Storm control settings applied on port toward the endpoint.
@@ -58039,6 +58054,7 @@ class EosDesigns(EosDesignsRootModel):
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
                         "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "address_locking": {"type": EosCliConfigGen.EthernetInterfacesItem.AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
                         "monitor_sessions": {"type": MonitorSessions},
@@ -58217,6 +58233,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
                     """802.1x"""
+                    address_locking: EosCliConfigGen.EthernetInterfacesItem.AddressLocking
+                    """Address locking settings applied on the port."""
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe
                     """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
                     storm_control: StormControl
@@ -58317,6 +58335,7 @@ class EosDesigns(EosDesignsRootModel):
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
                             dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            address_locking: EosCliConfigGen.EthernetInterfacesItem.AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
                             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -58462,6 +58481,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 dot1x: 802.1x
+                                address_locking: Address locking settings applied on the port.
                                 poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                                 storm_control:
                                    Storm control settings applied on port toward the endpoint.
@@ -59840,6 +59860,7 @@ class EosDesigns(EosDesignsRootModel):
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
                         "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "address_locking": {"type": EosCliConfigGen.EthernetInterfacesItem.AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
                         "monitor_sessions": {"type": MonitorSessions},
@@ -60018,6 +60039,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
                     """802.1x"""
+                    address_locking: EosCliConfigGen.EthernetInterfacesItem.AddressLocking
+                    """Address locking settings applied on the port."""
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe
                     """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
                     storm_control: StormControl
@@ -60118,6 +60141,7 @@ class EosDesigns(EosDesignsRootModel):
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
                             dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            address_locking: EosCliConfigGen.EthernetInterfacesItem.AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
                             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -60263,6 +60287,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 dot1x: 802.1x
+                                address_locking: Address locking settings applied on the port.
                                 poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                                 storm_control:
                                    Storm control settings applied on port toward the endpoint.

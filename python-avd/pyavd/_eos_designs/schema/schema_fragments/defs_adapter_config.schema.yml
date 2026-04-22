@@ -185,6 +185,10 @@ $defs:
       dot1x:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x
+      address_locking:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/address_locking
+        description: Address locking settings applied on the port.
       poe:
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe
         type: dict

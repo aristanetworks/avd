@@ -32,6 +32,9 @@ if TYPE_CHECKING:
         "T_EvpnEthernetSegment", EosCliConfigGen.EthernetInterfacesItem.EvpnEthernetSegment, EosCliConfigGen.PortChannelInterfacesItem.EvpnEthernetSegment
     )
     T_Phone = TypeVar("T_Phone", EosCliConfigGen.EthernetInterfacesItem.Switchport.Phone, EosCliConfigGen.PortChannelInterfacesItem.Switchport.Phone)
+    T_AddressLocking = TypeVar(
+        "T_AddressLocking", EosCliConfigGen.EthernetInterfacesItem.AddressLocking, EosCliConfigGen.PortChannelInterfacesItem.AddressLocking
+    )
 
 
 class UtilsMixin(Protocol):
@@ -233,6 +236,17 @@ class UtilsMixin(Protocol):
             return adapter.l2_mtu
 
         return None
+
+    def _get_adapter_address_locking(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+        output_type: type[T_AddressLocking],
+    ) -> T_AddressLocking | UndefinedType:
+        """Return address_locking for one adapter."""
+        if adapter.address_locking:
+            return adapter.address_locking._cast_as(output_type)
+
+        return Undefined
 
     def _get_adapter_dot1x(
         self: AvdStructuredConfigConnectedEndpointsProtocol,

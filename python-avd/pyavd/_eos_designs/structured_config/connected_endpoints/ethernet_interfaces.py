@@ -106,6 +106,7 @@ class EthernetInterfacesMixin(Protocol):
             spanning_tree_link_type=adapter.spanning_tree_link_type,
             storm_control=self._get_adapter_storm_control(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.StormControl),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.Ptp),
+            address_locking=self._get_adapter_address_locking(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.AddressLocking),
             service_profile=adapter.qos_profile,
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.LinkTrackingGroups),

@@ -594,6 +594,22 @@ ethernet_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: none
+- name: Ethernet42
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_SERVER
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: true
+      ipv6: true
+  metadata:
+    peer: ADDRESS_LOCKING_SERVER
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: ADDRESS_LOCKING_PROFILE
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 111
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
