@@ -176,10 +176,7 @@ class RouterBgpMixin(Protocol):
 
                     for bgp_peer_group in vrf.bgp_peer_groups:
                         if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
-                            for listen_range in bgp_peer_group.listen_ranges:
-                                bgp_vrf.listen_ranges.append_new(
-                                    prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined
-                                )
+                            self._set_listen_ranges(bgp_peer_group, bgp_vrf)
 
                     if vrf.redistribute_connected:
                         bgp_vrf.redistribute.connected.enabled = True
@@ -217,10 +214,7 @@ class RouterBgpMixin(Protocol):
 
                     for bgp_peer_group in vrf.bgp_peer_groups:
                         if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname):
-                            for listen_range in bgp_peer_group.listen_ranges:
-                                bgp_vrf.listen_ranges.append_new(
-                                    prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined
-                                )
+                            self._set_listen_ranges(bgp_peer_group, bgp_vrf)
 
                     # Common things but need it repeated between default and non-default since type checker gets too confused
                     # about the type of bgp_vrf vs. bgp_peer_config.
@@ -825,3 +819,11 @@ class RouterBgpMixin(Protocol):
                     mtu=tenant.vpws.mtu,
                     label_flow=tenant.vpws.label_flow or None,  # Using 'or None' to only render True in structured config.
                 )
+
+    def _set_listen_ranges(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        bgp_peer_group: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.BgpPeerGroupsItem,
+        bgp_vrf: EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp,
+    ):
+        for listen_range in bgp_peer_group.listen_ranges:
+            bgp_vrf.listen_ranges.append_new(prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined)
