@@ -826,5 +826,11 @@ class RouterBgpMixin(Protocol):
         bgp_vrf: EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp,
     ) -> EosCliConfigGen.RouterBgp.VrfsItem | EosCliConfigGen.RouterBgp:
         for listen_range in bgp_peer_group.listen_ranges:
-            bgp_vrf.listen_ranges.append_new(prefix=listen_range.prefix, peer_group=bgp_peer_group.name, remote_as=listen_range.remote_as or Undefined)
+            bgp_vrf.listen_ranges.append_new(
+                prefix=listen_range.prefix,
+                peer_group=bgp_peer_group.name,
+                remote_as=listen_range.remote_as or Undefined,
+                peer_filter=listen_range.peer_filter,
+                peer_id_include_router_id=listen_range.peer_id_include_router_id
+                )
         return bgp_vrf

@@ -60413,7 +60413,12 @@ class EosDesigns(EosDesignsRootModel):
                     class ListenRangesItem(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"prefix": {"type": str}, "remote_as": {"type": str}}
+                        _fields: ClassVar[dict] = {
+                            "prefix": {"type": str},
+                            "remote_as": {"type": str},
+                            "peer_id_include_router_id": {"type": bool},
+                            "peer_filter": {"type": str},
+                        }
                         prefix: str
                         """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                         remote_as: str | None
@@ -60423,10 +60428,26 @@ class EosDesigns(EosDesignsRootModel):
                         YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                         number.
                         """
+                        peer_id_include_router_id: bool | None
+                        """Include router ID as part of peer filter."""
+                        peer_filter: str | None
+                        """
+                        Peer-filter name.
+                        note: `peer_filter` or `remote_as` is required but mutually exclusive.
+                        If both are
+                        defined, `peer_filter` takes precedence
+                        """
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, prefix: str | UndefinedType = Undefined, remote_as: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                prefix: str | UndefinedType = Undefined,
+                                remote_as: str | None | UndefinedType = Undefined,
+                                peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                                peer_filter: str | None | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 ListenRangesItem.
 
@@ -60440,6 +60461,12 @@ class EosDesigns(EosDesignsRootModel):
                                        For asdot notation in
                                        YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                                        number.
+                                    peer_id_include_router_id: Include router ID as part of peer filter.
+                                    peer_filter:
+                                       Peer-filter name.
+                                       note: `peer_filter` or `remote_as` is required but mutually exclusive.
+                                       If both are
+                                       defined, `peer_filter` takes precedence
 
                                 """
 
@@ -66876,7 +66903,12 @@ class EosDesigns(EosDesignsRootModel):
                         class ListenRangesItem(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"prefix": {"type": str}, "remote_as": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "remote_as": {"type": str},
+                                "peer_id_include_router_id": {"type": bool},
+                                "peer_filter": {"type": str},
+                            }
                             prefix: str
                             """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                             remote_as: str | None
@@ -66886,10 +66918,26 @@ class EosDesigns(EosDesignsRootModel):
                             YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                             number.
                             """
+                            peer_id_include_router_id: bool | None
+                            """Include router ID as part of peer filter."""
+                            peer_filter: str | None
+                            """
+                            Peer-filter name.
+                            note: `peer_filter` or `remote_as` is required but mutually exclusive.
+                            If both are
+                            defined, `peer_filter` takes precedence
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, prefix: str | UndefinedType = Undefined, remote_as: str | None | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | UndefinedType = Undefined,
+                                    remote_as: str | None | UndefinedType = Undefined,
+                                    peer_id_include_router_id: bool | None | UndefinedType = Undefined,
+                                    peer_filter: str | None | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     ListenRangesItem.
 
@@ -66903,6 +66951,12 @@ class EosDesigns(EosDesignsRootModel):
                                            For asdot notation in
                                            YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                                            number.
+                                        peer_id_include_router_id: Include router ID as part of peer filter.
+                                        peer_filter:
+                                           Peer-filter name.
+                                           note: `peer_filter` or `remote_as` is required but mutually exclusive.
+                                           If both are
+                                           defined, `peer_filter` takes precedence
 
                                     """
 

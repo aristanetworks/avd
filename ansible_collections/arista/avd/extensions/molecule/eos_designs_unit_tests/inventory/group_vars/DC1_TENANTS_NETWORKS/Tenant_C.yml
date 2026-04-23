@@ -31,6 +31,8 @@ tenant_c:
         listen_ranges:
           - prefix: 192.168.142.0/24
             remote_as: 111
+            peer_id_include_router_id: true
+            peer_filter: peerfilter
         nodes: ['dc1-bl[12]a']
       - name: Tenant_C_BGP_PEER_GROUP2
         remote_as: "667"

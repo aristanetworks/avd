@@ -16,6 +16,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listen_ranges</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].listen_ranges") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].listen_ranges.[].prefix") | String | Required |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].listen_ranges.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_id_include_router_id</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].listen_ranges.[].peer_id_include_router_id") | Boolean |  |  |  | Include router ID as part of peer filter. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_filter</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].listen_ranges.[].peer_filter") | String |  |  |  | Peer-filter name.<br>note: `peer_filter` or `remote_as` is required but mutually exclusive.<br>If both are defined, `peer_filter` takes precedence<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].nodes") | List, items: String |  |  |  | List of node names or regular expressions to match against hostnames to configure the peer-group.<br>The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.<br>The peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].nodes.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].address_family_ipv4") | Dictionary |  |  |  |  |
@@ -152,6 +154,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listen_ranges</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].listen_ranges") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].listen_ranges.[].prefix") | String | Required |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_as</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].listen_ranges.[].remote_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_id_include_router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].listen_ranges.[].peer_id_include_router_id") | Boolean |  |  |  | Include router ID as part of peer filter. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_filter</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].listen_ranges.[].peer_filter") | String |  |  |  | Peer-filter name.<br>note: `peer_filter` or `remote_as` is required but mutually exclusive.<br>If both are defined, `peer_filter` takes precedence<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv4</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].address_family_ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].address_family_ipv4.activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].address_family_ipv4.route_map_in") | String |  |  |  | Inbound route-map name. |
@@ -279,6 +283,14 @@
                 # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                 # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                 remote_as: <str>
+
+                # Include router ID as part of peer filter.
+                peer_id_include_router_id: <bool>
+
+                # Peer-filter name.
+                # note: `peer_filter` or `remote_as` is required but mutually exclusive.
+                # If both are defined, `peer_filter` takes precedence
+                peer_filter: <str>
 
             # List of node names or regular expressions to match against hostnames to configure the peer-group.
             # The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
@@ -617,6 +629,14 @@
                     # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
                     # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                     remote_as: <str>
+
+                    # Include router ID as part of peer filter.
+                    peer_id_include_router_id: <bool>
+
+                    # Peer-filter name.
+                    # note: `peer_filter` or `remote_as` is required but mutually exclusive.
+                    # If both are defined, `peer_filter` takes precedence
+                    peer_filter: <str>
                 address_family_ipv4:
                   activate: <bool>
 

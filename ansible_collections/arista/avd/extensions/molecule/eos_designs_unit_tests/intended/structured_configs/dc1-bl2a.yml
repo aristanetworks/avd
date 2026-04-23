@@ -175,7 +175,9 @@ router_bgp:
       d_path: true
   listen_ranges:
   - prefix: 192.168.142.0/24
+    peer_id_include_router_id: true
     peer_group: Tenant_C_BGP_PEER_GROUP_RESTRICTED
+    peer_filter: peerfilter
     remote_as: '111'
   peer_groups:
   - name: UNDERLAY-PEERS

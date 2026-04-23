@@ -125,6 +125,15 @@ $defs:
                         For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
                       convert_types:
                         - int
+                    peer_id_include_router_id:
+                      type: bool
+                      description: Include router ID as part of peer filter.
+                    peer_filter:
+                      type: str
+                      description: |
+                        Peer-filter name.
+                        note: `peer_filter` or `remote_as` is required but mutually exclusive.
+                        If both are defined, `peer_filter` takes precedence
               nodes:
                 type: list
                 items:
@@ -1632,20 +1641,7 @@ $defs:
                         To protect the password at rest it is strongly recommended to make use of a vault or similar.
                     listen_ranges:
                       type: list
-                      items:
-                        type: dict
-                        keys:
-                          prefix:
-                            type: str
-                            required: true
-                            description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
-                          remote_as:
-                            type: str
-                            description: |-
-                              BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
-                              For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
-                            convert_types:
-                              - int
+                      $ref: "eos_designs#/$defs/network_services/items/keys/bgp_peer_groups/items/keys/listen_ranges"
                     address_family_ipv4:
                       type: dict
                       keys:
