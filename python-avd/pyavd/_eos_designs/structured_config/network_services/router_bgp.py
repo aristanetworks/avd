@@ -831,6 +831,6 @@ class RouterBgpMixin(Protocol):
                 peer_group=bgp_peer_group.name,
                 remote_as=listen_range.remote_as or Undefined,
                 peer_filter=listen_range.peer_filter,
-                peer_id_include_router_id=listen_range.peer_id_include_router_id
-                )
+                peer_id_include_router_id=listen_range.peer_id_include_router_id,
+            )
         return bgp_vrf
