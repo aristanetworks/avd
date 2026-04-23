@@ -28,6 +28,10 @@ class LoopbackInterfacesMixin(Protocol):
         if not self.shared_utils.underlay_router:
             return
 
+        if self.inputs.avd_design_future.raise_for_underlay_router_with_port_channel_uplink and self.shared_utils.uplink_type == "port-channel":
+            msg = "'underlay_router: true' is not supported with 'uplink_type: port-channel'."
+            raise AristaAvdInvalidInputsError(msg)
+
         # Loopback 0
         loopback0 = EosCliConfigGen.LoopbackInterfacesItem(
             name="Loopback0",

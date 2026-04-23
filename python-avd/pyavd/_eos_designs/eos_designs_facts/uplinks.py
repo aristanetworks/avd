@@ -126,9 +126,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         and by templates for peer devices when rendering downlinks
         """
         if self.shared_utils.uplink_type == "port-channel":
-            if self.inputs.avd_design_future.raise_for_underlay_router_with_port_channel_uplink and self.shared_utils.underlay_router:
-                msg = "'underlay_router: true' is not supported with 'uplink_type: port-channel'."
-                raise AristaAvdInvalidInputsError(msg)
             get_uplink = self._get_port_channel_uplink
         elif self.shared_utils.uplink_type == "p2p-vrfs":
             if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:

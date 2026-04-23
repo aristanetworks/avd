@@ -13,4 +13,4 @@ l3leaf:
       uplink_type: port-channel
 
 expected_error_message: >-
-  'underlay_router: true' is not supported with 'uplink_type: port-channel' for host 'underlay-router-with-port-channel-uplink'.
+  'underlay_router: true' is not supported with 'uplink_type: port-channel'.
