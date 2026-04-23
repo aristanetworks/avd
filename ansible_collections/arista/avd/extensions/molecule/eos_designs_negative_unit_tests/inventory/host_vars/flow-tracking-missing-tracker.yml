@@ -5,6 +5,13 @@ l2leaf:
       id: 1
       # Could as well be hardware
       flow_tracker_type: sampled
+      uplink_interfaces: [Ethernet2, Ethernet3]
+      uplink_switch_interfaces: [Ethernet1, Ethernet2]
+      inband_mgmt_vlan: 100
+      inband_mgmt_subnet: 192.168.101.0/24
+      inband_mgmt_vrf: INBANDMGMT
+      # Set to create inband mgmt config for network-services-ip-helpers-leaf1.
+      uplink_switches: [network-services-ip-helpers-leaf1, network-services-ip-helpers-leaf1]
 
 fabric_flow_tracking:
   endpoints:
