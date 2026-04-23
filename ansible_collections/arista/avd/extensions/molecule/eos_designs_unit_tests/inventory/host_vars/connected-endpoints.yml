@@ -303,9 +303,8 @@ port_profiles:
 
   - profile: ADDRESS_LOCKING_PROFILE
     address_locking:
-      address_family:
-        ipv4: true
-        ipv6: true
+      ipv4: true
+      ipv6: true
 
 monitor:
   - name: custom_connected_endpoint

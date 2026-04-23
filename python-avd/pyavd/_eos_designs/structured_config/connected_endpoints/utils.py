@@ -7,13 +7,13 @@ import re
 from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import Undefined, UndefinedType, get_v2, short_esi_to_route_target
 
 if TYPE_CHECKING:
     from typing import TypeVar
 
-    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
     from pyavd._eos_designs.schema import EosDesigns
 
     from . import AvdStructuredConfigConnectedEndpointsProtocol
@@ -242,11 +242,15 @@ class UtilsMixin(Protocol):
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         output_type: type[T_AddressLocking],
     ) -> T_AddressLocking | UndefinedType:
-        """Return address_locking for one adapter."""
-        if adapter.address_locking:
-            return adapter.address_locking._cast_as(output_type)
+        """Return address_locking for one adapter, mapping ipv4/ipv6 flags to address_family format."""
+        if not adapter.address_locking:
+            return Undefined
 
-        return Undefined
+        address_locking = output_type()
+        address_locking.address_family.ipv4=adapter.address_locking.ipv4
+        if isinstance(address_locking, EosCliConfigGen.EthernetInterfacesItem.AddressLocking):
+            address_locking.address_family.ipv6=adapter.address_locking.ipv6
+        return address_locking
 
     def _get_adapter_dot1x(
         self: AvdStructuredConfigConnectedEndpointsProtocol,
