@@ -131,7 +131,7 @@ async def _sync_studio_roots(cv_manifest: CVManifest, deployment_result: DeployT
 
     Note:
         During an update, this function reorders root containers. All AVD-managed
-        containers are placed first, followed by any existing manually-added containers.
+        containers are placed first, followed by any existing containers.
     """
     workspace_id = deployment_result.workspace.id
 
@@ -146,10 +146,10 @@ async def _sync_studio_roots(cv_manifest: CVManifest, deployment_result: DeployT
     )
 
     desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
-    manual_ids = [container_id for container_id in existing_root_ids if not container_id.startswith(AVD_ENTITY_PREFIX)]
+    non_manifest_root_ids = [container_id for container_id in existing_root_ids if not container_id.startswith(AVD_ENTITY_PREFIX)]
 
-    # Update the Studio root container list if necessary, preserving any manually added (non-AVD) root containers.
-    new_ordered_ids = desired_root_ids + manual_ids
+    # Update the Studio root container list if necessary, preserving any non-manifest root containers.
+    new_ordered_ids = desired_root_ids + non_manifest_root_ids
     if new_ordered_ids != existing_root_ids:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Updating Studio root container assignment list...")
         await cv_client.set_studio_inputs(
