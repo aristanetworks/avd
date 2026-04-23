@@ -1,0 +1,16 @@
+---
+avd_design_future:
+  raise_for_underlay_router_with_port_channel_uplink: true
+
+type: l3leaf
+l3leaf:
+  nodes:
+    - bgp_as: 65000
+      name: underlay-router-with-port-channel-uplink
+      id: 1
+      loopback_ipv4_pool: 192.168.0.0/24
+      vtep_loopback_ipv4_pool: 192.168.1.0/24
+      uplink_type: port-channel
+
+expected_error_message: >-
+  'underlay_router: true' is not supported with 'uplink_type: port-channel' for host 'underlay-router-with-port-channel-uplink'.
