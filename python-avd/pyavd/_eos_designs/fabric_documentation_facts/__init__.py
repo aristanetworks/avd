@@ -202,34 +202,31 @@ class FabricDocumentationFacts(AvdFacts):
                 rd = get(vrf, "rd")
                 if not rd:
                     continue
-                # Collect route targets
-                import_rts = []
-                export_rts = []
-                for rt_import in get(vrf, "route_targets.import", default=[]):
-                    for rt in get(rt_import, "route_targets", default=[]):
-                        if rt not in import_rts:
-                            import_rts.append(rt)
-                for rt_export in get(vrf, "route_targets.export", default=[]):
-                    for rt in get(rt_export, "route_targets", default=[]):
-                        if rt not in export_rts:
-                            export_rts.append(rt)
-
                 if vrf_name not in vrf_data:
                     vrf_data[vrf_name] = {
                         "vrf": vrf_name,
                         "rd_pattern": rd.split(":")[1] if ":" in rd else rd,  # Extract VRF ID portion
-                        "import_rt": ", ".join(sorted(set(import_rts))),
-                        "export_rt": ", ".join(sorted(set(export_rts))),
+                        "import_rt": ", ".join(sorted(set(self._collect_route_targets(vrf, "import")))),
+                        "export_rt": ", ".join(sorted(set(self._collect_route_targets(vrf, "export")))),
                         "nodes": [hostname],
                     }
                 elif hostname not in vrf_data[vrf_name]["nodes"]:
                     vrf_data[vrf_name]["nodes"].append(hostname)
 
-        # Format nodes list
         for vrf in vrf_data.values():
             vrf["nodes"] = ", ".join(natural_sort(vrf["nodes"]))
 
         return natural_sort(list(vrf_data.values()), sort_key="vrf")
+
+    @staticmethod
+    def _collect_route_targets(vrf: dict, direction: str) -> list[str]:
+        """Return unique route targets for the given direction ("import" or "export"), preserving discovery order."""
+        rts: list[str] = []
+        for rt_group in get(vrf, f"route_targets.{direction}", default=[]):
+            for rt in get(rt_group, "route_targets", default=[]):
+                if rt not in rts:
+                    rts.append(rt)
+        return rts
 
     @cached_property
     def has_vrfs(self) -> bool:
@@ -246,38 +243,47 @@ class FabricDocumentationFacts(AvdFacts):
                 pg_name = get(peer_group, "name")
                 if not pg_name:
                     continue
-                remote_as = get(peer_group, "remote_as")
-                update_source = get(peer_group, "update_source", default="-")
-                bfd = "Yes" if get(peer_group, "bfd") is True else "No"
-                send_community = get(peer_group, "send_community", default="-")
-
                 if pg_name not in peer_groups_data:
-                    peer_groups_data[pg_name] = {
-                        "name": pg_name,
-                        "remote_as": remote_as,
-                        "update_source": update_source,
-                        "bfd": bfd,
-                        "send_community": send_community,
-                        "nodes": [hostname],
-                    }
+                    peer_groups_data[pg_name] = self._new_peer_group_entry(peer_group, hostname)
                 else:
-                    if hostname not in peer_groups_data[pg_name]["nodes"]:
-                        peer_groups_data[pg_name]["nodes"].append(hostname)
-                    # If remote_as differs across nodes, show "-" to indicate it varies
-                    if peer_groups_data[pg_name]["remote_as"] != remote_as:
-                        peer_groups_data[pg_name]["remote_as"] = None
+                    self._merge_peer_group_entry(peer_groups_data[pg_name], peer_group, hostname)
 
-        # Format nodes list and remote_as
         for pg in peer_groups_data.values():
             pg["nodes"] = ", ".join(natural_sort(pg["nodes"]))
             pg["remote_as"] = pg["remote_as"] if pg["remote_as"] is not None else "-"
 
         return natural_sort(list(peer_groups_data.values()), sort_key="name")
 
+    @staticmethod
+    def _new_peer_group_entry(peer_group: dict, hostname: str) -> dict:
+        return {
+            "name": get(peer_group, "name"),
+            "remote_as": get(peer_group, "remote_as"),
+            "update_source": get(peer_group, "update_source", default="-"),
+            "bfd": "Yes" if get(peer_group, "bfd") is True else "No",
+            "send_community": get(peer_group, "send_community", default="-"),
+            "nodes": [hostname],
+        }
+
+    @staticmethod
+    def _merge_peer_group_entry(entry: dict, peer_group: dict, hostname: str) -> None:
+        if hostname not in entry["nodes"]:
+            entry["nodes"].append(hostname)
+        # If remote_as differs across nodes, mark it as varying so it renders as "-".
+        if entry["remote_as"] != get(peer_group, "remote_as"):
+            entry["remote_as"] = None
+
     @cached_property
     def has_bgp_peer_groups(self) -> bool:
         """At least one BGP peer group is configured."""
         return len(self.bgp_peer_groups) > 0
+
+    _REDISTRIBUTE_PROTOCOLS: tuple[tuple[str, str], ...] = (
+        ("connected.enabled", "connected"),
+        ("ospf.enabled", "OSPF"),
+        ("static.enabled", "static"),
+        ("bgp.enabled", "BGP"),
+    )
 
     @cached_property
     def vrf_routing_protocols(self) -> list[dict]:
@@ -289,30 +295,18 @@ class FabricDocumentationFacts(AvdFacts):
                 vrf_name = get(vrf, "name")
                 if not vrf_name or vrf_name == "default":
                     continue
-
-                # Check redistribute settings
-                redistribute = get(vrf, "redistribute", default={})
-                protocols = []
-                if get(redistribute, "connected.enabled"):
-                    protocols.append("connected")
-                if get(redistribute, "ospf.enabled"):
-                    protocols.append("OSPF")
-                if get(redistribute, "static.enabled"):
-                    protocols.append("static")
-                if get(redistribute, "bgp.enabled"):
-                    protocols.append("BGP")
-
-                protocols_str = "-" if not protocols else ", ".join(protocols)
-
                 key = f"{hostname}:{vrf_name}"
-                if key not in vrf_routing_data:
-                    vrf_routing_data[key] = {
-                        "node": hostname,
-                        "type": self.avd_facts[hostname].type,
-                        "vrf": vrf_name,
-                        "router_id": get(vrf, "router_id", default="-"),
-                        "redistribute": protocols_str,
-                    }
+                if key in vrf_routing_data:
+                    continue
+                redistribute = get(vrf, "redistribute", default={})
+                protocols = [label for path, label in self._REDISTRIBUTE_PROTOCOLS if get(redistribute, path)]
+                vrf_routing_data[key] = {
+                    "node": hostname,
+                    "type": self.avd_facts[hostname].type,
+                    "vrf": vrf_name,
+                    "router_id": get(vrf, "router_id", default="-"),
+                    "redistribute": ", ".join(protocols) if protocols else "-",
+                }
 
         return natural_sort(list(vrf_routing_data.values()), sort_key="node")
 
