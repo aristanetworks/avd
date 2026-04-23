@@ -360,7 +360,7 @@ class AvdManifest:
     It can contain a full container hierarchy, only configlets, or both.
     """
 
-    configlet_policy: Literal["avd-controlled", "additive"] = field(default="avd-controlled")
+    configlet_policy: Literal["managed", "additive"] = field(default="managed")
     configlets: tuple[AvdConfiglet, ...] = field(default_factory=tuple)
     containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
 
@@ -368,7 +368,7 @@ class AvdManifest:
     def from_dict(cls, data: dict[str, Any]) -> AvdManifest:
         """Build an AvdManifest instance from an input dictionary."""
         try:
-            configlet_policy = data.get("configlet_policy", "avd-controlled")
+            configlet_policy = data.get("configlet_policy", "managed")
             configlets_data = data.get("configlets", [])
             containers_data = data.get("containers", [])
 
@@ -385,7 +385,7 @@ class AvdManifest:
 class CVManifest:
     """CloudVision manifest to be created/updated to the "Static Configuration" Studio."""
 
-    configlet_policy: Literal["avd-controlled", "additive"]
+    configlet_policy: Literal["managed", "additive"]
     configlets: tuple[CVConfiglet, ...]
     containers: tuple[CVContainer, ...]
 

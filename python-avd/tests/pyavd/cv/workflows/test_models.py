@@ -404,7 +404,7 @@ class TestAvdManifestFromDict:
         manifest = AvdManifest.from_dict(full_manifest_dict)
         assert len(manifest.configlets) == 2
         assert len(manifest.containers) == 1
-        assert manifest.configlet_policy == "avd-controlled"  # Default
+        assert manifest.configlet_policy == "managed"  # Default
         assert manifest.configlets[0].name == "global_cfg"
         assert manifest.containers[0].name == "ROOT"
         assert len(manifest.containers[0].sub_containers) == 1
@@ -436,10 +436,10 @@ class TestAvdManifestFromDict:
         assert not manifest_empty_lists.configlets
         assert not manifest_empty_lists.containers
 
-    def test_configlet_policy_defaults_to_avd_controlled(self) -> None:
-        """Tests that the manifest configlet_policy defaults to 'avd-controlled' when omitted."""
+    def test_configlet_policy_defaults_to_managed(self) -> None:
+        """Tests that the manifest configlet_policy defaults to 'managed' when omitted."""
         manifest = AvdManifest.from_dict({})
-        assert manifest.configlet_policy == "avd-controlled"
+        assert manifest.configlet_policy == "managed"
 
     def test_configlet_policy_explicit_additive(self) -> None:
         """Tests that the manifest configlet_policy can be set to 'additive'."""
@@ -448,9 +448,9 @@ class TestAvdManifestFromDict:
 
     def test_configlet_policy_propagates_to_cv_manifest(self) -> None:
         """Tests that the configlet_policy propagates from AvdManifest to CVManifest."""
-        avd_manifest_controlled = AvdManifest(configlet_policy="avd-controlled", configlets=(), containers=())
-        cv_manifest_controlled = CVManifest.from_avd_manifest(avd_manifest_controlled)
-        assert cv_manifest_controlled.configlet_policy == "avd-controlled"
+        avd_manifest_managed = AvdManifest(configlet_policy="managed", configlets=(), containers=())
+        cv_manifest_managed = CVManifest.from_avd_manifest(avd_manifest_managed)
+        assert cv_manifest_managed.configlet_policy == "managed"
 
         avd_manifest_additive = AvdManifest(configlet_policy="additive", configlets=(), containers=())
         cv_manifest_additive = CVManifest.from_avd_manifest(avd_manifest_additive)
