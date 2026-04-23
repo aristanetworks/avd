@@ -319,7 +319,7 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         if self.inputs.dns_settings.ip_hosts:
-            self.structured_config.ip_hosts = EosCliConfigGen.IpHosts(self.inputs.dns_settings.ip_hosts)
+            self.structured_config.ip_hosts = self.inputs.dns_settings.ip_hosts
 
         if self.inputs.dns_settings.domain:
             self.structured_config.dns_domain = self.inputs.dns_settings.domain
