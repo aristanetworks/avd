@@ -130,8 +130,10 @@ async def _sync_studio_roots(cv_manifest: CVManifest, deployment_result: DeployT
     Synchronize Studio root containers. Update root container assignments.
 
     Note:
-        During an update, this function reorders root containers. All AVD-managed
-        containers are placed first, followed by any existing containers.
+        When new manifest root container IDs are introduced, all manifest containers are placed first,
+        followed by any existing root containers.
+        When only removing manifest root containers, the existing order is preserved and removed entries
+        are filtered out, keeping existing root containers in their current positions.
     """
     workspace_id = deployment_result.workspace.id
 
@@ -145,11 +147,20 @@ async def _sync_studio_roots(cv_manifest: CVManifest, deployment_result: DeployT
         default_value=[],
     )
 
+    # Calculate which desired roots are missing.
     desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
-    non_manifest_root_ids = [container_id for container_id in existing_root_ids if not container_id.startswith(AVD_ENTITY_PREFIX)]
+    desired_root_ids_set = set(desired_root_ids)
+    existing_root_ids_set = set(existing_root_ids)
+    missing_ids = desired_root_ids_set - existing_root_ids_set
 
-    # Update the Studio root container list if necessary, preserving any non-manifest root containers.
-    new_ordered_ids = desired_root_ids + non_manifest_root_ids
+    if missing_ids:
+        non_manifest_root_ids = [container_id for container_id in existing_root_ids if not container_id.startswith(AVD_ENTITY_PREFIX)]
+        new_ordered_ids = desired_root_ids + non_manifest_root_ids
+    else:
+        new_ordered_ids = [
+            container_id for container_id in existing_root_ids if container_id in desired_root_ids_set or not container_id.startswith(AVD_ENTITY_PREFIX)
+        ]
+
     if new_ordered_ids != existing_root_ids:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Updating Studio root container assignment list...")
         await cv_client.set_studio_inputs(

@@ -356,3 +356,40 @@ class TestDeployStaticConfigStudio:
 
         # Verify deployment result object.
         assert deployment_result.removed_static_config_containers == ["ROOT_REMOVE"]
+
+    async def test_root_removal_preserves_manual_position(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that removing an AVD root keeps manually-added containers in their current position."""
+        avd_root1_id = generate_id("AVD_ROOT1")
+        avd_root2_id = generate_id("AVD_ROOT2")
+        manual_root1_id = "manual-root-container-456"
+        manual_root2_id = "manual-root-container-789"
+
+        existing_containers = [
+            create_grpc_container(container_id=avd_root1_id, name="AVD_ROOT1", description="", query="device:*"),
+            create_grpc_container(container_id=avd_root2_id, name="AVD_ROOT2", description="", query="device:*"),
+            create_grpc_container(container_id=manual_root1_id, name="MANUAL_ROOT_1", description="", query="device:*"),
+            create_grpc_container(container_id=manual_root2_id, name="MANUAL_ROOT_2", description="", query="device:*"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        # Manual roots are placed first and interleaved with the AVD roots.
+        mock_cv_client.get_studio_inputs_with_path.return_value = [manual_root1_id, avd_root1_id, manual_root2_id, avd_root2_id]
+
+        # New desired state: AVD_ROOT2 removed, AVD_ROOT1 kept.
+        avd_root1 = AvdContainer(name="AVD_ROOT1", tag_query="device:*")
+        updated_manifest = AvdManifest(containers=(avd_root1,))
+
+        await deploy_static_config_studio_manifest_to_cv(updated_manifest, deployment_result, mock_cv_client)
+
+        # Verify AVD_ROOT2 was deleted.
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=avd_root2_id)
+
+        # Verify the studio root list preserves both manual roots in their original positions.
+        mock_cv_client.set_studio_inputs.assert_called_once_with(
+            studio_id="studio-static-configlet",
+            workspace_id=deployment_result.workspace.id,
+            input_path=["configletAssignmentRoots"],
+            inputs=[manual_root1_id, avd_root1_id, manual_root2_id],
+        )
+
+        assert deployment_result.removed_static_config_containers == ["AVD_ROOT2"]
