@@ -31,5 +31,5 @@ tenants:
                 source_vrf: use_inband_mgmt_vrf
 
 expected_error_message: >-
-  'IP_HELPERS3.svis[SVI2].ip_helpers[0].source_vrf or IP_HELPERS3.ip_helpers[0].source_vrf or' is set to 'use_inband_mgmt_vrf'
-  but this node is missing configuration for inband management.
+  'tenants[name=TEST1].vrfs[name=IP_HELPERS3].svis[SVI2].ip_helpers[0].source_vrf or tenants[name=TEST1].vrfs[name=IP_HELPERS3].ip_helpers[0].source_vrf'
+  is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management.

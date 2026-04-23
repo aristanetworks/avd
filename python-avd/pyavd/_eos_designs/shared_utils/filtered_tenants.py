@@ -514,7 +514,10 @@ class FilteredTenantsMixin(Protocol):
                 source_vrf = (
                     self.get_vrf(
                         svi_ip_helper.source_vrf,
-                        context=f"{vrf.name}.svis[{svi.name}].ip_helpers[{idx}].source_vrf or {vrf.name}.ip_helpers[{idx}].source_vrf or",
+                        context=(
+                            f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[{svi.name}].ip_helpers[{idx}].source_vrf or"
+                            f" tenants[name={tenant.name}].vrfs[name={vrf.name}].ip_helpers[{idx}].source_vrf"
+                        )
                     )
                     if svi_ip_helper.source_vrf
                     else None
