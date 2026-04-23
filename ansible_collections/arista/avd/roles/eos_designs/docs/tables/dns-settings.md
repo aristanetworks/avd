@@ -19,6 +19,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "dns_settings.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "dns_settings.vrfs.[].source_interface") | String |  |  |  | Source interface to use for DNS lookups in this VRF.<br>If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence. |
     | [<samp>&nbsp;&nbsp;set_source_interfaces</samp>](## "dns_settings.set_source_interfaces") | Boolean |  | `True` |  | Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>Can be set to `false` to avoid changes when migrating from the old `name_servers` model. |
+    | [<samp>&nbsp;&nbsp;ip_hosts</samp>](## "dns_settings.ip_hosts") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;hostname</samp>](## "dns_settings.ip_hosts.[].hostname") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_addresses</samp>](## "dns_settings.ip_hosts.[].ipv4_addresses") | List, items: String | Required |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dns_settings.ip_hosts.[].ipv4_addresses.[]") | String |  |  |  |  |
 
 === "YAML"
 
@@ -62,4 +66,8 @@
       # Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
       # Can be set to `false` to avoid changes when migrating from the old `name_servers` model.
       set_source_interfaces: <bool; default=True>
+      ip_hosts:
+        - hostname: <str; required; unique>
+          ipv4_addresses: # >=1 items; required
+            - <str>
     ```
