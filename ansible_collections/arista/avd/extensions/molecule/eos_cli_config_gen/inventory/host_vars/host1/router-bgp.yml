@@ -719,10 +719,25 @@ router_bgp:
           send_limit: 20
           prefix_list: PL2
         default_originate:
+          enabled: true
           route_map: RM-FOO
           always: true
       - name: FOOBAR
         activate: false
+      - name: FOOBAR1
+        activate: true
+        default_originate:
+          enabled: true
+      - name: FOOBAR2
+        activate: true
+        default_originate:
+          enabled: true
+          route_map: RM-FOO
+      - name: FOOBAR3
+        activate: true
+        default_originate:
+          enabled: true
+          always: true
     neighbors:
       - ip_address: 2001:db8::1
         prefix_list_in: PL-FOO-v6-IN

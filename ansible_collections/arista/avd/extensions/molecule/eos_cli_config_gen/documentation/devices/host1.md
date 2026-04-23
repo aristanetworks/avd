@@ -10238,6 +10238,12 @@ router bgp 65101
       neighbor baz default-originate route-map RM-FOO always
       neighbor baz additional-paths send ecmp limit 20
       no neighbor FOOBAR activate
+      neighbor FOOBAR1 activate
+      neighbor FOOBAR1 default-originate
+      neighbor FOOBAR2 activate
+      neighbor FOOBAR2 default-originate route-map RM-FOO
+      neighbor FOOBAR3 activate
+      neighbor FOOBAR3 default-originate always
       neighbor IPV6-UNDERLAY activate
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH in
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH out
