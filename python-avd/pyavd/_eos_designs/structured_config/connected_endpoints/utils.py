@@ -287,7 +287,7 @@ class UtilsMixin(Protocol):
         subinterface_item: EosCliConfigGen.PortChannelInterfacesItem,
         channel_group_id: int,
     ) -> EosCliConfigGen.PortChannelInterfacesItem:
-        """Return structured_config for one ethernet_interface or port_channel_interface (subinterface)."""
+        """Return structured_config for one port_channel_interface (subinterface)."""
         if (vlan_id := subinterface.vlan_id or subinterface.number) > 4094:
             msg = f"'vlan_id' must be set for subinterface '{subinterface_item.name}' since the subinterface number is above 4094."
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
