@@ -40,7 +40,7 @@ class UtilsMixin(Protocol):
         underlay_links = self.facts.uplinks._deepcopy()
 
         for uplink in underlay_links:
-            uplink.sflow_enabled = self.structured_config_utils.get_interface_sflow(uplink.interface, self.inputs.fabric_sflow.uplinks)
+            uplink.sflow_enabled = self._get_sflow(uplink.interface, self.inputs.fabric_sflow.uplinks)
             uplink.flow_tracking = self.inputs.fabric_flow_tracking.uplinks
             if not self.shared_utils.platform_settings.feature_support.ptp:
                 uplink.ptp.enable = False
@@ -82,7 +82,7 @@ class UtilsMixin(Protocol):
                     underlay_multicast_pim_sm=uplink.underlay_multicast_pim_sm,
                     underlay_multicast_static=uplink.underlay_multicast_static,
                     ipv6_enable=uplink.ipv6_enable,
-                    sflow_enabled=self.structured_config_utils.get_interface_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
+                    sflow_enabled=self._get_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
                     ethernet_structured_config=uplink.peer_ethernet_structured_config,
@@ -311,6 +311,21 @@ class UtilsMixin(Protocol):
             interface_ip=interface_ip,
             peer_ip=interface.peer_ip,
         )
+
+    def _get_sflow(self: AvdStructuredConfigUnderlayProtocol, interface: str, configured_sflow: bool | None) -> bool | None:
+        """
+        Get the configured sFlow state if the interface supports it based on platform settings.
+
+        Considers global sFlow support and specific support for subinterfaces.
+
+        Returns:
+            The configured_sflow value if supported, otherwise None.
+        """
+        sflow_supported_on_interface = self.shared_utils.platform_settings.feature_support.sflow and (
+            "." not in interface or self.shared_utils.platform_settings.feature_support.sflow_subinterfaces
+        )
+
+        return configured_sflow if sflow_supported_on_interface else None
 
     @cached_property
     def _underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
