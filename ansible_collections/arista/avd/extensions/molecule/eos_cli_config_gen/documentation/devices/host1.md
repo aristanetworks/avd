@@ -5105,10 +5105,10 @@ interface Ethernet3
    ptp enable
    ptp delay-mechanism e2e
    ptp role dynamic
-   ptp region domain-number 25
    ptp sync-message interval 1
    ptp transport layer2
    ptp vlan 2
+   ptp region domain-number 25
    no priority-flow-control
    spanning-tree guard root
    spanning-tree bpduguard rate-limit disable
@@ -5233,10 +5233,10 @@ interface Ethernet7
    ptp delay-mechanism p2p
    ptp delay-req interval 20
    ptp role master
-   ptp region domain-number 56
    ptp sync-message interval 5
    ptp transport layer2
    ptp vlan all
+   ptp region domain-number 56
    service-profile QoS
    qos trust cos
    qos cos 5

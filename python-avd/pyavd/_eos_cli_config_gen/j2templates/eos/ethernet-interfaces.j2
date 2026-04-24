@@ -706,9 +706,6 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ptp.role is arista.avd.defined %}
    ptp role {{ ethernet_interface.ptp.role }}
 {%     endif %}
-{%     if ethernet_interface.ptp.region.domain_number is arista.avd.defined %}
-   ptp region domain-number {{ ethernet_interface.ptp.region.domain_number }}
-{%     endif %}
 {%     if ethernet_interface.ptp.sync_message.interval is arista.avd.defined %}
    ptp sync-message interval {{ ethernet_interface.ptp.sync_message.interval }}
 {%     endif %}
@@ -717,6 +714,9 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.ptp.vlan is arista.avd.defined %}
    ptp vlan {{ ethernet_interface.ptp.vlan }}
+{%     endif %}
+{%     if ethernet_interface.ptp.region.domain_number is arista.avd.defined %}
+   ptp region domain-number {{ ethernet_interface.ptp.region.domain_number }}
 {%     endif %}
 {%     if ethernet_interface.service_policy.qos.input is arista.avd.defined %}
    service-policy type qos input {{ ethernet_interface.service_policy.qos.input }}
