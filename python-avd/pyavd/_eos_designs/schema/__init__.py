@@ -3158,15 +3158,13 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 subinterfaces: Subinterfaces
                 """
-                Port-Channel L2 Subinterfaces
+                Port-Channel L2 Subinterfaces.
                 Subinterfaces are only supported on routed port-channels, which means
                 they cannot be configured on MLAG port-channels.
-                The parent Port-Channel interface is automatically
-                created if not defined elsewhere.
-                Setting short_esi: auto generates the short_esi automatically
-                using a hash of configuration elements.
-                Please see the notes under "EVPN A/A ESI dual-attached
-                endpoint scenario" before setting short_esi: auto.
+                Setting short_esi: auto generates the short_esi
+                automatically using a hash of configuration elements.
+                Please see the notes under "EVPN A/A ESI dual-
+                attached endpoint scenario" before setting short_esi: auto.
 
 
                 Subclass of AvdIndexedList with
@@ -3257,15 +3255,13 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of AvdModel.
                             subinterfaces:
-                               Port-Channel L2 Subinterfaces
+                               Port-Channel L2 Subinterfaces.
                                Subinterfaces are only supported on routed port-channels, which means
                                they cannot be configured on MLAG port-channels.
-                               The parent Port-Channel interface is automatically
-                               created if not defined elsewhere.
-                               Setting short_esi: auto generates the short_esi automatically
-                               using a hash of configuration elements.
-                               Please see the notes under "EVPN A/A ESI dual-attached
-                               endpoint scenario" before setting short_esi: auto.
+                               Setting short_esi: auto generates the short_esi
+                               automatically using a hash of configuration elements.
+                               Please see the notes under "EVPN A/A ESI dual-
+                               attached endpoint scenario" before setting short_esi: auto.
 
 
                                Subclass of AvdIndexedList with
@@ -24738,15 +24734,13 @@ class EosDesigns(EosDesignsRootModel):
             """
             subinterfaces: Subinterfaces
             """
-            Port-Channel L2 Subinterfaces
+            Port-Channel L2 Subinterfaces.
             Subinterfaces are only supported on routed port-channels, which means
             they cannot be configured on MLAG port-channels.
-            The parent Port-Channel interface is automatically
-            created if not defined elsewhere.
-            Setting short_esi: auto generates the short_esi automatically
-            using a hash of configuration elements.
-            Please see the notes under "EVPN A/A ESI dual-attached
-            endpoint scenario" before setting short_esi: auto.
+            Setting short_esi: auto generates the short_esi
+            automatically using a hash of configuration elements.
+            Please see the notes under "EVPN A/A ESI dual-
+            attached endpoint scenario" before setting short_esi: auto.
 
 
             Subclass of AvdIndexedList with
@@ -24837,15 +24831,13 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         subinterfaces:
-                           Port-Channel L2 Subinterfaces
+                           Port-Channel L2 Subinterfaces.
                            Subinterfaces are only supported on routed port-channels, which means
                            they cannot be configured on MLAG port-channels.
-                           The parent Port-Channel interface is automatically
-                           created if not defined elsewhere.
-                           Setting short_esi: auto generates the short_esi automatically
-                           using a hash of configuration elements.
-                           Please see the notes under "EVPN A/A ESI dual-attached
-                           endpoint scenario" before setting short_esi: auto.
+                           Setting short_esi: auto generates the short_esi
+                           automatically using a hash of configuration elements.
+                           Please see the notes under "EVPN A/A ESI dual-
+                           attached endpoint scenario" before setting short_esi: auto.
 
 
                            Subclass of AvdIndexedList with
@@ -29676,15 +29668,13 @@ class EosDesigns(EosDesignsRootModel):
             """
             subinterfaces: Subinterfaces
             """
-            Port-Channel L2 Subinterfaces
+            Port-Channel L2 Subinterfaces.
             Subinterfaces are only supported on routed port-channels, which means
             they cannot be configured on MLAG port-channels.
-            The parent Port-Channel interface is automatically
-            created if not defined elsewhere.
-            Setting short_esi: auto generates the short_esi automatically
-            using a hash of configuration elements.
-            Please see the notes under "EVPN A/A ESI dual-attached
-            endpoint scenario" before setting short_esi: auto.
+            Setting short_esi: auto generates the short_esi
+            automatically using a hash of configuration elements.
+            Please see the notes under "EVPN A/A ESI dual-
+            attached endpoint scenario" before setting short_esi: auto.
 
 
             Subclass of AvdIndexedList with
@@ -29775,15 +29765,13 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         subinterfaces:
-                           Port-Channel L2 Subinterfaces
+                           Port-Channel L2 Subinterfaces.
                            Subinterfaces are only supported on routed port-channels, which means
                            they cannot be configured on MLAG port-channels.
-                           The parent Port-Channel interface is automatically
-                           created if not defined elsewhere.
-                           Setting short_esi: auto generates the short_esi automatically
-                           using a hash of configuration elements.
-                           Please see the notes under "EVPN A/A ESI dual-attached
-                           endpoint scenario" before setting short_esi: auto.
+                           Setting short_esi: auto generates the short_esi
+                           automatically using a hash of configuration elements.
+                           Please see the notes under "EVPN A/A ESI dual-
+                           attached endpoint scenario" before setting short_esi: auto.
 
 
                            Subclass of AvdIndexedList with
@@ -58049,15 +58037,13 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         subinterfaces: Subinterfaces
                         """
-                        Port-Channel L2 Subinterfaces
+                        Port-Channel L2 Subinterfaces.
                         Subinterfaces are only supported on routed port-channels, which means
                         they cannot be configured on MLAG port-channels.
-                        The parent Port-Channel interface is automatically
-                        created if not defined elsewhere.
-                        Setting short_esi: auto generates the short_esi automatically
-                        using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-attached
-                        endpoint scenario" before setting short_esi: auto.
+                        Setting short_esi: auto generates the short_esi
+                        automatically using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-
+                        attached endpoint scenario" before setting short_esi: auto.
 
 
                         Subclass of AvdIndexedList with
@@ -58148,15 +58134,13 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     subinterfaces:
-                                       Port-Channel L2 Subinterfaces
+                                       Port-Channel L2 Subinterfaces.
                                        Subinterfaces are only supported on routed port-channels, which means
                                        they cannot be configured on MLAG port-channels.
-                                       The parent Port-Channel interface is automatically
-                                       created if not defined elsewhere.
-                                       Setting short_esi: auto generates the short_esi automatically
-                                       using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-attached
-                                       endpoint scenario" before setting short_esi: auto.
+                                       Setting short_esi: auto generates the short_esi
+                                       automatically using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-
+                                       attached endpoint scenario" before setting short_esi: auto.
 
 
                                        Subclass of AvdIndexedList with
@@ -59890,15 +59874,13 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         subinterfaces: Subinterfaces
                         """
-                        Port-Channel L2 Subinterfaces
+                        Port-Channel L2 Subinterfaces.
                         Subinterfaces are only supported on routed port-channels, which means
                         they cannot be configured on MLAG port-channels.
-                        The parent Port-Channel interface is automatically
-                        created if not defined elsewhere.
-                        Setting short_esi: auto generates the short_esi automatically
-                        using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-attached
-                        endpoint scenario" before setting short_esi: auto.
+                        Setting short_esi: auto generates the short_esi
+                        automatically using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-
+                        attached endpoint scenario" before setting short_esi: auto.
 
 
                         Subclass of AvdIndexedList with
@@ -59989,15 +59971,13 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     subinterfaces:
-                                       Port-Channel L2 Subinterfaces
+                                       Port-Channel L2 Subinterfaces.
                                        Subinterfaces are only supported on routed port-channels, which means
                                        they cannot be configured on MLAG port-channels.
-                                       The parent Port-Channel interface is automatically
-                                       created if not defined elsewhere.
-                                       Setting short_esi: auto generates the short_esi automatically
-                                       using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-attached
-                                       endpoint scenario" before setting short_esi: auto.
+                                       Setting short_esi: auto generates the short_esi
+                                       automatically using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-
+                                       attached endpoint scenario" before setting short_esi: auto.
 
 
                                        Subclass of AvdIndexedList with

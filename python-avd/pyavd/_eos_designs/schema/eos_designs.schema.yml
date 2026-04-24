@@ -7435,13 +7435,10 @@ $defs:
           subinterfaces:
             type: list
             primary_key: number
-            description: 'Port-Channel L2 Subinterfaces
+            description: 'Port-Channel L2 Subinterfaces.
 
               Subinterfaces are only supported on routed port-channels, which means
               they cannot be configured on MLAG port-channels.
-
-              The parent Port-Channel interface is automatically created if not defined
-              elsewhere.
 
               Setting short_esi: auto generates the short_esi automatically using
               a hash of configuration elements.
