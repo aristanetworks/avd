@@ -7,13 +7,13 @@ import re
 from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import AvdStringFormatter, Undefined, UndefinedType, get_v2, short_esi_to_route_target, strip_null_from_data
 
 if TYPE_CHECKING:
     from typing import TypeVar
 
-    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
     from pyavd._eos_designs.schema import EosDesigns
 
     from . import AvdStructuredConfigConnectedEndpointsProtocol
@@ -323,7 +323,7 @@ class UtilsMixin(Protocol):
             )
 
         if subinterface.structured_config:
-            if isinstance(subinterface, EosCliConfigGen.PortChannelInterfacesItem):
+            if isinstance(subinterface_item, EosCliConfigGen.PortChannelInterfacesItem):
                 self.custom_structured_configs.nested.port_channel_interfaces.obtain(subinterface_item.name)._deepmerge(
                     subinterface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                 )
