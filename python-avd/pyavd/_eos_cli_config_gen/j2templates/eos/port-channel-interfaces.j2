@@ -559,6 +559,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ptp.role is arista.avd.defined %}
    ptp role {{ port_channel_interface.ptp.role }}
 {%     endif %}
+{%     if etherneport_channel_interfacet_interface.ptp.region.domain_number is arista.avd.defined %}
+   ptp region domain-number {{ port_channel_interface.ptp.region.domain_number }}
+{%     endif %}
 {%     if port_channel_interface.ptp.sync_message.interval is arista.avd.defined %}
    ptp sync-message interval {{ port_channel_interface.ptp.sync_message.interval }}
 {%     endif %}

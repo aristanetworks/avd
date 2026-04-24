@@ -295,6 +295,8 @@ ethernet_interfaces:
     ptp:
       enable: true
       delay_mechanism: e2e
+      region:
+        domain_number: 25
       sync_message:
         interval: 1
       role: dynamic
@@ -470,6 +472,8 @@ ethernet_interfaces:
         timeout: 30
       delay_req: 20
       delay_mechanism: p2p
+      region:
+        domain_number: 56
       sync_message:
         interval: 5
       role: master
