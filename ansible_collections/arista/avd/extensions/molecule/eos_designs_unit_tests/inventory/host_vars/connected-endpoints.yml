@@ -275,7 +275,7 @@ servers:
         switch_ports: [Ethernet43, Ethernet44]
         profile: ADDRESS_LOCKING_PROFILE
         mode: access
-        vlans: 111
+        vlans: 112
         port_channel:
           mode: active
           channel_id: 43
