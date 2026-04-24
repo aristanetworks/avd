@@ -269,6 +269,16 @@ servers:
         profile: ADDRESS_LOCKING_PROFILE
         mode: access
         vlans: 111
+  - name: ADDRESS_LOCKING_PC_SERVER
+    adapters:
+      - switches: [connected-endpoints, connected-endpoints]
+        switch_ports: [Ethernet43, Ethernet44]
+        profile: ADDRESS_LOCKING_PROFILE
+        mode: access
+        vlans: 111
+        port_channel:
+          mode: active
+          channel_id: 43
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
