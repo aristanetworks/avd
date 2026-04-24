@@ -2152,6 +2152,9 @@ keys:
 
           Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
+      ip_hosts:
+        type: list
+        $ref: eos_cli_config_gen#/keys/ip_hosts
   dot1x_settings:
     documentation_options:
       table: dot1x-settings

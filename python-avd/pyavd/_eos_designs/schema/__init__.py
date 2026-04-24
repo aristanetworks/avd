@@ -17369,6 +17369,7 @@ class EosDesigns(EosDesignsRootModel):
             "servers": {"type": Servers},
             "vrfs": {"type": Vrfs},
             "set_source_interfaces": {"type": bool, "default": True},
+            "ip_hosts": {"type": EosCliConfigGen.IpHosts},
         }
         domain: str | None
         """DNS domain name like 'fabric.local'"""
@@ -17391,6 +17392,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
+        ip_hosts: EosCliConfigGen.IpHosts
 
         if TYPE_CHECKING:
 
@@ -17402,6 +17404,7 @@ class EosDesigns(EosDesignsRootModel):
                 servers: Servers | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 set_source_interfaces: bool | UndefinedType = Undefined,
+                ip_hosts: EosCliConfigGen.IpHosts | UndefinedType = Undefined,
             ) -> None:
                 """
                 DnsSettings.
@@ -17422,6 +17425,7 @@ class EosDesigns(EosDesignsRootModel):
                        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
                        Can be set to `false` to avoid changes when
                        migrating from the old `name_servers` model.
+                    ip_hosts: ip_hosts
 
                 """
 
