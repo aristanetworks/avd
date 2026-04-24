@@ -9739,7 +9739,8 @@ keys:
       cv_use_static_config_manifest:
         type: bool
         default: false
-        description: 'PREVIEW: This key is in preview mode.
+        description: 'PREVIEW: This option is marked as "preview", meaning the data
+          models or generated configuration can change at any time.
 
 
           When set to `true`, the device configuration is expected to be deployed

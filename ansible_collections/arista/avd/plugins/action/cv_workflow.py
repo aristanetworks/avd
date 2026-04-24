@@ -203,15 +203,15 @@ class ActionModule(ActionBase):
                 configlet_name_template=get(validated_args, "configlet_name_template"),
             )
 
+            # Extract to individual list objects to maintain the same Ansible result.
+            eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = extract_from_device_deployments(device_deployments)
+
             # Build Static Config Studio manifest if necessary.
             static_config_manifest = AvdManifest.from_dict(validated_args["static_config_manifest"]) if "static_config_manifest" in validated_args else None
 
             # Add return data if relevant.
             if validated_args["return_details"]:
                 # Objects are converted to JSON compatible dicts.
-                eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = extract_from_device_deployments(
-                    device_deployments
-                )
                 result.update(
                     cloudvision={
                         **asdict(cloudvision),
@@ -228,7 +228,10 @@ class ActionModule(ActionBase):
             # Check if there is anything to deploy.
             work_to_do = any(
                 [
-                    device_deployments,
+                    eos_config_objects,
+                    device_tag_objects,
+                    interface_tag_objects,
+                    cv_pathfinder_metadata_objects,
                     static_config_manifest,
                 ]
             )

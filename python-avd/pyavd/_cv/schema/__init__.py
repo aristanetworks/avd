@@ -122,14 +122,15 @@ class CvDeploy(AvdModel):
         """Metadata used for CV Pathfinder visualization on CloudVision."""
         cv_use_static_config_manifest: bool
         """
-        PREVIEW: This key is in preview mode.
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
 
-        When set to `true`, the device configuration is expected to
-        be deployed via the
+        When set to `true`, the device configuration is expected to be deployed via the
         `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
-        flat "AVD Configurations" layout in the Static Configlet Studio.
-        The device will still be verified
-        and onboarded in the Inventory & Topology Studio.
+        flat "AVD
+        Configurations" layout in the Static Configlet Studio.
+        The device will still be verified and
+        onboarded in the Inventory & Topology Studio.
 
         Default value: `False`
         """
@@ -161,14 +162,15 @@ class CvDeploy(AvdModel):
                     cv_tags: cv_tags
                     cv_pathfinder: Metadata used for CV Pathfinder visualization on CloudVision.
                     cv_use_static_config_manifest:
-                       PREVIEW: This key is in preview mode.
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
 
-                       When set to `true`, the device configuration is expected to
-                       be deployed via the
+                       When set to `true`, the device configuration is expected to be deployed via the
                        `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
-                       flat "AVD Configurations" layout in the Static Configlet Studio.
-                       The device will still be verified
-                       and onboarded in the Inventory & Topology Studio.
+                       flat "AVD
+                       Configurations" layout in the Static Configlet Studio.
+                       The device will still be verified and
+                       onboarded in the Inventory & Topology Studio.
 
                 """
 
@@ -235,14 +237,15 @@ class CvDeploy(AvdModel):
     """Metadata used for CV Pathfinder visualization on CloudVision."""
     cv_use_static_config_manifest: bool
     """
-    PREVIEW: This key is in preview mode.
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
 
-    When set to `true`, the device configuration is expected to
-    be deployed via the
+    When set to `true`, the device configuration is expected to be deployed via the
     `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
-    flat "AVD Configurations" layout in the Static Configlet Studio.
-    The device will still be verified
-    and onboarded in the Inventory & Topology Studio.
+    flat "AVD
+    Configurations" layout in the Static Configlet Studio.
+    The device will still be verified and
+    onboarded in the Inventory & Topology Studio.
 
     Default value: `False`
     """
@@ -315,14 +318,15 @@ class CvDeploy(AvdModel):
                    with `CvInterfaceTagsItem` items.
                 cv_pathfinder_metadata: Metadata used for CV Pathfinder visualization on CloudVision.
                 cv_use_static_config_manifest:
-                   PREVIEW: This key is in preview mode.
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
 
-                   When set to `true`, the device configuration is expected to
-                   be deployed via the
+                   When set to `true`, the device configuration is expected to be deployed via the
                    `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
-                   flat "AVD Configurations" layout in the Static Configlet Studio.
-                   The device will still be verified
-                   and onboarded in the Inventory & Topology Studio.
+                   flat "AVD
+                   Configurations" layout in the Static Configlet Studio.
+                   The device will still be verified and
+                   onboarded in the Inventory & Topology Studio.
                 metadata:
                    Metadata from the `eos_designs` role, loaded automatically from structured configs.
                    For standalone
