@@ -154,6 +154,12 @@ keys:
                     Any other string will be used directly as the VRF name."
                   convert_types:
                   - int
+                timeout:
+                  type: int
+                  $ref: eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/timeout
+                retransmit:
+                  type: int
+                  $ref: eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/retransmit
                 key:
                   type: str
                   description: 'Encrypted type-7 key.
@@ -2139,6 +2145,9 @@ keys:
 
           Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
+      ip_hosts:
+        type: list
+        $ref: eos_cli_config_gen#/keys/ip_hosts
   dot1x_settings:
     documentation_options:
       table: dot1x-settings

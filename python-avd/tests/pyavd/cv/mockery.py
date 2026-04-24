@@ -135,6 +135,9 @@ async def recording_unary_stream(
         # Write messages together with stringified exception if some messages were recorded prior to exception
         if messages_as_json:
             recording_file.write_text(f"[{', '.join(messages_as_json)}]")
+        # No messages were received. Write an empty list
+        else:
+            recording_file.write_text("[]")
 
 
 async def playback_unary_unary(
