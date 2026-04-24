@@ -323,8 +323,8 @@ class UtilsMixin(Protocol):
             )
 
         if subinterface.structured_config and isinstance(subinterface_item, EosCliConfigGen.PortChannelInterfacesItem):
-                self.custom_structured_configs.nested.port_channel_interfaces.obtain(subinterface_item.name)._deepmerge(
-                    subinterface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-                )
+            self.custom_structured_configs.nested.port_channel_interfaces.obtain(subinterface_item.name)._deepmerge(
+                subinterface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+            )
 
         return strip_null_from_data(subinterface_item, strip_values_tuple=(None, ""))
