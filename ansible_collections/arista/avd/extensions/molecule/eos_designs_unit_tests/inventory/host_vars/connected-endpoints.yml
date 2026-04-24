@@ -115,6 +115,7 @@ servers:
             - number: 100
             - number: 200
               vlan_id: 200
+              description: "{subinterface}-{subinterface_number}-{vlan_id}-{dot1q_client_vlan}-{endpoint_type}-{endpoint}"
   - name: OLD_SW-1/12
     adapters:
       - switches: [connected-endpoints]

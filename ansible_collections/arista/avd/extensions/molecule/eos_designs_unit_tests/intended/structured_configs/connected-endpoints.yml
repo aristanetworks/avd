@@ -676,6 +676,7 @@ port_channel_interfaces:
       encapsulation: client
   vlan_id: 100
 - name: Port-Channel20.200
+  description: Port-Channel20.200-200-200-200-custom_server-OLD_SW-1/9
   encapsulation_vlan:
     client:
       encapsulation: dot1q

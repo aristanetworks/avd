@@ -1,0 +1,31 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: invalid-vlan-id-on-port-channel-subinterface
+      platform: 720XP
+      link_tracking:
+        enabled: true
+      filter:
+        only_vlans_in_use: true
+      mgmt_ip: 192.168.1.2
+
+servers:
+  # port-channel provide physical and port-channel descriptions as templates with all fields
+  - name: OLD_SW-1/2
+    adapters:
+      - switches: [invalid-vlan-id-on-port-channel-subinterface, invalid-vlan-id-on-port-channel-subinterface]
+        switch_ports: [Ethernet1, Ethernet2]
+        endpoint_ports: [Endpoint_port1, ENDPOINT_PORT2]
+        description: "Interface description {interface} {endpoint_type}_{endpoint}{endpoint_port?<_!u}"
+        port_channel:
+          mode: "active"
+          description: "Port channel description {interface} {endpoint_type}_{endpoint}_Po{port_channel_id}_{endpoint_port_channel}_{adapter_description!u}"
+          endpoint_port_channel: ENDPOINT_PORT_CHANNEL
+          subinterfaces:
+            - number: 10000
+              description: subinterface number greater that 4094
+
+expected_error_message: >-
+  'vlan_id' must be set for subinterface 'Port-Channel1.10000' since the subinterface number is above 4094.

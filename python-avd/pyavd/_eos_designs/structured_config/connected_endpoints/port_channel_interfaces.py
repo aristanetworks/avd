@@ -55,9 +55,6 @@ class PortChannelInterfacesMixin(Protocol):
                     )
 
                 for subinterface in adapter.port_channel.subinterfaces:
-                    if not subinterface.number:
-                        continue
-
                     port_channel_subinterface_name = f"Port-Channel{channel_group_id}.{subinterface.number}"
 
                     self.structured_config_utils.parent_interfaces_tracker.register_port_channel_subinterface(port_channel_subinterface_name)

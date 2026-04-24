@@ -2964,6 +2964,24 @@ class EosDesigns(EosDesignsRootModel):
                     number: int
                     """Subinterface number."""
                     description: str | None
+                    """
+                    Description for subinterface.
+                    This can be a template using the AVD string formatter syntax:
+                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                    descriptions-names.html#avd-string-formatter-syntax.
+                    The available template fields are:
+                      -
+                    `subinterface` - The full subinterface name.
+                      - `subinterface_number` - The number for the
+                    subinterface.
+                      - `vlan_id` - The VLAN ID bridged to this subinterface.
+                      - `dot1q_client_vlan` -
+                    The Client VLAN ID encapsulation.
+                      - `endpoint_type` - The `type` of the connected endpoint either
+                    set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                      -
+                    `endpoint` - The name of the connected endpoint
+                    """
                     short_esi: str | None
                     """
                     In format xxxx:xxxx:xxxx or "auto".
@@ -3011,7 +3029,23 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 number: Subinterface number.
-                                description: description
+                                description:
+                                   Description for subinterface.
+                                   This can be a template using the AVD string formatter syntax:
+                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                   descriptions-names.html#avd-string-formatter-syntax.
+                                   The available template fields are:
+                                     -
+                                   `subinterface` - The full subinterface name.
+                                     - `subinterface_number` - The number for the
+                                   subinterface.
+                                     - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                     - `dot1q_client_vlan` -
+                                   The Client VLAN ID encapsulation.
+                                     - `endpoint_type` - The `type` of the connected endpoint either
+                                   set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                     -
+                                   `endpoint` - The name of the connected endpoint
                                 short_esi:
                                    In format xxxx:xxxx:xxxx or "auto".
                                    Required for multihomed port-channels with subinterfaces.
@@ -24510,6 +24544,24 @@ class EosDesigns(EosDesignsRootModel):
                 number: int
                 """Subinterface number."""
                 description: str | None
+                """
+                Description for subinterface.
+                This can be a template using the AVD string formatter syntax:
+                https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                descriptions-names.html#avd-string-formatter-syntax.
+                The available template fields are:
+                  -
+                `subinterface` - The full subinterface name.
+                  - `subinterface_number` - The number for the
+                subinterface.
+                  - `vlan_id` - The VLAN ID bridged to this subinterface.
+                  - `dot1q_client_vlan` -
+                The Client VLAN ID encapsulation.
+                  - `endpoint_type` - The `type` of the connected endpoint either
+                set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                  -
+                `endpoint` - The name of the connected endpoint
+                """
                 short_esi: str | None
                 """
                 In format xxxx:xxxx:xxxx or "auto".
@@ -24557,7 +24609,23 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             number: Subinterface number.
-                            description: description
+                            description:
+                               Description for subinterface.
+                               This can be a template using the AVD string formatter syntax:
+                               https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                               descriptions-names.html#avd-string-formatter-syntax.
+                               The available template fields are:
+                                 -
+                               `subinterface` - The full subinterface name.
+                                 - `subinterface_number` - The number for the
+                               subinterface.
+                                 - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                 - `dot1q_client_vlan` -
+                               The Client VLAN ID encapsulation.
+                                 - `endpoint_type` - The `type` of the connected endpoint either
+                               set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                 -
+                               `endpoint` - The name of the connected endpoint
                             short_esi:
                                In format xxxx:xxxx:xxxx or "auto".
                                Required for multihomed port-channels with subinterfaces.
@@ -29414,6 +29482,24 @@ class EosDesigns(EosDesignsRootModel):
                 number: int
                 """Subinterface number."""
                 description: str | None
+                """
+                Description for subinterface.
+                This can be a template using the AVD string formatter syntax:
+                https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                descriptions-names.html#avd-string-formatter-syntax.
+                The available template fields are:
+                  -
+                `subinterface` - The full subinterface name.
+                  - `subinterface_number` - The number for the
+                subinterface.
+                  - `vlan_id` - The VLAN ID bridged to this subinterface.
+                  - `dot1q_client_vlan` -
+                The Client VLAN ID encapsulation.
+                  - `endpoint_type` - The `type` of the connected endpoint either
+                set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                  -
+                `endpoint` - The name of the connected endpoint
+                """
                 short_esi: str | None
                 """
                 In format xxxx:xxxx:xxxx or "auto".
@@ -29461,7 +29547,23 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             number: Subinterface number.
-                            description: description
+                            description:
+                               Description for subinterface.
+                               This can be a template using the AVD string formatter syntax:
+                               https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                               descriptions-names.html#avd-string-formatter-syntax.
+                               The available template fields are:
+                                 -
+                               `subinterface` - The full subinterface name.
+                                 - `subinterface_number` - The number for the
+                               subinterface.
+                                 - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                 - `dot1q_client_vlan` -
+                               The Client VLAN ID encapsulation.
+                                 - `endpoint_type` - The `type` of the connected endpoint either
+                               set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                 -
+                               `endpoint` - The name of the connected endpoint
                             short_esi:
                                In format xxxx:xxxx:xxxx or "auto".
                                Required for multihomed port-channels with subinterfaces.
@@ -57753,6 +57855,24 @@ class EosDesigns(EosDesignsRootModel):
                             number: int
                             """Subinterface number."""
                             description: str | None
+                            """
+                            Description for subinterface.
+                            This can be a template using the AVD string formatter syntax:
+                            https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                            descriptions-names.html#avd-string-formatter-syntax.
+                            The available template fields are:
+                              -
+                            `subinterface` - The full subinterface name.
+                              - `subinterface_number` - The number for the
+                            subinterface.
+                              - `vlan_id` - The VLAN ID bridged to this subinterface.
+                              - `dot1q_client_vlan` -
+                            The Client VLAN ID encapsulation.
+                              - `endpoint_type` - The `type` of the connected endpoint either
+                            set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                              -
+                            `endpoint` - The name of the connected endpoint
+                            """
                             short_esi: str | None
                             """
                             In format xxxx:xxxx:xxxx or "auto".
@@ -57800,7 +57920,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         number: Subinterface number.
-                                        description: description
+                                        description:
+                                           Description for subinterface.
+                                           This can be a template using the AVD string formatter syntax:
+                                           https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                           descriptions-names.html#avd-string-formatter-syntax.
+                                           The available template fields are:
+                                             -
+                                           `subinterface` - The full subinterface name.
+                                             - `subinterface_number` - The number for the
+                                           subinterface.
+                                             - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                             - `dot1q_client_vlan` -
+                                           The Client VLAN ID encapsulation.
+                                             - `endpoint_type` - The `type` of the connected endpoint either
+                                           set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                             -
+                                           `endpoint` - The name of the connected endpoint
                                         short_esi:
                                            In format xxxx:xxxx:xxxx or "auto".
                                            Required for multihomed port-channels with subinterfaces.
@@ -59560,6 +59696,24 @@ class EosDesigns(EosDesignsRootModel):
                             number: int
                             """Subinterface number."""
                             description: str | None
+                            """
+                            Description for subinterface.
+                            This can be a template using the AVD string formatter syntax:
+                            https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                            descriptions-names.html#avd-string-formatter-syntax.
+                            The available template fields are:
+                              -
+                            `subinterface` - The full subinterface name.
+                              - `subinterface_number` - The number for the
+                            subinterface.
+                              - `vlan_id` - The VLAN ID bridged to this subinterface.
+                              - `dot1q_client_vlan` -
+                            The Client VLAN ID encapsulation.
+                              - `endpoint_type` - The `type` of the connected endpoint either
+                            set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                              -
+                            `endpoint` - The name of the connected endpoint
+                            """
                             short_esi: str | None
                             """
                             In format xxxx:xxxx:xxxx or "auto".
@@ -59607,7 +59761,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         number: Subinterface number.
-                                        description: description
+                                        description:
+                                           Description for subinterface.
+                                           This can be a template using the AVD string formatter syntax:
+                                           https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                           descriptions-names.html#avd-string-formatter-syntax.
+                                           The available template fields are:
+                                             -
+                                           `subinterface` - The full subinterface name.
+                                             - `subinterface_number` - The number for the
+                                           subinterface.
+                                             - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                             - `dot1q_client_vlan` -
+                                           The Client VLAN ID encapsulation.
+                                             - `endpoint_type` - The `type` of the connected endpoint either
+                                           set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                             -
+                                           `endpoint` - The name of the connected endpoint
                                         short_esi:
                                            In format xxxx:xxxx:xxxx or "auto".
                                            Required for multihomed port-channels with subinterfaces.

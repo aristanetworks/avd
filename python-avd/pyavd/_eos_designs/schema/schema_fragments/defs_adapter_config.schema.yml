@@ -392,6 +392,16 @@ $defs:
                   description: Subinterface number.
                 description:
                   type: str
+                  description: |-
+                    Description for subinterface.
+                    This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                    The available template fields are:
+                      - `subinterface` - The full subinterface name.
+                      - `subinterface_number` - The number for the subinterface.
+                      - `vlan_id` - The VLAN ID bridged to this subinterface.
+                      - `dot1q_client_vlan` - The Client VLAN ID encapsulation.
+                      - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                      - `endpoint` - The name of the connected endpoint
                 short_esi:
                   type: str
                   description: |
