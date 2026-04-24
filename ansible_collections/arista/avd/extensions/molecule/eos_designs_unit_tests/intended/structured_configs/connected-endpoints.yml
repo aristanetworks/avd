@@ -687,7 +687,7 @@ port_channel_interfaces:
   description: CUSTOM_SERVER_OLD_SW-1/12
   shutdown: false
   switchport:
-    enabled: false
+    enabled: true
 - name: Port-Channel12
   description: CUSTOM_SERVER_INDIVIDUAL_1_INDIVIDUAL_1
   shutdown: false

@@ -375,6 +375,7 @@ $defs:
                 description: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
           subinterfaces:
             type: list
+            primary_key: number
             description: |
               Port-Channel L2 Subinterfaces
               Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
@@ -389,6 +390,8 @@ $defs:
                   convert_types:
                     - str
                   description: Subinterface number.
+                description:
+                  type: str
                 short_esi:
                   type: str
                   description: |

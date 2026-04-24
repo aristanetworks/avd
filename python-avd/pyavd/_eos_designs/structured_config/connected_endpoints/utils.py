@@ -8,7 +8,7 @@ from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, UndefinedType, get_v2, short_esi_to_route_target
+from pyavd._utils import AvdStringFormatter, Undefined, UndefinedType, get_v2, short_esi_to_route_target, strip_null_from_data
 
 if TYPE_CHECKING:
     from typing import TypeVar
@@ -45,7 +45,7 @@ class UtilsMixin(Protocol):
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         channel_group_id: int,
-        port_channel_subif_short_esi: str | None = None,
+        subif_short_esi: str | None = None,
         hash_extra_value: str = "",
     ) -> str | None:
         """
@@ -56,7 +56,7 @@ class UtilsMixin(Protocol):
         if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
             return None
 
-        if (short_esi := (port_channel_subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
+        if (short_esi := (subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
             return None
 
         if len(set(adapter.switches)) < 2:
@@ -278,3 +278,54 @@ class UtilsMixin(Protocol):
                 return adapter.vlans
 
         return Undefined
+
+    def _get_subinterface_cfg(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        subinterface: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.PortChannel.SubinterfacesItem,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+        connected_endpoint: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem,
+        subinterface_item: EosCliConfigGen.PortChannelInterfacesItem,
+        channel_group_id: int,
+    ) -> EosCliConfigGen.PortChannelInterfacesItem:
+        """Return structured_config for one ethernet_interface or port_channel_interface (subinterface)."""
+        if (vlan_id := subinterface.vlan_id or subinterface.number) > 4094:
+            msg = f"'vlan_id' must be set for subinterface '{subinterface_item.name}' since the subinterface number is above 4094."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+        if (dot1q_client_vlan := subinterface.encapsulation_vlan.client_dot1q or subinterface.number) > 4094:
+            msg = f"'encapsulation_vlan.client_dot1q' must be set for subinterface '{subinterface_item.name}' since the subinterface number is above 4094."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
+        # Common interface settings
+        subinterface_item._update(
+            description=AvdStringFormatter().format(
+                subinterface.description,
+                subinterface=subinterface_item.name,
+                subinterface_number=subinterface.number,
+                vlan_id=vlan_id,
+                dot1q_client_vlan=dot1q_client_vlan,
+                endpoint_type=connected_endpoint.type,
+                endpoint=connected_endpoint.name,
+            )
+            if subinterface.description
+            else None,
+            vlan_id=vlan_id,
+            eos_cli=subinterface.raw_eos_cli,
+        )
+        subinterface_item.encapsulation_vlan.client._update(encapsulation="dot1q", vlan=dot1q_client_vlan)
+        subinterface_item.encapsulation_vlan.network.encapsulation = "client"
+
+        if (
+            short_esi := self._get_short_esi(adapter, channel_group_id, subif_short_esi=subinterface.short_esi, hash_extra_value=str(subinterface.number))
+        ) is not None:
+            subinterface_item.evpn_ethernet_segment._update(
+                identifier=f"{self.inputs.evpn_short_esi_prefix}{short_esi}",
+                route_target=short_esi_to_route_target(short_esi),
+            )
+
+        if subinterface.structured_config:
+            if isinstance(subinterface, EosCliConfigGen.PortChannelInterfacesItem):
+                self.custom_structured_configs.nested.port_channel_interfaces.obtain(subinterface_item.name)._deepmerge(
+                    subinterface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                )
+
+        return strip_null_from_data(subinterface_item, strip_values_tuple=(None, ""))

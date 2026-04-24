@@ -7434,6 +7434,7 @@ $defs:
                   EOS default is 3.
           subinterfaces:
             type: list
+            primary_key: number
             description: 'Port-Channel L2 Subinterfaces
 
               Subinterfaces are only supported on routed port-channels, which means
@@ -7457,6 +7458,8 @@ $defs:
                   convert_types:
                   - str
                   description: Subinterface number.
+                description:
+                  type: str
                 short_esi:
                   type: str
                   description: 'In format xxxx:xxxx:xxxx or "auto".

@@ -2954,14 +2954,16 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {
                         "number": {"type": int},
+                        "description": {"type": str},
                         "short_esi": {"type": str},
                         "vlan_id": {"type": int},
                         "encapsulation_vlan": {"type": EncapsulationVlan},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                     }
-                    number: int | None
+                    number: int
                     """Subinterface number."""
+                    description: str | None
                     short_esi: str | None
                     """
                     In format xxxx:xxxx:xxxx or "auto".
@@ -2993,7 +2995,8 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            number: int | None | UndefinedType = Undefined,
+                            number: int | UndefinedType = Undefined,
+                            description: str | None | UndefinedType = Undefined,
                             short_esi: str | None | UndefinedType = Undefined,
                             vlan_id: int | None | UndefinedType = Undefined,
                             encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -3008,6 +3011,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 number: Subinterface number.
+                                description: description
                                 short_esi:
                                    In format xxxx:xxxx:xxxx or "auto".
                                    Required for multihomed port-channels with subinterfaces.
@@ -3027,8 +3031,10 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
-                class Subinterfaces(AvdList[SubinterfacesItem]):
-                    """Subclass of AvdList with `SubinterfacesItem` items."""
+                class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                    """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                    _primary_key: ClassVar[str] = "number"
 
                 Subinterfaces._item_type = SubinterfacesItem
 
@@ -3129,8 +3135,8 @@ class EosDesigns(EosDesignsRootModel):
                 endpoint scenario" before setting short_esi: auto.
 
 
-                Subclass of AvdList with `SubinterfacesItem`
-                items.
+                Subclass of AvdIndexedList with
+                `SubinterfacesItem` items. Primary key is `number` (`int`).
                 """
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -3228,8 +3234,8 @@ class EosDesigns(EosDesignsRootModel):
                                endpoint scenario" before setting short_esi: auto.
 
 
-                               Subclass of AvdList with `SubinterfacesItem`
-                               items.
+                               Subclass of AvdIndexedList with
+                               `SubinterfacesItem` items. Primary key is `number` (`int`).
                             raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                             structured_config:
                                Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -24494,14 +24500,16 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {
                     "number": {"type": int},
+                    "description": {"type": str},
                     "short_esi": {"type": str},
                     "vlan_id": {"type": int},
                     "encapsulation_vlan": {"type": EncapsulationVlan},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                 }
-                number: int | None
+                number: int
                 """Subinterface number."""
+                description: str | None
                 short_esi: str | None
                 """
                 In format xxxx:xxxx:xxxx or "auto".
@@ -24533,7 +24541,8 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        number: int | None | UndefinedType = Undefined,
+                        number: int | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
                         short_esi: str | None | UndefinedType = Undefined,
                         vlan_id: int | None | UndefinedType = Undefined,
                         encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -24548,6 +24557,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             number: Subinterface number.
+                            description: description
                             short_esi:
                                In format xxxx:xxxx:xxxx or "auto".
                                Required for multihomed port-channels with subinterfaces.
@@ -24567,8 +24577,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class Subinterfaces(AvdList[SubinterfacesItem]):
-                """Subclass of AvdList with `SubinterfacesItem` items."""
+            class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                _primary_key: ClassVar[str] = "number"
 
             Subinterfaces._item_type = SubinterfacesItem
 
@@ -24669,8 +24681,8 @@ class EosDesigns(EosDesignsRootModel):
             endpoint scenario" before setting short_esi: auto.
 
 
-            Subclass of AvdList with `SubinterfacesItem`
-            items.
+            Subclass of AvdIndexedList with
+            `SubinterfacesItem` items. Primary key is `number` (`int`).
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -24768,8 +24780,8 @@ class EosDesigns(EosDesignsRootModel):
                            endpoint scenario" before setting short_esi: auto.
 
 
-                           Subclass of AvdList with `SubinterfacesItem`
-                           items.
+                           Subclass of AvdIndexedList with
+                           `SubinterfacesItem` items. Primary key is `number` (`int`).
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
                            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -29392,14 +29404,16 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {
                     "number": {"type": int},
+                    "description": {"type": str},
                     "short_esi": {"type": str},
                     "vlan_id": {"type": int},
                     "encapsulation_vlan": {"type": EncapsulationVlan},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                 }
-                number: int | None
+                number: int
                 """Subinterface number."""
+                description: str | None
                 short_esi: str | None
                 """
                 In format xxxx:xxxx:xxxx or "auto".
@@ -29431,7 +29445,8 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        number: int | None | UndefinedType = Undefined,
+                        number: int | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
                         short_esi: str | None | UndefinedType = Undefined,
                         vlan_id: int | None | UndefinedType = Undefined,
                         encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -29446,6 +29461,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             number: Subinterface number.
+                            description: description
                             short_esi:
                                In format xxxx:xxxx:xxxx or "auto".
                                Required for multihomed port-channels with subinterfaces.
@@ -29465,8 +29481,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class Subinterfaces(AvdList[SubinterfacesItem]):
-                """Subclass of AvdList with `SubinterfacesItem` items."""
+            class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                _primary_key: ClassVar[str] = "number"
 
             Subinterfaces._item_type = SubinterfacesItem
 
@@ -29567,8 +29585,8 @@ class EosDesigns(EosDesignsRootModel):
             endpoint scenario" before setting short_esi: auto.
 
 
-            Subclass of AvdList with `SubinterfacesItem`
-            items.
+            Subclass of AvdIndexedList with
+            `SubinterfacesItem` items. Primary key is `number` (`int`).
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -29666,8 +29684,8 @@ class EosDesigns(EosDesignsRootModel):
                            endpoint scenario" before setting short_esi: auto.
 
 
-                           Subclass of AvdList with `SubinterfacesItem`
-                           items.
+                           Subclass of AvdIndexedList with
+                           `SubinterfacesItem` items. Primary key is `number` (`int`).
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
                            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -57725,14 +57743,16 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "number": {"type": int},
+                                "description": {"type": str},
                                 "short_esi": {"type": str},
                                 "vlan_id": {"type": int},
                                 "encapsulation_vlan": {"type": EncapsulationVlan},
                                 "raw_eos_cli": {"type": str},
                                 "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             }
-                            number: int | None
+                            number: int
                             """Subinterface number."""
+                            description: str | None
                             short_esi: str | None
                             """
                             In format xxxx:xxxx:xxxx or "auto".
@@ -57764,7 +57784,8 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    number: int | None | UndefinedType = Undefined,
+                                    number: int | UndefinedType = Undefined,
+                                    description: str | None | UndefinedType = Undefined,
                                     short_esi: str | None | UndefinedType = Undefined,
                                     vlan_id: int | None | UndefinedType = Undefined,
                                     encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -57779,6 +57800,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         number: Subinterface number.
+                                        description: description
                                         short_esi:
                                            In format xxxx:xxxx:xxxx or "auto".
                                            Required for multihomed port-channels with subinterfaces.
@@ -57798,8 +57820,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Subinterfaces(AvdList[SubinterfacesItem]):
-                            """Subclass of AvdList with `SubinterfacesItem` items."""
+                        class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                            """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "number"
 
                         Subinterfaces._item_type = SubinterfacesItem
 
@@ -57900,8 +57924,8 @@ class EosDesigns(EosDesignsRootModel):
                         endpoint scenario" before setting short_esi: auto.
 
 
-                        Subclass of AvdList with `SubinterfacesItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `SubinterfacesItem` items. Primary key is `number` (`int`).
                         """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -57999,8 +58023,8 @@ class EosDesigns(EosDesignsRootModel):
                                        endpoint scenario" before setting short_esi: auto.
 
 
-                                       Subclass of AvdList with `SubinterfacesItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `SubinterfacesItem` items. Primary key is `number` (`int`).
                                     raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                                     structured_config:
                                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -59526,14 +59550,16 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "number": {"type": int},
+                                "description": {"type": str},
                                 "short_esi": {"type": str},
                                 "vlan_id": {"type": int},
                                 "encapsulation_vlan": {"type": EncapsulationVlan},
                                 "raw_eos_cli": {"type": str},
                                 "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             }
-                            number: int | None
+                            number: int
                             """Subinterface number."""
+                            description: str | None
                             short_esi: str | None
                             """
                             In format xxxx:xxxx:xxxx or "auto".
@@ -59565,7 +59591,8 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    number: int | None | UndefinedType = Undefined,
+                                    number: int | UndefinedType = Undefined,
+                                    description: str | None | UndefinedType = Undefined,
                                     short_esi: str | None | UndefinedType = Undefined,
                                     vlan_id: int | None | UndefinedType = Undefined,
                                     encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -59580,6 +59607,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         number: Subinterface number.
+                                        description: description
                                         short_esi:
                                            In format xxxx:xxxx:xxxx or "auto".
                                            Required for multihomed port-channels with subinterfaces.
@@ -59599,8 +59627,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Subinterfaces(AvdList[SubinterfacesItem]):
-                            """Subclass of AvdList with `SubinterfacesItem` items."""
+                        class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                            """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "number"
 
                         Subinterfaces._item_type = SubinterfacesItem
 
@@ -59701,8 +59731,8 @@ class EosDesigns(EosDesignsRootModel):
                         endpoint scenario" before setting short_esi: auto.
 
 
-                        Subclass of AvdList with `SubinterfacesItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `SubinterfacesItem` items. Primary key is `number` (`int`).
                         """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -59800,8 +59830,8 @@ class EosDesigns(EosDesignsRootModel):
                                        endpoint scenario" before setting short_esi: auto.
 
 
-                                       Subclass of AvdList with `SubinterfacesItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `SubinterfacesItem` items. Primary key is `number` (`int`).
                                     raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                                     structured_config:
                                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config

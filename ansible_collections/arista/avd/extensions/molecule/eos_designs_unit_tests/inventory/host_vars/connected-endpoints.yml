@@ -113,7 +113,6 @@ servers:
           mode: active
           subinterfaces:
             - number: 100
-            - short_esi: auto
             - number: 200
               vlan_id: 200
   - name: OLD_SW-1/12
@@ -123,8 +122,7 @@ servers:
         endpoint_ports: [Endpoint_port6]
         port_channel:
           mode: active
-          subinterfaces:
-            - short_esi: auto
+
   # port-channel with lacp fallback individual and profile for member interfaces
   - name: INDIVIDUAL_1
     adapters:
