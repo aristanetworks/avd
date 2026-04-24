@@ -63,6 +63,10 @@ class NodeTypeMixin(Protocol):
         underlay_router set based on
         node_type_keys.<node_type_key>.underlay_router.
         """
+        if self.inputs.avd_design_future.raise_for_underlay_router_with_port_channel_uplink and self.uplink_type == "port-channel":
+            msg = "'underlay_router: true' is not supported with 'uplink_type: port-channel'."
+            raise AristaAvdInvalidInputsError(msg)
+
         return self.node_type_key_data.underlay_router
 
     @cached_property
