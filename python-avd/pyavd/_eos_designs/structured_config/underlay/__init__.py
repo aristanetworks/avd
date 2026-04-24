@@ -19,6 +19,7 @@ from .router_bgp import RouterBgpMixin
 from .router_isis import RouterIsisMixin
 from .router_msdp import RouterMsdpMixin
 from .router_ospf import RouterOspfMixin
+from .ipv6_router_ospf import Ipv6RouterOspfMixin
 from .router_pim_sparse_mode import RouterPimSparseModeMixin
 from .standard_access_lists import StandardAccessListsMixin
 from .static_routes import StaticRoutesMixin
@@ -33,6 +34,7 @@ class AvdStructuredConfigUnderlayProtocol(
     LoopbackInterfacesMixin,
     RouterBgpMixin,
     RouterOspfMixin,
+    Ipv6RouterOspfMixin,
     PrefixListsMixin,
     RouteMapsMixin,
     RouterIsisMixin,

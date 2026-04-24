@@ -8951,6 +8951,73 @@ $defs:
                     documentation_options:
                       hide_keys: true
                     $ref: eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items
+              ipv6_ospf:
+                documentation_options:
+                  table: network-services-vrfs-ospfv3-settings
+                type: dict
+                description: 'Router OSPFv3 configuration.
+
+                  This will create an OSPFv3 routing instance in the tenant VRF. If
+                  there is no nodes definition, the OSPF instance will be
+
+                  created on all leafs where the VRF is deployed.
+
+                  '
+                keys:
+                  enabled:
+                    type: bool
+                  process_id:
+                    type: int
+                    convert_types:
+                    - str
+                    description: If not set, "vrf_id" will be used.
+                  router_id:
+                    type: str
+                    description: 'Router ID to use for OSPF in this VRF.
+
+                      This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".
+
+                      - "main_router_id" will use the IP address of Loopback0 or the
+                      common `router general` Router ID if `use_router_general_for_router_id`
+                      is set."
+
+                      - "none" will not configure a OSPF Router ID for this VRF. EOS
+                      will use the main OSPF Router ID.
+
+                      - "diagnostic_loopback" will use the IP address of the VRF Diagnostic
+                      Loopback interface.'
+                    default: main_router_id
+                  redistribute_bgp:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: true
+                      route_map:
+                        type: str
+                        description: Route-map name.
+                  redistribute_connected:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: false
+                      route_map:
+                        type: str
+                        description: Route-map name.
+                  nodes:
+                    type: list
+                    items:
+                      type: str
+                      description: Hostname.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under ipv6_router_ospf.process_ids.[process_id=<process_id>]
+                      for the EOS Config schema.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: eos_cli_config_gen#/keys/ipv6_router_ospf/keys/process_ids/items
               redistribute_ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
@@ -14531,6 +14598,23 @@ $defs:
                     make use of a vault or similar.'
                   min_length: 1
                   max_length: 16
+      ipv6_ospf:
+        documentation_options:
+          table: network-services-vrfs-ospfv3-settings
+        type: dict
+        description: OSPFv3 interface configuration.
+        keys:
+          enabled:
+            type: bool
+          point_to_point:
+            type: bool
+            default: false
+          area:
+            type: str
+            convert_types:
+            - int
+            description: OSPFv3 area ID.
+            default: 0.0.0.0
       bgp:
         type: dict
         keys:
