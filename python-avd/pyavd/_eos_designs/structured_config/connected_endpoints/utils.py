@@ -279,6 +279,7 @@ class UtilsMixin(Protocol):
 
         return Undefined
 
+    # Keeping this in utils to support ethernet subinterface in future
     def _get_subinterface_cfg(
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         subinterface: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.PortChannel.SubinterfacesItem,
@@ -322,7 +323,7 @@ class UtilsMixin(Protocol):
                 route_target=short_esi_to_route_target(short_esi),
             )
 
-        if subinterface.structured_config and isinstance(subinterface_item, EosCliConfigGen.PortChannelInterfacesItem):
+        if subinterface.structured_config:
             self.custom_structured_configs.nested.port_channel_interfaces.obtain(subinterface_item.name)._deepmerge(
                 subinterface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
