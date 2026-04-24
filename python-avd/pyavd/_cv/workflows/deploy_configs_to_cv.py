@@ -74,22 +74,27 @@ async def get_existing_device_container_ids_from_root_container(workspace_id: st
     """
     Get or create root level container for AVD configurations. Using the hardcoded id from CONFIGLET_CONTAINER_ID.
 
+    Always make sure that AVD root level container is a part of the configletAssignmentRoots.
+
     Then return the list of existing device container ids. (Always empty if we just created the root container).
     """
     root_cv_containers = await cv_client.get_configlet_containers(workspace_id=workspace_id, container_ids=[CONFIGLET_CONTAINER_ID])
     LOGGER.info("get_or_create_configlet_root_container: Got AVD root container? %s", bool(root_cv_containers))
-    if root_cv_containers:
-        return root_cv_containers[0].child_assignment_ids.values
 
-    # Create the root level container
-    LOGGER.info("deploy_configs_to_cv: Creating AVD root container '%s'", CONFIGLET_CONTAINER_ID)
-    await cv_client.set_configlet_container(
-        workspace_id=workspace_id,
-        container_id=CONFIGLET_CONTAINER_ID,
-        display_name="AVD Configurations",
-        description="Configurations created and uploaded by AVD",
-        query="device:*",
-    )
+    child_assignment_ids: list[str] = []
+    if root_cv_containers:
+        child_assignment_ids = root_cv_containers[0].child_assignment_ids.values
+    else:
+        # Create the root level container
+        LOGGER.info("deploy_configs_to_cv: Creating AVD root container '%s'", CONFIGLET_CONTAINER_ID)
+        await cv_client.set_configlet_container(
+            workspace_id=workspace_id,
+            container_id=CONFIGLET_CONTAINER_ID,
+            display_name="AVD Configurations",
+            description="Configurations created and uploaded by AVD",
+            query="device:*",
+        )
+
     # Add the root level container to the list of root level containers using the studio inputs API (!?!)
     root_containers: list = await cv_client.get_studio_inputs_with_path(
         studio_id=STATIC_CONFIGLET_STUDIO_ID,
@@ -108,7 +113,7 @@ async def get_existing_device_container_ids_from_root_container(workspace_id: st
             input_path=["configletAssignmentRoots"],
             inputs=root_containers,
         )
-    return []
+    return child_assignment_ids
 
 
 async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspace_id: str, cv_client: CVClient) -> None:
