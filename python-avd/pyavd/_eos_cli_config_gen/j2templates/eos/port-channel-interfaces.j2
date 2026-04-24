@@ -568,7 +568,7 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ptp.vlan is arista.avd.defined %}
    ptp vlan {{ port_channel_interface.ptp.vlan }}
 {%     endif %}
-{%     if etherneport_channel_interfacet_interface.ptp.region.domain_number is arista.avd.defined %}
+{%     if port_channel_interface.ptp.region.domain_number is arista.avd.defined %}
    ptp region domain-number {{ port_channel_interface.ptp.region.domain_number }}
 {%     endif %}
 {%     if port_channel_interface.service_policy.qos.input is arista.avd.defined %}

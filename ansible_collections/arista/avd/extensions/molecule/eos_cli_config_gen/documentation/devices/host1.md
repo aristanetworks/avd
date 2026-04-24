@@ -6373,6 +6373,7 @@ interface Port-Channel5
    ptp sync-message interval 1
    ptp transport layer2
    ptp vlan 2
+   ptp region domain-number 25
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1
