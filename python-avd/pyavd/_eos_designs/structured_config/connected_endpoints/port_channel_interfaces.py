@@ -10,7 +10,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, default, short_esi_to_route_target, strip_null_from_data
+from pyavd._utils import Undefined, default
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 
@@ -242,4 +242,3 @@ class PortChannelInterfacesMixin(Protocol):
             port_channel_interface.lacp_fallback_timeout = adapter.port_channel.lacp_fallback.timeout
 
         return port_channel_interface
-
