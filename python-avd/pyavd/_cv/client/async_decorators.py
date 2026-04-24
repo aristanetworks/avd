@@ -218,6 +218,24 @@ class GRPCRequestHandler:
 
         return _string_based_annotation is list or get_origin(annotation) is list, _string_based_annotation
 
+    async def _wait_before_retry_or_raise(self, e: Exception, attempt: int, func_name: str, call_args: tuple, call_kwargs: dict) -> None:
+        """Sleep before the next retry attempt or raise CVGRPCStatusUnavailable if retries are exhausted."""
+        if attempt <= self.max_retries:
+            delay = self.initial_delay * (self.factor ** (attempt - 1))
+            LOGGER.warning(
+                "%s: Attempt %s/%s to execute call '%s' returned '%s'. Retrying in %ss...",
+                self.__class__.__name__,
+                attempt,
+                self.max_retries + 1,
+                func_name,
+                e,
+                delay,
+            )
+            await asyncio_sleep(delay)
+        else:
+            msg = f"{self.__class__.__name__}: Attempt {attempt}/{self.max_retries + 1} to execute call '{func_name}' failed."
+            raise CVGRPCStatusUnavailable(msg, *e.args, call_args, call_kwargs)
+
     async def _execute_single_call_with_retries(self, call_args: tuple, call_kwargs: dict) -> None:
         """Executes a single call to self.func with retry logic for gRPC UNAVAILABLE."""
         func_name = self.func.__name__
@@ -242,22 +260,7 @@ class GRPCRequestHandler:
                                 raise CVTimeoutError(*e.args, call_args, call_kwargs)
 
                             case Status.UNAVAILABLE:
-                                if attempt <= self.max_retries:
-                                    delay = self.initial_delay * (self.factor ** (attempt - 1))
-                                    LOGGER.warning(
-                                        "%s: Attempt %s/%s to execute call '%s' returned '%s'. Retrying in %ss...",
-                                        self.__class__.__name__,
-                                        attempt,
-                                        self.max_retries + 1,
-                                        func_name,
-                                        e,
-                                        delay,
-                                    )
-                                    await asyncio_sleep(delay)
-                                # Use case where all retries for this specific call failed
-                                else:
-                                    msg = f"{self.__class__.__name__}: Attempt {attempt}/{self.max_retries + 1} to execute call '{func_name}' failed."
-                                    raise CVGRPCStatusUnavailable(msg, *e.args, call_args, call_kwargs)
+                                await self._wait_before_retry_or_raise(e, attempt, func_name, call_args, call_kwargs)
 
                             case Status.RESOURCE_EXHAUSTED:
                                 if matches := fullmatch(MSG_SIZE_EXCEEDED_REGEX, e.message):
@@ -275,21 +278,7 @@ class GRPCRequestHandler:
                         # Other error codes (e.g. NO_ERROR from timeout) fall through to CVClientException.
                         if not (matches := fullmatch(STREAM_RESET_ERROR_CODE_REGEX, str(e.args[0] if e.args else ""))) or int(matches.group("error_code")) != 2:
                             raise CVClientException(*e.args, call_args, call_kwargs)
-                        if attempt <= self.max_retries:
-                            delay = self.initial_delay * (self.factor ** (attempt - 1))
-                            LOGGER.warning(
-                                "%s: Attempt %s/%s to execute call '%s' returned '%s'. Retrying in %ss...",
-                                self.__class__.__name__,
-                                attempt,
-                                self.max_retries + 1,
-                                func_name,
-                                e,
-                                delay,
-                            )
-                            await asyncio_sleep(delay)
-                        else:
-                            msg = f"{self.__class__.__name__}: Attempt {attempt}/{self.max_retries + 1} to execute call '{func_name}' failed."
-                            raise CVGRPCStatusUnavailable(msg, *e.args, call_args, call_kwargs)
+                        await self._wait_before_retry_or_raise(e, attempt, func_name, call_args, call_kwargs)
 
                     case _:
                         raise CVClientException(*e.args, call_args, call_kwargs)
