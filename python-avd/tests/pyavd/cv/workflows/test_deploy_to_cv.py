@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import tempfile
 from contextlib import nullcontext as does_not_raise
-from logging import INFO
+from logging import DEBUG
 from typing import TYPE_CHECKING
 from unittest.mock import patch
 
@@ -48,6 +48,10 @@ async def test_deploy_to_cv(
             display_name='MOCKED_WS_NAME', description='MOCKED_WS_DESCRIPTION'))'
         targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/ce73310ec5154d57ac888fc8f93d69893962d804.json'
 
+    -   description: Wait for Workspace to become ready (PENDING)
+        request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
+
     -   description: Fetch device status
         request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname='avd-ci-leaf2', system_mac_address=None)],
             time=TimeBounds(start=None, end=None))'
@@ -69,6 +73,21 @@ async def test_deploy_to_cv(
             'ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_assignment_id='avd-configlets'))], time=TimeBounds(start=None, end=None))'
         targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/0462b04aed494937b07702371f123831a4e81036.json'
 
+    -   description: Fetch Configlet assignments
+        request: 'InputsRequest(key=InputsKey(studio_id='studio-static-configlet', workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e',
+            path=RepeatedString(values=['configletAssignmentRoots'])), time=None)'
+        targeted_file: 'arista.studio.v1.InputsService/GetOne/www.cv-prod-us-central1-c.arista.io/218b79449463543915f8e63e66bdbbbd249333d3.json'
+
+    -   description: Fetch Configlet assignments
+        request: 'InputsConfigStreamRequest(partial_eq_filter=InputsConfig(key=InputsKey(studio_id='studio-static-configlet',
+            workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', path=RepeatedString(values=['configletAssignmentRoots'])), remove=True), time=None)'
+        targeted_file: 'arista.studio.v1.InputsConfigService/GetAll/www.cv-prod-us-central1-c.arista.io/1fbe2ebb45ada87974e6a6228efcce717950d89d.json'
+
+    -   description: Fetch Configlet assignments
+        request: 'InputsRequest(key=InputsKey(studio_id='studio-static-configlet', workspace_id='', path=RepeatedString(values=['configletAssignmentRoots'])),
+            time=None)'
+        targeted_file: 'arista.studio.v1.InputsService/GetOne/www.cv-prod-us-central1-c.arista.io/b45e9b96ea9c215914828995f6c62354ae80296f.json'
+
     -   description: Fetch configlets assignments
         request: Too long. Please consult JSON file for details.
         targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/15b2c867c1abf9b0d425ca76fa4327294c18c376.json'
@@ -81,6 +100,12 @@ async def test_deploy_to_cv(
     -   description: Fetch build results
         request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
         targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
+
+    -   description: Fetch Workspace build results
+        request: 'WorkspaceBuildDetailsStreamRequest(partial_eq_filter=[WorkspaceBuildDetails(key=WorkspaceBuildDetailsKey(
+            workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', build_id='req-914310f3-08dd-4239-bd42-6d78bf781229'))], time=None)'
+        targeted_file: 'arista.workspace.v1.WorkspaceBuildDetailsService/GetAll/www.cv-prod-us-central1-c.arista.io/
+            f451562f4f8c0dc37965a23121bb11dd6efc0f6a.json'
 
     -   description: Submit Workspace (UNFORCED use case)
         request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
@@ -97,7 +122,7 @@ async def test_deploy_to_cv(
         targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
     """
     with (
-        caplog.at_level(INFO),
+        caplog.at_level(DEBUG),
         does_not_raise(),
         patch(
             "pyavd._cv.client.workspace.uuid4",
