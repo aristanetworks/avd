@@ -312,21 +312,6 @@ class UtilsMixin(Protocol):
             peer_ip=interface.peer_ip,
         )
 
-    def _get_sflow(self: AvdStructuredConfigUnderlayProtocol, interface: str, configured_sflow: bool | None) -> bool | None:
-        """
-        Get the configured sFlow state if the interface supports it based on platform settings.
-
-        Considers global sFlow support and specific support for subinterfaces.
-
-        Returns:
-            The configured_sflow value if supported, otherwise None.
-        """
-        sflow_supported_on_interface = self.shared_utils.platform_settings.feature_support.sflow and (
-            "." not in interface or self.shared_utils.platform_settings.feature_support.sflow_subinterfaces
-        )
-
-        return configured_sflow if sflow_supported_on_interface else None
-
     @cached_property
     def _underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
         """Return a list of P2P underlay links."""
