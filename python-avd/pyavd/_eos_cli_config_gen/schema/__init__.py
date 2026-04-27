@@ -6237,53 +6237,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class EosConfigFuture(AvdModel):
         """Subclass of AvdModel."""
 
-        class NewSnmpServerCliOrder(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"ipv4_acls": {"type": bool, "default": False}, "ipv6_acls": {"type": bool, "default": False}}
-            ipv4_acls: bool
-            """
-            When `true`, renders IPv4 ACLs grouped under each VRF in the new EOS CLI order.
-            When `false`
-            (default), renders the legacy CLI order with all IPv4 ACLs rendered at the end of the configuration.
-
-            Default value: `False`
-            """
-            ipv6_acls: bool
-            """
-            When `true`, renders IPv6 ACLs grouped under each VRF in the new EOS CLI order.
-            When `false`
-            (default), renders the legacy CLI order with all IPv6 ACLs rendered at the end of the configuration.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, ipv4_acls: bool | UndefinedType = Undefined, ipv6_acls: bool | UndefinedType = Undefined) -> None:
-                    """
-                    NewSnmpServerCliOrder.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        ipv4_acls:
-                           When `true`, renders IPv4 ACLs grouped under each VRF in the new EOS CLI order.
-                           When `false`
-                           (default), renders the legacy CLI order with all IPv4 ACLs rendered at the end of the configuration.
-                        ipv6_acls:
-                           When `true`, renders IPv6 ACLs grouped under each VRF in the new EOS CLI order.
-                           When `false`
-                           (default), renders the legacy CLI order with all IPv6 ACLs rendered at the end of the configuration.
-
-                    """
-
-        _fields: ClassVar[dict] = {
-            "new_ip_radius_cli_order": {"type": bool, "default": False},
-            "new_ip_tacacs_cli_order": {"type": bool, "default": False},
-            "new_snmp_server_cli_order": {"type": NewSnmpServerCliOrder},
-        }
+        _fields: ClassVar[dict] = {"new_ip_radius_cli_order": {"type": bool, "default": False}, "new_ip_tacacs_cli_order": {"type": bool, "default": False}}
         new_ip_radius_cli_order: bool
         """
         When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
@@ -6302,22 +6256,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
-        new_snmp_server_cli_order: NewSnmpServerCliOrder
-        """
-        Opt-in to new EOS CLI order for `snmp_server` keys.
-
-        Subclass of AvdModel.
-        """
 
         if TYPE_CHECKING:
 
-            def __init__(
-                self,
-                *,
-                new_ip_radius_cli_order: bool | UndefinedType = Undefined,
-                new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
-                new_snmp_server_cli_order: NewSnmpServerCliOrder | UndefinedType = Undefined,
-            ) -> None:
+            def __init__(self, *, new_ip_radius_cli_order: bool | UndefinedType = Undefined, new_ip_tacacs_cli_order: bool | UndefinedType = Undefined) -> None:
                 """
                 EosConfigFuture.
 
@@ -6335,10 +6277,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        When `false`
                        (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
                        interface name.
-                    new_snmp_server_cli_order:
-                       Opt-in to new EOS CLI order for `snmp_server` keys.
-
-                       Subclass of AvdModel.
 
                 """
 
@@ -64616,70 +64554,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Ipv4Acls._item_type = Ipv4AclsItem
 
-        class Ipv4AclsPerVrf(AvdModel):
-            """Subclass of AvdModel."""
-
-            class VrfsItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"name": {"type": str}, "access_list": {"type": str}}
-                name: str
-                """VRF name."""
-                access_list: str
-                """IPv4 access list name."""
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, name: str | UndefinedType = Undefined, access_list: str | UndefinedType = Undefined) -> None:
-                        """
-                        VrfsItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            name: VRF name.
-                            access_list: IPv4 access list name.
-
-                        """
-
-            class Vrfs(AvdIndexedList[str, VrfsItem]):
-                """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
-
-                _primary_key: ClassVar[str] = "name"
-
-            Vrfs._item_type = VrfsItem
-
-            _fields: ClassVar[dict] = {"access_list": {"type": str}, "vrfs": {"type": Vrfs}}
-            access_list: str | None
-            """IPv4 access list for VRF default."""
-            vrfs: Vrfs
-            """
-            IPv4 access lists for any VRF other than default.
-
-            Subclass of AvdIndexedList with `VrfsItem` items.
-            Primary key is `name` (`str`).
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, access_list: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
-                    """
-                    Ipv4AclsPerVrf.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        access_list: IPv4 access list for VRF default.
-                        vrfs:
-                           IPv4 access lists for any VRF other than default.
-
-                           Subclass of AvdIndexedList with `VrfsItem` items.
-                           Primary key is `name` (`str`).
-
-                    """
-
         class Ipv6AclsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -64707,70 +64581,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `Ipv6AclsItem` items."""
 
         Ipv6Acls._item_type = Ipv6AclsItem
-
-        class Ipv6AclsPerVrf(AvdModel):
-            """Subclass of AvdModel."""
-
-            class VrfsItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"name": {"type": str}, "access_list": {"type": str}}
-                name: str
-                """VRF name."""
-                access_list: str
-                """IPv6 access list name."""
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, name: str | UndefinedType = Undefined, access_list: str | UndefinedType = Undefined) -> None:
-                        """
-                        VrfsItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            name: VRF name.
-                            access_list: IPv6 access list name.
-
-                        """
-
-            class Vrfs(AvdIndexedList[str, VrfsItem]):
-                """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
-
-                _primary_key: ClassVar[str] = "name"
-
-            Vrfs._item_type = VrfsItem
-
-            _fields: ClassVar[dict] = {"access_list": {"type": str}, "vrfs": {"type": Vrfs}}
-            access_list: str | None
-            """IPv6 access list for VRF default."""
-            vrfs: Vrfs
-            """
-            IPv6 access lists for any VRF other than default.
-
-            Subclass of AvdIndexedList with `VrfsItem` items.
-            Primary key is `name` (`str`).
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, access_list: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
-                    """
-                    Ipv6AclsPerVrf.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        access_list: IPv6 access list for VRF default.
-                        vrfs:
-                           IPv6 access lists for any VRF other than default.
-
-                           Subclass of AvdIndexedList with `VrfsItem` items.
-                           Primary key is `name` (`str`).
-
-                    """
 
         class LocalInterfacesItem(AvdModel):
             """Subclass of AvdModel."""
@@ -64801,68 +64611,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _primary_key: ClassVar[str] = "name"
 
         LocalInterfaces._item_type = LocalInterfacesItem
-
-        class LocalInterfacesPerVrf(AvdModel):
-            """Subclass of AvdModel."""
-
-            class VrfsItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"name": {"type": str}, "local_interface": {"type": str}}
-                name: str
-                local_interface: str
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, name: str | UndefinedType = Undefined, local_interface: str | UndefinedType = Undefined) -> None:
-                        """
-                        VrfsItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            name: name
-                            local_interface: local_interface
-
-                        """
-
-            class Vrfs(AvdIndexedList[str, VrfsItem]):
-                """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
-
-                _primary_key: ClassVar[str] = "name"
-
-            Vrfs._item_type = VrfsItem
-
-            _fields: ClassVar[dict] = {"local_interface": {"type": str}, "vrfs": {"type": Vrfs}}
-            local_interface: str | None
-            """Local interface name for VRF default."""
-            vrfs: Vrfs
-            """
-            Local interfaces for any VRF other than default.
-
-            Subclass of AvdIndexedList with `VrfsItem` items.
-            Primary key is `name` (`str`).
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, local_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
-                    """
-                    LocalInterfacesPerVrf.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        local_interface: Local interface name for VRF default.
-                        vrfs:
-                           Local interfaces for any VRF other than default.
-
-                           Subclass of AvdIndexedList with `VrfsItem` items.
-                           Primary key is `name` (`str`).
-
-                    """
 
         class ViewsItem(AvdModel):
             """Subclass of AvdModel."""
@@ -65194,14 +64942,34 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "enable": {"type": bool}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "enable": {"type": bool},
+                "ipv4_acl": {"type": str},
+                "ipv6_acl": {"type": str},
+                "local_interface": {"type": str},
+            }
             name: str
             """VRF name."""
             enable: bool | None
+            ipv4_acl: str | None
+            """IPv4 access list name."""
+            ipv6_acl: str | None
+            """IPv6 access list name."""
+            local_interface: str | None
+            """Local interface name."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, enable: bool | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    enable: bool | None | UndefinedType = Undefined,
+                    ipv4_acl: str | None | UndefinedType = Undefined,
+                    ipv6_acl: str | None | UndefinedType = Undefined,
+                    local_interface: str | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     VrfsItem.
 
@@ -65211,6 +64979,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF name.
                         enable: enable
+                        ipv4_acl: IPv4 access list name.
+                        ipv6_acl: IPv6 access list name.
+                        local_interface: Local interface name.
 
                     """
 
@@ -65227,11 +64998,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "location": {"type": str},
             "communities": {"type": Communities},
             "ipv4_acls": {"type": Ipv4Acls},
-            "ipv4_acls_per_vrf": {"type": Ipv4AclsPerVrf},
+            "ipv4_acl": {"type": str},
             "ipv6_acls": {"type": Ipv6Acls},
-            "ipv6_acls_per_vrf": {"type": Ipv6AclsPerVrf},
+            "ipv6_acl": {"type": str},
             "local_interfaces": {"type": LocalInterfaces},
-            "local_interfaces_per_vrf": {"type": LocalInterfacesPerVrf},
+            "local_interface": {"type": str},
             "views": {"type": Views},
             "groups": {"type": Groups},
             "users": {"type": Users},
@@ -65250,16 +65021,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`)."""
         ipv4_acls: Ipv4Acls
         """Subclass of AvdList with `Ipv4AclsItem` items."""
-        ipv4_acls_per_vrf: Ipv4AclsPerVrf
-        """Subclass of AvdModel."""
+        ipv4_acl: str | None
+        """IPv4 access list for VRF default."""
         ipv6_acls: Ipv6Acls
         """Subclass of AvdList with `Ipv6AclsItem` items."""
-        ipv6_acls_per_vrf: Ipv6AclsPerVrf
-        """Subclass of AvdModel."""
+        ipv6_acl: str | None
+        """IPv6 access list for VRF default."""
         local_interfaces: LocalInterfaces
         """Subclass of AvdIndexedList with `LocalInterfacesItem` items. Primary key is `name` (`str`)."""
-        local_interfaces_per_vrf: LocalInterfacesPerVrf
-        """Subclass of AvdModel."""
+        local_interface: str | None
+        """Local interface for VRF default."""
         views: Views
         """Subclass of AvdList with `ViewsItem` items."""
         groups: Groups
@@ -65285,11 +65056,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 location: str | None | UndefinedType = Undefined,
                 communities: Communities | UndefinedType = Undefined,
                 ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
-                ipv4_acls_per_vrf: Ipv4AclsPerVrf | UndefinedType = Undefined,
+                ipv4_acl: str | None | UndefinedType = Undefined,
                 ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
-                ipv6_acls_per_vrf: Ipv6AclsPerVrf | UndefinedType = Undefined,
+                ipv6_acl: str | None | UndefinedType = Undefined,
                 local_interfaces: LocalInterfaces | UndefinedType = Undefined,
-                local_interfaces_per_vrf: LocalInterfacesPerVrf | UndefinedType = Undefined,
+                local_interface: str | None | UndefinedType = Undefined,
                 views: Views | UndefinedType = Undefined,
                 groups: Groups | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
@@ -65310,11 +65081,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     location: SNMP location.
                     communities: Subclass of AvdIndexedList with `CommunitiesItem` items. Primary key is `name` (`str`).
                     ipv4_acls: Subclass of AvdList with `Ipv4AclsItem` items.
-                    ipv4_acls_per_vrf: Subclass of AvdModel.
+                    ipv4_acl: IPv4 access list for VRF default.
                     ipv6_acls: Subclass of AvdList with `Ipv6AclsItem` items.
-                    ipv6_acls_per_vrf: Subclass of AvdModel.
+                    ipv6_acl: IPv6 access list for VRF default.
                     local_interfaces: Subclass of AvdIndexedList with `LocalInterfacesItem` items. Primary key is `name` (`str`).
-                    local_interfaces_per_vrf: Subclass of AvdModel.
+                    local_interface: Local interface for VRF default.
                     views: Subclass of AvdList with `ViewsItem` items.
                     groups: Subclass of AvdList with `GroupsItem` items.
                     users: Subclass of AvdList with `UsersItem` items.
@@ -73146,8 +72917,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     snmp_server: SnmpServer
     """
     SNMP settings.
-    This requires to set the 'eos_config_future.new_snmp_server_cli_order: true' to
-    render the new CLI order.
 
     Subclass of AvdModel.
     """
@@ -73782,8 +73551,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 sflow: Subclass of AvdModel.
                 snmp_server:
                    SNMP settings.
-                   This requires to set the 'eos_config_future.new_snmp_server_cli_order: true' to
-                   render the new CLI order.
 
                    Subclass of AvdModel.
                 spanning_tree: Subclass of AvdModel.

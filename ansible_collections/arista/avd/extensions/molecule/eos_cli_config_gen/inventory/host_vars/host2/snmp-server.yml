@@ -2,22 +2,3 @@
 snmp_server:
   traps:
     enable: false
-  # test without future knob, it will render the config in old order
-  ipv4_acls_per_vrf:
-    access_list: onur
-    vrfs:
-      - name: aaa
-        access_list: SNMP-MGMT1
-      - name: MGMT
-        access_list: SNMP-MGMT
-      - name: AAA
-        access_list: SNMP-MGMT2
-  ipv6_acls_per_vrf:
-    access_list: onur_v6
-    vrfs:
-      - name: aaa
-        access_list: SNMP-MGMT1
-      - name: MGMT
-        access_list: SNMP-MGMT
-      - name: AAA
-        access_list: SNMP-MGMT2

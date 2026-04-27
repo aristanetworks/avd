@@ -2489,26 +2489,6 @@ keys:
 
           When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`,
           sorted by source interface name.'
-      new_snmp_server_cli_order:
-        type: dict
-        description: Opt-in to new EOS CLI order for `snmp_server` keys.
-        keys:
-          ipv4_acls:
-            type: bool
-            default: false
-            description: 'When `true`, renders IPv4 ACLs grouped under each VRF in
-              the new EOS CLI order.
-
-              When `false` (default), renders the legacy CLI order with all IPv4 ACLs
-              rendered at the end of the configuration.'
-          ipv6_acls:
-            type: bool
-            default: false
-            description: 'When `true`, renders IPv6 ACLs grouped under each VRF in
-              the new EOS CLI order.
-
-              When `false` (default), renders the legacy CLI order with all IPv6 ACLs
-              rendered at the end of the configuration.'
   errdisable:
     type: dict
     keys:
@@ -23493,10 +23473,7 @@ keys:
                   default: true
   snmp_server:
     type: dict
-    description: 'SNMP settings.
-
-      This requires to set the ''eos_config_future.new_snmp_server_cli_order: true''
-      to render the new CLI order.'
+    description: SNMP settings.
     keys:
       engine_ids:
         type: dict
@@ -23569,7 +23546,7 @@ keys:
           warning: true
           removed: false
           allow_with_new_key: false
-          new_key: ipv4_acls_per_vrf
+          new_key: ipv4_acl
         items:
           type: dict
           keys:
@@ -23580,35 +23557,16 @@ keys:
               type: str
               convert_types:
               - int
-      ipv4_acls_per_vrf:
-        type: dict
-        keys:
-          access_list:
-            type: str
-            description: IPv4 access list for VRF default.
-          vrfs:
-            type: list
-            primary_key: name
-            description: IPv4 access lists for any VRF other than default.
-            items:
-              type: dict
-              keys:
-                name:
-                  type: str
-                  convert_types:
-                  - int
-                  description: VRF name.
-                access_list:
-                  type: str
-                  required: true
-                  description: IPv4 access list name.
+      ipv4_acl:
+        type: str
+        description: IPv4 access list for VRF default.
       ipv6_acls:
         type: list
         deprecation:
           warning: true
           removed: false
           allow_with_new_key: false
-          new_key: ipv6_acls_per_vrf
+          new_key: ipv6_acl
         items:
           type: dict
           keys:
@@ -23619,35 +23577,16 @@ keys:
               type: str
               convert_types:
               - int
-      ipv6_acls_per_vrf:
-        type: dict
-        keys:
-          access_list:
-            type: str
-            description: IPv6 access list for VRF default.
-          vrfs:
-            type: list
-            primary_key: name
-            description: IPv6 access lists for any VRF other than default.
-            items:
-              type: dict
-              keys:
-                name:
-                  type: str
-                  convert_types:
-                  - int
-                  description: VRF name.
-                access_list:
-                  type: str
-                  required: true
-                  description: IPv6 access list name.
+      ipv6_acl:
+        type: str
+        description: IPv6 access list for VRF default.
       local_interfaces:
         type: list
         deprecation:
           warning: true
           removed: false
           allow_with_new_key: false
-          new_key: local_interfaces_per_vrf
+          new_key: local_interface
         primary_key: name
         items:
           type: dict
@@ -23659,24 +23598,9 @@ keys:
               type: str
               convert_types:
               - int
-      local_interfaces_per_vrf:
-        type: dict
-        keys:
-          local_interface:
-            type: str
-            description: Local interface name for VRF default.
-          vrfs:
-            type: list
-            primary_key: name
-            description: Local interfaces for any VRF other than default.
-            items:
-              type: dict
-              keys:
-                name:
-                  type: str
-                local_interface:
-                  type: str
-                  required: true
+      local_interface:
+        type: str
+        description: Local interface for VRF default.
       views:
         type: list
         items:
@@ -23859,6 +23783,15 @@ keys:
               - int
             enable:
               type: bool
+            ipv4_acl:
+              type: str
+              description: IPv4 access list name.
+            ipv6_acl:
+              type: str
+              description: IPv6 access list name.
+            local_interface:
+              type: str
+              description: Local interface name.
       ifmib_ifspeed_shape_rate:
         type: bool
         description: SNMP ifspeed reflecting shaping rate.
