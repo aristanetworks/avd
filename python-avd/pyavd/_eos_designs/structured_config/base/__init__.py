@@ -309,10 +309,17 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.queue_monitor_length = queue_monitor_length
 
     @structured_config_contributor
-    def ip_name_server(self) -> None:
-        """Set ip name servers using old name_servers model and new dns_settings model. Results will be combined."""
+    def dns_settings(self) -> None:
+        """
+        Configure DNS settings from the dns_settings input model.
+
+        Sets IP name servers (with VRF and priority), IP hosts, DNS domain, domain list, and domain-lookup source interfaces per VRF.
+        """
         if not self.inputs.dns_settings:
             return
+
+        if self.inputs.dns_settings.ip_hosts:
+            self.structured_config.ip_hosts = self.inputs.dns_settings.ip_hosts
 
         if self.inputs.dns_settings.domain:
             self.structured_config.dns_domain = self.inputs.dns_settings.domain
@@ -776,6 +783,9 @@ class AvdStructuredConfigBaseProtocol(
             server_kwargs["tls"] = server.tls
         else:
             server_kwargs["key"] = self._get_tacacs_or_radius_server_password(server)
+
+        server_kwargs["timeout"] = server.timeout
+        server_kwargs["retransmit"] = server.retransmit
 
         if server_vrf == "default":
             self.structured_config.radius_server.servers.append_new(**server_kwargs)

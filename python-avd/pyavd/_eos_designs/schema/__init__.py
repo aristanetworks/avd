@@ -304,6 +304,8 @@ class EosDesigns(EosDesignsRootModel):
                     "host": {"type": str},
                     "groups": {"type": Groups},
                     "vrf": {"type": str},
+                    "timeout": {"type": int},
+                    "retransmit": {"type": int},
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
                     "tls": {"type": EosCliConfigGen.RadiusServer.ServersItem.Tls},
@@ -333,6 +335,8 @@ class EosDesigns(EosDesignsRootModel):
                 `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
                 """
+                timeout: int | None
+                retransmit: int | None
                 key: str | None
                 """
                 Encrypted type-7 key.
@@ -356,6 +360,8 @@ class EosDesigns(EosDesignsRootModel):
                         host: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
+                        timeout: int | None | UndefinedType = Undefined,
+                        retransmit: int | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         cleartext_key: str | None | UndefinedType = Undefined,
                         tls: EosCliConfigGen.RadiusServer.ServersItem.Tls | UndefinedType = Undefined,
@@ -387,6 +393,8 @@ class EosDesigns(EosDesignsRootModel):
                                the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
+                            timeout: timeout
+                            retransmit: retransmit
                             key:
                                Encrypted type-7 key.
                                Takes precedence over `cleartext_key`.
@@ -17347,6 +17355,7 @@ class EosDesigns(EosDesignsRootModel):
             "servers": {"type": Servers},
             "vrfs": {"type": Vrfs},
             "set_source_interfaces": {"type": bool, "default": True},
+            "ip_hosts": {"type": EosCliConfigGen.IpHosts},
         }
         domain: str | None
         """DNS domain name like 'fabric.local'"""
@@ -17369,6 +17378,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
+        ip_hosts: EosCliConfigGen.IpHosts
 
         if TYPE_CHECKING:
 
@@ -17380,6 +17390,7 @@ class EosDesigns(EosDesignsRootModel):
                 servers: Servers | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 set_source_interfaces: bool | UndefinedType = Undefined,
+                ip_hosts: EosCliConfigGen.IpHosts | UndefinedType = Undefined,
             ) -> None:
                 """
                 DnsSettings.
@@ -17400,6 +17411,7 @@ class EosDesigns(EosDesignsRootModel):
                        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
                        Can be set to `false` to avoid changes when
                        migrating from the old `name_servers` model.
+                    ip_hosts: ip_hosts
 
                 """
 
