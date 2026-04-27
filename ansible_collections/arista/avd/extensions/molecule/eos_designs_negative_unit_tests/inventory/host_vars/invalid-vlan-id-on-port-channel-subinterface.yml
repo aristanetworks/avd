@@ -28,4 +28,5 @@ servers:
               description: subinterface number greater that 4094
 
 expected_error_message: >-
-  'vlan_id' must be set for subinterface 'servers[name=OLD_SW-1/2].adapters[0].port_channel.subinterfaces[number=10000]' since the subinterface number is above 4094.
+  'vlan_id' must be set for subinterface 'servers[name=OLD_SW-1/2].adapters[0].port_channel.subinterfaces[number=10000]'
+  since the subinterface number is above 4094.
