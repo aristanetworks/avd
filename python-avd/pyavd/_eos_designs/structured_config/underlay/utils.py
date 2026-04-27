@@ -82,7 +82,7 @@ class UtilsMixin(Protocol):
                     underlay_multicast_pim_sm=uplink.underlay_multicast_pim_sm,
                     underlay_multicast_static=uplink.underlay_multicast_static,
                     ipv6_enable=uplink.ipv6_enable,
-                    sflow_enabled=self._get_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
+                    sflow_enabled=self.inputs.fabric_sflow.downlinks,
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
                     ethernet_structured_config=uplink.peer_ethernet_structured_config,
