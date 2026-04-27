@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ipv6_acls</samp>](## "ipv6_acls") | List, items: Dictionary |  |  |  | IPv6 extended access-lists supporting substitution on certain fields.<br>These access-lists can be referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be configured on devices where they are in use.<br><br>The substitution is useful when assigning the same access-list on multiple interfaces where certain fields (e.g. interface_ip) require unique values.<br>When using substitution, the interface name will be appended to the ACL name. |
+    | [<samp>ipv6_acls</samp>](## "ipv6_acls") | List, items: Dictionary |  |  |  | IPv6 extended access-lists supporting substitution on certain fields.<br>These access-lists can be referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be configured on devices where they are in use.<br><br>The substitution is useful when assigning the same access-list on multiple interfaces where certain fields require unique values.<br>When using substitution, the interface name will be appended to the ACL name.<br><br>The "interface_ip" substitution field is resolved from `ipv6_address` set on the SVI.<br>If `ipv6_address` is not set, the first entry of `ipv6_address_virtuals` is used as a fallback.<br>If neither is set, the substitution will fail with an error. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv6_acls.[].name") | String | Required, Unique |  |  | Access-list name.<br>When using substitution for any fields, the interface name will be appended to the ACL name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ipv6_acls.[].entries") | List, items: Dictionary | Required |  |  | ACL Entries. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source</samp>](## "ipv6_acls.[].entries.[].source") | String |  |  |  | This field supports substitution of the field "interface_ip" for SVIs.<br>Alternatively it can be set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".<br>"<ipv6>" without a mask means host.<br>Required except for remarks. |
@@ -48,8 +48,12 @@
     # IPv6 extended access-lists supporting substitution on certain fields.
     # These access-lists can be referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be configured on devices where they are in use.
     #
-    # The substitution is useful when assigning the same access-list on multiple interfaces where certain fields (e.g. interface_ip) require unique values.
+    # The substitution is useful when assigning the same access-list on multiple interfaces where certain fields require unique values.
     # When using substitution, the interface name will be appended to the ACL name.
+    #
+    # The "interface_ip" substitution field is resolved from `ipv6_address` set on the SVI.
+    # If `ipv6_address` is not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+    # If neither is set, the substitution will fail with an error.
     ipv6_acls:
 
         # Access-list name.

@@ -92852,11 +92852,18 @@ class EosDesigns(EosDesignsRootModel):
     configured on devices where they are in use.
 
     The substitution is useful when assigning the same
-    access-list on multiple interfaces where certain fields (e.g. interface_ip) require unique values.
-    When using substitution, the interface name will be appended to the ACL name.
+    access-list on multiple interfaces where certain fields require unique values.
+    When using
+    substitution, the interface name will be appended to the ACL name.
 
-    Subclass of
-    AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
+    The "interface_ip" substitution
+    field is resolved from `ipv6_address` set on the SVI.
+    If `ipv6_address` is not set, the first entry
+    of `ipv6_address_virtuals` is used as a fallback.
+    If neither is set, the substitution will fail with
+    an error.
+
+    Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
     """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
     """
@@ -94882,11 +94889,18 @@ class EosDesigns(EosDesignsRootModel):
                    configured on devices where they are in use.
 
                    The substitution is useful when assigning the same
-                   access-list on multiple interfaces where certain fields (e.g. interface_ip) require unique values.
-                   When using substitution, the interface name will be appended to the ACL name.
+                   access-list on multiple interfaces where certain fields require unique values.
+                   When using
+                   substitution, the interface name will be appended to the ACL name.
 
-                   Subclass of
-                   AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
+                   The "interface_ip" substitution
+                   field is resolved from `ipv6_address` set on the SVI.
+                   If `ipv6_address` is not set, the first entry
+                   of `ipv6_address_virtuals` is used as a fallback.
+                   If neither is set, the substitution will fail with
+                   an error.
+
+                   Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.
