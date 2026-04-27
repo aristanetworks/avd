@@ -54,7 +54,7 @@ keys:
                   min_length: 1
                   items:
                     type: str
-                    pattern: ^(?:tacacs\+.+|tacacs[^+].|tacac[^s].|taca[^c].|tac[^a].|ta[^c].|t[^a].|[^t].*|t|ta|tac|taca|tacac|tacacs?)$
+                    pattern: ^(?!tacacs\+$).+$
                   description: 'List of Tacacs group names.
 
                     The group name `tacacs+` is reserved by EOS and must not be used.'
@@ -144,7 +144,7 @@ keys:
                   min_length: 1
                   items:
                     type: str
-                    pattern: ^(?:radius.+|radiu[^s].|radi[^u].|rad[^i].|ra[^d].|r[^a].|[^r].*|r|ra|rad|radi|radiu)$
+                    pattern: ^(?!radius$).+$
                   description: 'List of Radius group names.
 
                     The group name `radius` is reserved by EOS and must not be used.'

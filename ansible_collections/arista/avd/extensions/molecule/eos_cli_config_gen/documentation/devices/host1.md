@@ -1681,10 +1681,8 @@ ip radius vrf abc source-interface Loopback10
 | LADP2 | ldap | default | 10.10.10.249 | - | - |
 | RADIUS1 | radius | mgt | 192.168.10.157 | - | - |
 | RADIUS1 | radius | default | 10.10.10.248 | - | - |
-| RADIUS1 | radius | mgt | 11.11.11.123 | True | 2086 |
 | RADIUS2 | radius | mgt | 10.10.10.157 | - | - |
 | RADIUS2 | radius | default | 10.10.10.249 | - | - |
-| RADIUS2 | radius | default | 12.12.12.145 | True | - |
 | RADIUS3 | radius | - | - | - | - |
 
 #### AAA Server Groups Device Configuration
@@ -1702,12 +1700,10 @@ aaa group server ldap LDAP1
 aaa group server radius RADIUS1
    server 192.168.10.157 vrf mgt
    server 10.10.10.248
-   server 11.11.11.123 vrf mgt tls port 2086
 !
 aaa group server radius RADIUS2
    server 10.10.10.157 vrf mgt
    server 10.10.10.249
-   server 12.12.12.145 tls
 !
 aaa group server radius RADIUS3
 !

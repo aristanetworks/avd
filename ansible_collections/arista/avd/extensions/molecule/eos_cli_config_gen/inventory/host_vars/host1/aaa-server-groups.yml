@@ -37,19 +37,11 @@ aaa_server_groups:
       - server: 192.168.10.157
         vrf: mgt
       - server: 10.10.10.248
-      - server: 11.11.11.123
-        vrf: mgt
-        tls:
-          enabled: true
-          port: 2086
   - name: RADIUS2
     type: radius
     servers:
       - server: 10.10.10.157
         vrf: mgt
       - server: 10.10.10.249
-      - server: 12.12.12.145
-        tls:
-          enabled: true
   - name: RADIUS3
     type: radius
