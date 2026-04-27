@@ -45,8 +45,8 @@ class SnmpServerMixin(Protocol):
         self.set_snmp_local_engine_id()
         self.set_snmp_location()
         self.set_snmp_users()
-        self.set_snmp_hosts()
         self.set_snmp_vrfs_and_acls()
+        self.set_snmp_hosts()
 
         self.structured_config.snmp_server._update(
             contact=snmp_settings.contact,
@@ -234,9 +234,10 @@ class SnmpServerMixin(Protocol):
 
                 if source_interface:
                     if host_vrf == "default":
-                        self.structured_config.snmp_server.local_interfaces_per_vrf.local_interface = source_interface
+                        self.structured_config.snmp_server.local_interface = source_interface
                     else:
-                        self.structured_config.snmp_server.local_interfaces_per_vrf.vrfs.append_new(name=host_vrf, local_interface=source_interface)
+                        vrf = self.structured_config.snmp_server.vrfs.obtain(host_vrf)
+                        vrf.local_interface = source_interface
 
             if not vrfs:
                 # If no VRFs are defined
@@ -273,18 +274,20 @@ class SnmpServerMixin(Protocol):
                 continue
 
             vrf_name = self.shared_utils.get_vrf(vrf.name, context=f"snmp_settings.vrfs[name={vrf.name}]")
-            vrfs.append_new(name=vrf_name, enable=vrf.enable)
+            vrf_kwargs: dict = {"name": vrf_name, "enable": vrf.enable}
 
             if vrf.ipv4_acl is not None:
                 if vrf_name == "default":
-                    self.structured_config.snmp_server.ipv4_acls_per_vrf.access_list = vrf.ipv4_acl
+                    self.structured_config.snmp_server.ipv4_acl = vrf.ipv4_acl
                 else:
-                    self.structured_config.snmp_server.ipv4_acls_per_vrf.vrfs.append_new(name=vrf_name, access_list=vrf.ipv4_acl)
+                    vrf_kwargs["ipv4_acl"] = vrf.ipv4_acl
 
             if vrf.ipv6_acl is not None:
                 if vrf_name == "default":
-                    self.structured_config.snmp_server.ipv6_acls_per_vrf.access_list = vrf.ipv6_acl
+                    self.structured_config.snmp_server.ipv6_acl = vrf.ipv6_acl
                 else:
-                    self.structured_config.snmp_server.ipv6_acls_per_vrf.vrfs.append_new(name=vrf_name, access_list=vrf.ipv6_acl)
+                    vrf_kwargs["ipv6_acl"] = vrf.ipv6_acl
+
+            vrfs.append_new(**vrf_kwargs)
 
         self.structured_config.snmp_server.vrfs = vrfs._natural_sorted()
