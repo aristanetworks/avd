@@ -1,0 +1,21 @@
+{
+    "payload": {
+        "value": {
+            "key": {
+                "studioId": "studio-static-configlet",
+                "workspaceId": "",
+                "path": {
+                    "values": [
+                        "configletAssignmentRoots"
+                    ]
+                }
+            },
+            "createdAt": "2025-01-23T20:29:00.285388141",
+            "createdBy": "agorbunov",
+            "lastModifiedAt": "2026-04-21T08:11:11.426349194",
+            "lastModifiedBy": "agorbunov",
+            "inputs": "[\"avd_1cb9aa2e-4c10-5fe1-9503-78a6ba3160ab\",\"avd-configlets\",\"RECONCILE_TREE_KEY\"]"
+        },
+        "time": "2026-04-21T21:45:01.126359280"
+    }
+}

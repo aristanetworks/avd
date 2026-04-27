@@ -7,7 +7,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_dc2-leaf1a_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.66/31
   metadata:
     peer: dc2-leaf1a
@@ -18,7 +18,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_dc2-leaf1b_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.70/31
   metadata:
     peer: dc2-leaf1b
@@ -29,7 +29,7 @@ ethernet_interfaces:
 - name: Ethernet3
   description: P2P_dc2-leaf2a_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.74/31
   metadata:
     peer: dc2-leaf2a
@@ -40,7 +40,7 @@ ethernet_interfaces:
 - name: Ethernet4
   description: P2P_dc2-leaf2b_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.78/31
   metadata:
     peer: dc2-leaf2b
@@ -78,7 +78,7 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOSLab
   fabric_name: FABRIC
   validate_hardware:
     enabled: false

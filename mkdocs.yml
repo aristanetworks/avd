@@ -71,13 +71,13 @@ plugins:
       glob:
         - README.md
         - contributing.md
+        - pylintrc-ansible
         - ansible_collections/arista/avd/bindep.txt
         - ansible_collections/arista/avd/CHANGELOG.rst
         - ansible_collections/arista/avd/CNAME
         - ansible_collections/arista/avd/collections.yml
         - ansible_collections/arista/avd/galaxy.yml
         - ansible_collections/arista/avd/LICENSE
-        - ansible_collections/arista/avd/pylintrc
         - ansible_collections/arista/avd/pytest.ini
         - ansible_collections/arista/avd/README.md
         - ansible_collections/arista/avd/requirements.txt
@@ -179,8 +179,10 @@ nav:
       - Ansible Collection: docs/installation/collection-installation.md
       - Containers: docs/containers/overview.md
   - Examples:
+      - How to use AVD examples: ansible_collections/arista/avd/examples/README.md
       - Single DC L3LS: ansible_collections/arista/avd/examples/single-dc-l3ls/README.md
       - Dual DC L3LS: ansible_collections/arista/avd/examples/dual-dc-l3ls/README.md
+      - Single DC Multi-Pod L3LS (5-Stage Clos): ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/README.md
       - L2LS Fabric: ansible_collections/arista/avd/examples/l2ls-fabric/README.md
       - Campus Fabric: ansible_collections/arista/avd/examples/campus-fabric/README.md
       - ISIS-LDP IPVPN: ansible_collections/arista/avd/examples/isis-ldp-ipvpn/README.md
@@ -189,6 +191,7 @@ nav:
       - Fabric Topology: docs/howto/fabric_topology/README.md
       - Connected Endpoints: docs/howto/connected_endpoints/README.md
       - IP Addressing: docs/howto/ip_addressing/README.md
+      - IPv6 Addressing: docs/howto/ipv6_numbered/README.md
       - Node Types: docs/howto/node_types/README.md
       - Network Services: docs/howto/network_services/README.md
       - Configuring PTP: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/ptp.md
@@ -203,9 +206,9 @@ nav:
           - Overview: docs/data-models/README.md
           - AVD Design: ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
+      - Ansible and AVD: docs/user-manual/intro-to-ansible-and-avd.md
+      - Ansible Usage Patterns: docs/user-manual/ansible-usage-patterns.md
       - Ansible Collection:
-          - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
-          - Ansible Usage Patterns: docs/getting-started/ansible-usage-patterns.md
           - Roles:
               - eos_designs:
                   - Overview: ansible_collections/arista/avd/roles/eos_designs/README.md
@@ -221,7 +224,7 @@ nav:
               - cv_deploy: ansible_collections/arista/avd/roles/cv_deploy/README.md
               - anta_runner: ansible_collections/arista/avd/roles/anta_runner/README.md
           - Plugins: docs/plugins/
-          - AVD and Ansible Automation Platform: docs/getting-started/avd-aap.md
+      - Ansible Automation Platform: docs/user-manual/avd-aap.md
       - PyAVD: docs/pyavd/pyavd.md
   - Release Notes:
       - 6.x.x: docs/release-notes/6.x.x.md

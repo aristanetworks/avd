@@ -1,0 +1,7 @@
+---
+# Test for deprecated key ipv6_address
+tunnel_interfaces:
+  - name: Tunnel1
+    description: test ipv4 only
+    ip_address: 42.42.42.42/24
+    ipv6_address: 2002::CAFE/128

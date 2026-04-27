@@ -72,6 +72,9 @@ keys:
                     Any other string will be used directly as the VRF name."
                   convert_types:
                   - int
+                timeout:
+                  type: int
+                  $ref: eos_cli_config_gen#/keys/tacacs_servers/keys/hosts/items/keys/timeout
                 key:
                   type: str
                   description: 'Encrypted Type 7 key.
@@ -159,6 +162,12 @@ keys:
                     Any other string will be used directly as the VRF name."
                   convert_types:
                   - int
+                timeout:
+                  type: int
+                  $ref: eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/timeout
+                retransmit:
+                  type: int
+                  $ref: eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/retransmit
                 key:
                   type: str
                   description: 'Encrypted type-7 key.
@@ -326,6 +335,31 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
+  avd_design_future:
+    type: dict
+    description: Opt-in to future AVD behaviors which will become default behaviors
+      in a future AVD major version.
+    keys:
+      accept_dhcp_default_route_for_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: Configure management interface to accept DHCP default route when
+          the management IP is set to 'dhcp'.
+      remove_redundant_ipv4_unicast_for_peer_groups:
+        type: bool
+        description: Deactivate the IPv4 unicast Address Family for BGP Peer Groups
+          only when IPv4 is activated by default instead of always deactivating it.
+        default: false
+      raise_for_port_channels_without_members:
+        type: bool
+        description: Raise an error if an L3 Port-Channel is configured without any
+          member interfaces.
+        default: false
+      only_configure_mlag_vrfs_peer_group_when_used:
+        type: bool
+        description: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when
+          needed.
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -1500,7 +1534,10 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Server FQDN or IP address.
+                    description: 'Server IP address or FQDN.
+
+                      Note: It is currently recommended to use IP address because
+                      of limitations with Image transfers from CloudVision.'
                   port:
                     type: int
                     convert_types:
@@ -2052,6 +2089,9 @@ keys:
       domain:
         type: str
         description: DNS domain name like 'fabric.local'
+      domain_list:
+        type: list
+        $ref: eos_cli_config_gen#/keys/domain_list
       servers:
         type: list
         required: true
@@ -2113,6 +2153,9 @@ keys:
 
           Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
+      ip_hosts:
+        type: list
+        $ref: eos_cli_config_gen#/keys/ip_hosts
   dot1x_settings:
     documentation_options:
       table: dot1x-settings
@@ -2488,19 +2531,25 @@ keys:
 
       Only used when `evpn_prevent_readvertise_to_server` is set to `true`.
 
-      `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers
-      which filter out BGP updates learned directly from the ASN of the route-server.
+      `source_peer_asn` mode configures an outbound route-maps towards EVPN route-servers
+      which filter out BGP updates learned directly from the ASN of the route-servers.
       This mode will still allow routes learned via any other peer, even if they have
       the route-server''s ASN in the AS-path.
 
-      `as_path_acl` mode configures an outbound route-map and as-path access-list
-      which filters out BGP updates with the route-server ASN anywhere in the AS-path.
+      `as_path_acl` mode configures an outbound route-maps and as-path access-lists
+      which filter out BGP updates with the route-servers'' ASN anywhere in the AS-path.
+
+      `rcf` method uses RCF `as_path has_none` condition to filter out EVPN BGP routes
+      containing the route-servers'' ASN in the `AS PATH` attribute. Filtering is
+      applied to EVPN BGP Address Family only. This method requires EOS 4.35.2F and
+      newer.
 
       '
     type: str
     valid_values:
     - source_peer_asn
     - as_path_acl
+    - rcf
     default: as_path_acl
   evpn_short_esi_prefix:
     documentation_options:
@@ -2668,8 +2717,6 @@ keys:
         type: dict
         keys:
           ipv6_prefix_length:
-            documentation_options:
-              table: node-type-loopback-vtep-configuration
             description: IPv6 prefix length used for Router ID, VTEP and diagnostic
               loopbacks.
             type: int
@@ -3032,6 +3079,52 @@ keys:
             - host: 127.0.0.1
             local_interface: Loopback0
             template_interval: 3600000
+  general_settings:
+    type: dict
+    documentation_options:
+      table: system-settings
+    keys:
+      interface_defaults:
+        type: dict
+        keys:
+          ethernet_shutdown:
+            type: bool
+            default: false
+            description: Shutdown Ethernet interfaces by default unless they are explicitly
+              enabled.
+      arp:
+        type: dict
+        keys:
+          persistent:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/arp/keys/persistent
+          aging:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/arp/keys/aging
+      ip_icmp_redirect:
+        type: bool
+        $ref: eos_cli_config_gen#/keys/ip_icmp_redirect
+      dhcp_relay:
+        type: dict
+        keys:
+          information_option:
+            type: bool
+            description: Enables the insertion of DHCP Relay Agent Information (Option
+              82).
+            default: false
+          tunnel_requests_disabled:
+            type: bool
+            description: 'Blocks DHCP relay for packets received over VXLAN tunnels.
+
+              This is a VTEP-specific optimization and will only be configured on
+              VXLAN VTEPs.'
+            default: false
+          mlag_peerlink_requests_disabled:
+            type: bool
+            description: 'Blocks DHCP relay for packets arriving via the MLAG peer-link.
+
+              This will only be configured on VXLAN VTEPs which are also MLAG devices.'
+            default: false
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
@@ -3593,6 +3686,17 @@ keys:
               description: IPv6 access-list name.
               convert_types:
               - int
+  management_settings:
+    type: dict
+    documentation_options:
+      table: management-settings
+    keys:
+      console:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/management_console
+      banners:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/banners
   mgmt_destination_networks:
     documentation_options:
       table: management-interface-settings
@@ -3600,7 +3704,10 @@ keys:
     description: 'List of IPv4 prefixes to configure as static routes towards the
       OOB Management interface gateway.
 
-      Replaces the default route.'
+      Replaces the default route.
+
+      This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+      true'', since the DHCP server will provide the default route.'
     items:
       type: str
       description: IPv4_address/Mask.
@@ -3611,6 +3718,9 @@ keys:
     description: 'OOB Management interface gateway in IPv4 format.
 
       Used as next-hop for default gateway or static routes defined under ''mgmt_destination_networks''.
+
+      This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+      true'', since the DHCP server will provide the gateway.
 
       '
   mgmt_interface:
@@ -4704,6 +4814,7 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         evpn_gateway_all_active_multihoming: true
+        evpn_gateway_rd_rt_rewrite: true
         per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
@@ -4769,6 +4880,7 @@ keys:
       feature_support:
         per_interface_l2_mtu: false
         evpn_gateway_all_active_multihoming: true
+        evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
       digital_twin:
         platform: vEOS-lab
@@ -4782,6 +4894,7 @@ keys:
       feature_support:
         per_interface_l2_mtu: false
         evpn_gateway_all_active_multihoming: true
+        evpn_gateway_rd_rt_rewrite: true
         private_vlan: false
       digital_twin:
         platform: vEOS-lab
@@ -4841,6 +4954,7 @@ keys:
         per_interface_l2_mtu: false
         per_interface_l2_mru: false
         evpn_gateway_all_active_multihoming: true
+        evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
       reload_delay:
@@ -4862,6 +4976,7 @@ keys:
         per_interface_l2_mtu: false
         per_interface_l2_mru: false
         evpn_gateway_all_active_multihoming: true
+        evpn_gateway_rd_rt_rewrite: true
         sflow_subinterfaces: false
         hardware_validation: false
       management_interface: Management1
@@ -5101,7 +5216,7 @@ keys:
         $ref: eos_cli_config_gen#/keys/ptp/keys/free_running
   queue_monitor_length:
     documentation_options:
-      table: system-settings
+      table: latency-analyzer
     $ref: eos_cli_config_gen#/keys/queue_monitor_length
     type: dict
     keys:
@@ -5116,6 +5231,8 @@ keys:
 
           '
   queue_monitor_streaming:
+    documentation_options:
+      table: latency-analyzer
     type: dict
     $ref: eos_cli_config_gen#/keys/queue_monitor_streaming
   redundancy:
@@ -6272,6 +6389,9 @@ keys:
             other fabric devices in the extra fabric validation tests performed by
             the `anta_runner` role.
           default: false
+        interfaces:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/metadata/keys/interfaces
   vtep_loopback_description:
     documentation_options:
       table: overlay-settings
@@ -6977,8 +7097,21 @@ $defs:
           '
       vlans:
         type: str
-        description: Interface VLANs - if not set, the EOS default is that all VLANs
-          are allowed for trunk ports, and VLAN 1 will be used for access ports.
+        description: 'Access VLAN for an access port or a range of VLANs to be allowed
+          on a trunk port.
+
+          The value will be interpreted according to these rules:
+
+          - `defined_vlans` will configure all VLANs defined under network services
+          as explicitly allowed VLANs on the trunk port.
+
+          - Any other string will be interpreted as a single VLAN (for access ports)
+          or a range of VLANs (for trunk ports).
+
+          If not set, the EOS default is that all VLANs are implicitly allowed for
+          trunk ports, and VLAN 1 will be used for access ports.
+
+          '
         convert_types:
         - int
       spanning_tree_portfast:
@@ -7008,6 +7141,11 @@ $defs:
         - 'False'
         - 'true'
         - 'false'
+      spanning_tree_link_type:
+        type: str
+        valid_values:
+        - shared
+        - point-to-point
       flowcontrol:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/flowcontrol
@@ -7309,6 +7447,9 @@ $defs:
               Subinterfaces are only supported on routed port-channels, which means
               they cannot be configured on MLAG port-channels.
 
+              The parent Port-Channel interface is automatically created if not defined
+              elsewhere.
+
               Setting short_esi: auto generates the short_esi automatically using
               a hash of configuration elements.
 
@@ -7592,6 +7733,51 @@ $defs:
             underlay_multicast_group:
               description: Specific multicast group to use for this VLAN.
               type: str
+        igmp_snooping:
+          type: dict
+          documentation_options:
+            table: network-services-multicast-settings
+          keys:
+            enabled:
+              type: bool
+              description: Enable or disable IGMP snooping (Enabled by default on
+                EOS).
+            querier:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Will be enabled automatically if `evpn_l2_multicast`
+                    is enabled.
+                source_address:
+                  type: str
+                  description: 'The value of `source_address` will be interpreted
+                    according to these rules:
+
+                    - `vrf_router_id` will configure the VRF router ID address according
+                    to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+
+                    - ''diagnostic_loopback'' will configure the VRF Diagnostic Loopback
+                    address.
+
+                    - `main_router_id` will configure the Loopback0 IP address.
+
+                    - An IPv4 address will be used directly as the source address.
+
+                    Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.'
+                version:
+                  type: int
+                  description: IGMP Version (By default EOS uses IGMP version 2 for
+                    IGMP querier).
+                  convert_types:
+                  - str
+                  valid_values:
+                  - 1
+                  - 2
+                  - 3
+            fast_leave:
+              type: bool
+              description: Enable IGMP snooping fast-leave feature.
         igmp_snooping_enabled:
           documentation_options:
             table: network-services-multicast-settings
@@ -7601,6 +7787,11 @@ $defs:
           documentation_options:
             table: network-services-multicast-settings
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: igmp_snooping.querier
           description: 'Enable igmp snooping querier, by default using IP address
             of Loopback 0.
 
@@ -7693,6 +7884,19 @@ $defs:
               default: 31
               min: 8
               max: 31
+            ipv6_pool:
+              type: str
+              description: Comma separated list of prefixes (IPv6 address/Mask) or
+                ranges (IPv6_address-IPv6_address).
+              format: ipv6_pool
+            ipv6_prefix_size:
+              type: int
+              convert_types:
+              - str
+              description: IPv6 prefix size.
+              default: 127
+              min: 32
+              max: 127
       p2p_links_profiles:
         type: list
         primary_key: name
@@ -8024,6 +8228,48 @@ $defs:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+        igmp_snooping:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: dict
+          keys:
+            querier:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Will be enabled automatically if `evpn_l2_multicast`
+                    is enabled.
+                source_address:
+                  type: str
+                  description: 'The value of `source_address` will be interpreted
+                    according to these rules:
+
+                    - `vrf_router_id` will configure the VRF router ID address according
+                    to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+
+                    - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
+
+                    - `main_router_id` will configure the Loopback0 IP address.
+
+                    - An IPv4 address will be used directly as the source address.'
+                  default: main_router_id
+                version:
+                  type: int
+                  description: IGMP Version (By default EOS uses IGMP version 2 for
+                    IGMP querier).
+                  convert_types:
+                  - str
+                  valid_values:
+                  - 1
+                  - 2
+                  - 3
+            fast_leave:
+              type: bool
+              description: 'Explicitly enable or disable IGMP snooping fast-leave
+                feature for all SVIs and L2 VLANs within the Tenant.
+
+                On EOS, IGMP fast-leave is enabled on all VLANs by default.'
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -8054,6 +8300,11 @@ $defs:
               - str
             fast_leave:
               type: bool
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 7.0.0
+                new_key: igmp_snooping.fast_leave under the Tenant
               description: Enable IGMP snooping fast-leave feature for all SVIs and
                 l2vlans within the Tenant.
             always_redistribute_igmp:
@@ -8207,6 +8458,11 @@ $defs:
 
             '
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: igmp_snooping.querier
           keys:
             enabled:
               type: bool
@@ -8365,6 +8621,28 @@ $defs:
                   and does not affect any entries defined under `additional_route_targets`.
 
                   '
+                default: true
+              rt_import_evpn_remote:
+                type: bool
+                description: 'Enable or disable route target import for the VRF for
+                  EVPN remote.
+
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode`
+                  is `rd-rt-rewrite`.
+
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.'
+                default: true
+              rt_export_evpn_remote:
+                type: bool
+                description: 'Enable or disable route target export for the VRF for
+                  EVPN remote.
+
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode`
+                  is `rd-rt-rewrite`.
+
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.'
                 default: true
               evpn_vlan_bundle:
                 type: str
@@ -8900,7 +9178,10 @@ $defs:
                       type: list
                       items:
                         type: str
-                        description: Interface name.
+                        description: 'Interface name.
+
+                          For subinterfaces, the parent physical interface is automatically
+                          created if not defined elsewhere.'
                     encapsulation_dot1q_vlan:
                       type: list
                       description: For sub-interfaces the dot1q vlan is derived from
@@ -9063,6 +9344,10 @@ $defs:
                       $ref: eos_designs#/$defs/flow_tracking_link
                       description: Configures flow-tracking on the interface. Overrides
                         `fabric_flow_tracking.l3_interfaces` setting.
+                    sflow:
+                      type: bool
+                      description: Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces`
+                        setting.
                     monitor_sessions:
                       type: list
                       $ref: eos_designs#/$defs/monitor_sessions
@@ -9457,6 +9742,37 @@ $defs:
                 default: true
                 description: Enable or disable the redistribution of all connected
                   routes to BGP in the VRF. Note this is not applicable to VRF `default`.
+              static_arp_entries:
+                type: list
+                description: 'List of static ARP entries for the tenant VRF.
+
+                  Entries are configured on all devices carrying the VRF unless filtered
+                  using the nodes key.
+
+                  '
+                items:
+                  type: dict
+                  keys:
+                    ipv4_address:
+                      type: str
+                      required: true
+                      description: ARP entry IPv4 address.
+                    mac_address:
+                      type: str
+                      description: ARP entry MAC address.
+                      required: true
+                      pattern: '[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}'
+                    nodes:
+                      type: list
+                      items:
+                        type: str
+                      description: 'List of nodes where the ARP static entry should
+                        be configured.
+
+                        If not set, the entry will be configured on all devices carrying
+                        the VRF.
+
+                        '
               bgp_peers:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
@@ -9880,6 +10196,28 @@ $defs:
                 items:
                   type: str
                   default: all
+        vpws:
+          type: dict
+          description: 'VPWS pseudowire settings for the tenant.
+
+            To render `mpls_control_word`, `mtu`, and `label_flow` in the BGP VPWS
+            configuration,
+
+            both `point_to_point_services` and `pseudowire_rt_base` must be set under
+            the tenant.'
+          keys:
+            mpls_control_word:
+              type: bool
+              default: false
+              description: Enable or disable MPLS control word for VPWS pseudowires.
+            mtu:
+              type: int
+              convert_types:
+              - str
+              description: MTU for VPWS pseudowires.
+            label_flow:
+              type: bool
+              description: Enable or disable MPLS label flow for VPWS pseudowires.
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings
@@ -9981,6 +10319,9 @@ $defs:
                         The list of interfaces is mapped to the list of nodes, so
                         they must have the same length.
 
+                        For subinterfaces, the parent physical interface is automatically
+                        created if not defined elsewhere.
+
                         '
                       required: true
                       min_length: 1
@@ -10061,15 +10402,22 @@ $defs:
           mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
-            description: Node management interface IPv4 address.
+            description: 'Node management interface IPv4 address/Mask or ''dhcp''.
+
+              When set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+              true'', the `mgmt_destination_networks` and `mgmt_gateway` settings
+              are ignored since the DHCP server is expected to provide the gateway
+              and the default route.'
             type: str
-            format: cidr
           mgmt_gateway:
             documentation_options:
               table: node-type-common-configuration
             type: str
-            description: This key sets the management gateway for the device. It takes
-              precedence over the global `mgmt_gateway`.
+            description: 'This key sets the management gateway for the device. It
+              takes precedence over the global `mgmt_gateway`.
+
+              This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and ''avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+              true'', since the DHCP server will provide the gateway.'
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
@@ -10890,6 +11238,40 @@ $defs:
                   inter_domain:
                     type: bool
                     default: true
+                  mode:
+                    type: str
+                    valid_values:
+                    - next-hop-self
+                    - rd-rt-rewrite
+                    default: next-hop-self
+                    description: 'Defines the rewriting mode for EVPN L3 inter-domain
+                      routing.
+
+                      - next-hop-self: (default) Forward EVPN IP-Prefix routes by
+                      only replacing the next-hop to the gateway itself.
+
+                      - rd-rt-rewrite: Re-export local EVPN IP-Prefix routes with
+                      the RD and export RTs of the remote domain and vice versa.
+
+                      '
+              d_path:
+                type: dict
+                keys:
+                  enabled:
+                    description: Enable D-path for use with BGP bestpath selection
+                      algorithm.
+                    type: bool
+                    default: true
+                  local_domain_id:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin
+                      notation
+                    type: str
+                    required: true
+                  remote_domain_id:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin
+                      notation
+                    type: str
+                    required: true
               all_active_multihoming:
                 description: 'Enable Active Active Multihoming architecture for EVPN
                   Gateways.
@@ -10907,16 +11289,43 @@ $defs:
                       algorithm.
                     type: bool
                     default: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: <node_type_key>.defaults.evpn_gateway.d_path.enabled
+                        or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled
+                        or <node_type_key>.node_groups[].evpn_gateway.d_path.enabled
+                        or <node_type_key>.nodes[].evpn_gateway.d_path.enabled or
+                        device_profiles[].evpn_gateway.d_path.enabled or devices[].evpn_gateway.d_path.enabled
                   evpn_domain_id_local:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin
                       notation
                     type: str
-                    required: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: <node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local
+                        or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local
+                        or <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local
+                        or <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local
+                        or device_profiles[].evpn_gateway.d_path.local_domain_id_local
+                        or devices[].evpn_gateway.d_path.local_domain_id_local
                   evpn_domain_id_remote:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin
                       notation
                     type: str
-                    required: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: <node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id
+                        or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id
+                        or <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id
+                        or <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id
+                        or device_profiles[].evpn_gateway.d_path.remote_domain_id
+                        or devices[].evpn_gateway.d_path.remote_domain_id
                   evpn_ethernet_segment:
                     type: dict
                     required: true
@@ -10946,12 +11355,12 @@ $defs:
                 required: true
               evpn_domain_id:
                 description: Domain ID to assign to EVPN address family for use with
-                  D-path. Format <nn>:<nn>.
+                  D-path. Format `<nn>:<nn>`.
                 type: str
                 default: '65535:1'
               ipvpn_domain_id:
                 description: Domain ID to assign to IPVPN address families for use
-                  with D-path. Format <nn>:<nn>.
+                  with D-path. Format `<nn>:<nn>`.
                 type: str
                 default: '65535:2'
               enable_d_path:
@@ -12430,7 +12839,8 @@ $defs:
           description: 'Ethernet interface name like ''Ethernet2'' or subinterface
             name like ''Ethernet2.42''.
 
-            For a subinterface, the parent physical interface is automatically created.'
+            For a subinterface, the parent physical interface is automatically created
+            if not defined elsewhere.'
           pattern: Ethernet[\d/]+(\.[\d]+)?
         description:
           type: str
@@ -12876,7 +13286,8 @@ $defs:
         ip_pool:
           type: str
           description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A
-            /31 will be taken from the pool per P2P link.
+            /31 IPv4 subnet or /127 IPv6 prefix will be taken from the pool per P2P
+            link.
         subnet:
           type: str
           description: IPv4 address/Mask. Subnet used on this P2P link.
@@ -12893,6 +13304,17 @@ $defs:
           default: false
           description: Allows turning on ipv6 for the link or profile (also autodetected
             based on underlay_rfc5549 and include_in_underlay_protocol).
+        ipv6_prefix:
+          type: str
+          description: IPv6 address/Mask. Prefix used on this P2P link.
+        ipv6:
+          type: list
+          description: Specific IPv6 addresses used on this P2P link.
+          min_length: 2
+          max_length: 2
+          items:
+            type: str
+            description: Node IPv6 address/Mask.
         nodes:
           type: list
           description: Nodes where this link should be configured.
@@ -12949,7 +13371,20 @@ $defs:
         include_in_underlay_protocol:
           type: bool
           default: true
-          description: Add this interface to underlay routing protocol.
+          description: 'Add this interface to the underlay routing protocols.
+
+            This is currently not supported when IPv6 addresses are used.'
+        use_underlay_ospf_authentication:
+          type: bool
+          default: false
+          description: 'Enable OSPF authentication on this P2P link when underlay
+            is OSPF.
+
+            Requires `include_in_underlay_protocol: true` and global setting `underlay_ospf_authentication.enabled:
+            true`.
+
+            When enabled, the message digest keys defined under `underlay_ospf_authentication.message_digest_keys`
+            are applied to the interface.'
         isis_hello_padding:
           type: bool
           default: true
@@ -13349,6 +13784,12 @@ $defs:
               type: bool
               default: false
               description: 'Support for all-active EVPN gateway redundancy.
+
+                An error will be raised if the feature is enabled and this is false.'
+            evpn_gateway_rd_rt_rewrite:
+              type: bool
+              default: false
+              description: 'Support for EVPN gateway RD/RT rewrite mode.
 
                 An error will be raised if the feature is enabled and this is false.'
             hardware_counters:
@@ -13882,6 +14323,11 @@ $defs:
 
               but it is required to support forwarding of TTL=1 multicast traffic
               within the VLAN.'
+      evpn_redistribute_router_mac_system:
+        type: bool
+        default: false
+        description: Configure 'redistribute router-mac system' under BGP for this
+          L3 VLAN.
       vxlan_flood_multicast:
         documentation_options:
           table: network-services-multicast-settings
@@ -13907,15 +14353,69 @@ $defs:
         keys:
           enabled:
             type: bool
+      igmp_snooping:
+        type: dict
+        documentation_options:
+          table: network-services-multicast-settings
+        keys:
+          enabled:
+            type: bool
+            description: Enable or disable IGMP snooping (Enabled by default on EOS).
+          querier:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                description: Will be enabled automatically if `evpn_l2_multicast`
+                  is enabled.
+              source_address:
+                type: str
+                description: 'The value of `source_address` will be interpreted according
+                  to these rules:
+
+                  - `vrf_router_id` will configure the VRF router ID address according
+                  to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+
+                  - ''diagnostic_loopback'' will configure the VRF Diagnostic Loopback
+                  address.
+
+                  - `main_router_id` will configure the Loopback0 IP address.
+
+                  - An IPv4 address will be used directly as the source address.
+
+                  Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.'
+              version:
+                type: int
+                description: IGMP Version (By default EOS uses IGMP version 2 for
+                  IGMP querier).
+                convert_types:
+                - str
+                valid_values:
+                - 1
+                - 2
+                - 3
+          fast_leave:
+            type: bool
+            description: Enable IGMP snooping fast-leave feature.
       igmp_snooping_enabled:
         documentation_options:
           table: network-services-multicast-settings
         type: bool
         description: Enable or disable IGMP snooping (Enabled by default on EOS).
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: igmp_snooping.enabled
       igmp_snooping_querier:
         documentation_options:
           table: network-services-multicast-settings
         type: dict
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: igmp_snooping.querier
         keys:
           enabled:
             type: bool
@@ -13935,7 +14435,7 @@ $defs:
 
               - An IPv4 address will be used directly as the source address.
 
-              Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.'
+              Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.'
           version:
             type: int
             description: IGMP Version (By default EOS uses IGMP version 2 for IGMP

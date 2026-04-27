@@ -16,7 +16,9 @@
 - [Authentication](#authentication)
   - [Enable Password](#enable-password)
   - [TACACS Servers](#tacacs-servers)
+  - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [RADIUS Server](#radius-server)
+  - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
@@ -169,9 +171,9 @@ EOF
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -297,9 +299,9 @@ management cvx
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| True | False | - | False |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| True | False | - | False | 1440 minutes |
 
 #### Management API HTTP Device Configuration
 
@@ -359,6 +361,27 @@ enable password 5 <removed>
 tacacs-server host 10.10.10.159 key 8a <removed>
 ```
 
+### IP TACACS Source Interfaces
+
+#### IP TACACS Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------------- |
+| default | Loopback10 |
+| TEST1 | Loopback3 |
+| mgmt | Loopback1 |
+
+#### IP TACACS Source Interfaces Device Configuration
+
+```eos
+!
+ip tacacs vrf mgmt source-interface Loopback1
+!
+ip tacacs vrf TEST1 source-interface Loopback3
+!
+ip tacacs vrf default source-interface Loopback10
+```
+
 ### RADIUS Server
 
 - Attribute 32 is included in access requests using format 'myformat'
@@ -368,6 +391,30 @@ tacacs-server host 10.10.10.159 key 8a <removed>
 ```eos
 !
 radius-server attribute 32 include-in-access-req format myformat
+```
+
+### IP RADIUS Source Interfaces
+
+#### IP RADIUS Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+| default | Loopback1 |
+| BLAH | Loopback10 |
+| MGMT | Management1 |
+| abc | Loopback10 |
+
+#### IP RADIUS Source Interfaces Device Configuration
+
+```eos
+!
+ip radius vrf default source-interface Loopback1
+!
+ip radius vrf abc source-interface Loopback10
+!
+ip radius vrf BLAH source-interface Loopback10
+!
+ip radius vrf MGMT source-interface Management1
 ```
 
 ### AAA Authentication
@@ -913,9 +960,9 @@ interface defaults
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.42/24 | False | 666 | Sampled: FT-S | - |
+| Interface | IP address | IPv6 addresses | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | -------------- | -------- | --- | --------------- | --------------- |
+| Dps1 | 192.168.42.42/24 | - | False | 666 | Sampled: FT-S | - |
 
 #### DPS Interfaces Device Configuration
 
@@ -1132,6 +1179,12 @@ ASN Notation: asplain
 | no bgp default ipv4-unicast transport ipv6 |
 | bgp route-reflector preserve-attributes |
 
+#### Route Distinguisher
+
+| Address Families | Range |
+| ---------------- | ----- |
+| - | 25-29 |
+
 #### Router BGP EVPN Address Family
 
 ##### EVPN Peer Groups
@@ -1168,13 +1221,29 @@ ASN Notation: asplain
 | -------- | ----- |
 | Graceful-restart | Enabled |
 
+##### BGP LU RIB
+
+| RIB | Enabled | Route-map |
+| --- | ------- | --------- |
+| IP | True | RM-test2 |
+| Tunnel | True | - |
+
 #### Router BGP Path-Selection Address Family
+
+#### Router BGP VRFs
+
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| VRF01 | 10.50.64.15:30003 (Remote Domain: 10.50.64.15:30003) | - | - |
+| VRF02 | - (Remote Domain: 10.50.64.15:30006) | - | - |
+| VRF03 | - | connected | - |
 
 #### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65101
+   bgp labeled-unicast rib ip route-map RM-test2 tunnel
    no bgp default ipv4-unicast
    no bgp default ipv4-unicast transport ipv6
    graceful-restart
@@ -1191,6 +1260,9 @@ router bgp 65101
    redistribute ospfv3 match internal include leaked route-map RM-CONN-2-BGP
    redistribute static route-map RM-STATIC-2-BGP
    redistribute dynamic rcf RCF_CONN_2_BGP()
+   !
+   route-distinguisher
+      assignment auto range 25 29
    !
    address-family evpn
       no bgp additional-paths send
@@ -1245,6 +1317,15 @@ router bgp 65101
    !
    address-family path-selection
       no bgp additional-paths send
+   !
+   vrf VRF01
+      rd evpn domain all 10.50.64.15:30003
+   !
+   vrf VRF02
+      rd evpn domain remote 10.50.64.15:30006
+   !
+   vrf VRF03
+      redistribute connected
 ```
 
 ### PBR Policy Maps
@@ -1437,8 +1518,8 @@ no ip igmp snooping querier
 
 #### IP Router Multicast Summary
 
-- Multipathing deterministically by selecting the same-colored upstream routers.
-- Software forwarding by the Linux kernel
+- Multipathing operates deterministically by selecting the same-colored upstream routers.
+- IPv4 software forwarding is handled by the Linux kernel.
 
 #### Router Multicast Device Configuration
 

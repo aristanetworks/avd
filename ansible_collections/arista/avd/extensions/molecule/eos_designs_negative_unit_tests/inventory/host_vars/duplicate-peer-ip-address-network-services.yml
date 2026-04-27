@@ -28,10 +28,10 @@ tenants:
         bgp_peers:
           - ip_address: 2.2.2.2
             peer_group: Tenant_C_BGP_PEER_GROUP
-            nodes: [ duplicate-peer-ip-address-network-services ]
+            nodes: [duplicate-peer-ip-address-network-services]
           - ip_address: 2.2.2.2
             peer_group: Tenant_C_BGP_PEER_GROUP2
-            nodes: [ duplicate-peer-ip-address-network-services ]
+            nodes: [duplicate-peer-ip-address-network-services]
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Neighbors.

@@ -96,6 +96,7 @@ class LogMessage(Enum):
     INTERFACE_NO_IP = "{interface} skipped - No IP address configured"
     INTERFACE_UNNUMBERED = "{interface} skipped - IP unnumbered interface"
     INTERFACE_NOT_INBAND_MGMT = "{interface} skipped - Not an inband management interface"
+    INTERFACE_NON_DEFAULT_VRF = "{interface} skipped - Interface in non-default VRF"
 
     # Vxlan interface state messages
     INTERFACE_VXLAN1_NO_VNI = "Vxlan1 skipped - No VNI configured"

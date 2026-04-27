@@ -11,7 +11,7 @@ l3leaf:
     uplink_switches: []
     uplink_ipv4_pool: 172.31.255.0/24
     bgp_defaults: ['distance bgp 20 200 200']
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
     spanning_tree_mode: mstp
@@ -21,61 +21,61 @@ l3leaf:
     - group: AUTO_BGP_ASN_LEAF1_AA
       mlag: false
       nodes:
-        - name: AUTO_BGP_ASN_LEAF1A
+        - name: auto-bgp-asn-leaf1a
           id: 1
           mgmt_ip: 192.168.202.105/24
-        - name: AUTO_BGP_ASN_LEAF1B
+        - name: auto-bgp-asn-leaf1b
           id: 2
           mgmt_ip: 192.168.202.106/24
     - group: AUTO_BGP_ASN_LEAF2_STANDALONE
       nodes:
-        - name: AUTO_BGP_ASN_LEAF2
+        - name: auto-bgp-asn-leaf2
           id: 3
           mgmt_ip: 192.168.202.107/24
     - group: AUTO_BGP_ASN_LEAF3_MLAG
       nodes:
-        - name: AUTO_BGP_ASN_LEAF3A
+        - name: auto-bgp-asn-leaf3a
           id: 5
           mgmt_ip: 192.168.202.109/24
-        - name: AUTO_BGP_ASN_LEAF3B
+        - name: auto-bgp-asn-leaf3b
           id: 6
           mgmt_ip: 192.168.202.110/24
     - group: AUTO_BGP_ASN_LEAF4_MLAG_OVERRIDE
       bgp_as: 65222
       nodes:
-        - name: AUTO_BGP_ASN_LEAF4A
+        - name: auto-bgp-asn-leaf4a
           id: 7
           mgmt_ip: 192.168.202.111/24
-        - name: AUTO_BGP_ASN_LEAF4B
+        - name: auto-bgp-asn-leaf4b
           id: 8
           mgmt_ip: 192.168.202.112/24
     - group: AUTO_BGP_ASN_LEAF5_NODE_OVERRIDE
       nodes:
-        - name: AUTO_BGP_ASN_LEAF5A
+        - name: auto-bgp-asn-leaf5a
           id: 9
           bgp_as: 65333
           mgmt_ip: 192.168.202.113/24
     - group: AUTO_BGP_ASN_LEAF5_4BYTE_DOTZERO
       bgp_as: "65222.0"
       nodes:
-        - name: AUTO_BGP_ASN_LEAF7A
+        - name: auto-bgp-asn-leaf7a
           id: 11
           mgmt_ip: 192.168.202.115/24
-        - name: AUTO_BGP_ASN_LEAF7B
+        - name: auto-bgp-asn-leaf7b
           id: 12
           mgmt_ip: 192.168.202.116/24
     - group: AUTO_BGP_ASN_LEAF5_4BYTE_RANGE
       bgp_as: 65222.0-100
       mlag: false
       nodes:
-        - name: AUTO_BGP_ASN_LEAF8A
+        - name: auto-bgp-asn-leaf8a
           id: 13
           mgmt_ip: 192.168.202.117/24
-        - name: AUTO_BGP_ASN_LEAF8B
+        - name: auto-bgp-asn-leaf8b
           id: 14
           mgmt_ip: 192.168.202.118/24
 
   nodes:
-    - name: AUTO_BGP_UNGROUPED_LEAF6
+    - name: auto-bgp-ungrouped-leaf6
       id: 10
       mgmt_ip: 192.168.202.114/24

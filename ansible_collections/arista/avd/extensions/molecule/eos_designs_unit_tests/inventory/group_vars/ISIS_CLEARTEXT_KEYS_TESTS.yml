@@ -15,7 +15,7 @@ l3leaf:
     loopback_ipv4_offset: 32
     vtep_loopback_ipv4_pool: 192.168.253.0/24
     platform: vEOS-LAB
-    uplink_switches: ["MLAG-ISIS-SPINE"]
+    uplink_switches: ["mlag-isis-spine"]
     uplink_interfaces: ["Ethernet1"]
   node_groups:
     - group: ISIS_CLEARTEXT_KEYS_LEAFS

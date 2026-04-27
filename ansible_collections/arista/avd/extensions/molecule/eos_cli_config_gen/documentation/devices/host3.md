@@ -14,9 +14,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -312,6 +312,12 @@ ASN Notation: asplain
 | graceful-restart-helper long-lived |
 | bgp additional-paths send limit 5 |
 
+#### Route Distinguisher
+
+| Address Families | Range |
+| ---------------- | ----- |
+| l3-vrf | - |
+
 #### Router BGP EVPN Address Family
 
 #### Router BGP IPv4 Labeled Unicast
@@ -321,6 +327,13 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 
+##### BGP LU RIB
+
+| RIB | Enabled | Route-map |
+| --- | ------- | --------- |
+| IP | True | RM-rib2 |
+| Tunnel | True | RM-rib3 |
+
 #### Router BGP Path-Selection Address Family
 
 #### Router BGP Device Configuration
@@ -328,6 +341,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65101.0001
+   bgp labeled-unicast rib ip route-map RM-rib2 tunnel route-map RM-rib3
    router-id 192.168.255.3
    graceful-restart-helper long-lived
    no bgp default ipv4-unicast
@@ -338,6 +352,9 @@ router bgp 65101.0001
    bgp additional-paths send limit 5
    redistribute ospf include leaked route-map RM-OSPF-TO-BGP
    redistribute static
+   !
+   route-distinguisher
+      assignment auto address-family l3-vrf
    !
    address-family evpn
       bgp additional-paths send ecmp limit 10
@@ -408,7 +425,7 @@ mpls rsvp
 
 #### IP Router Multicast Summary
 
-- Multipathing via ECMP.
+- Multipathing operates via ECMP.
 
 #### Router Multicast Device Configuration
 

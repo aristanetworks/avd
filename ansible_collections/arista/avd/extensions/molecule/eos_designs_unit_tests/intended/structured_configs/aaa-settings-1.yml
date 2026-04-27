@@ -171,21 +171,24 @@ config_end: true
 enable_password:
   hash_algorithm: sha512
   key: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
+eos_config_future:
+  new_ip_radius_cli_order: true
+  new_ip_tacacs_cli_order: true
 hostname: aaa-settings-1
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius_source_interfaces:
-- name: Vlan123
-  vrf: default
-- name: Vlan125
-  vrf: MGMT
-ip_tacacs_source_interfaces:
-- name: Vlan123
-  vrf: default
-- name: Management1
-  vrf: MGMT
-- name: Vlan125
-  vrf: MGMT1
+ip_radius:
+  source_interface: Vlan123
+  vrfs:
+  - name: MGMT
+    source_interface: Vlan125
+ip_tacacs:
+  source_interface: Vlan123
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
+  - name: MGMT1
+    source_interface: Vlan125
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -199,6 +202,8 @@ metadata:
 radius_server:
   servers:
   - host: 11.10.10.11
+    timeout: 10
+    retransmit: 3
     key: 071B245F5A
   - host: 10.10.10.42
     key: 071B245F5A
@@ -211,6 +216,7 @@ radius_server:
   - name: MGMT
     servers:
     - host: 11.10.10.1
+      timeout: 20
       key: 071B245F5A
     - host: 11.10.10.2
       key: 071B245F5A
@@ -231,9 +237,11 @@ tacacs_servers:
   - host: 10.10.10.11
     vrf: default
     key: 071B245F5A
+    timeout: 30
   - host: 10.10.10.1
     vrf: MGMT
     key: 071B245F5A
+    timeout: 60
   - host: 10.10.10.2
     vrf: MGMT
     key: 071B245F5A

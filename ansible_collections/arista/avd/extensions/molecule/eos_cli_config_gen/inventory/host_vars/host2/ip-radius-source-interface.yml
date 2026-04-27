@@ -1,0 +1,13 @@
+---
+### IP RADIUS source interface with old cli order ###
+# TODO 7.0: removed this test file
+
+ip_radius:
+  source_interface: Loopback1
+  vrfs:
+    - name: MGMT
+      source_interface: Management1
+    - name: abc
+      source_interface: Loopback10
+    - name: BLAH
+      source_interface: Loopback10

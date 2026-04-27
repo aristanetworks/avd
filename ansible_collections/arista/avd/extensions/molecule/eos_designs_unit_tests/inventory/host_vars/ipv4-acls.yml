@@ -53,6 +53,8 @@ ipv4_acls:
         protocol: ip
         source: peer_ip
         destination: interface_ip
+        inner_vlan_number: 123
+        inner_vlan_mask: "0x000"
   - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
     entries:
       - remark: Some remark will not require source and destination fields.

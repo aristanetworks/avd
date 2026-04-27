@@ -1,0 +1,10 @@
+# Test for deprecated key ipv6_nd_ra_disabled, ipv6_nd_managed_config_flag and ipv6_nd_prefixes
+port_channel_interfaces:
+  - name: Port-Channel5
+    ipv6_nd_ra_disabled: true
+    ipv6_nd_managed_config_flag: true
+    ipv6_nd_prefixes:
+      - ipv6_prefix: a1::/64
+        valid_lifetime: infinite
+        preferred_lifetime: infinite
+        no_autoconfig_flag: true

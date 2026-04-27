@@ -95,7 +95,12 @@ $defs:
           Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.
       vlans:
         type: str
-        description: Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.
+        description: |
+          Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+          The value will be interpreted according to these rules:
+          - `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.
+          - Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+          If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
         convert_types:
           - int
       spanning_tree_portfast:
@@ -113,6 +118,9 @@ $defs:
         convert_types:
           - bool
         valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
+      spanning_tree_link_type:
+        type: str
+        valid_values: ["shared", "point-to-point"]
       flowcontrol:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/flowcontrol
@@ -370,6 +378,7 @@ $defs:
             description: |
               Port-Channel L2 Subinterfaces
               Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+              The parent Port-Channel interface is automatically created if not defined elsewhere.
               Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
               Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
             items:

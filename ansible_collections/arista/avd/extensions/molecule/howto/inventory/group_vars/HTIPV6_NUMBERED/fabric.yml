@@ -1,0 +1,45 @@
+---
+# How-To IPv6 Fabric Settings
+
+# Override to maintain Management0 as the management interface for cEOS
+custom_platform_settings:
+  - platforms: [ceos]
+    management_interface: Management0
+
+default_interfaces:
+  - types: [spine]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+    downlink_interfaces: [Ethernet1-8]
+  - types: [l3leaf]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+    mlag_interfaces: [Ethernet3-4]
+
+default_node_types:
+  - match_hostnames:
+      - ".*-spine.*"
+    node_type: spine
+  - match_hostnames:
+      - ".*-leaf.*"
+    node_type: l3leaf
+
+# Enable IPv6 underlay with numbered addresses
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+
+# IPv6 prefix length settings
+fabric_ip_addressing:
+  loopback:
+    ipv6_prefix_length: 128
+  mlag:
+    ipv6_prefix_length: 64
+  p2p_uplinks:
+    ipv6_prefix_length: 64
+
+# Updating BGP peer group names for IPv6
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    name: IPv6-UNDERLAY-PEERS
+  mlag_ipv4_underlay_peer:
+    name: MLAG-IPv6-UNDERLAY-PEER

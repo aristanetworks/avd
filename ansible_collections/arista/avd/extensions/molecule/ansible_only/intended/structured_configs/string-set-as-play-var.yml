@@ -1,0 +1,49 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet7
+  description: PHYSICAL_PORT_DESCRIPTION
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  metadata:
+    peer: OLD_SW-1/6
+    peer_type: server
+    peer_key: servers
+hostname: string-set-as-play-var
+ip_igmp_snooping:
+  globally_enabled: true
+link_tracking_groups:
+- name: LT_GROUP1
+  recovery_delay: 300
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.1.1/24
+  type: oob
+metadata:
+  is_deployed: true
+  platform: 720XP
+  fabric_name: ANSIBLE_ONLY
+port_channel_interfaces:
+- name: Port-Channel7
+  description: test of var set under play vars
+  shutdown: false
+  switchport:
+    enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

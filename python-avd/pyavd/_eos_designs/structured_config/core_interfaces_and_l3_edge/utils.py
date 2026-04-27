@@ -13,7 +13,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_pool
-from pyavd._utils.password_utils.password import isis_encrypt
+from pyavd._utils.password_utils.password import isis_encrypt, ospf_message_digest_encrypt
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
@@ -44,16 +44,16 @@ class UtilsMixin(Protocol):
         # Apply p2p_profiles if set. Silently ignoring missing profile.
         p2p_links: list[T_P2pLinksItem] = [self._apply_p2p_links_profile(p2p_link) for p2p_link in cast("list[T_P2pLinksItem]", self.inputs_data.p2p_links)]
 
-        # Filter to only include p2p_links with our hostname under "nodes"
-        p2p_links = [p2p_link for p2p_link in p2p_links if self.shared_utils.hostname in p2p_link.nodes]
-        if not p2p_links:
+        # Filter to only include p2p_links with our hostname under "nodes", preserving original index for error messages.
+        p2p_links_with_index = [(idx, p2p_link) for idx, p2p_link in enumerate(p2p_links) if self.shared_utils.hostname in p2p_link.nodes]
+        if not p2p_links_with_index:
             return []
 
         # Resolve IPs from subnet or p2p_pools.
-        p2p_links = [self._resolve_p2p_ips(p2p_link) for p2p_link in p2p_links]
+        p2p_links_with_index = [(idx, self._resolve_p2p_ips(p2p_link)) for idx, p2p_link in p2p_links_with_index]
 
         # Parse P2P data model and create simplified data
-        return [(p2p_link, self._get_p2p_data(p2p_link)) for p2p_link in p2p_links]
+        return [(p2p_link, self._get_p2p_data(p2p_link, p2p_link_index=idx)) for idx, p2p_link in p2p_links_with_index]
 
     def _apply_p2p_links_profile(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> T_P2pLinksItem:
         """Apply a profile to a p2p_link. Always returns a new instance. TODO: Raise if profile is missing."""
@@ -65,29 +65,54 @@ class UtilsMixin(Protocol):
         return p2p_link._deepinherited(profile_as_p2p_link_item)
 
     def _resolve_p2p_ips(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> T_P2pLinksItem:
+        """Resolve both IPv4 and IPv6 addresses for a p2p_link."""
+        self._resolve_p2p_ipv4(p2p_link)
+        self._resolve_p2p_ipv6(p2p_link)
+        return p2p_link
+
+    def _resolve_p2p_ipv4(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> None:
+        """Resolve IPv4 addresses from subnet or IP pool if not already set."""
         if p2p_link.ip:
-            # ip already set, so nothing to do
-            return p2p_link
+            return
 
         if p2p_link.subnet:
-            # Resolve IPs from subnet
+            # Resolve IPs from subnet.
             network = ip_network(p2p_link.subnet, strict=False)
             p2p_link.ip.extend([f"{ip}/{network.prefixlen}" for ip in islice(network.hosts(), 2)])
 
         elif p2p_link.ip_pool and p2p_link.id and p2p_link.ip_pool in self.inputs_data.p2p_links_ip_pools:
             # Subnet not set but we have what we need to resolve IPs from pool.
             ip_pool = self.inputs_data.p2p_links_ip_pools[p2p_link.ip_pool]
-            if not ip_pool.ipv4_pool:
-                # The pool was missing ipv4_pool so we give up.
-                return p2p_link
+            if ip_pool.ipv4_pool:
+                p2p_link.ip.extend(
+                    [
+                        f"{get_ip_from_pool(ip_pool.ipv4_pool, ip_pool.prefix_size, p2p_link.id - 1, host_offset)}/{ip_pool.prefix_size}"
+                        for host_offset in [0, 1]
+                    ]
+                )
 
-            p2p_link.ip.extend(
-                [f"{get_ip_from_pool(ip_pool.ipv4_pool, ip_pool.prefix_size, p2p_link.id - 1, host_offset)}/{ip_pool.prefix_size}" for host_offset in [0, 1]]
-            )
+    def _resolve_p2p_ipv6(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> None:
+        """Resolve IPv6 addresses from prefix or IP pool if not already set."""
+        if p2p_link.ipv6:
+            return
 
-        return p2p_link
+        if p2p_link.ipv6_prefix:
+            # Resolve IPv6 from prefix.
+            v6_network = ip_network(p2p_link.ipv6_prefix, strict=False)
+            p2p_link.ipv6.extend([f"{ip}/{v6_network.prefixlen}" for ip in islice(v6_network.hosts(), 2)])
 
-    def _get_p2p_data(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> dict:
+        elif p2p_link.ip_pool and p2p_link.id and p2p_link.ip_pool in self.inputs_data.p2p_links_ip_pools:
+            # Prefix not set but we have what we need to resolve IPv6 addresses from pool.
+            ip_pool = self.inputs_data.p2p_links_ip_pools[p2p_link.ip_pool]
+            if ip_pool.ipv6_pool:
+                p2p_link.ipv6.extend(
+                    [
+                        f"{get_ip_from_pool(ip_pool.ipv6_pool, ip_pool.ipv6_prefix_size, p2p_link.id - 1, host_offset)}/{ip_pool.ipv6_prefix_size}"
+                        for host_offset in [0, 1]
+                    ]
+                )
+
+    def _get_p2p_data(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem, p2p_link_index: int | None = None) -> dict:
         """
         Parses p2p_link data model and extracts information which is easier to parse.
 
@@ -102,11 +127,18 @@ class UtilsMixin(Protocol):
               - interface: <interface on this node>
                 peer_interface: <interface on peer>
             ip: <ip if set | None>
+            ipv6: <ipv6 if set | None>
             peer_ip: <peer ip if set | None>
+            peer_ipv6: <peer ipv6 if set | None>
             bgp_as: <as if set | None>
             peer_bgp_as: <peer as if set | None>
+            p2p_link_index: int | None
         }
         """
+        if p2p_link.include_in_underlay_protocol and p2p_link.ipv6:
+            msg = f"{self.data_model}.p2p_links.[].include_in_underlay_protocol is currently not supported with IPv6 addresses."
+            raise AristaAvdInvalidInputsError(msg)
+
         index = p2p_link.nodes.index(self.shared_utils.hostname)
         peer_index = (index + 1) % 2
         peer = p2p_link.nodes[peer_index]
@@ -115,20 +147,26 @@ class UtilsMixin(Protocol):
 
         # Set ip or fallback to list with None values
         ips = p2p_link.ip or [None, None]
+        ipv6s = p2p_link.ipv6 or [None, None]
         # Set bgp_as or fallback to list with None values
         bgp_as = p2p_link.field_as or [None, None]
         # Set descriptions or fallback to list with None values
         descriptions = p2p_link.descriptions or [None, None]
 
         ip = ips[index]
+        ipv6 = ipv6s[index]
         peer_ip = ips[peer_index]
+        peer_ipv6 = ipv6s[peer_index]
         description = descriptions[index]
 
         data = {
+            "p2p_link_index": p2p_link_index,
             "peer": peer,
             "peer_type": peer_type,
             "ip": ip,
+            "ipv6": ipv6,
             "peer_ip": peer_ip,
+            "peer_ipv6": peer_ipv6,
             "bgp_as": self.shared_utils.get_asn(str(bgp_as[index])) if index < len(bgp_as) and bgp_as[index] else None,
             "peer_bgp_as": self.shared_utils.get_asn(str(bgp_as[peer_index])) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
             "description": description,
@@ -247,6 +285,11 @@ class UtilsMixin(Protocol):
         if p2p_link_data["ip"]:
             interface.ip_address = p2p_link_data["ip"]
 
+        if p2p_link_data["ipv6"]:
+            interface.ipv6_addresses.append(p2p_link_data["ipv6"])
+            # Enable IPv6 unicast routing when IPv6 addresses are configured on p2p_links.
+            self.structured_config.ipv6_unicast_routing = True
+
         self._update_interface_multicast_config(p2p_link, interface)
 
         if p2p_link.include_in_underlay_protocol:
@@ -255,6 +298,26 @@ class UtilsMixin(Protocol):
 
             if self.shared_utils.underlay_ospf:
                 interface._update(ospf_network_point_to_point=True, ospf_area=self.inputs.underlay_ospf_area)
+                if p2p_link.use_underlay_ospf_authentication is True:
+                    if not self.inputs.underlay_ospf_authentication.enabled:
+                        msg = (
+                            f"'use_underlay_ospf_authentication' is set to true for {self.data_model}.p2p_links"
+                            f"[{p2p_link_data['p2p_link_index']}] but 'underlay_ospf_authentication.enabled' is false. "
+                            "Enable 'underlay_ospf_authentication.enabled'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
+                    interface.ospf_authentication = "message-digest"
+                    for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
+                        interface.ospf_message_digest_keys.append_new(
+                            id=ospf_key.id,
+                            hash_algorithm=ospf_key.hash_algorithm,
+                            key=ospf_message_digest_encrypt(
+                                password=ospf_key.cleartext_key,
+                                key=interface.name,
+                                hash_algorithm=ospf_key.hash_algorithm,
+                                key_id=str(ospf_key.id),
+                            ),
+                        )
 
             if self.shared_utils.underlay_isis:
                 interface._update(
