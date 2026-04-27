@@ -60,6 +60,7 @@ class PortChannelInterfacesMixin(Protocol):
                     self.structured_config_utils.parent_interfaces_tracker.register_port_channel_subinterface(port_channel_subinterface_name)
 
                     subinterface_item = EosCliConfigGen.PortChannelInterfacesItem(name=port_channel_subinterface_name)
+                    subinterface._internal_data.context = f"{adapter._internal_data.context}.port_channel.subinterfaces[number={subinterface.number}]"
                     self.structured_config.port_channel_interfaces.append(
                         self._get_subinterface_cfg(
                             subinterface,

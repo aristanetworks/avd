@@ -3,7 +3,7 @@ type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    - name: invalid-vlan-id-on-port-channel-subinterface
+    - name: invalid-dot1q-encapsulation-vlan-id
       platform: 720XP
       link_tracking:
         enabled: true
@@ -15,7 +15,7 @@ servers:
   # port-channel provide physical and port-channel descriptions as templates with all fields
   - name: OLD_SW-1/2
     adapters:
-      - switches: [invalid-vlan-id-on-port-channel-subinterface, invalid-vlan-id-on-port-channel-subinterface]
+      - switches: [invalid-dot1q-encapsulation-vlan-id, invalid-dot1q-encapsulation-vlan-id]
         switch_ports: [Ethernet1, Ethernet2]
         endpoint_ports: [Endpoint_port1, ENDPOINT_PORT2]
         description: "Interface description {interface} {endpoint_type}_{endpoint}{endpoint_port?<_!u}"
@@ -26,6 +26,8 @@ servers:
           subinterfaces:
             - number: 10000
               description: subinterface number greater that 4094
+              vlan_id: 1000
 
 expected_error_message: >-
-  'vlan_id' must be set for subinterface 'servers[name=OLD_SW-1/2].adapters[0].port_channel.subinterfaces[number=10000]' since the subinterface number is above 4094.
+  'encapsulation_vlan.client_dot1q' must be set for 'servers[name=OLD_SW-1/2].adapters[0].port_channel.subinterfaces[number=10000]'
+  since the subinterface number is above 4094.
