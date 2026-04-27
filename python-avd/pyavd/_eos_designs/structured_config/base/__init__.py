@@ -427,7 +427,6 @@ class AvdStructuredConfigBaseProtocol(
             self.inputs.monitor_connectivity.interface_sets,
             "monitor_connectivity",
         )
-
         for vrf in self.inputs.monitor_connectivity.vrfs:
             monitor_connectivity_vrf = monitor_connectivity.vrfs.append_new(
                 name=vrf.name,
