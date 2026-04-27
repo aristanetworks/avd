@@ -40,7 +40,7 @@ class UtilsMixin(Protocol):
         underlay_links = self.facts.uplinks._deepcopy()
 
         for uplink in underlay_links:
-            uplink.sflow_enabled = self._get_sflow(uplink.interface, self.inputs.fabric_sflow.uplinks)
+            uplink.sflow_enabled = self.inputs.fabric_sflow.uplinks
             uplink.flow_tracking = self.inputs.fabric_flow_tracking.uplinks
             if not self.shared_utils.platform_settings.feature_support.ptp:
                 uplink.ptp.enable = False
