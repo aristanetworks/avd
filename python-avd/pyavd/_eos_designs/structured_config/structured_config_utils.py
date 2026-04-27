@@ -239,9 +239,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
 
     @run_once_method
     def set_once_sflow(self) -> None:
-        """
-        Structured config for sFlow based on sflow_settings.
-        """
+        """Structured config for sFlow based on sflow_settings."""
         sflow_settings = self.inputs.sflow_settings
         destinations = sflow_settings.destinations._natural_sorted(sort_key="destination")
         if sflow_settings.export_to_cloudvision.enabled:
