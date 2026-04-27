@@ -9468,6 +9468,8 @@ ASN Notation: asdot
 
 #### Router BGP VPN-IPv4 Address Family
 
+- Next-hop resolution is **disabled**
+
 - VPN import pruning is **enabled**
 
 ##### VPN-IPv4 Neighbors
@@ -10389,6 +10391,7 @@ router bgp 65101
       neighbor 192.168.255.5 default-route rcf Address_Family_VPN_IPV4_In()
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       domain identifier 65000:0
+      next-hop resolution disabled
       route import match-failure action discard
    !
    address-family vpn-ipv6
