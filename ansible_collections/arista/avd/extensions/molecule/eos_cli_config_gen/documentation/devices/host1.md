@@ -5108,6 +5108,7 @@ interface Ethernet3
    ptp sync-message interval 1
    ptp transport layer2
    ptp vlan 2
+   ptp region domain-number 25
    no priority-flow-control
    spanning-tree guard root
    spanning-tree bpduguard rate-limit disable
@@ -5235,6 +5236,7 @@ interface Ethernet7
    ptp sync-message interval 5
    ptp transport layer2
    ptp vlan all
+   ptp region domain-number 56
    service-profile QoS
    qos trust cos
    qos cos 5
@@ -6371,6 +6373,7 @@ interface Port-Channel5
    ptp sync-message interval 1
    ptp transport layer2
    ptp vlan 2
+   ptp region domain-number 25
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1

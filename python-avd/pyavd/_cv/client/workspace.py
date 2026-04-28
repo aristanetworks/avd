@@ -234,7 +234,7 @@ class WorkspaceMixin(Protocol):
         LOGGER.debug("submit_workspace: Got response to submission: %s", response.value)
         return response.value
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def wait_for_workspace_response(
         self: CVClientProtocol,
         workspace_id: str,
@@ -282,7 +282,7 @@ class WorkspaceMixin(Protocol):
         # TODO: Consider raising a more specific CVWorkspaceFailed exception.
         raise CVResourceNotFound(msg)
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def wait_for_workspace_state(
         self: CVClientProtocol,
         workspace_id: str,
@@ -322,7 +322,7 @@ class WorkspaceMixin(Protocol):
         msg = f"Workspace '{workspace_id}' has not reached desired state '{state}'."
         raise CVWorkspaceFailed(msg)
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_workspace_build_details(
         self: CVClientProtocol,
         workspace_id: str,
