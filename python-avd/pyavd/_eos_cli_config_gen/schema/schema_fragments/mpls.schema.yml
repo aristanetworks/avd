@@ -282,6 +282,52 @@ keys:
           shutdown:
             type: bool
             description: Make `shutdown` key false for `no shutdown` cli.
+      label_ranges:
+        description: MPLS label ranges configuration.
+        type: dict
+        keys:
+          ospf_sr:
+            description: |
+              Label range for OSPF Segment Routing Global Block (SRGB).
+              Renders 'mpls label range ospf-sr <base> <size>'.
+              Requires EOS 4.31.1F or later.
+            type: dict
+            keys:
+              base:
+                type: int
+                convert_types:
+                  - str
+                description: First label of the SRGB range.
+                min: 16
+                max: 1048575
+              size:
+                type: int
+                convert_types:
+                  - str
+                description: Size of the SRGB range.
+                min: 1
+                max: 1048560
+          dynamic:
+            description: |
+              Label range for dynamic labels (e.g. adjacency segments).
+              Renders 'mpls label range dynamic <base> <size>'.
+              Must not overlap with the static label range (default static range is 16-1023).
+            type: dict
+            keys:
+              base:
+                type: int
+                convert_types:
+                  - str
+                description: First label of the dynamic range.
+                min: 16
+                max: 1048575
+              size:
+                type: int
+                convert_types:
+                  - str
+                description: Size of the dynamic range.
+                min: 0
+                max: 1048560
       tunnel:
         description: Configure MPLS tunnel.
         type: dict

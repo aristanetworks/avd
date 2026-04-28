@@ -29283,6 +29283,110 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class LabelRanges(AvdModel):
+            """Subclass of AvdModel."""
+
+            class OspfSr(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int | None
+                """First label of the SRGB range."""
+                size: int | None
+                """Size of the SRGB range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        OspfSr.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of the SRGB range.
+                            size: Size of the SRGB range.
+
+                        """
+
+            class Dynamic(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int | None
+                """First label of the dynamic range."""
+                size: int | None
+                """Size of the dynamic range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Dynamic.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of the dynamic range.
+                            size: Size of the dynamic range.
+
+                        """
+
+            _fields: ClassVar[dict] = {"ospf_sr": {"type": OspfSr}, "dynamic": {"type": Dynamic}}
+            ospf_sr: OspfSr
+            """
+            Label range for OSPF Segment Routing Global Block (SRGB).
+            Renders 'mpls label range ospf-sr <base>
+            <size>'.
+            Requires EOS 4.31.1F or later.
+
+
+            Subclass of AvdModel.
+            """
+            dynamic: Dynamic
+            """
+            Label range for dynamic labels (e.g. adjacency segments).
+            Renders 'mpls label range dynamic <base>
+            <size>'.
+            Must not overlap with the static label range (default static range is 16-1023).
+
+
+            Subclass
+            of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ospf_sr: OspfSr | UndefinedType = Undefined, dynamic: Dynamic | UndefinedType = Undefined) -> None:
+                    """
+                    LabelRanges.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ospf_sr:
+                           Label range for OSPF Segment Routing Global Block (SRGB).
+                           Renders 'mpls label range ospf-sr <base>
+                           <size>'.
+                           Requires EOS 4.31.1F or later.
+
+
+                           Subclass of AvdModel.
+                        dynamic:
+                           Label range for dynamic labels (e.g. adjacency segments).
+                           Renders 'mpls label range dynamic <base>
+                           <size>'.
+                           Must not overlap with the static label range (default static range is 16-1023).
+
+
+                           Subclass
+                           of AvdModel.
+
+                    """
+
         class Tunnel(AvdModel):
             """Subclass of AvdModel."""
 
@@ -29396,7 +29500,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"ip": {"type": bool}, "ldp": {"type": Ldp}, "icmp": {"type": Icmp}, "rsvp": {"type": Rsvp}, "tunnel": {"type": Tunnel}}
+        _fields: ClassVar[dict] = {
+            "ip": {"type": bool},
+            "ldp": {"type": Ldp},
+            "icmp": {"type": Icmp},
+            "rsvp": {"type": Rsvp},
+            "label_ranges": {"type": LabelRanges},
+            "tunnel": {"type": Tunnel},
+        }
         ip: bool | None
         ldp: Ldp
         """Subclass of AvdModel."""
@@ -29409,6 +29520,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         rsvp: Rsvp
         """Subclass of AvdModel."""
+        label_ranges: LabelRanges
+        """
+        MPLS label ranges configuration.
+
+        Subclass of AvdModel.
+        """
         tunnel: Tunnel
         """
         Configure MPLS tunnel.
@@ -29425,6 +29542,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ldp: Ldp | UndefinedType = Undefined,
                 icmp: Icmp | UndefinedType = Undefined,
                 rsvp: Rsvp | UndefinedType = Undefined,
+                label_ranges: LabelRanges | UndefinedType = Undefined,
                 tunnel: Tunnel | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -29442,6 +29560,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass
                        of AvdModel.
                     rsvp: Subclass of AvdModel.
+                    label_ranges:
+                       MPLS label ranges configuration.
+
+                       Subclass of AvdModel.
                     tunnel:
                        Configure MPLS tunnel.
 

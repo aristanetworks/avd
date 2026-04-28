@@ -10936,6 +10936,8 @@ monitor loop-protection
 | LDP Router ID | 192.168.1.1 |
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
+| OSPF-SR Label Range (SRGB) | Base: 900000, Size: 1000 |
+| Dynamic Label Range | Base: 16000, Size: 131072 |
 | ICMP Fragmentation-Needed Tunneling Enabled | True |
 | Tunnel Termination Model | TTL: uniform, DSCP: uniform |
 | Tunnel Termination PHP Model | TTL: pipe, DSCP: pipe |
@@ -11014,6 +11016,8 @@ mpls ldp
    no shutdown
 !
 mpls icmp fragmentation-needed tunneling
+mpls label range dynamic 16000 131072
+mpls label range ospf-sr 900000 1000
 !
 mpls rsvp
    refresh interval 3

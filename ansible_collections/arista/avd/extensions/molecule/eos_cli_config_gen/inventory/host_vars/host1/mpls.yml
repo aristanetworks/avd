@@ -92,3 +92,10 @@ mpls:
       - ip_address: 1.10.1.2
         authentication:
           type: none
+  label_ranges:
+    ospf_sr:
+      base: 900000
+      size: 1000
+    dynamic:
+      base: 16000
+      size: 131072
