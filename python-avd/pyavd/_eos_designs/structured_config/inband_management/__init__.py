@@ -62,7 +62,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
 
     def _set_vlan_interfaces(self) -> None:
         """VLAN interfaces can be our own management interface and/or SVIs created on behalf of child switches using us as uplink_switch."""
-        vlan_interface = self.structured_config.vlan_interfaces.append_new(
+        vlan_interface = EosCliConfigGen.VlanInterfacesItem(
             name=cast("str", self.shared_utils.inband_mgmt_interface),
             description=self.shared_utils.node_config.inband_mgmt_description,
             shutdown=False,
@@ -74,6 +74,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         )
         if ipv6_address := self.shared_utils.inband_mgmt_ipv6_address:
             vlan_interface.ipv6_addresses.append(ipv6_address)
+        self.structured_config.vlan_interfaces.append(vlan_interface)
 
     def _set_ipv4_default_route(self) -> None:
         """Set default route with inband management gateway in inband management VRF."""
