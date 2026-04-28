@@ -1165,6 +1165,8 @@ router_bgp:
     domain_identifier: "65000:0"
     route:
       import_match_failure_action: discard
+    next_hop:
+      resolution_disabled: true
     peer_groups:
       - name: MPLS-IBGP-PEERS
         activate: true
