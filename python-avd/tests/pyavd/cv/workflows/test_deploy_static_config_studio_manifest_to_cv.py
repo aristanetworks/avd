@@ -394,6 +394,58 @@ class TestDeployStaticConfigStudio:
 
         assert deployment_result.removed_static_config_containers == ["AVD_ROOT2"]
 
+    async def test_additive_configlet_policy_skips_deletion(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that configlet_policy='additive' skips deletion of unused AVD-managed configlets."""
+        cf_leaf1_id = generate_id("CF_LEAF1")
+        cf_unused_id = generate_id("CF_UNUSED")
+
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=cf_leaf1_id), display_name="CF_LEAF1"),
+            Configlet(key=ConfigletKey(configlet_id=cf_unused_id), display_name="CF_UNUSED"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = []
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = []
+
+        # Only declare CF_LEAF1, CF_UNUSED is not declared but should be kept.
+        cfl1 = AvdConfiglet(name="CF_LEAF1", file=Path("/path/to/cfl1.cfg"))
+        manifest = AvdManifest(configlet_policy="additive", configlets=(cfl1,), containers=())
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Configlets should be pushed.
+        mock_cv_client.set_configlets_from_files.assert_called_once()
+
+        # No configlets should be deleted (additive mode).
+        mock_cv_client.get_configlets.assert_not_called()
+        mock_cv_client.delete_configlets.assert_not_called()
+        assert not deployment_result.removed_static_config_configlets
+
+    async def test_managed_configlet_policy_deletes_unused(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that configlet_policy='managed' (default) deletes unused manifest-managed configlets but keeps manual ones."""
+        cf_leaf1_id = generate_id("CF_LEAF1")
+        cf_unused_avd_id = generate_id("CF_UNUSED_AVD")
+        cf_manual_id = "manual-configlet-123"  # Does not have the AVD prefix
+
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=cf_leaf1_id), display_name="CF_LEAF1"),
+            Configlet(key=ConfigletKey(configlet_id=cf_unused_avd_id), display_name="CF_UNUSED_AVD"),
+            Configlet(key=ConfigletKey(configlet_id=cf_manual_id), display_name="MANUAL_CONFIGLET"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = []
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = []
+
+        # Only declare CF_LEAF1.
+        cfl1 = AvdConfiglet(name="CF_LEAF1", file=Path("/path/to/cfl1.cfg"))
+        manifest = AvdManifest(configlets=(cfl1,), containers=())
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Only the unused AVD-managed configlet should be deleted, not the manual one.
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[cf_unused_avd_id])
+        assert deployment_result.removed_static_config_configlets == ["CF_UNUSED_AVD"]
+
     async def test_configlets_only_manifest(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test a manifest containing only configlets and no containers."""
         mock_cv_client.get_configlet_containers.return_value = []
