@@ -33,3 +33,30 @@ cpes:
               encapsulation_vlan:
                 client_dot1q: 333
     rack: Undefined
+
+  - name: CPE2_TENANT_A_SITE1_SUBINTERFACES
+    adapters:
+      - endpoint_ports:
+          - Ethernet1
+          - Ethernet2
+        switch_ports:
+          - Ethernet10
+          - Ethernet10
+        switches:
+          - SITE1-LER1
+          - SITE1-LER2
+        ethernet_segment:
+          short_esi: 0303:0202:0201
+        subinterfaces:
+          - number: 11
+            short_esi: 0303:0202:0211
+            raw_eos_cli: |-
+              storm-control broadcast level 12
+            structured_config:
+              comment: Testing structured config on subinterface.
+          - number: 12
+            description: "{subinterface}-{subinterface_number}-{vlan_id}-{dot1q_client_vlan}-{endpoint_type}-{endpoint}"
+            short_esi: 0303:0202:0212
+            vlan_id: 112
+            encapsulation_vlan:
+              client_dot1q: 211
