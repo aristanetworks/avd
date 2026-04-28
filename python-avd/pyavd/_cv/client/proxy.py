@@ -179,7 +179,7 @@ class CVProxyManager:
     _proxy_username: str | None
     _proxy_password: str | None
 
-    cv_proxy_bypass_manager: CVProxyBypassManager
+    cv_proxy_bypass_manager: CVProxyBypassManager | None
 
     _proxy_configuration_source: T_ProxyConfigurationSource
     """Source of the proxy server information."""
@@ -207,6 +207,7 @@ class CVProxyManager:
 
         # Do not use proxy server by default
         self.use_proxy = False
+        self.cv_proxy_bypass_manager = None
 
         # Check if usage of the proxy server was requested using explicit inputs
         if proxy_host is not None:
