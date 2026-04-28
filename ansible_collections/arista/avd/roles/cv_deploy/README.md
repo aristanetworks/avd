@@ -437,7 +437,7 @@ cv_deploy_validate_inputs_batch_size: 10
 
 The `arista.avd.cv_deploy` role supports connecting to CloudVision through an **HTTP CONNECT** proxy server.
 
-Use the settings below to modify proxy behavior. The fields currently display the default values
+Use the settings below to modify proxy behavior. The fields currently display the default values.
 
 ```yaml
 # Set FQDN/IP of the HTTP CONNECT proxy server.
