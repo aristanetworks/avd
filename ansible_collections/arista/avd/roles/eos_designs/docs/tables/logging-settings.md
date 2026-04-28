@@ -49,6 +49,13 @@
     | [<samp>&nbsp;&nbsp;level</samp>](## "logging_settings.level") | List, items: Dictionary |  |  |  | Configure logging severity. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;facility</samp>](## "logging_settings.level.[].facility") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;severity</samp>](## "logging_settings.level.[].severity") | String | Required |  | Valid Values:<br>- <code>alerts</code><br>- <code>critical</code><br>- <code>debugging</code><br>- <code>emergencies</code><br>- <code>errors</code><br>- <code>informational</code><br>- <code>notifications</code><br>- <code>warnings</code><br>- <code>0</code><br>- <code>1</code><br>- <code>2</code><br>- <code>3</code><br>- <code>4</code><br>- <code>5</code><br>- <code>6</code><br>- <code>7</code> | Severity of facility. Below are the supported severities.<br>emergencies    System is unusable                (severity=0)<br>alerts         Immediate action needed           (severity=1)<br>critical       Critical conditions               (severity=2)<br>errors         Error conditions                  (severity=3)<br>warnings       Warning conditions                (severity=4)<br>notifications  Normal but significant conditions (severity=5)<br>informational  Informational messages            (severity=6)<br>debugging      Debugging messages                (severity=7)<br><0-7>          Severity level value |
+    | [<samp>&nbsp;&nbsp;monitor_layer1</samp>](## "logging_settings.monitor_layer1") | Dictionary |  |  |  | Enable SYSLOG messages on transceiver SMBus communication failures. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "logging_settings.monitor_layer1.enabled") | Boolean | Required |  |  | Enable monitor layer1. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;logging_mac_fault</samp>](## "logging_settings.monitor_layer1.logging_mac_fault") | Boolean |  |  |  | Enable MAC fault logging. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;logging_transceiver</samp>](## "logging_settings.monitor_layer1.logging_transceiver") | Dictionary |  |  |  | Configure transceiver monitoring logging. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dom</samp>](## "logging_settings.monitor_layer1.logging_transceiver.dom") | Boolean |  |  |  | Enable transceiver Digital Optical Monitoring (DOM) logging. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;communication</samp>](## "logging_settings.monitor_layer1.logging_transceiver.communication") | Boolean |  |  |  | Enable transceiver SMBus fail and reset logging. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "logging_settings.monitor_layer1.logging_transceiver.enabled") | Boolean |  |  |  | Some platforms support only the `logging transceiver` command. `enabled` key configures this command. |
 
 === "YAML"
 
@@ -155,4 +162,25 @@
           # debugging      Debugging messages                (severity=7)
           # <0-7>          Severity level value
           severity: <str; "alerts" | "critical" | "debugging" | "emergencies" | "errors" | "informational" | "notifications" | "warnings" | "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7"; required>
+
+      # Enable SYSLOG messages on transceiver SMBus communication failures.
+      monitor_layer1:
+
+        # Enable monitor layer1.
+        enabled: <bool; required>
+
+        # Enable MAC fault logging.
+        logging_mac_fault: <bool>
+
+        # Configure transceiver monitoring logging.
+        logging_transceiver:
+
+          # Enable transceiver Digital Optical Monitoring (DOM) logging.
+          dom: <bool>
+
+          # Enable transceiver SMBus fail and reset logging.
+          communication: <bool>
+
+          # Some platforms support only the `logging transceiver` command. `enabled` key configures this command.
+          enabled: <bool>
     ```
