@@ -447,7 +447,7 @@ class TestDeployStaticConfigStudio:
         assert deployment_result.removed_static_config_configlets == ["CF_UNUSED_AVD"]
 
     async def test_configlets_only_manifest(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
-        """Test a manifest containing only configlets and no containers."""
+        """Test that a manifest containing only configlets (unassigned) and no containers is supported."""
         mock_cv_client.get_configlet_containers.return_value = []
         mock_cv_client.get_configlets.return_value = []
         mock_cv_client.get_studio_inputs_with_path.return_value = []
