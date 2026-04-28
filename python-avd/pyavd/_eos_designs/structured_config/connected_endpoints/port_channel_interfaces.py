@@ -10,7 +10,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, default, short_esi_to_route_target, strip_null_from_data
+from pyavd._utils import AvdStringFormatter, Undefined, default, short_esi_to_route_target, strip_null_from_data
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 
@@ -63,6 +63,7 @@ class PortChannelInterfacesMixin(Protocol):
                         self._get_port_channel_subinterface_cfg(
                             subinterface,
                             adapter,
+                            connected_endpoint,
                             port_channel_subinterface_name,
                             channel_group_id,
                         )
@@ -242,6 +243,7 @@ class PortChannelInterfacesMixin(Protocol):
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         subinterface: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.PortChannel.SubinterfacesItem,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+        connected_endpoint: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem,
         port_channel_subinterface_name: str,
         channel_group_id: int,
     ) -> EosCliConfigGen.PortChannelInterfacesItem:
@@ -262,6 +264,17 @@ class PortChannelInterfacesMixin(Protocol):
         # Common port_channel_interface settings
         port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
             name=port_channel_subinterface_name,
+            description=AvdStringFormatter().format(
+                subinterface.description,
+                subinterface=port_channel_subinterface_name,
+                subinterface_number=subinterface.number,
+                vlan_id=vlan_id,
+                dot1q_client_vlan=dot1q_client_vlan,
+                endpoint_type=connected_endpoint.type,
+                endpoint=connected_endpoint.name,
+            )
+            if subinterface.description
+            else None,
             vlan_id=vlan_id,
             eos_cli=subinterface.raw_eos_cli,
         )
