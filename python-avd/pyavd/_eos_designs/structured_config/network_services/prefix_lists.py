@@ -61,7 +61,10 @@ class PrefixListsMixin(Protocol):
                     continue
 
                 # Convert mlag_ip_address to network prefix string and add to set.
-                mlag_prefixes.add(str(ip_network(self._get_vlan_ip_config_for_mlag_peering(vrf), strict=False)))
+                if self.shared_utils.underlay_ipv6_numbered:
+                    mlag_prefixes.add(str(ip_network(self.structured_config_utils.get_ipv6_mlag_peering_ip(vrf), strict=False)))
+                else:
+                    mlag_prefixes.add(str(ip_network(self.structured_config_utils.get_ipv4_mlag_peering_ip(vrf), strict=False)))
 
         return natural_sort(mlag_prefixes)
 
