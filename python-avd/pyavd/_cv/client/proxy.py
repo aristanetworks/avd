@@ -8,7 +8,7 @@ import ssl
 from ipaddress import IPv4Address, IPv4Network, IPv6Address, IPv6Network, ip_address, ip_network
 from logging import getLogger
 from os import environ
-from typing import TYPE_CHECKING, Final, Literal, TypeGuard, overload
+from typing import TYPE_CHECKING, Final, Literal, TypeGuard, cast, overload
 from urllib.parse import ParseResult, quote, urlparse
 
 from grpclib.client import Channel
@@ -183,9 +183,9 @@ class CVProxyManager:
 
     _proxy_configuration_source: T_ProxyConfigurationSource
     """Source of the proxy server information."""
-    _env_var_proxy_name: T_ProxyEnvVars
+    _env_var_proxy_name: T_ProxyEnvVars | None
     """Name of the selected environment variable."""
-    _env_var_proxy_content: str
+    _env_var_proxy_content: str | None
     """Raw content of the selected environment variables."""
     _parsed_env_var_proxy_content: ParseResult
     """Parsed proxy server information."""
@@ -208,6 +208,8 @@ class CVProxyManager:
         # Do not use proxy server by default
         self.use_proxy = False
         self.cv_proxy_bypass_manager = None
+        self._env_var_proxy_name: T_ProxyEnvVars | None = None
+        self._env_var_proxy_content: str | None = None
 
         # Check if usage of the proxy server was requested using explicit inputs
         if proxy_host is not None:
@@ -283,7 +285,7 @@ class CVProxyManager:
             self._proxy_host_format = self._identify_host_format(self._parsed_env_var_proxy_content.hostname)
 
             self.use_proxy = True
-            self._proxy_configuration_source = self._env_var_proxy_name
+            self._proxy_configuration_source = cast("T_ProxyConfigurationSource", self._env_var_proxy_name)
             self._proxy_scheme = self._parsed_env_var_proxy_content.scheme
             self._proxy_host = self._parsed_env_var_proxy_content.hostname
             self._proxy_port = self._parsed_env_var_proxy_content.port
@@ -446,10 +448,10 @@ class CVProxyManager:
         return bool(self.get_env_var_proxy_name() and self.get_env_var_proxy_content())
 
     def get_env_var_proxy_name(self) -> T_ProxyEnvVars | None:
-        return getattr(self, "_env_var_proxy_name", None)
+        return self._env_var_proxy_name
 
     def get_env_var_proxy_content(self) -> str | None:
-        return getattr(self, "_env_var_proxy_content", None)
+        return self._env_var_proxy_content
 
     def get_proxy_url(self, hide_password: bool = False) -> str:
         """
