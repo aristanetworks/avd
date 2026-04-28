@@ -290,10 +290,10 @@ class UtilsMixin(Protocol):
     ) -> EosCliConfigGen.PortChannelInterfacesItem:
         """Return structured_config for one port_channel_interface (subinterface)."""
         if (vlan_id := subinterface.vlan_id or subinterface.number) > 4094:
-            msg = f"'vlan_id' must be set for subinterface '{adapter._internal_data.context}.subinterfaces[name={subinterface.number}]' since the subinterface number is above 4094."
+            msg = f"'vlan_id' must be set for subinterface '{subinterface._internal_data.context}' since the subinterface number is above 4094."
             raise AristaAvdInvalidInputsError(msg)
         if (dot1q_client_vlan := subinterface.encapsulation_vlan.client_dot1q or subinterface.number) > 4094:
-            msg = f"'encapsulation_vlan.client_dot1q' must be set for '{adapter._internal_data.context}.subinterfaces[name={subinterface.number}]' since the subinterface number is above 4094."
+            msg = f"'encapsulation_vlan.client_dot1q' must be set for '{subinterface._internal_data.context}' since the subinterface number is above 4094."
             raise AristaAvdInvalidInputsError(msg)
 
         # Common interface settings
