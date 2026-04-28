@@ -110,10 +110,10 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
 
     # In "additive" mode, don't delete any configlets.
     if cv_manifest.configlet_policy == "additive":
-        LOGGER.info("deploy_static_config_studio_manifest_to_cv: No configlet deletions when configlet_policy is set to additive.")
+        LOGGER.debug("deploy_static_config_studio_manifest_to_cv: No configlet deletions when configlet_policy is set to additive.")
         return
 
-    # In "managed" mode, delete manifest-managed configlets not declared in this push and not assigned to any container.
+    # In "managed" mode, delete manifest-managed configlets not declared in this manifest and not assigned to any container.
     existing_configlets = await cv_client.get_configlets(workspace_id=workspace_id)
     desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
     configlets_to_delete = {
@@ -124,7 +124,8 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
 
     if configlets_to_delete:
         LOGGER.info(
-            "deploy_static_config_studio_manifest_to_cv: Deleting %d manifest-managed configlets not declared in this push and not assigned to any container.",
+            "deploy_static_config_studio_manifest_to_cv: Deleting %d manifest-managed "
+            "configlets not declared in this manifest and not assigned to any container.",
             len(configlets_to_delete),
         )
         deployment_result.removed_static_config_configlets.extend(configlets_to_delete.values())
