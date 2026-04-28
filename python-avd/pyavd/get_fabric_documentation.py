@@ -234,7 +234,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                         and digital_twin_node_type in ["cloudeos", "veos"]
                     )
                     else None,
-                    # Render Ethernet ports for veos node type devices. Skip ports facing other fabric nodes
+                    # Render Ethernet ports for veos node type devices (excluding subinterfaces).
                     ports=tuple(
                         sorted(
                             (

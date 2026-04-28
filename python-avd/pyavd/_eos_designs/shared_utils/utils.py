@@ -326,15 +326,18 @@ class UtilsMixin(Protocol):
 
         Args:
             user_input: Boolean value of the `validate_state` from the inputs of the interface. `None` if not set in inputs.
-            peer_in_fabric: Flag indicating if interface is facing a fabric device or connected endpoint and is expected to be up/up.
+            peer_in_fabric: Flag indicating if the interface peer is a known AVD fabric device.
 
         Returns:
             True: If `validate_state` should be enabled (set to True) for the interface.
             False: If `validate_state` should be disabled (set to False) for the interface.
             UndefinedType: If `validate_state` should not be set/changed for the interface.
         """
-        # If remote peer is not defined/deployed in Digital Twin environment then disable state validation as interfaces is supposed to be down.
-        if self.digital_twin and not peer_in_fabric:
-            return False
-        # For all other cases return Undefined if input is not set else respect input
+        if self.digital_twin:
+            # Peer is not deployed in Digital Twin - interface will be down, so disable state validation.
+            if not peer_in_fabric:
+                return False
+            # Peer is in the fabric - only respect an explicit False from user input; do not force True in Digital Twin.
+            return False if user_input is False else Undefined
+        # Non-Digital-Twin: follow the user input if set, otherwise leave unset.
         return Undefined if user_input is None else user_input
