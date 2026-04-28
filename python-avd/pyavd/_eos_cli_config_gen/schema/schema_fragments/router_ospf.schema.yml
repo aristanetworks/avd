@@ -318,6 +318,41 @@ keys:
               type: bool
             mpls_ldp_sync_default:
               type: bool
+            segment_routing:
+              type: dict
+              description: OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable Segment Routing MPLS. When true, renders 'segment-routing mpls' with 'no shutdown'.
+                prefix_segments:
+                  type: list
+                  primary_key: prefix
+                  description: Prefix Segment Identifier (Prefix-SID) configuration.
+                  items:
+                    type: dict
+                    keys:
+                      prefix:
+                        type: str
+                        description: IPv4 prefix (e.g. 192.0.2.1/32).
+                      index:
+                        type: int
+                        required: true
+                        convert_types:
+                          - str
+                        description: SID index value.
+                        min: 0
+                        max: 65535
+                adjacency_segment:
+                  type: dict
+                  keys:
+                    allocation:
+                      type: str
+                      valid_values:
+                        - all-interfaces
+                        - none
+                        - sr-peers
+                      description: Adjacency segment allocation mode.
             eos_cli:
               type: str
               description: Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration.

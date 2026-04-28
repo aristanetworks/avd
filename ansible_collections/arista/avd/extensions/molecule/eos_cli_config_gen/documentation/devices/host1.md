@@ -8520,6 +8520,9 @@ router traffic-engineering
 | 400 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 | 500 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 | 600 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+| 700 | 10.255.0.1 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+| 701 | 10.255.0.2 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+| 702 | 10.255.0.3 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Distance
 
@@ -8567,6 +8570,22 @@ router traffic-engineering
 | 101 | 20.0.0.0/8 | 10 | - | - |
 | 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
 | 101 | 40.0.0.0/8 | - | - | True |
+
+#### Router OSPF Segment Routing
+
+| Process ID | SR Enabled | Adjacency Segment Allocation |
+| ---------- | ---------- | ---------------------------- |
+| 700 | True | all-interfaces |
+| 701 | False | sr-peers |
+| 702 | - | none |
+
+##### OSPF Prefix Segments
+
+| Process ID | Prefix | Index |
+| ---------- | ------ | ----- |
+| 700 | 10.255.0.1/32 | 100 |
+| 700 | 10.255.0.2/32 | 200 |
+| 701 | 192.0.2.0/24 | 300 |
 
 #### Router OSPF Areas
 
@@ -8678,6 +8697,25 @@ router ospf 600
    area 0.0.20.25 nssa default-information-originate metric-type 1
    area 0.0.20.26 nssa no-summary
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+!
+router ospf 700
+   router-id 10.255.0.1
+   segment-routing mpls
+      no shutdown
+      prefix-segment 10.255.0.1/32 index 100
+      prefix-segment 10.255.0.2/32 index 200
+      adjacency-segment allocation all-interfaces
+!
+router ospf 701
+   router-id 10.255.0.2
+   segment-routing mpls
+      prefix-segment 192.0.2.0/24 index 300
+      adjacency-segment allocation sr-peers
+!
+router ospf 702
+   router-id 10.255.0.3
+   segment-routing mpls
+      adjacency-segment allocation none
 !
 ip ospf router-id output-format hostnames
 ```

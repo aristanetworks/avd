@@ -61635,6 +61635,105 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class SegmentRouting(AvdModel):
+                """Subclass of AvdModel."""
+
+                class PrefixSegmentsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "index": {"type": int}}
+                    prefix: str
+                    """IPv4 prefix (e.g. 192.0.2.1/32)."""
+                    index: int
+                    """SID index value."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, prefix: str | UndefinedType = Undefined, index: int | UndefinedType = Undefined) -> None:
+                            """
+                            PrefixSegmentsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                prefix: IPv4 prefix (e.g. 192.0.2.1/32).
+                                index: SID index value.
+
+                            """
+
+                class PrefixSegments(AvdIndexedList[str, PrefixSegmentsItem]):
+                    """Subclass of AvdIndexedList with `PrefixSegmentsItem` items. Primary key is `prefix` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "prefix"
+
+                PrefixSegments._item_type = PrefixSegmentsItem
+
+                class AdjacencySegment(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Allocation: TypeAlias = Literal["all-interfaces", "none", "sr-peers"]
+                    _fields: ClassVar[dict] = {"allocation": {"type": str}}
+                    allocation: Allocation | None
+                    """Adjacency segment allocation mode."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, allocation: Allocation | None | UndefinedType = Undefined) -> None:
+                            """
+                            AdjacencySegment.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                allocation: Adjacency segment allocation mode.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "prefix_segments": {"type": PrefixSegments},
+                    "adjacency_segment": {"type": AdjacencySegment},
+                }
+                enabled: bool | None
+                """Enable Segment Routing MPLS. When true, renders 'segment-routing mpls' with 'no shutdown'."""
+                prefix_segments: PrefixSegments
+                """
+                Prefix Segment Identifier (Prefix-SID) configuration.
+
+                Subclass of AvdIndexedList with
+                `PrefixSegmentsItem` items. Primary key is `prefix` (`str`).
+                """
+                adjacency_segment: AdjacencySegment
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        prefix_segments: PrefixSegments | UndefinedType = Undefined,
+                        adjacency_segment: AdjacencySegment | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        SegmentRouting.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable Segment Routing MPLS. When true, renders 'segment-routing mpls' with 'no shutdown'.
+                            prefix_segments:
+                               Prefix Segment Identifier (Prefix-SID) configuration.
+
+                               Subclass of AvdIndexedList with
+                               `PrefixSegmentsItem` items. Primary key is `prefix` (`str`).
+                            adjacency_segment: Subclass of AvdModel.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "id": {"type": int},
                 "vrf": {"type": str},
@@ -61659,6 +61758,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "graceful_restart": {"type": GracefulRestart},
                 "graceful_restart_helper": {"type": bool},
                 "mpls_ldp_sync_default": {"type": bool},
+                "segment_routing": {"type": SegmentRouting},
                 "eos_cli": {"type": str},
             }
             id: int
@@ -61699,6 +61799,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             graceful_restart_helper: bool | None
             mpls_ldp_sync_default: bool | None
+            segment_routing: SegmentRouting
+            """
+            OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.
+
+            Subclass of AvdModel.
+            """
             eos_cli: str | None
             """Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration."""
 
@@ -61730,6 +61836,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
                     graceful_restart_helper: bool | None | UndefinedType = Undefined,
                     mpls_ldp_sync_default: bool | None | UndefinedType = Undefined,
+                    segment_routing: SegmentRouting | UndefinedType = Undefined,
                     eos_cli: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -61762,6 +61869,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         graceful_restart: Subclass of AvdModel.
                         graceful_restart_helper: graceful_restart_helper
                         mpls_ldp_sync_default: mpls_ldp_sync_default
+                        segment_routing:
+                           OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.
+
+                           Subclass of AvdModel.
                         eos_cli: Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration.
 
                     """
