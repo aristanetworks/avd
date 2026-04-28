@@ -297,10 +297,16 @@ class EthernetInterfacesMixin(Protocol):
     ) -> EosCliConfigGen.EthernetInterfacesItem:
         """Return structured_config for one ethernet_interface (subinterface)."""
         if (vlan_id := subinterface.vlan_id or subinterface.number) > 4094:
-            msg = f"'vlan_id' must be set for subinterface '{ethernet_subinterface_name}' since the subinterface number is above 4094."
+            msg = (
+                f"'vlan_id' must be set for '{adapter._internal_data.context}.subinterfaces[number={subinterface.number}]'"
+                " since the subinterface number is above 4094."
+            )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         if (dot1q_client_vlan := subinterface.encapsulation_vlan.client_dot1q or subinterface.number) > 4094:
-            msg = f"'encapsulation_vlan.client_dot1q' must be set for subinterface '{ethernet_subinterface_name}' since the subinterface number is above 4094."
+            msg = (
+                f"'encapsulation_vlan.client_dot1q' must be set for '{adapter._internal_data.context}."
+                f"subinterfaces[number={subinterface.number}]' since the subinterface number is above 4094."
+            )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         # Common ethernet_interface settings
