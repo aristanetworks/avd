@@ -16,8 +16,8 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
     @structured_config_contributor
     def inband_management(self) -> None:
         if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
-            self._set_vlans()
-            self._set_vlan_interfaces()
+            self._set_vlan()
+            self._set_vlan_interface()
             if self.shared_utils.configure_inband_mgmt:
                 self._set_inband_mgmt_vrf()
                 if self.shared_utils.inband_mgmt_gateway is not None:
@@ -30,7 +30,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             self._set_ip_virtual_router_mac_address()
             self._set_inband_mgmt_vrf()
             for index, (vlan_id, vlan) in enumerate(self.shared_utils.inband_management_parent_vlans.items(), start=1):
-                self._set_parent_vlans(vlan_id)
+                self._set_parent_vlan(vlan_id)
                 self._set_parent_vlan_interface(vlan, vlan_id)
                 if self.shared_utils.inband_mgmt_vrf is None and self.shared_utils.underlay_bgp:
                     self._set_once_enable_router_bgp_redistribute_attached_host()
@@ -43,7 +43,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                                 self._set_once_route_map_conn_2_bgp_sequence_60()
                             self._set_l2leaf_inband_mgmt_ipv6_prefix_lists(vlan, index)
 
-    def _set_vlans(self) -> None:
+    def _set_vlan(self) -> None:
         # TODO: Refactor this later to inject from filtered tenants
         # Note that an attempt was made for this in #6073 but it has been postponed
         # To keep current behavior we need to overwrite the existing values if the vlan was introduced via network_services
@@ -60,7 +60,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             name=self.shared_utils.node_config.inband_mgmt_vlan_name,
         )
 
-    def _set_vlan_interfaces(self) -> None:
+    def _set_vlan_interface(self) -> None:
         """VLAN interfaces can be our own management interface and/or SVIs created on behalf of child switches using us as uplink_switch."""
         vlan_interface = EosCliConfigGen.VlanInterfacesItem(
             name=cast("str", self.shared_utils.inband_mgmt_interface),
