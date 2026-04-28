@@ -39,12 +39,6 @@ class Ipv6RouterOspfMixin(Protocol):
                 if not vrf.ipv6_ospf.enabled or (vrf.ipv6_ospf.nodes and self.shared_utils.hostname not in vrf.ipv6_ospf.nodes):
                     continue
 
-                # Allowing network_services to influence the underlay OSPF configuration in a manner similar to BGP
-                if vrf.ipv6_ospf.process_id == self.inputs.underlay_ospf_process_id and vrf.name != "default":
-                    msg = f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].ipv6_ospf.process_id[process_id={vrf.ospf.process_id}]' should not match the \
-underlay OSPFv3 process id '{self.inputs.underlay_ospf_process_id}'."
-                    raise AristaAvdInvalidInputsError(msg)
-
                 process_id = default(vrf.ipv6_ospf.process_id, vrf.vrf_id)
                 if not process_id:
                     msg = f"Missing or invalid 'ipv6_ospf.process_id' or 'vrf_id' under vrf '{vrf.name}"
@@ -61,32 +55,22 @@ underlay OSPFv3 process id '{self.inputs.underlay_ospf_process_id}'."
 
                 if vrf.name != "default":
                     process.vrf = vrf.name
-                self._update_ospf_redistribute(process, vrf)
+                self._update_ipv6_ospf_redistribute(process, vrf)
 
-                # In theory only the underlay could have created an OSPFv3 process before that.
-                maybe_existing_process = self.structured_config.ipv6_router_ospf.process_ids.obtain(process_id)
-                maybe_existing_process._combine(process)
-
-        # TODO: Need to confirm
-        # If we have static_routes in default VRF and not EVPN, and underlay is OSPF
-        # Then add redistribute static to the underlay OSPF process.
-        # if self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self.shared_utils.underlay_routing_protocol in ["ospf", "ospf-ldp"]:
-        #     self.structured_config.router_ospf.process_ids.obtain(self.inputs.underlay_ospf_process_id).redistribute.static.enabled = True
-
-    def _update_ospf_redistribute(
+    def _update_ipv6_ospf_redistribute(
         self: AvdStructuredConfigNetworkServicesProtocol,
-        process: EosCliConfigGen.RouterOspf.ProcessIdsItem,
+        process: EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
     ) -> None:
         """
-        Configures OSPF route redistribution settings for the given VRF.
+        Configures OSPFv3 route redistribution settings for the given VRF.
 
-        This method enables redistribution of BGP and connected routes into OSPF,
+        This method enables redistribution of BGP and connected routes into OSPFv3,
         setting the associated route maps if specified.
 
         Args:
-            process: The OSPF process configuration object.
-            vrf: The VRF object containing OSPF redistribution settings.
+            process: The OSPFv3 process configuration object.
+            vrf: The VRF object containing OSPFv3 redistribution settings.
         """
         if vrf.ospf.redistribute_bgp.enabled:
             process.redistribute.bgp.enabled = True
@@ -97,4 +81,3 @@ underlay OSPFv3 process id '{self.inputs.underlay_ospf_process_id}'."
             process.redistribute.connected.enabled = True
             if route_map := vrf.ospf.redistribute_connected.route_map:
                 process.redistribute.connected.route_map = route_map
-

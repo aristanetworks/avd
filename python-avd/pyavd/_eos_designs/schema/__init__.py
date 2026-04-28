@@ -32306,20 +32306,36 @@ class EosDesigns(EosDesignsRootModel):
             class Ipv6Ospf(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {
-                    "enabled": {"type": bool},
-                    "point_to_point": {"type": bool, "default": False},
-                    "area": {"type": str, "default": "0.0.0.0"},
-                }
+                class Process(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
+                    id: int
+                    """OSPFv3 Process ID."""
+                    area: str
+                    """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
+                            """
+                            Process.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                id: OSPFv3 Process ID.
+                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                            """
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "process": {"type": Process}, "point_to_point": {"type": bool, "default": False}}
                 enabled: bool | None
+                process: Process
+                """Subclass of AvdModel."""
                 point_to_point: bool
                 """Default value: `False`"""
-                area: str
-                """
-                OSPFv3 area ID.
-
-                Default value: `"0.0.0.0"`
-                """
 
                 if TYPE_CHECKING:
 
@@ -32327,8 +32343,8 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         enabled: bool | None | UndefinedType = Undefined,
+                        process: Process | UndefinedType = Undefined,
                         point_to_point: bool | UndefinedType = Undefined,
-                        area: str | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv6Ospf.
@@ -32338,8 +32354,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             enabled: enabled
+                            process: Subclass of AvdModel.
                             point_to_point: point_to_point
-                            area: OSPFv3 area ID.
 
                         """
 
@@ -33459,20 +33475,36 @@ class EosDesigns(EosDesignsRootModel):
         class Ipv6Ospf(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "enabled": {"type": bool},
-                "point_to_point": {"type": bool, "default": False},
-                "area": {"type": str, "default": "0.0.0.0"},
-            }
+            class Process(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
+                id: int
+                """OSPFv3 Process ID."""
+                area: str
+                """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Process.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            id: OSPFv3 Process ID.
+                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "process": {"type": Process}, "point_to_point": {"type": bool, "default": False}}
             enabled: bool | None
+            process: Process
+            """Subclass of AvdModel."""
             point_to_point: bool
             """Default value: `False`"""
-            area: str
-            """
-            OSPFv3 area ID.
-
-            Default value: `"0.0.0.0"`
-            """
 
             if TYPE_CHECKING:
 
@@ -33480,8 +33512,8 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
+                    process: Process | UndefinedType = Undefined,
                     point_to_point: bool | UndefinedType = Undefined,
-                    area: str | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Ospf.
@@ -33491,8 +33523,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
+                        process: Subclass of AvdModel.
                         point_to_point: point_to_point
-                        area: OSPFv3 area ID.
 
                     """
 
@@ -62267,15 +62299,23 @@ class EosDesigns(EosDesignsRootModel):
                         class RedistributeBgp(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "route_map": {"type": str}}
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                             enabled: bool
                             """Default value: `True`"""
                             route_map: str | None
                             """Route-map name."""
+                            include_leaked: bool | None
+                            """Include leaked routes while redistributing."""
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     RedistributeBgp.
 
@@ -62285,21 +62325,34 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         route_map: Route-map name.
+                                        include_leaked: Include leaked routes while redistributing.
 
                                     """
 
                         class RedistributeConnected(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "route_map": {"type": str},
+                                "include_leaked": {"type": bool},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             route_map: str | None
                             """Route-map name."""
+                            include_leaked: bool | None
+                            """Include leaked routes while redistributing."""
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     RedistributeConnected.
 
@@ -62309,6 +62362,242 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         route_map: Route-map name.
+                                        include_leaked: Include leaked routes while redistributing.
+
+                                    """
+
+                        class RedistributeIsis(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "isis_level": {"type": str},
+                                "route_map": {"type": str},
+                                "include_leaked": {"type": bool},
+                            }
+                            enabled: bool
+                            """Default value: `False`"""
+                            isis_level: IsisLevel | None
+                            """Redistribute IS-IS route level."""
+                            route_map: str | None
+                            include_leaked: bool | None
+                            """Include leaked routes while redistributing."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    isis_level: IsisLevel | None | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    RedistributeIsis.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        isis_level: Redistribute IS-IS route level.
+                                        route_map: route_map
+                                        include_leaked: Include leaked routes while redistributing.
+
+                                    """
+
+                        class RedistributeOspfv3(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class MatchExternal(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                                enabled: bool
+                                route_map: str | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        MatchExternal.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            route_map: route_map
+
+                                        """
+
+                            class MatchInternal(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                                enabled: bool
+                                route_map: str | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        MatchInternal.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            route_map: route_map
+
+                                        """
+
+                            class MatchNssaExternal(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                                enabled: bool
+                                route_map: str | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        MatchNssaExternal.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            route_map: route_map
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "match_external": {"type": MatchExternal},
+                                "match_internal": {"type": MatchInternal},
+                                "match_nssa_external": {"type": MatchNssaExternal},
+                                "route_map": {"type": str},
+                            }
+                            enabled: bool | None
+                            """Redistribute OSPFv3 routes."""
+                            match_external: MatchExternal
+                            """
+                            Redistribute OSPFv3 routes learned from external sources.
+
+                            Subclass of AvdModel.
+                            """
+                            match_internal: MatchInternal
+                            """
+                            Redistribute OSPFv3 routes learned from internal sources.
+
+                            Subclass of AvdModel.
+                            """
+                            match_nssa_external: MatchNssaExternal
+                            """
+                            Redistribute OSPFv3 routes learned from external NSSA sources.
+
+                            Subclass of AvdModel.
+                            """
+                            route_map: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    match_external: MatchExternal | UndefinedType = Undefined,
+                                    match_internal: MatchInternal | UndefinedType = Undefined,
+                                    match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    RedistributeOspfv3.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Redistribute OSPFv3 routes.
+                                        match_external:
+                                           Redistribute OSPFv3 routes learned from external sources.
+
+                                           Subclass of AvdModel.
+                                        match_internal:
+                                           Redistribute OSPFv3 routes learned from internal sources.
+
+                                           Subclass of AvdModel.
+                                        match_nssa_external:
+                                           Redistribute OSPFv3 routes learned from external NSSA sources.
+
+                                           Subclass of AvdModel.
+                                        route_map: route_map
+
+                                    """
+
+                        class RedistributeDhcp(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
+                            enabled: bool
+                            """Default value: `False`"""
+                            route_map: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    RedistributeDhcp.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        route_map: route_map
+
+                                    """
+
+                        class RedistributeStatic(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "route_map": {"type": str},
+                                "include_leaked": {"type": bool},
+                            }
+                            enabled: bool
+                            """Default value: `False`"""
+                            route_map: str | None
+                            """Route-map name."""
+                            include_leaked: bool | None
+                            """Include leaked routes while redistributing."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    route_map: str | None | UndefinedType = Undefined,
+                                    include_leaked: bool | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    RedistributeStatic.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        route_map: Route-map name.
+                                        include_leaked: Include leaked routes while redistributing.
 
                                     """
 
@@ -62321,8 +62610,13 @@ class EosDesigns(EosDesignsRootModel):
                             "enabled": {"type": bool},
                             "process_id": {"type": int},
                             "router_id": {"type": str, "default": "main_router_id"},
+                            "auto_cost_reference_bandwidth": {"type": int},
                             "redistribute_bgp": {"type": RedistributeBgp},
                             "redistribute_connected": {"type": RedistributeConnected},
+                            "redistribute_isis": {"type": RedistributeIsis},
+                            "redistribute_ospfv3": {"type": RedistributeOspfv3},
+                            "redistribute_dhcp": {"type": RedistributeDhcp},
+                            "redistribute_static": {"type": RedistributeStatic},
                             "nodes": {"type": Nodes},
                             "structured_config": {"type": EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem},
                         }
@@ -62331,21 +62625,23 @@ class EosDesigns(EosDesignsRootModel):
                         """If not set, "vrf_id" will be used."""
                         router_id: str
                         """
-                        Router ID to use for OSPF in this VRF.
-                        This can be an IPv4 address, "main_router_id", "none" or
-                        "diagnostic_loopback".
-                        - "main_router_id" will use the IP address of Loopback0 or the common `router
-                        general` Router ID if `use_router_general_for_router_id` is set."
-                        - "none" will not configure a OSPF
-                        Router ID for this VRF. EOS will use the main OSPF Router ID.
-                        - "diagnostic_loopback" will use the
-                        IP address of the VRF Diagnostic Loopback interface.
+                        Router ID to use for OSPFv3 in this VRF.
 
                         Default value: `"main_router_id"`
                         """
+                        auto_cost_reference_bandwidth: int | None
+                        """Bandwidth in mbps."""
                         redistribute_bgp: RedistributeBgp
                         """Subclass of AvdModel."""
                         redistribute_connected: RedistributeConnected
+                        """Subclass of AvdModel."""
+                        redistribute_isis: RedistributeIsis
+                        """Subclass of AvdModel."""
+                        redistribute_ospfv3: RedistributeOspfv3
+                        """Subclass of AvdModel."""
+                        redistribute_dhcp: RedistributeDhcp
+                        """Subclass of AvdModel."""
+                        redistribute_static: RedistributeStatic
                         """Subclass of AvdModel."""
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
@@ -62363,8 +62659,13 @@ class EosDesigns(EosDesignsRootModel):
                                 enabled: bool | None | UndefinedType = Undefined,
                                 process_id: int | None | UndefinedType = Undefined,
                                 router_id: str | UndefinedType = Undefined,
+                                auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
                                 redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
                                 redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                                redistribute_isis: RedistributeIsis | UndefinedType = Undefined,
+                                redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
+                                redistribute_dhcp: RedistributeDhcp | UndefinedType = Undefined,
+                                redistribute_static: RedistributeStatic | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem | UndefinedType = Undefined,
                             ) -> None:
@@ -62377,18 +62678,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     enabled: enabled
                                     process_id: If not set, "vrf_id" will be used.
-                                    router_id:
-                                       Router ID to use for OSPF in this VRF.
-                                       This can be an IPv4 address, "main_router_id", "none" or
-                                       "diagnostic_loopback".
-                                       - "main_router_id" will use the IP address of Loopback0 or the common `router
-                                       general` Router ID if `use_router_general_for_router_id` is set."
-                                       - "none" will not configure a OSPF
-                                       Router ID for this VRF. EOS will use the main OSPF Router ID.
-                                       - "diagnostic_loopback" will use the
-                                       IP address of the VRF Diagnostic Loopback interface.
+                                    router_id: Router ID to use for OSPFv3 in this VRF.
+                                    auto_cost_reference_bandwidth: Bandwidth in mbps.
                                     redistribute_bgp: Subclass of AvdModel.
                                     redistribute_connected: Subclass of AvdModel.
+                                    redistribute_isis: Subclass of AvdModel.
+                                    redistribute_ospfv3: Subclass of AvdModel.
+                                    redistribute_dhcp: Subclass of AvdModel.
+                                    redistribute_static: Subclass of AvdModel.
                                     nodes: Subclass of AvdList with `str` items.
                                     structured_config:
                                        Custom structured config added under ipv6_router_ospf.process_ids.[process_id=<process_id>] for the
@@ -63230,20 +63527,40 @@ class EosDesigns(EosDesignsRootModel):
                             class Ipv6Ospf(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                class Process(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
+                                    id: int
+                                    """OSPFv3 Process ID."""
+                                    area: str
+                                    """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
+                                            """
+                                            Process.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                id: OSPFv3 Process ID.
+                                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                            """
+
                                 _fields: ClassVar[dict] = {
                                     "enabled": {"type": bool},
+                                    "process": {"type": Process},
                                     "point_to_point": {"type": bool, "default": False},
-                                    "area": {"type": str, "default": "0.0.0.0"},
                                 }
                                 enabled: bool | None
+                                process: Process
+                                """Subclass of AvdModel."""
                                 point_to_point: bool
                                 """Default value: `False`"""
-                                area: str
-                                """
-                                OSPFv3 area ID.
-
-                                Default value: `"0.0.0.0"`
-                                """
 
                                 if TYPE_CHECKING:
 
@@ -63251,8 +63568,8 @@ class EosDesigns(EosDesignsRootModel):
                                         self,
                                         *,
                                         enabled: bool | None | UndefinedType = Undefined,
+                                        process: Process | UndefinedType = Undefined,
                                         point_to_point: bool | UndefinedType = Undefined,
-                                        area: str | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         Ipv6Ospf.
@@ -63262,8 +63579,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             enabled: enabled
+                                            process: Subclass of AvdModel.
                                             point_to_point: point_to_point
-                                            area: OSPFv3 area ID.
 
                                         """
 
@@ -64410,20 +64727,40 @@ class EosDesigns(EosDesignsRootModel):
                         class Ipv6Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class Process(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
+                                id: int
+                                """OSPFv3 Process ID."""
+                                area: str
+                                """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
+                                        """
+                                        Process.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            id: OSPFv3 Process ID.
+                                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool},
+                                "process": {"type": Process},
                                 "point_to_point": {"type": bool, "default": False},
-                                "area": {"type": str, "default": "0.0.0.0"},
                             }
                             enabled: bool | None
+                            process: Process
+                            """Subclass of AvdModel."""
                             point_to_point: bool
                             """Default value: `False`"""
-                            area: str
-                            """
-                            OSPFv3 area ID.
-
-                            Default value: `"0.0.0.0"`
-                            """
 
                             if TYPE_CHECKING:
 
@@ -64431,8 +64768,8 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     enabled: bool | None | UndefinedType = Undefined,
+                                    process: Process | UndefinedType = Undefined,
                                     point_to_point: bool | UndefinedType = Undefined,
-                                    area: str | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     Ipv6Ospf.
@@ -64442,8 +64779,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
+                                        process: Subclass of AvdModel.
                                         point_to_point: point_to_point
-                                        area: OSPFv3 area ID.
 
                                     """
 

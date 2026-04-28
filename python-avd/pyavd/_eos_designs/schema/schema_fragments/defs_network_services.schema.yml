@@ -754,13 +754,15 @@ $defs:
                     description: If not set, "vrf_id" will be used.
                   router_id:
                     type: str
-                    description: |-
-                      Router ID to use for OSPF in this VRF.
-                      This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".
-                      - "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."
-                      - "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
-                      - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
+                    description: Router ID to use for OSPFv3 in this VRF.
                     default: main_router_id
+                  auto_cost_reference_bandwidth:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Bandwidth in mbps.
+                    min: 1
+                    max: 4294967
                   redistribute_bgp:
                     type: dict
                     keys:
@@ -770,6 +772,9 @@ $defs:
                       route_map:
                         type: str
                         description: Route-map name.
+                      include_leaked:
+                        type: bool
+                        description: Include leaked routes while redistributing.
                   redistribute_connected:
                     type: dict
                     keys:
@@ -779,12 +784,15 @@ $defs:
                       route_map:
                         type: str
                         description: Route-map name.
+                      include_leaked:
+                        type: bool
+                        description: Include leaked routes while redistributing.
                   redistribute_isis:
                     type: dict
                     keys:
                       enabled:
                         type: bool
-                        required: true
+                        default: false
                       isis_level:
                         type: str
                         description: Redistribute IS-IS route level.
@@ -794,6 +802,9 @@ $defs:
                           - level-1-2
                       route_map:
                         type: str
+                      include_leaked:
+                        type: bool
+                        description: Include leaked routes while redistributing.
                   redistribute_ospfv3:
                     type: dict
                     keys:
@@ -834,9 +845,21 @@ $defs:
                     keys:
                       enabled:
                         type: bool
-                        required: true
+                        default: false
                       route_map:
                         type: str
+                  redistribute_static:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        default: false
+                      route_map:
+                        type: str
+                        description: Route-map name.
+                      include_leaked:
+                        type: bool
+                        description: Include leaked routes while redistributing.
                   nodes:
                     type: list
                     items:
