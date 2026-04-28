@@ -14951,9 +14951,18 @@ keys:
               - str
             key:
               type: str
-              description: 'Encrypted key - only type 7 supported.
+              description: 'Encrypted key.
 
                 When TLS is configured, `key` is ignored.'
+            key_type:
+              type: str
+              convert_types:
+              - int
+              valid_values:
+              - '0'
+              - '7'
+              - 8a
+              default: '7'
       vrfs:
         type: list
         primary_key: name

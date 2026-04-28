@@ -39231,7 +39231,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"host": {"type": str}, "tls": {"type": Tls}, "timeout": {"type": int}, "retransmit": {"type": int}, "key": {"type": str}}
+            KeyType: TypeAlias = Literal["0", "7", "8a"]
+            _fields: ClassVar[dict] = {
+                "host": {"type": str},
+                "tls": {"type": Tls},
+                "timeout": {"type": int},
+                "retransmit": {"type": int},
+                "key": {"type": str},
+                "key_type": {"type": str, "default": "7"},
+            }
             host: str
             """
             -> Host IP address or name. Multiple server with the same hostname/IP address can be configured for
@@ -39247,9 +39255,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             retransmit: int | None
             key: str | None
             """
-            Encrypted key - only type 7 supported.
+            Encrypted key.
             When TLS is configured, `key` is ignored.
             """
+            key_type: KeyType
+            """Default value: `"7"`"""
 
             if TYPE_CHECKING:
 
@@ -39261,6 +39271,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     timeout: int | None | UndefinedType = Undefined,
                     retransmit: int | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ServersItem.
@@ -39279,8 +39290,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         timeout: timeout
                         retransmit: retransmit
                         key:
-                           Encrypted key - only type 7 supported.
+                           Encrypted key.
                            When TLS is configured, `key` is ignored.
+                        key_type: key_type
 
                     """
 
@@ -39328,12 +39340,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {
                     "host": {"type": str},
                     "tls": {"type": Tls},
                     "timeout": {"type": int},
                     "retransmit": {"type": int},
                     "key": {"type": str},
+                    "key_type": {"type": str, "default": "7"},
                 }
                 host: str
                 """
@@ -39350,9 +39364,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 retransmit: int | None
                 key: str | None
                 """
-                Encrypted key - only type 7 supported.
+                Encrypted key.
                 When TLS is configured, `key` is ignored.
                 """
+                key_type: KeyType
+                """Default value: `"7"`"""
 
                 if TYPE_CHECKING:
 
@@ -39364,6 +39380,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         timeout: int | None | UndefinedType = Undefined,
                         retransmit: int | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
+                        key_type: KeyType | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServersItem.
@@ -39382,8 +39399,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             timeout: timeout
                             retransmit: retransmit
                             key:
-                               Encrypted key - only type 7 supported.
+                               Encrypted key.
                                When TLS is configured, `key` is ignored.
+                            key_type: key_type
 
                         """
 

@@ -1613,6 +1613,7 @@ radius proxy
 | default | 10.10.11.156 | - | - | - | 34 | 45 |
 | default | 10.10.11.156 | True | 345 | - | - | - |
 | default | 10.10.10.249 | - | - | - | 1 | 1 |
+| default | 10.10.10.249 | - | - | - | 1 | 1 |
 | mgt | 10.10.10.157 | - | - | - | 1 | 1 |
 | mgt | 10.10.11.159 | - | - | - | - | 1 |
 | mgt | 10.10.11.160 | - | - | - | 1 | - |
@@ -1629,15 +1630,16 @@ radius-server attribute 32 include-in-access-req hostname
 radius-server dynamic-authorization port 1700
 radius-server tls ssl-profile GLOBAL_RADIUS_SSL_PROFILE
 radius-server dynamic-authorization tls ssl-profile SSL_PROFILE
-radius-server host 10.10.10.158 timeout 1 retransmit 1 key 7 <removed>
+radius-server host 10.10.10.158 timeout 1 retransmit 1 key 7<removed>
 radius-server host 10.10.11.156 tls port 1700 timeout 1 retransmit 1
-radius-server host 10.10.11.156 timeout 34 retransmit 45 key 7 <removed>
+radius-server host 10.10.11.156 timeout 34 retransmit 45 key 7<removed>
 radius-server host 10.10.11.156 tls port 345
-radius-server host 10.10.10.249 timeout 1 retransmit 1 key 7 <removed>
-radius-server host 10.10.10.157 vrf mgt timeout 1 retransmit 1 key 7 <removed>
-radius-server host 10.10.11.159 vrf mgt retransmit 1 key 7 <removed>
-radius-server host 10.10.11.160 vrf mgt timeout 1 key 7 <removed>
-radius-server host 10.10.11.248 vrf mgt key 7 <removed>
+radius-server host 10.10.10.249 timeout 1 retransmit 1 key 0<removed>
+radius-server host 10.10.10.249 timeout 1 retransmit 1 key 8a<removed>
+radius-server host 10.10.10.157 vrf mgt timeout 1 retransmit 1 key 7<removed>
+radius-server host 10.10.11.159 vrf mgt retransmit 1 key 7<removed>
+radius-server host 10.10.11.160 vrf mgt timeout 1 key 8a<removed>
+radius-server host 10.10.11.248 vrf mgt key 0<removed>
 radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 2083 timeout 1 retransmit 1
 radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 ```
