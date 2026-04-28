@@ -254,8 +254,8 @@ class PortChannelInterfacesMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         if (dot1q_client_vlan := subinterface.encapsulation_vlan.client_dot1q or subinterface.number) > 4094:
             msg = (
-                f"'encapsulation_vlan.client_dot1q' must be set for '{adapter._internal_data.context}.port_channel.subinterfaces[number={port_channel_subinterface_name}'"
-                " since the subinterface number is above 4094."
+                f"'encapsulation_vlan.client_dot1q' must be set for '{adapter._internal_data.context}.port_channel."
+                f"subinterfaces[number={port_channel_subinterface_name}' since the subinterface number is above 4094."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
