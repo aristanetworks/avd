@@ -3557,6 +3557,15 @@ keys:
                       valid_values:
                       - forwardable
                       - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
+                  convert_types:
+                  - str
             sync_message:
               type: dict
               keys:
@@ -12905,6 +12914,15 @@ keys:
                       valid_values:
                       - forwardable
                       - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
+                  convert_types:
+                  - str
             sync_message:
               type: dict
               keys:
