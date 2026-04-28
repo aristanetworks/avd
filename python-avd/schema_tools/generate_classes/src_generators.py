@@ -11,13 +11,17 @@ from schema_tools.constants import LICENSE_HEADER
 
 SRC_HEADER = indent(LICENSE_HEADER + "\n\n", "# ") + "from __future__ import annotations\n"
 
-BASE_IMPORTS = """\
+TYPE_CHECKING_IMPORT = """\
 from typing import TYPE_CHECKING
+"""
 
-from pyavd._schema.models.avd_indexed_list import AvdIndexedList
-from pyavd._schema.models.avd_list import AvdList
-from pyavd._schema.models.avd_model import AvdModel
+BASE_MODEL_IMPORTS_MAP = {
+    "AvdIndexedList": "from pyavd._schema.models.avd_indexed_list import AvdIndexedList",
+    "AvdList": "from pyavd._schema.models.avd_list import AvdList",
+    "AvdModel": "from pyavd._schema.models.avd_model import AvdModel",
+}
 
+IF_TYPE_CHECKING_BLOCK = """\
 if TYPE_CHECKING:
     from pyavd._utils import Undefined, UndefinedType
 """
@@ -396,22 +400,27 @@ class FileSrc:
 
     def __str__(self) -> str:
         """Returns Python source code for this file."""
-        src = f"{SRC_HEADER}"
-        # BASE_IMPORTS comes last since we have if TYPE_CHECKING.
-        src += f"{self._render_imports()}\n{BASE_IMPORTS}\n\n"
-        src += self._render_classes()
-        return src.rstrip() + "\n"
+        classes_src = self._render_classes()
+        imports_src = self._render_imports(classes_src)
+        return f"{SRC_HEADER}{imports_src}\n\n{classes_src}".rstrip() + "\n"
 
     def _render_classes(self) -> str:
         """Render the python source code for classes."""
         return "\n\n".join(str(cls) for cls in self.classes if cls is not None)
 
-    def _render_imports(self) -> str:
+    def _render_imports(self, classes_src: str) -> str:
         """Render the python source code for imports."""
         imports = set()
-        for cls in self.classes:
+        for cls in filter(None, self.classes):
             imports.update(cls.get_imports())
-        return "\n".join(str(imp) for imp in imports)
+
+        # Check which base models are actually used in the generated classes
+        base_model_imports = [import_statement for model_name, import_statement in BASE_MODEL_IMPORTS_MAP.items() if model_name in classes_src]
+
+        # Add TYPE_CHECKING import, base model imports and if TYPE_CHECKING block
+        imports.add(TYPE_CHECKING_IMPORT)
+        all_imports = [*sorted(imports), "", *base_model_imports, "", IF_TYPE_CHECKING_BLOCK]
+        return "\n".join(all_imports)
 
 
 @dataclass

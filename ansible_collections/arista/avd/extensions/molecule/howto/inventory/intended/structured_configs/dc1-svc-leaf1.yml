@@ -1,0 +1,389 @@
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.1.12:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvsourceintf: Management1
+  cvvrf: MGMT
+  disable_aaa: true
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_dc1-spine1_Ethernet3
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.255.255.83/31
+  metadata:
+    peer: dc1-spine1
+    peer_interface: Ethernet3
+    peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet10
+  description: APP-SERVER-01_eth0
+  shutdown: false
+  spanning_tree_portfast: edge
+  metadata:
+    peer: APP-SERVER-01
+    peer_interface: eth0
+    peer_key: connected_endpoints
+    port_profile: PP-APPSERVER
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,12
+hostname: dc1-svc-leaf1
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
+ip_igmp_snooping:
+  globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.1.1
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: arista
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.255.0.10/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.255.1.10/32
+- name: Loopback10
+  description: DIAG_VRF_VRF10
+  shutdown: false
+  vrf: VRF10
+  ip_address: 10.255.10.10/32
+- name: Loopback11
+  description: DIAG_VRF_VRF11
+  shutdown: false
+  vrf: VRF11
+  ip_address: 10.255.11.10/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.16.1.111/24
+  type: oob
+  gateway: 172.16.1.1
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 0.pool.ntp.org
+    preferred: true
+  vrf: MGMT
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.0.0/27 eq 32
+  - sequence: 20
+    action: permit 10.255.1.0/27 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65110'
+  router_id: 10.255.0.10
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    password: 7x4B4rnJhZB438m9+BrBfQ==
+    send_community: all
+    maximum_routes: 256000
+  - name: EVPN-OVERLAY-PEERS
+    metadata:
+      type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 10.255.255.82
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    metadata:
+      peer: dc1-spine1
+    description: dc1-spine1_Ethernet3
+  - ip_address: 10.255.0.1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65100'
+    metadata:
+      peer: dc1-spine1
+    description: dc1-spine1_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 11
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 10.255.0.10:10011
+    route_targets:
+      both:
+      - 10011:10011
+    redistribute_routes:
+    - learned
+  - id: 12
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 10.255.0.10:10012
+    route_targets:
+      both:
+      - 10012:10012
+    redistribute_routes:
+    - learned
+  - id: 21
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 10.255.0.10:10021
+    route_targets:
+      both:
+      - 10021:10021
+    redistribute_routes:
+    - learned
+  - id: 22
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 10.255.0.10:10022
+    route_targets:
+      both:
+      - 10022:10022
+    redistribute_routes:
+    - learned
+  - id: 3401
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 10.255.0.10:13401
+    route_targets:
+      both:
+      - 13401:13401
+    redistribute_routes:
+    - learned
+  - id: 3402
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 10.255.0.10:13402
+    route_targets:
+      both:
+      - 13402:13402
+    redistribute_routes:
+    - learned
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  vrfs:
+  - name: VRF10
+    rd: 10.255.0.10:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    router_id: 10.255.0.10
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF11
+    rd: 10.255.0.10:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    router_id: 10.255.0.10
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 8192
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 172.16.1.1
+transceiver_qsfp_default_mode_4x10: true
+virtual_source_nat_vrfs:
+- name: VRF10
+  ip_address: 10.255.10.10
+- name: VRF11
+  ip_address: 10.255.11.10
+vlan_interfaces:
+- name: Vlan11
+  description: VRF10_VLAN11
+  shutdown: false
+  vrf: VRF10
+  ip_address_virtual: 10.10.11.1/24
+  metadata:
+    tenants:
+    - TENANT1
+- name: Vlan12
+  description: VRF10_VLAN12
+  shutdown: false
+  vrf: VRF10
+  ip_address_virtual: 10.10.12.1/24
+  metadata:
+    tenants:
+    - TENANT1
+- name: Vlan21
+  description: VRF11_VLAN21
+  shutdown: false
+  vrf: VRF11
+  ip_address_virtual: 10.10.21.1/24
+  metadata:
+    tenants:
+    - TENANT1
+- name: Vlan22
+  description: VRF11_VLAN22
+  shutdown: false
+  vrf: VRF11
+  ip_address_virtual: 10.10.22.1/24
+  metadata:
+    tenants:
+    - TENANT1
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VRF10_VLAN11
+  metadata:
+    tenants:
+    - TENANT1
+- id: 12
+  name: VRF10_VLAN12
+  metadata:
+    tenants:
+    - TENANT1
+- id: 21
+  name: VRF11_VLAN21
+  metadata:
+    tenants:
+    - TENANT1
+- id: 22
+  name: VRF11_VLAN22
+  metadata:
+    tenants:
+    - TENANT1
+- id: 3401
+  name: L2_VLAN3401
+  metadata:
+    tenants:
+    - TENANT1
+- id: 3402
+  name: L2_VLAN3402
+  metadata:
+    tenants:
+    - TENANT1
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF10
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT1
+- name: VRF11
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT1
+vxlan_interface:
+  vxlan1:
+    description: dc1-svc-leaf1_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 11
+        vni: 10011
+      - id: 12
+        vni: 10012
+      - id: 21
+        vni: 10021
+      - id: 22
+        vni: 10022
+      - id: 3401
+        vni: 13401
+      - id: 3402
+        vni: 13402
+      vrfs:
+      - name: VRF10
+        vni: 10
+      - name: VRF11
+        vni: 11

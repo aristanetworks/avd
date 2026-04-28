@@ -1,0 +1,18 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+! Output from custom_template1.j2 BEGIN
+{# Test access to structured config from custom template #}
+! is_deployed: {{ metadata.is_deployed }}
+!
+{# Test access to hostvars from custom template #}
+! fabric_name: {{ fabric_name }}
+! type: {{ type }}
+!
+{# Test access to coerced types have the post-coercion type #}
+! vrf name is int (should be False): {{ vrfs.0.name is number }}
+! vrf name is str (should be True): {{ vrfs.0.name is string }}
+!
+! Output from custom_template1.j2 END

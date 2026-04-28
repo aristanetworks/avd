@@ -2,6 +2,9 @@ aaa_root:
   disabled: true
 config_end: true
 dns_domain: testfabric.local
+domain_list:
+- avd.lab
+- other.net
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -21,21 +24,32 @@ ip_domain_lookup:
   - name: Vlan123
   - name: Management1
     vrf: MGMT
+ip_hosts:
+- hostname: dns-settings-1
+  ipv4_addresses:
+  - 10.1.1.1
+- hostname: dns-settings-2
+  ipv4_addresses:
+  - 4.4.4.4
+  - 2.2.2.2
+  - 1.1.1.1
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 10.10.10.1
-  vrf: default
-  priority: 1
-- ip_address: 10.10.10.1
-  vrf: MGMT
-  priority: 1
-- ip_address: 10.10.10.2
-  vrf: MGMT
-- ip_address: 10.10.10.2
-  vrf: other_vrf
-- ip_address: 10.10.10.3
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+  - name: MGMT
+    servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+    - ip_address: 10.10.10.2
+    - ip_address: 10.10.10.3
+  - name: other_vrf
+    servers:
+    - ip_address: 10.10.10.2
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

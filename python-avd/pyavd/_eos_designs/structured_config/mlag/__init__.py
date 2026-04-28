@@ -31,7 +31,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         if self.shared_utils.mlag_peer_l3_vlan is not None and self.shared_utils.underlay_routing_protocol != "none":
             self.structured_config.vlans.append_new(
                 id=self.shared_utils.mlag_peer_l3_vlan,
-                metadata=EosCliConfigGen.VlansItem.Metadata(tenant="system"),
+                metadata=EosCliConfigGen.VlansItem.Metadata(tenants=EosCliConfigGen.VlansItem.Metadata.Tenants(["system"])),
                 name=AvdStringFormatter().format(
                     self.inputs.mlag_peer_l3_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_l3_vlan=self.shared_utils.mlag_peer_l3_vlan
                 ),
@@ -40,7 +40,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
 
         self.structured_config.vlans.append_new(
             id=self.shared_utils.node_config.mlag_peer_vlan,
-            metadata=EosCliConfigGen.VlansItem.Metadata(tenant="system"),
+            metadata=EosCliConfigGen.VlansItem.Metadata(tenants=EosCliConfigGen.VlansItem.Metadata.Tenants(["system"])),
             name=AvdStringFormatter().format(
                 self.inputs.mlag_peer_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_vlan=self.shared_utils.node_config.mlag_peer_vlan
             ),
@@ -73,7 +73,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             )
 
         if self.shared_utils.node_config.mlag_peer_address_family == "ipv6":
-            main_vlan_interface.ipv6_address = f"{self.shared_utils.mlag_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+            main_vlan_interface.ipv6_addresses.append(f"{self.shared_utils.mlag_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}")
         else:
             main_vlan_interface.ip_address = f"{self.shared_utils.mlag_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
         if not self.shared_utils.mlag_l3 or self.shared_utils.underlay_routing_protocol == "none":
@@ -103,7 +103,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         )
         if not self.inputs.underlay_rfc5549:
             if self.shared_utils.underlay_ipv6_numbered:
-                l3_vlan_interface.ipv6_address = f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+                l3_vlan_interface.ipv6_addresses.append(f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}")
             else:
                 l3_vlan_interface.ip_address = f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
 
@@ -251,27 +251,6 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         self.structured_config.mlag_configuration = mlag_configuration
 
     @structured_config_contributor
-    def route_maps(self) -> None:
-        """
-        Set list of route-maps.
-
-        Origin Incomplete for MLAG iBGP learned routes.
-
-        TODO: Partially duplicated in network_services. Should be moved to a common class
-        """
-        if not (self.shared_utils.mlag_l3 and self.shared_utils.node_config.mlag_ibgp_origin_incomplete and self.shared_utils.underlay_bgp):
-            return
-
-        route_map = EosCliConfigGen.RouteMapsItem(name="RM-MLAG-PEER-IN")
-        route_map.sequence_numbers.append_new(
-            sequence=10,
-            type="permit",
-            description="Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing",
-            set=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Set(["origin incomplete"]),
-        )
-        self.structured_config.route_maps.append(route_map)
-
-    @structured_config_contributor
     def router_bgp(self) -> None:
         """
         Set the structured config for router bgp.
@@ -283,7 +262,9 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             return
 
         # MLAG Peer group
-        self.shared_utils.update_router_bgp_with_mlag_peer_group(self.structured_config.router_bgp, self.custom_structured_configs)
+        self.structured_config_utils.set_once_peer_group_mlag_ipv4_underlay_peer()
+        if not self.inputs.avd_design_future.only_configure_mlag_vrfs_peer_group_when_used and self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
+            self.structured_config_utils.set_once_peer_group_mlag_ipv4_vrfs_peer()
 
         vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)
         interface_name = f"Vlan{vlan}"

@@ -27,16 +27,6 @@ aaa_accounting:
       - method: group
         group: RADIUS1
       - method: logging
-  dot1x:
-    default:
-      type: start-stop
-      methods:
-      - multicast: true
-        method: group
-        group: radius
-      - method: group
-        group: radius
-      - method: logging
   commands:
     console:
     - commands: all
@@ -105,8 +95,6 @@ aaa_authentication:
     console: local
   enable:
     default: group TACACS1 local
-  dot1x:
-    default: group RADIUS1
   policies:
     on_failure_log: true
     on_success_log: true
@@ -123,10 +111,6 @@ aaa_authorization:
     default: group TACACS1 local
   config_commands: true
   serial_console: true
-  dynamic:
-    dot1x_additional_groups:
-    - radius
-    - RADIUS1
   commands:
     all_default: group TACACS1
     privilege:
@@ -187,21 +171,24 @@ config_end: true
 enable_password:
   hash_algorithm: sha512
   key: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
+eos_config_future:
+  new_ip_radius_cli_order: true
+  new_ip_tacacs_cli_order: true
 hostname: aaa-settings-1
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius_source_interfaces:
-- name: Vlan123
-  vrf: default
-- name: Vlan125
-  vrf: MGMT
-ip_tacacs_source_interfaces:
-- name: Vlan123
-  vrf: default
-- name: Management1
-  vrf: MGMT
-- name: Vlan125
-  vrf: MGMT1
+ip_radius:
+  source_interface: Vlan123
+  vrfs:
+  - name: MGMT
+    source_interface: Vlan125
+ip_tacacs:
+  source_interface: Vlan123
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
+  - name: MGMT1
+    source_interface: Vlan125
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -213,43 +200,48 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 radius_server:
-  hosts:
+  servers:
   - host: 11.10.10.11
-    vrf: default
+    timeout: 10
+    retransmit: 3
     key: 071B245F5A
-  - host: 11.10.10.1
-    vrf: MGMT
+  - host: 10.10.10.42
     key: 071B245F5A
-  - host: 11.10.10.2
-    vrf: MGMT
-    key: 071B245F5A
-  - host: 11.10.10.5
-    vrf: MGMT
+  - host: 11.10.10.12
     tls:
       enabled: true
       ssl_profile: HOST_SSL_PROFILE
       port: 2080
-  - host: 11.10.10.3
-    vrf: MGMT
-    key: 0112140D481F07
-  - host: nodomain.co
-    vrf: MGMT
-    key: 071B245F5A
-  - host: '1:1:1:1:1:1:1:1'
-    vrf: MGMT
-    key: 071B245F5A
-  - host: 10.10.10.42
-    vrf: default
-    key: 071B245F5A
+  vrfs:
+  - name: MGMT
+    servers:
+    - host: 11.10.10.1
+      timeout: 20
+      key: 071B245F5A
+    - host: 11.10.10.2
+      key: 071B245F5A
+    - host: 11.10.10.5
+      tls:
+        enabled: true
+        ssl_profile: HOST_SSL_PROFILE
+        port: 2080
+    - host: 11.10.10.3
+      key: 0112140D481F07
+    - host: nodomain.co
+      key: 071B245F5A
+    - host: '1:1:1:1:1:1:1:1'
+      key: 071B245F5A
 service_routing_protocols_model: multi-agent
 tacacs_servers:
   hosts:
   - host: 10.10.10.11
     vrf: default
     key: 071B245F5A
+    timeout: 30
   - host: 10.10.10.1
     vrf: MGMT
     key: 071B245F5A
+    timeout: 60
   - host: 10.10.10.2
     vrf: MGMT
     key: 071B245F5A

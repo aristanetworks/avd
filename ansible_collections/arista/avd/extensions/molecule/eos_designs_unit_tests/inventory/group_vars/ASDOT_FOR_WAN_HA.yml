@@ -78,7 +78,7 @@ wan_router:
         enabled: true
         ipsec: false
       nodes:
-        - name: asdot-for-wan-ha-transit1A1
+        - name: asdot-for-wan-ha-transit1a1
           id: 1
           uplink_switch_interfaces: [Ethernet1]
           l3_interfaces:
@@ -92,7 +92,7 @@ wan_router:
               wan_carrier: Colt
               wan_circuit_id: 10666
               ip_address: 172.16.6.6/31
-        - name: asdot-for-wan-ha-transit1B1
+        - name: asdot-for-wan-ha-transit1b1
           id: 2
           uplink_switch_interfaces: [Ethernet2]
           l3_interfaces:
@@ -104,3 +104,16 @@ wan_router:
               encapsulation_dot1q_vlan: 666
               wan_carrier: Colt
               ip_address: 172.16.7.6/31
+
+wan_route_servers:
+  - hostname: cv-pathfinder-pathfinder3
+    vtep_ip: 6.6.6.6
+    path_groups:
+      - name: MPLS
+        interfaces:
+          - name: Ethernet1
+            public_ip: 172.17.17.17
+      - name: INET
+        interfaces:
+          - name: Ethernet2/1
+            public_ip: 10.50.50.50

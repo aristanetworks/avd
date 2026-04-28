@@ -4,7 +4,6 @@ dc1-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc1-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-leaf1a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -40,7 +39,6 @@ dc1-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc1-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-leaf1b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-leaf1b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -97,7 +95,6 @@ dc1-leaf2a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc1-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf2a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf2a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-leaf2a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-leaf2a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf2a,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-leaf2a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -154,7 +151,6 @@ dc1-spine1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc1-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-spine1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-spine1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-spine1,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-spine1,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-spine1,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc1-spine1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
@@ -176,7 +172,6 @@ dc1-spine2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc1-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-spine2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-spine2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-spine2,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-spine2,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-spine2,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc1-spine2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
@@ -198,7 +193,6 @@ dc1-svc-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference b
 dc1-svc-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-svc-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-svc-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-svc-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-svc-leaf1a,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-svc-leaf1a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-svc-leaf1a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -226,7 +220,6 @@ dc1-svc-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference b
 dc1-svc-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-svc-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-svc-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-svc-leaf1b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-svc-leaf1b,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc1-svc-leaf1b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-svc-leaf1b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -255,7 +248,6 @@ dc1-wan1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between
 dc1-wan1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-wan1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-wan1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-wan1,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-wan1,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-wan1,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-wan1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -288,7 +280,6 @@ dc1-wan2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between
 dc1-wan2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-wan2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-wan2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-wan2,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-wan2,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-wan2,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
 dc1-wan2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -317,12 +308,43 @@ dc1-wan2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization 
 dc1-wan2,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-wan2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-wan2,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
+dc1-wan3,VerifyAVTSpecificPath,unset,,Verifies the Adaptive Virtual Topology (AVT) path.,AVT
+dc1-wan3,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
+dc1-wan3,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-wan3,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
+dc1-wan3,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
+dc1-wan3,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
+dc1-wan3,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
+dc1-wan3,VerifyEnvironmentPower,unset,,Verifies the power supplies state and input voltage.,Hardware
+dc1-wan3,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
+dc1-wan3,VerifyInventory,unset,,Verifies the physical hardware inventory of the device.,Hardware
+dc1-wan3,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
+dc1-wan3,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
+dc1-wan3,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
+dc1-wan3,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
+dc1-wan3,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
+dc1-wan3,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
+dc1-wan3,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
+dc1-wan3,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
+dc1-wan3,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
+dc1-wan3,VerifySpecificPath,unset,,Verifies the DPS path and telemetry state of an IPv4 peer.,Path-Selection
+dc1-wan3,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
+dc1-wan3,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-wan3,VerifySpecificIPSecConn,unset,,Verifies the IPv4 security connections.,Security
+dc1-wan3,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
+dc1-wan3,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
+dc1-wan3,VerifyCoredump,unset,,Verifies there are no core dump files.,System
+dc1-wan3,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-wan3,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
+dc1-wan3,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
+dc1-wan3,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
+dc1-wan3,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-wan3,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf1a,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf1a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf1a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -352,7 +374,6 @@ dc2-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc2-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf1b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf1b,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf1b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf1b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -403,7 +424,6 @@ dc2-leaf2a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc2-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf2a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf2a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf2a,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf2a,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf2a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -433,7 +453,6 @@ dc2-leaf2b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc2-leaf2b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf2b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf2b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf2b,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf2b,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf2b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -458,33 +477,11 @@ dc2-leaf2b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilizatio
 dc2-leaf2b,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf2b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf2b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc2-leaf2c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
-dc2-leaf2c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
-dc2-leaf2c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
-dc2-leaf2c,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
-dc2-leaf2c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
-dc2-leaf2c,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
-dc2-leaf2c,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
-dc2-leaf2c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
-dc2-leaf2c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc2-leaf2c,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
-dc2-leaf2c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
-dc2-leaf2c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
-dc2-leaf2c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
-dc2-leaf2c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
-dc2-leaf2c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
-dc2-leaf2c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
-dc2-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
-dc2-leaf2c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
-dc2-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
-dc2-leaf2c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
-dc2-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf3a.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf3a.arista.com,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf3a.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf3a.arista.com,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf3a.arista.com,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf3a.arista.com,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf3a.arista.com,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf3a.arista.com,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf3a.arista.com,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -514,7 +511,6 @@ dc2-leaf3b.arista.com,VerifyRunningConfigDiffs,unset,,Verifies there is no diffe
 dc2-leaf3b.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf3b.arista.com,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf3b.arista.com,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf3b.arista.com,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf3b.arista.com,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in port channels.,Interfaces
 dc2-leaf3b.arista.com,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-leaf3b.arista.com,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
@@ -539,12 +535,27 @@ dc2-leaf3b.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory
 dc2-leaf3b.arista.com,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf3b.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf3b.arista.com,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
+dc2-leaf3c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-leaf3c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
+dc2-leaf3c,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
+dc2-leaf3c,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
+dc2-leaf3c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
+dc2-leaf3c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
+dc2-leaf3c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
+dc2-leaf3c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-leaf3c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
+dc2-leaf3c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
+dc2-leaf3c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
+dc2-leaf3c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf3c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
+dc2-leaf3c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
+dc2-leaf3c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
+dc2-leaf3c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-spine1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-spine1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-spine1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-spine1,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-spine1,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-spine1,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc2-spine1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
@@ -568,7 +579,6 @@ dc2-spine2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc2-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-spine2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-spine2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-spine2,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-spine2,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc2-spine2,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc2-spine2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces

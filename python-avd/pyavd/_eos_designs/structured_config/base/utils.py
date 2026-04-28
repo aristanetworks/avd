@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from hashlib import sha1
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_designs.schema import EosDesigns
@@ -113,3 +114,55 @@ class UtilsMixin(Protocol):
 
         msg = f"`{path_prefix}.key` or `{path_prefix}.cleartext_key`"
         raise AristaAvdMissingVariableError(msg)
+
+    def get_salt(self: AvdStructuredConfigBaseProtocol, string: str) -> str:
+        """
+        Computes the SHA1 hash of the input string and returns a truncated version of the hash.
+
+        The SHA1 hash is computed, and the resulting hexadecimal digest is truncated to a maximum of 16 characters.
+        This function is flagged with 'NOSONAR' to indicate that the use of SHA1 is intentional
+        and not a security vulnerability in this context, as it is used for generating a salt.
+
+        Args:
+            string: The input string to be hashed.
+
+        Returns:
+            A string representing the truncated SHA1 hash (salt), with a maximum length of 16 characters.
+        """
+        return sha1(string.encode(), usedforsecurity=False).hexdigest()[:16]  # NOSONAR
+
+    def _set_monitor_connectivity_hosts(
+        self: AvdStructuredConfigBaseProtocol,
+        hosts: EosDesigns.MonitorConnectivity.Hosts | EosDesigns.MonitorConnectivity.VrfsItem.Hosts,
+        monitor_connectivity_hosts: EosCliConfigGen.MonitorConnectivity.Hosts | EosCliConfigGen.MonitorConnectivity.VrfsItem.Hosts,
+        interface_sets: EosDesigns.MonitorConnectivity.InterfaceSets | EosDesigns.MonitorConnectivity.VrfsItem.InterfaceSets,
+        context: str,
+    ) -> None:
+        """
+        Populate monitor connectivity hosts from EOS Designs host entries.
+
+        Iterates over the provided design-level hosts and appends each one to the
+        CLI config gen monitor connectivity hosts list, mapping all relevant fields.
+
+        Args:
+            hosts: Source host entries from EOS Designs, either at the global or
+                VRF level of monitor connectivity configuration.
+            monitor_connectivity_hosts: Target host list in the EOS CLI config gen
+                structure where the mapped entries will be appended.
+            interface_sets: The parent interface_sets to validate host local_interfaces against.
+            context: Path prefix used in error messages (e.g. "monitor_connectivity" or "monitor_connectivity.vrfs[name=MGMT]").
+        """
+        for host in hosts:
+            if host.local_interfaces is not None and host.local_interfaces not in interface_sets:
+                msg = f"{context}.hosts[name={host.name}].local_interfaces '{host.local_interfaces}' has to be defined in {context}.interface_sets."
+                raise AristaAvdInvalidInputsError(msg)
+            monitor_connectivity_hosts.append_new(
+                name=host.name,
+                description=host.description,
+                single_line_description=host.single_line_description,
+                ip=host.ip,
+                icmp_echo_size=host.icmp_echo_size,
+                local_interfaces=host.local_interfaces,
+                address_only=host.address_only,
+                url=host.url,
+            )

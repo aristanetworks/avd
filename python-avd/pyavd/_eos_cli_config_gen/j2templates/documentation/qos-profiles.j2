@@ -9,7 +9,7 @@
 ### QOS Profiles
 
 #### QOS Profiles Summary
-{%     for profile in qos_profiles | arista.avd.natural_sort(sort_key='name') %}
+{%     for profile in qos_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 
 ##### QOS Profile: **{{ profile.name }}**
 

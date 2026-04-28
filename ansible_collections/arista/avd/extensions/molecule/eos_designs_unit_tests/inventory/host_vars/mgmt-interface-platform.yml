@@ -1,0 +1,11 @@
+# Minimum config to only test the specific feature.
+mgmt_interface_vrf: MGMT
+mgmt_gateway: 1.1.1.1
+l2leaf:
+  nodes:
+    - name: mgmt-interface-platform
+      platform: 7500R2
+      mgmt_ip: 1.1.1.2
+      id: 105
+      filter:
+        deny_vrfs: [MULTI_TENANT_VRF_TEST]

@@ -3,6 +3,8 @@
   hosts: test_hosts
   gather_facts: false
   connection: local
+  vars:
+    read_structured_config_from_file: false
   tasks:
 
     - name: Generate device intended config and documentation

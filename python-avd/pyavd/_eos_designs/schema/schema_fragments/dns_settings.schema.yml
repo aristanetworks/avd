@@ -7,8 +7,6 @@
 type: dict
 keys:
   dns_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     description: |-
       DNS settings
@@ -16,19 +14,19 @@ keys:
       domain:
         type: str
         description: DNS domain name like 'fabric.local'
+      domain_list:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/domain_list"
       servers:
         type: list
         required: true
         min_length: 1
-        $ref: eos_cli_config_gen#/keys/ip_name_servers
         items:
           type: dict
           keys:
             vrf:
               type: str
               default: use_default_mgmt_method_vrf
-              # override required: true from `eos_cli_config_gen`
-              required: false
               description: |-
                 The value of `vrf` will be interpreted according to these rules:
                 - `use_mgmt_interface_vrf` will configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as DNS lookup source-interface.
@@ -39,6 +37,17 @@ keys:
                 - Any other string will be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
               convert_types:
                 - int
+            ip_address:
+              type: str
+              required: true
+              description: IPv4 or IPv6 address for DNS server.
+            priority:
+              description: Priority value (lower is first).
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 4
       vrfs:
         type: list
         primary_key: name
@@ -61,3 +70,6 @@ keys:
         description: |-
           Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
           Can be set to `false` to avoid changes when migrating from the old `name_servers` model.
+      ip_hosts:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/ip_hosts"

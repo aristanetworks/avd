@@ -1,0 +1,33 @@
+---
+ansible:
+  executor:
+    backend: ansible-playbook
+    args:
+      ansible_playbook:
+        - --inventory=inventory/hosts.yml
+  env:
+    ANSIBLE_FORCE_COLOR: true
+    PYTHONPATH: ${PYTHONPATH}:${MOLECULE_SCENARIO_DIRECTORY}/custom_modules
+  cfg:
+    defaults:
+      gathering: explicit
+scenario:
+  converge_sequence:
+    - syntax
+    - converge
+    - verify
+    - side_effect
+  test_sequence:
+    - syntax
+    - create
+    - converge
+    - idempotence
+    - verify
+    - side_effect
+  cleanup_sequence:
+    - destroy
+dependency:
+  name: galaxy
+  enabled: false
+verifier:
+  name: ansible

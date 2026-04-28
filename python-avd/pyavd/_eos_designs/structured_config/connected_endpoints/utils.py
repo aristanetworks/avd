@@ -45,18 +45,14 @@ class UtilsMixin(Protocol):
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         channel_group_id: int,
-        port_channel_subif_short_esi: str | None = None,
+        subif_short_esi: str | None = None,
         hash_extra_value: str = "",
     ) -> str | None:
-        """
-        Return short_esi for one adapter.
-
-        short_esi is only set when called from sub-interface port-channels.
-        """
+        """Return short_esi for one adapter or subinterface."""
         if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
             return None
 
-        if (short_esi := (port_channel_subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
+        if (short_esi := (subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
             return None
 
         if len(set(adapter.switches)) < 2:
@@ -234,6 +230,24 @@ class UtilsMixin(Protocol):
 
         return None
 
+    def _get_adapter_dot1x(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> EosCliConfigGen.EthernetInterfacesItem.Dot1x:
+        """
+        Return dot1x for one adapter.
+
+        Raise AristaAvdInvalidInputsError if dot1x is not globally enabled.
+        """
+        if not self.inputs.dot1x_settings.enabled:
+            msg = (
+                f"802.1X settings are configured under '{adapter._internal_data.context}' but 802.1X is not enabled globally. "
+                "802.1X must be enabled globally by setting 'dot1x_settings.enabled: true' before configuring 802.1X on any interface."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        return adapter.dot1x
+
     def _get_adapter_l2_mru(
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
@@ -243,3 +257,20 @@ class UtilsMixin(Protocol):
             return adapter.l2_mru
 
         return None
+
+    def _get_adapter_vlans(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> str | UndefinedType:
+        """Return a list of allowed VLANs for a Trunk port for one adapter."""
+        if adapter.mode == "trunk":
+            if adapter.vlans == "defined_vlans":
+                return self.facts.vlans or "none"
+            # EOS default is implicit "switchport trunk allowed vlan 1-4094" ("all" is its alias)
+            if adapter.vlans == "all":
+                return Undefined
+            # Covers both "none" and actual range of VLANs
+            if adapter.vlans:
+                return adapter.vlans
+
+        return Undefined

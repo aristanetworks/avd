@@ -1,0 +1,34 @@
+---
+- name: Validate inputs reading from hostvars
+  arista.avd.validate_inputs:
+    schema_name: eos_config
+    read_from_input_dir: false
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+# We use the eos_cli_config_gen module to verify that the validated inputs are as expected.
+# This is because the validated inputs are written to a temporary directory which we cannot access directly.
+- name: Render config from validated inputs
+  register: result
+  arista.avd.eos_cli_config_gen:
+    config_filename: "{{ actual_output_dir }}/testhost.cfg"
+    generate_device_doc: false
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen"
+  delegate_to: localhost
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+
+- name: Compare actual output with expected output
+  ansible.builtin.shell: >-
+    diff "{{ expected_output_dir }}/{{ expected_file }}"
+    "{{ actual_output_dir }}/testhost.cfg"
+  failed_when: diff_output.rc > 0
+  register: diff_output
+  delegate_to: localhost
+  vars:
+    expected_file: hostname_from_hostvars.cfg

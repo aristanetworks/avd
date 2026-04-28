@@ -27,10 +27,11 @@ bgp_peer_groups:
 tenants:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
+    igmp_snooping:
+      fast_leave: true
     evpn_l2_multicast:
       enabled: true
       underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
-      fast_leave: true
     # TO test vxlan_flood_multicast disabled at tenants.
     vxlan_flood_multicast:
       enabled: false
@@ -79,6 +80,8 @@ tenants:
             tags: ["test_l3"]
             enabled: true
             ip_address_virtual: 10.2.11.1/24
+            igmp_snooping:
+              fast_leave: false
             evpn_l2_multicast:
               enabled: false
       - name: MULTICAST_DISABLED_310_311
@@ -112,8 +115,8 @@ tenants:
       - id: 256
         name: "MULTICAST_DISABLED_256"
         tags: ["test_l2"]
-        # test for fast-leave when tenant level evpn_l2_multicast.enabled: true, evpn_l2_multicast.fast_leave: true and l2vlans.evpn_l2_multicast.enabled: false
-        # fast-leave is not expected for VLAN 256 since l2vlans.evpn_l2_multicast.enabled: false
+        # test for fast-leave when tenant level evpn_l2_multicast.enabled: true, igmp_snooping.fast_leave: true and l2vlans.evpn_l2_multicast.enabled: false
+        # fast_leave will be applied to VLAN 256 regardless of l2vlans.evpn_l2_multicast.enabled.
         evpn_l2_multicast:
           enabled: false
         # To test vxlan_flood_multicast enabled at l2vlans with underlay_multicast_group
@@ -145,9 +148,10 @@ tenants:
       enabled: true
       underlay_l2_multicast_group_ipv4_pool: 232.1.0.0-232.1.0.40
       underlay_l2_multicast_group_ipv4_pool_offset: 1
-    igmp_snooping_querier:
-      version: 3
-      source_address: 1.1.1.1
+    igmp_snooping:
+      querier:
+        version: 3
+        source_address: 1.1.1.1
     vrfs:
       - name: MULTICAST_ENABLED_1_2
         description: "MULTICAST_ENABLED_1_2"
@@ -168,19 +172,21 @@ tenants:
             enabled: true
             ip_address_virtual: 10.0.1.1/24
             # test for fast-leave when tenant level evpn_l2_multicast.enabled: false and
-            # vrfs.svis.evpn_l2_multicast.enabled: true with igmp_snooping_querier.fast_leave: true
+            # vrfs.svis.evpn_l2_multicast.enabled: true with igmp_snooping.fast_leave: true
             evpn_l2_multicast:
               enabled: true
+            evpn_redistribute_router_mac_system: true
             # To test vxlan_flood_multicast disabled at l2vlans but enabled at tenant
             vxlan_flood_multicast:
               enabled: false
-            igmp_snooping_querier:
+            igmp_snooping:
               fast_leave: true
           - id: 2
             name: "MULTICAST_ENABLED_2"
             tags: ["test_l3"]
             enabled: true
             ip_address_virtual: 10.0.2.1/24
+            evpn_redistribute_router_mac_system: false
             evpn_l2_multicast:
               enabled: true
             # To test vxlan_flood_multicast disabled at l2vlans but enabled at tenant with underlay_multicast_group
@@ -206,9 +212,10 @@ tenants:
             ip_address_virtual: 10.0.3.1/24
             evpn_l2_multicast:
               enabled: true
-            igmp_snooping_querier:
-              version: 1
-              source_address: 2.2.2.2
+            igmp_snooping:
+              querier:
+                version: 1
+                source_address: 2.2.2.2
           - id: 4
             name: "MULTICAST_DISABLED_4"
             tags: ["test_l3"]
@@ -258,9 +265,10 @@ tenants:
         tags: ["test_l2"]
         evpn_l2_multicast:
           enabled: true
-        igmp_snooping_querier:
-          version: 1
-          source_address: 2.2.2.2
+        igmp_snooping:
+          querier:
+            version: 1
+            source_address: 2.2.2.2
       - id: 10
         name: "MULTICAST_VXLAN_FLOOD_ENABLED_WITH_UNDERLAY_MULTICAST_GROUP"
         tags: ["test_l2"]
@@ -317,15 +325,15 @@ tenants:
             ip_virtual_router_addresses:
               - 10.1.14.1
             nodes:
-              - node: EVPN-MULTICAST-L3LEAF1A
+              - node: evpn-multicast-l3leaf1a
                 ip_address: 10.1.14.2/24
-              - node: EVPN-MULTICAST-L3LEAF1B
+              - node: evpn-multicast-l3leaf1b
                 ip_address: 10.1.14.3/24
-              - node: EVPN-MULTICAST-L3LEAF2A
+              - node: evpn-multicast-l3leaf2a
                 ip_address: 10.1.14.4/24
-              - node: EVPN-MULTICAST-L3LEAF3A
+              - node: evpn-multicast-l3leaf3a
                 ip_address: 10.1.14.5/24
-              - node: EVPN-MULTICAST-L3LEAF3B
+              - node: evpn-multicast-l3leaf3b
                 ip_address: 10.1.14.6/24
           - id: 136
             name: "L3_L2_MULTICAST_ENABLED_136"
@@ -360,10 +368,10 @@ tenants:
             tags: ["test_l3"]
             enabled: true
             ip_address_virtual: 10.2.23.1/24
-            # test for fast-leave when igmp_snooping_querier.fast_leave: true but evpn_l2_multicast.enabled is not set
-            # fast-leave is not expected for VLAN 230 since evpn_l2_multicast.enabled is not set
-            igmp_snooping_querier:
-              enabled: true
+            # test for fast-leave when igmp_snooping.fast_leave: true
+            igmp_snooping:
+              querier:
+                enabled: true
               fast_leave: true
           - id: 231
             name: "L3_MULTICAST_DISABLED_231"
@@ -467,12 +475,12 @@ tenants:
       evpn_peg:
         # Nodes should be in one node group only
         # Nodes is optional, settings apply everywhere if not defined
-        - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+        - nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
           transit: false
 
     # If pim_rp_addresses is defined and evpn_l3_multicast is enabled above create router pim sparse-mode
     pim_rp_addresses:
-      - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+      - nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
         rps:
           - 10.1.51.129
           - 10.1.52.129
@@ -483,11 +491,11 @@ tenants:
           - 10.1.50.100
         groups:
           - 232.0.112.0/21
-      - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+      - nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
         rps:
           - 10.1.51.130
           - 10.1.52.130
-      - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+      - nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
         rps:
           - 10.1.51.140
           - 10.1.52.140
@@ -523,20 +531,20 @@ tenants:
         l3_interfaces:
           - interfaces: [Ethernet7, Ethernet7]
             ip_addresses: [10.1.51.0/31, 10.1.51.2/31]
-            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             enabled: true
             pim:
               enabled: true
           - interfaces: [Ethernet7.10, Ethernet7.10]
             ip_addresses: [10.1.51.4/31, 10.1.51.6/31]
-            nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+            nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
             enabled: true
             # Implicit disable
             # pim:
             #   enabled: false
           - interfaces: [Ethernet8, Ethernet8]
             ip_addresses: [10.1.51.4/31, 10.1.51.6/31]
-            nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+            nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
             enabled: true
             pim:
               enabled: true
@@ -562,7 +570,7 @@ tenants:
               - 10.40.40.40
           - rps:
               - 10.20.20.30
-            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             groups:
               - 232.1.0.0/21
             access_list_name: RP_ACL_VRF_OVERRIDE
@@ -576,7 +584,7 @@ tenants:
         l3_interfaces:
           - interfaces: [Ethernet8, Ethernet8]
             ip_addresses: [10.1.55.0/31, 10.1.55.2/31]
-            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             enabled: true
             pim:
               enabled: true
@@ -592,15 +600,15 @@ tenants:
           enabled: true
           # Test transit mode
           evpn_peg:
-            - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            - nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
               transit: true
-            - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+            - nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
               transit: true
         pim_rp_addresses:
-          - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+          - nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             rps:
               - 10.30.30.30
-          - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+          - nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
             rps:
               - 10.60.60.60
         vrf_vni: 52
@@ -613,13 +621,13 @@ tenants:
         l3_interfaces:
           - interfaces: [Ethernet9, Ethernet9]
             ip_addresses: [10.1.52.0/31, 10.1.52.2/31]
-            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             enabled: true
             pim:
               enabled: true
           - interfaces: [Ethernet9, Ethernet9]
             ip_addresses: [10.2.52.0/31, 10.2.52.2/31]
-            nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+            nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
             enabled: true
             pim:
               enabled: true
@@ -637,10 +645,10 @@ tenants:
           evpn_peg:
             - transit: true
         pim_rp_addresses:
-          - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+          - nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             rps:
               - 10.30.30.30
-          - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+          - nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
             rps:
               - 10.60.60.60
         vrf_vni: 60
@@ -653,24 +661,7 @@ tenants:
         l3_interfaces:
           - interfaces: [Ethernet10, Ethernet10]
             ip_addresses: [10.1.60.0/31, 10.1.60.2/31]
-            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             enabled: true
             pim:
               enabled: true
-
-  # Test when tenant level evpn_l2_multicast.enabled: true and evpn_l2_multicast.fast_leave: true
-  - name: Tenant_F
-    mac_vrf_vni_base: 10000
-    evpn_l2_multicast:
-      enabled: true
-      fast_leave: true
-      underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
-    l2vlans:
-      - id: 251
-        name: "MULTICAST_DISABLED_251"
-        tags: ["test_l2"]
-        evpn_l2_multicast:
-          enabled: false
-      - id: 252
-        name: "MULTICAST_ENABLED_252"
-        tags: ["test_l2"]

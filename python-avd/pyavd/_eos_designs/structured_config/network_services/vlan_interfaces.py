@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Protocol
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -44,7 +44,14 @@ class VlanInterfacesMixin(Protocol):
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
 
-                self.structured_config.vlan_interfaces.append(self._get_vlan_interface_config_for_mlag_peering(vrf, tenant, vlan_id), ignore_fields=("tenant",))
+                vlan_interface_config = self._get_vlan_interface_config_for_mlag_peering(vrf, tenant, vlan_id)
+                self.structured_config.vlan_interfaces.append(vlan_interface_config, ignore_fields=("metadata",))
+
+                # If the VLAN interface already existed (shared VRF across multiple tenants),
+                # append this tenant to the existing item's metadata.
+                existing_vlan_interface = self.structured_config.vlan_interfaces.obtain(f"Vlan{vlan_id}")
+                if tenant.name not in existing_vlan_interface.metadata.tenants:
+                    existing_vlan_interface.metadata.tenants.append(tenant.name)
 
     def _check_virtual_router_mac_address(self: AvdStructuredConfigNetworkServicesProtocol, variable: str) -> None:
         """Raise if virtual router mac address is required but missing, otherwise return None."""
@@ -61,30 +68,31 @@ class VlanInterfacesMixin(Protocol):
         pim_source_interface_needed = False
 
         interface_name = f"Vlan{svi.id}"
-        interface_ip = svi.ip_address_virtual
-        if interface_ip is not None and "/" in interface_ip:
-            interface_ip = get_ip_from_ip_prefix(interface_ip)
+        ipv4_interface_ip = svi.ip_address or svi.ip_address_virtual
+        if ipv4_interface_ip is not None and "/" in ipv4_interface_ip:
+            ipv4_interface_ip = get_ip_from_ip_prefix(ipv4_interface_ip)
         vlan_interface_config = EosCliConfigGen.VlanInterfacesItem(
             name=interface_name,
             description=default(svi.description, svi.name),
             shutdown=not default(svi.enabled, False),  # noqa: FBT003
             ip_address=svi.ip_address,
             ip_address_secondaries=EosCliConfigGen.VlanInterfacesItem.IpAddressSecondaries(svi.ip_address_secondaries),
-            ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
             arp_gratuitous_accept=svi.arp_gratuitous_accept,
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
-        vlan_interface_config.metadata._update(
-            tenant=tenant.name, tags=EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
-        )  # Historic behavior is to not output the default ["all"])
+        if svi.ipv6_address:
+            vlan_interface_config.ipv6_addresses.append(svi.ipv6_address)
+        vlan_interface_config.metadata.tenants.append(tenant.name)
+        # Historic behavior is to not output the default ["all"]
+        vlan_interface_config.metadata.tags = EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
 
         if svi.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(
                 name=svi.ipv4_acl_in,
                 interface_name=interface_name,
-                interface_ip=interface_ip,
+                interface_ip=ipv4_interface_ip,
             )
             vlan_interface_config.access_group_in = acl.name
             self._set_ipv4_acl(acl)
@@ -93,7 +101,7 @@ class VlanInterfacesMixin(Protocol):
             acl = self.shared_utils.get_ipv4_acl(
                 name=svi.ipv4_acl_out,
                 interface_name=interface_name,
-                interface_ip=interface_ip,
+                interface_ip=ipv4_interface_ip,
             )
             vlan_interface_config.access_group_out = acl.name
             self._set_ipv4_acl(acl)
@@ -138,8 +146,8 @@ class VlanInterfacesMixin(Protocol):
                     raise AristaAvdInvalidInputsError(msg)
                 vlan_interface_config.pim.ipv4.local_interface = f"Loopback{vrf_diagnostic_loopback}"
 
-        # Only set VARPv6 if ipv6_address is set or ipv6_enable is set to true
-        if (vlan_interface_config.ipv6_address or vlan_interface_config.ipv6_enable) and svi.ipv6_virtual_router_addresses:
+        # Only set VARPv6 if ipv6_addresses is set or ipv6_enable is set to true
+        if (vlan_interface_config.ipv6_addresses or vlan_interface_config.ipv6_enable) and svi.ipv6_virtual_router_addresses:
             vlan_interface_config.ipv6_virtual_router_addresses.extend(svi.ipv6_virtual_router_addresses)
             self._check_virtual_router_mac_address("ipv6_virtual_router_addresses")
 
@@ -153,7 +161,7 @@ class VlanInterfacesMixin(Protocol):
 
             if svi.ipv6_nd.advertise_ipv6_address_virtuals:
                 for ipv6_address in svi.ipv6_address_virtuals:
-                    vlan_interface_config.ipv6_nd_prefixes.append_new(
+                    vlan_interface_config.ipv6_nd.prefixes.append_new(
                         ipv6_prefix=ipv6_address,
                         valid_lifetime=svi.ipv6_nd.valid_lifetime,
                         preferred_lifetime=svi.ipv6_nd.preferred_lifetime,
@@ -178,59 +186,61 @@ class VlanInterfacesMixin(Protocol):
             name=f"Vlan{vlan_id}",
             shutdown=False,
             description=self.shared_utils.interface_descriptions.mlag_peer_l3_vrf_svi(
-                InterfaceDescriptionData(shared_utils=self.shared_utils, interface=f"Vlan{vlan_id}", vrf=vrf.name, vlan=vlan_id)
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=f"Vlan{vlan_id}",
+                    vrf=vrf.name,
+                    vlan=vlan_id,
+                )
             ),
             vrf=vrf.name,
             mtu=self.shared_utils.get_interface_mtu(f"Vlan{vlan_id}", self.shared_utils.p2p_uplinks_mtu),
         )
-        vlan_interface_config.metadata._update(tenant=tenant.name, type="underlay_peering")
-        vlan_interface_config._update(**self._get_vlan_ip_config_for_mlag_peering(vrf))
+        vlan_interface_config.metadata.tenants.append(tenant.name)
+        vlan_interface_config.metadata.type = "underlay_peering"
+
+        if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
+            vlan_interface_config.ipv6_enable = True
+        elif self.shared_utils.underlay_ipv6_numbered:
+            vlan_interface_config.ipv6_addresses.append_new(self._get_vlan_ip_config_for_mlag_peering(vrf))
+        else:
+            vlan_interface_config.ip_address = self._get_vlan_ip_config_for_mlag_peering(vrf)
+
         return vlan_interface_config
 
     def _get_vlan_ip_config_for_mlag_peering(
-        self: AvdStructuredConfigNetworkServicesProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
-    ) -> dict[str, Any]:
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+    ) -> str:
         """
-        Build IP config for MLAG peering SVI for the given VRF.
+        Return the IP address for the MLAG peering SVI for the given VRF.
 
         Called from _get_vlan_interface_config_for_mlag_peering and prefix_lists.
-
-        TODO: Refactor to update the input in-place
+        The RFC5549 / ipv6_enable case is handled by the caller before calling this method.
         """
-        if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
-            return {"ipv6_enable": True}
-
         if self.shared_utils.underlay_ipv6_numbered:
             if vrf.mlag_ibgp_peering_ipv6_pool:
                 if self.shared_utils.mlag_role == "primary":
-                    return {
-                        "ipv6_address": (
-                            f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_primary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
-                            f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
-                        )
-                    }
-                return {
-                    "ipv6_address": (
-                        f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_secondary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                    return (
+                        f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_primary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
                         f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
                     )
-                }
-            return {"ipv6_address": f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"}
+                return (
+                    f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_secondary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                    f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+                )
+
+            return f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
 
         if vrf.mlag_ibgp_peering_ipv4_pool:
             if self.shared_utils.mlag_role == "primary":
-                return {
-                    "ip_address": (
-                        f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(vrf.mlag_ibgp_peering_ipv4_pool)}/"
-                        f"{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
-                    )
-                }
-
-            return {
-                "ip_address": (
-                    f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(vrf.mlag_ibgp_peering_ipv4_pool)}/"
+                return (
+                    f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(vrf.mlag_ibgp_peering_ipv4_pool)}/"
                     f"{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
                 )
-            }
+            return (
+                f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(vrf.mlag_ibgp_peering_ipv4_pool)}/"
+                f"{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
+            )
 
-        return {"ip_address": f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"}
+        return f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"

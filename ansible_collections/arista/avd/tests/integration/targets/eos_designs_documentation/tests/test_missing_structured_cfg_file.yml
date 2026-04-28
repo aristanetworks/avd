@@ -1,9 +1,28 @@
+---
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
 - name: Remove test output to force 'changed'
   ansible.builtin.file:
     path: "{{ actual_output_dir }}/eos_designs_documentation_missing_structured_cfg_file.md"
     state: absent
 
 - name: Test missing structured config file for device (warning but success)
+  delegate_to: localhost
   ignore_errors: false
   register: result
   arista.avd.eos_designs_documentation:
@@ -11,6 +30,7 @@
     fabric_documentation_file: "{{ actual_output_dir }}/eos_designs_documentation_missing_structured_cfg_file.md"
     topology_csv_file: "not_used_but_required.csv"
     p2p_links_csv_file: "not_used_but_required.csv"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
 - name: Validate result
   ansible.builtin.assert:
     that:

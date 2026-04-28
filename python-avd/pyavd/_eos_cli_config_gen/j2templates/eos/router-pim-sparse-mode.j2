@@ -61,7 +61,7 @@ router pim sparse-mode
       register local-interface {{ router_pim_sparse_mode.ipv4.register_local_interface }}
 {%         endif %}
 {%     endif %}
-{%     for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
+{%     for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    vrf {{ vrf.name }}
 {%         if vrf.ipv4 is arista.avd.defined %}
@@ -104,6 +104,15 @@ router pim sparse-mode
 {%                 else %}
          rp address {{ rp_address.address }}{{ rp_options_cli }}
 {%                 endif %}
+{%             endfor %}
+{%             for anycast_rp in vrf.ipv4.anycast_rps | arista.avd.natural_sort('address') %}
+{%                 for other_anycast_rp_address in anycast_rp.other_anycast_rp_addresses | arista.avd.natural_sort('address') %}
+{%                     set other_anycast_rp_addresses_cli = "anycast-rp " ~ anycast_rp.address ~ " " ~ other_anycast_rp_address.address %}
+{%                     if other_anycast_rp_address.register_count is arista.avd.defined %}
+{%                         set other_anycast_rp_addresses_cli = other_anycast_rp_addresses_cli ~ " register-count " ~ other_anycast_rp_address.register_count %}
+{%                     endif %}
+         {{ other_anycast_rp_addresses_cli }}
+{%                 endfor %}
 {%             endfor %}
 {%             if vrf.ipv4.register_local_interface is arista.avd.defined %}
          register local-interface {{ vrf.ipv4.register_local_interface }}

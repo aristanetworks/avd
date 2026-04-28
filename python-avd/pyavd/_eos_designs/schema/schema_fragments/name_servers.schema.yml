@@ -8,7 +8,7 @@ type: dict
 keys:
   name_servers:
     documentation_options:
-      table: management-settings
+      table: removed-keys
     type: list
     deprecation:
       warning: true

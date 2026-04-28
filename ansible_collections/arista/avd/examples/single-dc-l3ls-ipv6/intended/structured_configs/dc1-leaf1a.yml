@@ -37,8 +37,9 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_dc1-spine1_Ethernet1
   shutdown: false
-  mtu: 1500
-  ipv6_address: 2001:db8:2::2/64
+  mtu: 9214
+  ipv6_addresses:
+  - 2001:db8:2::2/64
   metadata:
     peer: dc1-spine1
     peer_interface: Ethernet1
@@ -48,8 +49,9 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_dc1-spine2_Ethernet1
   shutdown: false
-  mtu: 1500
-  ipv6_address: 2001:db8:2:1::2/64
+  mtu: 9214
+  ipv6_addresses:
+  - 2001:db8:2:1::2/64
   metadata:
     peer: dc1-spine2
     peer_interface: Ethernet1
@@ -84,9 +86,11 @@ ip_domain_lookup:
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.1.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.1.1
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
 ipv6_prefix_lists:
@@ -106,19 +110,21 @@ local_users:
   privilege: 15
   role: network-admin
   no_password: true
-- name: ansible
+- name: arista
   privilege: 15
   role: network-admin
-  sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8:1:1::1/64
+  ipv6_addresses:
+  - 2001:db8:1:1::1/64
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ipv6_address: 2001:db8:5:1::1/64
+  ipv6_addresses:
+  - 2001:db8:5:1::1/64
 - name: Loopback10
   description: DIAG_VRF_VRF10
   shutdown: false
@@ -148,7 +154,7 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOSLab
   fabric_name: FABRIC
   validate_hardware:
     enabled: false
@@ -241,14 +247,14 @@ router_bgp:
     next_hop_self: true
     password: GNtuK+/vTwZwSZiwj1FK/Q==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv6-UNDERLAY-PEERS
     metadata:
       type: ipv6
     password: F0bdF6JLcJtagc6PCN8W0Q==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -295,7 +301,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.1.1:10011
     route_targets:
       both:
@@ -304,7 +311,8 @@ router_bgp:
     - learned
   - id: 12
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.1.1:10012
     route_targets:
       both:
@@ -313,7 +321,8 @@ router_bgp:
     - learned
   - id: 21
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.1.1:10021
     route_targets:
       both:
@@ -322,7 +331,8 @@ router_bgp:
     - learned
   - id: 22
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.1.1:10022
     route_targets:
       both:
@@ -331,7 +341,8 @@ router_bgp:
     - learned
   - id: 31
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.1.1:10031
     route_targets:
       both:
@@ -340,7 +351,8 @@ router_bgp:
     - learned
   - id: 32
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.1.1:10032
     route_targets:
       both:
@@ -349,7 +361,8 @@ router_bgp:
     - learned
   - id: 3401
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.1.1:13401
     route_targets:
       both:
@@ -358,7 +371,8 @@ router_bgp:
     - learned
   - id: 3402
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.1.1:13402
     route_targets:
       both:
@@ -463,13 +477,15 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_L3
   shutdown: false
-  ipv6_address: 2001:db8:4::1/64
-  mtu: 1500
+  ipv6_addresses:
+  - 2001:db8:4::1/64
+  mtu: 9214
 - name: Vlan4094
   description: MLAG
   shutdown: false
-  ipv6_address: 2001:db8:3::1/64
-  mtu: 1500
+  ipv6_addresses:
+  - 2001:db8:3::1/64
+  mtu: 9214
   no_autostate: true
 - name: Vlan11
   description: VRF10_VLAN11
@@ -477,22 +493,26 @@ vlan_interfaces:
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3009
   description: MLAG_L3_VRF_VRF10
   shutdown: false
   vrf: VRF10
-  ipv6_address: 2001:db8:4::1/64
-  mtu: 1500
+  ipv6_addresses:
+  - 2001:db8:4::1/64
+  mtu: 9214
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
     type: underlay_peering
 - name: Vlan21
   description: VRF11_VLAN21
@@ -502,22 +522,26 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:DB8:21::1/48
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3010
   description: MLAG_L3_VRF_VRF11
   shutdown: false
   vrf: VRF11
-  ipv6_address: 2001:db8:4::1/64
-  mtu: 1500
+  ipv6_addresses:
+  - 2001:db8:4::1/64
+  mtu: 9214
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
     type: underlay_peering
 - name: Vlan31
   description: VRF12_VLAN31
@@ -527,7 +551,8 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:DB8:31::1/48
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan32
   description: VRF12_VLAN32
   shutdown: false
@@ -536,15 +561,18 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:DB8:32::1/48
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3011
   description: MLAG_L3_VRF_VRF12
   shutdown: false
   vrf: VRF12
-  ipv6_address: 2001:db8:4::1/64
-  mtu: 1500
+  ipv6_addresses:
+  - 2001:db8:4::1/64
+  mtu: 9214
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -557,80 +585,96 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 11
   name: VRF10_VLAN11
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 12
   name: VRF10_VLAN12
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3009
   name: MLAG_L3_VRF_VRF10
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 21
   name: VRF11_VLAN21
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 22
   name: VRF11_VLAN22
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3010
   name: MLAG_L3_VRF_VRF11
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 31
   name: VRF12_VLAN31
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 32
   name: VRF12_VLAN32
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3011
   name: MLAG_L3_VRF_VRF12
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3401
   name: L2_VLAN3401
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3402
   name: L2_VLAN3402
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
   ip_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: VRF11
   ip_routing: true
   ipv6_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: VRF12
   ip_routing: true
   ipv6_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: dc1-leaf1a_VTEP

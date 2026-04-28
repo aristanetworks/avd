@@ -7,8 +7,8 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_dc2-leaf1a_Ethernet1
   shutdown: false
-  mtu: 1500
-  ip_address: 10.255.255.104/31
+  mtu: 9214
+  ip_address: 10.255.255.64/31
   metadata:
     peer: dc2-leaf1a
     peer_interface: Ethernet1
@@ -18,8 +18,8 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_dc2-leaf1b_Ethernet1
   shutdown: false
-  mtu: 1500
-  ip_address: 10.255.255.108/31
+  mtu: 9214
+  ip_address: 10.255.255.68/31
   metadata:
     peer: dc2-leaf1b
     peer_interface: Ethernet1
@@ -29,8 +29,8 @@ ethernet_interfaces:
 - name: Ethernet3
   description: P2P_dc2-leaf2a_Ethernet1
   shutdown: false
-  mtu: 1500
-  ip_address: 10.255.255.112/31
+  mtu: 9214
+  ip_address: 10.255.255.72/31
   metadata:
     peer: dc2-leaf2a
     peer_interface: Ethernet1
@@ -40,8 +40,8 @@ ethernet_interfaces:
 - name: Ethernet4
   description: P2P_dc2-leaf2b_Ethernet1
   shutdown: false
-  mtu: 1500
-  ip_address: 10.255.255.116/31
+  mtu: 9214
+  ip_address: 10.255.255.76/31
   metadata:
     peer: dc2-leaf2b
     peer_interface: Ethernet1
@@ -63,7 +63,7 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 10.255.128.11/32
+  ip_address: 10.255.128.1/32
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -78,7 +78,7 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOSLab
   fabric_name: FABRIC
   validate_hardware:
     enabled: false
@@ -101,7 +101,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65200'
-  router_id: 10.255.128.11
+  router_id: 10.255.128.1
   maximum_paths:
     paths: 4
   bgp:
@@ -113,7 +113,7 @@ router_bgp:
       type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -125,49 +125,49 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   neighbors:
-  - ip_address: 10.255.255.105
+  - ip_address: 10.255.255.65
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65201'
     metadata:
       peer: dc2-leaf1a
     description: dc2-leaf1a_Ethernet1
-  - ip_address: 10.255.255.109
+  - ip_address: 10.255.255.69
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65201'
     metadata:
       peer: dc2-leaf1b
     description: dc2-leaf1b_Ethernet1
-  - ip_address: 10.255.255.113
+  - ip_address: 10.255.255.73
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65202'
     metadata:
       peer: dc2-leaf2a
     description: dc2-leaf2a_Ethernet1
-  - ip_address: 10.255.255.117
+  - ip_address: 10.255.255.77
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65202'
     metadata:
       peer: dc2-leaf2b
     description: dc2-leaf2b_Ethernet1
-  - ip_address: 10.255.128.13
+  - ip_address: 10.255.128.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65201'
     metadata:
       peer: dc2-leaf1a
     description: dc2-leaf1a_Loopback0
-  - ip_address: 10.255.128.14
+  - ip_address: 10.255.128.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65201'
     metadata:
       peer: dc2-leaf1b
     description: dc2-leaf1b_Loopback0
-  - ip_address: 10.255.128.15
+  - ip_address: 10.255.128.5
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65202'
     metadata:
       peer: dc2-leaf2a
     description: dc2-leaf2a_Loopback0
-  - ip_address: 10.255.128.16
+  - ip_address: 10.255.128.6
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65202'
     metadata:

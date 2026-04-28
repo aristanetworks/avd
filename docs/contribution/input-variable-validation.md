@@ -9,7 +9,7 @@
 !!! NOTE
     - Some schema validations are not implemented yet.
 
-`eos_designs` and `eos_cli_config_gen` support a wide range of input variables described under the role documentation sections.
+Arista AVD supports a wide range of data models described under the user manual's [data model](../data-models/README.md) section.
 
 Internally the supported data models are described in the proprietary "AVD Schema" format, which is used to perform validation of
 the input variables at run-time. The same schema is also used to generate the role documentation describing the supported data
@@ -77,8 +77,8 @@ This fragment will be merged with other fragments during development, to form th
 
 For reference, the full Role Schemas can be found here:
 
-- [`eos_designs` AVD Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml)
-- [`eos_cli_config_gen` AVD Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml)
+- `eos_designs` uses the [AVD Design Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml)
+- `eos_cli_config_gen` uses the [EOS Config Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml)
 
 The supported schema options depend on the type of variable that is described. The supported types are `int`, `bool`, `str`,
 `dict` and `list`. The schema does not support mixed types for the same variable, but the automatic type conversion mentioned

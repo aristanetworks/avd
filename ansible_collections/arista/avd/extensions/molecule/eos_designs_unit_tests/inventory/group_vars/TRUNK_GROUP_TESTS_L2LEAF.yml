@@ -3,9 +3,9 @@ type: l2leaf
 
 l2leaf:
   defaults:
-    uplink_switches: [ trunk-group-tests-l3leaf1a, trunk-group-tests-l3leaf1b ]
-    uplink_interfaces: [ Ethernet1, Ethernet2 ]
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    uplink_switches: [trunk-group-tests-l3leaf1a, trunk-group-tests-l3leaf1b]
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_ipv4_pool: 10.255.248.0/24
   node_groups:
     # Testing regular trunk groups behavior
@@ -19,13 +19,13 @@ l2leaf:
       nodes:
         - name: trunk-group-tests-l2leaf1a
           id: 1
-          uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
 
         # Testing "only_local_vlan_trunk_groups: true" set in hostvars to see that only
         # locally used trunk-groups are set on vlans even without "filter.only_vlans_in_use: true"
         - name: trunk-group-tests-l2leaf1b
           id: 2
-          uplink_switch_interfaces: [ Ethernet2, Ethernet2 ]
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
 
   # Testing "only_vlans_in_use" filter in combination with trunk groups
   # l3leaf will only get the vlans configured which are being used by local ports or on a downstream l2leaf.
@@ -38,7 +38,7 @@ l2leaf:
     # that only TG_200 and UPLINK are set on vlans 2xx
     - name: trunk-group-tests-l2leaf3
       id: 3
-      uplink_switch_interfaces: [ Ethernet5, Ethernet5 ]
+      uplink_switch_interfaces: [Ethernet5, Ethernet5]
       filter:
         only_vlans_in_use: true
 
@@ -47,7 +47,7 @@ l2leaf:
     # trunk group for l2leaf assigned.
     - name: trunk-group-tests-l2leaf4
       id: 4
-      uplink_switches: [ trunk-group-tests-l3leaf2a, trunk-group-tests-l3leaf2b ]
-      uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]
+      uplink_switches: [trunk-group-tests-l3leaf2a, trunk-group-tests-l3leaf2b]
+      uplink_switch_interfaces: [Ethernet1, Ethernet1]
       filter:
         only_vlans_in_use: true

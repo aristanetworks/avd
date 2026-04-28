@@ -184,7 +184,7 @@ cv_devices: [ DC1-L3LEAF1A, DC1-L3LEAF1B ]
 
 The role will fail if a device is not found on CloudVision. Any workspace created will be abandoned automatically.
 
-Devices with `is_deployed: false` set as part of `eos_designs` inputs will automatically be ignored.
+Devices with `is_deployed: false` set as part of AVD Design inputs will be ignored.
 
 It is possible to ignore other missing devices by simply skipping them and continue with the remaining devices.
 
@@ -201,7 +201,8 @@ By default the role will
 2. Push all configurations and tags.
 3. Unassign tags
 4. Build and submit the Workspace.
-5. Leave any created Change Control in `pending approval` state.
+5. Fetch and expose errors and warnings raised during the Workspace Build phase.
+6. Leave any created Change Control in `pending approval` state.
 
 !!! warning
     When deploying CloudVision Tag assignments, the builtin behavior is to unassign any other tags
@@ -220,8 +221,13 @@ cv_submit_workspace: true
 # If set, configurations will not be validated for non-streaming devices.
 cv_submit_workspace_force: false
 
+# Fetch and expose Workspace build warnings.
+# Suppress specific warnings based on pre-defined options or custom regex fullmatch pattern(s).
+cv_workspace_build_warnings_enabled: true
+cv_workspace_build_warnings_suppress_patterns: []
+cv_workspace_build_warnings_suppress_portfast: false
+
 # Approve, start and wait for the Change Control to Complete. Otherwise the Change Control will be left in "pending approval" mode.
-# Only applicable if cv_submit_workspace is true.
 cv_run_change_control: false
 
 # Set the name of the created Workspace. By default this will be "AVD <date and time>"
@@ -253,25 +259,63 @@ cv_register_detailed_results: false
 cv_workspace_build_timeout: 300
 ```
 
-##### Structured configuration validation
+##### Advanced role configuration
 
-Presence of the same `serial_number` or `system_mac_address` values in structured configuration of multiple EOS devices may lead to the unexpected results (or even network outages) on the CloudVision side due to the possibility of pushing designed configuration of one device to another device.
-
-To eliminate this risk, this role will always raise an error and will terminate its execution before updating CloudVision in the following cases:
-
-- Structured configuration files of two or more targeted devices have the same `serial_number` (values of `system_mac_address` are not important in this case).
-- Structured configuration files of two or more targeted devices have the same `system_mac_address` and at least one of these devices has an unset `serial_number` value.
-
-By default, this role will warn the user about inconsistencies in the structured configuration files in the following case:
-
-- Structured configuration files of two or more targeted devices have the same `system_mac_address` but unique `serial_number` values.
-
-Having duplicate `system_mac_address` but unique `serial_number` will not lead to unexpected results on CloudVision as the `serial_number` takes precedence.
-
-To force an error to always be raised in case of duplicate `system_mac_address`, set the `cv_strict_system_mac_address` to `true`.
+The optional settings below provide direct control over Workspace and Change Control states.
 
 ```yaml
-cv_strict_system_mac_address: true
+# Set the ID of the created Workspace. If a workspace with the same ID already exists, it must be in the 'pending' state.
+# cv_workspace_id: <str>
+
+# Set the requested state for the Workspace.
+# Accepted values: "pending", "built", "submitted", "abandoned" or "deleted".
+# cv_workspace_requested_state: <str>
+
+# Set the requested state of the created Change Control.
+# Accepted values: "pending approval", "approved", "running" or "completed".
+# cv_change_control_requested_state: <str>
+```
+
+**`cv_workspace_id`**
+
+By default, `cv_deploy` auto-generates new workspace ID on each run. Setting `cv_workspace_id` instructs the role to use a specific ID instead. If a workspace with that ID already exists in CloudVision and is in `pending` state, it will be reused (this may be useful for resuming an interrupted deployment). If the existing workspace is in any other state, the role will raise an error. If workspace with that ID does not yet exist - it will be created.
+
+```mermaid
+flowchart LR
+    A([cv_deploy]) --> B{cv_workspace_id\nis set?}
+    B -- No --> C[auto-generate\nWorkspace ID]
+    B -- Yes --> D{Workspace with\nrequested ID exists?}
+    D -- No --> E[Create Workspace\nwith requested ID]
+    D -- Yes --> G{Workspace is in\nPENDING state?}
+    G -- Yes --> F[Reuse existing\nWorkspace]
+    G -- No --> I([Raise exception])
+```
+
+**`cv_workspace_requested_state`**
+
+By default, the Workspace state is controlled by the `cv_submit_workspace` key. Setting `cv_workspace_requested_state` bypasses `cv_submit_workspace` entirely and applies the specified state directly. This is useful for workflows that need precise control over the target state of the Workspace.
+
+```mermaid
+flowchart LR
+    A([cv_deploy]) --> B{"cv_workspace_requested_state\nis set?"}
+    B -- Yes --> C["Workspace requested state =\ncv_workspace_requested_state"]
+    B -- No --> D{cv_submit_workspace?}
+    D -- "True (default)" --> E["Workspace requested state =\n submitted"]
+    D -- False --> F["Workspace requested state =\n built"]
+```
+
+**`cv_change_control_requested_state`**
+
+By default, the Change Control state is controlled by `cv_run_change_control`. Setting `cv_change_control_requested_state` bypasses `cv_run_change_control` entirely. Only applicable when the requested state of the Workspace is `submitted`.
+
+```mermaid
+flowchart LR
+    A(["Workspace requested state\n==\nsubmitted?"]) -- Yes --> B{cv_change_control_requested_state set?}
+    A -- No --> G["Change Control is not created"]
+    B -- Yes --> C["Change Control requested state\n=\ncv_change_control_requested_state"]
+    B -- No --> D{"cv_run_change_control?"}
+    D -- True --> E["Change Control requested state\n=\ncompleted"]
+    D -- "False (default)" --> F["Change Control requested state\n=\npending approval"]
 ```
 
 #### Static Configuration Studio deployment
@@ -280,6 +324,12 @@ In addition to deploying device-specific configurations, the role allows for the
 
 ```yaml
 cv_static_config_manifest:
+
+  # Policy for managing configlets in the Configlet Library.
+  # - "managed" (default): Delete manifest-managed configlets not declared in this manifest and not assigned to any container.
+  #   Configlets not managed by the manifest are preserved.
+  # - "additive": Only create or update declared configlets. All existing configlets are preserved.
+  configlet_policy: <str, default="managed", choices=["managed", "additive"]>
 
   # A list of dictionaries defining configlets to be created in the Configlet Library.
   # Configlet names must be unique across all defined configlets.
@@ -316,7 +366,7 @@ cv_static_config_manifest:
 
 #### Role default input directories
 
-The EOS device configurations and AVD structured configurations are read from files generated by `arista.avd.eos_designs` and `arista.avd.eos_cli_config_gen` roles.
+When using the standard AVD workflow, the EOS device configurations and AVD structured configurations are read from files generated by the `arista.avd.eos_designs` and `arista.avd.eos_cli_config_gen` roles.
 
 The directories are configured with the same variables as for the other AVD roles:
 
@@ -325,6 +375,69 @@ The directories are configured with the same variables as for the other AVD role
 ansible_collections/arista/avd/roles/cv_deploy/defaults/main/directories.yml
 --8<--
 ```
+
+#### Device metadata from structured configuration
+
+`cv_deploy` uses the `metadata` key from each device structured configuration to get the following information:
+
+- **Device identification**: `serial_number` and `system_mac_address`
+- **Deployment status**: `is_deployed`
+- **CloudVision tags**: `cv_tags` (device and interface tags)
+- **CV Pathfinder metadata**: `cv_pathfinder`
+
+No additional configuration is required when using the standard AVD workflow (`eos_designs` → `eos_cli_config_gen` → `cv_deploy`).
+
+#### Using cv_deploy without eos_designs
+
+For users *not* using `eos_designs` in their workflow, the `cv_deploy` role can be used independently by providing the required structured configuration variables directly as Ansible variables.
+
+To use Ansible variables instead of structured configuration files, set the role variable `read_structured_config_from_file` to `false`.
+
+The following variables can then be set per device:
+
+--8<--
+schemas/cv_deploy/docs/tables/cv_deploy.md
+--8<--
+
+#### Input Variables Validation
+
+The role automatically validates all inputs specified above. Any validation errors will block further processing. During this process, temporary files are created to store templated and validated data.
+
+```yaml
+# Vault ID used for encrypting temporary files generated by the role.
+# When Ansible Vault is not configured, this parameter has no effect and files are written as plain JSON.
+# When Ansible Vault is configured, AVD encrypts files containing templated and validated data
+# to prevent sensitive information from being exposed in the temporary directories.
+#   * When `avd_vault_id` is not specified, AVD uses the *first* Vault ID in the list for encryption.
+#   * When `avd_vault_id` is specified, AVD uses the specified Vault ID for encryption.
+avd_vault_id: null
+
+# Avoid deleting temporary files. Allows the user to inspect tmp files created by the role.
+# When an Ansible Vault secret is set, temporary files holding input variables are encrypted. Decryption is required to inspect them.
+cv_deploy_keep_tmp_files: false
+
+# The number of hosts to process in each batch when validating inputs.
+# Depending on your inventory size and the available resources, you may want to adjust this number.
+cv_deploy_validate_inputs_batch_size: 10
+```
+
+!!! warning
+    The presence of the same `serial_number` or `system_mac_address` values for multiple EOS devices may lead to unexpected results (or even network outages) on CloudVision due to the possibility of pushing the configuration of one device to another.
+
+    To eliminate this risk, the role will raise an error and terminate before updating CloudVision in the following cases:
+
+    - Two or more targeted devices have the same `serial_number` (values of `system_mac_address` are not important in this case).
+    - Two or more targeted devices have the same `system_mac_address` and at least one of these devices has an unset `serial_number` value.
+
+    However, by default the role will only warn (not error) in the following case:
+
+    - Two or more targeted devices have the same `system_mac_address` but unique `serial_number` values.
+
+    To raise an error instead of a warning for the above case, set the role variable `cv_strict_system_mac_address` to `true`:
+
+    ```yaml
+    cv_strict_system_mac_address: true
+    ```
 
 ## Steps to create service accounts on CloudVision
 

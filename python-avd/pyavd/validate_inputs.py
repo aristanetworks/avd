@@ -3,31 +3,48 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import json
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .validation_result import ValidationResult
+    from pyavd_utils.validation import Configuration
+
+    from .api.validation import ValidatedDataResult
 
 
-def validate_inputs(inputs: dict) -> ValidationResult:
+def validate_inputs(inputs: dict, *, configuration: Configuration | None = None) -> ValidatedDataResult:
     """
-    Validate input variables according to the `eos_designs` schema as documented on avd.arista.com.
+    Validate input variables according to the AVD Design schema as documented on avd.arista.com.
 
     Where supported by the schema, types will be auto type-converted like from "int" to "str".
 
     Args:
-        inputs: Dictionary with inputs for "eos_designs".
+        inputs: Dictionary with inputs for AVD Design.
+        configuration: Optional Configuration object from pyavd_utils.validation.
+            If not provided use a default configuration enabling warnings for EOS Config keys.
 
     Returns:
-        Validation result object with any validation errors or deprecation warnings.
+        ValidatedDataResult object with the ValidationResult containing validation errors, deprecation warnings
+        and the validated_data as a dict. If the validation fails, the validated_data will be None.
+
+    Raises:
+        ValueError: If the inputs are not JSON serializable.
     """
-    from .avd_schema_tools import EosDesignsAvdSchemaTools  # noqa: PLC0415
+    from pyavd_utils.validation import Configuration, get_validated_data  # noqa: PLC0415
 
-    eos_designs_schema_tools = EosDesignsAvdSchemaTools()
+    # Use default configuration if not provided
+    configuration = configuration or Configuration(warn_eos_config_keys=True)
 
-    # Inplace conversion of data
-    validation_result = eos_designs_schema_tools.convert_data(inputs)
+    from ._schema.store import init_store  # noqa: PLC0415
+    from .api.validation import ValidatedDataResult  # noqa: PLC0415
 
-    # Validate input data
-    validation_result.merge(eos_designs_schema_tools.validate_data(inputs))
-    return validation_result
+    init_store()
+
+    try:
+        data_as_json = json.dumps(inputs, skipkeys=True, default=lambda _: "<not serializable>")
+    except (TypeError, ValueError, RecursionError) as e:
+        msg = f"Unable to serialize inputs: {e}"
+        raise ValueError(msg) from e
+
+    pyavd_utils_validated_data_result = get_validated_data(data_as_json=data_as_json, schema_name="avd_design", configuration=configuration)
+    return ValidatedDataResult._from_pyavd_utils_validated_data_result(pyavd_utils_validated_data_result)

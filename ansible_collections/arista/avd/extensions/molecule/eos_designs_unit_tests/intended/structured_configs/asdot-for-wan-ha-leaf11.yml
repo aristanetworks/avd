@@ -5,23 +5,23 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_asdot-for-wan-ha-transit1A1_Ethernet52
+  description: P2P_asdot-for-wan-ha-transit1a1_Ethernet52
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.0/31
   metadata:
-    peer: asdot-for-wan-ha-transit1A1
+    peer: asdot-for-wan-ha-transit1a1
     peer_interface: Ethernet52
     peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet2
-  description: P2P_asdot-for-wan-ha-transit1B1_Ethernet52
+  description: P2P_asdot-for-wan-ha-transit1b1_Ethernet52
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.2/31
   metadata:
-    peer: asdot-for-wan-ha-transit1B1
+    peer: asdot-for-wan-ha-transit1b1
     peer_interface: Ethernet52
     peer_type: wan_router
   switchport:
@@ -77,42 +77,28 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
+    maximum_routes: 256000
   neighbors:
   - ip_address: 172.17.0.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '4259840100'
     metadata:
-      peer: asdot-for-wan-ha-transit1A1
-    description: asdot-for-wan-ha-transit1A1_Ethernet52
+      peer: asdot-for-wan-ha-transit1a1
+    description: asdot-for-wan-ha-transit1a1_Ethernet52
   - ip_address: 172.17.0.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '4259840100'
     metadata:
-      peer: asdot-for-wan-ha-transit1B1
-    description: asdot-for-wan-ha-transit1B1_Ethernet52
+      peer: asdot-for-wan-ha-transit1b1
+    description: asdot-for-wan-ha-transit1b1_Ethernet52
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:

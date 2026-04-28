@@ -34,6 +34,9 @@ class RouterBgpMixin(Protocol):
                 msg = f"{self.data_model}.p2p_links.[].as or {self.data_model}.p2p_links_profiles.[].as"
                 raise AristaAvdInvalidInputsError(msg)
 
+            if p2p_link.include_in_underlay_protocol:
+                self.structured_config_utils.set_once_peer_group_ipv4_underlay_peers()
+
             # RFC5549
             # When routing protocol is not set, we just add the neighbor_interface and continue.
             if self.inputs.underlay_rfc5549 and p2p_link.include_in_underlay_protocol and p2p_link.routing_protocol != "ebgp":

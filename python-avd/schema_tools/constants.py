@@ -8,6 +8,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).parents[2]
 PYAVD_DIR = REPO_ROOT.joinpath("python-avd/pyavd")
+SCHEMAS_DIR = REPO_ROOT.joinpath("schemas")
 
 LICENSE_HEADER = REPO_ROOT.joinpath("development/license-short.txt").read_text(encoding="UTF-8").strip()
 
@@ -15,6 +16,9 @@ METASCHEMA_DIR = PYAVD_DIR.joinpath("_schema")
 EOS_CLI_CONFIG_GEN_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_cli_config_gen/schema")
 EOS_DESIGNS_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_designs/schema")
 EOS_DESIGNS_FACTS_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_designs/eos_designs_facts/schema")
+CV_DEPLOY_SCHEMA_DIR = PYAVD_DIR.joinpath("_cv/schema")
+
+PYTHON_CLASS_INIT_PATH = "__init__.py"
 
 
 @dataclass(frozen=True)
@@ -36,14 +40,14 @@ SCHEMAS = {
         yaml_file=EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath("eos_cli_config_gen.schema.yml"),
         pickled_schema=EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath("eos_cli_config_gen.schema.pickle"),
         fragments_dir=EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath("schema_fragments"),
-        python_class=EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath("__init__.py"),
+        python_class=EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath(PYTHON_CLASS_INIT_PATH),
         docs_path=REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/eos_cli_config_gen/docs"),
     ),
     "eos_designs": SchemaPaths(
         yaml_file=EOS_DESIGNS_SCHEMA_DIR.joinpath("eos_designs.schema.yml"),
         pickled_schema=EOS_DESIGNS_SCHEMA_DIR.joinpath("eos_designs.schema.pickle"),
         fragments_dir=EOS_DESIGNS_SCHEMA_DIR.joinpath("schema_fragments"),
-        python_class=EOS_DESIGNS_SCHEMA_DIR.joinpath("__init__.py"),
+        python_class=EOS_DESIGNS_SCHEMA_DIR.joinpath(PYTHON_CLASS_INIT_PATH),
         docs_path=REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/eos_designs/docs"),
     ),
     "eos_designs_facts_protocol": SchemaPaths(
@@ -52,4 +56,13 @@ SCHEMAS = {
         python_class=EOS_DESIGNS_FACTS_SCHEMA_DIR.joinpath("protocol.py"),
         docs_path=REPO_ROOT.joinpath("docs/contribution/eos_designs_facts_internal"),
     ),
+    "cv_deploy": SchemaPaths(
+        yaml_file=SCHEMAS_DIR.joinpath("cv_deploy/cv_deploy.schema.yml"),
+        pickled_schema=CV_DEPLOY_SCHEMA_DIR.joinpath("cv_deploy.schema.pickle"),
+        fragments_dir=SCHEMAS_DIR.joinpath("cv_deploy/schema_fragments"),
+        python_class=CV_DEPLOY_SCHEMA_DIR.joinpath(PYTHON_CLASS_INIT_PATH),
+        docs_path=SCHEMAS_DIR.joinpath("cv_deploy/docs"),
+    ),
 }
+
+SCHEMA_STORE_GZ_FILE = PYAVD_DIR.joinpath("_schema/schemas.json.gz")

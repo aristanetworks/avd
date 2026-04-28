@@ -53,7 +53,7 @@ pip3 install pyavd
 
 ## Examples
 
-- [Getting started](docs/getting-started/intro-to-ansible-and-avd.md)
+- [Getting started](docs/user-manual/intro-to-ansible-and-avd.md)
 - [Arista NetDevOps GitHub repository](https://github.com/aristanetworks/netdevops-examples)
 
 ## Additional resources

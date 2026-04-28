@@ -12,10 +12,10 @@ enable_password:
   disabled: true
 transceiver_qsfp_default_mode_4x10: true
 vrfs:
-- name: MGMT
-  ip_routing: false
+  - name: MGMT
+    ip_routing: false
 ip_igmp_snooping:
   globally_enabled: true
 metadata:
-  fabric_name: integration_tests
+  fabric_name: testgroup
   is_deployed: true

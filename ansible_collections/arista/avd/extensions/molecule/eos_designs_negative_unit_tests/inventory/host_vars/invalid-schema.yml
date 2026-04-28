@@ -7,4 +7,4 @@ l2leaf:
       id: 1
 
 expected_error_message: >-
-  2 errors found during schema validation of input vars.
+  2 errors found during schema validation of input variables.

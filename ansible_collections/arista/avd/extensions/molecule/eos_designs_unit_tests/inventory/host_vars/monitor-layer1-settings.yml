@@ -1,0 +1,24 @@
+---
+# Test case for monitor_layer1 under logging_settings
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.50
+  nodes:
+    - name: monitor-layer1-settings
+      id: 150
+      bgp_as: 150
+
+logging_settings:
+  hosts:
+    - name: syslog-server.example.com
+  monitor_layer1:
+    enabled: true
+    logging_mac_fault: true
+    logging_transceiver:
+      dom: true
+      communication: true

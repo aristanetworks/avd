@@ -7,12 +7,14 @@ from itertools import chain
 from typing import TYPE_CHECKING
 
 from anta.input_models.interfaces import InterfaceState
-from anta.tests.interfaces import VerifyInterfacesStatus, VerifyPortChannels, VerifyStormControlDrops
+from anta.tests.interfaces import VerifyIllegalLACP, VerifyInterfaceErrDisabled, VerifyInterfacesStatus, VerifyPortChannels, VerifyStormControlDrops
 
+from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
-from ._base_classes import AntaTestInputFactory
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_missing_config
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -79,7 +81,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
 
     def _get_vxlan_interface(self) -> Iterator[InterfaceState]:
         """Get the VXLAN interface."""
-        if not self.device.is_vtep:
+        if not self.data_source.is_vtep:
             return
 
         vxlan_config = self.structured_config.vxlan_interface.vxlan1.vxlan
@@ -131,6 +133,7 @@ class VerifyPortChannelsInputFactory(AntaTestInputFactory[VerifyPortChannels.Inp
     are ignored.
     """
 
+    @skip_if_missing_config(StructuredConfigKey.PORT_CHANNEL_INTERFACES)
     def create(self) -> Iterator[VerifyPortChannels.Input]:
         """Generate the inputs for the `VerifyPortChannels` test."""
         ignored_interfaces: list[str] = []
@@ -165,3 +168,45 @@ class VerifyStormControlDropsInputFactory(AntaTestInputFactory[VerifyStormContro
             yield VerifyStormControlDrops.Input()
         else:
             self.logger_adapter.debug(LogMessage.NO_STORM_CONTROL_ENABLED)
+
+
+class VerifyIllegalLACPInputFactory(AntaTestInputFactory[VerifyIllegalLACP.Input]):
+    """
+    Input factory class for the `VerifyIllegalLACP` test.
+
+    Generate the test inputs only if `port_channel_interfaces` are configured.
+    """
+
+    @skip_if_missing_config(StructuredConfigKey.PORT_CHANNEL_INTERFACES)
+    def create(self) -> Iterator[VerifyIllegalLACP.Input]:
+        yield VerifyIllegalLACP.Input()
+
+
+class VerifyInterfaceErrDisabledInputFactory(AntaTestInputFactory[VerifyInterfaceErrDisabled.Input]):
+    """
+    Input factory class for the `VerifyInterfaceErrDisabled` test.
+
+    When `metadata.interfaces.errdisable.only_avd_interfaces` is True, only the AVD-managed
+    Ethernet, Port-Channel, Loopback, VLAN, Management, DPS, and Tunnel interfaces are checked.
+    Otherwise, all interfaces are checked.
+    """
+
+    def create(self) -> Iterator[VerifyInterfaceErrDisabled.Input]:
+        """Generate the inputs for the `VerifyInterfaceErrDisabled` test."""
+        if self.structured_config.metadata.interfaces.errdisable.only_avd_interfaces:
+            all_interfaces = chain(
+                self.structured_config.ethernet_interfaces,
+                self.structured_config.port_channel_interfaces,
+                self.structured_config.loopback_interfaces,
+                self.structured_config.vlan_interfaces,
+                self.structured_config.management_interfaces,
+                self.structured_config.dps_interfaces,
+                self.structured_config.tunnel_interfaces,
+            )
+            interface_names = [intf.name for intf in all_interfaces]
+            if not interface_names:
+                self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+                return
+            yield VerifyInterfaceErrDisabled.Input(interfaces=natural_sort(interface_names))
+        else:
+            yield VerifyInterfaceErrDisabled.Input()

@@ -46,27 +46,31 @@
 {%         endif %}
 | RFC5424 | {{ logging.format.rfc5424 | arista.avd.default(false) }} |
 {%     endif %}
-{%     if logging.vrfs is arista.avd.defined %}
+{%     if logging.vrfs is arista.avd.defined or logging.source_interface is arista.avd.defined or logging.local_interface is arista.avd.defined %}
 
 | VRF | Source Interface |
 | --- | ---------------- |
 {%         if logging.source_interface is arista.avd.defined %}
 | - | {{ logging.source_interface }} |
+{%         elif logging.local_interface is arista.avd.defined %}
+| - | {{ logging.local_interface }} |
 {%         endif %}
-{%         for vrf in logging.vrfs | arista.avd.natural_sort('name') %}
+{%         for vrf in logging.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 {%             if vrf.source_interface is arista.avd.defined %}
 | {{ vrf.name }} | {{ vrf.source_interface }} |
+{%             elif vrf.local_interface is arista.avd.defined %}
+| {{ vrf.name }} | {{ vrf.local_interface }} |
 {%             endif %}
 {%         endfor %}
+{%     endif %}
+{%     if logging.vrfs is arista.avd.defined %}
 
 | VRF | Hosts | Ports | Protocol | SSL-profile |
 | --- | ----- | ----- | -------- | ----------- |
-{%         for vrf in logging.vrfs | arista.avd.natural_sort('name') %}
-{%             if vrf.hosts is arista.avd.defined %}
-{%                 for host in vrf.hosts | arista.avd.natural_sort('name') %}
+{%         for vrf in logging.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
+{%             for host in vrf.hosts | arista.avd.default([]) | sort(attribute="name", case_sensitive=True) %}
 | {{ vrf.name }} | {{ host.name }} | {{ host.ports | arista.avd.default(['Default']) | join(', ') }} | {{ host.protocol | arista.avd.default('UDP') | upper }} | {{ host.ssl_profile | arista.avd.default("-") }} |
-{%                 endfor %}
-{%             endif %}
+{%             endfor %}
 {%         endfor %}
 {%     endif %}
 {%     if logging.level is arista.avd.defined %}
@@ -74,9 +78,7 @@
 | Facility | Severity |
 | -------- | -------- |
 {%         for level in logging.level | arista.avd.natural_sort('facility') %}
-{%             if level.severity is arista.avd.defined %}
 | {{ level.facility }} | {{ level.severity }} |
-{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if logging.facility is arista.avd.defined %}

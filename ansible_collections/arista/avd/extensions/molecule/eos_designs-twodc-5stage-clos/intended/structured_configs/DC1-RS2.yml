@@ -2,22 +2,22 @@ aaa_root:
   disabled: true
 as_path:
   access_lists:
-  - name: AS65200
-    entries:
-    - type: permit
-      match: _65200_
-  - name: AS65201
-    entries:
-    - type: permit
-      match: _65201_
-  - name: AS65210
-    entries:
-    - type: permit
-      match: _65210_
   - name: AS65211
     entries:
     - type: permit
       match: _65211_
+  - name: AS65210
+    entries:
+    - type: permit
+      match: _65210_
+  - name: AS65201
+    entries:
+    - type: permit
+      match: _65201_
+  - name: AS65200
+    entries:
+    - type: permit
+      match: _65200_
 config_end: true
 enable_password:
   disabled: true
@@ -63,7 +63,6 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  no_password: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -94,20 +93,12 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-- name: RM-EVPN-FILTER-AS65200
+- name: RM-EVPN-FILTER-AS65211
   sequence_numbers:
   - sequence: 10
     type: deny
     match:
-    - as-path AS65200
-  - sequence: 20
-    type: permit
-- name: RM-EVPN-FILTER-AS65201
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - as-path AS65201
+    - as-path AS65211
   - sequence: 20
     type: permit
 - name: RM-EVPN-FILTER-AS65210
@@ -118,12 +109,20 @@ route_maps:
     - as-path AS65210
   - sequence: 20
     type: permit
-- name: RM-EVPN-FILTER-AS65211
+- name: RM-EVPN-FILTER-AS65201
   sequence_numbers:
   - sequence: 10
     type: deny
     match:
-    - as-path AS65211
+    - as-path AS65201
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-FILTER-AS65200
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - as-path AS65200
   - sequence: 20
     type: permit
 router_bfd:
@@ -149,7 +148,7 @@ router_bgp:
       type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

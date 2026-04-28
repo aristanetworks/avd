@@ -44,13 +44,8 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
 
     # Perform synchronization tasks.
     await _sync_configlets(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
-    existing_containers_by_id = await _sync_containers(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
-    await _sync_studio_roots(
-        cv_manifest=cv_manifest,
-        deployment_result=deployment_result,
-        cv_client=cv_client,
-        existing_containers_by_id=existing_containers_by_id,
-    )
+    await _sync_containers(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
+    await _sync_studio_roots(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
 
     # Done.
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Completed manifest deployment for workspace '%s'.", workspace_id)
@@ -83,12 +78,25 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No container creations or updates are needed.")
 
-    # Return all existing containers from CloudVision to be further processed if needed.
-    return existing_containers_by_id
+    # Delete unused AVD-managed containers.
+    desired_container_ids = {container.id for container in cv_manifest.containers}
+    containers_to_delete = {
+        container_id: cast("str", container.display_name)
+        for container_id, container in existing_containers_by_id.items()
+        if container_id.startswith(AVD_ENTITY_PREFIX) and container_id not in desired_container_ids
+    }
+
+    if containers_to_delete:
+        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d AVD-managed containers which are no longer used.", len(containers_to_delete))
+        deployment_result.removed_static_config_containers.extend(containers_to_delete.values())
+        # TODO: Build a 'delete_configlet_containers' gRPC API
+        await gather(*[cv_client.delete_configlet_container(workspace_id=workspace_id, assignment_id=container_id) for container_id in containers_to_delete])
+    else:
+        LOGGER.info("deploy_static_config_studio_manifest_to_cv: No AVD-managed container deletions are needed.")
 
 
 async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
-    """Synchronize configlets. Create/update new ones and delete unused AVD-managed ones."""
+    """Synchronize configlets. Create/update declared ones and optionally delete not declared AVD-managed ones."""
     workspace_id = deployment_result.workspace.id
 
     # Create or update configlets.
@@ -100,7 +108,12 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No configlet creations or updates are needed.")
 
-    # Delete unused AVD-managed configlets.
+    # In "additive" mode, don't delete any configlets.
+    if cv_manifest.configlet_policy == "additive":
+        LOGGER.debug("deploy_static_config_studio_manifest_to_cv: No configlet deletions when configlet_policy is set to additive.")
+        return
+
+    # In "managed" mode, delete manifest-managed configlets not declared in this manifest and not assigned to any container.
     existing_configlets = await cv_client.get_configlets(workspace_id=workspace_id)
     desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
     configlets_to_delete = {
@@ -110,22 +123,26 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     }
 
     if configlets_to_delete:
-        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d AVD-managed configlets which are no longer used.", len(configlets_to_delete))
+        LOGGER.info(
+            "deploy_static_config_studio_manifest_to_cv: Deleting %d manifest-managed "
+            "configlets not declared in this manifest and not assigned to any container.",
+            len(configlets_to_delete),
+        )
         deployment_result.removed_static_config_configlets.extend(configlets_to_delete.values())
         await cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(configlets_to_delete.keys()))
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No AVD-managed configlet deletions are needed.")
 
 
-async def _sync_studio_roots(
-    cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient, existing_containers_by_id: dict[str, ConfigletAssignment]
-) -> None:
+async def _sync_studio_roots(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
     """
-    Synchronize Studio root containers. Update root container assignments and delete unused AVD-managed ones.
+    Synchronize Studio root containers. Update root container assignments.
 
     Note:
-        During an update, this function reorders root containers. All AVD-managed
-        containers are placed first, followed by any existing manually-added containers.
+        When new manifest root container IDs are introduced, all manifest containers are placed first,
+        followed by any existing root containers.
+        When only removing manifest root containers, the existing order is preserved and removed entries
+        are filtered out, keeping existing root containers in their current positions.
     """
     workspace_id = deployment_result.workspace.id
 
@@ -139,21 +156,22 @@ async def _sync_studio_roots(
         default_value=[],
     )
 
-    # Calculate which desired roots are missing and which existing AVD-managed roots are stale.
+    # Calculate which desired roots are missing.
     desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
     desired_root_ids_set = set(desired_root_ids)
     existing_root_ids_set = set(existing_root_ids)
     missing_ids = desired_root_ids_set - existing_root_ids_set
-    stale_avd_ids = {
-        container_id for container_id in existing_root_ids_set if container_id.startswith(AVD_ENTITY_PREFIX) and container_id not in desired_root_ids_set
-    }
 
-    # Update the Studio root container list if necessary, preserving any manually added (non-AVD) root containers.
-    if missing_ids or stale_avd_ids:
+    if missing_ids:
+        non_manifest_root_ids = [container_id for container_id in existing_root_ids if not container_id.startswith(AVD_ENTITY_PREFIX)]
+        new_ordered_ids = desired_root_ids + non_manifest_root_ids
+    else:
+        new_ordered_ids = [
+            container_id for container_id in existing_root_ids if container_id in desired_root_ids_set or not container_id.startswith(AVD_ENTITY_PREFIX)
+        ]
+
+    if new_ordered_ids != existing_root_ids:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Updating Studio root container assignment list...")
-        manual_ids = [container_id for container_id in existing_root_ids if not container_id.startswith(AVD_ENTITY_PREFIX)]
-        new_ordered_ids = desired_root_ids + manual_ids
-
         await cv_client.set_studio_inputs(
             studio_id=STATIC_CONFIGURATION_STUDIO_ID,
             workspace_id=workspace_id,
@@ -162,19 +180,3 @@ async def _sync_studio_roots(
         )
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Studio root container assignments are already in the desired state.")
-
-    # Delete stale AVD-managed root containers that are no longer needed.
-    if stale_avd_ids:
-        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d stale AVD-managed root containers...", len(stale_avd_ids))
-        deployment_result.removed_static_config_root_containers.extend(
-            [
-                cast("str", existing_container.display_name)
-                for container_id in stale_avd_ids
-                if (existing_container := existing_containers_by_id.get(container_id)) is not None
-            ]
-        )
-
-        # TODO: Build a 'delete_configlet_containers' gRPC API
-        await gather(*[cv_client.delete_configlet_container(workspace_id=workspace_id, assignment_id=container_id) for container_id in stale_avd_ids])
-    else:
-        LOGGER.info("deploy_static_config_studio_manifest_to_cv: No AVD-managed root container deletions are needed.")

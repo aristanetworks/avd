@@ -1,34 +1,27 @@
 aaa_root:
   disabled: true
+aaa_server_groups:
+- name: TACACS1
+  type: tacacs+
+  servers:
+  - server: 10.10.10.11
+    vrf: default
+  - server: 10.10.10.2
+    vrf: default
+  - server: 10.10.10.3
+    vrf: default
+  - server: 10.10.10.11
+    vrf: MGMT
+  - server: 10.10.10.2
+    vrf: MGMT
+  - server: 10.10.10.4
+    vrf: MGMT
 config_end: true
 domain_list: null
 enable_password:
   disabled: true
 hostname: custom-structured-configuration
-ip_domain_lookup:
-  source_interfaces:
-  - name: Management1
-    vrf: MGMT
 ip_igmp_snooping: {}
-ip_name_servers:
-- ip_address: 192.168.42.10
-  vrf: MGMT
-- ip_address: 192.168.42.40
-  vrf: MGMT
-- ip_address: 192.168.42.50
-  vrf: MGMT
-- ip_address: 192.168.42.1
-  vrf: VRF1
-- ip_address: 192.168.42.10
-  vrf: VRF1
-- ip_address: 192.168.42.4
-  vrf: VRF1
-- ip_address: 192.168.42.1
-  vrf: VRF2
-- ip_address: 192.168.42.40
-  vrf: VRF2
-- ip_address: 192.168.42.8
-  vrf: VRF2
 local_users:
 - name: eos-designs-admin
   disabled: false
@@ -80,6 +73,18 @@ snmp_server:
     enable: true
   - name: bar
     enable: true
+tacacs_servers:
+  hosts:
+  - host: 10.10.10.11
+    vrf: default
+    key: 15131905173E2A
+  - host: 10.10.10.2
+    vrf: default
+    key: 15131905173E2A
+  - host: 10.10.10.3
+    vrf: default
+    key: 0005010F174F0A
+  policy_unknown_mandatory_attribute_ignore: false
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

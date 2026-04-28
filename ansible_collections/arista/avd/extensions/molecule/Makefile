@@ -17,7 +17,7 @@ test: ## Execute molecule "converge" sequence. Specify scenario name with `MOLEC
 
 .PHONY: converge
 converge: ## Execute molecule "converge" sequence. Specify scenario name with `MOLECULE=<scenario_name>` (default: `eos_cli_config_gen`) and Ansible options with `ANSIBLE_OPTIONS=<options>` (default: `--forks 5`).
-	cd .. && \
+	cd ../.. && \
 	molecule converge --scenario-name $(MOLECULE) -- $(ANSIBLE_OPTIONS)
 
 .PHONY: refresh-facts
@@ -25,8 +25,8 @@ refresh-facts: ## Run all "eos_designs" and "eos_cli_config_gen" molecule scenar
 	@while read -r MOLECULE_SCENARIO; do \
 		if [ -d "$$MOLECULE_SCENARIO" ]; then\
 			echo "Run scenario for "$$MOLECULE_SCENARIO && \
-			cd .. ; \
+			cd ../.. ; \
 			molecule converge --scenario-name $$MOLECULE_SCENARIO -- $(ANSIBLE_OPTIONS); \
-			cd ./molecule ; \
+			cd ./extensions/molecule ; \
 		fi \
 	done <MOLECULE_SCENARIOS.txt

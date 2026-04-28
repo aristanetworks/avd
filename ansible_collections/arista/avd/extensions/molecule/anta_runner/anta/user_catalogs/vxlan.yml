@@ -29,3 +29,6 @@ anta.tests.vxlan:
         - 10.33.1.5
       filters:
         tags: ["border_leaf"]
+      # Adding a custom_field for Markdown report rendering
+      result_overwrite:
+        custom_field: "DC2 VXLAN VTEP reachability"

@@ -172,12 +172,6 @@ ethernet_interfaces:
     peer_type: l3_interface
   switchport:
     enabled: false
-- name: Ethernet1/49
-  shutdown: false
-  metadata:
-    peer_type: l3_interface
-  switchport:
-    enabled: false
 - name: Ethernet6
   description: peerDevice1_PeerDevIntf1
   shutdown: false
@@ -238,6 +232,12 @@ ethernet_interfaces:
   metadata:
     peer: peerDevice11
     peer_type: l3_port_channel_member
+- name: Ethernet1/49
+  shutdown: false
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 flow_tracking:
   hardware:
     trackers:
@@ -932,7 +932,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: WAN-OVERLAY-PEERS
     metadata:
@@ -1354,15 +1354,18 @@ vrfs:
 - name: IT
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: ATTRACTED-VRF-FROM-UPLINK
   ip_routing: true
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-edge1_VTEP

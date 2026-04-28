@@ -7,7 +7,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_rr1_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.3.13/31
   isis_enable: CORE
   isis_metric: 50
@@ -33,7 +33,7 @@ ethernet_interfaces:
 - name: Ethernet4
   description: P2P_p4_Ethernet4
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.3.20/31
   isis_enable: CORE
   isis_metric: 50
@@ -59,7 +59,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_pe3_Ethernet1
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.3.23/31
   isis_enable: CORE
   isis_metric: 50
@@ -120,7 +120,7 @@ management_security:
     encryption_key_common: true
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOSLab
   fabric_name: FABRIC
   validate_hardware:
     enabled: false

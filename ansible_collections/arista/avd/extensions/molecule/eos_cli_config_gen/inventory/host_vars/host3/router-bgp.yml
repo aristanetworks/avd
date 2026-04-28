@@ -1,5 +1,9 @@
 router_bgp:
   as: "65101.0001"
+  route_distinguisher:
+    assignment_auto:
+      address_families:
+        - l3-vrf
   bgp_defaults:
     - no bgp default ipv4-unicast
     - update wait-install
@@ -14,6 +18,14 @@ router_bgp:
     additional_paths:
       send: limit
       send_limit: 5
+    labeled_unicast:
+      rib:
+        ip:
+          enabled: true
+          route_map: RM-rib2
+        tunnel:
+          enabled: true
+          route_map: RM-rib3
   redistribute:
     static:
       enabled: true

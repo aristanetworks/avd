@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, overload
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, UndefinedType, template_var
+from pyavd._utils import template_var
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
@@ -319,25 +319,3 @@ class UtilsMixin(Protocol):
             case "use_inband_mgmt_interface":
                 return self.inband_mgmt_interface
         return input_interface
-
-    def get_interface_validate_state(self: SharedUtilsProtocol, user_input: bool | None, peer_in_fabric: bool = False) -> bool | UndefinedType:
-        """
-        Checks if validate_state flag should be set or not.
-
-        Args:
-            user_input: Boolean value of the `validate_state` from the inputs of the interface. `None` if not set in inputs.
-            peer_in_fabric: Flag indicating if the interface peer is a known AVD fabric device.
-
-        Returns:
-            True: If `validate_state` should be enabled (set to True) for the interface.
-            False: If `validate_state` should be disabled (set to False) for the interface.
-            UndefinedType: If `validate_state` should not be set/changed for the interface.
-        """
-        if self.digital_twin:
-            # Peer is not deployed in Digital Twin - interface will be down, so disable state validation.
-            if not peer_in_fabric:
-                return False
-            # Peer is in the fabric - only respect an explicit False from user input; do not force True in Digital Twin.
-            return False if user_input is False else Undefined
-        # Non-Digital-Twin: follow the user input if set, otherwise leave unset.
-        return Undefined if user_input is None else user_input

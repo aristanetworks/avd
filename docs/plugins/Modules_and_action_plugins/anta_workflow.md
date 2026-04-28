@@ -51,13 +51,16 @@ The plugin offers the following capabilities:
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;run_tests</samp> | list | optional | None | - | List of ANTA tests to only include in the AVD-generated catalogs. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;skip_tests</samp> | list | optional | None | - | List of ANTA tests to exclude from the AVD-generated catalogs. `skip_tests` takes precedence over `run_tests`. |
 | <samp>user_catalogs</samp> | dict | optional | None | - | User-defined test catalogs settings. These settings are used to run user-provided ANTA catalogs against the devices. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp> | bool | optional | False | - | Enable used-defined catalogs generation. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;input_dir</samp> | str | optional | None | - | Directory containing the user-defined ANTA test catalogs. |
 | <samp>runner</samp> | dict | optional | None | - | ANTA runner settings. These settings change the behavior of the ANTA runner. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp> | float | optional | 30.0 | - | Global timeout in seconds for API calls to the devices. Can be adjusted depending on the amount of devices and tests. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;batch_size</samp> | int | optional | 5 | - | Number of devices to run per ANTA instance. This can be increased based on the available resources of the Ansible runner. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;tags</samp> | any | optional | None | - | List of tags used with user-defined catalogs to filter which tests to run on which devices.<br>These tags are used in conjunction with `anta_tags` variable assigned to devices in the Ansible inventory. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;tags</samp> | list | optional | None | - | List of tags used with user-defined catalogs to filter which tests to run on which devices.<br>These tags are used in conjunction with `anta_tags` variable assigned to devices in the Ansible inventory. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;dry_run</samp> | bool | optional | False | - | Run ANTA in dry-run mode. In this mode, only the test catalogs are generated,<br>and a report is created to preview the tests that would be run against each device. |
 | <samp>report</samp> | dict | optional | None | - | ANTA report settings. These settings define the output format and location of the ANTA reports. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;expand_results</samp> | bool | optional | False | - | Controls the granularity of the Markdown report.<br>When enabled, test entries are expanded to show the individual status of every check performed.<br>Not all ANTA tests currently support expanded results. For tests that do not support this feature yet,<br>the report will display the standard aggregated result regardless of this setting. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;generate_custom_field</samp> | bool | optional | False | - | Controls whether the `custom_field` column is generated in the Markdown report.<br>ANTA test definitions can include an arbitrary string in the `custom_field` input that will be added to the test result. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;csv_output</samp> | str | optional | None | - | Path to the CSV report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;md_output</samp> | str | optional | None | - | Path to the Markdown report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;json_output</samp> | str | optional | None | - | Path to the JSON report file. |
@@ -93,7 +96,9 @@ The plugin offers the following capabilities:
           #   - device_list: "{{ groups['DC1'] }}"
           #     skip_tests:
           #       - VerifyNTP
+          # extra_fabric_validation: true
         user_catalogs:
+          enabled: true
           input_dir: "{{ inventory_dir }}/anta/user_catalogs"
         runner:
           timeout: 360.0
@@ -106,9 +111,18 @@ The plugin offers the following capabilities:
           md_output: "{{ inventory_dir }}/anta/reports/anta_report.md"
           json_output: "{{ inventory_dir }}/anta/reports/anta_report.json"
           # filters:
-          #   hide_statuses:
+          #   exclude_statuses:
           #     - success
           #     - skipped
+          # sorting:
+          #   status_priority:
+          #     - failure
+          #     - error
+          #     - skipped
+          #   sort_fields:
+          #     - categories
+          # expand_results: true
+          # generate_custom_field: true
 ```
 
 ## Authors
