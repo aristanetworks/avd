@@ -45,7 +45,7 @@ radius-server dynamic-authorization tls ssl-profile {{ radius_server.dynamic_aut
 {%             set radius_cli = radius_cli ~ " retransmit " ~ radius_host.retransmit %}
 {%         endif %}
 {%         if radius_host.key is arista.avd.defined and radius_host.tls.enabled is not arista.avd.defined(true) %}
-{%             set radius_cli = radius_cli ~ " key " ~ radius_host.key_type | arista.avd.default('7') ~ radius_host.key | arista.avd.hide_passwords(hide_passwords) %}
+{%             set radius_cli = radius_cli ~ " key " ~ radius_host.key_type | arista.avd.default('7') ~ " " ~ radius_host.key | arista.avd.hide_passwords(hide_passwords) %}
 {%         endif %}
 {{ radius_cli }}
 {%     endfor %}
@@ -68,7 +68,7 @@ radius-server dynamic-authorization tls ssl-profile {{ radius_server.dynamic_aut
 {%                 set radius_cli = radius_cli ~ " retransmit " ~ radius_host.retransmit %}
 {%             endif %}
 {%             if radius_host.key is arista.avd.defined and radius_host.tls.enabled is not arista.avd.defined(true) %}
-{%                 set radius_cli = radius_cli ~ " key " ~ radius_host.key_type | arista.avd.default('7')  ~ radius_host.key | arista.avd.hide_passwords(hide_passwords) %}
+{%                 set radius_cli = radius_cli ~ " key " ~ radius_host.key_type | arista.avd.default('7')  ~ " " ~  radius_host.key | arista.avd.hide_passwords(hide_passwords) %}
 {%             endif %}
 {{ radius_cli }}
 {%         endfor %}
