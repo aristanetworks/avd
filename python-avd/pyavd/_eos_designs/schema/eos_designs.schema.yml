@@ -7641,6 +7641,8 @@ $defs:
                   convert_types:
                   - str
                   description: Subinterface number.
+                  min: 1
+                  max: 1048575
                 description:
                   type: str
                   description: "Description for subinterface.\nThis can be a template
