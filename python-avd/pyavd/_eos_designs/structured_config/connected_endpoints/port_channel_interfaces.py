@@ -10,7 +10,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, default
+from pyavd._utils import Undefined, default, short_esi_to_route_target, strip_null_from_data
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 
@@ -56,17 +56,15 @@ class PortChannelInterfacesMixin(Protocol):
 
                 for subinterface in adapter.port_channel.subinterfaces:
                     port_channel_subinterface_name = f"Port-Channel{channel_group_id}.{subinterface.number}"
-                    subinterface._internal_data.context = f"{adapter._internal_data.context}.port_channel.subinterfaces[number={subinterface.number}]"
 
                     self.structured_config_utils.parent_interfaces_tracker.register_port_channel_subinterface(port_channel_subinterface_name)
 
                     subinterface_item = EosCliConfigGen.PortChannelInterfacesItem(name=port_channel_subinterface_name)
                     self.structured_config.port_channel_interfaces.append(
-                        self._get_subinterface_cfg(
+                        self._get_port_channel_subinterface_cfg(
                             subinterface,
                             adapter,
-                            connected_endpoint,
-                            subinterface_item,
+                            port_channel_subinterface_name,
                             channel_group_id,
                         )
                     )
@@ -240,3 +238,43 @@ class PortChannelInterfacesMixin(Protocol):
             port_channel_interface.lacp_fallback_timeout = adapter.port_channel.lacp_fallback.timeout
 
         return port_channel_interface
+
+    def _get_port_channel_subinterface_cfg(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        subinterface: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.PortChannel.SubinterfacesItem,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+        port_channel_subinterface_name: str,
+        channel_group_id: int,
+    ) -> EosCliConfigGen.PortChannelInterfacesItem:
+        """Return structured_config for one port_channel_interface (subinterface)."""
+        # Common port_channel_interface settings
+        port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
+            name=port_channel_subinterface_name,
+            vlan_id=subinterface.vlan_id or subinterface.number,
+            eos_cli=subinterface.raw_eos_cli,
+        )
+        port_channel_interface.encapsulation_vlan.client._update(
+            encapsulation="dot1q", vlan=subinterface.encapsulation_vlan.client_dot1q or subinterface.number
+        )
+        port_channel_interface.encapsulation_vlan.network.encapsulation = "client"
+
+        # EVPN A/A
+        if (
+            short_esi := self._get_short_esi(
+                adapter,
+                channel_group_id,
+                subif_short_esi=subinterface.short_esi,
+                hash_extra_value=str(subinterface.number),
+            )
+        ) is not None:
+            port_channel_interface.evpn_ethernet_segment._update(
+                identifier=f"{self.inputs.evpn_short_esi_prefix}{short_esi}",
+                route_target=short_esi_to_route_target(short_esi),
+            )
+
+        if subinterface.structured_config:
+            self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_subinterface_name)._deepmerge(
+                subinterface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+            )
+
+        return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))
