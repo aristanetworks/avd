@@ -140,7 +140,7 @@ class CVConnectionManager:
         Requests will pick it up from ssl lib itself.
         """
         if not verify_certs:
-            LOGGER.debug("<CVConnectionManager>.get_ssl_context: Using relaxed 'ssl_context' (no hostname or cerfificate validation).")
+            LOGGER.debug("<CVConnectionManager>.get_ssl_context: Using relaxed 'ssl_context' (no hostname or certificate validation).")
             # Accepting SonarLint issue: We are purposely implementing no verification of certs.
             context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
             context.check_hostname = False
@@ -164,7 +164,7 @@ class CVProxyManager:
     """
     Proxy manager for CloudVision.
 
-    This class handles all work related to discovering proxy server settings and establishing eggress connections through it.
+    This class handles all work related to discovering proxy server settings and establishing egress connections through it.
     It as well handles proxy bypass.
     """
 
@@ -210,7 +210,7 @@ class CVProxyManager:
 
         # Check if usage of the proxy server was requested using explicit inputs
         if proxy_scheme and proxy_host and proxy_port:
-            LOGGER.info("<CVProxyManager>: Proxy server information is passed explicitly. Verifying it's validity...")
+            LOGGER.info("<CVProxyManager>: Proxy server information is passed explicitly. Verifying its validity...")
 
             # Identify format of the proxy host
             self._proxy_host_format = self._identify_host_format(proxy_host)
@@ -229,7 +229,7 @@ class CVProxyManager:
                 # Valid proxy server settings successfully discovered using explicit parameters
                 return
 
-        LOGGER.info("<CVProxyManager>: Trying to discovering proxy server settings using environment variables...")
+        LOGGER.info("<CVProxyManager>: Trying to discover proxy server settings using environment variables...")
         # Fallback to discovering proxy-related settings passed via environment variables
         # Identify format of the target CloudVision host
         self._target_host_format = self._identify_host_format(self._target_host)

@@ -38,7 +38,7 @@ proxy_username: "avd_proxy_user"
 proxy_password: "avd_proxy_password"
 ```
 
-!!! None
+!!! Note
 
     All special symbols present in the explicitly passed proxy username and password will be automatically encoded by AVD.
 
@@ -105,7 +105,7 @@ http://user1:pass1@10.10.10.10:8081
 http://user1:pass1@proxy-server.local:8081
 ```
 
-!!! None
+!!! Note
 
     When setting proxy credentials via environment variables, make sure to quote all special symbols (like `:`, `@`, etc. ) otherwise such proxy URI string will be invalid.
 
