@@ -74,12 +74,6 @@ ethernet_interfaces:
   ip_address: 192.168.3.210/31
   metadata:
     peer_type: l3_interface
-- name: Ethernet20
-  shutdown: false
-  metadata:
-    peer_type: l3_interface
-  switchport:
-    enabled: false
 - name: Ethernet22
   shutdown: false
   channel_group:
@@ -243,6 +237,12 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
+- name: Ethernet20
+  shutdown: false
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 hostname: digital-twin-ethernet-ports-1
 ip_igmp_snooping:
   globally_enabled: true
@@ -409,21 +409,13 @@ router_bgp:
     description: digital.twin.ethernet.ports.2
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
+    maximum_routes: 256000
   neighbors:
   - ip_address: 192.168.3.81
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -488,18 +480,12 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: TENANT_A_VRF_A
     rd: 192.168.3.129:1025
@@ -537,7 +523,8 @@ vlan_interfaces:
   shutdown: false
   vrf: TENANT_A_VRF_A
   metadata:
-    tenant: TENANT_A
+    tenants:
+    - TENANT_A
 vlan_internal_order:
   allocation: ascending
   range:
@@ -549,24 +536,28 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 1
   name: TENANT_A_VRF_A_SVI_A
   metadata:
-    tenant: TENANT_A
+    tenants:
+    - TENANT_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TENANT_A_VRF_A
   ip_routing: true
   metadata:
-    tenant: TENANT_A
+    tenants:
+    - TENANT_A
 vxlan_interface:
   vxlan1:
     description: digital-twin-ethernet-ports-1_VTEP
