@@ -209,7 +209,7 @@ class CVProxyManager:
         self.use_proxy = False
 
         # Check if usage of the proxy server was requested using explicit inputs
-        if proxy_scheme and proxy_host and proxy_port:
+        if proxy_host is not None:
             LOGGER.info("<CVProxyManager>: Proxy server information is passed explicitly. Verifying its validity...")
 
             # Identify format of the proxy host
