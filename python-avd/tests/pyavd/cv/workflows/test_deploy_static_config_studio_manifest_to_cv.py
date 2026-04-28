@@ -481,7 +481,7 @@ class TestDeployStaticConfigStudio:
         assert not deployment_result.removed_static_config_configlets
 
     async def test_non_avd_containers_are_preserved(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
-        """Test that existing containers without the AVD prefix are never deleted by _sync_containers."""
+        """Test that existing containers without the AVD prefix are never deleted."""
         avd_root_id = generate_id("AVD_ROOT")
         non_avd_container_id = "manually-created-container-abc"
 
