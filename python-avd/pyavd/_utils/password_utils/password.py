@@ -23,11 +23,11 @@ def _validate_password_and_key(password: Any, key: str) -> None:
         TypeError: If the password is not of type `str`.
     """
     if not key:
-        msg = "Key is required for encryption"
+        msg = "Key is required for encryption/decryption"
         raise ValueError(msg)
 
     if not password:
-        msg = "Password is required for encryption"
+        msg = "Password is required for encryption/decryption"
         raise ValueError(msg)
 
     if not isinstance(password, str):
