@@ -1,0 +1,108 @@
+---
+# Test case for monitor_connectivity as top-level key
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.51
+  nodes:
+    - name: monitor-connectivity-settings
+      id: 151
+      bgp_as: 151
+
+monitor_connectivity:
+  shutdown: false
+  interval: 5
+  interface_sets:
+    - name: SET_INTERNET
+      interfaces: Ethernet1-2
+    - name: SET_INTERNET_1
+      interfaces: Ethernet3-4
+    - name: SET_INTERNET_2
+      interfaces: Ethernet5-6
+    - name: SET_LOOPBACK0
+      interfaces: Loopback0
+  local_interfaces: SET_LOOPBACK0
+  address_only: true
+  hosts:
+    - name: DNS1
+      description: Primary DNS Server
+      ip: 8.8.8.8
+      icmp_echo_size: 100
+      local_interfaces: SET_INTERNET
+      address_only: false
+      url: http://www.dummy.com
+    - name: DNS2
+      description: Secondary DNS Server
+      ip: 1.1.1.1
+      local_interfaces: SET_INTERNET_1
+      icmp_echo_size: 100
+    - name: DNS3
+      description: Tertiory DNS Server
+      ip: 1.1.1.2
+      local_interfaces: SET_INTERNET_2
+      address_only: true
+  vrfs:
+    - name: MGMT
+      description: Management VRF monitoring
+      # testing default vrf.address_only
+      interface_sets:
+        - name: SET_MGMT
+          interfaces: Management0
+        - name: SET_MGMT_1
+          interfaces: Loopback100
+        - name: SET_MGMT_2
+          interfaces: Loopback101
+      hosts:
+        - name: MGMT_SERVER
+          description: Management server
+          ip: 10.0.0.1
+          # testing vrf.hosts.[].address_only: false
+          local_interfaces: SET_MGMT
+          address_only: false
+        - name: MGMT_SERVER_1
+          description: Management server 1
+          ip: 10.0.0.2
+          local_interfaces: SET_MGMT_1
+          # testing vrf.hosts.[].address_only: true
+          address_only: true
+        - name: MGMT_SERVER_2
+          description: Management server 2
+          ip: 10.0.0.3
+          # testing default vrf.hosts.[].address_only
+          local_interfaces: SET_MGMT_2
+    - name: MGMT_1
+      description: Management VRF monitoring 1
+      # testing vrf.address_only: true.
+      interface_sets:
+        - name: Vrf_Set_MGMT
+          interfaces: Management0
+        - name: SET_MGMT_1
+          interfaces: Loopback200
+        - name: SET_MGMT_2
+          interfaces: Loopback201
+        - name: SET_MGMT_3
+          interfaces: Loopback202
+      local_interfaces: Vrf_Set_MGMT
+      address_only: true
+      hosts:
+        - name: MGMT_SERVER_1
+          description: Management server 1
+          ip: 11.0.0.1
+          # testing vrf.hosts.[].address_only: false
+          local_interfaces: SET_MGMT_1
+          address_only: false
+        - name: MGMT_SERVER_2
+          description: Management server 2
+          ip: 11.0.0.2
+          local_interfaces: SET_MGMT_2
+          # testing vrf.hosts.[].address_only: true
+          address_only: true
+        - name: MGMT_SERVER_3
+          description: Management server 3
+          ip: 11.0.0.3
+          # testing default vrf.hosts.[].address_only
+          local_interfaces: SET_MGMT_3
