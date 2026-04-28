@@ -48,11 +48,7 @@ class UtilsMixin(Protocol):
         subif_short_esi: str | None = None,
         hash_extra_value: str = "",
     ) -> str | None:
-        """
-        Return short_esi for one adapter.
-
-        short_esi is only set when called from sub-interface port-channels.
-        """
+        """Return short_esi for one adapter or subinterface."""
         if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
             return None
 
