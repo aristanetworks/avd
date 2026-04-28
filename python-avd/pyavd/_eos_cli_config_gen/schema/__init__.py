@@ -4195,11 +4195,55 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Servers._item_type = str
 
-        _fields: ClassVar[dict] = {"servers": {"type": Servers}, "tunnel_requests_disabled": {"type": bool}, "mlag_peerlink_requests_disabled": {"type": bool}}
+        class ClientRequests(AvdModel):
+            """Subclass of AvdModel."""
+
+            class FloodingSuppressionVlans(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            FloodingSuppressionVlans._item_type = str
+
+            _fields: ClassVar[dict] = {"flooding_suppression_vlans": {"type": FloodingSuppressionVlans}}
+            flooding_suppression_vlans: FloodingSuppressionVlans
+            """
+            Disable DHCP request flooding to other interfaces in VLAN.
+
+            Subclass of AvdList with `str` items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, flooding_suppression_vlans: FloodingSuppressionVlans | UndefinedType = Undefined) -> None:
+                    """
+                    ClientRequests.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        flooding_suppression_vlans:
+                           Disable DHCP request flooding to other interfaces in VLAN.
+
+                           Subclass of AvdList with `str` items.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "servers": {"type": Servers},
+            "tunnel_requests_disabled": {"type": bool},
+            "mlag_peerlink_requests_disabled": {"type": bool},
+            "client_requests": {"type": ClientRequests},
+        }
         servers: Servers
         """Subclass of AvdList with `str` items."""
         tunnel_requests_disabled: bool | None
         mlag_peerlink_requests_disabled: bool | None
+        client_requests: ClientRequests
+        """
+        Configure DHCP client request settings.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -4209,6 +4253,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 servers: Servers | UndefinedType = Undefined,
                 tunnel_requests_disabled: bool | None | UndefinedType = Undefined,
                 mlag_peerlink_requests_disabled: bool | None | UndefinedType = Undefined,
+                client_requests: ClientRequests | UndefinedType = Undefined,
             ) -> None:
                 """
                 DhcpRelay.
@@ -4220,6 +4265,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     servers: Subclass of AvdList with `str` items.
                     tunnel_requests_disabled: tunnel_requests_disabled
                     mlag_peerlink_requests_disabled: mlag_peerlink_requests_disabled
+                    client_requests:
+                       Configure DHCP client request settings.
+
+                       Subclass of AvdModel.
 
                 """
 
