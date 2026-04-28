@@ -339,7 +339,7 @@ class EthernetInterfacesMixin(Protocol):
                     peer_interface=member_intf.peer_interface,
                     peer_type="l3_port_channel_member",
                     peer=peer,
-                    validate_state=self.structured_config_utils.get_interface_validate_state(None),
+                    validate_state=self.structured_config_utils.get_interface_validate_state(),
                 ),
             )
 

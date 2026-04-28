@@ -284,7 +284,7 @@ class UtilsMixin(Protocol):
         if not isinstance(
             (
                 validate_status_result := self.structured_config_utils.get_interface_validate_state(
-                    None, p2p_link_data["peer"] in self.shared_utils.all_fabric_devices
+                    peer_in_fabric=p2p_link_data["peer"] in self.shared_utils.all_fabric_devices
                 )
             ),
             UndefinedType,

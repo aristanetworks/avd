@@ -175,7 +175,7 @@ class UtilsMixin(Protocol):
             eos_cli=l3_generic_interface.raw_eos_cli,
         )
         interface.metadata.peer = l3_generic_interface.peer
-        if not isinstance((validate_state_result := self.structured_config_utils.get_interface_validate_state(None)), UndefinedType):
+        if not isinstance((validate_state_result := self.structured_config_utils.get_interface_validate_state()), UndefinedType):
             interface.metadata.validate_state = validate_state_result
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 

@@ -99,7 +99,7 @@ class PortChannelInterfacesMixin(Protocol):
                         peer_interface=l3_port_channel.peer_port_channel or None,
                         peer=l3_port_channel.peer,
                         peer_type="l3_port_channel",
-                        validate_state=self.structured_config_utils.get_interface_validate_state(None),
+                        validate_state=self.structured_config_utils.get_interface_validate_state(),
                     ),
                 )
                 if l3_port_channel.ipv4_acl_in:

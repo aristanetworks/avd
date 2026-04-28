@@ -81,7 +81,7 @@ class EthernetInterfacesMixin(Protocol):
                         peer_interface=member_intf.peer_interface or None,
                         peer_type="l3_port_channel_member",
                         peer=peer or None,
-                        validate_state=self.structured_config_utils.get_interface_validate_state(None),
+                        validate_state=self.structured_config_utils.get_interface_validate_state(),
                     ),
                 )
 
@@ -137,7 +137,7 @@ class EthernetInterfacesMixin(Protocol):
                     flow_tracker=self.shared_utils.get_flow_tracker(l3_interface.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                     metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
                         peer_type="l3_interface",
-                        validate_state=self.structured_config_utils.get_interface_validate_state(None),
+                        validate_state=self.structured_config_utils.get_interface_validate_state(),
                     ),
                 )
 

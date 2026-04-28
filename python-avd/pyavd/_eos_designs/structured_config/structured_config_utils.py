@@ -236,7 +236,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
 
         router_bgp.peer_groups.append(peer_group)
 
-    def get_interface_validate_state(self, user_input: bool | None, peer_in_fabric: bool = False) -> bool | UndefinedType:
+    def get_interface_validate_state(self, user_input: bool | None = None, peer_in_fabric: bool = False) -> bool | UndefinedType:
         """
         Checks if validate_state flag should be set or not.
 
