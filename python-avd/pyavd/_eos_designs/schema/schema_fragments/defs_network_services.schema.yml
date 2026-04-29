@@ -820,6 +820,9 @@ $defs:
                             required: true
                           route_map:
                             type: str
+                          include_leaked:
+                            type: bool
+                            description: Include leaked routes while redistributing
                       match_internal:
                         description: Redistribute OSPFv3 routes learned from internal sources.
                         type: dict

@@ -394,23 +394,12 @@ $defs:
         keys:
           enabled:
             type: bool
-          process:
-              type: dict
-              keys:
-                id:
-                  type: int
-                  description: OSPFv3 Process ID.
-                  min: 1
-                  max: 65535
-                  required: true
-                  convert_types:
-                    - str
-                area:
-                  type: str
-                  description: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-                  convert_types:
-                    - int
-                  required: true
+          area:
+            type: str
+            description: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+            convert_types:
+              - int
+            required: true
           point_to_point:
             type: bool
             default: false

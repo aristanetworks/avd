@@ -65,19 +65,60 @@ class Ipv6RouterOspfMixin(Protocol):
         """
         Configures OSPFv3 route redistribution settings for the given VRF.
 
-        This method enables redistribution of BGP and connected routes into OSPFv3,
-        setting the associated route maps if specified.
-
         Args:
             process: The OSPFv3 process configuration object.
             vrf: The VRF object containing OSPFv3 redistribution settings.
         """
-        if vrf.ospf.redistribute_bgp.enabled:
+        if vrf.ipv6_ospf.redistribute_bgp.enabled:
             process.redistribute.bgp.enabled = True
-            if route_map := vrf.ospf.redistribute_bgp.route_map:
+            if route_map := vrf.ipv6_ospf.redistribute_bgp.route_map:
                 process.redistribute.bgp.route_map = route_map
+            if include_leaked := vrf.ipv6_ospf.redistribute_bgp.include_leaked:
+                process.redistribute.bgp.include_leaked = include_leaked
 
-        if vrf.ospf.redistribute_connected.enabled:
+        if vrf.ipv6_ospf.redistribute_connected.enabled:
             process.redistribute.connected.enabled = True
-            if route_map := vrf.ospf.redistribute_connected.route_map:
+            if route_map := vrf.ipv6_ospf.redistribute_connected.route_map:
                 process.redistribute.connected.route_map = route_map
+            if include_leaked := vrf.ipv6_ospf.redistribute_bgp.include_leaked:
+                process.redistribute.connected.include_leaked = include_leaked
+
+        if vrf.ipv6_ospf.redistribute_isis.enabled:
+            process.redistribute.isis.enabled = True
+            if isis_level := vrf.ipv6_ospf.redistribute_isis.isis_level:
+                process.redistribute.isis.isis_level = isis_level
+            if route_map := vrf.ipv6_ospf.redistribute_isis.route_map:
+                process.redistribute.isis.route_map = route_map
+            if include_leaked := vrf.ipv6_ospf.redistribute_isis.include_leaked:
+                process.redistribute.isis.include_leaked = include_leaked
+
+        if vrf.ipv6_ospf.redistribute_ospfv3.enabled:
+            process.redistribute.ospfv3.enabled = True
+            if vrf.ipv6_ospf.redistribute_ospfv3.match_external.enabled:
+                process.redistribute.ospfv3.match_external.enabled = True
+                if route_map := vrf.ipv6_ospf.redistribute_ospfv3.match_external.route_map:
+                    process.redistribute.ospfv3.match_external.route_map = route_map
+                if include_leaked := vrf.ipv6_ospf.redistribute_ospfv3.match_external.include_leaked:
+                    process.redistribute.ospfv3.match_external.include_leaked = include_leaked
+            if vrf.ipv6_ospf.redistribute_ospfv3.match_internal.enabled:
+                process.redistribute.ospfv3.match_internal.enabled = True
+                if route_map := vrf.ipv6_ospf.redistribute_ospfv3.match_internal.route_map:
+                    process.redistribute.ospfv3.match_internal.route_map = route_map
+            if vrf.ipv6_ospf.redistribute_ospfv3.match_nssa_external.enabled:
+                process.redistribute.ospfv3.match_nssa_external.enabled = True
+                if route_map := vrf.ipv6_ospf.redistribute_ospfv3.match_nssa_external.route_map:
+                    process.redistribute.ospfv3.match_nssa_external.route_map = route_map
+            if route_map := vrf.ipv6_ospf.redistribute_ospfv3.route_map:
+                process.redistribute.ospfv3.route_map = route_map
+
+        if vrf.ipv6_ospf.redistribute_dhcp.enabled:
+            process.redistribute.dhcp.enabled = True
+            if route_map := vrf.ipv6_ospf.redistribute_dhcp.route_map:
+                process.redistribute.dhcp.route_map = route_map
+
+        if vrf.ipv6_ospf.redistribute_static.enabled:
+            process.redistribute.static.enabled = True
+            if route_map := vrf.ipv6_ospf.redistribute_static.route_map:
+                process.redistribute.static.route_map = route_map
+            if include_leaked := vrf.ipv6_ospf.redistribute_static.include_leaked:
+                process.redistribute.static.include_leaked = include_leaked

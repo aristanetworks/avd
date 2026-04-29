@@ -32306,34 +32306,10 @@ class EosDesigns(EosDesignsRootModel):
             class Ipv6Ospf(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Process(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
-                    id: int
-                    """OSPFv3 Process ID."""
-                    area: str
-                    """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
-                            """
-                            Process.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                id: OSPFv3 Process ID.
-                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-
-                            """
-
-                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "process": {"type": Process}, "point_to_point": {"type": bool, "default": False}}
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str}, "point_to_point": {"type": bool, "default": False}}
                 enabled: bool | None
-                process: Process
-                """Subclass of AvdModel."""
+                area: str
+                """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
                 point_to_point: bool
                 """Default value: `False`"""
 
@@ -32343,7 +32319,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         enabled: bool | None | UndefinedType = Undefined,
-                        process: Process | UndefinedType = Undefined,
+                        area: str | UndefinedType = Undefined,
                         point_to_point: bool | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -32354,7 +32330,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             enabled: enabled
-                            process: Subclass of AvdModel.
+                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                             point_to_point: point_to_point
 
                         """
@@ -33475,34 +33451,10 @@ class EosDesigns(EosDesignsRootModel):
         class Ipv6Ospf(AvdModel):
             """Subclass of AvdModel."""
 
-            class Process(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
-                id: int
-                """OSPFv3 Process ID."""
-                area: str
-                """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
-                        """
-                        Process.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            id: OSPFv3 Process ID.
-                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-
-                        """
-
-            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "process": {"type": Process}, "point_to_point": {"type": bool, "default": False}}
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str}, "point_to_point": {"type": bool, "default": False}}
             enabled: bool | None
-            process: Process
-            """Subclass of AvdModel."""
+            area: str
+            """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
             point_to_point: bool
             """Default value: `False`"""
 
@@ -33512,7 +33464,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
-                    process: Process | UndefinedType = Undefined,
+                    area: str | UndefinedType = Undefined,
                     point_to_point: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -33523,7 +33475,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
-                        process: Subclass of AvdModel.
+                        area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                         point_to_point: point_to_point
 
                     """
@@ -62414,13 +62366,21 @@ class EosDesigns(EosDesignsRootModel):
                             class MatchExternal(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
                                 enabled: bool
                                 route_map: str | None
+                                include_leaked: bool | None
+                                """Include leaked routes while redistributing"""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        route_map: str | None | UndefinedType = Undefined,
+                                        include_leaked: bool | None | UndefinedType = Undefined,
+                                    ) -> None:
                                         """
                                         MatchExternal.
 
@@ -62430,6 +62390,7 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             enabled: enabled
                                             route_map: route_map
+                                            include_leaked: Include leaked routes while redistributing
 
                                         """
 
@@ -63527,38 +63488,10 @@ class EosDesigns(EosDesignsRootModel):
                             class Ipv6Ospf(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                class Process(AvdModel):
-                                    """Subclass of AvdModel."""
-
-                                    _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
-                                    id: int
-                                    """OSPFv3 Process ID."""
-                                    area: str
-                                    """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
-
-                                    if TYPE_CHECKING:
-
-                                        def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
-                                            """
-                                            Process.
-
-
-                                            Subclass of AvdModel.
-
-                                            Args:
-                                                id: OSPFv3 Process ID.
-                                                area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-
-                                            """
-
-                                _fields: ClassVar[dict] = {
-                                    "enabled": {"type": bool},
-                                    "process": {"type": Process},
-                                    "point_to_point": {"type": bool, "default": False},
-                                }
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str}, "point_to_point": {"type": bool, "default": False}}
                                 enabled: bool | None
-                                process: Process
-                                """Subclass of AvdModel."""
+                                area: str
+                                """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
                                 point_to_point: bool
                                 """Default value: `False`"""
 
@@ -63568,7 +63501,7 @@ class EosDesigns(EosDesignsRootModel):
                                         self,
                                         *,
                                         enabled: bool | None | UndefinedType = Undefined,
-                                        process: Process | UndefinedType = Undefined,
+                                        area: str | UndefinedType = Undefined,
                                         point_to_point: bool | UndefinedType = Undefined,
                                     ) -> None:
                                         """
@@ -63579,7 +63512,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             enabled: enabled
-                                            process: Subclass of AvdModel.
+                                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                                             point_to_point: point_to_point
 
                                         """
@@ -64727,38 +64660,10 @@ class EosDesigns(EosDesignsRootModel):
                         class Ipv6Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
-                            class Process(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
-                                id: int
-                                """OSPFv3 Process ID."""
-                                area: str
-                                """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
-                                        """
-                                        Process.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            id: OSPFv3 Process ID.
-                                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-
-                                        """
-
-                            _fields: ClassVar[dict] = {
-                                "enabled": {"type": bool},
-                                "process": {"type": Process},
-                                "point_to_point": {"type": bool, "default": False},
-                            }
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str}, "point_to_point": {"type": bool, "default": False}}
                             enabled: bool | None
-                            process: Process
-                            """Subclass of AvdModel."""
+                            area: str
+                            """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
                             point_to_point: bool
                             """Default value: `False`"""
 
@@ -64768,7 +64673,7 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     enabled: bool | None | UndefinedType = Undefined,
-                                    process: Process | UndefinedType = Undefined,
+                                    area: str | UndefinedType = Undefined,
                                     point_to_point: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -64779,7 +64684,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        process: Subclass of AvdModel.
+                                        area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
                                         point_to_point: point_to_point
 
                                     """
