@@ -98,7 +98,8 @@ class PortChannelInterfacesMixin(Protocol):
                 )
                 if l3_port_channel.ipv6_addresses:
                     port_channel_interface.ipv6_addresses.extend(l3_port_channel.ipv6_addresses)
-                    self.structured_config.ipv6_unicast_routing = True
+                    if vrf.name == "default":
+                        self.structured_config.ipv6_unicast_routing = True
                 port_channel_interface.metadata._update(
                     peer_interface=l3_port_channel.peer_port_channel or None,
                     peer=l3_port_channel.peer,
