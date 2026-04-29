@@ -48,18 +48,14 @@ class UtilsMixin(Protocol):
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         channel_group_id: int,
-        port_channel_subif_short_esi: str | None = None,
+        subif_short_esi: str | None = None,
         hash_extra_value: str = "",
     ) -> str | None:
-        """
-        Return short_esi for one adapter.
-
-        short_esi is only set when called from sub-interface port-channels.
-        """
+        """Return short_esi for one adapter or subinterface."""
         if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
             return None
 
-        if (short_esi := (port_channel_subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
+        if (short_esi := (subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
             return None
 
         if len(set(adapter.switches)) < 2:
