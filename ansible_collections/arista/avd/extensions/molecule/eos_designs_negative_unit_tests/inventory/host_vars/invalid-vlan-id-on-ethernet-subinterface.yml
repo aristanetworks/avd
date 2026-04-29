@@ -20,7 +20,7 @@ servers:
         description: "Interface description {interface} {endpoint_type}_{endpoint}{endpoint_port?<_!u}"
         subinterfaces:
           - number: 10000
-            description: subinterface number greater that 4094
+            description: subinterface number greater than 4094
 
 expected_error_message: >-
   'vlan_id' must be set for 'servers[name=OLD_SW-1/2].adapters[0].subinterfaces[number=10000]'
