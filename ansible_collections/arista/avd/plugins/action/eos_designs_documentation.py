@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import json
 import logging
-from dataclasses import asdict
+from dataclasses import fields, is_dataclass
 from pathlib import Path
 from typing import Any
 
@@ -50,6 +50,20 @@ ARGUMENT_SPEC = {
     "digital_twin_file": {"type": "str", "default": "DIGITAL-TWIN-TOPOLOGY.yml"},
     "digital_twin": {"type": "bool", "default": False},
 }
+
+
+def _normalize_yaml_data(data: Any) -> Any:
+    """Recursively normalize data for YAML output while honoring per-field YAML key aliases on dataclasses."""
+    if is_dataclass(data):
+        return {
+            str(dataclass_field.metadata.get("yaml_key", dataclass_field.name)): _normalize_yaml_data(getattr(data, dataclass_field.name))
+            for dataclass_field in fields(data)
+        }
+    if isinstance(data, dict):
+        return {str(key): _normalize_yaml_data(value) for key, value in data.items()}
+    if isinstance(data, tuple | list):
+        return [_normalize_yaml_data(value) for value in data]
+    return data
 
 
 class ActionModule(ActionBase):
@@ -125,9 +139,7 @@ class ActionModule(ActionBase):
             result["changed"] = result.get("changed") or changed
 
         if output.digital_twin:
-            content = strip_empties_from_dict(
-                {str(key).replace("_", "-"): list(value) if isinstance(value, tuple) else value for key, value in asdict(output.digital_twin).items()}
-            )
+            content = strip_empties_from_dict(_normalize_yaml_data(output.digital_twin))
             changed = write_file(
                 content=yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130, explicit_start=True),
                 filename=validated_args["digital_twin_file"],

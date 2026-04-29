@@ -1,0 +1,11 @@
+---
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: none
+
+default_interfaces:
+  - types: [spine]
+    platforms: [default]
+    downlink_interfaces: [Ethernet1-2]
+  - types: [l3leaf]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]

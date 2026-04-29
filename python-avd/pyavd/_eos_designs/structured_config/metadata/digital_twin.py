@@ -88,7 +88,5 @@ class DigitalTwinMixin(Protocol):
                     )
                 return
             case "containerlab":
-                # Containerlab MVP only marks the target backend, allowing the
-                # documentation action plugin to emit a placeholder `.clab.yml`.
                 self.structured_config.metadata.digital_twin._update(environment=environment)
                 return
