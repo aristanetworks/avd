@@ -9,6 +9,9 @@ pe,SITE1-LER1,,Ethernet8,cpe,CPE_TENANT_A_SITE1,,Ethernet1,True
 pe,SITE1-LER1,,Ethernet9,l3_interface,,,,True
 pe,SITE1-LER1,,Ethernet9.100,point_to_point_service,,,,True
 pe,SITE1-LER1,,Ethernet9.101,point_to_point_service,,,,True
+pe,SITE1-LER1,,Ethernet10,cpe,CPE2_TENANT_A_SITE1_SUBINTERFACES,,Ethernet1,True
+pe,SITE1-LER1,,Ethernet10.11,,,,,True
+pe,SITE1-LER1,,Ethernet10.12,,,,,True
 pe,SITE1-LER2,,Ethernet1,p,SITE1-LSR2,,Ethernet1,True
 pe,SITE1-LER2,,Ethernet2,pe,SITE1-LER1,,Ethernet2,True
 pe,SITE1-LER2,,Ethernet3,point_to_point_service,,,,True
@@ -16,6 +19,9 @@ pe,SITE1-LER2,,Ethernet4,point_to_point_service,,,,True
 pe,SITE1-LER2,,Ethernet5,l3_interface,,,,True
 pe,SITE1-LER2,,Ethernet5.100,l3_interface,,,,True
 pe,SITE1-LER2,,Ethernet8,cpe,CPE_TENANT_A_SITE1,,Ethernet2,True
+pe,SITE1-LER2,,Ethernet10,cpe,CPE2_TENANT_A_SITE1_SUBINTERFACES,,Ethernet2,True
+pe,SITE1-LER2,,Ethernet10.11,,,,,True
+pe,SITE1-LER2,,Ethernet10.12,,,,,True
 p,SITE1-LSR1,,Ethernet1,pe,SITE1-LER1,,Ethernet1,True
 p,SITE1-LSR1,,Ethernet3,p,SITE2-LSR1,,Ethernet3,True
 p,SITE1-LSR1,,Ethernet4,rr,SITE1-RR1,,Ethernet4,True
