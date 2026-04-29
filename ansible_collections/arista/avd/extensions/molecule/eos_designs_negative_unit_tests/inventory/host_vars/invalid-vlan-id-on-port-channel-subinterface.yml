@@ -1,14 +1,13 @@
 ---
-type: l2leaf
-l2leaf:
+type: l3leaf
+l3leaf:
   defaults:
   nodes:
     - name: invalid-vlan-id-on-port-channel-subinterface
-      platform: 720XP
-      link_tracking:
-        enabled: true
-      filter:
-        only_vlans_in_use: true
+      id: 1
+      bgp_as: 65001
+      loopback_ipv4_pool: 10.0.0.0/24
+      vtep_loopback_ipv4_pool: 10.0.1.0/24
       mgmt_ip: 192.168.1.2
 
 servers:
