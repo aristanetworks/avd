@@ -265,7 +265,7 @@ class PortChannelInterfacesMixin(Protocol):
             short_esi := self._get_short_esi(
                 adapter,
                 channel_group_id,
-                port_channel_subif_short_esi=subinterface.short_esi,
+                subif_short_esi=subinterface.short_esi,
                 hash_extra_value=str(subinterface.number),
             )
         ) is not None:
