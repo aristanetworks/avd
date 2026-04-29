@@ -8963,6 +8963,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class Region(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"domain_number": {"type": int}}
+                domain_number: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, domain_number: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Region.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            domain_number: domain_number
+
+                        """
+
             class SyncMessage(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -8991,6 +9011,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "delay_req": {"type": int},
                 "delay_mechanism": {"type": str},
                 "profile": {"type": Profile},
+                "region": {"type": Region},
                 "sync_message": {"type": SyncMessage},
                 "role": {"type": str},
                 "vlan": {"type": str},
@@ -9002,6 +9023,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             delay_req: int | None
             delay_mechanism: DelayMechanism | None
             profile: Profile
+            """Subclass of AvdModel."""
+            region: Region
             """Subclass of AvdModel."""
             sync_message: SyncMessage
             """Subclass of AvdModel."""
@@ -9020,6 +9043,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     delay_req: int | None | UndefinedType = Undefined,
                     delay_mechanism: DelayMechanism | None | UndefinedType = Undefined,
                     profile: Profile | UndefinedType = Undefined,
+                    region: Region | UndefinedType = Undefined,
                     sync_message: SyncMessage | UndefinedType = Undefined,
                     role: Role | None | UndefinedType = Undefined,
                     vlan: str | None | UndefinedType = Undefined,
@@ -9037,6 +9061,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         delay_req: delay_req
                         delay_mechanism: delay_mechanism
                         profile: Subclass of AvdModel.
+                        region: Subclass of AvdModel.
                         sync_message: Subclass of AvdModel.
                         role: role
                         vlan: VLAN can be 'all' or list of vlans as string.
@@ -33732,6 +33757,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class Region(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"domain_number": {"type": int}}
+                domain_number: int | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, domain_number: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Region.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            domain_number: domain_number
+
+                        """
+
             class SyncMessage(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -33760,6 +33805,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "delay_req": {"type": int},
                 "delay_mechanism": {"type": str},
                 "profile": {"type": Profile},
+                "region": {"type": Region},
                 "sync_message": {"type": SyncMessage},
                 "role": {"type": str},
                 "vlan": {"type": str},
@@ -33772,6 +33818,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             delay_req: int | None
             delay_mechanism: DelayMechanism | None
             profile: Profile
+            """Subclass of AvdModel."""
+            region: Region
             """Subclass of AvdModel."""
             sync_message: SyncMessage
             """Subclass of AvdModel."""
@@ -33799,6 +33847,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     delay_req: int | None | UndefinedType = Undefined,
                     delay_mechanism: DelayMechanism | None | UndefinedType = Undefined,
                     profile: Profile | UndefinedType = Undefined,
+                    region: Region | UndefinedType = Undefined,
                     sync_message: SyncMessage | UndefinedType = Undefined,
                     role: Role | None | UndefinedType = Undefined,
                     vlan: str | None | UndefinedType = Undefined,
@@ -33817,6 +33866,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         delay_req: delay_req
                         delay_mechanism: delay_mechanism
                         profile: Subclass of AvdModel.
+                        region: Subclass of AvdModel.
                         sync_message: Subclass of AvdModel.
                         role: role
                         vlan: VLAN can be 'all' or list of vlans as string.
@@ -51950,12 +52000,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "domain_identifier": {"type": str},
                 "peer_groups": {"type": PeerGroups},
                 "route": {"type": Route},
                 "neighbors": {"type": Neighbors},
                 "neighbor_default_encapsulation_mpls_next_hop_self": {"type": NeighborDefaultEncapsulationMplsNextHopSelf},
+                "next_hop": {"type": NextHop},
             }
             domain_identifier: str | None
             peer_groups: PeerGroups
@@ -51965,6 +52036,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             neighbors: Neighbors
             """Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`)."""
             neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf
+            """Subclass of AvdModel."""
+            next_hop: NextHop
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
@@ -51977,6 +52050,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     route: Route | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyVpnIpv4.
@@ -51990,6 +52064,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         route: Subclass of AvdModel.
                         neighbors: Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`).
                         neighbor_default_encapsulation_mpls_next_hop_self: Subclass of AvdModel.
+                        next_hop: Subclass of AvdModel.
 
                     """
 

@@ -3557,6 +3557,15 @@ keys:
                       valid_values:
                       - forwardable
                       - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
+                  convert_types:
+                  - str
             sync_message:
               type: dict
               keys:
@@ -13124,6 +13133,15 @@ keys:
                       valid_values:
                       - forwardable
                       - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
+                  convert_types:
+                  - str
             sync_message:
               type: dict
               keys:
@@ -19298,6 +19316,11 @@ keys:
             keys:
               source_interface:
                 type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
       address_family_vpn_ipv6:
         type: dict
         keys:

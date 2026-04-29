@@ -56,7 +56,7 @@ class TagMixin(Protocol):
 
     tags_api_version: Literal["v2"] = "v2"
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_tags(
         self: CVClientProtocol,
         workspace_id: str,
@@ -155,7 +155,7 @@ class TagMixin(Protocol):
 
         return [response.key async for response in responses]
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
