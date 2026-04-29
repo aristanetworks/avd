@@ -930,7 +930,7 @@ class EosDesigns(EosDesignsRootModel):
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
-            "retain_inband_mgmt_ipv6_behaviour": {"type": bool, "default": True},
+            "inband_mgmt_ipv6_fix": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -957,15 +957,15 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        retain_inband_mgmt_ipv6_behaviour: bool
+        inband_mgmt_ipv6_fix: bool
         """
-        Retain the current behavior of IPv6 inband management. When this key is set to false:
+        Fix the current behavior of IPv6 inband management. When this key is set to true:
         1. Inband
         management VRF is generated when IPv6 inband management is set.
         2. Prefix list `IPv6-PL-L2LEAF-
         INBAND-MGMT` is not generated when overlay_routing_protocol is `none`.
 
-        Default value: `True`
+        Default value: `False`
         """
 
         if TYPE_CHECKING:
@@ -977,7 +977,7 @@ class EosDesigns(EosDesignsRootModel):
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
-                retain_inband_mgmt_ipv6_behaviour: bool | UndefinedType = Undefined,
+                inband_mgmt_ipv6_fix: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -992,8 +992,8 @@ class EosDesigns(EosDesignsRootModel):
                        default instead of always deactivating it.
                     raise_for_port_channels_without_members: Raise an error if an L3 Port-Channel is configured without any member interfaces.
                     only_configure_mlag_vrfs_peer_group_when_used: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
-                    retain_inband_mgmt_ipv6_behaviour:
-                       Retain the current behavior of IPv6 inband management. When this key is set to false:
+                    inband_mgmt_ipv6_fix:
+                       Fix the current behavior of IPv6 inband management. When this key is set to true:
                        1. Inband
                        management VRF is generated when IPv6 inband management is set.
                        2. Prefix list `IPv6-PL-L2LEAF-
