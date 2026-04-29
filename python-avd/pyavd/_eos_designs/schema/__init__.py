@@ -961,7 +961,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Retain the current behavior of IPv6 inband management. When this key is set to false:
         1. Inband
-        mangement VRF is generated when IPv6 inband management is set.
+        management VRF is generated when IPv6 inband management is set.
         2. Prefix list `IPv6-PL-L2LEAF-
         INBAND-MGMT` is not generated when overlay_routing_protocol is `none`.
 
@@ -995,7 +995,7 @@ class EosDesigns(EosDesignsRootModel):
                     retain_inband_mgmt_ipv6_behaviour:
                        Retain the current behavior of IPv6 inband management. When this key is set to false:
                        1. Inband
-                       mangement VRF is generated when IPv6 inband management is set.
+                       management VRF is generated when IPv6 inband management is set.
                        2. Prefix list `IPv6-PL-L2LEAF-
                        INBAND-MGMT` is not generated when overlay_routing_protocol is `none`.
 

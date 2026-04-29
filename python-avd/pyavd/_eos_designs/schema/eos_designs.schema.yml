@@ -358,7 +358,7 @@ keys:
         description: 'Retain the current behavior of IPv6 inband management. When
           this key is set to false:
 
-          1. Inband mangement VRF is generated when IPv6 inband management is set.
+          1. Inband management VRF is generated when IPv6 inband management is set.
 
           2. Prefix list `IPv6-PL-L2LEAF-INBAND-MGMT` is not generated when overlay_routing_protocol
           is `none`.'
