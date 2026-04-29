@@ -11,7 +11,6 @@ l3leaf:
       mgmt_ip: 192.168.1.2
 
 servers:
-  # port-channel provide physical and port-channel descriptions as templates with all fields
   - name: OLD_SW-1/2
     adapters:
       - switches: [invalid-dot1q-encapsulation-vlan-ethernet-subinterface]
