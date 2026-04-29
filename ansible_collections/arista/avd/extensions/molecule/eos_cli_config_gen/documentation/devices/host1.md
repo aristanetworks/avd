@@ -2056,6 +2056,7 @@ alias siib show ip interface brief
 
 - DHCP Relay is disabled for tunnelled requests
 - DHCP Relay is disabled for MLAG peer-link requests
+- Client requests flooding suppression for VLANs: 500-510,1000,2000,3000
 
 | DHCP Relay Servers |
 | ------------------ |
@@ -2069,6 +2070,7 @@ alias siib show ip interface brief
 dhcp relay
    tunnel requests disabled
    mlag peer-link requests disabled
+   client requests flooding suppression vlan 500-510,1000,2000,3000
    server dhcp-relay-server1
    server dhcp-relay-server2
 ```
