@@ -192,7 +192,6 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     Containerlab nodes with management addresses under `topology.nodes` and
     inter-switch links under `topology.links`.
     """
-
     nodes = {
         device: ContainerlabNode(mgmt_ipv4=get_ip_from_ip_prefix(mgmt_ip))
         for device in sorted(fabric_documentation_facts.avd_facts)
