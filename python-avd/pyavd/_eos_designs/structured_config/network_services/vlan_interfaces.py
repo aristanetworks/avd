@@ -202,8 +202,8 @@ class VlanInterfacesMixin(Protocol):
         if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
             vlan_interface_config.ipv6_enable = True
         elif self.shared_utils.underlay_ipv6_numbered:
-            vlan_interface_config.ipv6_addresses.append_new(self.structured_config_utils.get_ipv6_mlag_peering_ip(vrf))
+            vlan_interface_config.ipv6_addresses.append_new(self.get_ipv6_mlag_peering_ip(vrf))
         else:
-            vlan_interface_config.ip_address = self.structured_config_utils.get_ipv4_mlag_peering_ip(vrf)
+            vlan_interface_config.ip_address = self.get_ipv4_mlag_peering_ip(vrf)
 
         return vlan_interface_config
