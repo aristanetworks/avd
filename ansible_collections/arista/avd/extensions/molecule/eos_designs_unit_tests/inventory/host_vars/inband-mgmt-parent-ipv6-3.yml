@@ -1,0 +1,4 @@
+---
+overlay_routing_protocol: none
+avd_design_future:
+  retain_inband_mgmt_ipv6_behaviour: false

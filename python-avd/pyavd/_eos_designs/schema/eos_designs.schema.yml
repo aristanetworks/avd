@@ -352,6 +352,16 @@ keys:
         description: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when
           needed.
         default: false
+      retain_inband_mgmt_ipv6_behaviour:
+        type: bool
+        default: true
+        description: 'Retain the current behavior of IPv6 inband management. When
+          this key is set to false:
+
+          1. Inband mangement VRF is generated when IPv6 inband management is set.
+
+          2. Prefix list `IPv6-PL-L2LEAF-INBAND-MGMT` is not generated when overlay_routing_protocol
+          is `none`.'
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings

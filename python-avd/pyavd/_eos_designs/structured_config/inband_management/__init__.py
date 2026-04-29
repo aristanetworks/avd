@@ -22,8 +22,11 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                 self._set_inband_mgmt_vrf()
                 if self.shared_utils.inband_mgmt_gateway is not None:
                     self._set_ipv4_default_route()
-            if self.shared_utils.configure_inband_mgmt_ipv6 and self.shared_utils.inband_mgmt_ipv6_gateway is not None:
-                self._set_ipv6_default_route()
+            if self.shared_utils.configure_inband_mgmt_ipv6:
+                if not self.inputs.avd_design_future.retain_inband_mgmt_ipv6_behaviour:
+                    self._set_inband_mgmt_vrf()
+                if self.shared_utils.inband_mgmt_ipv6_gateway is not None:
+                    self._set_ipv6_default_route()
             return
 
         if self.shared_utils.inband_management_parent_vlans:
@@ -39,9 +42,12 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                             self._set_once_route_map_conn_2_bgp_sequence_20()
                             self._set_l2leaf_inband_mgmt_prefix_lists(vlan, index)
                         if vlan["ipv6"]:
+                            if self.inputs.avd_design_future.retain_inband_mgmt_ipv6_behaviour:
+                                self._set_l2leaf_inband_mgmt_ipv6_prefix_lists(vlan, index)
                             if self.shared_utils.overlay_routing_protocol != "none":
                                 self._set_once_route_map_conn_2_bgp_sequence_60()
-                            self._set_l2leaf_inband_mgmt_ipv6_prefix_lists(vlan, index)
+                                if not self.inputs.avd_design_future.retain_inband_mgmt_ipv6_behaviour:
+                                    self._set_l2leaf_inband_mgmt_ipv6_prefix_lists(vlan, index)
 
     def _set_vlan(self) -> None:
         # TODO: Refactor this later to inject from filtered tenants
