@@ -7,12 +7,16 @@ from re import findall as re_findall
 from typing import TYPE_CHECKING, cast
 
 from pyavd._utils.get import get
+from pyavd._utils.get_ip_from_ip_prefix import get_ip_from_ip_prefix
 from pyavd.api.fabric_documentation import (
     ACTDigitalTwin,
     ActLinkSettings,
     ActNodeSettings,
     ActNodeTypeSettings,
     ContainerlabDigitalTwin,
+    ContainerlabLinkSettings,
+    ContainerlabNode,
+    ContainerlabTopology,
     FabricDocumentation,
 )
 
@@ -166,9 +170,56 @@ def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> A
             return None
 
 
+def _is_p2p_link(topology_link: dict) -> bool:
+    # Skip connections where at least one of the contributing sources is not a non-empty string
+    return bool(
+        isinstance(topology_link["node"], str)
+        and topology_link["node"]
+        and isinstance(topology_link["node_interface"], str)
+        and topology_link["node_interface"]
+        and "." not in topology_link["node_interface"]
+        and isinstance(topology_link["peer"], str)
+        and topology_link["peer"]
+        and isinstance(topology_link["peer_interface"], str)
+        and topology_link["peer_interface"]
+        and "." not in topology_link["peer_interface"]
+    )
+
+
 def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentationFacts) -> ContainerlabDigitalTwin:
-    """Return the minimal Containerlab Digital Twin payload."""
-    return ContainerlabDigitalTwin(name=f"{fabric_documentation_facts.fabric_name}, Containerlab Digital Twin", prefix="avd-dt")
+    """
+    Build and return the Containerlab topology data.
+
+    The returned object contains the minimal information required to render
+    Containerlab nodes with management addresses under `topology.nodes` and
+    inter-switch links under `topology.links`.
+    """
+    nodes = {
+        device: ContainerlabNode(mgmt_ipv4=get_ip_from_ip_prefix(mgmt_ip))
+        for device in sorted(fabric_documentation_facts.avd_facts)
+        # TODO: add some error messages later to fail with "unsupported" on no mgmt_ip or dhcp
+        if (mgmt_ip := fabric_documentation_facts.avd_facts[device].mgmt_ip) and mgmt_ip != "dhcp"
+    }
+
+    links = [
+        ContainerlabLinkSettings(
+            endpoints=(
+                f"{topology_link['node']}:{topology_link['node_interface']}",
+                f"{topology_link['peer']}:{topology_link['peer_interface']}",
+            )
+        )
+        for topology_link in fabric_documentation_facts.topology_links
+        if _is_p2p_link(topology_link)
+    ]
+
+    return ContainerlabDigitalTwin(
+        name=f"{fabric_documentation_facts.fabric_name}, Containerlab Digital Twin",
+        prefix="avd-dt",
+        topology=ContainerlabTopology(
+            nodes=nodes,
+            links=tuple(links),
+        ),
+    )
 
 
 def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin:
@@ -214,23 +265,6 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
     }
     digital_twin_devices: list[dict[str, ActNodeSettings]] = []
     device_list: list[str] = list(fabric_documentation_facts.avd_facts)
-    verified_topology_links: list[dict] = [
-        topology_link
-        for topology_link in fabric_documentation_facts.topology_links
-        # Skip connections where at least one of the contributing sources is not a non-empty string
-        if (
-            isinstance(topology_link["node"], str)
-            and topology_link["node"]
-            and isinstance(topology_link["node_interface"], str)
-            and "." not in topology_link["node_interface"]
-            and topology_link["node_interface"]
-            and isinstance(topology_link["peer"], str)
-            and topology_link["peer"]
-            and isinstance(topology_link["peer_interface"], str)
-            and "." not in topology_link["peer_interface"]
-            and topology_link["peer_interface"]
-        )
-    ]
     for device in sorted(device_list):
         if (
             digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..node_type", separator="..")
@@ -285,7 +319,8 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
             ActLinkSettings(
                 connection=(f"{topology_link['node']}:{topology_link['node_interface']}", f"{topology_link['peer']}:{topology_link['peer_interface']}")
             )
-            for topology_link in verified_topology_links
+            for topology_link in fabric_documentation_facts.topology_links
+            if _is_p2p_link(topology_link)
         ),
         cloudeos=digital_twin_node_types["cloudeos"],
         cvp=digital_twin_node_types["cvp"],
