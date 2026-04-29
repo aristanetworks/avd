@@ -313,7 +313,8 @@ port_profiles:
 
   - profile: ADDRESS_LOCKING_PROFILE
     address_locking:
-      ipv4: true
+      # setting ipv4: false to show up in port-channel configuration
+      ipv4: false
       ipv6: true
 
 monitor:

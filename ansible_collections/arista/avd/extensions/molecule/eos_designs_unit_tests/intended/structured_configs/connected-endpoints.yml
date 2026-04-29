@@ -599,7 +599,7 @@ ethernet_interfaces:
   shutdown: false
   address_locking:
     address_family:
-      ipv4: true
+      ipv4: false
       ipv6: true
   metadata:
     peer: ADDRESS_LOCKING_SERVER
@@ -820,7 +820,7 @@ port_channel_interfaces:
   shutdown: false
   address_locking:
     address_family:
-      ipv4: true
+      ipv4: false
   switchport:
     enabled: true
     mode: access
