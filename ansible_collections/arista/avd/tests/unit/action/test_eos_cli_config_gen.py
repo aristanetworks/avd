@@ -4,155 +4,242 @@
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
 import pytest
 from ansible.errors import AnsibleActionFail
 
-from ansible_collections.arista.avd.plugins.action.eos_cli_config_gen import (
-    ActionModule,
-    setup_module_logging,
-)
+from ansible_collections.arista.avd.plugins.action.eos_cli_config_gen import ActionModule
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.eos_cli_config_gen"
 MOCK_TMP_DIR = "/avd/mocked/tmp"
 
 
-def get_action_module() -> ActionModule:
-    """Create an ActionModule instance bypassing ActionBase.__init__."""
-    module = ActionModule.__new__(ActionModule)
-    module._task = MagicMock()
-    module._connection = MagicMock()
-    module._play_context = MagicMock()
-    module._loader = MagicMock()
-    module._templar = MagicMock()
-    module._shared_loader_obj = MagicMock()
-    return module
+@pytest.fixture
+def action_module() -> Callable[..., ActionModule]:
+    def _factory(task_args: dict | None = None) -> ActionModule:
+        mock_task = MagicMock()
+        mock_task.args = task_args or {}
+        mock_task.async_val = False
+        mock_task.check_mode = False
+        return ActionModule(
+            task=mock_task,
+            connection=MagicMock(),
+            play_context=MagicMock(),
+            loader=MagicMock(),
+            templar=MagicMock(),
+            shared_loader_obj=MagicMock(),
+        )
+
+    return _factory
 
 
-# ===========================
-# Tests for setup_module_logging
-# ===========================
+@pytest.mark.parametrize(
+    ("generate_device_config", "generate_device_doc", "expected_messages"),
+    [
+        pytest.param(
+            True,
+            True,
+            [
+                "Validating task arguments...",
+                "Validating task arguments [done].",
+                "Loading structured config...",
+                "Loading structured config [done].",
+                "Rendering configuration...",
+                "Rendering configuration [done].",
+                "Rendering documentation...",
+                "Rendering documentation [done].",
+            ],
+            id="config_and_doc",
+        ),
+        pytest.param(
+            True,
+            False,
+            [
+                "Validating task arguments...",
+                "Validating task arguments [done].",
+                "Loading structured config...",
+                "Loading structured config [done].",
+                "Rendering configuration...",
+                "Rendering configuration [done].",
+            ],
+            id="config_only",
+        ),
+        pytest.param(
+            False,
+            True,
+            [
+                "Validating task arguments...",
+                "Validating task arguments [done].",
+                "Loading structured config...",
+                "Loading structured config [done].",
+                "Rendering documentation...",
+                "Rendering documentation [done].",
+            ],
+            id="doc_only",
+        ),
+    ],
+)
+def test_main_emits_expected_debug_logs(
+    action_module: Callable[..., ActionModule],
+    caplog: pytest.LogCaptureFixture,
+    generate_device_config: bool,
+    generate_device_doc: bool,
+    expected_messages: list[str],
+) -> None:
+    """Verify that main emits the expected sequence of DEBUG log messages."""
+    module = action_module()
+    validated_args = {
+        "tmp_dir": MOCK_TMP_DIR,
+        "generate_device_config": generate_device_config,
+        "generate_device_doc": generate_device_doc,
+        "config_filename": "/output/config.cfg",
+        "documentation_filename": "/output/doc.md",
+        "device_doc_toc": False,
+    }
+
+    with (
+        patch.object(module, "validate_args", return_value=validated_args),
+        patch.object(module, "load_structured_config", return_value={}),
+        patch.object(module, "write_file", return_value=False),
+        patch(f"{MODULE_PATH}.get_device_config", return_value="! config\n", create=True),
+        patch(f"{MODULE_PATH}.get_device_doc", return_value="# doc\n", create=True),
+        caplog.at_level(logging.DEBUG, logger="ansible_collections.arista.avd"),
+    ):
+        module.main("test-device", {}, {})
+
+    assert caplog.messages == expected_messages
+    assert all(r.levelno == logging.DEBUG for r in caplog.records)
 
 
-class TestSetupModuleLogging:
-    def test_adds_handler_to_logger(self) -> None:
-        """Test that setup_module_logging adds a PythonToAnsibleHandler to the AVD logger."""
-        with (
-            patch(f"{MODULE_PATH}.PythonToAnsibleContextFilter") as mock_filter_cls,
-            patch(f"{MODULE_PATH}.PythonToAnsibleHandler") as mock_handler_cls,
-            patch(f"{MODULE_PATH}.LOGGER") as mock_logger,
-        ):
-            mock_filter_instance = MagicMock()
-            mock_handler_instance = MagicMock()
-            mock_filter_cls.return_value = mock_filter_instance
-            mock_handler_cls.return_value = mock_handler_instance
+@pytest.mark.parametrize(
+    ("generate_device_config", "generate_device_doc", "expected_display_messages"),
+    [
+        pytest.param(
+            True,
+            True,
+            [
+                "<my-spine-1> Validating task arguments...",
+                "<my-spine-1> Validating task arguments [done].",
+                "<my-spine-1> Loading structured config...",
+                "<my-spine-1> Loading structured config [done].",
+                "<my-spine-1> Rendering configuration...",
+                "<my-spine-1> Rendering configuration [done].",
+                "<my-spine-1> Rendering documentation...",
+                "<my-spine-1> Rendering documentation [done].",
+            ],
+            id="config_and_doc",
+        ),
+        pytest.param(
+            True,
+            False,
+            [
+                "<my-spine-1> Validating task arguments...",
+                "<my-spine-1> Validating task arguments [done].",
+                "<my-spine-1> Loading structured config...",
+                "<my-spine-1> Loading structured config [done].",
+                "<my-spine-1> Rendering configuration...",
+                "<my-spine-1> Rendering configuration [done].",
+            ],
+            id="config_only",
+        ),
+        pytest.param(
+            False,
+            True,
+            [
+                "<my-spine-1> Validating task arguments...",
+                "<my-spine-1> Validating task arguments [done].",
+                "<my-spine-1> Loading structured config...",
+                "<my-spine-1> Loading structured config [done].",
+                "<my-spine-1> Rendering documentation...",
+                "<my-spine-1> Rendering documentation [done].",
+            ],
+            id="doc_only",
+        ),
+    ],
+)
+def test_run_routes_debug_logs_to_display_with_hostname(
+    action_module: Callable[..., ActionModule],
+    generate_device_config: bool,
+    generate_device_doc: bool,
+    expected_display_messages: list[str],
+) -> None:
+    """Verify that debug log messages reach display.vvv prefixed with the device hostname."""
+    module = action_module()
+    validated_args = {
+        "tmp_dir": MOCK_TMP_DIR,
+        "generate_device_config": generate_device_config,
+        "generate_device_doc": generate_device_doc,
+        "config_filename": "/output/config.cfg",
+        "documentation_filename": "/output/doc.md",
+        "device_doc_toc": False,
+    }
 
-            setup_module_logging("test-host", {})
+    with (
+        patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        patch.object(module, "validate_args", return_value=validated_args),
+        patch.object(module, "load_structured_config", return_value={}),
+        patch.object(module, "write_file", return_value=False),
+        patch(f"{MODULE_PATH}.get_device_config", return_value="! config\n", create=True),
+        patch(f"{MODULE_PATH}.get_device_doc", return_value="# doc\n", create=True),
+        patch(f"{MODULE_PATH}.display") as mock_display,
+    ):
+        module.run(task_vars={"inventory_hostname": "my-spine-1"})
 
-            mock_filter_cls.assert_called_once_with("test-host")
-            mock_handler_instance.addFilter.assert_called_once_with(mock_filter_instance)
-            mock_logger.addHandler.assert_called_once_with(mock_handler_instance)
-            assert mock_logger.propagate is False
-            mock_logger.setLevel.assert_called_once_with(logging.DEBUG)
-
-    def test_uses_hostname_for_filter(self) -> None:
-        """Test that the hostname is passed to PythonToAnsibleContextFilter."""
-        with (
-            patch(f"{MODULE_PATH}.PythonToAnsibleContextFilter") as mock_filter_cls,
-            patch(f"{MODULE_PATH}.PythonToAnsibleHandler"),
-            patch(f"{MODULE_PATH}.LOGGER"),
-        ):
-            setup_module_logging("my-spine-1", {})
-            mock_filter_cls.assert_called_once_with("my-spine-1")
-
-    def test_passes_result_and_display_to_handler(self) -> None:
-        """Test that result dict and display are passed to PythonToAnsibleHandler."""
-        with (
-            patch(f"{MODULE_PATH}.PythonToAnsibleContextFilter"),
-            patch(f"{MODULE_PATH}.PythonToAnsibleHandler") as mock_handler_cls,
-            patch(f"{MODULE_PATH}.LOGGER"),
-            patch(f"{MODULE_PATH}.display") as mock_display,
-        ):
-            result = {"some": "data"}
-            setup_module_logging("host", result)
-            mock_handler_cls.assert_called_once_with(result, mock_display)
-
-
-# ===========================
-# Tests for error handling
-# ===========================
-
-
-class TestLoadStructuredConfigErrors:
-    def test_raises_action_fail_when_file_missing(self) -> None:
-        """Test that AnsibleActionFail is raised when the validated config file is absent."""
-        module = get_action_module()
-        module.tmp_dir = MOCK_TMP_DIR
-
-        mock_file_path = MagicMock()
-        mock_file_path.exists.return_value = False
-        mock_validated_path = MagicMock()
-        mock_validated_path.__truediv__ = MagicMock(return_value=mock_file_path)
-
-        with (
-            patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(MagicMock(), mock_validated_path)),
-            patch(f"{MODULE_PATH}.AVDVaultHandler"),
-            patch(f"{MODULE_PATH}.AVDFileHandler"),
-            pytest.raises(AnsibleActionFail, match="Missing the validated structured config"),
-        ):
-            module.load_structured_config("missing-device")
-
-    def test_error_message_contains_hostname(self) -> None:
-        """Test that the AnsibleActionFail message includes the hostname."""
-        module = get_action_module()
-        module.tmp_dir = MOCK_TMP_DIR
-
-        mock_file_path = MagicMock()
-        mock_file_path.exists.return_value = False
-        mock_validated_path = MagicMock()
-        mock_validated_path.__truediv__ = MagicMock(return_value=mock_file_path)
-
-        with (
-            patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(MagicMock(), mock_validated_path)),
-            patch(f"{MODULE_PATH}.AVDVaultHandler"),
-            patch(f"{MODULE_PATH}.AVDFileHandler"),
-            pytest.raises(AnsibleActionFail, match="my-spine-device"),
-        ):
-            module.load_structured_config("my-spine-device")
+    actual = [call.args[0] for call in mock_display.vvv.call_args_list]
+    assert actual == expected_display_messages
 
 
-class TestMainErrors:
-    def test_exception_calls_raise_action_fail(self) -> None:
-        """Test that any exception during execution is forwarded to raise_action_fail."""
-        module = get_action_module()
-        validated_args = {
-            "tmp_dir": MOCK_TMP_DIR,
-            "generate_device_config": True,
-            "generate_device_doc": False,
-            "config_filename": "/output/config.cfg",
-        }
+def test_load_structured_config_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:
+    """Test that AnsibleActionFail is raised with a message identifying the missing host."""
+    module = action_module()
+    module.tmp_dir = MOCK_TMP_DIR
 
-        with (
-            patch.object(module, "validate_args", return_value=validated_args),
-            patch.object(module, "load_structured_config", return_value={}),
-            patch(f"{MODULE_PATH}.get_device_config", side_effect=RuntimeError("pyavd exploded"), create=True),
-            patch(f"{MODULE_PATH}.raise_action_fail") as mock_raise_fail,
-        ):
-            module.main("test-device", {}, {})
+    mock_file_path = MagicMock()
+    mock_file_path.exists.return_value = False
+    mock_validated_path = MagicMock()
+    mock_validated_path.__truediv__ = MagicMock(return_value=mock_file_path)
 
-        mock_raise_fail.assert_called_once()
-        assert "pyavd exploded" in str(mock_raise_fail.call_args)
+    with (
+        patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(MagicMock(), mock_validated_path)),
+        patch(f"{MODULE_PATH}.AVDVaultHandler"),
+        patch(f"{MODULE_PATH}.AVDFileHandler"),
+        pytest.raises(AnsibleActionFail, match="Missing the validated structured config for host 'my-spine-device'"),
+    ):
+        module.load_structured_config("my-spine-device")
 
 
-class TestRunErrors:
-    def test_raises_when_pyavd_not_installed(self) -> None:
-        """Test that AnsibleActionFail is raised immediately when pyavd is missing."""
-        module = get_action_module()
+def test_main_wraps_exceptions_as_action_fail(action_module: Callable[..., ActionModule]) -> None:
+    """Test that any exception during execution is forwarded to raise_action_fail."""
+    module = action_module()
+    validated_args = {
+        "tmp_dir": MOCK_TMP_DIR,
+        "generate_device_config": True,
+        "generate_device_doc": False,
+        "config_filename": "/output/config.cfg",
+    }
 
-        with (
-            patch(f"{MODULE_PATH}.HAS_PYAVD", new=False),
-            patch("ansible.plugins.action.ActionBase.run", return_value={}),
-            pytest.raises(AnsibleActionFail, match="pyavd"),
-        ):
-            module.run(task_vars={"inventory_hostname": "test-device"})
+    with (
+        patch.object(module, "validate_args", return_value=validated_args),
+        patch.object(module, "load_structured_config", return_value={}),
+        patch(f"{MODULE_PATH}.get_device_config", side_effect=RuntimeError("pyavd exploded"), create=True),
+        pytest.raises(AnsibleActionFail, match="pyavd exploded"),
+    ):
+        module.main("test-device", {}, {})
+
+
+def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
+    """Test that AnsibleActionFail is raised immediately when pyavd is missing."""
+    module = action_module()
+
+    with (
+        patch(f"{MODULE_PATH}.HAS_PYAVD", new=False),
+        patch("ansible.plugins.action.ActionBase.run", return_value={}),
+        pytest.raises(AnsibleActionFail, match="pyavd"),
+    ):
+        module.run(task_vars={"inventory_hostname": "test-device"})
