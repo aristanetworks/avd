@@ -15,7 +15,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 from grpclib import Status
-from grpclib.exceptions import GRPCError
+from grpclib.exceptions import GRPCError, StreamTerminatedError
 
 from pyavd._cv.client.async_decorators import GRPCRequestHandler, LimitCvVersion
 from pyavd._cv.client.exceptions import (
@@ -45,6 +45,76 @@ VALID_VERSION_TESTS = [
     pytest.param("2024.1.5", ("2024.1.0", "2024.1.99"), id="valid_version_2"),
     pytest.param("2025.42.25", ("2025.1.0", "2025.99.99"), id="valid_version_3"),
     pytest.param(CVAAS_VERSION_STRING, (CVAAS_VERSION_STRING, CVAAS_VERSION_STRING), id="valid_version_4"),
+]
+
+STREAM_RESET_RETRY_TESTS = [
+    # Format: failures, error_code, message, async_sleep_calls, log_patterns, outer_exception
+    pytest.param(
+        1,
+        2,
+        None,
+        1,
+        [
+            "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s",
+        ],
+        does_not_raise(),
+        id="ONE_STREAM_RESET_INTERNAL_ERROR_RECOVERS",
+    ),
+    pytest.param(
+        3,
+        2,
+        None,
+        3,
+        [
+            "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
+            "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
+            "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
+        ],
+        does_not_raise(),
+        id="THREE_STREAM_RESET_INTERNAL_ERRORS_RECOVERS",
+    ),
+    pytest.param(
+        6,
+        2,
+        None,
+        5,
+        [
+            "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
+            "Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
+            "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
+            "Attempt 4/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
+            "Attempt 5/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
+        ],
+        pytest.raises(CVGRPCStatusUnavailable),
+        id="SIX_STREAM_RESET_INTERNAL_ERRORS_EXHAUSTED",
+    ),
+    pytest.param(
+        1,
+        0,
+        None,
+        0,
+        [],
+        pytest.raises(CVClientException),
+        id="STREAM_RESET_NO_ERROR_NOT_RETRIED",
+    ),
+    pytest.param(
+        1,
+        20,
+        None,
+        0,
+        [],
+        pytest.raises(CVClientException),
+        id="STREAM_RESET_ERROR_CODE_20_NOT_RETRIED",
+    ),
+    pytest.param(
+        1,
+        2,
+        "Protocol error",
+        0,
+        [],
+        pytest.raises(CVClientException),
+        id="STREAM_RESET_PROTOCOL_ERROR_NOT_RETRIED",
+    ),
 ]
 
 MSG_SIZE_HANDLER_TESTS = [
@@ -86,6 +156,7 @@ class CvClass:
         self._grpc_call_count = defaultdict(int)
         self._grpc_msgsize_unlimited_call_count = defaultdict(int)
         self._grpc_msgsize_limited_call_count = defaultdict(lambda: defaultdict(int))
+        self._stream_reset_call_count = defaultdict(int)
 
     @LimitCvVersion(min_ver="2024.1.0", max_ver="2024.1.99")
     async def version_limited_method(self) -> tuple[str, str]:
@@ -121,6 +192,33 @@ class CvClass:
     async def msgsize_unlimited_grpc_method_exception(self, inner_exception: Exception) -> Exception:
         self._grpc_msgsize_unlimited_call_count[self.msgsize_unlimited_grpc_method_exception.__name__] += 1
         raise inner_exception
+
+    @GRPCRequestHandler(retry_on_stream_reset=True)
+    async def stream_reset_retry_method(self, failures: int = 0, error_code: int = 2, message: str | None = None) -> str:
+        self._stream_reset_call_count[self.stream_reset_retry_method.__name__] += 1
+        if self._stream_reset_call_count[self.stream_reset_retry_method.__name__] <= failures:
+            raise StreamTerminatedError(message if message is not None else f"Stream reset by remote party, error_code: {error_code}")
+        return "gRPC call succeeded"
+
+    @GRPCRequestHandler(retry_on_stream_reset=True)
+    async def mixed_retry_method(self, exceptions: list[Exception]) -> str:
+        self._stream_reset_call_count[self.mixed_retry_method.__name__] += 1
+        if (attempt := self._stream_reset_call_count[self.mixed_retry_method.__name__]) <= len(exceptions):
+            raise exceptions[attempt - 1]
+        return "gRPC call succeeded"
+
+    @GRPCRequestHandler(retry_on_stream_reset=True)
+    async def streaming_with_mid_reset_method(self, items: list[str], fail_on_attempt: int = 1) -> list[str]:
+        """Simulates streaming: processes items one by one, raises RST_STREAM mid-stream on the specified attempt."""
+        self._stream_reset_call_count[self.streaming_with_mid_reset_method.__name__] += 1
+        attempt = self._stream_reset_call_count[self.streaming_with_mid_reset_method.__name__]
+        result = []
+        msg = "Stream reset by remote party, error_code: 2"
+        for i, item in enumerate(items):
+            if attempt == fail_on_attempt and i == len(items) // 2:
+                raise StreamTerminatedError(msg)
+            result.append(item)
+        return result
 
     @GRPCRequestHandler()
     async def msgsize_unlimited_grpc_method_failure(self, failures: int = 0) -> Exception | str:
@@ -628,6 +726,18 @@ async def test_grpc_request_handler_unlimited_success(
             pytest.raises(CVResourceNotFound, match=r"Raising the same CV exception."),
             id="GRPC_DEADLINE_EXCEEDED_DEADLINE_EXCEEDED",
         ),
+        pytest.param(
+            ["Preparing call.*with 1 item"],
+            StreamTerminatedError("Stream reset by remote party, error_code: 2"),
+            pytest.raises(CVClientException),
+            id="STREAM_RESET_INTERNAL_ERROR_NO_RETRY_FLAG",
+        ),
+        pytest.param(
+            ["Preparing call.*with 1 item"],
+            StreamTerminatedError("Protocol error"),
+            pytest.raises(CVClientException),
+            id="STREAM_RESET_PROTOCOL_ERROR_NO_RETRY_FLAG",
+        ),
     ],
 )
 @pytest.mark.parametrize(
@@ -753,6 +863,99 @@ async def test_responses_all_errors(caplog: pytest.LogCaptureFixture) -> None:
         assert isinstance(response, tuple)
         assert response[0].response_id == str(item)
         assert response[1] == f"Error for item {item}"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    (
+        "failures",
+        "error_code",
+        "message",
+        "async_sleep_calls",
+        "log_patterns",
+        "outer_exception",
+    ),
+    STREAM_RESET_RETRY_TESTS,
+)
+async def test_grpc_request_handler_stream_reset_retry(
+    caplog: pytest.LogCaptureFixture,
+    failures: int,
+    error_code: int,
+    message: str | None,
+    async_sleep_calls: int,
+    log_patterns: list[str],
+    outer_exception: ExpectedExceptionContext,
+) -> None:
+    with patch("pyavd._cv.client.async_decorators.asyncio_sleep", new_callable=AsyncMock) as sleep_mock:
+        mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+        with caplog.at_level(logging.WARNING), outer_exception:
+            _ = await mocked_cv_client.stream_reset_retry_method(failures=failures, error_code=error_code, message=message)
+
+        # Assert that log messages match expected log patterns
+        for current_pattern, current_record in zip(log_patterns, caplog.records, strict=False):
+            assert re.search(re.compile(current_pattern), current_record.message)
+
+        # Assert correct number of sleep calls (retries)
+        assert sleep_mock.call_count == async_sleep_calls
+
+        # Assert exponential backoff on retried cases
+        delay_pattern = re.compile(r"Retrying in (?P<delay>\d+)s")
+        current_call_delays = [int(delay_match.group("delay")) for record in caplog.records if (delay_match := delay_pattern.search(record.message))]
+        assert all((y / x == 2) for x, y in pairwise(current_call_delays))
+
+
+@pytest.mark.asyncio
+async def test_grpc_request_handler_stream_reset_mid_stream(caplog: pytest.LogCaptureFixture) -> None:
+    """RST_STREAM occurs mid-stream after processing some items — partial results must not leak and retry must return full response."""
+    items = ["a", "b", "c", "d", "e"]
+
+    with patch("pyavd._cv.client.async_decorators.asyncio_sleep", new_callable=AsyncMock) as sleep_mock:
+        mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+        with caplog.at_level(logging.WARNING):
+            result = await mocked_cv_client.streaming_with_mid_reset_method(items=items, fail_on_attempt=1)
+
+        # Full response from the retried call — no partial results from the failed attempt
+        assert result == items
+
+        # Exactly one retry
+        assert sleep_mock.call_count == 1
+
+        # Log correctly names the RST_STREAM exception
+        assert re.search(
+            re.compile(r"Attempt 1/6 to execute call '.*' returned '.*Stream reset by remote party, error_code: 2.*'\. Retrying in [0-9]+s"),
+            caplog.records[0].message,
+        )
+
+
+@pytest.mark.asyncio
+async def test_grpc_request_handler_mixed_unavailable_and_stream_reset(caplog: pytest.LogCaptureFixture) -> None:
+    """UNAVAILABLE and RST_STREAM INTERNAL_ERROR failures alternate — retry counter is shared and each log names the correct exception."""
+    exceptions = [
+        GRPCError(Status.UNAVAILABLE),
+        StreamTerminatedError("Stream reset by remote party, error_code: 2"),
+        GRPCError(Status.UNAVAILABLE),
+    ]
+    log_patterns = [
+        r"Attempt 1/6 to execute call '.*' returned '.*UNAVAILABLE.*'\. Retrying in [0-9]+s",
+        r"Attempt 2/6 to execute call '.*' returned '.*Stream reset by remote party, error_code: 2.*'\. Retrying in [0-9]+s",
+        r"Attempt 3/6 to execute call '.*' returned '.*UNAVAILABLE.*'\. Retrying in [0-9]+s",
+    ]
+
+    with patch("pyavd._cv.client.async_decorators.asyncio_sleep", new_callable=AsyncMock) as sleep_mock:
+        mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+        with caplog.at_level(logging.WARNING):
+            result = await mocked_cv_client.mixed_retry_method(exceptions=exceptions)
+
+        assert result == "gRPC call succeeded"
+        assert sleep_mock.call_count == 3
+
+        for current_pattern, current_record in zip(log_patterns, caplog.records, strict=False):
+            assert re.search(re.compile(current_pattern), current_record.message)
+
+        # Assert exponential backoff across mixed failure types
+        delay_pattern = re.compile(r"Retrying in (?P<delay>\d+)s")
+        delays = [int(m.group("delay")) for r in caplog.records if (m := delay_pattern.search(r.message))]
+        assert all((y / x == 2) for x, y in pairwise(delays))
 
 
 @pytest.mark.asyncio

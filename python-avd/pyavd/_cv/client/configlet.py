@@ -56,7 +56,7 @@ class ConfigletMixin(Protocol):
 
     configlet_api_version: Literal["v1"] = "v1"
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_configlet_containers(
         self: CVClientProtocol,
         workspace_id: str,
@@ -249,7 +249,7 @@ class ConfigletMixin(Protocol):
 
         return response.value
 
-    @GRPCRequestHandler(list_field="configlet_ids")
+    @GRPCRequestHandler(list_field="configlet_ids", retry_on_stream_reset=True)
     async def get_configlets(
         self: CVClientProtocol,
         workspace_id: str,

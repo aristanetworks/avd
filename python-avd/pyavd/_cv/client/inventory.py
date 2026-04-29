@@ -22,7 +22,7 @@ class InventoryMixin(Protocol):
 
     inventory_api_version: Literal["v1"] = "v1"
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_inventory_devices(
         self: CVClientProtocol,
         devices: set[tuple[str | None, str | None, str | None]] | None = None,
