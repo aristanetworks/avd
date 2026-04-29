@@ -1,6 +1,6 @@
 ---
-type: l2leaf
-l2leaf:
+type: l3leaf
+l3leaf:
   defaults:
   nodes:
     - name: invalid-dot1q-encapsulation-vlan-port-channel-subinterface
