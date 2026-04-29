@@ -732,32 +732,6 @@
             platform: vEOS-lab
         - platforms:
           - 720DP-24ZS
-          feature_support:
-            queue_monitor_length_notify: false
-            poe: true
-            subinterface_mtu: false
-            per_interface_l2_mru: false
-            sflow_subinterfaces: false
-            errdisable_causes:
-              dot1x:
-                detection: false
-                recovery: false
-              dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
-                detection: false
-                recovery: false
-              dot1x_session_replace:
-                detection: false
-              tap_port_init:
-                recovery: false
-          reload_delay:
-            mlag: 300
-            non_mlag: 330
-          digital_twin:
-            platform: vEOS-lab
-        - platforms:
           - 720DP-48ZS
           feature_support:
             queue_monitor_length_notify: false
@@ -779,8 +753,6 @@
                 detection: false
               tap_port_init:
                 recovery: false
-              tapagg:
-                detection: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -833,6 +805,9 @@
                 detection: false
               tap_port_init:
                 recovery: false
+              dot1x_phone_classification:
+                detection: false
+                recovery: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -851,9 +826,6 @@
                 detection: false
                 recovery: false
               dot1x_coa:
-                detection: false
-                recovery: false
-              dot1x_phone_classification:
                 detection: false
                 recovery: false
               dot1x_session_replace:
