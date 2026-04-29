@@ -4206,8 +4206,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {"flooding_suppression_vlans": {"type": FloodingSuppressionVlans}}
             flooding_suppression_vlans: FloodingSuppressionVlans
             """
-            Disable DHCP request flooding to other interfaces in VLAN.
-
+            Suppress flooding of DHCP/DHCPv6 client requests to other interfaces in the specified VLANs.
             Subclass of AvdList with `str` items.
             """
 
@@ -4222,8 +4221,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         flooding_suppression_vlans:
-                           Disable DHCP request flooding to other interfaces in VLAN.
-
+                           Suppress flooding of DHCP/DHCPv6 client requests to other interfaces in the specified VLANs.
                            Subclass of AvdList with `str` items.
 
                     """

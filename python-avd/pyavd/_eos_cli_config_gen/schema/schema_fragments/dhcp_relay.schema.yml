@@ -24,12 +24,15 @@ keys:
         keys:
           flooding_suppression_vlans:
             type: list
-            description: Disable DHCP request flooding to other interfaces in VLAN.
+            description: Suppress flooding of DHCP/DHCPv6 client requests to other interfaces in the specified VLANs.
+            min_length: 1
             items:
               type: str
-              description: |
-                VLAN ID or range(s) of VLAN IDs, <1-4094>.
+              description: |-
+                VLAN ID or range of VLAN IDs, <1-4094>.
                 Example:
                   - 1000
                   - 500-510
                   - 2000,3000
+              convert_types:
+                - int
