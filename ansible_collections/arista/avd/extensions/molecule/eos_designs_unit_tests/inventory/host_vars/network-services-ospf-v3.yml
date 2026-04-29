@@ -1,0 +1,73 @@
+---
+# Tests OSPFv3
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.66.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    virtual_router_mac_address: 00:11:22:33:44:55
+    bgp_as: 666
+  nodes:
+    - name: network-services-ospf-v3
+      id: 142
+      mgmt_ip: 192.168.42.142/24
+
+tenants:
+  - name: Tenant_OSPFv3
+    mac_vrf_vni_base: 10000
+    mac_vrf_id_base: 20000
+    redistribute_mlag_ibgp_peering_vrfs: true
+    vrfs:
+      - name: Tenant_OSPFv3_VRF
+        vrf_vni: 100
+        vrf_id: 42
+        ipv6_ospf:
+          enabled: true
+          router_id: ipv6_ospf_router
+          auto_cost_reference_bandwidth: 10
+          redistribute_bgp:
+            enabled: true
+            route_map: ipv6_ospf_rm
+            include_leaked: true
+          redistribute_connected:
+            enabled: true
+            route_map: ipv6_ospf_rm
+            include_leaked: true
+          redistribute_isis:
+            enabled: true
+            isis_level: level-1
+            route_map: ipv6_ospf_rm
+            include_leaked: true
+          redistribute_ospfv3:
+            enabled: true
+            route_map: ipv6_ospf_rm
+            match_external:
+              enabled: true
+              route_map: ipv6_ospf_rm
+              include_leaked: true
+            match_internal:
+              enabled: true
+              route_map: ipv6_ospf_rm
+            match_nssa_external:
+              enabled: true
+              route_map: ipv6_ospf_rm
+          redistribute_dhcp:
+            enabled: true
+            route_map: ipv6_ospf_rm
+          redistribute_static:
+            enabled: true
+            route_map: ipv6_ospf_rm
+            include_leaked: true
+          nodes: [network-services-ospf-v3]
+        svis:
+          - id: 201
+            name: Tenant_OSPFv3_201
+            description: "Tenant_OSPFv3_201 description"
+            enabled: true
+            ipv6_address: cafe::cafe/64
+            ipv6_enable: true
+            ipv6_ospf:
+              enabled: true
+              point_to_point: true

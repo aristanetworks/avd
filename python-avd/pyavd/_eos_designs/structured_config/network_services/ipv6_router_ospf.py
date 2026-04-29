@@ -45,7 +45,9 @@ class Ipv6RouterOspfMixin(Protocol):
                     raise AristaAvdInvalidInputsError(msg)
 
                 process = EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem(
-                    id=process_id, router_id=self.get_protocol_vrf_router_id(vrf, tenant, vrf.ipv6_ospf.router_id)
+                    id=process_id,
+                    router_id=self.get_protocol_vrf_router_id(vrf, tenant, vrf.ipv6_ospf.router_id),
+                    auto_cost_reference_bandwidth=vrf.ipv6_ospf.auto_cost_reference_bandwidth,
                 )
 
                 if vrf.ipv6_ospf.structured_config:
@@ -56,6 +58,10 @@ class Ipv6RouterOspfMixin(Protocol):
                 if vrf.name != "default":
                     process.vrf = vrf.name
                 self._update_ipv6_ospf_redistribute(process, vrf)
+
+                # In theory only the underlay could have created an OSPF process before that.
+                maybe_existing_process = self.structured_config.ipv6_router_ospf.process_ids.obtain(process_id)
+                maybe_existing_process._combine(process)
 
     def _update_ipv6_ospf_redistribute(
         self: AvdStructuredConfigNetworkServicesProtocol,

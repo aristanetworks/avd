@@ -399,7 +399,7 @@ $defs:
             description: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
             convert_types:
               - int
-            required: true
+            default: "0.0.0.0"
           point_to_point:
             type: bool
             default: false

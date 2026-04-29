@@ -32306,10 +32306,18 @@ class EosDesigns(EosDesignsRootModel):
             class Ipv6Ospf(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str}, "point_to_point": {"type": bool, "default": False}}
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "area": {"type": str, "default": "0.0.0.0"},
+                    "point_to_point": {"type": bool, "default": False},
+                }
                 enabled: bool | None
                 area: str
-                """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
+                """
+                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                Default value: `"0.0.0.0"`
+                """
                 point_to_point: bool
                 """Default value: `False`"""
 
@@ -33451,10 +33459,18 @@ class EosDesigns(EosDesignsRootModel):
         class Ipv6Ospf(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str}, "point_to_point": {"type": bool, "default": False}}
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "area": {"type": str, "default": "0.0.0.0"},
+                "point_to_point": {"type": bool, "default": False},
+            }
             enabled: bool | None
             area: str
-            """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
+            """
+            OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+            Default value: `"0.0.0.0"`
+            """
             point_to_point: bool
             """Default value: `False`"""
 
@@ -63488,10 +63504,18 @@ class EosDesigns(EosDesignsRootModel):
                             class Ipv6Ospf(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str}, "point_to_point": {"type": bool, "default": False}}
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "area": {"type": str, "default": "0.0.0.0"},
+                                    "point_to_point": {"type": bool, "default": False},
+                                }
                                 enabled: bool | None
                                 area: str
-                                """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
+                                """
+                                OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                                Default value: `"0.0.0.0"`
+                                """
                                 point_to_point: bool
                                 """Default value: `False`"""
 
@@ -64660,10 +64684,18 @@ class EosDesigns(EosDesignsRootModel):
                         class Ipv6Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "area": {"type": str}, "point_to_point": {"type": bool, "default": False}}
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "area": {"type": str, "default": "0.0.0.0"},
+                                "point_to_point": {"type": bool, "default": False},
+                            }
                             enabled: bool | None
                             area: str
-                            """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
+                            """
+                            OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                            Default value: `"0.0.0.0"`
+                            """
                             point_to_point: bool
                             """Default value: `False`"""
 

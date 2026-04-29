@@ -58,11 +58,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].node") | String | Required, Unique |  |  | Node inventory hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_ospf") | Dictionary |  |  |  | OSPFv3 interface configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_ospf.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_ospf.area") | String | Required |  |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_ospf.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;point_to_point</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_ospf.point_to_point") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_ospf") | Dictionary |  |  |  | OSPFv3 interface configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_ospf.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_ospf.area") | String | Required |  |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_ospf.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;point_to_point</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_ospf.point_to_point") | Boolean |  | `False` |  |  |
     | [<samp>svi_profiles</samp>](## "svi_profiles") | List, items: Dictionary |  |  |  | Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.<br>Keys are the same used under SVIs. Keys defined under SVIs take precedence.<br>Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:<br>1. svi.nodes[inventory_hostname].structured_config<br>2. svi_profile.nodes[inventory_hostname].structured_config<br>3. svi_parent_profile.nodes[inventory_hostname].structured_config<br>4. svi.structured_config<br>5. svi_profile.structured_config<br>6. svi_parent_profile.structured_config<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "svi_profiles.[].profile") | String | Required, Unique |  |  | Profile name. |
@@ -70,11 +70,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "svi_profiles.[].nodes.[].node") | String | Required, Unique |  |  | Node inventory hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf</samp>](## "svi_profiles.[].nodes.[].ipv6_ospf") | Dictionary |  |  |  | OSPFv3 interface configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].ipv6_ospf.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].nodes.[].ipv6_ospf.area") | String | Required |  |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].nodes.[].ipv6_ospf.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;point_to_point</samp>](## "svi_profiles.[].nodes.[].ipv6_ospf.point_to_point") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf</samp>](## "svi_profiles.[].ipv6_ospf") | Dictionary |  |  |  | OSPFv3 interface configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].ipv6_ospf.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].ipv6_ospf.area") | String | Required |  |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].ipv6_ospf.area") | String |  | `0.0.0.0` |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;point_to_point</samp>](## "svi_profiles.[].ipv6_ospf.point_to_point") | Boolean |  | `False` |  |  |
 
 === "YAML"
@@ -198,7 +198,7 @@
                       enabled: <bool>
 
                       # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-                      area: <str; required>
+                      area: <str; default="0.0.0.0">
                       point_to_point: <bool; default=False>
 
                 # OSPFv3 interface configuration.
@@ -206,7 +206,7 @@
                   enabled: <bool>
 
                   # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-                  area: <str; required>
+                  area: <str; default="0.0.0.0">
                   point_to_point: <bool; default=False>
 
     # Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
@@ -235,7 +235,7 @@
               enabled: <bool>
 
               # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-              area: <str; required>
+              area: <str; default="0.0.0.0">
               point_to_point: <bool; default=False>
 
         # OSPFv3 interface configuration.
@@ -243,6 +243,6 @@
           enabled: <bool>
 
           # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-          area: <str; required>
+          area: <str; default="0.0.0.0">
           point_to_point: <bool; default=False>
     ```

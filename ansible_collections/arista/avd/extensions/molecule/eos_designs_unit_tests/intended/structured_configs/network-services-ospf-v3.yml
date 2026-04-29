@@ -1,0 +1,179 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: network-services-ospf-v3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:11:22:33:44:55
+ipv6_router_ospf:
+  process_ids:
+  - id: 42
+    vrf: Tenant_OSPFv3_VRF
+    router_id: ipv6_ospf_router
+    redistribute:
+      bgp:
+        enabled: true
+        route_map: ipv6_ospf_rm
+        include_leaked: true
+      connected:
+        enabled: true
+        route_map: ipv6_ospf_rm
+        include_leaked: true
+      isis:
+        enabled: true
+        isis_level: level-1
+        route_map: ipv6_ospf_rm
+        include_leaked: true
+      ospfv3:
+        enabled: true
+        match_external:
+          enabled: true
+          route_map: ipv6_ospf_rm
+          include_leaked: true
+        match_internal:
+          enabled: true
+          route_map: ipv6_ospf_rm
+        match_nssa_external:
+          enabled: true
+          route_map: ipv6_ospf_rm
+        route_map: ipv6_ospf_rm
+      static:
+        enabled: true
+        route_map: ipv6_ospf_rm
+        include_leaked: true
+      dhcp:
+        enabled: true
+        route_map: ipv6_ospf_rm
+    auto_cost_reference_bandwidth: 10
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.66.142/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.142.142/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.42.142/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.66.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.142.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '666'
+  router_id: 192.168.66.142
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 201
+    metadata:
+      tenants:
+      - Tenant_OSPFv3
+    rd: 192.168.66.142:20201
+    route_targets:
+      both:
+      - 20201:20201
+    redistribute_routes:
+    - learned
+  vrfs:
+  - name: Tenant_OSPFv3_VRF
+    rd: 192.168.66.142:42
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+    router_id: 192.168.66.142
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan201
+  description: Tenant_OSPFv3_201 description
+  shutdown: false
+  vrf: Tenant_OSPFv3_VRF
+  ipv6_enable: true
+  ipv6_addresses:
+  - cafe::cafe/64
+  ipv6_ospf:
+    process:
+      id: 42
+      area: 0.0.0.0
+    network_point_to_point: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 201
+  name: Tenant_OSPFv3_201
+  metadata:
+    tenants:
+    - Tenant_OSPFv3
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: Tenant_OSPFv3_VRF
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3
+vxlan_interface:
+  vxlan1:
+    description: network-services-ospf-v3_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 201
+        vni: 10201
+      vrfs:
+      - name: Tenant_OSPFv3_VRF
+        vni: 100

@@ -1570,6 +1570,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vr
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-ospf-settings.md
 --8<--
 
+#### Network services VRF OSPFv3 configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-ospfv3-settings.md
+--8<--
+
 #### Network services L2 VLANs configuration
 
 --8<--
