@@ -2,7 +2,7 @@
 fabric_name: FABRIC_UNDERLAY_ROUTER_WITH_PORT_CHANNEL_UPLINK
 
 avd_design_future:
-  raise_for_underlay_router_with_port_channel_uplink_type: true
+  raise_for_underlay_router_with_uplink_type_port_channel: true
 
 type: l3leaf
 l3leaf:

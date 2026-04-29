@@ -12,7 +12,7 @@
     | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
     | [<samp>&nbsp;&nbsp;raise_for_port_channels_without_members</samp>](## "avd_design_future.raise_for_port_channels_without_members") | Boolean |  | `False` |  | Raise an error if an L3 Port-Channel is configured without any member interfaces. |
     | [<samp>&nbsp;&nbsp;only_configure_mlag_vrfs_peer_group_when_used</samp>](## "avd_design_future.only_configure_mlag_vrfs_peer_group_when_used") | Boolean |  | `False` |  | Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed. |
-    | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_port_channel_uplink_type</samp>](## "avd_design_future.raise_for_underlay_router_with_port_channel_uplink_type") | Boolean |  | `False` |  | Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
+    | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
 
 === "YAML"
 
@@ -34,5 +34,5 @@
 
       # Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
       # since this combination is not supported.
-      raise_for_underlay_router_with_port_channel_uplink_type: <bool; default=False>
+      raise_for_underlay_router_with_uplink_type_port_channel: <bool; default=False>
     ```
