@@ -31768,7 +31768,6 @@ class EosDesigns(EosDesignsRootModel):
                 of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be
                 used directly as the source interface.
-                - If not set, EOS uses the VRF on the SVI.
                 """
                 source_vrf: str | None
                 """
@@ -31819,7 +31818,6 @@ class EosDesigns(EosDesignsRootModel):
                                of the two options above depending on the value of `default_mgmt_method`.
                                - Any other string will be
                                used directly as the source interface.
-                               - If not set, EOS uses the VRF on the SVI.
                             source_vrf:
                                VRF to originate DHCP relay packets to DHCP server.
                                The value will be interpreted according to these
@@ -32927,7 +32925,6 @@ class EosDesigns(EosDesignsRootModel):
             of the two options above depending on the value of `default_mgmt_method`.
             - Any other string will be
             used directly as the source interface.
-            - If not set, EOS uses the VRF on the SVI.
             """
             source_vrf: str | None
             """
@@ -32978,7 +32975,6 @@ class EosDesigns(EosDesignsRootModel):
                            of the two options above depending on the value of `default_mgmt_method`.
                            - Any other string will be
                            used directly as the source interface.
-                           - If not set, EOS uses the VRF on the SVI.
                         source_vrf:
                            VRF to originate DHCP relay packets to DHCP server.
                            The value will be interpreted according to these
@@ -61843,7 +61839,6 @@ class EosDesigns(EosDesignsRootModel):
                         of the two options above depending on the value of `default_mgmt_method`.
                         - Any other string will be
                         used directly as the source interface.
-                        - If not set, EOS uses the VRF on the SVI.
                         """
                         source_vrf: str | None
                         """
@@ -61894,7 +61889,6 @@ class EosDesigns(EosDesignsRootModel):
                                        of the two options above depending on the value of `default_mgmt_method`.
                                        - Any other string will be
                                        used directly as the source interface.
-                                       - If not set, EOS uses the VRF on the SVI.
                                     source_vrf:
                                        VRF to originate DHCP relay packets to DHCP server.
                                        The value will be interpreted according to these
@@ -62616,7 +62610,6 @@ class EosDesigns(EosDesignsRootModel):
                                 of the two options above depending on the value of `default_mgmt_method`.
                                 - Any other string will be
                                 used directly as the source interface.
-                                - If not set, EOS uses the VRF on the SVI.
                                 """
                                 source_vrf: str | None
                                 """
@@ -62667,7 +62660,6 @@ class EosDesigns(EosDesignsRootModel):
                                                of the two options above depending on the value of `default_mgmt_method`.
                                                - Any other string will be
                                                used directly as the source interface.
-                                               - If not set, EOS uses the VRF on the SVI.
                                             source_vrf:
                                                VRF to originate DHCP relay packets to DHCP server.
                                                The value will be interpreted according to these
@@ -63808,7 +63800,6 @@ class EosDesigns(EosDesignsRootModel):
                             of the two options above depending on the value of `default_mgmt_method`.
                             - Any other string will be
                             used directly as the source interface.
-                            - If not set, EOS uses the VRF on the SVI.
                             """
                             source_vrf: str | None
                             """
@@ -63859,7 +63850,6 @@ class EosDesigns(EosDesignsRootModel):
                                            of the two options above depending on the value of `default_mgmt_method`.
                                            - Any other string will be
                                            used directly as the source interface.
-                                           - If not set, EOS uses the VRF on the SVI.
                                         source_vrf:
                                            VRF to originate DHCP relay packets to DHCP server.
                                            The value will be interpreted according to these

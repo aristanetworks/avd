@@ -8696,9 +8696,7 @@ $defs:
                         interface for one of the two options above depending on the
                         value of `default_mgmt_method`.
 
-                        - Any other string will be used directly as the source interface.
-
-                        - If not set, EOS uses the VRF on the SVI.'
+                        - Any other string will be used directly as the source interface.'
                     source_vrf:
                       type: str
                       description: "VRF to originate DHCP relay packets to DHCP server.\nThe
@@ -14265,9 +14263,7 @@ $defs:
                 - `use_default_mgmt_method_interface` will configure the source interface
                 for one of the two options above depending on the value of `default_mgmt_method`.
 
-                - Any other string will be used directly as the source interface.
-
-                - If not set, EOS uses the VRF on the SVI.'
+                - Any other string will be used directly as the source interface.'
             source_vrf:
               type: str
               description: "VRF to originate DHCP relay packets to DHCP server.\nThe
