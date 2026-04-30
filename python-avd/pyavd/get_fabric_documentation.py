@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ipaddress import IPv4Network, ip_network
+from ipaddress import ip_network
 from typing import TYPE_CHECKING, cast
 
 from pyavd._utils import get, get_ip_from_ip_prefix
@@ -218,17 +218,17 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     default_kind = "arista_ceos"
 
     # find Containerlab mgmt network and raise and error if nodes are not in the same subnet
-    unique_mgmt_networks = set([ 
-        ip_network(mgmt_ip, strict=False) for device in sorted(fabric_documentation_facts.avd_facts)
-        if (mgmt_ip := fabric_documentation_facts.avd_facts[device].mgmt_ip) and mgmt_ip != "dhcp"
-    ])
+    unique_mgmt_networks = set(
+        [
+            ip_network(mgmt_ip, strict=False)
+            for device in sorted(fabric_documentation_facts.avd_facts)
+            if (mgmt_ip := fabric_documentation_facts.avd_facts[device].mgmt_ip) and mgmt_ip != "dhcp"
+        ]
+    )
 
     if len(unique_mgmt_networks) > 1:
         mgmt_networks = ", ".join(f"{network}" for network in unique_mgmt_networks)
-        msg = (
-            "Containerlab Digital Twin requires all node management IPv4 addresses to belong to the same subnet."
-            f"Found multiple subnets: {mgmt_networks}."
-        )
+        msg = f"Containerlab Digital Twin requires all node management IPv4 addresses to belong to the same subnet.Found multiple subnets: {mgmt_networks}."
         raise AristaAvdError(msg)
 
     return ContainerlabDigitalTwin(
