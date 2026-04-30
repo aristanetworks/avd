@@ -8,9 +8,10 @@ topology:
     arista_ceos:
       enforce-startup-config: true
       image: arista/ceos:latest
+  mgmt:
+    network: custom_mgmt
+    ipv4-subnet: 172.16.1.0/24
   nodes:
-    containerlab-single-switch-fabric-1:
-      mgmt-ipv4: 192.0.2.1
     dc1-leaf1a:
       mgmt-ipv4: 172.16.1.101
     dc1-leaf2a:

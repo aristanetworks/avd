@@ -5,6 +5,7 @@
 import pytest
 
 from pyavd import get_fabric_documentation
+from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd.api.fabric_documentation import ContainerlabDigitalTwin, FabricDocumentation
 
 
@@ -47,7 +48,7 @@ def test_get_fabric_documentation_with_no_connected_endpoints(monkeypatch: pytes
 def test_get_fabric_documentation_containerlab(digital_twin_enabled: bool) -> None:
     """Test Containerlab environment selection and the Digital Twin enable flag."""
     fabric_documentation_obj = get_fabric_documentation(
-        avd_facts={},
+        avd_facts={"leaf1": EosDesignsFacts(mgmt_ip="192.0.2.1/24")},
         structured_configs={"leaf1": {"metadata": {"digital_twin": {"environment": "containerlab"}}}},
         fabric_name="CONTAINERLAB_FABRIC",
         fabric_documentation=False,
@@ -59,5 +60,6 @@ def test_get_fabric_documentation_containerlab(digital_twin_enabled: bool) -> No
         assert isinstance(fabric_documentation_obj.digital_twin, ContainerlabDigitalTwin)
         assert fabric_documentation_obj.digital_twin.name == "CONTAINERLAB_FABRIC, Containerlab Digital Twin"
         assert fabric_documentation_obj.digital_twin.prefix == "avd-dt"
+        assert fabric_documentation_obj.digital_twin.topology.mgmt.ipv4_subnet == "192.0.2.0/24"
     else:
         assert fabric_documentation_obj.digital_twin is None
