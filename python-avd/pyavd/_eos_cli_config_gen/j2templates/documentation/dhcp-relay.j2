@@ -21,6 +21,9 @@
 {%     else %}
 - DHCP Relay is enabled for MLAG peer-link requests
 {%     endif %}
+{%     if dhcp_relay.client_requests.flooding_suppression_vlans is arista.avd.defined %}
+- Client requests flooding suppression for VLANs: {{ dhcp_relay.client_requests.flooding_suppression_vlans | arista.avd.natural_sort | join(',') }}
+{%     endif %}
 {%     if dhcp_relay.servers is arista.avd.defined %}
 
 | DHCP Relay Servers |
