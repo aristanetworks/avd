@@ -88,13 +88,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospf.process_ids.[].graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospf.process_ids.[].graceful_restart_helper") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp_sync_default</samp>](## "router_ospf.process_ids.[].mpls_ldp_sync_default") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segment_routing</samp>](## "router_ospf.process_ids.[].segment_routing") | Dictionary |  |  |  | OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospf.process_ids.[].segment_routing.enabled") | Boolean |  |  |  | Enable Segment Routing MPLS. When true, renders 'segment-routing mpls' with 'no shutdown'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_segments</samp>](## "router_ospf.process_ids.[].segment_routing.prefix_segments") | List, items: Dictionary |  |  |  | Prefix Segment Identifier (Prefix-SID) configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_ospf.process_ids.[].segment_routing.prefix_segments.[].prefix") | String | Required, Unique |  |  | IPv4 prefix (e.g. 192.0.2.1/32). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index</samp>](## "router_ospf.process_ids.[].segment_routing.prefix_segments.[].index") | Integer | Required |  | Min: 0<br>Max: 65535 | SID index value. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;adjacency_segment</samp>](## "router_ospf.process_ids.[].segment_routing.adjacency_segment") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allocation</samp>](## "router_ospf.process_ids.[].segment_routing.adjacency_segment.allocation") | String |  |  | Valid Values:<br>- <code>all-interfaces</code><br>- <code>none</code><br>- <code>sr-peers</code> | Adjacency segment allocation mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segment_routing_mpls</samp>](## "router_ospf.process_ids.[].segment_routing_mpls") | Dictionary |  |  |  | OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospf.process_ids.[].segment_routing_mpls.enabled") | Boolean | Required |  |  | Enable Segment Routing MPLS. When true, renders 'segment-routing mpls'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "router_ospf.process_ids.[].segment_routing_mpls.shutdown") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_segments</samp>](## "router_ospf.process_ids.[].segment_routing_mpls.prefix_segments") | List, items: Dictionary |  |  |  | Prefix Segment Identifier (Prefix-SID) configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_ospf.process_ids.[].segment_routing_mpls.prefix_segments.[].prefix") | String | Required, Unique |  |  | IPv4 prefix (e.g. 192.0.2.1/32). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index</samp>](## "router_ospf.process_ids.[].segment_routing_mpls.prefix_segments.[].index") | Integer | Required |  | Min: 0<br>Max: 65535 | SID index value. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;adjacency_segment_allocation</samp>](## "router_ospf.process_ids.[].segment_routing_mpls.adjacency_segment_allocation") | String |  |  | Valid Values:<br>- <code>all-interfaces</code><br>- <code>none</code><br>- <code>sr-peers</code> | Adjacency segment allocation mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_ospf.process_ids.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration. |
 
 === "YAML"
@@ -232,10 +232,11 @@
           mpls_ldp_sync_default: <bool>
 
           # OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.
-          segment_routing:
+          segment_routing_mpls:
 
-            # Enable Segment Routing MPLS. When true, renders 'segment-routing mpls' with 'no shutdown'.
-            enabled: <bool>
+            # Enable Segment Routing MPLS. When true, renders 'segment-routing mpls'.
+            enabled: <bool; required>
+            shutdown: <bool>
 
             # Prefix Segment Identifier (Prefix-SID) configuration.
             prefix_segments:
@@ -245,10 +246,9 @@
 
                 # SID index value.
                 index: <int; 0-65535; required>
-            adjacency_segment:
 
-              # Adjacency segment allocation mode.
-              allocation: <str; "all-interfaces" | "none" | "sr-peers">
+            # Adjacency segment allocation mode.
+            adjacency_segment_allocation: <str; "all-interfaces" | "none" | "sr-peers">
 
           # Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration.
           eos_cli: <str>

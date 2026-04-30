@@ -61725,7 +61725,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class SegmentRouting(AvdModel):
+            class SegmentRoutingMpls(AvdModel):
                 """Subclass of AvdModel."""
 
                 class PrefixSegmentsItem(AvdModel):
@@ -61759,35 +61759,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 PrefixSegments._item_type = PrefixSegmentsItem
 
-                class AdjacencySegment(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    Allocation: TypeAlias = Literal["all-interfaces", "none", "sr-peers"]
-                    _fields: ClassVar[dict] = {"allocation": {"type": str}}
-                    allocation: Allocation | None
-                    """Adjacency segment allocation mode."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, allocation: Allocation | None | UndefinedType = Undefined) -> None:
-                            """
-                            AdjacencySegment.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                allocation: Adjacency segment allocation mode.
-
-                            """
-
+                AdjacencySegmentAllocation: TypeAlias = Literal["all-interfaces", "none", "sr-peers"]
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
+                    "shutdown": {"type": bool},
                     "prefix_segments": {"type": PrefixSegments},
-                    "adjacency_segment": {"type": AdjacencySegment},
+                    "adjacency_segment_allocation": {"type": str},
                 }
-                enabled: bool | None
-                """Enable Segment Routing MPLS. When true, renders 'segment-routing mpls' with 'no shutdown'."""
+                enabled: bool
+                """Enable Segment Routing MPLS. When true, renders 'segment-routing mpls'."""
+                shutdown: bool | None
                 prefix_segments: PrefixSegments
                 """
                 Prefix Segment Identifier (Prefix-SID) configuration.
@@ -61795,32 +61776,34 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdIndexedList with
                 `PrefixSegmentsItem` items. Primary key is `prefix` (`str`).
                 """
-                adjacency_segment: AdjacencySegment
-                """Subclass of AvdModel."""
+                adjacency_segment_allocation: AdjacencySegmentAllocation | None
+                """Adjacency segment allocation mode."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
-                        enabled: bool | None | UndefinedType = Undefined,
+                        enabled: bool | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
                         prefix_segments: PrefixSegments | UndefinedType = Undefined,
-                        adjacency_segment: AdjacencySegment | UndefinedType = Undefined,
+                        adjacency_segment_allocation: AdjacencySegmentAllocation | None | UndefinedType = Undefined,
                     ) -> None:
                         """
-                        SegmentRouting.
+                        SegmentRoutingMpls.
 
 
                         Subclass of AvdModel.
 
                         Args:
-                            enabled: Enable Segment Routing MPLS. When true, renders 'segment-routing mpls' with 'no shutdown'.
+                            enabled: Enable Segment Routing MPLS. When true, renders 'segment-routing mpls'.
+                            shutdown: shutdown
                             prefix_segments:
                                Prefix Segment Identifier (Prefix-SID) configuration.
 
                                Subclass of AvdIndexedList with
                                `PrefixSegmentsItem` items. Primary key is `prefix` (`str`).
-                            adjacency_segment: Subclass of AvdModel.
+                            adjacency_segment_allocation: Adjacency segment allocation mode.
 
                         """
 
@@ -61848,7 +61831,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "graceful_restart": {"type": GracefulRestart},
                 "graceful_restart_helper": {"type": bool},
                 "mpls_ldp_sync_default": {"type": bool},
-                "segment_routing": {"type": SegmentRouting},
+                "segment_routing_mpls": {"type": SegmentRoutingMpls},
                 "eos_cli": {"type": str},
             }
             id: int
@@ -61889,7 +61872,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             graceful_restart_helper: bool | None
             mpls_ldp_sync_default: bool | None
-            segment_routing: SegmentRouting
+            segment_routing_mpls: SegmentRoutingMpls
             """
             OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.
 
@@ -61926,7 +61909,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
                     graceful_restart_helper: bool | None | UndefinedType = Undefined,
                     mpls_ldp_sync_default: bool | None | UndefinedType = Undefined,
-                    segment_routing: SegmentRouting | UndefinedType = Undefined,
+                    segment_routing_mpls: SegmentRoutingMpls | UndefinedType = Undefined,
                     eos_cli: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -61959,7 +61942,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         graceful_restart: Subclass of AvdModel.
                         graceful_restart_helper: graceful_restart_helper
                         mpls_ldp_sync_default: mpls_ldp_sync_default
-                        segment_routing:
+                        segment_routing_mpls:
                            OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.
 
                            Subclass of AvdModel.

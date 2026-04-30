@@ -8527,6 +8527,7 @@ router traffic-engineering
 | 700 | 10.255.0.1 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 | 701 | 10.255.0.2 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 | 702 | 10.255.0.3 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+| 703 | 10.255.0.4 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Distance
 
@@ -8577,11 +8578,12 @@ router traffic-engineering
 
 #### Router OSPF Segment Routing
 
-| Process ID | SR Enabled | Adjacency Segment Allocation |
-| ---------- | ---------- | ---------------------------- |
-| 700 | True | all-interfaces |
-| 701 | False | sr-peers |
-| 702 | - | none |
+| Process ID | SR Enabled | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------- | ---------------------------- | -------- |
+| 700 | True | all-interfaces | False |
+| 701 | True | sr-peers | True |
+| 702 | True | none | - |
+| 703 | False | - | - |
 
 ##### OSPF Prefix Segments
 
@@ -8713,6 +8715,7 @@ router ospf 700
 router ospf 701
    router-id 10.255.0.2
    segment-routing mpls
+      shutdown
       prefix-segment 192.0.2.0/24 index 300
       adjacency-segment allocation sr-peers
 !
@@ -8720,6 +8723,9 @@ router ospf 702
    router-id 10.255.0.3
    segment-routing mpls
       adjacency-segment allocation none
+!
+router ospf 703
+   router-id 10.255.0.4
 !
 ip ospf router-id output-format hostnames
 ```

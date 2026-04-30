@@ -187,26 +187,30 @@ router_ospf:
             metric_type: 1
     - id: 700
       router_id: 10.255.0.1
-      segment_routing:
+      segment_routing_mpls:
         enabled: true
+        shutdown: false
         prefix_segments:
           - prefix: 10.255.0.1/32
             index: 100
           - prefix: 10.255.0.2/32
             index: 200
-        adjacency_segment:
-          allocation: all-interfaces
+        adjacency_segment_allocation: all-interfaces
     - id: 701
       router_id: 10.255.0.2
-      segment_routing:
-        enabled: false
+      segment_routing_mpls:
+        enabled: true
+        shutdown: true
         prefix_segments:
           - prefix: 192.0.2.0/24
             index: 300
-        adjacency_segment:
-          allocation: sr-peers
+        adjacency_segment_allocation: sr-peers
     - id: 702
       router_id: 10.255.0.3
-      segment_routing:
-        adjacency_segment:
-          allocation: none
+      segment_routing_mpls:
+        enabled: true
+        adjacency_segment_allocation: none
+    - id: 703
+      router_id: 10.255.0.4
+      segment_routing_mpls:
+        enabled: false
