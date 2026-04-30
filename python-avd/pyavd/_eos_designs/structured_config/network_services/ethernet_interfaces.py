@@ -119,9 +119,7 @@ class EthernetInterfacesMixin(Protocol):
 
                 interface_name = l3_interface.interfaces[node_index]
                 ip_address = l3_interface.ip_addresses[node_index] if l3_interface.ip_addresses else None
-                interface_ip = ip_address
-                if interface_ip and "/" in interface_ip:
-                    interface_ip = get_ip_from_ip_prefix(interface_ip)
+                interface_ip = get_ip_from_ip_prefix(ip_address) if ip_address and "/" in ip_address else ip_address
                 # if 'descriptions' is set, it is preferred
                 interface_description = l3_interface.descriptions[node_index] if l3_interface.descriptions else l3_interface.description
                 interface = EosCliConfigGen.EthernetInterfacesItem(
