@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from ipaddress import IPv4Network, ip_network
 from typing import TYPE_CHECKING, cast
 
 from pyavd._utils import get, get_ip_from_ip_prefix
@@ -15,6 +16,7 @@ from pyavd.api.fabric_documentation import (
     ContainerlabDigitalTwin,
     ContainerlabKind,
     ContainerlabLinkSettings,
+    ContainerlabMgmt,
     ContainerlabNode,
     ContainerlabTopology,
     FabricDocumentation,
@@ -194,6 +196,8 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     Containerlab nodes with management addresses under `topology.nodes` and
     inter-switch links under `topology.links`.
     """
+    from pyavd._errors import AristaAvdError  # noqa: PLC0415
+
     nodes = {
         device: ContainerlabNode(mgmt_ipv4=get_ip_from_ip_prefix(mgmt_ip))
         for device in sorted(fabric_documentation_facts.avd_facts)
@@ -213,6 +217,20 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
     ]
     default_kind = "arista_ceos"
 
+    # find Containerlab mgmt network and raise and error if nodes are not in the same subnet
+    unique_mgmt_networks = set([ 
+        ip_network(mgmt_ip, strict=False) for device in sorted(fabric_documentation_facts.avd_facts)
+        if (mgmt_ip := fabric_documentation_facts.avd_facts[device].mgmt_ip) and mgmt_ip != "dhcp"
+    ])
+
+    if len(unique_mgmt_networks) > 1:
+        mgmt_networks = ", ".join(f"{network}" for network in unique_mgmt_networks)
+        msg = (
+            "Containerlab Digital Twin requires all node management IPv4 addresses to belong to the same subnet."
+            f"Found multiple subnets: {mgmt_networks}."
+        )
+        raise AristaAvdError(msg)
+
     return ContainerlabDigitalTwin(
         name=f"{fabric_documentation_facts.fabric_name}, Containerlab Digital Twin",
         prefix="avd-dt",
@@ -224,6 +242,7 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
                     image="arista/ceos:latest",
                 )
             },
+            mgmt=ContainerlabMgmt(network="custom_mgmt", ipv4_subnet=str(next(iter(unique_mgmt_networks)))),
             nodes=nodes,
             links=tuple(links),
         ),

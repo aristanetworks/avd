@@ -32,9 +32,16 @@ class ContainerlabKind:
 
 
 @dataclass(frozen=True)
+class ContainerlabMgmt:
+    network: str
+    ipv4_subnet: str = field(metadata={"yaml_key": "ipv4-subnet"})
+
+
+@dataclass(frozen=True)
 class ContainerlabTopology:
     defaults: ContainerlabDefaults
     kinds: dict[str, ContainerlabKind]
+    mgmt: ContainerlabMgmt
     nodes: dict[str, ContainerlabNode]
     links: tuple[ContainerlabLinkSettings, ...]
 

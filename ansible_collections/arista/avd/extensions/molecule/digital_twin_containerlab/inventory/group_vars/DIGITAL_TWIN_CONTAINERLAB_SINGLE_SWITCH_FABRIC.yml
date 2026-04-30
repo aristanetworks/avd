@@ -1,6 +1,0 @@
----
-l2leaf:
-  nodes:
-    - name: containerlab-single-switch-fabric-1
-      id: 1
-      mgmt_ip: 192.0.2.1/32
