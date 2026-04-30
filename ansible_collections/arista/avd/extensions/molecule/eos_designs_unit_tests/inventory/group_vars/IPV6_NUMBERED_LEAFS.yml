@@ -146,7 +146,7 @@ tenants:
           # Loopback interface number
           loopback: 10
           # Loopback ip range, a unique ip is derived from this ranged and assigned
-          # to each l3 leaf based on it's unique id.
+          # to each l3 leaf based on its unique id.
           loopback_ip_range: 10.255.10.0/27
         svis:
           # SVI definitions.
