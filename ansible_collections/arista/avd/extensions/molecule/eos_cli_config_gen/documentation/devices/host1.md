@@ -1906,7 +1906,7 @@ address locking
 
 #### Auto-Certificate Profile AVD_AUTO_CERTIFICATE_PROFILE Parameters
 
-**Distinguished Name**
+##### Distinguished Name
 
 | Field | Value |
 | ----- | ----- |
@@ -1919,7 +1919,7 @@ address locking
 | Serial Number | 123abc |
 | State | CA |
 
-**Subject Alternative Name**
+##### Subject Alternative Name
 
 | Field | Value |
 | ----- | ----- |
@@ -1930,7 +1930,7 @@ address locking
 
 #### Auto-Certificate Profile AVD_AUTO_CERTIFICATE_PROFILE_system Parameters
 
-**Distinguished Name**
+##### Distinguished Name
 
 | Field | Value |
 | ----- | ----- |
