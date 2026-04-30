@@ -5,3 +5,8 @@ dhcp_relay:
     - dhcp-relay-server1
   tunnel_requests_disabled: true
   mlag_peerlink_requests_disabled: true
+  client_requests:
+    flooding_suppression_vlans:
+      - 1000
+      - 500-510
+      - 2000,3000
