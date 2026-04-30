@@ -1921,10 +1921,10 @@ address locking
 
 | Field | Value |
 | ----- | ----- |
-| Dns | avd.arista.com, avd2.arista.com |
+| DNS | avd.arista.com, avd2.arista.com |
 | Email | noreply@arista.com, support@arista.com |
-| Ip | 198.51.100.42, 198.51.100.43 |
-| Uri | https://avd.arista.com/, https://avd2.arista.com/ |
+| IP | 198.51.100.42, 198.51.100.43 |
+| URI | https://avd.arista.com/, https://avd2.arista.com/ |
 
 #### Auto-Certificate Profile AVD_AUTO_CERTIFICATE_PROFILE_system Parameters
 
