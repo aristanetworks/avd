@@ -352,6 +352,13 @@ keys:
         description: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when
           needed.
         default: false
+      raise_for_underlay_router_with_uplink_type_port_channel:
+        type: bool
+        description: 'Raise an error if a node has both ''underlay_router: true''
+          and ''uplink_type: port-channel'' set,
+
+          since this combination is not supported.'
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
