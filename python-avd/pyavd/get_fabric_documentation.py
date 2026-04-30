@@ -11,7 +11,9 @@ from pyavd.api.fabric_documentation import (
     ActLinkSettings,
     ActNodeSettings,
     ActNodeTypeSettings,
+    ContainerlabDefaults,
     ContainerlabDigitalTwin,
+    ContainerlabKind,
     ContainerlabLinkSettings,
     ContainerlabNode,
     ContainerlabTopology,
@@ -209,11 +211,19 @@ def _get_digital_twin_containerlab(fabric_documentation_facts: FabricDocumentati
         for topology_link in fabric_documentation_facts.topology_links
         if _is_p2p_link(topology_link)
     ]
+    default_kind = "arista_ceos"
 
     return ContainerlabDigitalTwin(
         name=f"{fabric_documentation_facts.fabric_name}, Containerlab Digital Twin",
         prefix="avd-dt",
         topology=ContainerlabTopology(
+            defaults=ContainerlabDefaults(kind=default_kind),
+            kinds={
+                default_kind: ContainerlabKind(
+                    enforce_startup_config=True,
+                    image="arista/ceos:latest",
+                )
+            },
             nodes=nodes,
             links=tuple(links),
         ),

@@ -21,7 +21,20 @@ class ContainerlabNode:
 
 
 @dataclass(frozen=True)
+class ContainerlabDefaults:
+    kind: str
+
+
+@dataclass(frozen=True)
+class ContainerlabKind:
+    enforce_startup_config: bool = field(metadata={"yaml_key": "enforce-startup-config"})
+    image: str
+
+
+@dataclass(frozen=True)
 class ContainerlabTopology:
+    defaults: ContainerlabDefaults
+    kinds: dict[str, ContainerlabKind]
     nodes: dict[str, ContainerlabNode]
     links: tuple[ContainerlabLinkSettings, ...]
 

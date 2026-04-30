@@ -2,6 +2,12 @@
 name: DIGITAL_TWIN_CONTAINERLAB, Containerlab Digital Twin
 prefix: avd-dt
 topology:
+  defaults:
+    kind: arista_ceos
+  kinds:
+    arista_ceos:
+      enforce-startup-config: true
+      image: arista/ceos:latest
   nodes:
     containerlab-single-switch-fabric-1:
       mgmt-ipv4: 192.0.2.1
