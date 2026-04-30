@@ -1897,18 +1897,77 @@ address locking
 
 ### Management Security Auto-Certificate Profiles
 
-| Auto-Certificate Profile Name | Key filename | Auto-Certificate Protocol Name | Certificate Signature Digest | Renewal Time | Distinguished Name Parameters | Subject Alternative Name Parameters |
-| ----------------------------- | ------------ | ------------------------------ | ---------------------------- | ------------ | ----------------------------- | ----------------------------------- |
-| AVD_AUTO_CERTIFICATE_PROFILE | SSL_KEY | AVD_EST_PROTOCOL_token | sha512 | - | Common Name: 00:1c:73:ff:ff:ff<br>Country: US<br>Email: noreply@arista.com<br>Locality: Santa Clara<br>Organization: Arista Networks<br>Organization Unit: AVD<br>Serial Number: 123abc<br>State: CA | Dns: avd.arista.com<br>Email: noreply@arista.com<br>Ip: 198.51.100.42<br>Uri: https://avd.arista.com/ |
-| AVD_AUTO_CERTIFICATE_PROFILE_system | SSL_KEY | AVD_EST_PROTOCOL_secret | - | 86400 | Common Name: 00:1c:73:aa:aa:aa<br>Country: US<br>Email: noreply@arista.com<br>Locality: Santa Clara<br>Organization: Arista Networks<br>Organization Unit: AVD<br>Serial Number: system<br>State: CA | - |
+| Profile | Key | EST Protocol Profile | Digest | Renewal(seconds) |
+| ------- | --- | -------------------- | ------ | ---------------- |
+| AVD_AUTO_CERTIFICATE_PROFILE | SSL_KEY | AVD_EST_PROTOCOL_token | sha512 | - |
+| AVD_AUTO_CERTIFICATE_PROFILE_system | SSL_KEY | AVD_EST_PROTOCOL_secret | - | 86400 |
+
+#### Auto-Certificate Profile AVD_AUTO_CERTIFICATE_PROFILE Parameters
+
+**Distinguished Name**
+
+| Field | Value |
+| ----- | ----- |
+| Common Name | 00:1c:73:ff:ff:ff |
+| Country | US |
+| Email | noreply@arista.com |
+| Locality | Santa Clara |
+| Organization | Arista Networks |
+| Organization Unit | AVD |
+| Serial Number | 123abc |
+| State | CA |
+
+**Subject Alternative Name**
+
+| Field | Value |
+| ----- | ----- |
+| Dns | avd.arista.com, avd2.arista.com |
+| Email | noreply@arista.com, support@arista.com |
+| Ip | 198.51.100.42, 198.51.100.43 |
+| Uri | https://avd.arista.com/, https://avd2.arista.com/ |
+
+#### Auto-Certificate Profile AVD_AUTO_CERTIFICATE_PROFILE_system Parameters
+
+**Distinguished Name**
+
+| Field | Value |
+| ----- | ----- |
+| Common Name | 00:1c:73:aa:aa:aa |
+| Country | US |
+| Email | noreply@arista.com |
+| Locality | Santa Clara |
+| Organization | Arista Networks |
+| Organization Unit | AVD |
+| Serial Number | system |
+| State | CA |
 
 ### Management Security Auto-Certificate Protocols
 
-| Auto-Certificate Protocol Name | Protocol | Disabled | Server URL | SSL Profile Name | VRF | Connection Retry Count | Connection Retry Interval | Exponential Backoff |
-| ------------------------------ | -------- | -------- | ---------- | ---------------- | --- | ---------------------- | ------------------------- | ------------------- |
+| Profile | Protocol | Disabled | Server URL | SSL Profile Name | VRF | Retry Count | Retry Interval (seconds) | Exponential Backoff |
+| ------- | -------- | -------- | ---------- | ---------------- | --- | ----------- | ------------------------ | ------------------- |
 | AVD_EST_PROTOCOL_both | EST | True | https://test_est.example.com/test2 | SSL_PROFILE | MGMT | 100 | 30 | False |
 | AVD_EST_PROTOCOL_secret | EST | - | https://test_est.example.com/test1 | SSL_PROFILE | - | 100 | - | - |
 | AVD_EST_PROTOCOL_token | EST | - | https://test_est.example.com/test | SSL_PROFILE | MGMT | 100 | 30 | True |
+
+#### Auto-Certificate Protocol AVD_EST_PROTOCOL_both Credentials
+
+| Operation | Method | Username | Encoding |
+| --------- | ------ | -------- | -------- |
+| Enroll | Token | - | 0 |
+
+#### Auto-Certificate Protocol AVD_EST_PROTOCOL_secret Credentials
+
+| Operation | Method | Username | Encoding |
+| --------- | ------ | -------- | -------- |
+| Enroll | Username/Secret | est_authentication | 7 |
+| Re-Enroll | Username/Secret | est_authentication | 0 |
+
+#### Auto-Certificate Protocol AVD_EST_PROTOCOL_token Credentials
+
+| Operation | Method | Username | Encoding |
+| --------- | ------ | -------- | -------- |
+| Enroll | Token | - | 7 |
+| Re-Enroll | Token | - | 7 |
 
 ### Management Security SSL Profiles
 
@@ -1991,10 +2050,10 @@ management security
       parameters distinguished-name organization-unit "AVD"
       parameters distinguished-name email noreply@arista.com
       parameters distinguished-name serial-number "123abc"
-      parameters subject-alternative-name ip 198.51.100.42
-      parameters subject-alternative-name dns avd.arista.com
-      parameters subject-alternative-name email noreply@arista.com
-      parameters subject-alternative-name uri https://avd.arista.com/
+      parameters subject-alternative-name ip 198.51.100.42 198.51.100.43
+      parameters subject-alternative-name dns avd.arista.com avd2.arista.com
+      parameters subject-alternative-name email noreply@arista.com support@arista.com
+      parameters subject-alternative-name uri https://avd.arista.com/ https://avd2.arista.com/
       protocol instance AVD_EST_PROTOCOL_token
       digest sha512
    !

@@ -23644,24 +23644,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "state": {"type": str},
                         }
                         common_name: str | None
-                        """Common name for use in subject."""
                         country: str | None
-                        """Two-Letter Country Code for use in subject."""
                         email: str | None
-                        """Email address for use in subject."""
                         locality: str | None
-                        """Locality Name for use in subject."""
                         organization: str | None
-                        """Organization Name for use in subject."""
                         organization_unit: str | None
-                        """Organization Unit Name for use in subject."""
                         serial_number: str | None
                         """
                         Serial Number for use in subject.
                         system: Use the device's serial number in subject.
                         """
                         state: str | None
-                        """State for use in subject."""
 
                         if TYPE_CHECKING:
 
@@ -23684,41 +23677,65 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    common_name: Common name for use in subject.
-                                    country: Two-Letter Country Code for use in subject.
-                                    email: Email address for use in subject.
-                                    locality: Locality Name for use in subject.
-                                    organization: Organization Name for use in subject.
-                                    organization_unit: Organization Unit Name for use in subject.
+                                    common_name: common_name
+                                    country: country
+                                    email: email
+                                    locality: locality
+                                    organization: organization
+                                    organization_unit: organization_unit
                                     serial_number:
                                        Serial Number for use in subject.
                                        system: Use the device's serial number in subject.
-                                    state: State for use in subject.
+                                    state: state
 
                                 """
 
                     class SubjectAlternativeName(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"dns": {"type": str}, "email": {"type": str}, "ip": {"type": str}, "uri": {"type": str}}
-                        dns: str | None
-                        """DNS names for use in subject-alternative-name."""
-                        email: str | None
-                        """Email addresses for use in subject-alternative-name."""
-                        ip: str | None
-                        """IPv4/IPv6 addresses for use in subject-alternative-name."""
-                        uri: str | None
-                        """URIs for use in subject-alternative-name."""
+                        class Dns(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Dns._item_type = str
+
+                        class Email(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Email._item_type = str
+
+                        class Ip(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ip._item_type = str
+
+                        class Uri(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Uri._item_type = str
+
+                        _fields: ClassVar[dict] = {"dns": {"type": Dns}, "email": {"type": Email}, "ip": {"type": Ip}, "uri": {"type": Uri}}
+                        dns: Dns
+                        """Subclass of AvdList with `str` items."""
+                        email: Email
+                        """Subclass of AvdList with `str` items."""
+                        ip: Ip
+                        """
+                        IPv4/IPv6 addresses for use in subject-alternative-name.
+
+                        Subclass of AvdList with `str` items.
+                        """
+                        uri: Uri
+                        """Subclass of AvdList with `str` items."""
 
                         if TYPE_CHECKING:
 
                             def __init__(
                                 self,
                                 *,
-                                dns: str | None | UndefinedType = Undefined,
-                                email: str | None | UndefinedType = Undefined,
-                                ip: str | None | UndefinedType = Undefined,
-                                uri: str | None | UndefinedType = Undefined,
+                                dns: Dns | UndefinedType = Undefined,
+                                email: Email | UndefinedType = Undefined,
+                                ip: Ip | UndefinedType = Undefined,
+                                uri: Uri | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 SubjectAlternativeName.
@@ -23727,10 +23744,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    dns: DNS names for use in subject-alternative-name.
-                                    email: Email addresses for use in subject-alternative-name.
-                                    ip: IPv4/IPv6 addresses for use in subject-alternative-name.
-                                    uri: URIs for use in subject-alternative-name.
+                                    dns: Subclass of AvdList with `str` items.
+                                    email: Subclass of AvdList with `str` items.
+                                    ip:
+                                       IPv4/IPv6 addresses for use in subject-alternative-name.
+
+                                       Subclass of AvdList with `str` items.
+                                    uri: Subclass of AvdList with `str` items.
 
                                 """
 
@@ -23770,10 +23790,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 }
                 name: str
                 digest: Digest | None
+                """Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset."""
                 key: str | None
-                """Key to use with auto-enrolled certificate."""
+                """Filename of the private key in the switch `sslkey:` directory."""
                 protocol_name: str | None
-                """Protocol definition to use to auto-enroll/renew the certificate."""
+                """EST protocol profile name."""
                 renewal: int | None
                 """Renewal time in seconds."""
                 parameters: Parameters
@@ -23804,9 +23825,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             name: name
-                            digest: digest
-                            key: Key to use with auto-enrolled certificate.
-                            protocol_name: Protocol definition to use to auto-enroll/renew the certificate.
+                            digest: Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset.
+                            key: Filename of the private key in the switch `sslkey:` directory.
+                            protocol_name: EST protocol profile name.
                             renewal: Renewal time in seconds.
                             parameters:
                                Parameters of the distinguished name and subject alternative name for the CSR.
@@ -23898,14 +23919,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "secret_type": {"type": str, "default": "7"},
                         }
                         token: str | None
-                        """Authentication token."""
                         token_type: TokenType
-                        """Default value: `"7"`"""
+                        """
+                        Encoding type of the token.
+                        "0" = cleartext
+                        "7" = obfuscated
+                        "8a" = AES-256-GCM encrypted.
+
+                        Default value: `"7"`
+                        """
                         username: str | None
                         secret: str | None
-                        """Authentication secret."""
                         secret_type: SecretType
-                        """Default value: `"7"`"""
+                        """
+                        Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted.
+
+                        Default value: `"7"`
+                        """
 
                         if TYPE_CHECKING:
 
@@ -23925,11 +23955,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    token: Authentication token.
-                                    token_type: token_type
+                                    token: token
+                                    token_type:
+                                       Encoding type of the token.
+                                       "0" = cleartext
+                                       "7" = obfuscated
+                                       "8a" = AES-256-GCM encrypted.
                                     username: username
-                                    secret: Authentication secret.
-                                    secret_type: secret_type
+                                    secret: secret
+                                    secret_type: Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted.
 
                                 """
 
@@ -23946,14 +23980,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "secret_type": {"type": str, "default": "7"},
                         }
                         token: str | None
-                        """Authentication token."""
                         token_type: TokenType
-                        """Default value: `"7"`"""
+                        """
+                        Encoding type of the token.
+                        "0" = cleartext
+                        "7" = obfuscated
+                        "8a" = AES-256-GCM encrypted.
+
+                        Default value: `"7"`
+                        """
                         username: str | None
                         secret: str | None
-                        """Authentication secret."""
                         secret_type: SecretType
-                        """Default value: `"7"`"""
+                        """
+                        Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted.
+
+                        Default value: `"7"`
+                        """
 
                         if TYPE_CHECKING:
 
@@ -23973,11 +24016,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    token: Authentication token.
-                                    token_type: token_type
+                                    token: token
+                                    token_type:
+                                       Encoding type of the token.
+                                       "0" = cleartext
+                                       "7" = obfuscated
+                                       "8a" = AES-256-GCM encrypted.
                                     username: username
-                                    secret: Authentication secret.
-                                    secret_type: secret_type
+                                    secret: secret
+                                    secret_type: Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted.
 
                                 """
 
@@ -24033,9 +24080,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"ssl_profile": {"type": str}, "url": {"type": str}, "vrf": {"type": str}}
                     ssl_profile: str | None
-                    """Name of TLS profile."""
+                    """SSL profile name."""
                     url: str | None
+                    """
+                    EST server URL. Must begin with `https://`. Should not end with `/` (the well-known EST paths are
+                    appended automatically).
+                    """
                     vrf: str | None
+                    """VRF used to reach the EST server. If unset, the default VRF is used on EOS."""
 
                     if TYPE_CHECKING:
 
@@ -24053,9 +24105,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                ssl_profile: Name of TLS profile.
-                                url: url
-                                vrf: vrf
+                                ssl_profile: SSL profile name.
+                                url:
+                                   EST server URL. Must begin with `https://`. Should not end with `/` (the well-known EST paths are
+                                   appended automatically).
+                                vrf: VRF used to reach the EST server. If unset, the default VRF is used on EOS.
 
                             """
 

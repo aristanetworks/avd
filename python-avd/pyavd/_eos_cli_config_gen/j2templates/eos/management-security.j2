@@ -41,20 +41,20 @@ management security
       parameters distinguished-name serial-number {{ auto_cert_dn_serial }}
 {%         endif %}
 {%         if auto_certificate_profile.parameters.subject_alternative_name.ip is arista.avd.defined %}
-      parameters subject-alternative-name ip {{ auto_certificate_profile.parameters.subject_alternative_name.ip }}
+      parameters subject-alternative-name ip {{ auto_certificate_profile.parameters.subject_alternative_name.ip | join(' ') }}
 {%         endif %}
 {%         if auto_certificate_profile.parameters.subject_alternative_name.dns is arista.avd.defined %}
-      parameters subject-alternative-name dns {{ auto_certificate_profile.parameters.subject_alternative_name.dns }}
+      parameters subject-alternative-name dns {{ auto_certificate_profile.parameters.subject_alternative_name.dns | join(' ') }}
 {%         endif %}
 {%         if auto_certificate_profile.parameters.subject_alternative_name.email is arista.avd.defined %}
-      parameters subject-alternative-name email {{ auto_certificate_profile.parameters.subject_alternative_name.email }}
+      parameters subject-alternative-name email {{ auto_certificate_profile.parameters.subject_alternative_name.email | join(' ') }}
 {%         endif %}
 {%         if auto_certificate_profile.parameters.subject_alternative_name.uri is arista.avd.defined %}
-      parameters subject-alternative-name uri {{ auto_certificate_profile.parameters.subject_alternative_name.uri }}
+      parameters subject-alternative-name uri {{ auto_certificate_profile.parameters.subject_alternative_name.uri | join(' ') }}
 {%         endif %}
 {%         if auto_certificate_profile.protocol_name is arista.avd.defined %}
-{%         endif %}
       protocol instance {{ auto_certificate_profile.protocol_name }}
+{%         endif %}
 {%         if auto_certificate_profile.digest is arista.avd.defined %}
       digest {{ auto_certificate_profile.digest }}
 {%         endif %}
@@ -84,7 +84,7 @@ management security
 {%         if auto_certificate_protocol.connection.retry.count is arista.avd.defined %}
       connection retry count {{ auto_certificate_protocol.connection.retry.count }}
 {%         endif %}
-{%         if auto_certificate_protocol.disabled is arista.avd.defined %}
+{%         if auto_certificate_protocol.disabled is arista.avd.defined(true) %}
       disabled
 {%         endif %}
 {%         if auto_certificate_protocol.credentials.enroll.token is arista.avd.defined %}

@@ -40,36 +40,65 @@
 
 ### Management Security Auto-Certificate Profiles
 
-| Auto-Certificate Profile Name | Key filename | Auto-Certificate Protocol Name | Certificate Signature Digest | Renewal Time | Distinguished Name Parameters | Subject Alternative Name Parameters |
-| ----------------------------- | ------------ | ------------------------------ | ---------------------------- | ------------ | ----------------------------- | ----------------------------------- |
-{%         for auto_certificate_profile in management_security.auto_certificate.profiles | arista.avd.natural_sort(sort_key="name") %}
-{%             set auto_certificate_dn = [] %}
-{%             for dn_key in auto_certificate_profile.parameters.distinguished_name | arista.avd.natural_sort %}
-{%                 set display_dn_key = dn_key | replace('_', ' ') %}
-{%                 do auto_certificate_dn.append(display_dn_key.title() ~ ': ' ~ auto_certificate_profile.parameters.distinguished_name[dn_key]) %}
-{%             endfor %}
-{%             if auto_certificate_dn | length == 0 %}
-{%                 do auto_certificate_dn.append('-') %}
+| Profile | Key | EST Protocol Profile | Digest | Renewal(seconds) |
+| ------- | --- | -------------------- | ------ | ---------------- |
+{%         for auto_certificate_profile in management_security.auto_certificate.profiles | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+| {{ auto_certificate_profile.name }} | {{ auto_certificate_profile.key | arista.avd.default("-") }} | {{ auto_certificate_profile.protocol_name | arista.avd.default("-") }} | {{ auto_certificate_profile.digest | arista.avd.default("-") }} | {{ auto_certificate_profile.renewal | arista.avd.default('-') }} |
+{%         endfor %}
+{%         for auto_certificate_profile in management_security.auto_certificate.profiles | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+{%             if auto_certificate_profile.parameters is arista.avd.defined %}
+
+#### Auto-Certificate Profile {{ auto_certificate_profile.name }} Parameters
+{%                 if auto_certificate_profile.parameters.distinguished_name is arista.avd.defined %}
+
+**Distinguished Name**
+
+| Field | Value |
+| ----- | ----- |
+{%                     for dn_key in auto_certificate_profile.parameters.distinguished_name | arista.avd.natural_sort %}
+| {{ dn_key | replace('_', ' ') | title }} | {{ auto_certificate_profile.parameters.distinguished_name[dn_key] }} |
+{%                     endfor %}
+{%                 endif %}
+{%                 if auto_certificate_profile.parameters.subject_alternative_name is arista.avd.defined %}
+
+**Subject Alternative Name**
+
+| Field | Value |
+| ----- | ----- |
+{%                     for san_key in auto_certificate_profile.parameters.subject_alternative_name | arista.avd.natural_sort %}
+| {{ san_key | replace('_', ' ') | title }} | {{ auto_certificate_profile.parameters.subject_alternative_name[san_key] | join(', ') }} |
+{%                     endfor %}
+{%                 endif %}
 {%             endif %}
-{%             set auto_certificate_san = [] %}
-{%             for san_key in auto_certificate_profile.parameters.subject_alternative_name | arista.avd.natural_sort %}
-{%                 set display_san_key = san_key | replace('_', ' ') %}
-{%                 do auto_certificate_san.append(display_san_key.title() ~ ': ' ~ auto_certificate_profile.parameters.subject_alternative_name[san_key]) %}
-{%             endfor %}
-{%             if auto_certificate_san | length == 0 %}
-{%                 do auto_certificate_san.append('-') %}
-{%             endif %}
-| {{ auto_certificate_profile.name }} | {{ auto_certificate_profile.key | arista.avd.default("-") }} | {{ auto_certificate_profile.protocol_name | arista.avd.default("-") }} | {{ auto_certificate_profile.digest | arista.avd.default("-") }} | {{ auto_certificate_profile.renewal | arista.avd.default('-') }} | {{ auto_certificate_dn | join('<br>') }} | {{ auto_certificate_san | join('<br>') }} |
 {%         endfor %}
 {%     endif %}
 {%     if management_security.auto_certificate.protocols is arista.avd.defined %}
 
 ### Management Security Auto-Certificate Protocols
 
-| Auto-Certificate Protocol Name | Protocol | Disabled | Server URL | SSL Profile Name | VRF | Connection Retry Count | Connection Retry Interval | Exponential Backoff |
-| ------------------------------ | -------- | -------- | ---------- | ---------------- | --- | ---------------------- | ------------------------- | ------------------- |
-{%         for auto_certificate_protocol in management_security.auto_certificate.protocols | arista.avd.natural_sort(sort_key="name") %}
+| Profile | Protocol | Disabled | Server URL | SSL Profile Name | VRF | Retry Count | Retry Interval (seconds) | Exponential Backoff |
+| ------- | -------- | -------- | ---------- | ---------------- | --- | ----------- | ------------------------ | ------------------- |
+{%         for auto_certificate_protocol in management_security.auto_certificate.protocols | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 | {{ auto_certificate_protocol.name }} | {{ auto_certificate_protocol.protocol | upper }} | {{ auto_certificate_protocol.disabled | arista.avd.default("-") }} | {{ auto_certificate_protocol.server.url | arista.avd.default("-") }} | {{ auto_certificate_protocol.server.ssl_profile | arista.avd.default("-") }} | {{ auto_certificate_protocol.server.vrf | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection.retry.count | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection.retry.interval | arista.avd.default('-') }} | {{ auto_certificate_protocol.connection.retry.exponential_backoff | arista.avd.default('-') }} |
+{%         endfor %}
+{%         for auto_certificate_protocol in management_security.auto_certificate.protocols | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+{%             if auto_certificate_protocol.credentials is arista.avd.defined %}
+
+#### Auto-Certificate Protocol {{ auto_certificate_protocol.name }} Credentials
+
+| Operation | Method | Username | Encoding |
+| --------- | ------ | -------- | -------- |
+{%                 for operation, cred_key in [('Enroll', 'enroll'), ('Re-Enroll', 're_enroll')] %}
+{%                     set cred = auto_certificate_protocol.credentials[cred_key] %}
+{%                     if cred is arista.avd.defined %}
+{%                         if cred.token is arista.avd.defined %}
+| {{ operation }} | Token | - | {{ cred.token_type | arista.avd.default('7') }} |
+{%                         elif cred.username is arista.avd.defined %}
+| {{ operation }} | Username/Secret | {{ cred.username }} | {{ cred.secret_type | arista.avd.default('7') }} |
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if management_security.ssl_profiles is arista.avd.defined %}

@@ -18,10 +18,18 @@ management_security:
             serial_number: 123abc
             state: CA
           subject_alternative_name:
-            dns: avd.arista.com
-            email: noreply@arista.com
-            ip: 198.51.100.42
-            uri: https://avd.arista.com/
+            dns:
+              - avd.arista.com
+              - avd2.arista.com
+            email:
+              - noreply@arista.com
+              - support@arista.com
+            ip:
+              - 198.51.100.42
+              - 198.51.100.43
+            uri:
+              - https://avd.arista.com/
+              - https://avd2.arista.com/
       - name: AVD_AUTO_CERTIFICATE_PROFILE_system
         key: SSL_KEY
         protocol_name: AVD_EST_PROTOCOL_secret
