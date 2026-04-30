@@ -323,7 +323,6 @@
             sflow_subinterfaces: false
             subinterface_mtu: false
             per_interface_l2_mru: false
-            subinterface_monitor_session: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -579,7 +578,6 @@
             subinterface_mtu: false
             per_interface_l2_mru: false
             sflow_subinterfaces: false
-            subinterface_monitor_session: false
           digital_twin:
             platform: vEOS-lab
         - platforms:

@@ -106,7 +106,25 @@ class MonitorSessionsMixin(Protocol):
                         continue
 
                     ethernet_interface_name = adapter.switch_ports[node_index]
+                    context = adapter._internal_data.context
+                    if (
+                        adapter.monitor_sessions
+                        and "." in ethernet_interface_name
+                        and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session
+                    ):
+                        msg = (
+                            f"Monitor session on sub-interfaces is not supported on this platform. "
+                            f"Got monitor session on interface '{ethernet_interface_name}' under {context}."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
                     for monitor_session in adapter.monitor_sessions:
+                        if "." in ethernet_interface_name and monitor_session.role != "destination" and monitor_session.source_settings.direction != "rx":
+                            msg = (
+                                f"Only 'direction: rx' supported on sub-interfaces for monitor session. "
+                                f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
+                                f"on interface '{ethernet_interface_name}' under {context}."
+                            )
+                            raise AristaAvdInvalidInputsError(msg)
                         per_interface_monitor_session = monitor_session._deepcopy()
                         per_interface_monitor_session._internal_data.interface = ethernet_interface_name
                         per_interface_monitor_session._internal_data.context = adapter._internal_data.context
@@ -117,6 +135,7 @@ class MonitorSessionsMixin(Protocol):
                 continue
 
             for ethernet_interface_name in range_expand(network_port.switch_ports):
+                context = network_port._internal_data.context
                 # Monitor session on Port-channel interface
                 if network_port.port_channel and network_port.port_channel.mode is not None:
                     default_channel_group_id = int("".join(re.findall(r"\d", ethernet_interface_name)))
@@ -131,7 +150,24 @@ class MonitorSessionsMixin(Protocol):
                     continue
 
                 # Monitor session on Ethernet interface
+                if (
+                    network_port.monitor_sessions
+                    and "." in ethernet_interface_name
+                    and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session
+                ):
+                    msg = (
+                        f"Monitor session on sub-interfaces is not supported on this platform. "
+                        f"Got monitor session on interface '{ethernet_interface_name}' under {context}."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
                 for monitor_session in network_port.monitor_sessions:
+                    if "." in ethernet_interface_name and monitor_session.role != "destination" and monitor_session.source_settings.direction != "rx":
+                        msg = (
+                            f"Only 'direction: rx' supported on sub-interfaces for monitor session. "
+                            f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
+                            f"on interface '{ethernet_interface_name}' under {context}."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
                     per_interface_monitor_session = monitor_session._deepcopy()
                     per_interface_monitor_session._internal_data.interface = ethernet_interface_name
                     per_interface_monitor_session._internal_data.context = network_port._internal_data.context
@@ -156,7 +192,7 @@ class MonitorSessionsMixin(Protocol):
                             )
                             raise AristaAvdInvalidInputsError(msg)
                         for monitor_session in l3_interface.monitor_sessions:
-                            if "." in interface_name and monitor_session.source_settings.direction != "rx":
+                            if "." in interface_name and monitor_session.role != "destination" and monitor_session.source_settings.direction != "rx":
                                 msg = (
                                     f"Only 'direction: rx' supported on sub-interfaces for monitor session. "
                                     f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "

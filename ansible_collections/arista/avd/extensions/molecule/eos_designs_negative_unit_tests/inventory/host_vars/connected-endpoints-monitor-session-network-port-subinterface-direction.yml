@@ -1,0 +1,23 @@
+loopback_ipv4_pool: 192.168.1.0/24
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: connected-endpoints-monitor-session-network-port-subinterface-direction
+
+network_ports:
+  - switches:
+      - connected-endpoints-monitor-session-network-port-subinterface-direction
+    switch_ports:
+      - Ethernet1.100
+    monitor_sessions:
+      - name: SESSION-ON-SUBINTERFACE-WITH-BOTH-DIRECTION
+        role: source
+        source_settings:
+          direction: both
+
+expected_error_message: >-
+  Only 'direction: rx' supported on sub-interfaces for monitor session.
+  Got 'direction: both' for monitor session 'SESSION-ON-SUBINTERFACE-WITH-BOTH-DIRECTION' on interface 'Ethernet1.100'
+  under network_ports[0].
