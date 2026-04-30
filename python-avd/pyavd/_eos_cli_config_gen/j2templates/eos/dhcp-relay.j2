@@ -13,6 +13,9 @@ dhcp relay
 {%     if dhcp_relay.mlag_peerlink_requests_disabled is arista.avd.defined(true) %}
    mlag peer-link requests disabled
 {%     endif %}
+{%     if dhcp_relay.client_requests.flooding_suppression_vlans is arista.avd.defined %}
+   client requests flooding suppression vlan {{ dhcp_relay.client_requests.flooding_suppression_vlans | arista.avd.natural_sort | join(',') }}
+{%     endif %}
 {%     for server in dhcp_relay.servers | arista.avd.natural_sort %}
    server {{ server }}
 {%     endfor %}

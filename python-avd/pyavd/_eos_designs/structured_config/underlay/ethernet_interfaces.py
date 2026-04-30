@@ -69,7 +69,7 @@ class EthernetInterfacesMixin(Protocol):
                         name=link_tracking_group.name,
                         direction=link_tracking_group.direction,
                     )
-                ethernet_interface.sflow.enable = self.shared_utils.get_interface_sflow(ethernet_interface.name, link.sflow_enabled)
+                ethernet_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(ethernet_interface.name, link.sflow_enabled)
 
                 # PTP
                 if link.ptp.enable:
@@ -203,7 +203,7 @@ class EthernetInterfacesMixin(Protocol):
                     ethernet_subinterface.metadata._update(peer_interface=subinterface.peer_interface, peer=link.peer, peer_type=link.peer_type)
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
 
-                    ethernet_subinterface.sflow.enable = self.shared_utils.get_interface_sflow(ethernet_subinterface.name, link.sflow_enabled)
+                    ethernet_subinterface.sflow.enable = self.structured_config_utils.get_interface_sflow(ethernet_subinterface.name, link.sflow_enabled)
 
                     if subinterface.ip_address:
                         ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
@@ -274,7 +274,7 @@ class EthernetInterfacesMixin(Protocol):
             self.custom_structured_configs.nested.ethernet_interfaces.obtain(l3_interface.name)._deepmerge(
                 l3_interface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
-        interface.sflow.enable = self.shared_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
+        interface.sflow.enable = self.structured_config_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
 
         if (
             self.shared_utils.is_wan_router
