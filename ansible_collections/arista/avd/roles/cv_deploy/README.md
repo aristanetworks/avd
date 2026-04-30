@@ -325,6 +325,12 @@ In addition to deploying device-specific configurations, the role allows for the
 ```yaml
 cv_static_config_manifest:
 
+  # Policy for managing configlets in the Configlet Library.
+  # - "managed" (default): Delete manifest-managed configlets not declared in this manifest and not assigned to any container.
+  #   Configlets not managed by the manifest are preserved.
+  # - "additive": Only create or update declared configlets. All existing configlets are preserved.
+  configlet_policy: <str, default="managed", choices=["managed", "additive"]>
+
   # A list of dictionaries defining configlets to be created in the Configlet Library.
   # Configlet names must be unique across all defined configlets.
   configlets:

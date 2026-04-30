@@ -23,7 +23,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "radius_server.servers.[].tls.port") | Integer |  |  | Min: 0<br>Max: 65535 | TCP Port used for TLS. EOS default is 2083. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "radius_server.servers.[].timeout") | Integer |  |  | Min: 1<br>Max: 1000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retransmit</samp>](## "radius_server.servers.[].retransmit") | Integer |  |  | Min: 0<br>Max: 100 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_server.servers.[].key") | String |  |  |  | Encrypted key - only type 7 supported.<br>When TLS is configured, `key` is ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_server.servers.[].key") | String |  |  |  | Encrypted key.<br>When TLS is configured, `key` is ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "radius_server.servers.[].key_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "radius_server.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "radius_server.vrfs.[].name") | String | Required, Unique |  |  | Non-defualt VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "radius_server.vrfs.[].servers") | List, items: Dictionary | Required |  |  | Hosts configuration for VRF default. |
@@ -34,7 +35,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "radius_server.vrfs.[].servers.[].tls.port") | Integer |  |  | Min: 0<br>Max: 65535 | TCP Port used for TLS. EOS default is 2083. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "radius_server.vrfs.[].servers.[].timeout") | Integer |  |  | Min: 1<br>Max: 1000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retransmit</samp>](## "radius_server.vrfs.[].servers.[].retransmit") | Integer |  |  | Min: 0<br>Max: 100 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_server.vrfs.[].servers.[].key") | String |  |  |  | Encrypted key - only type 7 supported.<br>When TLS is configured, `key` is ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_server.vrfs.[].servers.[].key") | String |  |  |  | Encrypted key.<br>When TLS is configured, `key` is ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "radius_server.vrfs.[].servers.[].key_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
     | [<samp>&nbsp;&nbsp;tls_ssl_profile</samp>](## "radius_server.tls_ssl_profile") | String |  |  |  | Name of global TLS profile. |
 
 === "YAML"
@@ -77,9 +79,10 @@
           timeout: <int; 1-1000>
           retransmit: <int; 0-100>
 
-          # Encrypted key - only type 7 supported.
+          # Encrypted key.
           # When TLS is configured, `key` is ignored.
           key: <str>
+          key_type: <str; "0" | "7" | "8a"; default="7">
       vrfs:
 
           # Non-defualt VRF name.
@@ -105,9 +108,10 @@
               timeout: <int; 1-1000>
               retransmit: <int; 0-100>
 
-              # Encrypted key - only type 7 supported.
+              # Encrypted key.
               # When TLS is configured, `key` is ignored.
               key: <str>
+              key_type: <str; "0" | "7" | "8a"; default="7">
 
       # Name of global TLS profile.
       tls_ssl_profile: <str>
