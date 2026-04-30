@@ -10,7 +10,7 @@ l3leaf:
     vtep_loopback_ipv4_pool: 10.255.2.0/24
     virtual_router_mac_address: 00:1c:73:00:dc:01
   nodes:
-    - name: network-services-ip-helpers-leaf1
+    - name: missing-inband-mgmt-config-ip-helpers
       id: 1
       filter:
         tenants: ["TEST1"]
