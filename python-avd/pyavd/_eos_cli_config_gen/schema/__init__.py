@@ -6309,13 +6309,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         new_ip_routing_vrfs_separator: bool
         """
-        When `true`, renders a `!` separator before the first VRF-scoped `ip routing` /
-        `ip routing ipv6
-        interfaces` / `no ip routing` line when no global `ip_routing`
-        or `ip_routing_ipv6_interfaces`
-        directive is rendered.
-        When `false` (default), preserves the legacy output without the leading
-        separator.
+        Always render a '!' before the '(no) ip routing command' section.
 
         Default value: `False`
         """
@@ -6346,14 +6340,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        When `false`
                        (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
                        interface name.
-                    new_ip_routing_vrfs_separator:
-                       When `true`, renders a `!` separator before the first VRF-scoped `ip routing` /
-                       `ip routing ipv6
-                       interfaces` / `no ip routing` line when no global `ip_routing`
-                       or `ip_routing_ipv6_interfaces`
-                       directive is rendered.
-                       When `false` (default), preserves the legacy output without the leading
-                       separator.
+                    new_ip_routing_vrfs_separator: Always render a '!' before the '(no) ip routing command' section.
 
                 """
 
