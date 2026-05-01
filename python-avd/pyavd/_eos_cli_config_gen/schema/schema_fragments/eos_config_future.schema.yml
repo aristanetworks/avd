@@ -27,7 +27,4 @@ keys:
         type: bool
         default: false
         description: |-
-          When `true`, renders a `!` separator before the first VRF-scoped `ip routing` /
-          `ip routing ipv6 interfaces` / `no ip routing` line when no global `ip_routing`
-          or `ip_routing_ipv6_interfaces` directive is rendered.
-          When `false` (default), preserves the legacy output without the leading separator.
+          Always render a '!' before the '(no) ip routing command' section.
