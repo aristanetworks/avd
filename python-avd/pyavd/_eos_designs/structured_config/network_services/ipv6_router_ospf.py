@@ -41,7 +41,7 @@ class Ipv6RouterOspfMixin(Protocol):
 
                 process_id = default(vrf.ipv6_ospf.process_id, vrf.vrf_id)
                 if not process_id:
-                    msg = f"Missing or invalid 'ipv6_ospf.process_id' or 'vrf_id' under vrf '{vrf.name}"
+                    msg = f"Missing or invalid 'ipv6_ospf.process_id' or 'vrf_id' under vrf '{vrf.name}'."
                     raise AristaAvdInvalidInputsError(msg)
 
                 process = EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem(

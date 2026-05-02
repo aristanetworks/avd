@@ -530,14 +530,14 @@ class FilteredTenantsMixin(Protocol):
             if not vrf.ipv6_ospf.enabled:
                 msg = f"OSPFv3 is enabled on SVI '{svi.name}' but not under 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
                 raise AristaAvdError(msg)
-            process_id = default(vrf.ipv6_ospf.process_id, vrf.vrf_id)
-            config.ipv6_ospf.process._update(
-                id=process_id,  # pyright: ignore [reportArgumentType]
-                area=svi.ipv6_ospf.area,
-            )
-            config.ipv6_ospf._update(
-                network_point_to_point=svi.ipv6_ospf.point_to_point,
-            )
+            if process_id := default(vrf.ipv6_ospf.process_id, vrf.vrf_id):
+                config.ipv6_ospf.process._update(
+                    id=process_id,
+                    area=svi.ipv6_ospf.area,
+                )
+                config.ipv6_ospf._update(
+                    network_point_to_point=svi.ipv6_ospf.point_to_point,
+                )
 
     def update_ospf_authentication(
         self: SharedUtilsProtocol,

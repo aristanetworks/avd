@@ -1,0 +1,35 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: ipv6-router-ospf-default-vrf
+      bgp_as: 102
+      id: 102
+
+tenants:
+  - name: Tenant_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: default
+        vrf_id: 2
+        ipv6_ospf:
+          enabled: true
+          process_id: 101
+          redistribute_bgp:
+            enabled: true
+          redistribute_connected:
+            enabled: true
+            route_map: ipv6_ospf_rm
+        svis:
+          - id: 201
+            name: default_201
+            description: "default_201 description"
+            enabled: true
+            ipv6_address: cafe::cafe/64
+            ipv6_enable: true
+            ipv6_ospf:
+              enabled: true
