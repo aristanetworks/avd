@@ -149,6 +149,7 @@ class MonitorSessionsMixin(Protocol):
                         monitor_session_configs.append(per_interface_monitor_session)
                     continue
 
+                # TODO: DO not raise the error for digital twin
                 # Monitor session on Ethernet interface
                 if (
                     network_port.monitor_sessions
