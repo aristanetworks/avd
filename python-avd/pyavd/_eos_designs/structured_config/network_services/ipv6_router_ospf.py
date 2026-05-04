@@ -68,63 +68,74 @@ class Ipv6RouterOspfMixin(Protocol):
         process: EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
     ) -> None:
-        """
-        Configures OSPFv3 route redistribution settings for the given VRF.
+        """Populate redistribution settings on the given OSPFv3 process from the VRF's ipv6_ospf config."""
+        ospfv3 = vrf.ipv6_ospf
+        redistribution = process.redistribute
 
-        Args:
-            process: The OSPFv3 process configuration object.
-            vrf: The VRF object containing OSPFv3 redistribution settings.
-        """
-        if vrf.ipv6_ospf.redistribute_bgp.enabled:
-            process.redistribute.bgp.enabled = True
-            if route_map := vrf.ipv6_ospf.redistribute_bgp.route_map:
-                process.redistribute.bgp.route_map = route_map
-            if include_leaked := vrf.ipv6_ospf.redistribute_bgp.include_leaked:
-                process.redistribute.bgp.include_leaked = include_leaked
+        if ospfv3.redistribute_bgp.enabled:
+            self._apply_redistribute(ospfv3.redistribute_bgp, redistribution.bgp)
 
-        if vrf.ipv6_ospf.redistribute_connected.enabled:
-            process.redistribute.connected.enabled = True
-            if route_map := vrf.ipv6_ospf.redistribute_connected.route_map:
-                process.redistribute.connected.route_map = route_map
-            if include_leaked := vrf.ipv6_ospf.redistribute_bgp.include_leaked:
-                process.redistribute.connected.include_leaked = include_leaked
+        if ospfv3.redistribute_connected.enabled:
+            self._apply_redistribute(ospfv3.redistribute_connected, redistribution.connected)
 
-        if vrf.ipv6_ospf.redistribute_isis.enabled:
-            process.redistribute.isis.enabled = True
-            if isis_level := vrf.ipv6_ospf.redistribute_isis.isis_level:
-                process.redistribute.isis.isis_level = isis_level
-            if route_map := vrf.ipv6_ospf.redistribute_isis.route_map:
-                process.redistribute.isis.route_map = route_map
-            if include_leaked := vrf.ipv6_ospf.redistribute_isis.include_leaked:
-                process.redistribute.isis.include_leaked = include_leaked
+        if ospfv3.redistribute_isis.enabled:
+            self._apply_redistribute(ospfv3.redistribute_isis, redistribution.isis)
+            if isis_level := ospfv3.redistribute_isis.isis_level:
+                redistribution.isis.isis_level = isis_level
 
-        if vrf.ipv6_ospf.redistribute_ospfv3.enabled:
-            process.redistribute.ospfv3.enabled = True
-            if vrf.ipv6_ospf.redistribute_ospfv3.match_external.enabled:
-                process.redistribute.ospfv3.match_external.enabled = True
-                if route_map := vrf.ipv6_ospf.redistribute_ospfv3.match_external.route_map:
-                    process.redistribute.ospfv3.match_external.route_map = route_map
-                if include_leaked := vrf.ipv6_ospf.redistribute_ospfv3.match_external.include_leaked:
-                    process.redistribute.ospfv3.match_external.include_leaked = include_leaked
-            if vrf.ipv6_ospf.redistribute_ospfv3.match_internal.enabled:
-                process.redistribute.ospfv3.match_internal.enabled = True
-                if route_map := vrf.ipv6_ospf.redistribute_ospfv3.match_internal.route_map:
-                    process.redistribute.ospfv3.match_internal.route_map = route_map
-            if vrf.ipv6_ospf.redistribute_ospfv3.match_nssa_external.enabled:
-                process.redistribute.ospfv3.match_nssa_external.enabled = True
-                if route_map := vrf.ipv6_ospf.redistribute_ospfv3.match_nssa_external.route_map:
-                    process.redistribute.ospfv3.match_nssa_external.route_map = route_map
-            if route_map := vrf.ipv6_ospf.redistribute_ospfv3.route_map:
-                process.redistribute.ospfv3.route_map = route_map
+        if ospfv3.redistribute_ospfv3.enabled:
+            self._apply_ospfv3_redistribute(ospfv3.redistribute_ospfv3, redistribution.ospfv3)
 
-        if vrf.ipv6_ospf.redistribute_dhcp.enabled:
-            process.redistribute.dhcp.enabled = True
-            if route_map := vrf.ipv6_ospf.redistribute_dhcp.route_map:
-                process.redistribute.dhcp.route_map = route_map
+        if ospfv3.redistribute_dhcp.enabled:
+            redistribution.dhcp.enabled = True
+            if route_map := ospfv3.redistribute_dhcp.route_map:
+                redistribution.dhcp.route_map = route_map
 
-        if vrf.ipv6_ospf.redistribute_static.enabled:
-            process.redistribute.static.enabled = True
-            if route_map := vrf.ipv6_ospf.redistribute_static.route_map:
-                process.redistribute.static.route_map = route_map
-            if include_leaked := vrf.ipv6_ospf.redistribute_static.include_leaked:
-                process.redistribute.static.include_leaked = include_leaked
+        if ospfv3.redistribute_static.enabled:
+            self._apply_redistribute(ospfv3.redistribute_static, redistribution.static)
+
+    def _apply_redistribute(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        src: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6Ospf.RedistributeBgp
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6Ospf.RedistributeConnected
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6Ospf.RedistributeIsis
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6Ospf.RedistributeStatic,
+        process: EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem.Redistribute.Bgp
+        | EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem.Redistribute.Connected
+        | EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem.Redistribute.Isis
+        | EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem.Redistribute.Static,
+    ) -> None:
+        """Set enabled, route_map, and include_leaked."""
+        process.enabled = True
+        if route_map := src.route_map:
+            process.route_map = route_map
+        if include_leaked := src.include_leaked:
+            process.include_leaked = include_leaked
+
+    def _apply_ospfv3_redistribute(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        src: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6Ospf.RedistributeOspfv3,
+        process: EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem.Redistribute.Ospfv3,
+    ) -> None:
+        """Set OSPFv3 redistribution settings (external, internal, NSSA-external match filters and route_map)."""
+        process.enabled = True
+
+        if src.match_external.enabled:
+            process.match_external.enabled = True
+            if route_map := src.match_external.route_map:
+                process.match_external.route_map = route_map
+            if include_leaked := src.match_external.include_leaked:
+                process.match_external.include_leaked = include_leaked
+
+        if src.match_internal.enabled:
+            process.match_internal.enabled = True
+            if route_map := src.match_internal.route_map:
+                process.match_internal.route_map = route_map
+
+        if src.match_nssa_external.enabled:
+            process.match_nssa_external.enabled = True
+            if route_map := src.match_nssa_external.route_map:
+                process.match_nssa_external.route_map = route_map
+
+        if route_map := src.route_map:
+            process.route_map = route_map
