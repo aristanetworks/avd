@@ -295,6 +295,7 @@ keys:
             keys:
               base:
                 type: int
+                required: true
                 convert_types:
                   - str
                 description: First label of the SRGB range.
@@ -302,6 +303,7 @@ keys:
                 max: 1048575
               size:
                 type: int
+                required: true
                 convert_types:
                   - str
                 description: Size of the SRGB range.
@@ -316,6 +318,7 @@ keys:
             keys:
               base:
                 type: int
+                required: true
                 convert_types:
                   - str
                 description: First label of the dynamic range.
@@ -323,6 +326,7 @@ keys:
                 max: 1048575
               size:
                 type: int
+                required: true
                 convert_types:
                   - str
                 description: Size of the dynamic range.

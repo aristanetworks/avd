@@ -11016,6 +11016,7 @@ mpls ldp
    no shutdown
 !
 mpls icmp fragmentation-needed tunneling
+!
 mpls label range dynamic 16000 131072
 mpls label range ospf-sr 900000 1000
 !

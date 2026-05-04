@@ -41,9 +41,12 @@ mpls icmp fragmentation-needed tunneling
 mpls icmp ttl-exceeded tunneling
 {%     endif %}
 {% endif %}
-{% if mpls.label_ranges.dynamic.base is arista.avd.defined and mpls.label_ranges.dynamic.size is arista.avd.defined %}
+{% if mpls.label_ranges.dynamic is arista.avd.defined and mpls.label_ranges.ospf_sr is arista.avd.defined %}
+!
+{%     if mpls.label_ranges.dynamic is arista.avd.defined %}
 mpls label range dynamic {{ mpls.label_ranges.dynamic.base }} {{ mpls.label_ranges.dynamic.size }}
-{% endif %}
-{% if mpls.label_ranges.ospf_sr.base is arista.avd.defined and mpls.label_ranges.ospf_sr.size is arista.avd.defined %}
+{%     endif %}
+{%     if mpls.label_ranges.ospf_sr is arista.avd.defined %}
 mpls label range ospf-sr {{ mpls.label_ranges.ospf_sr.base }} {{ mpls.label_ranges.ospf_sr.size }}
+{%     endif %}
 {% endif %}

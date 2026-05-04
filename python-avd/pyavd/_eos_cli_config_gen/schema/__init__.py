@@ -29290,14 +29290,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
-                base: int | None
+                base: int
                 """First label of the SRGB range."""
-                size: int | None
+                size: int
                 """Size of the SRGB range."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, base: int | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
                         """
                         OspfSr.
 
@@ -29314,14 +29314,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
-                base: int | None
+                base: int
                 """First label of the dynamic range."""
-                size: int | None
+                size: int
                 """Size of the dynamic range."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, base: int | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
                         """
                         Dynamic.
 
