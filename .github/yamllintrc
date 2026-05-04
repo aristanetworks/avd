@@ -55,11 +55,11 @@ rules:
     level: error
     indent-sequences: true
     ignore:
-      - /ansible_collections/arista/avd/extensions/molecule/**/intended/structured_configs/
-      - /ansible_collections/arista/avd/extensions/molecule/**/intended/structured_configs/cvp/
-      - /ansible_collections/arista/avd/examples/**/intended/structured_configs/
-      - /ansible_collections/arista/avd/examples/**/intended/structured_configs/cvp/
-      - /ansible_collections/arista/avd/tests/inventory/**/expected_output/
+      - /ansible_collections/arista/avd/**/intended/structured_configs/ # Auto generated
+      - /ansible_collections/arista/avd/tests/inventory/**/expected_output/ # Need to compare with auto generated structure config
+      - /ansible_collections/arista/avd/extensions/molecule/**/digital_twin/documentation/ # Auto generated topology files
+      - /python-avd/tests/**/artifacts/ # Need to compare with auto generated structure config
+      - /python-avd/pyavd/**/schema/eos_*.schema.yml # Auto generated
   octal-values:
     forbid-implicit-octal: true
     forbid-explicit-octal: true
