@@ -23692,6 +23692,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         }
                         common_name: str | None
                         country: str | None
+                        """
+                        ISO 3166-1 alpha-2 two-letter country code.
+                        Example:
+                        "US" for United States,
+                        "DE" for Germany,
+                        "IN"
+                        for India.
+                        """
                         email: str | None
                         locality: str | None
                         organization: str | None
@@ -23725,7 +23733,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     common_name: common_name
-                                    country: country
+                                    country:
+                                       ISO 3166-1 alpha-2 two-letter country code.
+                                       Example:  # fmt: skip
+                                       "US" for United States,
+                                       "DE" for Germany,
+                                       "IN"
+                                       for India.
                                     email: email
                                     locality: locality
                                     organization: organization
@@ -23968,9 +23982,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         token: str | None
                         token_type: TokenType
                         """
-                        Encoding type of the token.
-                        "0" = cleartext
-                        "7" = obfuscated
+                        Encoding type of the token:
+                        "0" = cleartext,
+                        "7" = obfuscated,
                         "8a" = AES-256-GCM encrypted.
 
                         Default value: `"7"`
@@ -23979,7 +23993,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         secret: str | None
                         secret_type: SecretType
                         """
-                        Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted.
+                        Encoding type of the token:
+                        "0" = cleartext,
+                        "7" = obfuscated,
+                        "8a" = AES-256-GCM encrypted.
 
                         Default value: `"7"`
                         """
@@ -24004,13 +24021,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Args:
                                     token: token
                                     token_type:
-                                       Encoding type of the token.
-                                       "0" = cleartext
-                                       "7" = obfuscated
+                                       Encoding type of the token:
+                                       "0" = cleartext,
+                                       "7" = obfuscated,
                                        "8a" = AES-256-GCM encrypted.
                                     username: username
                                     secret: secret
-                                    secret_type: Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted.
+                                    secret_type:
+                                       Encoding type of the token:
+                                       "0" = cleartext,
+                                       "7" = obfuscated,
+                                       "8a" = AES-256-GCM encrypted.
 
                                 """
 
@@ -24029,9 +24050,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         token: str | None
                         token_type: TokenType
                         """
-                        Encoding type of the token.
-                        "0" = cleartext
-                        "7" = obfuscated
+                        Encoding type of the token:
+                        "0" = cleartext,
+                        "7" = obfuscated,
                         "8a" = AES-256-GCM encrypted.
 
                         Default value: `"7"`
@@ -24040,7 +24061,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         secret: str | None
                         secret_type: SecretType
                         """
-                        Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted.
+                        Encoding type of the token:
+                        "0" = cleartext,
+                        "7" = obfuscated,
+                        "8a" = AES-256-GCM encrypted.
 
                         Default value: `"7"`
                         """
@@ -24065,13 +24089,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Args:
                                     token: token
                                     token_type:
-                                       Encoding type of the token.
-                                       "0" = cleartext
-                                       "7" = obfuscated
+                                       Encoding type of the token:
+                                       "0" = cleartext,
+                                       "7" = obfuscated,
                                        "8a" = AES-256-GCM encrypted.
                                     username: username
                                     secret: secret
-                                    secret_type: Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted.
+                                    secret_type:
+                                       Encoding type of the token:
+                                       "0" = cleartext,
+                                       "7" = obfuscated,
+                                       "8a" = AES-256-GCM encrypted.
 
                                 """
 

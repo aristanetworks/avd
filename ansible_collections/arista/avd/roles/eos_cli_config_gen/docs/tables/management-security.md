@@ -18,7 +18,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameters</samp>](## "management_security.auto_certificate.profiles.[].parameters") | Dictionary |  |  |  | Parameters of the distinguished name and subject alternative name for the CSR. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distinguished_name</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;common_name</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.common_name") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.country") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.country") | String |  |  | Pattern: `^[A-Z]{2}$` | ISO 3166-1 alpha-2 two-letter country code.<br>Example:<br>"US" for United States,<br>"DE" for Germany,<br>"IN" for India. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;email</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.email") | String |  |  | Pattern: `[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locality</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.locality") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;organization</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.organization") | String |  |  |  |  |
@@ -46,16 +46,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;credentials</samp>](## "management_security.auto_certificate.protocols.[].credentials") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enroll</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll") | Dictionary |  |  |  | Token or username/secret for initial certificate enrollment.<br>If both token and username/secret are defined, token will take precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.token") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.token_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token.<br>"0" = cleartext<br>"7" = obfuscated<br>"8a" = AES-256-GCM encrypted. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.token_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.username") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.secret") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_enroll</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll") | Dictionary |  |  |  | Token or username/secret for certificate re-enrollment.<br>If both token and username/secret are defined, token will take precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.token") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.token_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token.<br>"0" = cleartext<br>"7" = obfuscated<br>"8a" = AES-256-GCM encrypted. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.token_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.username") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.secret") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server</samp>](## "management_security.auto_certificate.protocols.[].server") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "management_security.auto_certificate.protocols.[].server.ssl_profile") | String |  |  |  | SSL profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "management_security.auto_certificate.protocols.[].server.url") | String |  |  | Pattern: `https://.+[^/]` | EST server URL. Must begin with `https://`. Should not end with `/` (the well-known EST paths are appended automatically). |
@@ -152,6 +152,12 @@
             parameters:
               distinguished_name:
                 common_name: <str>
+
+                # ISO 3166-1 alpha-2 two-letter country code.
+                # Example:
+                # "US" for United States,
+                # "DE" for Germany,
+                # "IN" for India.
                 country: <str>
                 email: <str>
                 locality: <str>
@@ -201,15 +207,18 @@
               enroll:
                 token: <str>
 
-                # Encoding type of the token.
-                # "0" = cleartext
-                # "7" = obfuscated
+                # Encoding type of the token:
+                # "0" = cleartext,
+                # "7" = obfuscated,
                 # "8a" = AES-256-GCM encrypted.
                 token_type: <str; "0" | "7" | "8a"; default="7">
                 username: <str>
                 secret: <str>
 
-                # Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted.
+                # Encoding type of the token:
+                # "0" = cleartext,
+                # "7" = obfuscated,
+                # "8a" = AES-256-GCM encrypted.
                 secret_type: <str; "0" | "7" | "8a"; default="7">
 
               # Token or username/secret for certificate re-enrollment.
@@ -217,15 +226,18 @@
               re_enroll:
                 token: <str>
 
-                # Encoding type of the token.
-                # "0" = cleartext
-                # "7" = obfuscated
+                # Encoding type of the token:
+                # "0" = cleartext,
+                # "7" = obfuscated,
                 # "8a" = AES-256-GCM encrypted.
                 token_type: <str; "0" | "7" | "8a"; default="7">
                 username: <str>
                 secret: <str>
 
-                # Encoding type of the secret. 0 = cleartext, 7 = obfuscated, 8a = AES-256-GCM encrypted.
+                # Encoding type of the token:
+                # "0" = cleartext,
+                # "7" = obfuscated,
+                # "8a" = AES-256-GCM encrypted.
                 secret_type: <str; "0" | "7" | "8a"; default="7">
             server:
 

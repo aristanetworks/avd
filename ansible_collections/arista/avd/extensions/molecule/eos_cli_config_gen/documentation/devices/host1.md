@@ -1899,8 +1899,8 @@ address locking
 
 ### Management Security Auto-Certificate Profiles
 
-| Profile | Key | EST Protocol Profile | Digest | Renewal(seconds) |
-| ------- | --- | -------------------- | ------ | ---------------- |
+| Profile | Key | EST Protocol Profile | Digest | Renewal (seconds) |
+| ------- | --- | -------------------- | ------ | ----------------- |
 | AVD_AUTO_CERTIFICATE_PROFILE | SSL_KEY | AVD_EST_PROTOCOL_token | sha512 | - |
 | AVD_AUTO_CERTIFICATE_PROFILE_system | SSL_KEY | AVD_EST_PROTOCOL_secret | - | 86400 |
 

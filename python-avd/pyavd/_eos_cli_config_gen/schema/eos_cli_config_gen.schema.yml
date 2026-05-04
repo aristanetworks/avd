@@ -9136,6 +9136,16 @@ keys:
                           type: str
                         country:
                           type: str
+                          description: 'ISO 3166-1 alpha-2 two-letter country code.
+
+                            Example:
+
+                            "US" for United States,
+
+                            "DE" for Germany,
+
+                            "IN" for India.'
+                          pattern: ^[A-Z]{2}$
                         email:
                           type: str
                           pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
@@ -9245,11 +9255,11 @@ keys:
                           - '7'
                           - 8a
                           default: '7'
-                          description: 'Encoding type of the token.
+                          description: 'Encoding type of the token:
 
-                            "0" = cleartext
+                            "0" = cleartext,
 
-                            "7" = obfuscated
+                            "7" = obfuscated,
 
                             "8a" = AES-256-GCM encrypted.'
                         username:
@@ -9265,8 +9275,13 @@ keys:
                           - '7'
                           - 8a
                           default: '7'
-                          description: Encoding type of the secret. 0 = cleartext,
-                            7 = obfuscated, 8a = AES-256-GCM encrypted.
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
                     re_enroll:
                       type: dict
                       description: 'Token or username/secret for certificate re-enrollment.
@@ -9287,11 +9302,11 @@ keys:
                           - '7'
                           - 8a
                           default: '7'
-                          description: 'Encoding type of the token.
+                          description: 'Encoding type of the token:
 
-                            "0" = cleartext
+                            "0" = cleartext,
 
-                            "7" = obfuscated
+                            "7" = obfuscated,
 
                             "8a" = AES-256-GCM encrypted.'
                         username:
@@ -9307,8 +9322,13 @@ keys:
                           - '7'
                           - 8a
                           default: '7'
-                          description: Encoding type of the secret. 0 = cleartext,
-                            7 = obfuscated, 8a = AES-256-GCM encrypted.
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
                 server:
                   type: dict
                   keys:
