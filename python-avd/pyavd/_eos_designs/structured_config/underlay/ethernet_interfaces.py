@@ -335,8 +335,13 @@ class EthernetInterfacesMixin(Protocol):
                 shutdown=not l3_port_channel.enabled,
                 speed=member_intf.speed or None,
                 channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=int(channel_group_id), mode=l3_port_channel.mode),
+                metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
+                    peer_interface=member_intf.peer_interface,
+                    peer_type="l3_port_channel_member",
+                    peer=peer,
+                    validate_state=self.structured_config_utils.get_interface_validate_state(),
+                ),
             )
-            ethernet_interface.metadata._update(peer_interface=member_intf.peer_interface, peer_type="l3_port_channel_member", peer=peer)
 
             self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(member_intf.name)
 
