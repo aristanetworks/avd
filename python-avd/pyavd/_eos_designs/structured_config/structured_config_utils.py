@@ -313,5 +313,11 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         # Non-Digital-Twin: follow the user input if set, otherwise leave unset.
         return Undefined if user_input is None else user_input
 
+    # TODO: AVD 7.0 - Move this to inband_management module once future knob is removed.
+    @run_once_method
+    def set_inband_mgmt_vrf(self: StructuredConfigUtils) -> None:
+        """Set inband management VRF if not present in the structured config."""
+        if self.shared_utils.inband_mgmt_vrf and self.shared_utils.inband_mgmt_vrf not in self.structured_config.vrfs:
+            self.structured_config.vrfs.append_new(name=self.shared_utils.inband_mgmt_vrf)
 
 __all__ = ["StructuredConfigUtils"]

@@ -19,19 +19,19 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             self._set_vlan()
             self._set_vlan_interface()
             if self.shared_utils.configure_inband_mgmt:
-                self._set_inband_mgmt_vrf()
+                self.structured_config_utils.set_inband_mgmt_vrf()
                 if self.shared_utils.inband_mgmt_gateway is not None:
                     self._set_ipv4_default_route()
             if self.shared_utils.configure_inband_mgmt_ipv6:
-                if self.inputs.avd_design_future.inband_mgmt_ipv6_fix:
-                    self._set_inband_mgmt_vrf()
+                if self.inputs.avd_design_future.configure_inband_mgmt_ipv6_vrf:
+                    self.structured_config_utils.set_inband_mgmt_vrf()
                 if self.shared_utils.inband_mgmt_ipv6_gateway is not None:
                     self._set_ipv6_default_route()
             return
 
         if self.shared_utils.inband_management_parent_vlans:
             self._set_ip_virtual_router_mac_address()
-            self._set_inband_mgmt_vrf()
+            self.structured_config_utils.set_inband_mgmt_vrf()
             for index, (vlan_id, vlan) in enumerate(self.shared_utils.inband_management_parent_vlans.items(), start=1):
                 self._set_parent_vlan(vlan_id)
                 self._set_parent_vlan_interface(vlan, vlan_id)
@@ -42,11 +42,11 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                             self._set_once_route_map_conn_2_bgp_sequence_20()
                             self._set_l2leaf_inband_mgmt_prefix_lists(vlan, index)
                         if vlan["ipv6"]:
-                            if not self.inputs.avd_design_future.inband_mgmt_ipv6_fix:
+                            if not self.inputs.avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used:
                                 self._set_l2leaf_inband_mgmt_ipv6_prefix_lists(vlan, index)
                             if self.shared_utils.overlay_routing_protocol != "none":
                                 self._set_once_route_map_conn_2_bgp_sequence_60()
-                                if self.inputs.avd_design_future.inband_mgmt_ipv6_fix:
+                                if self.inputs.avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used:
                                     self._set_l2leaf_inband_mgmt_ipv6_prefix_lists(vlan, index)
 
     def _set_vlan(self) -> None:
@@ -93,11 +93,6 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         self.structured_config.ipv6_static_routes.append_new(
             prefix="::/0", next_hop=self.shared_utils.inband_mgmt_ipv6_gateway, vrf=self.shared_utils.inband_mgmt_vrf
         )
-
-    def _set_inband_mgmt_vrf(self) -> None:
-        """Set inband management VRF if not present in the structured config."""
-        if self.shared_utils.inband_mgmt_vrf and self.shared_utils.inband_mgmt_vrf not in self.structured_config.vrfs:
-            self.structured_config.vrfs.append_new(name=self.shared_utils.inband_mgmt_vrf)
 
     def _set_ip_virtual_router_mac_address(self) -> None:
         if self.shared_utils.node_config.virtual_router_mac_address is None:
