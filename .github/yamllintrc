@@ -53,7 +53,13 @@ rules:
     type: unix
   indentation:
     level: error
-    indent-sequences: consistent
+    indent-sequences: true
+    ignore:
+      - /ansible_collections/arista/avd/extensions/molecule/**/intended/structured_configs/
+      - /ansible_collections/arista/avd/extensions/molecule/**/intended/structured_configs/cvp/
+      - /ansible_collections/arista/avd/examples/**/intended/structured_configs/
+      - /ansible_collections/arista/avd/examples/**/intended/structured_configs/cvp/
+      - /ansible_collections/arista/avd/tests/inventory/**/expected_output/
   octal-values:
     forbid-implicit-octal: true
     forbid-explicit-octal: true
