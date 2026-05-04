@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;raise_for_port_channels_without_members</samp>](## "avd_design_future.raise_for_port_channels_without_members") | Boolean |  | `False` |  | Raise an error if an L3 Port-Channel is configured without any member interfaces. |
     | [<samp>&nbsp;&nbsp;only_configure_mlag_vrfs_peer_group_when_used</samp>](## "avd_design_future.only_configure_mlag_vrfs_peer_group_when_used") | Boolean |  | `False` |  | Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed. |
     | [<samp>&nbsp;&nbsp;inband_mgmt_ipv6_fix</samp>](## "avd_design_future.inband_mgmt_ipv6_fix") | Boolean |  | `False` |  | Fix the current behavior of IPv6 inband management. When this key is set to true:<br>1. Inband management VRF is generated when IPv6 inband management is set.<br>2. Prefix list `IPv6-PL-L2LEAF-INBAND-MGMT` is not generated when overlay_routing_protocol is `none`. |
+    | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
 
 === "YAML"
 
@@ -36,4 +37,8 @@
       # 1. Inband management VRF is generated when IPv6 inband management is set.
       # 2. Prefix list `IPv6-PL-L2LEAF-INBAND-MGMT` is not generated when overlay_routing_protocol is `none`.
       inband_mgmt_ipv6_fix: <bool; default=False>
+
+      # Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
+      # since this combination is not supported.
+      raise_for_underlay_router_with_uplink_type_port_channel: <bool; default=False>
     ```

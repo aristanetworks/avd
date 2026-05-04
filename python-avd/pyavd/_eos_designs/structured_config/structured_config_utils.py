@@ -13,13 +13,14 @@ import ipaddress
 from typing import TYPE_CHECKING
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
-from pyavd._utils import as_path_list_match_from_bgp_asns
+from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._utils import Undefined, UndefinedType, as_path_list_match_from_bgp_asns
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.run_once import RunOnceMethodStateHelper, run_once_method
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
     from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
 
@@ -235,6 +236,82 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
             self.set_once_route_map_mlag_peer_in()
 
         router_bgp.peer_groups.append(peer_group)
+
+    @run_once_method
+    def set_once_sflow(self) -> None:
+        """Structured config for sFlow based on sflow_settings."""
+        sflow_settings = self.inputs.sflow_settings
+        destinations = sflow_settings.destinations._natural_sorted(sort_key="destination")
+        if sflow_settings.export_to_cloudvision.enabled:
+            destinations.append(EosDesigns.SflowSettings.DestinationsItem(destination="127.0.0.1", port=6343, vrf=sflow_settings.export_to_cloudvision.vrf))
+
+        if not destinations:
+            msg = "Either `sflow_settings.destinations` or `sflow_settings.export_to_cloudvision.enabled: true` is required to configure `sflow`."
+            raise AristaAvdInvalidInputsError(msg)
+
+        # At this point we have at least one interface with sFlow enabled
+        # and at least one destination.
+        self.structured_config.sflow._update(run=True, polling_interval=sflow_settings.polling_interval, sample=sflow_settings.sample.rate)
+
+        for destination in destinations:
+            destination: EosDesigns.SflowSettings.DestinationsItem
+            sflow_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
+                vrf_input=destination.vrf,
+                vrfs=sflow_settings.vrfs,
+                set_source_interfaces=True,
+                context=f"sflow_settings.destinations[destination={destination.destination}].vrf",
+            )
+            if sflow_vrf == "default":
+                # Add destination without VRF field
+                self.structured_config.sflow.destinations.append_new(destination=destination.destination, port=destination.port)
+                self.structured_config.sflow.source_interface = source_interface
+            else:
+                # Add destination with VRF field.
+                vrf_item = self.structured_config.sflow.vrfs.obtain(sflow_vrf)
+                vrf_item.destinations.append_new(destination=destination.destination, port=destination.port)
+                vrf_item.source_interface = source_interface
+                self.structured_config.sflow.vrfs.append(vrf_item)
+
+    def get_interface_sflow(self: StructuredConfigUtils, interface: str, configured_sflow: bool | None) -> bool | None:
+        """
+        Get the configured sFlow state if the interface supports it based on platform settings.
+
+        Considers global sFlow support and specific support for subinterfaces.
+
+        Also calls set_once_sflow if configured_sflow is True or not None.
+
+        Returns:
+            The configured_sflow value if supported, otherwise None.
+        """
+        if self.shared_utils.platform_settings.feature_support.sflow and (
+            "." not in interface or self.shared_utils.platform_settings.feature_support.sflow_subinterfaces
+        ):
+            if configured_sflow:
+                self.set_once_sflow()
+            return configured_sflow
+        return None
+
+    def get_interface_validate_state(self, user_input: bool | None = None, peer_in_fabric: bool = False) -> bool | UndefinedType:
+        """
+        Checks if validate_state flag should be set or not.
+
+        Args:
+            user_input: Boolean value of the `validate_state` from the inputs of the interface. `None` if not set in inputs.
+            peer_in_fabric: Flag indicating if the interface peer is a known AVD fabric device.
+
+        Returns:
+            True: If `validate_state` should be enabled (set to True) for the interface.
+            False: If `validate_state` should be disabled (set to False) for the interface.
+            UndefinedType: If `validate_state` should not be set/changed for the interface.
+        """
+        if self.shared_utils.digital_twin:
+            # Peer is not deployed in Digital Twin - interface will be down, so disable state validation.
+            if not peer_in_fabric:
+                return False
+            # Peer is in the fabric - only respect an explicit False from user input; never force True in Digital Twin.
+            return False if user_input is False else Undefined
+        # Non-Digital-Twin: follow the user input if set, otherwise leave unset.
+        return Undefined if user_input is None else user_input
 
 
 __all__ = ["StructuredConfigUtils"]

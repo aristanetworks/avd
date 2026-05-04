@@ -31,6 +31,14 @@ class IpAccesslistsMixin(Protocol):
         """
         self.structured_config.ip_access_lists.append(ipv4_acl._cast_as(EosCliConfigGen.IpAccessListsItem))
 
+    def _set_ipv6_acl(self: AvdStructuredConfigNetworkServicesProtocol, ipv6_acl: EosDesigns.Ipv6AclsItem) -> None:
+        """
+        Set structured config for ipv6_access_lists.
+
+        Called for each SVI when applying ipv6_acls.
+        """
+        self.structured_config.ipv6_access_lists.append(ipv6_acl._cast_as(EosCliConfigGen.Ipv6AccessListsItem))
+
     def _set_direct_ie_policy_acl(self: AvdStructuredConfigNetworkServicesProtocol, interface_ips: set[str], acl_name: str) -> None:
         """
         Configure an IP access list for the Direct Internet policy.

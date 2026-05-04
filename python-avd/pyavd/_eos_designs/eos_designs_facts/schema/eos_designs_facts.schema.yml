@@ -375,7 +375,7 @@ keys:
       This is to ensure that native vlan is not necessarily permitted on the uplink trunk.
   endpoint_vlans:
     type: str
-    description: Compressed list of vlans in use by endpoints connected to this switch, downstream switches or MLAG peer and it's downstream switches.
+    description: Compressed list of vlans in use by endpoints connected to this switch, downstream switches or MLAG peer and its downstream switches.
   local_endpoint_trunk_groups:
     type: list
     description: List of trunk_groups in use by endpoints connected to this switch.
@@ -383,7 +383,7 @@ keys:
       type: str
   endpoint_trunk_groups:
     type: list
-    description: List of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer and it's downstream switches.
+    description: List of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer and its downstream switches.
     items:
       type: str
   wan_path_groups:

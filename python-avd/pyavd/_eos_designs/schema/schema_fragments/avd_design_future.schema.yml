@@ -38,3 +38,9 @@ keys:
           Fix the current behavior of IPv6 inband management. When this key is set to true:
           1. Inband management VRF is generated when IPv6 inband management is set.
           2. Prefix list `IPv6-PL-L2LEAF-INBAND-MGMT` is not generated when overlay_routing_protocol is `none`.
+      raise_for_underlay_router_with_uplink_type_port_channel:
+        type: bool
+        description: |-
+          Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
+          since this combination is not supported.
+        default: false
