@@ -10,7 +10,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import Undefined, default, get_ip_from_ip_prefix
+from pyavd._utils import Undefined, UndefinedType, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
@@ -175,6 +175,8 @@ class UtilsMixin(Protocol):
             eos_cli=l3_generic_interface.raw_eos_cli,
         )
         interface.metadata.peer = l3_generic_interface.peer
+        if not isinstance((validate_state_result := self.structured_config_utils.get_interface_validate_state()), UndefinedType):
+            interface.metadata.validate_state = validate_state_result
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
         if is_subinterface:

@@ -59,25 +59,54 @@ ipv6_router_ospf:
         enabled: true
         route_map: ipv6_ospf_rm
   - id: 45
-    vrf: Tenant_OSPFv3_Redistribute_Ospfv3_Internal_VRF
-    router_id: ipv6_ospf_router_ospfv3_internal
+    vrf: Tenant_OSPFv3_Redistribute_Ospfv3_VRF
+    router_id: ipv6_ospf_router_ospfv3
     redistribute:
       bgp:
         enabled: true
       ospfv3:
         enabled: true
+        match_external:
+          enabled: true
+        match_internal:
+          enabled: true
+        match_nssa_external:
+          enabled: true
+        route_map: ipv6_ospf_rm
+  - id: 47
+    vrf: Tenant_OSPFv3_Redistribute_Ospfv3_Include_VRF
+    router_id: ipv6_ospf_router_ospfv3_include
+    redistribute:
+      bgp:
+        enabled: true
+      ospfv3:
+        enabled: true
+        match_external:
+          enabled: true
+          route_map: ipv6_ospf_rm
+          include_leaked: true
         match_internal:
           enabled: true
           route_map: ipv6_ospf_rm
+        match_nssa_external:
+          enabled: true
+          route_map: ipv6_ospf_rm
         route_map: ipv6_ospf_rm
+    auto_cost_reference_bandwidth: 10
   - id: 46
-    vrf: Tenant_OSPFv3_Redistribute_Ospfv3_nss_VRF
-    router_id: ipv6_ospf_router_ospfv3_nss
+    vrf: Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap_VRF
+    router_id: ipv6_ospf_router_ospfv3_route_map
     redistribute:
       bgp:
         enabled: true
       ospfv3:
         enabled: true
+        match_external:
+          enabled: true
+          route_map: ipv6_ospf_rm
+        match_internal:
+          enabled: true
+          route_map: ipv6_ospf_rm
         match_nssa_external:
           enabled: true
           route_map: ipv6_ospf_rm
@@ -182,17 +211,27 @@ router_bgp:
   - id: 204
     metadata:
       tenants:
-      - Tenant_OSPFv3_Redistribute_Ospfv3_Internal
+      - Tenant_OSPFv3_Redistribute_Ospfv3
     rd: 192.168.66.142:20204
     route_targets:
       both:
       - 20204:20204
     redistribute_routes:
     - learned
+  - id: 206
+    metadata:
+      tenants:
+      - Tenant_OSPFv3_Redistribute_Ospfv3_Include
+    rd: 192.168.66.142:20206
+    route_targets:
+      both:
+      - 20206:20206
+    redistribute_routes:
+    - learned
   - id: 205
     metadata:
       tenants:
-      - Tenant_OSPFv3_Redistribute_Ospfv3_nss
+      - Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap
     rd: 192.168.66.142:20205
     route_targets:
       both:
@@ -240,7 +279,7 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
-  - name: Tenant_OSPFv3_Redistribute_Ospfv3_Internal_VRF
+  - name: Tenant_OSPFv3_Redistribute_Ospfv3_VRF
     rd: 192.168.66.142:45
     route_targets:
       import:
@@ -255,7 +294,22 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
-  - name: Tenant_OSPFv3_Redistribute_Ospfv3_nss_VRF
+  - name: Tenant_OSPFv3_Redistribute_Ospfv3_Include_VRF
+    rd: 192.168.66.142:47
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '47:47'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '47:47'
+    router_id: 192.168.66.142
+    redistribute:
+      connected:
+        enabled: true
+  - name: Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap_VRF
     rd: 192.168.66.142:46
     route_targets:
       import:
@@ -319,9 +373,9 @@ vlan_interfaces:
     tenants:
     - Tenant_OSPFv3_Redistribute_Include_Leaked
 - name: Vlan204
-  description: Tenant_OSPFv3_Redistribute_Ospfv3_Internal_204 description
+  description: Tenant_OSPFv3_Redistribute_Ospfv3_204 description
   shutdown: false
-  vrf: Tenant_OSPFv3_Redistribute_Ospfv3_Internal_VRF
+  vrf: Tenant_OSPFv3_Redistribute_Ospfv3_VRF
   ipv6_enable: true
   ipv6_addresses:
   - ca::ca/64
@@ -332,11 +386,26 @@ vlan_interfaces:
     network_point_to_point: true
   metadata:
     tenants:
-    - Tenant_OSPFv3_Redistribute_Ospfv3_Internal
-- name: Vlan205
-  description: Tenant_OSPFv3_Redistribute_Ospfv3_nss_205 description
+    - Tenant_OSPFv3_Redistribute_Ospfv3
+- name: Vlan206
+  description: Tenant_OSPFv3_Redistribute_Ospfv3_Include_206 description
   shutdown: false
-  vrf: Tenant_OSPFv3_Redistribute_Ospfv3_nss_VRF
+  vrf: Tenant_OSPFv3_Redistribute_Ospfv3_Include_VRF
+  ipv6_enable: true
+  ipv6_addresses:
+  - ca::ca/64
+  ipv6_ospf:
+    process:
+      id: 47
+      area: 0.0.0.0
+    network_point_to_point: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_Ospfv3_Include
+- name: Vlan205
+  description: Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap_205 description
+  shutdown: false
+  vrf: Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap_VRF
   ipv6_enable: true
   ipv6_addresses:
   - ca::ca/64
@@ -347,7 +416,7 @@ vlan_interfaces:
     network_point_to_point: true
   metadata:
     tenants:
-    - Tenant_OSPFv3_Redistribute_Ospfv3_nss
+    - Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap
 - name: Vlan202
   description: Tenant_OSPFv3_Redistribute_Route_Map_202 description
   shutdown: false
@@ -380,15 +449,20 @@ vlans:
     tenants:
     - Tenant_OSPFv3_Redistribute_Include_Leaked
 - id: 204
-  name: Tenant_OSPFv3_Redistribute_Ospfv3_Internal_204
+  name: Tenant_OSPFv3_Redistribute_Ospfv3_204
   metadata:
     tenants:
-    - Tenant_OSPFv3_Redistribute_Ospfv3_Internal
+    - Tenant_OSPFv3_Redistribute_Ospfv3
+- id: 206
+  name: Tenant_OSPFv3_Redistribute_Ospfv3_Include_206
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_Ospfv3_Include
 - id: 205
-  name: Tenant_OSPFv3_Redistribute_Ospfv3_nss_205
+  name: Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap_205
   metadata:
     tenants:
-    - Tenant_OSPFv3_Redistribute_Ospfv3_nss
+    - Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap
 - id: 202
   name: Tenant_OSPFv3_Redistribute_Route_Map_202
   metadata:
@@ -409,18 +483,24 @@ vrfs:
   metadata:
     tenants:
     - Tenant_OSPFv3_Redistribute_Include_Leaked
-- name: Tenant_OSPFv3_Redistribute_Ospfv3_Internal_VRF
+- name: Tenant_OSPFv3_Redistribute_Ospfv3_VRF
   ip_routing: true
   ipv6_routing: true
   metadata:
     tenants:
-    - Tenant_OSPFv3_Redistribute_Ospfv3_Internal
-- name: Tenant_OSPFv3_Redistribute_Ospfv3_nss_VRF
+    - Tenant_OSPFv3_Redistribute_Ospfv3
+- name: Tenant_OSPFv3_Redistribute_Ospfv3_Include_VRF
   ip_routing: true
   ipv6_routing: true
   metadata:
     tenants:
-    - Tenant_OSPFv3_Redistribute_Ospfv3_nss
+    - Tenant_OSPFv3_Redistribute_Ospfv3_Include
+- name: Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap_VRF
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap
 - name: Tenant_OSPFv3_Redistribute_Route_Map_VRF
   ip_routing: true
   ipv6_routing: true
@@ -440,6 +520,8 @@ vxlan_interface:
         vni: 10203
       - id: 204
         vni: 10204
+      - id: 206
+        vni: 10206
       - id: 205
         vni: 10205
       - id: 202
@@ -449,9 +531,11 @@ vxlan_interface:
         vni: 100
       - name: Tenant_OSPFv3_Redistribute_Include_Leaked_VRF
         vni: 102
-      - name: Tenant_OSPFv3_Redistribute_Ospfv3_Internal_VRF
+      - name: Tenant_OSPFv3_Redistribute_Ospfv3_VRF
         vni: 103
-      - name: Tenant_OSPFv3_Redistribute_Ospfv3_nss_VRF
+      - name: Tenant_OSPFv3_Redistribute_Ospfv3_Include_VRF
+        vni: 105
+      - name: Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap_VRF
         vni: 104
       - name: Tenant_OSPFv3_Redistribute_Route_Map_VRF
         vni: 101
