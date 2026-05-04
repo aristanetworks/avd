@@ -200,6 +200,7 @@ $defs:
               - port-channel
               - p2p-vrfs
               - lan
+              - l2-ethernet
             description: |-
               Override the default `uplink_type` set at the `node_type_key` level.
               `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition.

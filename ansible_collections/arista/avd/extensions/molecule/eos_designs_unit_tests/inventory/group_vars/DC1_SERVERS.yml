@@ -732,3 +732,17 @@ network_ports:
       - Ethernet24-25
     profile: DOT1X_PORT_PROFILE
     description: PC
+  - description: Endpoint on ring topology triggering only_vlans_in_use with ring redundancy
+    switches:
+      - dc1-l2leaf8d
+    switch_ports:
+      - Ethernet10
+    mode: access
+    vlans: 111
+  - description: Endpoint on ring topology triggering only_vlans_in_use with ring redundancy
+    switches:
+      - dc1-l2leaf8e
+    switch_ports:
+      - Ethernet10
+    mode: trunk
+    vlans: 112,120

@@ -459,7 +459,7 @@ l2leaf:
           uplink_interfaces: [Ethernet1]
           uplink_switches: [dc1-leaf2b]
           uplink_switch_interfaces: [Ethernet31]
-      # Node to test structured configs for underlay_l2 uplinks.
+    # Node to test structured configs for underlay_l2 uplinks.
     - group: DC1_L2LEAF7
       nodes:
         - name: dc1.l2leaf7a
@@ -475,46 +475,49 @@ l2leaf:
           uplink_switch_ethernet_structured_config:
             description: description through uplink_switch_ethernet_structured_config(dc1.l2leaf7a)
 
-    # Minimal topology for asymmetric parent VLAN availability across split port-channel parents.
-    # Parent A has VLANs 3901 and 3902, parent B has only VLAN 3902, and the child has both VLANs.
-    # This test verifies that only 3902 is configured on both uplinks for `dc1-l2-child-asymmetric-2`
-    # and that `dc1-l2-child-asymmetric-1` keeps the non-breaking behavior.
-    - group: DC1_L2LEAF9
+    # Nodes to test uplink_type: l2-ethernet
+    # Testing a ring topology with DC-L2LEAF8A-C and a child ring with DC-L2LEAFD-E
+    # All uplinks are defined on both ends to ensure proper vlan redundancy around the ring.
+    - group: DC1_L2LEAF8
       mlag: false
-      uplink_type: port-channel
+      uplink_type: l2-ethernet
       nodes:
-        - name: dc1-l2-parent-a
-          mgmt_ip: 192.168.200.132/24
-          uplink_interfaces: []
-          uplink_switches: []
-          uplink_switch_interfaces: []
-          filter:
-            tenants: [Tenant_PARENT_A, Tenant_PARENT_B]
-            tags: [parent-a, parent-b]
-        - name: dc1-l2-parent-b
-          mgmt_ip: 192.168.200.133/24
-          uplink_interfaces: []
-          uplink_switches: []
-          uplink_switch_interfaces: []
-          filter:
-            tenants: [Tenant_PARENT_B]
-            tags: [parent-b]
-        - name: dc1-l2-child-asymmetric-1
-          mgmt_ip: 192.168.200.134/24
+        - name: dc1-l2leaf8a
+          mgmt_ip: 192.168.200.125/24
           uplink_interfaces: [Ethernet1, Ethernet2]
-          uplink_switches: [dc1-l2-parent-a, dc1-l2-parent-b]
-          uplink_switch_interfaces: [Ethernet1, Ethernet1]
-          filter:
-            tenants: [Tenant_PARENT_A, Tenant_PARENT_B]
-            tags: [parent-a, parent-b]
-        - name: dc1-l2-child-asymmetric-2
-          mgmt_ip: 192.168.200.135/24
+          uplink_switches: [dc1-leaf2a, dc1-l2leaf8b]
+          uplink_switch_interfaces: [Ethernet33, Ethernet1]
+          # Structured_config applied to member interfaces of uplink ethernet interface.
+          uplink_switch_ethernet_structured_config:
+            description: description through uplink_switch_ethernet_structured_config(dc1-l2leaf8a)
+        - name: dc1-l2leaf8b
+          mgmt_ip: 192.168.200.126/24
           uplink_interfaces: [Ethernet1, Ethernet2]
-          uplink_switches: [dc1-l2-parent-a, dc1-l2-parent-b]
+          uplink_switches: [dc1-l2leaf8a, dc1-l2leaf8c]
           uplink_switch_interfaces: [Ethernet2, Ethernet2]
+        - name: dc1-l2leaf8c
+          mgmt_ip: 192.168.200.127/24
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switches: [dc1-leaf2b, dc1-l2leaf8b]
+          uplink_switch_interfaces: [Ethernet33, Ethernet2]
+        # The switches below sit on another child ring with stricter VLAN filtering (don't do this at home kids!)
+        # Also see network_ports in DC1_SERVERS.yml.
+        - name: dc1-l2leaf8d
+          mgmt_ip: 192.168.200.128/24
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switches: [dc1-l2leaf8a, dc1-l2leaf8e]
+          uplink_switch_interfaces: [Ethernet3, Ethernet1]
           filter:
-            tenants: [Tenant_PARENT_A, Tenant_PARENT_B]
-            tags: [parent-a, parent-b]
+            only_vlans_in_use: true
+        - name: dc1-l2leaf8e
+          mgmt_ip: 192.168.200.129/24
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switches: [dc1-l2leaf8d, dc1-l2leaf8c]
+          uplink_switch_interfaces: [Ethernet2, Ethernet3]
+          inband_mgmt_vlan: 110 # Existing vlan in network services.
+          inband_mgmt_ip: 10.10.10.129/24
+          filter:
+            only_vlans_in_use: true
 
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500

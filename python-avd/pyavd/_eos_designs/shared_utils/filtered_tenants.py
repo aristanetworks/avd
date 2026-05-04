@@ -216,7 +216,7 @@ class FilteredTenantsMixin(Protocol):
             return set()
         switch_vlans_list = range_expand(switch_vlans)
         accepted_vlans = {int(vlan) for vlan in switch_vlans_list}
-        if self.uplink_type != "port-channel":
+        if self.uplink_type not in ["port-channel", "l2-ethernet"]:
             return accepted_vlans
 
         uplink_switches = unique(self.uplink_switches)
