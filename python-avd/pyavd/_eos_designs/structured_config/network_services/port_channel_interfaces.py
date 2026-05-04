@@ -95,11 +95,12 @@ class PortChannelInterfacesMixin(Protocol):
                         l3_port_channel.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker
                     ),
                     vrf=vrf.name if vrf.name != "default" else None,
-                )
-                port_channel_interface.metadata._update(
-                    peer_interface=l3_port_channel.peer_port_channel or None,
-                    peer=l3_port_channel.peer,
-                    peer_type="l3_port_channel",
+                    metadata=EosCliConfigGen.PortChannelInterfacesItem.Metadata(
+                        peer_interface=l3_port_channel.peer_port_channel or None,
+                        peer=l3_port_channel.peer,
+                        peer_type="l3_port_channel",
+                        validate_state=self.structured_config_utils.get_interface_validate_state(),
+                    ),
                 )
                 if l3_port_channel.ipv4_acl_in:
                     acl = self.shared_utils.get_ipv4_acl(

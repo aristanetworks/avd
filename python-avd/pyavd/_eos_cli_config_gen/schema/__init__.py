@@ -4195,11 +4195,53 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Servers._item_type = str
 
-        _fields: ClassVar[dict] = {"servers": {"type": Servers}, "tunnel_requests_disabled": {"type": bool}, "mlag_peerlink_requests_disabled": {"type": bool}}
+        class ClientRequests(AvdModel):
+            """Subclass of AvdModel."""
+
+            class FloodingSuppressionVlans(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            FloodingSuppressionVlans._item_type = str
+
+            _fields: ClassVar[dict] = {"flooding_suppression_vlans": {"type": FloodingSuppressionVlans}}
+            flooding_suppression_vlans: FloodingSuppressionVlans
+            """
+            Suppress flooding of DHCP/DHCPv6 client requests to other interfaces in the specified VLANs.
+            Subclass of AvdList with `str` items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, flooding_suppression_vlans: FloodingSuppressionVlans | UndefinedType = Undefined) -> None:
+                    """
+                    ClientRequests.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        flooding_suppression_vlans:
+                           Suppress flooding of DHCP/DHCPv6 client requests to other interfaces in the specified VLANs.
+                           Subclass of AvdList with `str` items.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "servers": {"type": Servers},
+            "tunnel_requests_disabled": {"type": bool},
+            "mlag_peerlink_requests_disabled": {"type": bool},
+            "client_requests": {"type": ClientRequests},
+        }
         servers: Servers
         """Subclass of AvdList with `str` items."""
         tunnel_requests_disabled: bool | None
         mlag_peerlink_requests_disabled: bool | None
+        client_requests: ClientRequests
+        """
+        Configure DHCP client request settings.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -4209,6 +4251,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 servers: Servers | UndefinedType = Undefined,
                 tunnel_requests_disabled: bool | None | UndefinedType = Undefined,
                 mlag_peerlink_requests_disabled: bool | None | UndefinedType = Undefined,
+                client_requests: ClientRequests | UndefinedType = Undefined,
             ) -> None:
                 """
                 DhcpRelay.
@@ -4220,6 +4263,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     servers: Subclass of AvdList with `str` items.
                     tunnel_requests_disabled: tunnel_requests_disabled
                     mlag_peerlink_requests_disabled: mlag_peerlink_requests_disabled
+                    client_requests:
+                       Configure DHCP client request settings.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -39403,7 +39450,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"host": {"type": str}, "tls": {"type": Tls}, "timeout": {"type": int}, "retransmit": {"type": int}, "key": {"type": str}}
+            KeyType: TypeAlias = Literal["0", "7", "8a"]
+            _fields: ClassVar[dict] = {
+                "host": {"type": str},
+                "tls": {"type": Tls},
+                "timeout": {"type": int},
+                "retransmit": {"type": int},
+                "key": {"type": str},
+                "key_type": {"type": str, "default": "7"},
+            }
             host: str
             """
             -> Host IP address or name. Multiple server with the same hostname/IP address can be configured for
@@ -39419,9 +39474,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             retransmit: int | None
             key: str | None
             """
-            Encrypted key - only type 7 supported.
+            Encrypted key.
             When TLS is configured, `key` is ignored.
             """
+            key_type: KeyType
+            """Default value: `"7"`"""
 
             if TYPE_CHECKING:
 
@@ -39433,6 +39490,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     timeout: int | None | UndefinedType = Undefined,
                     retransmit: int | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
+                    key_type: KeyType | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ServersItem.
@@ -39451,8 +39509,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         timeout: timeout
                         retransmit: retransmit
                         key:
-                           Encrypted key - only type 7 supported.
+                           Encrypted key.
                            When TLS is configured, `key` is ignored.
+                        key_type: key_type
 
                     """
 
@@ -39500,12 +39559,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                KeyType: TypeAlias = Literal["0", "7", "8a"]
                 _fields: ClassVar[dict] = {
                     "host": {"type": str},
                     "tls": {"type": Tls},
                     "timeout": {"type": int},
                     "retransmit": {"type": int},
                     "key": {"type": str},
+                    "key_type": {"type": str, "default": "7"},
                 }
                 host: str
                 """
@@ -39522,9 +39583,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 retransmit: int | None
                 key: str | None
                 """
-                Encrypted key - only type 7 supported.
+                Encrypted key.
                 When TLS is configured, `key` is ignored.
                 """
+                key_type: KeyType
+                """Default value: `"7"`"""
 
                 if TYPE_CHECKING:
 
@@ -39536,6 +39599,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         timeout: int | None | UndefinedType = Undefined,
                         retransmit: int | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
+                        key_type: KeyType | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServersItem.
@@ -39554,8 +39618,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             timeout: timeout
                             retransmit: retransmit
                             key:
-                               Encrypted key - only type 7 supported.
+                               Encrypted key.
                                When TLS is configured, `key` is ignored.
+                            key_type: key_type
 
                         """
 
@@ -51583,12 +51648,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class NextHop(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"resolution_disabled": {"type": bool}}
+                resolution_disabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, resolution_disabled: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        NextHop.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            resolution_disabled: resolution_disabled
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "domain_identifier": {"type": str},
                 "peer_groups": {"type": PeerGroups},
                 "route": {"type": Route},
                 "neighbors": {"type": Neighbors},
                 "neighbor_default_encapsulation_mpls_next_hop_self": {"type": NeighborDefaultEncapsulationMplsNextHopSelf},
+                "next_hop": {"type": NextHop},
             }
             domain_identifier: str | None
             peer_groups: PeerGroups
@@ -51598,6 +51684,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             neighbors: Neighbors
             """Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`)."""
             neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf
+            """Subclass of AvdModel."""
+            next_hop: NextHop
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
@@ -51610,6 +51698,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     route: Route | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf | UndefinedType = Undefined,
+                    next_hop: NextHop | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyVpnIpv4.
@@ -51623,6 +51712,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         route: Subclass of AvdModel.
                         neighbors: Subclass of AvdIndexedList with `NeighborsItem` items. Primary key is `ip_address` (`str`).
                         neighbor_default_encapsulation_mpls_next_hop_self: Subclass of AvdModel.
+                        next_hop: Subclass of AvdModel.
 
                     """
 
