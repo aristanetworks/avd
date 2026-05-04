@@ -202,6 +202,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_key: connected_endpoints
     port_profile: TENANT_A
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -225,6 +226,7 @@ ethernet_interfaces:
     peer_type: SpecialEndpoint
     peer_key: connected_endpoints
     port_profile: NESTED_TENANT_A
+    validate_state: false
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -244,6 +246,7 @@ ethernet_interfaces:
     peer_type: server
     peer_key: servers
     port_profile: TENANT_A
+    validate_state: false
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile TENANT_A
@@ -263,6 +266,7 @@ ethernet_interfaces:
     peer_type: server
     peer_key: servers
     port_profile: TENANT_A
+    validate_state: false
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under adapter for switch Eth17
@@ -282,6 +286,7 @@ ethernet_interfaces:
     peer_type: server
     peer_key: servers
     port_profile: NESTED_TENANT_A
+    validate_state: false
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -301,6 +306,7 @@ ethernet_interfaces:
     peer_type: server
     peer_key: servers
     port_profile: NESTED_TENANT_A
+    validate_state: false
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -318,6 +324,7 @@ ethernet_interfaces:
     peer_type: SpecialServer
     peer_key: servers
     port_profile: TENANT_A
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -423,6 +430,8 @@ port_channel_interfaces:
   shutdown: false
   mlag: 28
   service_profile: foo
+  metadata:
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -439,6 +448,8 @@ port_channel_interfaces:
   shutdown: false
   mlag: 16
   service_profile: bar
+  metadata:
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -448,6 +459,8 @@ port_channel_interfaces:
   shutdown: false
   mlag: 17
   service_profile: foo
+  metadata:
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -457,6 +470,8 @@ port_channel_interfaces:
   shutdown: false
   mlag: 18
   service_profile: foo
+  metadata:
+    validate_state: false
   switchport:
     enabled: true
     mode: access
@@ -473,6 +488,8 @@ port_channel_interfaces:
   shutdown: false
   mlag: 19
   service_profile: foo
+  metadata:
+    validate_state: false
   switchport:
     enabled: true
     mode: access
