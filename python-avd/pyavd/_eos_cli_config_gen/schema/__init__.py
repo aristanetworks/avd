@@ -29364,7 +29364,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 base: int
                 """First label of the dynamic range."""
                 size: int
-                """Size of the dynamic range."""
+                """Number of labels to reserve."""
 
                 if TYPE_CHECKING:
 
@@ -29377,7 +29377,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             base: First label of the dynamic range.
-                            size: Size of the dynamic range.
+                            size: Number of labels to reserve.
 
                         """
 

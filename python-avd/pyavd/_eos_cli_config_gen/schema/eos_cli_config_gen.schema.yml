@@ -11351,7 +11351,7 @@ keys:
                 required: true
                 convert_types:
                 - str
-                description: Size of the dynamic range.
+                description: Number of labels to reserve.
                 min: 0
                 max: 1048560
       tunnel:

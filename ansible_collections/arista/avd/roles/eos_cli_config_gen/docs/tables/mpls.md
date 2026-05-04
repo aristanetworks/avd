@@ -73,7 +73,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.ospf_sr.size") | Integer | Required |  | Min: 1<br>Max: 1048560 | Size of the SRGB range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "mpls.label_ranges.dynamic") | Dictionary |  |  |  | Label range for dynamic labels (e.g. adjacency segments).<br>Renders 'mpls label range dynamic <base> <size>'.<br>Must not overlap with the static label range (default static range is 16-1023).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.dynamic.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of the dynamic range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.dynamic.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of the dynamic range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.dynamic.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Number of labels to reserve. |
     | [<samp>&nbsp;&nbsp;tunnel</samp>](## "mpls.tunnel") | Dictionary |  |  |  | Configure MPLS tunnel. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;termination</samp>](## "mpls.tunnel.termination") | Dictionary |  |  |  | Controls selection of the TTL/DSCP values by LER when decapsulating MPLS packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model</samp>](## "mpls.tunnel.termination.model") | Dictionary |  |  |  |  |
@@ -254,7 +254,7 @@
           # First label of the dynamic range.
           base: <int; 16-1048575; required>
 
-          # Size of the dynamic range.
+          # Number of labels to reserve.
           size: <int; 0-1048560; required>
 
       # Configure MPLS tunnel.
