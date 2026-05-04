@@ -129,7 +129,7 @@
           run_once: true
           ansible.builtin.assert:
             that:
-              - cv_deploy_results.removed_configs == ["AVD_avd-ci-leaf1"]
+              - cv_deploy_results.removed_configs == ["AVD-avd-ci-leaf1"]
 
         - name: "(BLOCK) Verify manifest configlets were deployed (shared + device config) - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
