@@ -1281,9 +1281,9 @@ class EosDesignsFactsProtocol(Protocol):
     """Subclass of AvdList with `str` items."""
     vlans: str
     """
-    Compressed list of vlans to be defined on this switch after filtering network services.
-    The filter
-    is based on filter.tenants, filter.tags but not filter.only_vlans_in_use.
+    Compressed list of VLANs to be defined on this switch.
+    These are the available VLANs after local
+    network-service filtering and VLAN availability filtering from uplink switches.
 
     Ex. "1-100, 201-202"
     This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.
@@ -1490,9 +1490,9 @@ class EosDesignsFactsProtocol(Protocol):
                 uplink_peers: Subclass of AvdList with `str` items.
                 uplink_switch_vrfs: Subclass of AvdList with `str` items.
                 vlans:
-                   Compressed list of vlans to be defined on this switch after filtering network services.
-                   The filter
-                   is based on filter.tenants, filter.tags but not filter.only_vlans_in_use.
+                   Compressed list of VLANs to be defined on this switch.
+                   These are the available VLANs after local
+                   network-service filtering and VLAN availability filtering from uplink switches.
 
                    Ex. "1-100, 201-202"
                    This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.
