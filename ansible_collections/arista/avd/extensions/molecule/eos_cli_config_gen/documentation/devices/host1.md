@@ -1613,6 +1613,7 @@ radius proxy
 | default | 10.10.11.156 | - | - | - | 34 | 45 |
 | default | 10.10.11.156 | True | 345 | - | - | - |
 | default | 10.10.10.249 | - | - | - | 1 | 1 |
+| default | 10.10.10.249 | - | - | - | 1 | 1 |
 | mgt | 10.10.10.157 | - | - | - | 1 | 1 |
 | mgt | 10.10.11.159 | - | - | - | - | 1 |
 | mgt | 10.10.11.160 | - | - | - | 1 | - |
@@ -1633,11 +1634,12 @@ radius-server host 10.10.10.158 timeout 1 retransmit 1 key 7 <removed>
 radius-server host 10.10.11.156 tls port 1700 timeout 1 retransmit 1
 radius-server host 10.10.11.156 timeout 34 retransmit 45 key 7 <removed>
 radius-server host 10.10.11.156 tls port 345
-radius-server host 10.10.10.249 timeout 1 retransmit 1 key 7 <removed>
+radius-server host 10.10.10.249 timeout 1 retransmit 1 key 0 <removed>
+radius-server host 10.10.10.249 timeout 1 retransmit 1 key 8a <removed>
 radius-server host 10.10.10.157 vrf mgt timeout 1 retransmit 1 key 7 <removed>
 radius-server host 10.10.11.159 vrf mgt retransmit 1 key 7 <removed>
-radius-server host 10.10.11.160 vrf mgt timeout 1 key 7 <removed>
-radius-server host 10.10.11.248 vrf mgt key 7 <removed>
+radius-server host 10.10.11.160 vrf mgt timeout 1 key 8a <removed>
+radius-server host 10.10.11.248 vrf mgt key 0 <removed>
 radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 2083 timeout 1 retransmit 1
 radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 ```
@@ -2050,6 +2052,7 @@ alias siib show ip interface brief
 
 - DHCP Relay is disabled for tunnelled requests
 - DHCP Relay is disabled for MLAG peer-link requests
+- Client requests flooding suppression for VLANs: 500-510,1000,2000,3000
 
 | DHCP Relay Servers |
 | ------------------ |
@@ -2063,6 +2066,7 @@ alias siib show ip interface brief
 dhcp relay
    tunnel requests disabled
    mlag peer-link requests disabled
+   client requests flooding suppression vlan 500-510,1000,2000,3000
    server dhcp-relay-server1
    server dhcp-relay-server2
 ```
@@ -5104,6 +5108,7 @@ interface Ethernet3
    ptp sync-message interval 1
    ptp transport layer2
    ptp vlan 2
+   ptp region domain-number 25
    no priority-flow-control
    spanning-tree guard root
    spanning-tree bpduguard rate-limit disable
@@ -5231,6 +5236,7 @@ interface Ethernet7
    ptp sync-message interval 5
    ptp transport layer2
    ptp vlan all
+   ptp region domain-number 56
    service-profile QoS
    qos trust cos
    qos cos 5
@@ -6367,6 +6373,7 @@ interface Port-Channel5
    ptp sync-message interval 1
    ptp transport layer2
    ptp vlan 2
+   ptp region domain-number 25
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1
@@ -9464,6 +9471,8 @@ ASN Notation: asdot
 
 #### Router BGP VPN-IPv4 Address Family
 
+- Next-hop resolution is **disabled**
+
 - VPN import pruning is **enabled**
 
 ##### VPN-IPv4 Neighbors
@@ -10385,6 +10394,7 @@ router bgp 65101
       neighbor 192.168.255.5 default-route rcf Address_Family_VPN_IPV4_In()
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       domain identifier 65000:0
+      next-hop resolution disabled
       route import match-failure action discard
    !
    address-family vpn-ipv6

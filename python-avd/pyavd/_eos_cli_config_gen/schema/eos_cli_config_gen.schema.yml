@@ -1744,6 +1744,21 @@ keys:
         type: bool
       mlag_peerlink_requests_disabled:
         type: bool
+      client_requests:
+        type: dict
+        description: Configure DHCP client request settings.
+        keys:
+          flooding_suppression_vlans:
+            type: list
+            description: Suppress flooding of DHCP/DHCPv6 client requests to other
+              interfaces in the specified VLANs.
+            min_length: 1
+            items:
+              type: str
+              description: "VLAN ID or range of VLAN IDs, <1-4094>.\nExample:\n  -
+                1000\n  - 500-510\n  - 2000,3000"
+              convert_types:
+              - int
   dhcp_servers:
     type: list
     primary_key: vrf
@@ -3561,6 +3576,15 @@ keys:
                       valid_values:
                       - forwardable
                       - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
+                  convert_types:
+                  - str
             sync_message:
               type: dict
               keys:
@@ -12909,6 +12933,15 @@ keys:
                       valid_values:
                       - forwardable
                       - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
+                  convert_types:
+                  - str
             sync_message:
               type: dict
               keys:
@@ -14955,9 +14988,18 @@ keys:
               - str
             key:
               type: str
-              description: 'Encrypted key - only type 7 supported.
+              description: 'Encrypted key.
 
                 When TLS is configured, `key` is ignored.'
+            key_type:
+              type: str
+              convert_types:
+              - int
+              valid_values:
+              - '0'
+              - '7'
+              - 8a
+              default: '7'
       vrfs:
         type: list
         primary_key: name
@@ -19083,6 +19125,11 @@ keys:
             keys:
               source_interface:
                 type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
       address_family_vpn_ipv6:
         type: dict
         keys:

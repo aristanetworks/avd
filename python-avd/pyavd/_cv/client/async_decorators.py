@@ -14,7 +14,7 @@ from types import UnionType
 from typing import TYPE_CHECKING, Any, ClassVar, ParamSpec, TypeVar, get_args, get_origin
 
 from grpclib import Status
-from grpclib.exceptions import GRPCError
+from grpclib.exceptions import GRPCError, StreamTerminatedError
 
 from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVClientException, CVGRPCError, CVResourceNotFound, CVTimeoutError
 from pyavd._utils import batch
@@ -34,6 +34,7 @@ T = TypeVar("T")
 
 
 MSG_SIZE_EXCEEDED_REGEX = re_compile(r"grpc: received message larger than max \((?P<size>\d+) vs\. (?P<max>\d+)\)")
+STREAM_RESET_ERROR_CODE_REGEX = re_compile(r"Stream reset by remote party, error_code: (?P<error_code>\d+)")
 
 
 class LimitCvVersion:
@@ -124,6 +125,9 @@ class GRPCRequestHandler:
         list_field (str): Name of the parameter to be split if Status.RESOURCE_EXHAUSTED is received.
         min_items_for_splitting_attempt (int): Minimum length of the item that we'll still try to split.
         check_bulk_response_errors (bool): Check for the presence of the 'error' inside each response tuple for bulk (stream-based) gRPC calls.
+        retry_on_stream_reset (bool): Retry on StreamTerminatedError (RST_STREAM INTERNAL_ERROR from server) using the same backoff as UNAVAILABLE.
+            Should be enabled for streaming calls (GetAll, GetSome, Subscribe) where transient server resets are possible.
+            It is ok to enable it for calls mixing GetAll or GetSome with GetOne.
     """
 
     max_retries: int
@@ -132,6 +136,7 @@ class GRPCRequestHandler:
     list_field: str | None
     min_items_for_splitting_attempt: int
     check_bulk_response_errors: bool
+    retry_on_stream_reset: bool
     func: Callable
     func_signature: Signature
     bound_arguments: BoundArguments
@@ -145,6 +150,7 @@ class GRPCRequestHandler:
         list_field: str | None = None,
         min_items_for_splitting_attempt: int = 2,
         check_bulk_response_errors: bool = False,
+        retry_on_stream_reset: bool = False,
     ) -> None:
         self.max_retries = max_retries
         self.initial_delay = initial_delay
@@ -152,6 +158,7 @@ class GRPCRequestHandler:
         self.list_field = list_field
         self.min_items_for_splitting_attempt = max(2, min_items_for_splitting_attempt)
         self.check_bulk_response_errors = check_bulk_response_errors
+        self.retry_on_stream_reset = retry_on_stream_reset
 
     def __call__(self, func: Callable[P, T]) -> Callable[P, T]:
         self.func = func
@@ -211,6 +218,24 @@ class GRPCRequestHandler:
 
         return _string_based_annotation is list or get_origin(annotation) is list, _string_based_annotation
 
+    async def _wait_before_retry_or_raise(self, e: Exception, attempt: int, func_name: str, call_args: tuple, call_kwargs: dict) -> None:
+        """Sleep before the next retry attempt or raise CVGRPCStatusUnavailable if retries are exhausted."""
+        if attempt <= self.max_retries:
+            delay = self.initial_delay * (self.factor ** (attempt - 1))
+            LOGGER.warning(
+                "%s: Attempt %s/%s to execute call '%s' returned '%s'. Retrying in %ss...",
+                self.__class__.__name__,
+                attempt,
+                self.max_retries + 1,
+                func_name,
+                e,
+                delay,
+            )
+            await asyncio_sleep(delay)
+        else:
+            msg = f"{self.__class__.__name__}: Attempt {attempt}/{self.max_retries + 1} to execute call '{func_name}' failed."
+            raise CVGRPCStatusUnavailable(msg, *e.args, call_args, call_kwargs)
+
     async def _execute_single_call_with_retries(self, call_args: tuple, call_kwargs: dict) -> None:
         """Executes a single call to self.func with retry logic for gRPC UNAVAILABLE."""
         func_name = self.func.__name__
@@ -235,22 +260,7 @@ class GRPCRequestHandler:
                                 raise CVTimeoutError(*e.args, call_args, call_kwargs)
 
                             case Status.UNAVAILABLE:
-                                if attempt <= self.max_retries:
-                                    delay = self.initial_delay * (self.factor ** (attempt - 1))
-                                    LOGGER.warning(
-                                        "%s: Attempt %s/%s to execute call '%s' returned '%s'. Retrying in %ss...",
-                                        self.__class__.__name__,
-                                        attempt,
-                                        self.max_retries + 1,
-                                        func_name,
-                                        e,
-                                        delay,
-                                    )
-                                    await asyncio_sleep(delay)
-                                # Use case where all retries for this specific call failed
-                                else:
-                                    msg = f"{self.__class__.__name__}: Attempt {attempt}/{self.max_retries + 1} to execute call '{func_name}' failed."
-                                    raise CVGRPCStatusUnavailable(msg, *e.args, call_args, call_kwargs)
+                                await self._wait_before_retry_or_raise(e, attempt, func_name, call_args, call_kwargs)
 
                             case Status.RESOURCE_EXHAUSTED:
                                 if matches := fullmatch(MSG_SIZE_EXCEEDED_REGEX, e.message):
@@ -262,6 +272,13 @@ class GRPCRequestHandler:
                             case _:
                                 # All other gRPC errors are converted to CVGRPCError
                                 raise CVGRPCError(*e.args, call_args, call_kwargs)
+
+                    case StreamTerminatedError() if self.retry_on_stream_reset:
+                        # Only retry on HTTP2 RST_STREAM INTERNAL_ERROR (error_code: 2) - transient server-side fault.
+                        # Other error codes (e.g. NO_ERROR from timeout) fall through to CVClientException.
+                        if not (matches := fullmatch(STREAM_RESET_ERROR_CODE_REGEX, str(e.args[0] if e.args else ""))) or int(matches.group("error_code")) != 2:
+                            raise CVClientException(*e.args, call_args, call_kwargs)
+                        await self._wait_before_retry_or_raise(e, attempt, func_name, call_args, call_kwargs)
 
                     case _:
                         raise CVClientException(*e.args, call_args, call_kwargs)
