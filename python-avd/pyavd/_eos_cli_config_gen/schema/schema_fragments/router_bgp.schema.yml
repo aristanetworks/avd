@@ -3579,6 +3579,11 @@ keys:
             keys:
               source_interface:
                 type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
       address_family_vpn_ipv6:
         type: dict
         keys:

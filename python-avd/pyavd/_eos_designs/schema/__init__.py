@@ -930,6 +930,7 @@ class EosDesigns(EosDesignsRootModel):
             "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
+            "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -956,6 +957,14 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        raise_for_underlay_router_with_uplink_type_port_channel: bool
+        """
+        Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
+        since
+        this combination is not supported.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -966,6 +975,7 @@ class EosDesigns(EosDesignsRootModel):
                 remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
+                raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -980,6 +990,10 @@ class EosDesigns(EosDesignsRootModel):
                        default instead of always deactivating it.
                     raise_for_port_channels_without_members: Raise an error if an L3 Port-Channel is configured without any member interfaces.
                     only_configure_mlag_vrfs_peer_group_when_used: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+                    raise_for_underlay_router_with_uplink_type_port_channel:
+                       Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
+                       since
+                       this combination is not supported.
 
                 """
 
@@ -2070,6 +2084,144 @@ class EosDesigns(EosDesignsRootModel):
 
             Descriptions._item_type = str
 
+            class SubinterfacesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class EncapsulationVlan(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                    client_dot1q: int | None
+                    """
+                    Client VLAN ID encapsulation.
+                    Default is the subinterface number.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            EncapsulationVlan.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                client_dot1q:
+                                   Client VLAN ID encapsulation.
+                                   Default is the subinterface number.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "number": {"type": int},
+                    "description": {"type": str},
+                    "short_esi": {"type": str},
+                    "vlan_id": {"type": int},
+                    "encapsulation_vlan": {"type": EncapsulationVlan},
+                    "raw_eos_cli": {"type": str},
+                    "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                }
+                number: int
+                """Subinterface number."""
+                description: str | None
+                """
+                Description for subinterface.
+                This can be a template using the AVD string formatter syntax:
+                https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                descriptions-names.html#avd-string-formatter-syntax.
+                The available template fields are:
+                  -
+                `subinterface` - The full subinterface name.
+                  - `subinterface_number` - The number for the
+                subinterface.
+                  - `vlan_id` - The VLAN ID bridged to this subinterface.
+                  - `dot1q_client_vlan` -
+                The Client VLAN ID encapsulation.
+                  - `endpoint_type` - The `type` of the connected endpoint either
+                set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                  -
+                `endpoint` - The name of the connected endpoint
+                """
+                short_esi: str | None
+                """
+                In format xxxx:xxxx:xxxx or "auto".
+                Required for multihomed ethernet interfaces with subinterfaces.
+                """
+                vlan_id: int | None
+                """
+                VLAN ID to bridge.
+                Default is the subinterface number.
+                """
+                encapsulation_vlan: EncapsulationVlan
+                """Subclass of AvdModel."""
+                raw_eos_cli: str | None
+                """EOS CLI rendered directly on the subinterface in the final EOS configuration."""
+                structured_config: EosCliConfigGen.EthernetInterfacesItem
+                """
+                Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                eos_cli_config_gen.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        number: int | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
+                        short_esi: str | None | UndefinedType = Undefined,
+                        vlan_id: int | None | UndefinedType = Undefined,
+                        encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                        raw_eos_cli: str | None | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        SubinterfacesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            number: Subinterface number.
+                            description:
+                               Description for subinterface.
+                               This can be a template using the AVD string formatter syntax:
+                               https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                               descriptions-names.html#avd-string-formatter-syntax.
+                               The available template fields are:
+                                 -
+                               `subinterface` - The full subinterface name.
+                                 - `subinterface_number` - The number for the
+                               subinterface.
+                                 - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                 - `dot1q_client_vlan` -
+                               The Client VLAN ID encapsulation.
+                                 - `endpoint_type` - The `type` of the connected endpoint either
+                               set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                 -
+                               `endpoint` - The name of the connected endpoint
+                            short_esi:
+                               In format xxxx:xxxx:xxxx or "auto".
+                               Required for multihomed ethernet interfaces with subinterfaces.
+                            vlan_id:
+                               VLAN ID to bridge.
+                               Default is the subinterface number.
+                            encapsulation_vlan: Subclass of AvdModel.
+                            raw_eos_cli: EOS CLI rendered directly on the subinterface in the final EOS configuration.
+                            structured_config:
+                               Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                               eos_cli_config_gen.
+
+                        """
+
+            class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                _primary_key: ClassVar[str] = "number"
+
+            Subinterfaces._item_type = SubinterfacesItem
+
             Speed: TypeAlias = Literal[
                 "100full",
                 "100g",
@@ -2937,6 +3089,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
                         client_dot1q: int | None
+                        """
+                        Client VLAN ID encapsulation.
+                        Default is the subinterface number.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -2948,7 +3104,9 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    client_dot1q: client_dot1q
+                                    client_dot1q:
+                                       Client VLAN ID encapsulation.
+                                       Default is the subinterface number.
 
                                 """
 
@@ -2970,16 +3128,10 @@ class EosDesigns(EosDesignsRootModel):
                     vlan_id: int | None
                     """
                     VLAN ID to bridge.
-                    Default is subinterface number.
+                    Default is the subinterface number.
                     """
                     encapsulation_vlan: EncapsulationVlan
-                    """
-                    Client VLAN ID encapsulation.
-                    Default is subinterface number.
-
-
-                    Subclass of AvdModel.
-                    """
+                    """Subclass of AvdModel."""
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -3013,13 +3165,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Required for multihomed port-channels with subinterfaces.
                                 vlan_id:
                                    VLAN ID to bridge.
-                                   Default is subinterface number.
-                                encapsulation_vlan:
-                                   Client VLAN ID encapsulation.
-                                   Default is subinterface number.
-
-
-                                   Subclass of AvdModel.
+                                   Default is the subinterface number.
+                                encapsulation_vlan: Subclass of AvdModel.
                                 raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                                 structured_config:
                                    Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
@@ -3247,6 +3394,7 @@ class EosDesigns(EosDesignsRootModel):
                 "switches": {"type": Switches},
                 "endpoint_ports": {"type": EndpointPorts},
                 "descriptions": {"type": Descriptions},
+                "subinterfaces": {"type": Subinterfaces},
                 "speed": {"type": str},
                 "description": {"type": str},
                 "profile": {"type": str},
@@ -3330,6 +3478,17 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdList with `str`
             items.
+            """
+            subinterfaces: Subinterfaces
+            """
+            L2 Subinterfaces
+            Subinterfaces are only supported on routed Ethernet interfaces, which means they
+            cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+            Setting
+            short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+            Please
+            see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+            Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
             """
             speed: Speed | None
             """
@@ -3525,6 +3684,7 @@ class EosDesigns(EosDesignsRootModel):
                     switches: Switches | UndefinedType = Undefined,
                     endpoint_ports: EndpointPorts | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
+                    subinterfaces: Subinterfaces | UndefinedType = Undefined,
                     speed: Speed | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     profile: str | None | UndefinedType = Undefined,
@@ -3608,6 +3768,15 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdList with `str`
                            items.
+                        subinterfaces:
+                           L2 Subinterfaces
+                           Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                           cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                           Setting
+                           short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                           Please
+                           see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                           Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
                         speed:
                            Set adapter speed.
                            If not specified speed will be auto.
@@ -17355,6 +17524,7 @@ class EosDesigns(EosDesignsRootModel):
             "servers": {"type": Servers},
             "vrfs": {"type": Vrfs},
             "set_source_interfaces": {"type": bool, "default": True},
+            "ip_hosts": {"type": EosCliConfigGen.IpHosts},
         }
         domain: str | None
         """DNS domain name like 'fabric.local'"""
@@ -17377,6 +17547,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
+        ip_hosts: EosCliConfigGen.IpHosts
 
         if TYPE_CHECKING:
 
@@ -17388,6 +17559,7 @@ class EosDesigns(EosDesignsRootModel):
                 servers: Servers | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 set_source_interfaces: bool | UndefinedType = Undefined,
+                ip_hosts: EosCliConfigGen.IpHosts | UndefinedType = Undefined,
             ) -> None:
                 """
                 DnsSettings.
@@ -17408,6 +17580,7 @@ class EosDesigns(EosDesignsRootModel):
                        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
                        Can be set to `false` to avoid changes when
                        migrating from the old `name_servers` model.
+                    ip_hosts: ip_hosts
 
                 """
 
@@ -23339,6 +23512,7 @@ class EosDesigns(EosDesignsRootModel):
             "policy": {"type": EosCliConfigGen.Logging.Policy},
             "event": {"type": EosCliConfigGen.Logging.Event},
             "level": {"type": EosCliConfigGen.Logging.Level},
+            "monitor_layer1": {"type": EosCliConfigGen.MonitorLayer1},
         }
         use_local_interface_cli: bool
         """
@@ -23368,6 +23542,8 @@ class EosDesigns(EosDesignsRootModel):
         event: EosCliConfigGen.Logging.Event
         level: EosCliConfigGen.Logging.Level
         """Configure logging severity."""
+        monitor_layer1: EosCliConfigGen.MonitorLayer1
+        """Enable SYSLOG messages on transceiver SMBus communication failures."""
 
         if TYPE_CHECKING:
 
@@ -23388,6 +23564,7 @@ class EosDesigns(EosDesignsRootModel):
                 policy: EosCliConfigGen.Logging.Policy | UndefinedType = Undefined,
                 event: EosCliConfigGen.Logging.Event | UndefinedType = Undefined,
                 level: EosCliConfigGen.Logging.Level | UndefinedType = Undefined,
+                monitor_layer1: EosCliConfigGen.MonitorLayer1 | UndefinedType = Undefined,
             ) -> None:
                 """
                 LoggingSettings.
@@ -23413,6 +23590,7 @@ class EosDesigns(EosDesignsRootModel):
                     policy: policy
                     event: event
                     level: Configure logging severity.
+                    monitor_layer1: Enable SYSLOG messages on transceiver SMBus communication failures.
 
                 """
 
@@ -23585,6 +23763,426 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     base_vlan: base_vlan
+
+                """
+
+    class MonitorConnectivity(AvdModel):
+        """Subclass of AvdModel."""
+
+        class InterfaceSetsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+            name: str
+            interfaces: str
+            """
+            Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
+            Multiple interface
+            ranges can be specified separated by ",".
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | UndefinedType = Undefined) -> None:
+                    """
+                    InterfaceSetsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        interfaces:
+                           Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
+                           Multiple interface
+                           ranges can be specified separated by ",".
+
+                    """
+
+        class InterfaceSets(AvdIndexedList[str, InterfaceSetsItem]):
+            """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        InterfaceSets._item_type = InterfaceSetsItem
+
+        class HostsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "description": {"type": str},
+                "single_line_description": {"type": str},
+                "ip": {"type": str},
+                "icmp_echo_size": {"type": int},
+                "local_interfaces": {"type": str},
+                "address_only": {"type": bool, "default": False},
+                "url": {"type": str},
+            }
+            name: str
+            """Host Name."""
+            description: str | None
+            """
+            Description in the form of
+            ```
+            description
+            <description>
+            ```
+            """
+            single_line_description: str | None
+            """
+            Description in the form of `description <description>`.
+            Supported in EOS versions 4.32.2F and above.
+            """
+            ip: str | None
+            icmp_echo_size: int | None
+            """Size of ICMP probe in bytes."""
+            local_interfaces: str | None
+            address_only: bool
+            """
+            When address-only is configured, the source IP of the packet is set to the interface
+            IP but the
+            packet may exit the device via a different interface.
+            When set to `false`, the probe uses the
+            interface to exit the device.
+
+            Default value: `False`
+            """
+            url: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
+                    ip: str | None | UndefinedType = Undefined,
+                    icmp_echo_size: int | None | UndefinedType = Undefined,
+                    local_interfaces: str | None | UndefinedType = Undefined,
+                    address_only: bool | UndefinedType = Undefined,
+                    url: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    HostsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Host Name.
+                        description:
+                           Description in the form of
+                           ```
+                           description
+                           <description>
+                           ```
+                        single_line_description:
+                           Description in the form of `description <description>`.
+                           Supported in EOS versions 4.32.2F and above.
+                        ip: ip
+                        icmp_echo_size: Size of ICMP probe in bytes.
+                        local_interfaces: local_interfaces
+                        address_only:
+                           When address-only is configured, the source IP of the packet is set to the interface
+                           IP but the
+                           packet may exit the device via a different interface.
+                           When set to `false`, the probe uses the
+                           interface to exit the device.
+                        url: url
+
+                    """
+
+        class Hosts(AvdIndexedList[str, HostsItem]):
+            """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Hosts._item_type = HostsItem
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class InterfaceSetsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+                name: str
+                interfaces: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        InterfaceSetsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: name
+                            interfaces: interfaces
+
+                        """
+
+            class InterfaceSets(AvdIndexedList[str, InterfaceSetsItem]):
+                """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            InterfaceSets._item_type = InterfaceSetsItem
+
+            class HostsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "description": {"type": str},
+                    "single_line_description": {"type": str},
+                    "ip": {"type": str},
+                    "icmp_echo_size": {"type": int},
+                    "local_interfaces": {"type": str},
+                    "address_only": {"type": bool, "default": False},
+                    "url": {"type": str},
+                }
+                name: str
+                """Host name."""
+                description: str | None
+                """
+                Description in the form of
+                ```
+                description
+                <description>
+                ```
+                """
+                single_line_description: str | None
+                """
+                Description in the form of `description <description>`.
+                Supported in EOS versions 4.32.2F and above.
+                """
+                ip: str | None
+                icmp_echo_size: int | None
+                """Size of ICMP probe in bytes."""
+                local_interfaces: str | None
+                address_only: bool
+                """
+                When address-only is configured, the source IP of the packet is set to the interface
+                IP but the
+                packet may exit the device via a different interface.
+                When set to `false`, the probe uses the
+                interface to exit the device.
+
+                Default value: `False`
+                """
+                url: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
+                        single_line_description: str | None | UndefinedType = Undefined,
+                        ip: str | None | UndefinedType = Undefined,
+                        icmp_echo_size: int | None | UndefinedType = Undefined,
+                        local_interfaces: str | None | UndefinedType = Undefined,
+                        address_only: bool | UndefinedType = Undefined,
+                        url: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        HostsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Host name.
+                            description:
+                               Description in the form of
+                               ```
+                               description
+                               <description>
+                               ```
+                            single_line_description:
+                               Description in the form of `description <description>`.
+                               Supported in EOS versions 4.32.2F and above.
+                            ip: ip
+                            icmp_echo_size: Size of ICMP probe in bytes.
+                            local_interfaces: local_interfaces
+                            address_only:
+                               When address-only is configured, the source IP of the packet is set to the interface
+                               IP but the
+                               packet may exit the device via a different interface.
+                               When set to `false`, the probe uses the
+                               interface to exit the device.
+                            url: url
+
+                        """
+
+            class Hosts(AvdIndexedList[str, HostsItem]):
+                """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Hosts._item_type = HostsItem
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "description": {"type": str},
+                "single_line_description": {"type": str},
+                "interface_sets": {"type": InterfaceSets},
+                "local_interfaces": {"type": str},
+                "address_only": {"type": bool, "default": False},
+                "hosts": {"type": Hosts},
+            }
+            name: str
+            """VRF Name."""
+            description: str | None
+            """
+            Description in the form of
+            ```
+            description
+            <description>
+            ```
+            """
+            single_line_description: str | None
+            """
+            Description in the form of `description <description>`.
+            Supported in EOS versions 4.32.2F and above.
+            """
+            interface_sets: InterfaceSets
+            """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
+            local_interfaces: str | None
+            address_only: bool
+            """
+            When address-only is configured, the source IP of the packet is set to the interface
+            IP but the
+            packet may exit the device via a different interface.
+            When set to `false`, the probe uses the
+            interface to exit the device.
+
+            Default value: `False`
+            """
+            hosts: Hosts
+            """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
+                    interface_sets: InterfaceSets | UndefinedType = Undefined,
+                    local_interfaces: str | None | UndefinedType = Undefined,
+                    address_only: bool | UndefinedType = Undefined,
+                    hosts: Hosts | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF Name.
+                        description:
+                           Description in the form of
+                           ```
+                           description
+                           <description>
+                           ```
+                        single_line_description:
+                           Description in the form of `description <description>`.
+                           Supported in EOS versions 4.32.2F and above.
+                        interface_sets: Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`).
+                        local_interfaces: local_interfaces
+                        address_only:
+                           When address-only is configured, the source IP of the packet is set to the interface
+                           IP but the
+                           packet may exit the device via a different interface.
+                           When set to `false`, the probe uses the
+                           interface to exit the device.
+                        hosts: Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`).
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {
+            "shutdown": {"type": bool},
+            "interval": {"type": int},
+            "interface_sets": {"type": InterfaceSets},
+            "local_interfaces": {"type": str},
+            "address_only": {"type": bool, "default": False},
+            "hosts": {"type": Hosts},
+            "name_server_group": {"type": str},
+            "vrfs": {"type": Vrfs},
+        }
+        shutdown: bool | None
+        interval: int | None
+        interface_sets: InterfaceSets
+        """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
+        local_interfaces: str | None
+        address_only: bool
+        """
+        When address-only is configured, the source IP of the packet is set to the interface
+        IP but the
+        packet may exit the device via a different interface.
+        When set to `false`, the probe uses the
+        interface to exit the device.
+
+        Default value: `False`
+        """
+        hosts: Hosts
+        """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""
+        name_server_group: str | None
+        """Set name-server group."""
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                shutdown: bool | None | UndefinedType = Undefined,
+                interval: int | None | UndefinedType = Undefined,
+                interface_sets: InterfaceSets | UndefinedType = Undefined,
+                local_interfaces: str | None | UndefinedType = Undefined,
+                address_only: bool | UndefinedType = Undefined,
+                hosts: Hosts | UndefinedType = Undefined,
+                name_server_group: str | None | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
+            ) -> None:
+                """
+                MonitorConnectivity.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    shutdown: shutdown
+                    interval: interval
+                    interface_sets: Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`).
+                    local_interfaces: local_interfaces
+                    address_only:
+                       When address-only is configured, the source IP of the packet is set to the interface
+                       IP but the
+                       packet may exit the device via a different interface.
+                       When set to `false`, the probe uses the
+                       interface to exit the device.
+                    hosts: Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`).
+                    name_server_group: Set name-server group.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
@@ -24473,6 +25071,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
                     client_dot1q: int | None
+                    """
+                    Client VLAN ID encapsulation.
+                    Default is the subinterface number.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -24484,7 +25086,9 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                client_dot1q: client_dot1q
+                                client_dot1q:
+                                   Client VLAN ID encapsulation.
+                                   Default is the subinterface number.
 
                             """
 
@@ -24506,16 +25110,10 @@ class EosDesigns(EosDesignsRootModel):
                 vlan_id: int | None
                 """
                 VLAN ID to bridge.
-                Default is subinterface number.
+                Default is the subinterface number.
                 """
                 encapsulation_vlan: EncapsulationVlan
-                """
-                Client VLAN ID encapsulation.
-                Default is subinterface number.
-
-
-                Subclass of AvdModel.
-                """
+                """Subclass of AvdModel."""
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                 structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -24549,13 +25147,8 @@ class EosDesigns(EosDesignsRootModel):
                                Required for multihomed port-channels with subinterfaces.
                             vlan_id:
                                VLAN ID to bridge.
-                               Default is subinterface number.
-                            encapsulation_vlan:
-                               Client VLAN ID encapsulation.
-                               Default is subinterface number.
-
-
-                               Subclass of AvdModel.
+                               Default is the subinterface number.
+                            encapsulation_vlan: Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                             structured_config:
                                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
@@ -29371,6 +29964,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
                     client_dot1q: int | None
+                    """
+                    Client VLAN ID encapsulation.
+                    Default is the subinterface number.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -29382,7 +29979,9 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                client_dot1q: client_dot1q
+                                client_dot1q:
+                                   Client VLAN ID encapsulation.
+                                   Default is the subinterface number.
 
                             """
 
@@ -29404,16 +30003,10 @@ class EosDesigns(EosDesignsRootModel):
                 vlan_id: int | None
                 """
                 VLAN ID to bridge.
-                Default is subinterface number.
+                Default is the subinterface number.
                 """
                 encapsulation_vlan: EncapsulationVlan
-                """
-                Client VLAN ID encapsulation.
-                Default is subinterface number.
-
-
-                Subclass of AvdModel.
-                """
+                """Subclass of AvdModel."""
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                 structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -29447,13 +30040,8 @@ class EosDesigns(EosDesignsRootModel):
                                Required for multihomed port-channels with subinterfaces.
                             vlan_id:
                                VLAN ID to bridge.
-                               Default is subinterface number.
-                            encapsulation_vlan:
-                               Client VLAN ID encapsulation.
-                               Default is subinterface number.
-
-
-                               Subclass of AvdModel.
+                               Default is the subinterface number.
+                            encapsulation_vlan: Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                             structured_config:
                                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
@@ -56828,6 +57416,144 @@ class EosDesigns(EosDesignsRootModel):
 
                     Descriptions._item_type = str
 
+                    class SubinterfacesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class EncapsulationVlan(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                            client_dot1q: int | None
+                            """
+                            Client VLAN ID encapsulation.
+                            Default is the subinterface number.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    EncapsulationVlan.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        client_dot1q:
+                                           Client VLAN ID encapsulation.
+                                           Default is the subinterface number.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "number": {"type": int},
+                            "description": {"type": str},
+                            "short_esi": {"type": str},
+                            "vlan_id": {"type": int},
+                            "encapsulation_vlan": {"type": EncapsulationVlan},
+                            "raw_eos_cli": {"type": str},
+                            "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        }
+                        number: int
+                        """Subinterface number."""
+                        description: str | None
+                        """
+                        Description for subinterface.
+                        This can be a template using the AVD string formatter syntax:
+                        https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                        descriptions-names.html#avd-string-formatter-syntax.
+                        The available template fields are:
+                          -
+                        `subinterface` - The full subinterface name.
+                          - `subinterface_number` - The number for the
+                        subinterface.
+                          - `vlan_id` - The VLAN ID bridged to this subinterface.
+                          - `dot1q_client_vlan` -
+                        The Client VLAN ID encapsulation.
+                          - `endpoint_type` - The `type` of the connected endpoint either
+                        set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                          -
+                        `endpoint` - The name of the connected endpoint
+                        """
+                        short_esi: str | None
+                        """
+                        In format xxxx:xxxx:xxxx or "auto".
+                        Required for multihomed ethernet interfaces with subinterfaces.
+                        """
+                        vlan_id: int | None
+                        """
+                        VLAN ID to bridge.
+                        Default is the subinterface number.
+                        """
+                        encapsulation_vlan: EncapsulationVlan
+                        """Subclass of AvdModel."""
+                        raw_eos_cli: str | None
+                        """EOS CLI rendered directly on the subinterface in the final EOS configuration."""
+                        structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """
+                        Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                        eos_cli_config_gen.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                number: int | UndefinedType = Undefined,
+                                description: str | None | UndefinedType = Undefined,
+                                short_esi: str | None | UndefinedType = Undefined,
+                                vlan_id: int | None | UndefinedType = Undefined,
+                                encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                                raw_eos_cli: str | None | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                SubinterfacesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    number: Subinterface number.
+                                    description:
+                                       Description for subinterface.
+                                       This can be a template using the AVD string formatter syntax:
+                                       https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                       descriptions-names.html#avd-string-formatter-syntax.
+                                       The available template fields are:
+                                         -
+                                       `subinterface` - The full subinterface name.
+                                         - `subinterface_number` - The number for the
+                                       subinterface.
+                                         - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                         - `dot1q_client_vlan` -
+                                       The Client VLAN ID encapsulation.
+                                         - `endpoint_type` - The `type` of the connected endpoint either
+                                       set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                         -
+                                       `endpoint` - The name of the connected endpoint
+                                    short_esi:
+                                       In format xxxx:xxxx:xxxx or "auto".
+                                       Required for multihomed ethernet interfaces with subinterfaces.
+                                    vlan_id:
+                                       VLAN ID to bridge.
+                                       Default is the subinterface number.
+                                    encapsulation_vlan: Subclass of AvdModel.
+                                    raw_eos_cli: EOS CLI rendered directly on the subinterface in the final EOS configuration.
+                                    structured_config:
+                                       Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                                       eos_cli_config_gen.
+
+                                """
+
+                    class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                        """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                        _primary_key: ClassVar[str] = "number"
+
+                    Subinterfaces._item_type = SubinterfacesItem
+
                     Speed: TypeAlias = Literal[
                         "100full",
                         "100g",
@@ -57704,6 +58430,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                 _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
                                 client_dot1q: int | None
+                                """
+                                Client VLAN ID encapsulation.
+                                Default is the subinterface number.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -57715,7 +58445,9 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            client_dot1q: client_dot1q
+                                            client_dot1q:
+                                               Client VLAN ID encapsulation.
+                                               Default is the subinterface number.
 
                                         """
 
@@ -57737,16 +58469,10 @@ class EosDesigns(EosDesignsRootModel):
                             vlan_id: int | None
                             """
                             VLAN ID to bridge.
-                            Default is subinterface number.
+                            Default is the subinterface number.
                             """
                             encapsulation_vlan: EncapsulationVlan
-                            """
-                            Client VLAN ID encapsulation.
-                            Default is subinterface number.
-
-
-                            Subclass of AvdModel.
-                            """
+                            """Subclass of AvdModel."""
                             raw_eos_cli: str | None
                             """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                             structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -57780,13 +58506,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Required for multihomed port-channels with subinterfaces.
                                         vlan_id:
                                            VLAN ID to bridge.
-                                           Default is subinterface number.
-                                        encapsulation_vlan:
-                                           Client VLAN ID encapsulation.
-                                           Default is subinterface number.
-
-
-                                           Subclass of AvdModel.
+                                           Default is the subinterface number.
+                                        encapsulation_vlan: Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                                         structured_config:
                                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
@@ -58014,6 +58735,7 @@ class EosDesigns(EosDesignsRootModel):
                         "switches": {"type": Switches},
                         "endpoint_ports": {"type": EndpointPorts},
                         "descriptions": {"type": Descriptions},
+                        "subinterfaces": {"type": Subinterfaces},
                         "speed": {"type": str},
                         "description": {"type": str},
                         "profile": {"type": str},
@@ -58097,6 +58819,17 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str`
                     items.
+                    """
+                    subinterfaces: Subinterfaces
+                    """
+                    L2 Subinterfaces
+                    Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                    cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                    Setting
+                    short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                    Please
+                    see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                    Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
                     """
                     speed: Speed | None
                     """
@@ -58292,6 +59025,7 @@ class EosDesigns(EosDesignsRootModel):
                             switches: Switches | UndefinedType = Undefined,
                             endpoint_ports: EndpointPorts | UndefinedType = Undefined,
                             descriptions: Descriptions | UndefinedType = Undefined,
+                            subinterfaces: Subinterfaces | UndefinedType = Undefined,
                             speed: Speed | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
                             profile: str | None | UndefinedType = Undefined,
@@ -58375,6 +59109,15 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str`
                                    items.
+                                subinterfaces:
+                                   L2 Subinterfaces
+                                   Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                                   cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                                   Setting
+                                   short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                                   Please
+                                   see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                                   Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
                                 speed:
                                    Set adapter speed.
                                    If not specified speed will be auto.
@@ -58629,6 +59372,144 @@ class EosDesigns(EosDesignsRootModel):
 
                     Descriptions._item_type = str
 
+                    class SubinterfacesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class EncapsulationVlan(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                            client_dot1q: int | None
+                            """
+                            Client VLAN ID encapsulation.
+                            Default is the subinterface number.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    EncapsulationVlan.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        client_dot1q:
+                                           Client VLAN ID encapsulation.
+                                           Default is the subinterface number.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "number": {"type": int},
+                            "description": {"type": str},
+                            "short_esi": {"type": str},
+                            "vlan_id": {"type": int},
+                            "encapsulation_vlan": {"type": EncapsulationVlan},
+                            "raw_eos_cli": {"type": str},
+                            "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        }
+                        number: int
+                        """Subinterface number."""
+                        description: str | None
+                        """
+                        Description for subinterface.
+                        This can be a template using the AVD string formatter syntax:
+                        https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                        descriptions-names.html#avd-string-formatter-syntax.
+                        The available template fields are:
+                          -
+                        `subinterface` - The full subinterface name.
+                          - `subinterface_number` - The number for the
+                        subinterface.
+                          - `vlan_id` - The VLAN ID bridged to this subinterface.
+                          - `dot1q_client_vlan` -
+                        The Client VLAN ID encapsulation.
+                          - `endpoint_type` - The `type` of the connected endpoint either
+                        set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                          -
+                        `endpoint` - The name of the connected endpoint
+                        """
+                        short_esi: str | None
+                        """
+                        In format xxxx:xxxx:xxxx or "auto".
+                        Required for multihomed ethernet interfaces with subinterfaces.
+                        """
+                        vlan_id: int | None
+                        """
+                        VLAN ID to bridge.
+                        Default is the subinterface number.
+                        """
+                        encapsulation_vlan: EncapsulationVlan
+                        """Subclass of AvdModel."""
+                        raw_eos_cli: str | None
+                        """EOS CLI rendered directly on the subinterface in the final EOS configuration."""
+                        structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """
+                        Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                        eos_cli_config_gen.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                number: int | UndefinedType = Undefined,
+                                description: str | None | UndefinedType = Undefined,
+                                short_esi: str | None | UndefinedType = Undefined,
+                                vlan_id: int | None | UndefinedType = Undefined,
+                                encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                                raw_eos_cli: str | None | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                SubinterfacesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    number: Subinterface number.
+                                    description:
+                                       Description for subinterface.
+                                       This can be a template using the AVD string formatter syntax:
+                                       https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                       descriptions-names.html#avd-string-formatter-syntax.
+                                       The available template fields are:
+                                         -
+                                       `subinterface` - The full subinterface name.
+                                         - `subinterface_number` - The number for the
+                                       subinterface.
+                                         - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                         - `dot1q_client_vlan` -
+                                       The Client VLAN ID encapsulation.
+                                         - `endpoint_type` - The `type` of the connected endpoint either
+                                       set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                         -
+                                       `endpoint` - The name of the connected endpoint
+                                    short_esi:
+                                       In format xxxx:xxxx:xxxx or "auto".
+                                       Required for multihomed ethernet interfaces with subinterfaces.
+                                    vlan_id:
+                                       VLAN ID to bridge.
+                                       Default is the subinterface number.
+                                    encapsulation_vlan: Subclass of AvdModel.
+                                    raw_eos_cli: EOS CLI rendered directly on the subinterface in the final EOS configuration.
+                                    structured_config:
+                                       Custom structured config added under ethernet_interfaces.[name=<subinterface>] for
+                                       eos_cli_config_gen.
+
+                                """
+
+                    class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                        """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                        _primary_key: ClassVar[str] = "number"
+
+                    Subinterfaces._item_type = SubinterfacesItem
+
                     Speed: TypeAlias = Literal[
                         "100full",
                         "100g",
@@ -59505,6 +60386,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                 _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
                                 client_dot1q: int | None
+                                """
+                                Client VLAN ID encapsulation.
+                                Default is the subinterface number.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -59516,7 +60401,9 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            client_dot1q: client_dot1q
+                                            client_dot1q:
+                                               Client VLAN ID encapsulation.
+                                               Default is the subinterface number.
 
                                         """
 
@@ -59538,16 +60425,10 @@ class EosDesigns(EosDesignsRootModel):
                             vlan_id: int | None
                             """
                             VLAN ID to bridge.
-                            Default is subinterface number.
+                            Default is the subinterface number.
                             """
                             encapsulation_vlan: EncapsulationVlan
-                            """
-                            Client VLAN ID encapsulation.
-                            Default is subinterface number.
-
-
-                            Subclass of AvdModel.
-                            """
+                            """Subclass of AvdModel."""
                             raw_eos_cli: str | None
                             """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                             structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -59581,13 +60462,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Required for multihomed port-channels with subinterfaces.
                                         vlan_id:
                                            VLAN ID to bridge.
-                                           Default is subinterface number.
-                                        encapsulation_vlan:
-                                           Client VLAN ID encapsulation.
-                                           Default is subinterface number.
-
-
-                                           Subclass of AvdModel.
+                                           Default is the subinterface number.
+                                        encapsulation_vlan: Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                                         structured_config:
                                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
@@ -59815,6 +60691,7 @@ class EosDesigns(EosDesignsRootModel):
                         "switches": {"type": Switches},
                         "endpoint_ports": {"type": EndpointPorts},
                         "descriptions": {"type": Descriptions},
+                        "subinterfaces": {"type": Subinterfaces},
                         "speed": {"type": str},
                         "description": {"type": str},
                         "profile": {"type": str},
@@ -59898,6 +60775,17 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `str`
                     items.
+                    """
+                    subinterfaces: Subinterfaces
+                    """
+                    L2 Subinterfaces
+                    Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                    cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                    Setting
+                    short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                    Please
+                    see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                    Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
                     """
                     speed: Speed | None
                     """
@@ -60093,6 +60981,7 @@ class EosDesigns(EosDesignsRootModel):
                             switches: Switches | UndefinedType = Undefined,
                             endpoint_ports: EndpointPorts | UndefinedType = Undefined,
                             descriptions: Descriptions | UndefinedType = Undefined,
+                            subinterfaces: Subinterfaces | UndefinedType = Undefined,
                             speed: Speed | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
                             profile: str | None | UndefinedType = Undefined,
@@ -60176,6 +61065,15 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str`
                                    items.
+                                subinterfaces:
+                                   L2 Subinterfaces
+                                   Subinterfaces are only supported on routed Ethernet interfaces, which means they
+                                   cannot be configured in combination with any L2 features like `mode`, `vlans` etc.
+                                   Setting
+                                   short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+                                   Please
+                                   see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+                                   Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
                                 speed:
                                    Set adapter speed.
                                    If not specified speed will be auto.
@@ -68784,7 +69682,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     L2VLAN profile name.
                     The profile must be defined under `l2vlan_profiles`. The profile may refer to
-                    another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                    another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                     l2vlan_profile -> l2vlan_parent_profile).
                     """
                     tags: Tags
@@ -68929,7 +69827,7 @@ class EosDesigns(EosDesignsRootModel):
                                 profile:
                                    L2VLAN profile name.
                                    The profile must be defined under `l2vlan_profiles`. The profile may refer to
-                                   another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                                   another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                                    l2vlan_profile -> l2vlan_parent_profile).
                                 tags:
                                    Tags leveraged for networks services filtering.
@@ -90505,6 +91403,7 @@ class EosDesigns(EosDesignsRootModel):
         "mlag_peer_svi_description": {"type": str, "default": "MLAG"},
         "mlag_peer_vlan_name": {"type": str, "default": "MLAG"},
         "mlag_port_channel_description": {"type": str, "default": "MLAG_{mlag_peer}_{peer_interface}"},
+        "monitor_connectivity": {"type": MonitorConnectivity},
         "network_ports": {"type": NetworkPorts},
         "network_services_keys": {"type": NetworkServicesKeys, "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=cls)},
         "custom_node_type_keys": {"type": CustomNodeTypeKeys},
@@ -92359,6 +93258,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"MLAG_{mlag_peer}_{peer_interface}"`
     """
+    monitor_connectivity: MonitorConnectivity
+    """Subclass of AvdModel."""
     network_ports: NetworkPorts
     """Subclass of AvdList with `NetworkPortsItem` items."""
     network_services_keys: NetworkServicesKeys
@@ -93251,6 +94152,7 @@ class EosDesigns(EosDesignsRootModel):
             mlag_peer_svi_description: str | UndefinedType = Undefined,
             mlag_peer_vlan_name: str | UndefinedType = Undefined,
             mlag_port_channel_description: str | UndefinedType = Undefined,
+            monitor_connectivity: MonitorConnectivity | UndefinedType = Undefined,
             network_ports: NetworkPorts | UndefinedType = Undefined,
             network_services_keys: NetworkServicesKeys | UndefinedType = Undefined,
             custom_node_type_keys: CustomNodeTypeKeys | UndefinedType = Undefined,
@@ -94263,6 +95165,7 @@ class EosDesigns(EosDesignsRootModel):
 
                    By
                    default the description is templated from the name and port-channel interface of the MLAG peer.
+                monitor_connectivity: Subclass of AvdModel.
                 network_ports: Subclass of AvdList with `NetworkPortsItem` items.
                 network_services_keys:
                    Network Services can be grouped by using separate keys.

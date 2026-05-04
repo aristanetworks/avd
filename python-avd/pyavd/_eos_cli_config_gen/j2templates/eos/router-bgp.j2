@@ -2631,6 +2631,9 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_vpn_ipv4.domain_identifier is arista.avd.defined %}
       domain identifier {{ router_bgp.address_family_vpn_ipv4.domain_identifier }}
 {%         endif %}
+{%         if router_bgp.address_family_vpn_ipv4.next_hop.resolution_disabled is arista.avd.defined(true) %}
+      next-hop resolution disabled
+{%         endif %}
 {%         if router_bgp.address_family_vpn_ipv4.route.import_match_failure_action is arista.avd.defined('discard') %}
       route import match-failure action discard
 {%         endif %}

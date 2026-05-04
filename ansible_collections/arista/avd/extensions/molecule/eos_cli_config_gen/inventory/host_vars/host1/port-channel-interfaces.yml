@@ -64,6 +64,8 @@ port_channel_interfaces:
       enable: true
       mpass: true
       delay_mechanism: e2e
+      region:
+        domain_number: 25
       sync_message:
         interval: 1
       role: dynamic
