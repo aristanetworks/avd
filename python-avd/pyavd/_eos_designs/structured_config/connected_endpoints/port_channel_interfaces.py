@@ -171,10 +171,11 @@ class PortChannelInterfacesMixin(Protocol):
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.Ptp),
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
             eos_cli=adapter.port_channel.raw_eos_cli,
-        )
-        port_channel_interface.metadata._update(
-            validate_state=False if adapter.validate_state is False else None,
-            validate_lldp=adapter.validate_lldp,
+            metadata=EosCliConfigGen.PortChannelInterfacesItem.Metadata(
+                # TODO: Make logic conditional once functionality allows to include (some) connected endpoints into the ACT topology definition file
+                validate_state=self.structured_config_utils.get_interface_validate_state(adapter.validate_state),
+                validate_lldp=adapter.validate_lldp,
+            ),
         )
         port_channel_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             port_channel_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
