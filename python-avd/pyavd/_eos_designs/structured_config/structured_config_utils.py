@@ -320,4 +320,5 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         if self.shared_utils.inband_mgmt_vrf and self.shared_utils.inband_mgmt_vrf not in self.structured_config.vrfs:
             self.structured_config.vrfs.append_new(name=self.shared_utils.inband_mgmt_vrf)
 
+
 __all__ = ["StructuredConfigUtils"]
