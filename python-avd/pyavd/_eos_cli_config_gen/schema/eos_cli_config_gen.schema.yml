@@ -1740,6 +1740,21 @@ keys:
         type: bool
       mlag_peerlink_requests_disabled:
         type: bool
+      client_requests:
+        type: dict
+        description: Configure DHCP client request settings.
+        keys:
+          flooding_suppression_vlans:
+            type: list
+            description: Suppress flooding of DHCP/DHCPv6 client requests to other
+              interfaces in the specified VLANs.
+            min_length: 1
+            items:
+              type: str
+              description: "VLAN ID or range of VLAN IDs, <1-4094>.\nExample:\n  -
+                1000\n  - 500-510\n  - 2000,3000"
+              convert_types:
+              - int
   dhcp_servers:
     type: list
     primary_key: vrf
