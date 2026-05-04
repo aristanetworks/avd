@@ -1285,10 +1285,12 @@ class EosDesignsFactsProtocol(Protocol):
     These are the available VLANs after local
     network-service filtering and VLAN availability filtering from uplink switches.
 
-    Ex. "1-100, 201-202"
-    This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.
-    This is
-    to ensure that native vlan is not necessarily permitted on the uplink trunk.
+    Ex. "1-100,
+    201-202"
+
+    This excludes the optional "uplink_native_vlan" if that vlan is not used for anything
+    else.
+    This is to ensure that native vlan is not necessarily permitted on the uplink trunk.
     """
     endpoint_vlans: str | None
     """
@@ -1494,10 +1496,12 @@ class EosDesignsFactsProtocol(Protocol):
                    These are the available VLANs after local
                    network-service filtering and VLAN availability filtering from uplink switches.
 
-                   Ex. "1-100, 201-202"
-                   This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.
-                   This is
-                   to ensure that native vlan is not necessarily permitted on the uplink trunk.
+                   Ex. "1-100,
+                   201-202"
+
+                   This excludes the optional "uplink_native_vlan" if that vlan is not used for anything
+                   else.
+                   This is to ensure that native vlan is not necessarily permitted on the uplink trunk.
                 endpoint_vlans:
                    Compressed list of vlans in use by endpoints connected to this switch, downstream switches or MLAG
                    peer and its downstream switches.
