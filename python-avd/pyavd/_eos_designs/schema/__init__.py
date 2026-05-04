@@ -70079,7 +70079,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     L2VLAN profile name.
                     The profile must be defined under `l2vlan_profiles`. The profile may refer to
-                    another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                    another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                     l2vlan_profile -> l2vlan_parent_profile).
                     """
                     tags: Tags
@@ -70224,7 +70224,7 @@ class EosDesigns(EosDesignsRootModel):
                                 profile:
                                    L2VLAN profile name.
                                    The profile must be defined under `l2vlan_profiles`. The profile may refer to
-                                   another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                                   another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                                    l2vlan_profile -> l2vlan_parent_profile).
                                 tags:
                                    Tags leveraged for networks services filtering.
