@@ -21,6 +21,27 @@ if TYPE_CHECKING:
 
 
 @dataclass
+class CVGRPCKeepalives:
+    enabled: bool = True
+    keepalive_time: int = 60
+    keepalive_timeout: int = 20
+    permit_without_calls: bool = False
+
+    def __post_init__(self) -> None:
+        if self.enabled and self.keepalive_time < 30:
+            msg = f"Invalid CVGRPCKeepalives settings. keepalive_time must be >= 30s, got {self.keepalive_time}."
+            raise ValueError(msg)
+
+
+@dataclass
+class CVDeployFuture:
+    """Future cv_deploy behaviors that will become defaults in a future major release."""
+
+    enable_grpc_keepalives: bool = False
+    """Enable gRPC keepalives. Will become the default in AVD 7.0."""
+
+
+@dataclass
 class CloudVision:
     servers: str | list[str]
     token: str | None
@@ -31,6 +52,8 @@ class CloudVision:
     proxy_port: int | None
     proxy_username: str | None
     proxy_password: str | None
+    grpc_keepalives: CVGRPCKeepalives = field(default_factory=CVGRPCKeepalives)
+    deploy_future: CVDeployFuture = field(default_factory=CVDeployFuture)
 
 
 @dataclass

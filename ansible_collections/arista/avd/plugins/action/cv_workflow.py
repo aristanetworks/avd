@@ -32,9 +32,11 @@ try:
         AvdManifest,
         CloudVision,
         CVChangeControl,
+        CVDeployFuture,
         CVDevice,
         CVDeviceTag,
         CVEosConfig,
+        CVGRPCKeepalives,
         CVInterfaceTag,
         CVPathfinderMetadata,
         CVTimeOuts,
@@ -58,6 +60,23 @@ ARGUMENT_SPEC = {
         "type": "dict",
         "options": {
             "read_from_validated_inputs": {"type": "bool", "default": False},
+        },
+    },
+    "cv_deploy_future": {
+        "type": "dict",
+        "required": False,
+        "options": {
+            "enable_grpc_keepalives": {"type": "bool", "required": False, "default": False},
+        },
+    },
+    "grpc_keepalives": {
+        "type": "dict",
+        "required": False,
+        "options": {
+            "enabled": {"type": "bool", "required": False, "default": True},
+            "keepalive_time": {"type": "int", "required": False, "default": 60},
+            "keepalive_timeout": {"type": "int", "required": False, "default": 20},
+            "permit_without_calls": {"type": "bool", "required": False, "default": False},
         },
     },
     "configuration_dir": {"type": "str", "required": True},
@@ -185,6 +204,8 @@ class ActionModule(ActionBase):
                 proxy_port=validated_args.get("proxy_port"),
                 proxy_username=validated_args.get("proxy_username"),
                 proxy_password=validated_args.get("proxy_password"),
+                grpc_keepalives=CVGRPCKeepalives(**get(validated_args, "grpc_keepalives", {})),
+                deploy_future=CVDeployFuture(**get(validated_args, "cv_deploy_future", {})),
             )
 
             # If read_from_validated_inputs is enabled, we use the tmp_dir which contains validated inputs as JSON for structured_config_dir.

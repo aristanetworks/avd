@@ -7,12 +7,12 @@ import tempfile
 from contextlib import nullcontext as does_not_raise
 from logging import DEBUG
 from typing import TYPE_CHECKING
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
-from pyavd._cv.workflows.models import CloudVision, CVEosConfig, CVWorkspace
+from pyavd._cv.workflows.models import CloudVision, CVDeployFuture, CVEosConfig, CVGRPCKeepalives, CVWorkspace
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
@@ -179,3 +179,94 @@ async def test_deploy_to_cv(
     assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
     assert result.workspace.force == workspace_force_submission
     assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("deploy_future", "grpc_keepalives", "grpc_config_is_expected"),
+    [
+        pytest.param(CVDeployFuture(enable_grpc_keepalives=False), CVGRPCKeepalives(), False, id="FUTURE_FLAG_OFF"),
+        pytest.param(CVDeployFuture(enable_grpc_keepalives=True), CVGRPCKeepalives(), True, id="FUTURE_FLAG_ON_DEFAULTS"),
+        pytest.param(
+            CVDeployFuture(enable_grpc_keepalives=True),
+            CVGRPCKeepalives(keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
+            True,
+            id="FUTURE_FLAG_ON_CUSTOM",
+        ),
+        pytest.param(
+            CVDeployFuture(enable_grpc_keepalives=True),
+            CVGRPCKeepalives(enabled=False),
+            False,
+            id="FUTURE_FLAG_ON_EXPLICITLY_DISABLED",
+        ),
+    ],
+)
+async def test_deploy_to_cv_grpc_keepalives(
+    deploy_future: CVDeployFuture,
+    grpc_keepalives: CVGRPCKeepalives,
+    grpc_config_is_expected: bool,
+) -> None:
+    """Tests that deploy_to_cv builds a grpclib Configuration only when cv_deploy_future.enable_grpc_keepalives is True."""
+    mock_cv_client = AsyncMock()
+
+    with patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client) as mocked_cv_client_cls:
+        await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+                grpc_keepalives=grpc_keepalives,
+                deploy_future=deploy_future,
+            ),
+        )
+
+    mocked_cv_client_cls.assert_called_once()
+    _, kwargs = mocked_cv_client_cls.call_args
+    grpc_config = kwargs.get("grpc_config")
+
+    if grpc_config_is_expected:
+        assert grpc_config is not None
+        assert grpc_config._keepalive_time == grpc_keepalives.keepalive_time
+        assert grpc_config._keepalive_timeout == grpc_keepalives.keepalive_timeout
+        assert grpc_config._keepalive_permit_without_calls == grpc_keepalives.permit_without_calls
+        assert grpc_config._http2_max_pings_without_data == 0
+        assert grpc_config._http2_min_sent_ping_interval_without_data == grpc_keepalives.keepalive_time
+    else:
+        assert grpc_config is None
+
+
+@pytest.mark.asyncio
+async def test_deploy_to_cv_grpc_keepalives_configuration_type_error(caplog: pytest.LogCaptureFixture) -> None:
+    """Tests that a TypeError from grpclib Configuration falls back to no keepalives and logs a warning."""
+    mock_cv_client = AsyncMock()
+
+    with (
+        caplog.at_level(DEBUG),
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client) as mocked_cv_client_cls,
+        patch("pyavd._cv.workflows.deploy_to_cv.Configuration", side_effect=TypeError("unexpected keyword argument")),
+    ):
+        await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+                deploy_future=CVDeployFuture(enable_grpc_keepalives=True),
+            ),
+        )
+
+    mocked_cv_client_cls.assert_called_once()
+    _, kwargs = mocked_cv_client_cls.call_args
+    assert kwargs.get("grpc_config") is None
+    assert "gRPC keepalives will not be enabled" in caplog.text

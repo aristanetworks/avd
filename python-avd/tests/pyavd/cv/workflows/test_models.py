@@ -2,6 +2,8 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+from contextlib import AbstractContextManager
+from contextlib import nullcontext as does_not_raise
 from pathlib import Path
 from typing import Any
 
@@ -10,7 +12,7 @@ import pytest
 from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
 from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVManifestError
-from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVManifest
+from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVDeployFuture, CVGRPCKeepalives, CVManifest
 
 from .helpers import generate_id
 
@@ -469,3 +471,54 @@ class TestAvdManifestFromDict:
         """Tests that ValueError is raised for invalid AvdManifest data."""
         with pytest.raises(ValueError, match=match_str):
             AvdManifest.from_dict(invalid_data)
+
+
+# === CVGRPCKeepalives Tests ===
+
+
+class TestCVGRPCKeepalives:
+    def test_defaults(self) -> None:
+        """Tests that CVGRPCKeepalives is created with expected default values."""
+        keepalives = CVGRPCKeepalives()
+        assert keepalives.enabled is True
+        assert keepalives.keepalive_time == 60
+        assert keepalives.keepalive_timeout == 20
+        assert keepalives.permit_without_calls is False
+
+    def test_custom_values(self) -> None:
+        """Tests that CVGRPCKeepalives accepts custom values including explicit disable."""
+        keepalives = CVGRPCKeepalives(enabled=False, keepalive_time=30, keepalive_timeout=10, permit_without_calls=True)
+        assert keepalives.enabled is False
+        assert keepalives.keepalive_time == 30
+        assert keepalives.keepalive_timeout == 10
+        assert keepalives.permit_without_calls is True
+
+    @pytest.mark.parametrize(
+        ("enabled", "keepalive_time", "expected_exception"),
+        [
+            pytest.param(True, 29, pytest.raises(ValueError, match="keepalive_time must be >= 30s, got 29"), id="ENABLED_TIME_29_BELOW_MIN"),
+            pytest.param(True, 1, pytest.raises(ValueError, match="keepalive_time must be >= 30s, got 1"), id="ENABLED_TIME_1_BELOW_MIN"),
+            pytest.param(True, 30, does_not_raise(), id="ENABLED_TIME_AT_MIN"),
+            pytest.param(True, 60, does_not_raise(), id="ENABLED_TIME_DEFAULT"),
+            pytest.param(False, 29, does_not_raise(), id="DISABLED_TIME_BELOW_MIN_OK"),
+        ],
+    )
+    def test_keepalive_time_validation(self, enabled: bool, keepalive_time: int, expected_exception: AbstractContextManager) -> None:
+        """Tests that keepalive_time >= 30 is enforced only when enabled=True."""
+        with expected_exception:
+            CVGRPCKeepalives(enabled=enabled, keepalive_time=keepalive_time)
+
+
+# === CVDeployFuture Tests ===
+
+
+class TestCVDeployFuture:
+    def test_defaults(self) -> None:
+        """Tests that CVDeployFuture is created with all future behaviors disabled by default."""
+        future = CVDeployFuture()
+        assert future.enable_grpc_keepalives is False
+
+    def test_enable_grpc_keepalives(self) -> None:
+        """Tests that enable_grpc_keepalives can be opted in."""
+        future = CVDeployFuture(enable_grpc_keepalives=True)
+        assert future.enable_grpc_keepalives is True
