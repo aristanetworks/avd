@@ -445,7 +445,7 @@ ipv6_acls:
   - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
     entries:
       - remark: This remark entry will be skipped and does not require source and destination.
-      - sequence: 10
+      - sequence: 30
         action: deny
         protocol: ipv6
         source: interface_ip

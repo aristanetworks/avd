@@ -164,7 +164,7 @@ ipv6_access_lists:
   - protocol: ipv6
     source: 2001:db8:132::1
     destination: any
-    sequence: 10
+    sequence: 30
     action: deny
   - protocol: ipv6
     source: any
