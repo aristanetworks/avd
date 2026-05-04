@@ -123,7 +123,9 @@ servers:
         endpoint_ports: [Endpoint_port6]
         port_channel:
           mode: active
-
+          subinterfaces:
+            - number: 10
+              short_esi: auto
   # port-channel with lacp fallback individual and profile for member interfaces
   - name: INDIVIDUAL_1
     adapters:

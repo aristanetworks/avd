@@ -688,7 +688,15 @@ port_channel_interfaces:
   description: CUSTOM_SERVER_OLD_SW-1/12
   shutdown: false
   switchport:
-    enabled: true
+    enabled: false
+- name: Port-Channel25.10
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 10
+    network:
+      encapsulation: client
+  vlan_id: 10
 - name: Port-Channel12
   description: CUSTOM_SERVER_INDIVIDUAL_1_INDIVIDUAL_1
   shutdown: false
