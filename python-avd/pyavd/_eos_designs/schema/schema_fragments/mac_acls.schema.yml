@@ -25,7 +25,7 @@ keys:
           type: bool
         entries:
           type: list
-          unique_keys:  [sequence]
+          unique_keys: [sequence]
           items:
             type: dict
             keys:
