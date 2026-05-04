@@ -1,0 +1,50 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ipv6_acls:
+    type: list
+    primary_key: name
+    description: |-
+      IPv6 extended access-lists supporting substitution on certain fields.
+      These access-lists can be referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be configured on devices where they are in use.
+
+      The substitution is useful when assigning the same access-list on multiple interfaces where certain fields require unique values.
+      When using substitution, the interface name will be appended to the ACL name.
+
+      The "interface_ip" substitution field is resolved from `ipv6_address` set on the SVI.
+      If `ipv6_address` is not set, the first entry of `ipv6_address_virtuals` is used as a fallback.
+      If neither is set, the substitution will fail with an error.
+    items:
+      $ref: "eos_cli_config_gen#/keys/ipv6_access_lists/items"
+      type: dict
+      keys:
+        name:
+          type: str
+          description: |-
+            Access-list name.
+            When using substitution for any fields, the interface name will be appended to the ACL name.
+        entries:
+          type: list
+          required: true
+          items:
+            type: dict
+            keys:
+              source:
+                type: str
+                description: |-
+                  This field supports substitution of the field "interface_ip" for SVIs.
+                  Alternatively it can be set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+                  "<ipv6>" without a mask means host.
+                  Required except for remarks.
+              destination:
+                type: str
+                description: |-
+                  This field supports substitution of the field "interface_ip" for SVIs.
+                  Alternatively it can be set with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+                  "<ipv6>" without a mask means host.
+                  Required except for remarks.

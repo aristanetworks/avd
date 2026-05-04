@@ -71,6 +71,9 @@ class VlanInterfacesMixin(Protocol):
         ipv4_interface_ip = svi.ip_address or svi.ip_address_virtual
         if ipv4_interface_ip is not None and "/" in ipv4_interface_ip:
             ipv4_interface_ip = get_ip_from_ip_prefix(ipv4_interface_ip)
+        ipv6_interface_ip = svi.ipv6_address or next(iter(svi.ipv6_address_virtuals), None)
+        if ipv6_interface_ip is not None and "/" in ipv6_interface_ip:
+            ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_interface_ip)
         vlan_interface_config = EosCliConfigGen.VlanInterfacesItem(
             name=interface_name,
             description=default(svi.description, svi.name),
@@ -105,6 +108,24 @@ class VlanInterfacesMixin(Protocol):
             )
             vlan_interface_config.access_group_out = acl.name
             self._set_ipv4_acl(acl)
+
+        if svi.ipv6_acl_in:
+            acl = self.shared_utils.get_ipv6_acl(
+                name=svi.ipv6_acl_in,
+                interface_name=interface_name,
+                interface_ip=ipv6_interface_ip,
+            )
+            vlan_interface_config.ipv6_access_group_in = acl.name
+            self._set_ipv6_acl(acl)
+
+        if svi.ipv6_acl_out:
+            acl = self.shared_utils.get_ipv6_acl(
+                name=svi.ipv6_acl_out,
+                interface_name=interface_name,
+                interface_ip=ipv6_interface_ip,
+            )
+            vlan_interface_config.ipv6_access_group_out = acl.name
+            self._set_ipv6_acl(acl)
 
         if svi.structured_config:
             self.custom_structured_configs.nested.vlan_interfaces.obtain(interface_name)._deepmerge(
