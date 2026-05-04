@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, TypeVar, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get_ip_from_pool
+from pyavd._utils import UndefinedType, default, get_ip_from_pool
 from pyavd._utils.password_utils.password import isis_encrypt, ospf_message_digest_encrypt
 
 if TYPE_CHECKING:
@@ -280,6 +280,21 @@ class UtilsMixin(Protocol):
             eos_cli=p2p_link.raw_eos_cli,
         )
         interface.metadata._update(peer_interface=p2p_link_data["peer_interface"], peer=p2p_link_data["peer"], peer_type=p2p_link_data["peer_type"])
+
+        if not isinstance(
+            (
+                validate_status_result := self.structured_config_utils.get_interface_validate_state(
+                    peer_in_fabric=p2p_link_data["peer"] in self.shared_utils.all_fabric_devices
+                )
+            ),
+            UndefinedType,
+        ):
+            interface.metadata.validate_state = validate_status_result
+            # Propagate validate_state to all port-channel member interfaces
+            if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
+                for port_channel_member in p2p_link_data.get("port_channel_members", []):
+                    self.structured_config.ethernet_interfaces.obtain(port_channel_member["interface"]).metadata.validate_state = validate_status_result
+
         interface.switchport.enabled = False
 
         if p2p_link_data["ip"]:
@@ -350,7 +365,7 @@ class UtilsMixin(Protocol):
         if p2p_link.macsec_profile:
             interface.mac_security.profile = p2p_link.macsec_profile
 
-        interface.sflow.enable = self.shared_utils.get_interface_sflow(
+        interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             interface.name,
             default(p2p_link.sflow, self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge),
         )

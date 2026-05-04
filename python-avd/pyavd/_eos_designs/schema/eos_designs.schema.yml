@@ -352,6 +352,13 @@ keys:
         description: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when
           needed.
         default: false
+      raise_for_underlay_router_with_uplink_type_port_channel:
+        type: bool
+        description: 'Raise an error if a node has both ''underlay_router: true''
+          and ''uplink_type: port-channel'' set,
+
+          since this combination is not supported.'
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -1124,6 +1131,80 @@ keys:
                   \ - `port_channel_id`: The port-channel number for the switch."
                 items:
                   type: str
+              subinterfaces:
+                type: list
+                description: 'L2 Subinterfaces
+
+                  Subinterfaces are only supported on routed Ethernet interfaces,
+                  which means they cannot be configured in combination with any L2
+                  features like `mode`, `vlans` etc.
+
+                  Setting short_esi: auto generates the short_esi automatically using
+                  a hash of configuration elements.
+
+                  Please see the notes under "EVPN A/A ESI dual-attached endpoint
+                  scenario" before setting short_esi: auto.'
+                primary_key: number
+                items:
+                  type: dict
+                  keys:
+                    number:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Subinterface number.
+                      min: 1
+                      max: 1048575
+                    description:
+                      type: str
+                      description: "Description for subinterface.\nThis can be a template
+                        using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                        available template fields are:\n  - `subinterface` - The full
+                        subinterface name.\n  - `subinterface_number` - The number
+                        for the subinterface.\n  - `vlan_id` - The VLAN ID bridged
+                        to this subinterface.\n  - `dot1q_client_vlan` - The Client
+                        VLAN ID encapsulation.\n  - `endpoint_type` - The `type` of
+                        the connected endpoint either set on the endpoint or taken
+                        from `connected_endpoints_keys.type` like `server`, `router`
+                        etc.\n  - `endpoint` - The name of the connected endpoint"
+                    short_esi:
+                      type: str
+                      description: 'In format xxxx:xxxx:xxxx or "auto".
+
+                        Required for multihomed ethernet interfaces with subinterfaces.'
+                    vlan_id:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 4094
+                      description: 'VLAN ID to bridge.
+
+                        Default is the subinterface number.'
+                    encapsulation_vlan:
+                      type: dict
+                      keys:
+                        client_dot1q:
+                          type: int
+                          description: 'Client VLAN ID encapsulation.
+
+                            Default is the subinterface number.'
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 4094
+                    raw_eos_cli:
+                      type: str
+                      description: EOS CLI rendered directly on the subinterface in
+                        the final EOS configuration.
+                    structured_config:
+                      type: dict
+                      relaxed_validation: true
+                      description: Custom structured config added under ethernet_interfaces.[name=<subinterface>]
+                        for eos_cli_config_gen.
+                      documentation_options:
+                        hide_keys: true
+                      $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
   custom_connected_endpoints_keys:
     $ref: eos_designs#/$defs/connected_endpoints_keys
     type: list
@@ -3351,6 +3432,66 @@ keys:
                 description: 'Action as string.
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  ipv6_acls:
+    type: list
+    primary_key: name
+    description: 'IPv6 extended access-lists supporting substitution on certain fields.
+
+      These access-lists can be referenced under network services `svis` using `ipv6_acl_in`
+      / `ipv6_acl_out`, and will only be configured on devices where they are in use.
+
+
+      The substitution is useful when assigning the same access-list on multiple interfaces
+      where certain fields require unique values.
+
+      When using substitution, the interface name will be appended to the ACL name.
+
+
+      The "interface_ip" substitution field is resolved from `ipv6_address` set on
+      the SVI.
+
+      If `ipv6_address` is not set, the first entry of `ipv6_address_virtuals` is
+      used as a fallback.
+
+      If neither is set, the substitution will fail with an error.'
+    items:
+      $ref: eos_cli_config_gen#/keys/ipv6_access_lists/items
+      type: dict
+      keys:
+        name:
+          type: str
+          description: 'Access-list name.
+
+            When using substitution for any fields, the interface name will be appended
+            to the ACL name.'
+        entries:
+          type: list
+          required: true
+          items:
+            type: dict
+            keys:
+              source:
+                type: str
+                description: 'This field supports substitution of the field "interface_ip"
+                  for SVIs.
+
+                  Alternatively it can be set with a static value of "any", "<ipv6>/<mask>"
+                  or "<ipv6>".
+
+                  "<ipv6>" without a mask means host.
+
+                  Required except for remarks.'
+              destination:
+                type: str
+                description: 'This field supports substitution of the field "interface_ip"
+                  for SVIs.
+
+                  Alternatively it can be set with a static value of "any", "<ipv6>/<mask>"
+                  or "<ipv6>".
+
+                  "<ipv6>" without a mask means host.
+
+                  Required except for remarks.'
   ipv6_mgmt_destination_networks:
     documentation_options:
       table: management-interface-settings
@@ -3620,6 +3761,9 @@ keys:
       level:
         type: list
         $ref: eos_cli_config_gen#/keys/logging/keys/level
+      monitor_layer1:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/monitor_layer1
   mac_address_table:
     documentation_options:
       table: system-settings
@@ -3889,6 +4033,189 @@ keys:
       ID on the MLAG peer.\n\nBy default the description is templated from the name
       and port-channel interface of the MLAG peer."
     default: MLAG_{mlag_peer}_{peer_interface}
+  monitor_connectivity:
+    type: dict
+    keys:
+      shutdown:
+        type: bool
+      interval:
+        type: int
+        convert_types:
+        - str
+      interface_sets:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            interfaces:
+              type: str
+              required: true
+              description: 'Interface range(s) should be of same type, Ethernet, Loopback,
+                Management etc.
+
+                Multiple interface ranges can be specified separated by ",".
+
+                '
+      local_interfaces:
+        type: str
+      address_only:
+        type: bool
+        description: 'When address-only is configured, the source IP of the packet
+          is set to the interface
+
+          IP but the packet may exit the device via a different interface.
+
+          When set to `false`, the probe uses the interface to exit the device.'
+        default: false
+      hosts:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              description: Host Name.
+              type: str
+            description:
+              type: str
+              description: 'Description in the form of
+
+                ```
+
+                description
+
+                <description>
+
+                ```'
+            single_line_description:
+              type: str
+              description: 'Description in the form of `description <description>`.
+
+                Supported in EOS versions 4.32.2F and above.'
+            ip:
+              type: str
+            icmp_echo_size:
+              type: int
+              description: Size of ICMP probe in bytes.
+              convert_types:
+              - str
+              min: 36
+              max: 18024
+            local_interfaces:
+              type: str
+            address_only:
+              type: bool
+              description: 'When address-only is configured, the source IP of the
+                packet is set to the interface
+
+                IP but the packet may exit the device via a different interface.
+
+                When set to `false`, the probe uses the interface to exit the device.'
+              default: false
+            url:
+              type: str
+      name_server_group:
+        type: str
+        description: Set name-server group.
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              description: VRF Name.
+              type: str
+              convert_types:
+              - int
+            description:
+              type: str
+              description: 'Description in the form of
+
+                ```
+
+                description
+
+                <description>
+
+                ```'
+            single_line_description:
+              type: str
+              description: 'Description in the form of `description <description>`.
+
+                Supported in EOS versions 4.32.2F and above.'
+            interface_sets:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  interfaces:
+                    type: str
+            local_interfaces:
+              type: str
+            address_only:
+              type: bool
+              description: 'When address-only is configured, the source IP of the
+                packet is set to the interface
+
+                IP but the packet may exit the device via a different interface.
+
+                When set to `false`, the probe uses the interface to exit the device.'
+              default: false
+            hosts:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    description: Host name.
+                    type: str
+                  description:
+                    type: str
+                    description: 'Description in the form of
+
+                      ```
+
+                      description
+
+                      <description>
+
+                      ```'
+                  single_line_description:
+                    type: str
+                    description: 'Description in the form of `description <description>`.
+
+                      Supported in EOS versions 4.32.2F and above.'
+                  ip:
+                    type: str
+                  icmp_echo_size:
+                    type: int
+                    description: Size of ICMP probe in bytes.
+                    convert_types:
+                    - str
+                    min: 36
+                    max: 18024
+                  local_interfaces:
+                    type: str
+                  address_only:
+                    type: bool
+                    description: 'When address-only is configured, the source IP of
+                      the packet is set to the interface
+
+                      IP but the packet may exit the device via a different interface.
+
+                      When set to `false`, the probe uses the interface to exit the
+                      device.'
+                    default: false
+                  url:
+                    type: str
   name_servers:
     documentation_options:
       table: removed-keys
@@ -7472,19 +7799,19 @@ $defs:
                   max: 4094
                   description: 'VLAN ID to bridge.
 
-                    Default is subinterface number.
+                    Default is the subinterface number.
 
                     '
                 encapsulation_vlan:
                   type: dict
-                  description: 'Client VLAN ID encapsulation.
-
-                    Default is subinterface number.
-
-                    '
                   keys:
                     client_dot1q:
                       type: int
+                      description: 'Client VLAN ID encapsulation.
+
+                        Default is the subinterface number.
+
+                        '
                       convert_types:
                       - str
                       min: 1
@@ -10170,9 +10497,8 @@ $defs:
                 description: 'L2VLAN profile name.
 
                   The profile must be defined under `l2vlan_profiles`. The profile
-                  may refer to another l2vlan_profile as it''s `parent_profile` to
-                  inherit settings in up to two levels (l2vlan -> l2vlan_profile ->
-                  l2vlan_parent_profile).'
+                  may refer to another l2vlan_profile as its `parent_profile` to inherit
+                  settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).'
               tags:
                 type: list
                 description: 'Tags leveraged for networks services filtering.
@@ -14208,6 +14534,22 @@ $defs:
         description: 'Name of the IPv4 Access-list to be assigned in the egress direction.
 
           The access-list must be defined under `ipv4_acls` and supports substitution
+          of the field "interface_ip".'
+        type: str
+        convert_types:
+        - int
+      ipv6_acl_in:
+        description: 'Name of the IPv6 access-list to be assigned in the ingress direction.
+
+          The access-list must be defined under `ipv6_acls` and supports substitution
+          of the field "interface_ip".'
+        type: str
+        convert_types:
+        - int
+      ipv6_acl_out:
+        description: 'Name of the IPv6 access-list to be assigned in the egress direction.
+
+          The access-list must be defined under `ipv6_acls` and supports substitution
           of the field "interface_ip".'
         type: str
         convert_types:
