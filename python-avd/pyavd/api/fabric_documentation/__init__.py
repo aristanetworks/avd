@@ -23,6 +23,7 @@ class ActNodeSettings:
     version: str
     # internet_access attribute is only applicable to cloudeos and veos node types and is ignored by ACT for all other node types
     internet_access: bool | None
+    ports: tuple[str, ...] | None
 
 
 @dataclass(frozen=True)

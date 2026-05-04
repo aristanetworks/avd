@@ -1613,6 +1613,7 @@ radius proxy
 | default | 10.10.11.156 | - | - | - | 34 | 45 |
 | default | 10.10.11.156 | True | 345 | - | - | - |
 | default | 10.10.10.249 | - | - | - | 1 | 1 |
+| default | 10.10.10.249 | - | - | - | 1 | 1 |
 | mgt | 10.10.10.157 | - | - | - | 1 | 1 |
 | mgt | 10.10.11.159 | - | - | - | - | 1 |
 | mgt | 10.10.11.160 | - | - | - | 1 | - |
@@ -1633,11 +1634,12 @@ radius-server host 10.10.10.158 timeout 1 retransmit 1 key 7 <removed>
 radius-server host 10.10.11.156 tls port 1700 timeout 1 retransmit 1
 radius-server host 10.10.11.156 timeout 34 retransmit 45 key 7 <removed>
 radius-server host 10.10.11.156 tls port 345
-radius-server host 10.10.10.249 timeout 1 retransmit 1 key 7 <removed>
+radius-server host 10.10.10.249 timeout 1 retransmit 1 key 0 <removed>
+radius-server host 10.10.10.249 timeout 1 retransmit 1 key 8a <removed>
 radius-server host 10.10.10.157 vrf mgt timeout 1 retransmit 1 key 7 <removed>
 radius-server host 10.10.11.159 vrf mgt retransmit 1 key 7 <removed>
-radius-server host 10.10.11.160 vrf mgt timeout 1 key 7 <removed>
-radius-server host 10.10.11.248 vrf mgt key 7 <removed>
+radius-server host 10.10.11.160 vrf mgt timeout 1 key 8a <removed>
+radius-server host 10.10.11.248 vrf mgt key 0 <removed>
 radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 2083 timeout 1 retransmit 1
 radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 ```
@@ -2054,6 +2056,7 @@ alias siib show ip interface brief
 
 - DHCP Relay is disabled for tunnelled requests
 - DHCP Relay is disabled for MLAG peer-link requests
+- Client requests flooding suppression for VLANs: 500-510,1000,2000,3000
 
 | DHCP Relay Servers |
 | ------------------ |
@@ -2067,6 +2070,7 @@ alias siib show ip interface brief
 dhcp relay
    tunnel requests disabled
    mlag peer-link requests disabled
+   client requests flooding suppression vlan 500-510,1000,2000,3000
    server dhcp-relay-server1
    server dhcp-relay-server2
 ```
@@ -10243,6 +10247,12 @@ router bgp 65101
       neighbor baz default-originate route-map RM-FOO always
       neighbor baz additional-paths send ecmp limit 20
       no neighbor FOOBAR activate
+      neighbor FOOBAR1 activate
+      neighbor FOOBAR1 default-originate
+      neighbor FOOBAR2 activate
+      neighbor FOOBAR2 default-originate route-map RM-FOO
+      neighbor FOOBAR3 activate
+      neighbor FOOBAR3 default-originate always
       neighbor IPV6-UNDERLAY activate
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH in
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH out
@@ -10259,15 +10269,19 @@ router bgp 65101
       neighbor 2001:db8::1 route-map Address_Family_IPV6_Out out
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-IN in
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-OUT out
+      neighbor 2001:db8::1 default-originate route-map RM-FOO-MATCH3 always
       neighbor 2001:db8::1 additional-paths send ecmp limit 20
       neighbor 2001:db8::1 peer-tag in PEER_TAG_IN_IPV6
       neighbor 2001:db8::1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6
       neighbor 2001:db8::2 activate
       neighbor 2001:db8::2 rcf in Address_Family_IPV6_In()
       neighbor 2001:db8::2 rcf out Address_Family_IPV6_Out()
+      neighbor 2001:db8::2 default-originate always
       neighbor 2001:db8::2 additional-paths send any
       no neighbor 2001:db8::21 activate
+      neighbor 2001:db8::21 default-originate
       no neighbor 2001:db8::21 additional-paths send
+      neighbor 2001:db8::22 default-originate route-map RM-FOO-MATCH3
       neighbor 2001:db8::22 additional-paths send limit 5
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
