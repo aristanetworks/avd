@@ -118,7 +118,7 @@ The `deprecation.new_key` field is used for detecting conflicts with old and new
 | <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
-| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
+| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has its own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
 
 The meta-schema does not allow for other keys to be set in the schema.
 
@@ -138,7 +138,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
-| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
+| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has its own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
 
 The meta-schema does not allow for other keys to be set in the schema.
 
@@ -168,7 +168,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
-| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
+| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has its own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
 
 The meta-schema does not allow for other keys to be set in the schema.
 
@@ -193,7 +193,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
-| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
+| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has its own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
 
 The meta-schema does not allow for other keys to be set in the schema.
 
@@ -216,6 +216,6 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Allows for easy reuse of schema definitions.<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
-| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
+| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has its own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
 
 The meta-schema does not allow for other keys to be set in the schema.
