@@ -124,12 +124,12 @@
               - "'AVD-avd-ci-leaf2' in cv_deploy_results.deployed_configs | map(attribute='configlet_name') | list"
               - "'AVD-avd-ci-spine1' in cv_deploy_results.deployed_configs | map(attribute='configlet_name') | list"
 
-        - name: "(BLOCK) Verify manifest-opted device container was removed from AVD Configurations - {{ test_id | upper }}"
+        - name: "(BLOCK) Verify manifest-opted device config was removed from AVD Configurations - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
             that:
-              - cv_deploy_results.removed_configs | length > 0
+              - cv_deploy_results.removed_configs == ["AVD_avd-ci-leaf1"]
 
         - name: "(BLOCK) Verify manifest configlets were deployed (shared + device config) - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]

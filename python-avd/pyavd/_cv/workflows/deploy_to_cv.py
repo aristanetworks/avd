@@ -9,9 +9,8 @@ from typing import TYPE_CHECKING
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
 
-from .cleanup_configlet_containers import cleanup_configlet_containers
 from .create_workspace_on_cv import create_workspace_on_cv
-from .deploy_configs_to_cv import deploy_configs_to_cv
+from .deploy_configs_to_cv import delete_configs_from_cv, deploy_configs_to_cv
 from .deploy_cv_pathfinder_metadata_to_cv import deploy_cv_pathfinder_metadata_to_cv
 from .deploy_static_config_studio_manifest_to_cv import deploy_static_config_studio_manifest_to_cv
 from .deploy_studio_inputs_to_cv import deploy_studio_inputs_to_cv
@@ -222,8 +221,8 @@ async def deploy_to_cv(
                     cv_client=cv_client,
                 )
 
-                # Clean up configlet containers for devices managed by the static config manifest.
-                await cleanup_configlet_containers(
+                # Delete any leftover device configs for devices managed by the static config manifest
+                await delete_configs_from_cv(
                     device_deployments=device_deployments,
                     result=result,
                     cv_client=cv_client,

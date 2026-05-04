@@ -3,13 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from asyncio import gather
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
 
-    from .models import CVEosConfig, DeployToCvResult
+    from .models import CVDeviceDeployment, CVEosConfig, DeployToCvResult
 
 LOGGER = getLogger(__name__)
 
@@ -168,4 +169,91 @@ async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspac
             workspace_id=workspace_id,
             container_id=CONFIGLET_CONTAINER_ID,
             child_assignment_ids=list(update_device_container_ids.union(existing_device_containers_by_id)),
+        )
+
+
+async def delete_configs_from_cv(device_deployments: list[CVDeviceDeployment], result: DeployToCvResult, cv_client: CVClient) -> None:
+    """
+    Delete leftovers device configurations from a previous `deploy_configs_to_cv` run.
+
+    For devices with `use_static_config_manifest=True`, the device configuration is expected to be deployed
+    via the static config manifest instead of the flat "AVD Configurations" layout. This function removes
+    the corresponding container (avd-<serial>) and configlet for these devices if they exist.
+
+    If all children are removed, the root container itself is deleted and unregistered from the Studio
+    """
+    workspace_id = result.workspace.id
+
+    # Build a stable list of target IDs from manifest-opted devices.
+    target_ids = [
+        f"{CONFIGLET_ID_PREFIX}{device_deployment.device.serial_number}"
+        for device_deployment in device_deployments
+        if device_deployment.use_static_config_manifest and device_deployment.device.serial_number
+    ]
+    if not target_ids:
+        return
+    target_ids_set = set(target_ids)
+
+    # Find what actually exists on CV for our targets and the root container.
+    existing_configlets, existing_containers = await gather(
+        cv_client.get_configlets(workspace_id=workspace_id, configlet_ids=target_ids),
+        cv_client.get_configlet_containers(workspace_id=workspace_id, container_ids=[*target_ids, CONFIGLET_CONTAINER_ID]),
+    )
+
+    configlets_by_id = {cast("str", configlet.key.configlet_id): configlet for configlet in existing_configlets}
+    containers_by_id = {cast("str", container.key.configlet_assignment_id): container for container in existing_containers}
+    root_cv_container = containers_by_id.pop(CONFIGLET_CONTAINER_ID, None)
+
+    # Delete leftover per-device containers and configlets in parallel.
+    delete_coroutines = [cv_client.delete_configlet_container(workspace_id=workspace_id, assignment_id=container_id) for container_id in containers_by_id]
+    if configlets_by_id:
+        delete_coroutines.append(cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(configlets_by_id)))
+
+    if delete_coroutines:
+        LOGGER.info(
+            "delete_configs_from_cv: Removing %s device containers and %s configlets.",
+            len(containers_by_id),
+            len(configlets_by_id),
+        )
+        await gather(*delete_coroutines)
+
+    result.removed_configs.extend(cast("str", configlet.display_name) for configlet in configlets_by_id.values())
+
+    # Reconcile the root "AVD Configurations" container if it exists.
+    if root_cv_container is None:
+        return
+
+    existing_child_ids = root_cv_container.child_assignment_ids.values
+    remaining_child_ids = [child_id for child_id in existing_child_ids if child_id not in target_ids_set]
+
+    if remaining_child_ids == list(existing_child_ids):
+        # Nothing of ours was referenced as a child so leave the root container untouched.
+        return
+
+    if remaining_child_ids:
+        LOGGER.info("delete_configs_from_cv: Updating root container children (%s remaining).", len(remaining_child_ids))
+        await cv_client.set_configlet_container(
+            workspace_id=workspace_id,
+            container_id=CONFIGLET_CONTAINER_ID,
+            child_assignment_ids=remaining_child_ids,
+        )
+        return
+
+    # No remaining children, delete the root container and unregister from studio roots.
+    LOGGER.info("delete_configs_from_cv: All device containers removed. Cleaning up root container.")
+    await cv_client.delete_configlet_container(workspace_id=workspace_id, assignment_id=CONFIGLET_CONTAINER_ID)
+
+    root_containers: list = await cv_client.get_studio_inputs_with_path(
+        studio_id=STATIC_CONFIGLET_STUDIO_ID,
+        workspace_id=workspace_id,
+        input_path=["configletAssignmentRoots"],
+        default_value=[],
+    )
+    if CONFIGLET_CONTAINER_ID in root_containers:
+        root_containers.remove(CONFIGLET_CONTAINER_ID)
+        await cv_client.set_studio_inputs(
+            studio_id=STATIC_CONFIGLET_STUDIO_ID,
+            workspace_id=workspace_id,
+            input_path=["configletAssignmentRoots"],
+            inputs=root_containers,
         )
