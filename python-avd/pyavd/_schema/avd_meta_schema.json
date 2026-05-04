@@ -344,7 +344,7 @@
       "properties": {
         "table": {
           "type": "string",
-          "description": "Setting 'table' will allow for custom grouping of schema fields in the documentation.\nBy default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.\nIf 'table' is set on a 'child' key, all 'ancestor' keys are automatically included in the table so the full path is visible.\nThe 'table' option is inherited to all child keys, unless specifically set on the child."
+          "description": "Setting 'table' will allow for custom grouping of schema fields in the documentation.\nBy default each root key has its own table. By setting the same table-value on multiple keys, they will be merged to a single table.\nIf 'table' is set on a 'child' key, all 'ancestor' keys are automatically included in the table so the full path is visible.\nThe 'table' option is inherited to all child keys, unless specifically set on the child."
         }
       },
       "additionalProperties": false
