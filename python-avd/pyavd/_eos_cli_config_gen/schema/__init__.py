@@ -26480,7 +26480,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "serial_number": {"type": str},
             "validate_hardware": {"type": ValidateHardware},
             "cv_tags": {"type": CvTags},
-            "cv_use_static_config_manifest": {"type": bool, "default": False},
+            "cv_use_static_config_manifest": {"type": bool},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
             "validate_no_errors_period": {"type": int},
@@ -26519,7 +26519,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         cv_tags: CvTags
         """Subclass of AvdModel."""
-        cv_use_static_config_manifest: bool
+        cv_use_static_config_manifest: bool | None
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
@@ -26530,8 +26530,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Configurations" layout in the Static Configlet Studio.
         The device will still be verified and
         onboarded in the Inventory & Topology Studio.
-
-        Default value: `False`
         """
         cv_pathfinder: CvPathfinder
         """
@@ -26577,7 +26575,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 serial_number: str | None | UndefinedType = Undefined,
                 validate_hardware: ValidateHardware | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
-                cv_use_static_config_manifest: bool | UndefinedType = Undefined,
+                cv_use_static_config_manifest: bool | None | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validate_no_errors_period: int | None | UndefinedType = Undefined,

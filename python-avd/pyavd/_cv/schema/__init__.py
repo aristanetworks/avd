@@ -105,7 +105,7 @@ class CvDeploy(AvdModel):
             "system_mac_address": {"type": str},
             "cv_tags": {"type": EosCliConfigGen.Metadata.CvTags},
             "cv_pathfinder": {"type": EosCliConfigGen.Metadata.CvPathfinder},
-            "cv_use_static_config_manifest": {"type": bool, "default": False},
+            "cv_use_static_config_manifest": {"type": bool},
         }
         _allow_other_keys: ClassVar[bool] = True
         is_deployed: bool | None
@@ -120,7 +120,7 @@ class CvDeploy(AvdModel):
         cv_tags: EosCliConfigGen.Metadata.CvTags
         cv_pathfinder: EosCliConfigGen.Metadata.CvPathfinder
         """Metadata used for CV Pathfinder visualization on CloudVision."""
-        cv_use_static_config_manifest: bool
+        cv_use_static_config_manifest: bool | None
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
@@ -131,8 +131,6 @@ class CvDeploy(AvdModel):
         Configurations" layout in the Static Configlet Studio.
         The device will still be verified and
         onboarded in the Inventory & Topology Studio.
-
-        Default value: `False`
         """
 
         if TYPE_CHECKING:
@@ -145,7 +143,7 @@ class CvDeploy(AvdModel):
                 system_mac_address: str | None | UndefinedType = Undefined,
                 cv_tags: EosCliConfigGen.Metadata.CvTags | UndefinedType = Undefined,
                 cv_pathfinder: EosCliConfigGen.Metadata.CvPathfinder | UndefinedType = Undefined,
-                cv_use_static_config_manifest: bool | UndefinedType = Undefined,
+                cv_use_static_config_manifest: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -181,7 +179,7 @@ class CvDeploy(AvdModel):
         "cv_device_tags": {"type": CvDeviceTags},
         "cv_interface_tags": {"type": CvInterfaceTags},
         "cv_pathfinder_metadata": {"type": EosCliConfigGen.Metadata.CvPathfinder},
-        "cv_use_static_config_manifest": {"type": bool, "default": False},
+        "cv_use_static_config_manifest": {"type": bool},
         "metadata": {"type": Metadata},
     }
     _allow_other_keys: ClassVar[bool] = True
@@ -235,7 +233,7 @@ class CvDeploy(AvdModel):
     """
     cv_pathfinder_metadata: EosCliConfigGen.Metadata.CvPathfinder
     """Metadata used for CV Pathfinder visualization on CloudVision."""
-    cv_use_static_config_manifest: bool
+    cv_use_static_config_manifest: bool | None
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
     change at any time.
@@ -246,8 +244,6 @@ class CvDeploy(AvdModel):
     Configurations" layout in the Static Configlet Studio.
     The device will still be verified and
     onboarded in the Inventory & Topology Studio.
-
-    Default value: `False`
     """
     metadata: Metadata
     """
@@ -271,7 +267,7 @@ class CvDeploy(AvdModel):
             cv_device_tags: CvDeviceTags | UndefinedType = Undefined,
             cv_interface_tags: CvInterfaceTags | UndefinedType = Undefined,
             cv_pathfinder_metadata: EosCliConfigGen.Metadata.CvPathfinder | UndefinedType = Undefined,
-            cv_use_static_config_manifest: bool | UndefinedType = Undefined,
+            cv_use_static_config_manifest: bool | None | UndefinedType = Undefined,
             metadata: Metadata | UndefinedType = Undefined,
         ) -> None:
             """
