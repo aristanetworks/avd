@@ -20,7 +20,7 @@ loopback_interfaces:
   isis_passive: true
   node_segment:
     ipv4_index: 203
-    ipv6_index: 203
+    ipv6_index: 1003
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
