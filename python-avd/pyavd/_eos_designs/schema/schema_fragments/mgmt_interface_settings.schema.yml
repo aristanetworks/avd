@@ -1,0 +1,54 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+type: dict
+keys:
+  mgmt_interface_settings:
+    documentation_options:
+      table: management-interface-settings
+    description: |-
+      Out-of-Band (OOB) management interface settings.
+      These settings override the corresponding global variables where applicable.
+    type: dict
+    keys:
+      description:
+        type: str
+        description: |-
+          Interface description configured on the management interface.
+          Takes precedence over the global 'mgmt_interface_description' variable.
+        default: OOB_MANAGEMENT
+      vrf:
+        type: str
+        convert_types:
+          - int
+        description: |-
+          VRF name used for the management interface.
+          Takes precedence over the global 'mgmt_interface_vrf' variable.
+        default: MGMT
+      vrf_routing:
+        type: bool
+        description: |-
+          Enable IP routing in the management VRF.
+          Takes precedence over the global 'mgmt_vrf_routing' variable.
+        default: false
+      interface:
+        type: str
+        description: |-
+          Name of the management interface (e.g. Management0, Management1).
+          Takes precedence over the global 'mgmt_interface' variable.
+        default: Management1
+      lldp:
+        type: dict
+        description: LLDP settings for the management interface.
+        keys:
+          transmit:
+            type: bool
+            description: Enable LLDP transmission on the management interface.
+          receive:
+            type: bool
+            description: Enable LLDP reception on the management interface.
+          ztp_vlan:
+            type: int
+            convert_types:
+              - str
+            description: VLAN ID advertised via LLDP for Zero Touch Provisioning (ZTP).

@@ -123,10 +123,12 @@ class AvdStructuredConfigBaseProtocol(
         if self.inputs.mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.mgmt_destination_networks:
                 self.structured_config.static_routes.append_new(
-                    vrf=self.inputs.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.mgmt_gateway
+                    vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.mgmt_gateway
                 )
         else:
-            self.structured_config.static_routes.append_new(vrf=self.inputs.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.mgmt_gateway)
+            self.structured_config.static_routes.append_new(
+                vrf=self.shared_utils.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.mgmt_gateway
+            )
 
     @structured_config_contributor
     def ipv6_static_routes(self) -> None:
@@ -137,11 +139,13 @@ class AvdStructuredConfigBaseProtocol(
         if self.inputs.ipv6_mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.ipv6_mgmt_destination_networks:
                 self.structured_config.ipv6_static_routes.append_new(
-                    vrf=self.inputs.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.ipv6_mgmt_gateway
+                    vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.ipv6_mgmt_gateway
                 )
             return
 
-        self.structured_config.ipv6_static_routes.append_new(vrf=self.inputs.mgmt_interface_vrf, prefix="::/0", next_hop=self.shared_utils.ipv6_mgmt_gateway)
+        self.structured_config.ipv6_static_routes.append_new(
+            vrf=self.shared_utils.mgmt_interface_vrf, prefix="::/0", next_hop=self.shared_utils.ipv6_mgmt_gateway
+        )
 
     @structured_config_contributor
     def service_routing_protocols_model(self) -> None:
@@ -545,10 +549,10 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def vrfs(self) -> None:
         """Vrfs set based on mgmt_interface_vrf variable."""
-        vrf_settings = EosCliConfigGen.VrfsItem(name=self.inputs.mgmt_interface_vrf, ip_routing=self.inputs.mgmt_vrf_routing)
+        vrf_settings = EosCliConfigGen.VrfsItem(name=self.shared_utils.mgmt_interface_vrf, ip_routing=self.shared_utils.mgmt_vrf_routing)
 
         if self.shared_utils.node_config.ipv6_mgmt_ip is not None:
-            vrf_settings.ipv6_routing = self.inputs.mgmt_vrf_routing
+            vrf_settings.ipv6_routing = self.shared_utils.mgmt_vrf_routing
         self.structured_config.vrfs.append(vrf_settings)
 
     @structured_config_contributor
@@ -560,9 +564,9 @@ class AvdStructuredConfigBaseProtocol(
 
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,
-                description=self.inputs.mgmt_interface_description,
+                description=self.shared_utils.mgmt_interface_description,
                 shutdown=False,
-                vrf=self.inputs.mgmt_interface_vrf,
+                vrf=self.shared_utils.mgmt_interface_vrf,
                 ip_address=self.shared_utils.node_config.mgmt_ip,
                 type="oob",
             )
@@ -583,6 +587,9 @@ class AvdStructuredConfigBaseProtocol(
                     ipv6_gateway=self.shared_utils.ipv6_mgmt_gateway,
                 )
                 interface_settings.ipv6_addresses.append(self.shared_utils.node_config.ipv6_mgmt_ip)
+
+            if self.inputs.mgmt_interface_settings.lldp:
+                interface_settings.lldp = self.inputs.mgmt_interface_settings.lldp._cast_as(EosCliConfigGen.ManagementInterfacesItem.Lldp)
             self.structured_config.management_interfaces.append(interface_settings)
 
     @structured_config_contributor
