@@ -2504,10 +2504,13 @@ keys:
 
           When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`,
           sorted by source interface name.'
-      new_ip_routing_vrfs_separator:
+      always_render_ip_routing_separator:
         type: bool
         default: false
-        description: Always render a '!' before the '(no) ip routing command' section.
+        description: 'Always render a ''!'' before the ''(no) ip routing'' command
+          section.
+
+          Without this the ''!'' is missing when only configuring routing for VRFs.'
   errdisable:
     type: dict
     keys:
