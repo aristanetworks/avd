@@ -7,86 +7,72 @@ daemon_terminattr:
   cvauth:
     method: token-secure
     token_file: /tmp/cv-onboarding-token
-  cvvrf: INBANDMGMT
+  cvvrf: VRF6
   disable_aaa: false
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: INBAND-MGMT-PARENT-IPV6-1_Ethernet27
+  description: INBAND-MGMT-PARENT-IPV6-1_Ethernet28
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
     peer: inband-mgmt-parent-ipv6-1
-    peer_interface: Ethernet27
+    peer_interface: Ethernet28
     peer_type: l3leaf
 - name: Ethernet2
-  description: INBAND-MGMT-PARENT-IPV6-2_Ethernet27
+  description: INBAND-MGMT-PARENT-IPV6-2_Ethernet28
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
     peer: inband-mgmt-parent-ipv6-2
-    peer_interface: Ethernet27
+    peer_interface: Ethernet28
     peer_type: l3leaf
-- name: Ethernet3
-  description: INBAND-MGMT-PARENT-IPV6-3_Ethernet27
-  shutdown: false
-  channel_group:
-    id: 1
-    mode: active
-  metadata:
-    peer: inband-mgmt-parent-ipv6-3
-    peer_interface: Ethernet27
-    peer_type: l3leaf
-hostname: inband-mgmt-ipv6-only-vrf
+hostname: inband-mgmt-ipv6-with-address
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_server:
   vrfs:
-  - name: INBANDMGMT
+  - name: VRF6
     servers:
     - ip_address: 1.1.1.1
     - ip_address: 8.8.8.8
-ipv6_static_routes:
-- vrf: INBANDMGMT
-  prefix: ::/0
-  next_hop: 2a00:107::1
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:
   local_interface:
-    name: Vlan107
-    vrf: INBANDMGMT
+    name: Vlan4092
+    vrf: VRF6
   servers:
   - name: 2.2.2.55
     preferred: true
   - name: pool.ntp.org
-  vrf: INBANDMGMT
+  vrf: VRF6
 port_channel_interfaces:
 - name: Port-Channel1
-  description: inband-mgmt-parents-ipv6_Po27
+  description: inband-mgmt-parents-ipv6_Po28
   shutdown: false
   switchport:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: '107'
+      allowed_vlan: '4092'
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
-- name: Vlan107
+- name: Vlan4092
   description: Inband Management
   shutdown: false
-  vrf: INBANDMGMT
+  vrf: VRF6
   ipv6_enable: true
   ipv6_addresses:
-  - 2a00:107::a/64
+  - 2a00:105::124/64
   mtu: 1500
   metadata:
     type: inband_mgmt
@@ -96,7 +82,7 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 107
+- id: 4092
   name: INBAND_MGMT
   metadata:
     tenants:
@@ -104,3 +90,4 @@ vlans:
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: VRF6
