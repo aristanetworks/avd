@@ -262,7 +262,7 @@ repos:
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
         entry: python development/find_missing_tables.py @.find-missing-tables-args
-        language: system
+        language: python
         pass_filenames: false
 
       - id: sort-hosts-yml
