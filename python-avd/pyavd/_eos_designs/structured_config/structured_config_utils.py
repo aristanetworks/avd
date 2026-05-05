@@ -314,5 +314,4 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         return Undefined if user_input is None else user_input
 
 
-
 __all__ = ["StructuredConfigUtils"]
