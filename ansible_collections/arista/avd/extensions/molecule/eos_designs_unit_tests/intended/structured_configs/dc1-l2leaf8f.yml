@@ -17,46 +17,22 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: DC1-LEAF2A_Ethernet33
+  description: DC1-L2LEAF8A_Ethernet4
   shutdown: false
   metadata:
-    peer: dc1-leaf2a
-    peer_interface: Ethernet33
-    peer_type: l3leaf
+    peer: dc1-l2leaf8a
+    peer_interface: Ethernet4
+    peer_type: l2leaf
   switchport:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
+      allowed_vlan: '111'
 - name: Ethernet2
-  description: DC1-L2LEAF8B_Ethernet1
+  description: DC1-L2LEAF8G_Ethernet1
   shutdown: false
   metadata:
-    peer: dc1-l2leaf8b
-    peer_interface: Ethernet1
-    peer_type: l2leaf
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
-- name: Ethernet3
-  description: DC1-L2LEAF8D_Ethernet1
-  shutdown: false
-  metadata:
-    peer: dc1-l2leaf8d
-    peer_interface: Ethernet1
-    peer_type: l2leaf
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: 110-112,120
-- name: Ethernet4
-  description: DC1-L2LEAF8F_Ethernet1
-  shutdown: false
-  metadata:
-    peer: dc1-l2leaf8f
+    peer: dc1-l2leaf8g
     peer_interface: Ethernet1
     peer_type: l2leaf
   switchport:
@@ -64,12 +40,19 @@ ethernet_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: '111'
-hostname: dc1-l2leaf8a
+- name: Ethernet10
+  description: Endpoint on ring topology triggering only_vlans_in_use with ring redundancy
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 111
+hostname: dc1-l2leaf8f
 ip_igmp_snooping:
   globally_enabled: true
-  vlans:
-  - id: 120
-    enabled: false
 ip_name_server:
   vrfs:
   - name: MGMT
@@ -99,7 +82,7 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.200.125/24
+  ip_address: 192.168.200.130/24
   type: oob
   gateway: 192.168.200.5
 metadata:
@@ -119,7 +102,7 @@ ntp:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS rackE dc1-l2leaf8a
+  location: EOS_DESIGNS_UNIT_TESTS rackE dc1-l2leaf8f
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -136,116 +119,11 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 130
-  name: Tenant_A_APP_Zone_1
-  metadata:
-    tenants:
-    - Tenant_A
-- id: 131
-  name: Tenant_A_APP_Zone_2
-  metadata:
-    tenants:
-    - Tenant_A
-- id: 140
-  name: Tenant_A_DB_BZone_1
-  metadata:
-    tenants:
-    - Tenant_A
-- id: 141
-  name: Tenant_A_DB_Zone_2
-  metadata:
-    tenants:
-    - Tenant_A
-- id: 110
-  name: Tenant_A_OP_Zone_1
-  metadata:
-    tenants:
-    - Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
   metadata:
     tenants:
     - Tenant_A
-- id: 112
-  name: Tenant_A_OP_Zone_3
-  metadata:
-    tenants:
-    - Tenant_A
-- id: 120
-  name: Tenant_A_WEB_Zone_1
-  metadata:
-    tenants:
-    - Tenant_A
-- id: 121
-  name: Tenant_A_WEBZone_2
-  metadata:
-    tenants:
-    - Tenant_A
-- id: 160
-  name: Tenant_A_VMOTION
-  metadata:
-    tenants:
-    - Tenant_A
-- id: 161
-  name: Tenant_A_NFS
-  metadata:
-    tenants:
-    - Tenant_A
-- id: 210
-  name: Tenant_B_OP_Zone_1
-  metadata:
-    tenants:
-    - Tenant_B
-- id: 211
-  name: Tenant_B_OP_Zone_2
-  metadata:
-    tenants:
-    - Tenant_B
-- id: 310
-  name: Tenant_C_OP_Zone_1
-  metadata:
-    tenants:
-    - Tenant_C
-- id: 311
-  name: Tenant_C_OP_Zone_2
-  metadata:
-    tenants:
-    - Tenant_C
-- id: 450
-  name: Tenant_D_v6_WAN_Zone_1
-  metadata:
-    tenants:
-    - Tenant_D
-- id: 451
-  name: Tenant_D_v6_WAN_Zone_2
-  metadata:
-    tenants:
-    - Tenant_D
-- id: 452
-  name: Tenant_D_v6_WAN_Zone_3
-  metadata:
-    tenants:
-    - Tenant_D
-- id: 410
-  name: Tenant_D_v6_OP_Zone_1
-  metadata:
-    tenants:
-    - Tenant_D
-- id: 411
-  name: Tenant_D_v6_OP_Zone_2
-  metadata:
-    tenants:
-    - Tenant_D
-- id: 412
-  name: Tenant_D_v6_OP_Zone_1
-  metadata:
-    tenants:
-    - Tenant_D
-- id: 413
-  name: Tenant_D_v6_OP_Zone_3
-  metadata:
-    tenants:
-    - Tenant_D
 vrfs:
 - name: MGMT
   ip_routing: false

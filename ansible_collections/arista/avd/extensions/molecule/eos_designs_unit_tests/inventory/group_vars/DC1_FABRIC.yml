@@ -476,8 +476,19 @@ l2leaf:
             description: description through uplink_switch_ethernet_structured_config(dc1.l2leaf7a)
 
     # Nodes to test uplink_type: l2-ethernet
-    # Testing a ring topology with DC-L2LEAF8A-C and a child ring with DC-L2LEAFD-E
-    # All uplinks are defined on both ends to ensure proper vlan redundancy around the ring.
+    # Testing a ring topology with DC-L2LEAF8A-C, a bidirectional child ring with DC-L2LEAF8D-E,
+    # and a parallel child ring with DC-L2LEAF8F-G where the 8g -> 8f uplink is intentionally omitted.
+    #
+    # dc1-leaf2a Et33 <-> Et1 dc1-l2leaf8a Et2 <-> Et1 dc1-l2leaf8b Et2 <-> Et2 dc1-l2leaf8c Et1 <-> Et33 dc1-leaf2b
+    #                            | Et3                                              Et3 |
+    #                            |                                                      |
+    #                            |    Et1 dc1-l2leaf8d Et2 <-> Et1 dc1-l2leaf8e Et2     |
+    #                            |______________________________________________________|
+    #
+    #                            | Et4                                              Et4 |
+    #                            |                                                      |
+    #                            |    Et1 dc1-l2leaf8f Et2 --> Et1 dc1-l2leaf8g Et2     |
+    #                            |______________________________________________________|
     - group: DC1_L2LEAF8
       mlag: false
       uplink_type: l2-ethernet
@@ -500,7 +511,7 @@ l2leaf:
           uplink_interfaces: [Ethernet1, Ethernet2]
           uplink_switches: [dc1-leaf2b, dc1-l2leaf8b]
           uplink_switch_interfaces: [Ethernet33, Ethernet2]
-        # The switches below sit on another child ring with stricter VLAN filtering (don't do this at home kids!)
+        # The next two switches sit on another child ring with stricter VLAN filtering (don't do this at home kids!)
         # Also see network_ports in DC1_SERVERS.yml.
         - name: dc1-l2leaf8d
           mgmt_ip: 192.168.200.128/24
@@ -516,6 +527,28 @@ l2leaf:
           uplink_switch_interfaces: [Ethernet2, Ethernet3]
           inband_mgmt_vlan: 110 # Existing vlan in network services.
           inband_mgmt_ip: 10.10.10.129/24
+          filter:
+            only_vlans_in_use: true
+        # The next two switches sit on a parallel child ring with same vlans as 8d/8e but without bidirection definition of uplinks.
+        # This should show why bidirectional definitions are required to get consistent vlan lists across the ring.
+        # Also see network_ports in DC1_SERVERS.yml.
+        - name: dc1-l2leaf8f
+          mgmt_ip: 192.168.200.130/24
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switches: [dc1-l2leaf8a, dc1-l2leaf8g]
+          uplink_switch_interfaces: [Ethernet4, Ethernet1]
+          filter:
+            only_vlans_in_use: true
+        - name: dc1-l2leaf8g
+          mgmt_ip: 192.168.200.131/24
+          # Notice that 8g does not declare uplink to 8f, so vlans only used on 8g (110->inband mgmt & 111)
+          # will not get configured on 8f and not allowed on the trunk between them.
+          # This is why configuring uplinks in both directions is required for full vlan redundancy.
+          uplink_interfaces: [Ethernet2]
+          uplink_switches: [dc1-l2leaf8c]
+          uplink_switch_interfaces: [Ethernet4]
+          inband_mgmt_vlan: 110 # Existing vlan in network services.
+          inband_mgmt_ip: 10.10.10.131/24
           filter:
             only_vlans_in_use: true
 

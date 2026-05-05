@@ -735,6 +735,7 @@ network_ports:
   - description: Endpoint on ring topology triggering only_vlans_in_use with ring redundancy
     switches:
       - dc1-l2leaf8d
+      - dc1-l2leaf8f
     switch_ports:
       - Ethernet10
     mode: access
@@ -742,6 +743,7 @@ network_ports:
   - description: Endpoint on ring topology triggering only_vlans_in_use with ring redundancy
     switches:
       - dc1-l2leaf8e
+      - dc1-l2leaf8g
     switch_ports:
       - Ethernet10
     mode: trunk
