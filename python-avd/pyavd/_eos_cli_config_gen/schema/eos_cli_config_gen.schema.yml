@@ -22525,8 +22525,10 @@ keys:
               type: bool
             segment_routing_mpls:
               type: dict
-              description: OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or
+              description: 'OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or
                 later.
+
+                Do not configure segment routing in more than one process id.'
               keys:
                 enabled:
                   type: bool
