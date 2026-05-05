@@ -48688,7 +48688,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class DefaultOriginate(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"always": {"type": bool}, "route_map": {"type": str}}
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                    enabled: bool | None
                     always: bool | None
                     """Always advertise a default route to this peer."""
                     route_map: str | None
@@ -48696,7 +48697,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, always: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            always: bool | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             DefaultOriginate.
 
@@ -48704,6 +48711,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
+                                enabled: enabled
                                 always: Always advertise a default route to this peer.
                                 route_map: Route-map name.
 
@@ -48807,6 +48815,38 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NeighborsItem(AvdModel):
                 """Subclass of AvdModel."""
 
+                class DefaultOriginate(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "always": {"type": bool}, "route_map": {"type": str}}
+                    enabled: bool | None
+                    always: bool | None
+                    """Always advertise a default route to this peer."""
+                    route_map: str | None
+                    """Route-map name."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            always: bool | None | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            DefaultOriginate.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                always: Always advertise a default route to this peer.
+                                route_map: Route-map name.
+
+                            """
+
                 class AdditionalPaths(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -48878,6 +48918,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "rcf_out": {"type": str},
                     "prefix_list_in": {"type": str},
                     "prefix_list_out": {"type": str},
+                    "default_originate": {"type": DefaultOriginate},
                     "additional_paths": {"type": AdditionalPaths},
                 }
                 ip_address: str
@@ -48904,6 +48945,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound prefix-list name."""
                 prefix_list_out: str | None
                 """Outbound prefix-list name."""
+                default_originate: DefaultOriginate
+                """Subclass of AvdModel."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
 
@@ -48922,6 +48965,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rcf_out: str | None | UndefinedType = Undefined,
                         prefix_list_in: str | None | UndefinedType = Undefined,
                         prefix_list_out: str | None | UndefinedType = Undefined,
+                        default_originate: DefaultOriginate | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -48945,6 +48989,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Example: MyFunction(myarg).
                             prefix_list_in: Inbound prefix-list name.
                             prefix_list_out: Outbound prefix-list name.
+                            default_originate: Subclass of AvdModel.
                             additional_paths: Subclass of AvdModel.
 
                         """
