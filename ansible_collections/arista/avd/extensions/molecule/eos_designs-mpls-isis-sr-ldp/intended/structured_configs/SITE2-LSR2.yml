@@ -12,6 +12,8 @@ ethernet_interfaces:
   mtu: 9178
   ip_address: 100.64.48.11/31
   ipv6_enable: true
+  ipv6_addresses:
+  - 2001:db8:0:fffe::b/127
   isis_enable: CUSTOM_NAME
   isis_metric: 60
   isis_network_point_to_point: true
@@ -89,7 +91,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 100.70.0.4/32
   ipv6_addresses:
-  - 2000:1234:ffff:ffff::4/128
+  - 2001:db8:300:ffff::4/128
   mpls:
     ldp:
       interface: true

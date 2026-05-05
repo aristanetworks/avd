@@ -16,7 +16,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 100.70.0.10/32
   ipv6_addresses:
-  - 2000:1234:ffff:ffff::a/128
+  - 2001:db8:200:ffff::a/128
   mpls:
     ldp:
       interface: true

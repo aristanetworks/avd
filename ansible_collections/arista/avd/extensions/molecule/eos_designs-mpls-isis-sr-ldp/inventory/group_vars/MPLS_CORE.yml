@@ -46,7 +46,7 @@ p:
   defaults:
     platform: 7280SR
     loopback_ipv4_pool: 100.70.0.0/24
-    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+    loopback_ipv6_pool: "2001:db8:300:ffff::/64"
     isis_sr_ipv4_node_sid_base: 300
     isis_sr_ipv6_node_sid_base: 1300
     isis_system_id_prefix: '0000.0000'
@@ -73,7 +73,7 @@ pe:
     virtual_router_mac_address: 00:1c:73:00:dc:00
     platform: 7280SR3
     loopback_ipv4_pool: 100.70.0.0/24
-    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+    loopback_ipv6_pool: "2001:db8:200:ffff::/64"
     is_type: level-1-2
     isis_sr_ipv4_node_sid_base: 200
     isis_sr_ipv6_node_sid_base: 1200
@@ -128,7 +128,7 @@ rr:
   defaults:
     platform: 7280SR3
     loopback_ipv4_pool: 100.70.0.0/24
-    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+    loopback_ipv6_pool: "2001:db8:100:ffff::/64"
     is_type: level-1-2
     isis_sr_ipv4_node_sid_base: 100
     isis_sr_ipv6_node_sid_base: 1100
@@ -161,6 +161,7 @@ core_interfaces:
   p2p_links_ip_pools:
     - name: underlay_pool
       ipv4_pool: 100.64.48.0/24
+      ipv6_pool: 2001:db8:0:fffe::/64
     - name: underlay_pool_custom_mask
       ipv4_pool: 100.64.49.0/24
       prefix_size: 30

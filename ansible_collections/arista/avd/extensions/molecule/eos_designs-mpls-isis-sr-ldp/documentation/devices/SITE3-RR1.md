@@ -138,7 +138,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | VRF | IPv6 Addresses |
 | --------- | ----------- | --- | -------------- |
-| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::c/128 |
+| Loopback0 | ROUTER_ID | default | 2001:db8:100:ffff::c/128 |
 
 ##### ISIS
 
@@ -154,7 +154,7 @@ interface Loopback0
    description ROUTER_ID
    no shutdown
    ip address 100.70.0.12/32
-   ipv6 address 2000:1234:ffff:ffff::c/128
+   ipv6 address 2001:db8:100:ffff::c/128
    mpls ldp interface
    node-segment ipv4 index 112
    node-segment ipv6 index 1112

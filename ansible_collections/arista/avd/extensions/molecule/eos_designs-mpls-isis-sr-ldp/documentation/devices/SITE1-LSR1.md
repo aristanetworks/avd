@@ -145,9 +145,9 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Ethernet1 | P2P_SITE1-LER1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - | - | - | - |
-| Ethernet3 | P2P_SITE2-LSR1_Ethernet3 | - | - | default | 9178 | False | - | - | - | - | - | - | - |
-| Ethernet4 | P2P_SITE1-RR1_Ethernet4 | - | - | default | 9178 | False | - | - | - | - | - | - | - |
+| Ethernet1 | P2P_SITE1-LER1_Ethernet1 | - | 2001:db8:0:fffe::1/127 | default | 9178 | False | - | - | - | - | - | - | - |
+| Ethernet3 | P2P_SITE2-LSR1_Ethernet3 | - | 2001:db8:0:fffe::8/127 | default | 9178 | False | - | - | - | - | - | - | - |
+| Ethernet4 | P2P_SITE1-RR1_Ethernet4 | - | 2001:db8:0:fffe::6/127 | default | 9178 | False | - | - | - | - | - | - | - |
 
 ##### ISIS
 
@@ -169,6 +169,7 @@ interface Ethernet1
    no switchport
    ip address 100.64.48.1/31
    ipv6 enable
+   ipv6 address 2001:db8:0:fffe::1/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -190,6 +191,7 @@ interface Ethernet3
    no switchport
    ip address 100.64.48.8/31
    ipv6 enable
+   ipv6 address 2001:db8:0:fffe::8/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -211,6 +213,7 @@ interface Ethernet4
    no switchport
    ip address 100.64.48.6/31
    ipv6 enable
+   ipv6 address 2001:db8:0:fffe::6/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -239,7 +242,7 @@ interface Ethernet4
 
 | Interface | Description | VRF | IPv6 Addresses |
 | --------- | ----------- | --- | -------------- |
-| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::1/128 |
+| Loopback0 | ROUTER_ID | default | 2001:db8:300:ffff::1/128 |
 
 ##### ISIS
 
@@ -255,7 +258,7 @@ interface Loopback0
    description ROUTER_ID
    no shutdown
    ip address 100.70.0.1/32
-   ipv6 address 2000:1234:ffff:ffff::1/128
+   ipv6 address 2001:db8:300:ffff::1/128
    mpls ldp interface
    node-segment ipv4 index 301
    node-segment ipv6 index 1301
