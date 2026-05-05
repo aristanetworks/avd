@@ -1,3 +1,4 @@
+---
 nodes:
 - digital-twin-adjust-oob-mgmt-1:
     node_type: veos
