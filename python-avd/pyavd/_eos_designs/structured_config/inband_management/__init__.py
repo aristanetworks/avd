@@ -31,7 +31,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
 
         if self.shared_utils.inband_management_parent_vlans:
             self._set_ip_virtual_router_mac_address()
-            self.structured_config_utils.set_inband_mgmt_vrf()
+            self.set_inband_mgmt_vrf()
             for index, (vlan_id, vlan) in enumerate(self.shared_utils.inband_management_parent_vlans.items(), start=1):
                 self._set_parent_vlan(vlan_id)
                 self._set_parent_vlan_interface(vlan, vlan_id)
