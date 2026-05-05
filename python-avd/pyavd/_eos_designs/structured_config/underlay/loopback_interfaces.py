@@ -97,11 +97,7 @@ class LoopbackInterfacesMixin(Protocol):
         self.structured_config.loopback_interfaces.extend(self.shared_utils.underlay_multicast_rp_interfaces)
 
     def get_isis_sr_ipv4_node_sid(self: AvdStructuredConfigUnderlayProtocol) -> int:
-        """
-        Calculate ISIS-SR Node SID for IPv4 by adding ID to a base number.
-
-        TODO: Add safeguards in case of invalid value after the addition.
-        """
+        """Calculate ISIS-SR Node SID for IPv4 by adding ID to a base number."""
         if self.shared_utils.id is None:
             msg = f"'id' is not set on '{self.shared_utils.hostname}' and is required to set node SID"
             raise AristaAvdInvalidInputsError(msg)
@@ -110,11 +106,7 @@ class LoopbackInterfacesMixin(Protocol):
         return self.shared_utils.id + base
 
     def get_isis_sr_ipv6_node_sid(self: AvdStructuredConfigUnderlayProtocol) -> int:
-        """
-        Calculate ISIS-SR Node SID for IPv6 by adding ID to a base number.
-
-        TODO: Add safeguards in case of invalid value after the addition.
-        """
+        """Calculate ISIS-SR Node SID for IPv6 by adding ID to a base number."""
         if self.shared_utils.id is None:
             msg = f"'id' is not set on '{self.shared_utils.hostname}' and is required to set node SID"
             raise AristaAvdInvalidInputsError(msg)
