@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.auto_certificate.profiles.[].name") | String | Required, Unique |  |  | Name of the certificate profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digest</samp>](## "management_security.auto_certificate.profiles.[].digest") | String |  |  | Valid Values:<br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "management_security.auto_certificate.profiles.[].key") | String |  |  |  | Filename of the private key in the switch `sslkey:` directory. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol_name</samp>](## "management_security.auto_certificate.profiles.[].protocol_name") | String |  |  |  | EST protocol profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol_instance_name</samp>](## "management_security.auto_certificate.profiles.[].protocol_instance_name") | String |  |  |  | EST protocol profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;renewal</samp>](## "management_security.auto_certificate.profiles.[].renewal") | Integer |  |  | Min: 1<br>Max: 4294967295 | Renewal time in seconds. EOS default is 7200 seconds (2 hours). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameters</samp>](## "management_security.auto_certificate.profiles.[].parameters") | Dictionary |  |  |  | Parameters of the distinguished name and subject alternative name for the CSR. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distinguished_name</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name") | Dictionary |  |  |  |  |
@@ -144,7 +144,7 @@
             key: <str>
 
             # EST protocol profile name.
-            protocol_name: <str>
+            protocol_instance_name: <str>
 
             # Renewal time in seconds. EOS default is 7200 seconds (2 hours).
             renewal: <int; 1-4294967295>

@@ -1923,10 +1923,10 @@ address locking
 
 | Field | Value |
 | ----- | ----- |
-| DNS | avd.arista.com, avd2.arista.com |
+| DNS | avd.arista.com, bbb.arista.com |
 | Email | noreply@arista.com, support@arista.com |
 | IP | 198.51.100.42, 198.51.100.43 |
-| URI | https://avd.arista.com/, https://avd2.arista.com/ |
+| URI | https://avd.arista.com/, https://bbb.arista.com/ |
 
 #### Auto-Certificate Profile AVD_AUTO_CERTIFICATE_PROFILE_system Parameters
 
@@ -1948,6 +1948,7 @@ address locking
 | Profile | Protocol | Disabled | Server URL | SSL Profile Name | VRF | Retry Count | Retry Interval (seconds) | Exponential Backoff |
 | ------- | -------- | -------- | ---------- | ---------------- | --- | ----------- | ------------------------ | ------------------- |
 | AVD_EST_PROTOCOL_both | EST | True | https://test_est.example.com/test2 | SSL_PROFILE | MGMT | 100 | 30 | False |
+| AVD_EST_PROTOCOL_non_user | EST | - | - | - | - | - | - | - |
 | AVD_EST_PROTOCOL_secret | EST | - | https://test_est.example.com/test1 | SSL_PROFILE | - | 100 | - | - |
 | AVD_EST_PROTOCOL_token | EST | - | https://test_est.example.com/test | SSL_PROFILE | MGMT | 100 | 30 | True |
 
@@ -1956,6 +1957,11 @@ address locking
 | Operation | Method | Username | Encoding |
 | --------- | ------ | -------- | -------- |
 | Enroll | Token | - | 0 |
+
+#### Auto-Certificate Protocol AVD_EST_PROTOCOL_non_user Credentials
+
+| Operation | Method | Username | Encoding |
+| --------- | ------ | -------- | -------- |
 
 #### Auto-Certificate Protocol AVD_EST_PROTOCOL_secret Credentials
 
@@ -2053,9 +2059,9 @@ management security
       parameters distinguished-name email noreply@arista.com
       parameters distinguished-name serial-number "123abc"
       parameters subject-alternative-name ip 198.51.100.42 198.51.100.43
-      parameters subject-alternative-name dns avd.arista.com avd2.arista.com
+      parameters subject-alternative-name dns avd.arista.com bbb.arista.com
       parameters subject-alternative-name email noreply@arista.com support@arista.com
-      parameters subject-alternative-name uri https://avd.arista.com/ https://avd2.arista.com/
+      parameters subject-alternative-name uri https://avd.arista.com/ https://bbb.arista.com/
       protocol instance AVD_EST_PROTOCOL_token
       digest sha512
    !
@@ -2080,6 +2086,10 @@ management security
       connection retry count 100
       disabled
       credentials enroll token 0 <removed>
+   !
+   auto-certificate protocol est AVD_EST_PROTOCOL_non_user
+      credentials enroll secret 7 <removed>
+      credentials re-enroll secret 0 <removed>
    !
    auto-certificate protocol est AVD_EST_PROTOCOL_secret
       server url https://test_est.example.com/test1

@@ -23845,7 +23845,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "name": {"type": str},
                     "digest": {"type": str},
                     "key": {"type": str},
-                    "protocol_name": {"type": str},
+                    "protocol_instance_name": {"type": str},
                     "renewal": {"type": int},
                     "parameters": {"type": Parameters},
                 }
@@ -23855,7 +23855,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset."""
                 key: str | None
                 """Filename of the private key in the switch `sslkey:` directory."""
-                protocol_name: str | None
+                protocol_instance_name: str | None
                 """EST protocol profile name."""
                 renewal: int | None
                 """Renewal time in seconds. EOS default is 7200 seconds (2 hours)."""
@@ -23875,7 +23875,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: str | UndefinedType = Undefined,
                         digest: Digest | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
-                        protocol_name: str | None | UndefinedType = Undefined,
+                        protocol_instance_name: str | None | UndefinedType = Undefined,
                         renewal: int | None | UndefinedType = Undefined,
                         parameters: Parameters | UndefinedType = Undefined,
                     ) -> None:
@@ -23889,7 +23889,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             name: Name of the certificate profile.
                             digest: Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset.
                             key: Filename of the private key in the switch `sslkey:` directory.
-                            protocol_name: EST protocol profile name.
+                            protocol_instance_name: EST protocol profile name.
                             renewal: Renewal time in seconds. EOS default is 7200 seconds (2 hours).
                             parameters:
                                Parameters of the distinguished name and subject alternative name for the CSR.

@@ -29,7 +29,7 @@ keys:
                 key:
                   type: str
                   description: Filename of the private key in the switch `sslkey:` directory.
-                protocol_name:
+                protocol_instance_name:
                   type: str
                   description: EST protocol profile name.
                 renewal:

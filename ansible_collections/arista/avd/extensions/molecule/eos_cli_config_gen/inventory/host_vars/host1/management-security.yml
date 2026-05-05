@@ -6,7 +6,7 @@ management_security:
       - name: AVD_AUTO_CERTIFICATE_PROFILE
         digest: sha512
         key: SSL_KEY
-        protocol_name: AVD_EST_PROTOCOL_token
+        protocol_instance_name: AVD_EST_PROTOCOL_token
         parameters:
           distinguished_name:
             common_name: 00:1c:73:ff:ff:ff
@@ -19,20 +19,20 @@ management_security:
             state: CA
           subject_alternative_name:
             dns:
+              - bbb.arista.com
               - avd.arista.com
-              - avd2.arista.com
             email:
-              - noreply@arista.com
               - support@arista.com
+              - noreply@arista.com
             ip:
-              - 198.51.100.42
               - 198.51.100.43
+              - 198.51.100.42
             uri:
+              - https://bbb.arista.com/
               - https://avd.arista.com/
-              - https://avd2.arista.com/
       - name: AVD_AUTO_CERTIFICATE_PROFILE_system
         key: SSL_KEY
-        protocol_name: AVD_EST_PROTOCOL_secret
+        protocol_instance_name: AVD_EST_PROTOCOL_secret
         renewal: 86400
         parameters:
           distinguished_name:
@@ -62,6 +62,15 @@ management_security:
           re_enroll:
             # token_type defaults to "7"
             token: 03175E08140A35735D0C1A171206341F012939213C
+      - name: AVD_EST_PROTOCOL_non_user
+        protocol: est
+        credentials:
+          enroll:
+            secret: 00171605165E1F
+            secret_type: "7"
+          re_enroll:
+            secret: 00171605165E1F
+            secret_type: "0"
       - name: AVD_EST_PROTOCOL_secret
         protocol: est
         server:
