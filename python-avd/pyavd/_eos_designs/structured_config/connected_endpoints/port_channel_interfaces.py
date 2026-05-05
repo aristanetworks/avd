@@ -188,10 +188,6 @@ class PortChannelInterfacesMixin(Protocol):
             port_channel_interface.mac_access_group_out = adapter.mac_acl_out
             self._set_mac_acl(adapter.mac_acl_out)
 
-        port_channel_interface.metadata._update(
-            validate_state=False if adapter.validate_state is False else None,
-            validate_lldp=adapter.validate_lldp,
-        )
         port_channel_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             port_channel_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
         )
