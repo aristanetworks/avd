@@ -6,7 +6,8 @@ dev = [
     "anta==1.8.0",
     "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.4",
+    # TODO: Do not merge this change, this is for testing this PR only. We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
+    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils@main",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     # dev requirements"

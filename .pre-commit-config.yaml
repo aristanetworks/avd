@@ -134,7 +134,9 @@ repos:
           - 'anta==1.8.0'
           - 'deepmerge>=1.1.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.4'
+          # TODO: Do not merge this change, this is for testing this PR only.
+          # We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
+          - 'pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils@main'
           - 'pydantic>=2.3.0'
           - 'pytest>=8.2.0'
           - 'pyyaml>=6.0.0'
@@ -280,7 +282,9 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.4', 'deepmerge>=1.1.0']
+        # TODO: Do not merge this change, this is for testing this PR only.
+        # We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils@main', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -288,7 +292,9 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.4', 'deepmerge>=1.1.0']
+        # TODO: Do not merge this change, this is for testing this PR only.
+        # We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils@main', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.22.1

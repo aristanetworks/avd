@@ -28,7 +28,8 @@ dependencies = [
     # we patch the connection code in grpclib to get proxy support, so we need to carefully monitor and test new versions
     "grpclib>=0.4.8",
     "jinja2>=3.0",
-    "pyavd-utils==0.0.4",
+    # TODO: Do not merge this change, this is for testing this PR only. We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
+    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils@main",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",
@@ -54,7 +55,8 @@ requires = [
     "deepmerge>=1.1.0",
     "jinja2>=3.0",
     "jsonschema-rs>=0.24",
-    "pyavd-utils==0.0.4",
+    # TODO: Do not merge this change, this is for testing this PR only. We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
+    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils@main",
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
