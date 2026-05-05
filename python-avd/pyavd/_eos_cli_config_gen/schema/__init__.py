@@ -23850,6 +23850,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "parameters": {"type": Parameters},
                 }
                 name: str
+                """Name of the certificate profile."""
                 digest: Digest | None
                 """Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset."""
                 key: str | None
@@ -23857,7 +23858,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 protocol_name: str | None
                 """EST protocol profile name."""
                 renewal: int | None
-                """Renewal time in seconds."""
+                """Renewal time in seconds. EOS default is 7200 seconds (2 hours)."""
                 parameters: Parameters
                 """
                 Parameters of the distinguished name and subject alternative name for the CSR.
@@ -23885,11 +23886,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: name
+                            name: Name of the certificate profile.
                             digest: Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset.
                             key: Filename of the private key in the switch `sslkey:` directory.
                             protocol_name: EST protocol profile name.
-                            renewal: Renewal time in seconds.
+                            renewal: Renewal time in seconds. EOS default is 7200 seconds (2 hours).
                             parameters:
                                Parameters of the distinguished name and subject alternative name for the CSR.
 
@@ -23910,57 +23911,36 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Protocol: TypeAlias = Literal["est"]
 
-                class Connection(AvdModel):
+                class ConnectionRetry(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class Retry(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"count": {"type": int}, "interval": {"type": int}, "exponential_backoff": {"type": bool}}
-                        count: int | None
-                        """Number of retries to attempt before giving up, if not configured the number of retries is infinite."""
-                        interval: int | None
-                        """Number of seconds between retries."""
-                        exponential_backoff: bool | None
-                        """Exponentially increase the interval between retries to a maximum of 24 hours."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                count: int | None | UndefinedType = Undefined,
-                                interval: int | None | UndefinedType = Undefined,
-                                exponential_backoff: bool | None | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                Retry.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    count: Number of retries to attempt before giving up, if not configured the number of retries is infinite.
-                                    interval: Number of seconds between retries.
-                                    exponential_backoff: Exponentially increase the interval between retries to a maximum of 24 hours.
-
-                                """
-
-                    _fields: ClassVar[dict] = {"retry": {"type": Retry}}
-                    retry: Retry
-                    """Subclass of AvdModel."""
+                    _fields: ClassVar[dict] = {"count": {"type": int}, "interval": {"type": int}, "exponential_backoff": {"type": bool}}
+                    count: int | None
+                    """Number of retries to attempt before giving up, if not configured the number of retries is infinite."""
+                    interval: int | None
+                    """Number of seconds between retries."""
+                    exponential_backoff: bool | None
+                    """Exponentially increase the interval between retries to a maximum of 24 hours."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, retry: Retry | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            count: int | None | UndefinedType = Undefined,
+                            interval: int | None | UndefinedType = Undefined,
+                            exponential_backoff: bool | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
-                            Connection.
+                            ConnectionRetry.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                retry: Subclass of AvdModel.
+                                count: Number of retries to attempt before giving up, if not configured the number of retries is infinite.
+                                interval: Number of seconds between retries.
+                                exponential_backoff: Exponentially increase the interval between retries to a maximum of 24 hours.
 
                             """
 
@@ -23980,6 +23960,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "secret_type": {"type": str, "default": "7"},
                         }
                         token: str | None
+                        """JSON Web Token for Bearer Authentication."""
                         token_type: TokenType
                         """
                         Encoding type of the token:
@@ -23990,7 +23971,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Default value: `"7"`
                         """
                         username: str | None
+                        """Username for HTTP Basic Authentication."""
                         secret: str | None
+                        """Password for HTTP Basic Authentication."""
                         secret_type: SecretType
                         """
                         Encoding type of the token:
@@ -24019,14 +24002,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    token: token
+                                    token: JSON Web Token for Bearer Authentication.
                                     token_type:
                                        Encoding type of the token:
                                        "0" = cleartext,
                                        "7" = obfuscated,
                                        "8a" = AES-256-GCM encrypted.
-                                    username: username
-                                    secret: secret
+                                    username: Username for HTTP Basic Authentication.
+                                    secret: Password for HTTP Basic Authentication.
                                     secret_type:
                                        Encoding type of the token:
                                        "0" = cleartext,
@@ -24048,6 +24031,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "secret_type": {"type": str, "default": "7"},
                         }
                         token: str | None
+                        """JSON Web Token for Bearer Authentication."""
                         token_type: TokenType
                         """
                         Encoding type of the token:
@@ -24058,7 +24042,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Default value: `"7"`
                         """
                         username: str | None
+                        """Username for HTTP Basic Authentication."""
                         secret: str | None
+                        """Password for HTTP Basic Authentication."""
                         secret_type: SecretType
                         """
                         Encoding type of the token:
@@ -24087,14 +24073,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    token: token
+                                    token: JSON Web Token for Bearer Authentication.
                                     token_type:
                                        Encoding type of the token:
                                        "0" = cleartext,
                                        "7" = obfuscated,
                                        "8a" = AES-256-GCM encrypted.
-                                    username: username
-                                    secret: secret
+                                    username: Username for HTTP Basic Authentication.
+                                    secret: Password for HTTP Basic Authentication.
                                     secret_type:
                                        Encoding type of the token:
                                        "0" = cleartext,
@@ -24192,16 +24178,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "name": {"type": str},
                     "protocol": {"type": str},
                     "disabled": {"type": bool},
-                    "connection": {"type": Connection},
+                    "connection_retry": {"type": ConnectionRetry},
                     "credentials": {"type": Credentials},
                     "server": {"type": Server},
                 }
                 name: str
+                """Name of the EST profile."""
                 protocol: Protocol
                 """Protocol to use to communicate with endpoint; only EST is supported currently."""
                 disabled: bool | None
                 """Temporarily disable sending requests to the server."""
-                connection: Connection
+                connection_retry: ConnectionRetry
                 """Subclass of AvdModel."""
                 credentials: Credentials
                 """Subclass of AvdModel."""
@@ -24216,7 +24203,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: str | UndefinedType = Undefined,
                         protocol: Protocol | UndefinedType = Undefined,
                         disabled: bool | None | UndefinedType = Undefined,
-                        connection: Connection | UndefinedType = Undefined,
+                        connection_retry: ConnectionRetry | UndefinedType = Undefined,
                         credentials: Credentials | UndefinedType = Undefined,
                         server: Server | UndefinedType = Undefined,
                     ) -> None:
@@ -24227,10 +24214,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: name
+                            name: Name of the EST profile.
                             protocol: Protocol to use to communicate with endpoint; only EST is supported currently.
                             disabled: Temporarily disable sending requests to the server.
-                            connection: Subclass of AvdModel.
+                            connection_retry: Subclass of AvdModel.
                             credentials: Subclass of AvdModel.
                             server: Subclass of AvdModel.
 

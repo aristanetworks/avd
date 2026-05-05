@@ -10,11 +10,11 @@
     | [<samp>management_security</samp>](## "management_security") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;auto_certificate</samp>](## "management_security.auto_certificate") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profiles</samp>](## "management_security.auto_certificate.profiles") | List, items: Dictionary |  |  |  | Profiles for automatic certificate enrollment and renewal. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.auto_certificate.profiles.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.auto_certificate.profiles.[].name") | String | Required, Unique |  |  | Name of the certificate profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digest</samp>](## "management_security.auto_certificate.profiles.[].digest") | String |  |  | Valid Values:<br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "management_security.auto_certificate.profiles.[].key") | String |  |  |  | Filename of the private key in the switch `sslkey:` directory. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol_name</samp>](## "management_security.auto_certificate.profiles.[].protocol_name") | String |  |  |  | EST protocol profile name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;renewal</samp>](## "management_security.auto_certificate.profiles.[].renewal") | Integer |  |  | Min: 1<br>Max: 4294967295 | Renewal time in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;renewal</samp>](## "management_security.auto_certificate.profiles.[].renewal") | Integer |  |  | Min: 1<br>Max: 4294967295 | Renewal time in seconds. EOS default is 7200 seconds (2 hours). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameters</samp>](## "management_security.auto_certificate.profiles.[].parameters") | Dictionary |  |  |  | Parameters of the distinguished name and subject alternative name for the CSR. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distinguished_name</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;common_name</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.common_name") | String |  |  |  |  |
@@ -35,26 +35,25 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uri</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.uri") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.uri.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "management_security.auto_certificate.protocols") | List, items: Dictionary |  |  |  | Protocols for automatic certificate enrollment and renewal. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.auto_certificate.protocols.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.auto_certificate.protocols.[].name") | String | Required, Unique |  |  | Name of the EST profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "management_security.auto_certificate.protocols.[].protocol") | String | Required |  | Valid Values:<br>- <code>est</code> | Protocol to use to communicate with endpoint; only EST is supported currently. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "management_security.auto_certificate.protocols.[].disabled") | Boolean |  |  |  | Temporarily disable sending requests to the server. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection</samp>](## "management_security.auto_certificate.protocols.[].connection") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retry</samp>](## "management_security.auto_certificate.protocols.[].connection.retry") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "management_security.auto_certificate.protocols.[].connection.retry.count") | Integer |  |  | Min: 0<br>Max: 4294967295 | Number of retries to attempt before giving up, if not configured the number of retries is infinite. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "management_security.auto_certificate.protocols.[].connection.retry.interval") | Integer |  |  | Min: 1<br>Max: 4294967295 | Number of seconds between retries. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exponential_backoff</samp>](## "management_security.auto_certificate.protocols.[].connection.retry.exponential_backoff") | Boolean |  |  |  | Exponentially increase the interval between retries to a maximum of 24 hours. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection_retry</samp>](## "management_security.auto_certificate.protocols.[].connection_retry") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "management_security.auto_certificate.protocols.[].connection_retry.count") | Integer |  |  | Min: 0<br>Max: 4294967295 | Number of retries to attempt before giving up, if not configured the number of retries is infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "management_security.auto_certificate.protocols.[].connection_retry.interval") | Integer |  |  | Min: 1<br>Max: 4294967295 | Number of seconds between retries. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exponential_backoff</samp>](## "management_security.auto_certificate.protocols.[].connection_retry.exponential_backoff") | Boolean |  |  |  | Exponentially increase the interval between retries to a maximum of 24 hours. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;credentials</samp>](## "management_security.auto_certificate.protocols.[].credentials") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enroll</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll") | Dictionary |  |  |  | Token or username/secret for initial certificate enrollment.<br>If both token and username/secret are defined, token will take precedence.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.token") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.token") | String |  |  |  | JSON Web Token for Bearer Authentication. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.token_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.username") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.secret") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.username") | String |  |  |  | Username for HTTP Basic Authentication. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.secret") | String |  |  |  | Password for HTTP Basic Authentication. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_enroll</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll") | Dictionary |  |  |  | Token or username/secret for certificate re-enrollment.<br>If both token and username/secret are defined, token will take precedence.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.token") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.token") | String |  |  |  | JSON Web Token for Bearer Authentication. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.token_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.username") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.secret") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.username") | String |  |  |  | Username for HTTP Basic Authentication. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.secret") | String |  |  |  | Password for HTTP Basic Authentication. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server</samp>](## "management_security.auto_certificate.protocols.[].server") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "management_security.auto_certificate.protocols.[].server.ssl_profile") | String |  |  |  | SSL profile name. |
@@ -134,6 +133,8 @@
 
         # Profiles for automatic certificate enrollment and renewal.
         profiles:
+
+            # Name of the certificate profile.
           - name: <str; required; unique>
 
             # Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset.
@@ -145,7 +146,7 @@
             # EST protocol profile name.
             protocol_name: <str>
 
-            # Renewal time in seconds.
+            # Renewal time in seconds. EOS default is 7200 seconds (2 hours).
             renewal: <int; 1-4294967295>
 
             # Parameters of the distinguished name and subject alternative name for the CSR.
@@ -182,6 +183,8 @@
 
         # Protocols for automatic certificate enrollment and renewal.
         protocols:
+
+            # Name of the EST profile.
           - name: <str; required; unique>
 
             # Protocol to use to communicate with endpoint; only EST is supported currently.
@@ -189,22 +192,23 @@
 
             # Temporarily disable sending requests to the server.
             disabled: <bool>
-            connection:
-              retry:
+            connection_retry:
 
-                # Number of retries to attempt before giving up, if not configured the number of retries is infinite.
-                count: <int; 0-4294967295>
+              # Number of retries to attempt before giving up, if not configured the number of retries is infinite.
+              count: <int; 0-4294967295>
 
-                # Number of seconds between retries.
-                interval: <int; 1-4294967295>
+              # Number of seconds between retries.
+              interval: <int; 1-4294967295>
 
-                # Exponentially increase the interval between retries to a maximum of 24 hours.
-                exponential_backoff: <bool>
+              # Exponentially increase the interval between retries to a maximum of 24 hours.
+              exponential_backoff: <bool>
             credentials:
 
               # Token or username/secret for initial certificate enrollment.
               # If both token and username/secret are defined, token will take precedence.
               enroll:
+
+                # JSON Web Token for Bearer Authentication.
                 token: <str>
 
                 # Encoding type of the token:
@@ -212,7 +216,11 @@
                 # "7" = obfuscated,
                 # "8a" = AES-256-GCM encrypted.
                 token_type: <str; "0" | "7" | "8a"; default="7">
+
+                # Username for HTTP Basic Authentication.
                 username: <str>
+
+                # Password for HTTP Basic Authentication.
                 secret: <str>
 
                 # Encoding type of the token:
@@ -224,6 +232,8 @@
               # Token or username/secret for certificate re-enrollment.
               # If both token and username/secret are defined, token will take precedence.
               re_enroll:
+
+                # JSON Web Token for Bearer Authentication.
                 token: <str>
 
                 # Encoding type of the token:
@@ -231,7 +241,11 @@
                 # "7" = obfuscated,
                 # "8a" = AES-256-GCM encrypted.
                 token_type: <str; "0" | "7" | "8a"; default="7">
+
+                # Username for HTTP Basic Authentication.
                 username: <str>
+
+                # Password for HTTP Basic Authentication.
                 secret: <str>
 
                 # Encoding type of the token:

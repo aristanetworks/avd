@@ -74,15 +74,15 @@ management security
 {%         if auto_certificate_protocol.server.vrf is arista.avd.defined %}
       server vrf {{ auto_certificate_protocol.server.vrf }}
 {%         endif %}
-{%         if auto_certificate_protocol.connection.retry.interval is arista.avd.defined %}
-{%             set conn_retry_interval = "connection retry interval " ~ auto_certificate_protocol.connection.retry.interval ~ " seconds" %}
-{%             if auto_certificate_protocol.connection.retry.exponential_backoff is arista.avd.defined(true) %}
+{%         if auto_certificate_protocol.connection_retry.interval is arista.avd.defined %}
+{%             set conn_retry_interval = "connection retry interval " ~ auto_certificate_protocol.connection_retry.interval ~ " seconds" %}
+{%             if auto_certificate_protocol.connection_retry.exponential_backoff is arista.avd.defined(true) %}
 {%                 set conn_retry_interval = conn_retry_interval ~ " backoff exponential" %}
 {%             endif %}
       {{ conn_retry_interval }}
 {%         endif %}
-{%         if auto_certificate_protocol.connection.retry.count is arista.avd.defined %}
-      connection retry count {{ auto_certificate_protocol.connection.retry.count }}
+{%         if auto_certificate_protocol.connection_retry.count is arista.avd.defined %}
+      connection retry count {{ auto_certificate_protocol.connection_retry.count }}
 {%         endif %}
 {%         if auto_certificate_protocol.disabled is arista.avd.defined(true) %}
       disabled

@@ -9102,6 +9102,7 @@ keys:
               keys:
                 name:
                   type: str
+                  description: Name of the certificate profile.
                 digest:
                   type: str
                   description: Digest algorithm used to sign the Certificate Signing
@@ -9118,7 +9119,8 @@ keys:
                   type: str
                   description: EST protocol profile name.
                 renewal:
-                  description: Renewal time in seconds.
+                  description: Renewal time in seconds. EOS default is 7200 seconds
+                    (2 hours).
                   type: int
                   min: 1
                   max: 4294967295
@@ -9196,6 +9198,7 @@ keys:
               keys:
                 name:
                   type: str
+                  description: Name of the EST profile.
                 protocol:
                   type: str
                   valid_values:
@@ -9206,31 +9209,28 @@ keys:
                 disabled:
                   type: bool
                   description: Temporarily disable sending requests to the server.
-                connection:
+                connection_retry:
                   type: dict
                   keys:
-                    retry:
-                      type: dict
-                      keys:
-                        count:
-                          type: int
-                          convert_types:
-                          - str
-                          min: 0
-                          max: 4294967295
-                          description: Number of retries to attempt before giving
-                            up, if not configured the number of retries is infinite.
-                        interval:
-                          type: int
-                          convert_types:
-                          - str
-                          min: 1
-                          max: 4294967295
-                          description: Number of seconds between retries.
-                        exponential_backoff:
-                          type: bool
-                          description: Exponentially increase the interval between
-                            retries to a maximum of 24 hours.
+                    count:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 4294967295
+                      description: Number of retries to attempt before giving up,
+                        if not configured the number of retries is infinite.
+                    interval:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 4294967295
+                      description: Number of seconds between retries.
+                    exponential_backoff:
+                      type: bool
+                      description: Exponentially increase the interval between retries
+                        to a maximum of 24 hours.
                 credentials:
                   type: dict
                   keys:
@@ -9246,6 +9246,7 @@ keys:
                       keys:
                         token:
                           type: str
+                          description: JSON Web Token for Bearer Authentication.
                         token_type:
                           type: str
                           convert_types:
@@ -9264,8 +9265,10 @@ keys:
                             "8a" = AES-256-GCM encrypted.'
                         username:
                           type: str
+                          description: Username for HTTP Basic Authentication.
                         secret:
                           type: str
+                          description: Password for HTTP Basic Authentication.
                         secret_type:
                           type: str
                           convert_types:
@@ -9293,6 +9296,7 @@ keys:
                       keys:
                         token:
                           type: str
+                          description: JSON Web Token for Bearer Authentication.
                         token_type:
                           type: str
                           convert_types:
@@ -9311,8 +9315,10 @@ keys:
                             "8a" = AES-256-GCM encrypted.'
                         username:
                           type: str
+                          description: Username for HTTP Basic Authentication.
                         secret:
                           type: str
+                          description: Password for HTTP Basic Authentication.
                         secret_type:
                           type: str
                           convert_types:

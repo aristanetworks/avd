@@ -47,11 +47,10 @@ management_security:
     protocols:
       - name: AVD_EST_PROTOCOL_token
         protocol: est
-        connection:
-          retry:
-            interval: 30
-            exponential_backoff: true
-            count: 100
+        connection_retry:
+          interval: 30
+          exponential_backoff: true
+          count: 100
         server:
           url: https://test_est.example.com/test
           vrf: MGMT
@@ -68,9 +67,8 @@ management_security:
         server:
           url: https://test_est.example.com/test1
           ssl_profile: SSL_PROFILE
-        connection:
-          retry:
-            count: 100
+        connection_retry:
+          count: 100
         credentials:
           enroll:
             username: est_authentication
@@ -83,11 +81,10 @@ management_security:
       - name: AVD_EST_PROTOCOL_both
         protocol: est
         disabled: true
-        connection:
-          retry:
-            interval: 30
-            exponential_backoff: false
-            count: 100
+        connection_retry:
+          interval: 30
+          exponential_backoff: false
+          count: 100
         server:
           url: https://test_est.example.com/test2
           vrf: MGMT
