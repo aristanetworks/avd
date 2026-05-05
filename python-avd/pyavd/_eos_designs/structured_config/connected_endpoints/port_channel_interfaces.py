@@ -173,6 +173,11 @@ class PortChannelInterfacesMixin(Protocol):
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.Ptp),
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
             eos_cli=adapter.port_channel.raw_eos_cli,
+            metadata=EosCliConfigGen.PortChannelInterfacesItem.Metadata(
+                # TODO: Make logic conditional once functionality allows to include (some) connected endpoints into the ACT topology definition file
+                validate_state=self.structured_config_utils.get_interface_validate_state(adapter.validate_state),
+                validate_lldp=adapter.validate_lldp,
+            ),
         )
 
         if adapter.mac_acl_in is not None:
@@ -187,7 +192,7 @@ class PortChannelInterfacesMixin(Protocol):
             validate_state=False if adapter.validate_state is False else None,
             validate_lldp=adapter.validate_lldp,
         )
-        port_channel_interface.sflow.enable = self.shared_utils.get_interface_sflow(
+        port_channel_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             port_channel_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
         )
 
@@ -274,7 +279,7 @@ class PortChannelInterfacesMixin(Protocol):
             short_esi := self._get_short_esi(
                 adapter,
                 channel_group_id,
-                port_channel_subif_short_esi=subinterface.short_esi,
+                subif_short_esi=subinterface.short_esi,
                 hash_extra_value=str(subinterface.number),
             )
         ) is not None:

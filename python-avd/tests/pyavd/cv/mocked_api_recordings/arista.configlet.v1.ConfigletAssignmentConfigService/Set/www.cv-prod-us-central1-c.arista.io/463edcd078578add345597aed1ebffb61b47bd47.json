@@ -1,0 +1,17 @@
+{
+    "payload": {
+        "value": {
+            "key": {
+                "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                "configletAssignmentId": "new-avd-configlets"
+            },
+            "displayName": "AVD Configurations",
+            "description": "Configurations created and uploaded by AVD",
+            "configletIds": {},
+            "query": "device:*",
+            "matchPolicy": "MATCH_ALL",
+            "childAssignmentIds": {}
+        },
+        "time": "2026-04-22T05:12:42.753745770"
+    }
+}

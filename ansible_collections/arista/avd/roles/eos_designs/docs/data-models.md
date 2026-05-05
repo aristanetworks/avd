@@ -848,6 +848,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-acls.md
 --8<--
 
+### IPv6 extended ACLs Catalog
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv6-acls.md
+--8<--
+
 ## MAC ACL settings
 
 --8<--
@@ -1082,6 +1088,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/load-interval.md
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/latency-analyzer.md
+--8<--
+
+### Monitor Connectivity
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/monitor-connectivity.md
 --8<--
 
 ## System settings

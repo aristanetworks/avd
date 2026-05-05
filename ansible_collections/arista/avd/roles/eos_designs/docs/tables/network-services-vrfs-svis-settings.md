@@ -49,6 +49,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IPv4 DHCP server IP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server. |
@@ -109,6 +111,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_virtual_router_addresses.[]") | String |  |  |  | IPv6_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv4_acl_in") | String |  |  |  | Name of the IPv4 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv4_acl_out") | String |  |  |  | Name of the IPv4 Access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_in</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_acl_in") | String |  |  |  | Name of the IPv6 access-list to be assigned in the ingress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl_out</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_acl_out") | String |  |  |  | Name of the IPv6 access-list to be assigned in the egress direction.<br>The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IPv4 DHCP server IP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name to originate DHCP relay packets to DHCP server. |
@@ -299,6 +303,14 @@
                     # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                     ipv4_acl_out: <str>
 
+                    # Name of the IPv6 access-list to be assigned in the ingress direction.
+                    # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                    ipv6_acl_in: <str>
+
+                    # Name of the IPv6 access-list to be assigned in the egress direction.
+                    # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                    ipv6_acl_out: <str>
+
                     # IP helper for DHCP relay.
                     ip_helpers:
 
@@ -476,6 +488,14 @@
                 # Name of the IPv4 Access-list to be assigned in the egress direction.
                 # The access-list must be defined under `ipv4_acls` and supports substitution of the field "interface_ip".
                 ipv4_acl_out: <str>
+
+                # Name of the IPv6 access-list to be assigned in the ingress direction.
+                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                ipv6_acl_in: <str>
+
+                # Name of the IPv6 access-list to be assigned in the egress direction.
+                # The access-list must be defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                ipv6_acl_out: <str>
 
                 # IP helper for DHCP relay.
                 ip_helpers:
