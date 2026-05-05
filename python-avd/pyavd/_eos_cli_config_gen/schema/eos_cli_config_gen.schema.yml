@@ -18301,6 +18301,8 @@ keys:
                 default_originate:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
                     always:
                       type: bool
                       description: Always advertise a default route to this peer.
@@ -18345,6 +18347,17 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                default_originate:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    always:
+                      type: bool
+                      description: Always advertise a default route to this peer.
+                    route_map:
+                      type: str
+                      description: Route-map name.
                 additional_paths:
                   type: dict
                   $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
