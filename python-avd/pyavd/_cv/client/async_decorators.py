@@ -269,6 +269,15 @@ class GRPCRequestHandler:
                                     new_exception.size = int(matches.group("size"))
                                     raise new_exception
 
+                            case Status.UNKNOWN:
+                                # Check if www is missing in CVaaS FQDN
+                                cv_servers = getattr(call_args[0], "_servers", []) if call_args else []
+                                first_cv_server = cv_servers[0] if cv_servers else ""
+                                if first_cv_server.endswith("arista.io") and not first_cv_server.startswith("www."):
+                                    msg = f"CVaaS FQDN '{first_cv_server}' is missing the required 'www.' prefix. Please use 'www.{first_cv_server}' instead."
+                                    raise CVClientException(msg)
+                                raise CVGRPCError(*e.args, call_args, call_kwargs)
+
                             case _:
                                 # All other gRPC errors are converted to CVGRPCError
                                 raise CVGRPCError(*e.args, call_args, call_kwargs)
