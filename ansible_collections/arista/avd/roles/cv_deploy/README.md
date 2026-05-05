@@ -70,7 +70,7 @@ This feature is still under development, so several planned features are not imp
 - Add required CloudVision versions once the APIs are generally available.
 - Update AVD examples.
 - Handle multinode clusters by trying connecting to each one by one.
-- Native `eos_designs` support for `cv_static_config_manifest` and the per-device `cv_use_static_config_manifest` knob (currently in preview).
+- Native `eos_designs` support to build a custom Static Configuration Studio layout.
 
 ## Example
 
@@ -259,6 +259,40 @@ cv_register_detailed_results: false
 # Time to wait for a Workspace to build. Depending on the scale this can be adjusted.
 cv_workspace_build_timeout: 300
 
+# Deploy a custom hierarchy of containers and configlets to the Static Configuration Studio.
+# See the "Static Configuration Studio" section below for more details.
+# cv_static_config_manifest:
+#
+#   # Policy for managing configlets in the Configlet Library.
+#   # - "managed" (default): Delete manifest-managed configlets not declared in this manifest and not assigned to any container.
+#   #   Configlets not managed by the manifest are preserved.
+#   # - "additive": Only create or update declared configlets. All existing configlets are preserved.
+#   configlet_policy: <str, default="managed", choices=["managed", "additive"]>
+#
+#   # A list of dictionaries defining configlets to be created in the Configlet Library.
+#   # Configlet names must be unique across all defined configlets.
+#   configlets:
+#     - name: <str>
+#       file: <str>
+#
+#   # A list of dictionaries defining the root containers in the Static Configuration hierarchy.
+#   # Container names must be unique among sibling containers (at the same level).
+#   containers:
+#     - name: <str>
+#       description: <str, optional>
+#       tag_query: <str>
+#       match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#       configlets:
+#         - name: <str>
+#       sub_containers:
+#         - name: <str>
+#           description: <str, optional>
+#           tag_query: <str>
+#           match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#           configlets:
+#             - name: <str>
+#           sub_containers: <list of containers>
+
 # Raise an error (instead of a warning) if two or more targeted devices share the same `system_mac_address`
 # but have unique `serial_number` values. See the warning below for full duplicate-detection behavior.
 cv_strict_system_mac_address: false
@@ -349,33 +383,17 @@ ansible_collections/arista/avd/roles/cv_deploy/defaults/main/directories.yml
 --8<--
 ```
 
-## Device metadata
-
-`cv_deploy` can read optional per-device metadata that CloudVision uses for identification, tagging, and feature integration.
-
-### AVD users
-
-When using the standard AVD workflow (`eos_designs` → `eos_cli_config_gen` → `cv_deploy`), this metadata is populated by `eos_designs` under the `metadata` key of each device structured configuration. No additional configuration is required.
-
-### Non-AVD users
-
-For users *not* using `eos_designs` in their workflow, the `cv_deploy` role can be used independently by providing this metadata directly as Ansible variables.
-
-To use Ansible variables instead of structured configuration files, set the following role variable:
+By default `cv_deploy` reads per-device variables from structured configuration files in `structured_dir`. To read them from Ansible host variables instead (see [Per-device variables](#per-device-variables) → [Non-AVD users](#non-avd-users)):
 
 ```yaml
-read_structured_config_from_file: false
+# Read structured configuration from files in `structured_dir` (default directory also used by the `eos_designs` role).
+# If set to false, `cv_deploy` will read structured configuration from hostvars.
+read_structured_config_from_file: true
 ```
 
-The following variables can then be set per device:
+#### Input validation
 
---8<--
-schemas/cv_deploy/docs/tables/cv_deploy.md
---8<--
-
-### Input validation
-
-The role automatically validates the metadata inputs (whether sourced from structured configuration files or Ansible variables) before deploying anything. Any validation errors will block further processing. During this process, temporary files are created to store templated and validated data.
+The role automatically validates the [per-device variables](#per-device-variables) (whether sourced from structured configuration files or Ansible variables) before deploying anything. Any validation errors will block further processing. During this process, temporary files are created to store templated and validated data.
 
 The following role variables can be used to tweak the validation behavior if needed:
 
@@ -397,6 +415,24 @@ cv_deploy_keep_tmp_files: false
 cv_deploy_validate_inputs_batch_size: 10
 ```
 
+## Per-device variables
+
+`cv_deploy` can read optional per-device variables used for CloudVision identification, tagging, and feature integration.
+
+### AVD users
+
+When using the standard AVD workflow (`eos_designs` → `eos_cli_config_gen` → `cv_deploy`), these variables are populated by `eos_designs` under the `metadata` key of each device structured configuration. No additional configuration is required.
+
+### Non-AVD users
+
+For users *not* using `eos_designs` in their workflow, the `cv_deploy` role can be used independently by providing these variables directly as Ansible variables. Set [`read_structured_config_from_file`](#role-default-input-directories) to `false` so the role reads structured configuration from Ansible host variables instead of files.
+
+The following variables can then be set per device:
+
+--8<--
+schemas/cv_deploy/docs/tables/cv_deploy.md
+--8<--
+
 ## Static Configuration Studio
 
 `cv_deploy` deploys device configurations to the CloudVision **Static Configuration Studio**.
@@ -416,59 +452,25 @@ AVD Configurations              (root container)
 
 ### Custom layout
 
-If you want to build your own hierarchy of containers and configlets, use the `cv_static_config_manifest` role variable.
+!!! warning "Preview"
+    `cv_use_static_config_manifest` is a **preview** setting. The data model and behavior may change in a future release.
 
-To deploy configuration via the manifest for a device, you must opt in by setting the `cv_use_static_config_manifest: true` device metadata knob. See the [example for AVD users](#example-for-avd-users) or the [example for non-AVD users](#example-for-non-avd-users) below for how this knob and the manifest fit together. Devices that do not opt in will continue to use the flat layout. When a device is opted in, any leftover flat-layout configlet or container is cleaned up automatically. Onboarding and tag deployment are unaffected by the knob.
+If you want to build your own hierarchy of containers and configlets, use the `cv_static_config_manifest` role variable. See the [Role behavior configuration](#role-behavior-configuration) section above for the full schema.
+
+To deploy configuration via the manifest for a device, you must opt in by setting the `cv_use_static_config_manifest: true` device metadata variable. See the [example for AVD users](#example-for-avd-users) or the [example for non-AVD users](#example-for-non-avd-users) below for how this variable and the manifest fit together. Devices that do not opt in will continue to use the flat layout. When a device is opted in, any leftover flat-layout configlet or container is cleaned up automatically. Onboarding and tag deployment are unaffected by this variable.
 
 For each opted-in device, you are responsible for ensuring the manifest defines a configlet and a container assigning it.
-
-```yaml
-cv_static_config_manifest:
-
-  # Policy for managing configlets in the Configlet Library.
-  # - "managed" (default): Delete manifest-managed configlets not declared in this manifest and not assigned to any container.
-  #   Configlets not managed by the manifest are preserved.
-  # - "additive": Only create or update declared configlets. All existing configlets are preserved.
-  configlet_policy: <str, default="managed", choices=["managed", "additive"]>
-
-  # A list of dictionaries defining configlets to be created in the Configlet Library.
-  # Configlet names must be unique across all defined configlets.
-  configlets:
-    - name: <str>
-      file: <str>
-
-  # A list of dictionaries defining the root containers in the Static Configuration hierarchy.
-  # Container names must be unique among sibling containers (at the same level).
-  containers:
-    - name: <str>
-      description: <str, optional>
-      tag_query: <str>
-      match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
-      configlets:
-        - name: <str>
-      sub_containers:
-        - name: <str>
-          description: <str, optional>
-          tag_query: <str>
-          match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
-          configlets:
-            - name: <str>
-          sub_containers: <list of containers>
-```
 
 !!! note "Root Containers Order"
     When initially deploying or adding new root containers, the role places its managed root containers to the top of the Studio container tree. Please be aware that this automated ordering **may displace any containers you have manually arranged**.
 
-!!! note "Per-device tag queries and `serial_number`"
-    The examples below use `device:<serial>` tag queries to assign per-device configlets, which requires `serial_number` to be set on each opted-in device. Native runtime substitution of the serial number is planned. Until then, the serial must be provided manually (as shown below). The device hostname can also be used in tag queries (`device:<hostname>`), but this is not recommended.
-
 #### Example for AVD users
 
-`eos_cli_config_gen` generates one configuration file per device in `eos_config_dir` (`intended/configs` by default). The example below adds those configurations into a custom hierarchy organized by fabric, DC, and device role:
+`eos_cli_config_gen` generates one configuration file per device in `eos_config_dir` (`intended/configs` by default). The example below puts those configurations into a custom hierarchy organized by fabric, DC, and POD.
 
 ```yaml title="group_vars/FABRIC.yml"
+# Custom hierarchy of containers and configlets.
 cv_static_config_manifest:
-  # Configlets generated by AVD in `eos_config_dir` (one entry per device).
   configlets:
     - name: AVD-spine1
       file: "{{ eos_config_dir }}/spine1.cfg"
@@ -486,55 +488,36 @@ cv_static_config_manifest:
               tag_query: "POD:POD1"
               sub_containers:
                 - name: DC1-POD1-SPINE1
-                  tag_query: "device:SPINE1_SERIAL_NUMBER"
+                  tag_query: "device:SN12345"
                   configlets:
                     - name: AVD-spine1
                 - name: DC1-POD1-LEAF1
-                  tag_query: "device:LEAF1_SERIAL_NUMBER"
+                  tag_query: "device:SN67890"
                   configlets:
                     - name: AVD-leaf1
-```
 
-The `DC` and `POD` tags used in the manifest's `tag_query` need to be deployed by AVD. The [`generate_cv_tags`](../eos_designs/docs/how-to/cloudvision-tags.md) data model of AVD Design can deploy them as device tags from the `dc_name` and `pod_name` AVD Design inputs:
-
-```yaml title="group_vars/FABRIC.yml (continued)"
+# Deploy DC and POD device tags from the dc_name and pod_name AVD Design inputs.
 generate_cv_tags:
   device_tags:
     - name: DC
-      value: "{{ dc_name }}"
+      data_path: metadata.dc_name
     - name: POD
-      value: "{{ pod_name }}"
-```
+      data_path: metadata.pod_name
 
-```yaml title="group_vars/DC1.yml"
-dc_name: DC1
-```
-
-```yaml title="group_vars/DC1_POD1.yml"
-pod_name: POD1
-```
-
-Additionally, each opted-in device needs a `serial_number` (matched by the per-device `device:<serial>` tag query in the manifest above). The `cv_use_static_config_manifest` knob is set via `custom_structured_configuration_metadata` until `eos_designs` adds native support:
-
-```yaml title="host_vars/spine1.yml"
+# Opt devices into the manifest (workaround until eos_designs adds native support).
 custom_structured_configuration_metadata:
   cv_use_static_config_manifest: true
-
-serial_number: SPINE1_SERIAL_NUMBER
-```
-
-```yaml title="host_vars/leaf1.yml"
-custom_structured_configuration_metadata:
-  cv_use_static_config_manifest: true
-
-serial_number: LEAF1_SERIAL_NUMBER
 ```
 
 #### Example for non-AVD users
 
-The same approach applies when using `cv_deploy` directly with the [Non-AVD users](#non-avd-users) inputs. The example below uses the same hierarchy as above but additionally illustrates how to layer shared configlets at multiple levels of the hierarchy.
+The same approach applies when using `cv_deploy` directly with the [Non-AVD users](#non-avd-users) inputs. The example below uses the same hierarchy as above but additionally illustrates how to layer shared configlets at multiple levels of the hierarchy:
 
 ```yaml title="group_vars/FABRIC.yml"
+# Use cv_deploy schema inputs (Ansible variables) instead of generated structured configuration files.
+read_structured_config_from_file: false
+
+# Custom hierarchy with shared, POD-level, and per-device configlets.
 cv_static_config_manifest:
   configlets:
     # Shared configlets
@@ -566,45 +549,23 @@ cv_static_config_manifest:
                 - name: POD1-MULTICAST
               sub_containers:
                 - name: DC1-POD1-SPINE1
-                  tag_query: "device:SPINE1_SERIAL_NUMBER"
+                  tag_query: "device:SN12345"
                   configlets:
                     - name: SPINE1
                 - name: DC1-POD1-LEAF1
-                  tag_query: "device:LEAF1_SERIAL_NUMBER"
+                  tag_query: "device:SN67890"
                   configlets:
                     - name: LEAF1
-```
 
-In this example, every device inherits `COMMON-NTP` and `COMMON-DNS` from the `FABRIC` container, every device in POD1 additionally inherits `POD1-MULTICAST` from the `DC1-POD1` sub-container, and each device gets its own per-device configlet.
-
-Each device needs a `serial_number` (matched by the device-level container's `tag_query`), the `DC` and `POD` device tags (matched by the higher-level containers), and the opt-in knob:
-
-```yaml title="host_vars/spine1.yml"
+# Set the DC and POD device tags used by the manifest's tag queries (same for every device in this example).
 cv_device_tags:
   - name: DC
     value: DC1
   - name: POD
     value: POD1
+
+# Opt devices into the manifest.
 cv_use_static_config_manifest: true
-
-serial_number: SPINE1_SERIAL_NUMBER
-```
-
-```yaml title="host_vars/leaf1.yml"
-cv_device_tags:
-  - name: DC
-    value: DC1
-  - name: POD
-    value: POD1
-cv_use_static_config_manifest: true
-
-serial_number: LEAF1_SERIAL_NUMBER
-```
-
-Finally, tell `cv_deploy` to read its inputs from the Ansible variables above instead of from generated structured configuration files:
-
-```yaml title="group_vars/FABRIC.yml (continued)"
-read_structured_config_from_file: false
 ```
 
 ### Manifest-only deployment
