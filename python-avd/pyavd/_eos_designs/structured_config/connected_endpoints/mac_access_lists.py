@@ -35,7 +35,7 @@ class MacAccessListsMixin(Protocol):
             if acl_entry.remark:
                 action += f"remark {acl_entry.remark}"
             elif acl_entry.action:
-                if not acl_entry.source: 
+                if not acl_entry.source:
                     msg = f"mac_acls[name={acl_name}].entries[{index}].source"
                     raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
@@ -65,7 +65,7 @@ class MacAccessListsMixin(Protocol):
                     raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                 action += acl_entry.action
-                action = action + " " + acl_entry.source # pyright: ignore[reportOperatorIssue]
+                action = action + " " + acl_entry.source  # pyright: ignore[reportOperatorIssue]
                 if acl_entry.source_wildcard:
                     action = action + " " + acl_entry.source_wildcard
 
