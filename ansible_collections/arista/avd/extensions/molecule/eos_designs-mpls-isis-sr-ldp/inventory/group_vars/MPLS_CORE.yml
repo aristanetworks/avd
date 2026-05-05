@@ -47,7 +47,8 @@ p:
     platform: 7280SR
     loopback_ipv4_pool: 100.70.0.0/24
     loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
-    node_sid_base: 300
+    isis_sr_ipv4_node_sid_base: 300
+    isis_sr_ipv6_node_sid_base: 1300
     isis_system_id_prefix: '0000.0000'
     raw_eos_cli: |
       management security
@@ -74,7 +75,8 @@ pe:
     loopback_ipv4_pool: 100.70.0.0/24
     loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
     is_type: level-1-2
-    node_sid_base: 200
+    isis_sr_ipv4_node_sid_base: 200
+    isis_sr_ipv6_node_sid_base: 1200
     isis_system_id_prefix: '0000.0001'
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
@@ -128,7 +130,8 @@ rr:
     loopback_ipv4_pool: 100.70.0.0/24
     loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
     is_type: level-1-2
-    node_sid_base: 100
+    isis_sr_ipv4_node_sid_base: 100
+    isis_sr_ipv6_node_sid_base: 1100
     isis_system_id_prefix: '0000.0002'
     overlay_address_families: [evpn, vpn-ipv4, vpn-ipv6]
     mpls_route_reflectors: [SITE1-RR1, SITE2-RR1]

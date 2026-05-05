@@ -517,7 +517,7 @@ interface Loopback0
    ipv6 address 2000:1234:ffff:ffff::5/128
    mpls ldp interface
    node-segment ipv4 index 205
-   node-segment ipv6 index 205
+   node-segment ipv6 index 1205
    isis enable CORE
    isis passive
 ```
@@ -686,7 +686,7 @@ router ospf 19 vrf TENANT_B_INTRA
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 205 | 205 |
+| Loopback0 | 205 | 1205 |
 
 #### ISIS IPv4 Address Family Summary
 

@@ -258,7 +258,7 @@ interface Loopback0
    ipv6 address 2000:1234:ffff:ffff::1/128
    mpls ldp interface
    node-segment ipv4 index 301
-   node-segment ipv6 index 301
+   node-segment ipv6 index 1301
    isis enable CORE
    isis passive
 ```
@@ -356,7 +356,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 301 | 301 |
+| Loopback0 | 301 | 1301 |
 
 #### ISIS IPv4 Address Family Summary
 

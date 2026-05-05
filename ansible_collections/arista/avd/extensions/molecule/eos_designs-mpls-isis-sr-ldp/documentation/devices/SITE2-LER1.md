@@ -509,7 +509,7 @@ interface Loopback0
    ipv6 address 2000:1234:ffff:ffff::7/128
    mpls ldp interface
    node-segment ipv4 index 207
-   node-segment ipv6 index 207
+   node-segment ipv6 index 1207
    isis enable CORE
    isis passive
 ```
@@ -682,7 +682,7 @@ router ospf 99 vrf TENANT_B_WAN
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 207 | 207 |
+| Loopback0 | 207 | 1207 |
 
 #### ISIS IPv4 Address Family Summary
 

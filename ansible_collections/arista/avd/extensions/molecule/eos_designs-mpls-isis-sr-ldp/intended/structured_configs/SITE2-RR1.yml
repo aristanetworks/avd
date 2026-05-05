@@ -53,7 +53,7 @@ loopback_interfaces:
   isis_passive: true
   node_segment:
     ipv4_index: 109
-    ipv6_index: 109
+    ipv6_index: 1109
 management_api_http:
   enable_https: true
   enable_vrfs:

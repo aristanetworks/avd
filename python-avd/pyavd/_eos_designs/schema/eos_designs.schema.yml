@@ -11230,12 +11230,34 @@ $defs:
           node_sid_base:
             documentation_options:
               table: node-type-isis-configuration
-            description: Node-SID base for isis-sr underlay variants. Combined with
-              node id to generate ISIS-SR node-SID.
+            description: IPv4 Node-SID base for ISIS-SR underlay variants. Combined
+              with node ID to generate ISIS-SR node-SID.
             type: int
             convert_types:
             - str
             default: 0
+            deprecation:
+              warning: true
+              new_key: isis_sr_ipv4_node_sid_base
+              remove_in_version: 7.0.0
+          isis_sr_ipv4_node_sid_base:
+            documentation_options:
+              table: node-type-isis-configuration
+            description: IPv4 Node-SID base for ISIS-SR underlay variants. Combined
+              with node ID to generate ISIS-SR node-SID.
+            type: int
+            convert_types:
+            - str
+            default: 0
+          isis_sr_ipv6_node_sid_base:
+            documentation_options:
+              table: node-type-isis-configuration
+            description: IPv6 Node-SID base for ISIS-SR underlay variants with IPv6.
+              Combined with node ID to generate ISIS-SR node-SID.
+            type: int
+            convert_types:
+            - str
+            default: 1000
           loopback_ipv4_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
