@@ -53,6 +53,8 @@ Serial Number: DEADBEEFC0FFEW
   - [Address Locking Device Configuration](#address-locking-device-configuration)
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
+  - [Management Security Auto-Certificate Profiles](#management-security-auto-certificate-profiles)
+  - [Management Security Auto-Certificate Protocols](#management-security-auto-certificate-protocols)
   - [Management Security SSL Profiles](#management-security-ssl-profiles)
   - [SSL profile test1-chain-cert Certificates Summary](#ssl-profile-test1-chain-cert-certificates-summary)
   - [SSL profile test1-trust-cert Certificates Summary](#ssl-profile-test1-trust-cert-certificates-summary)
@@ -1895,6 +1897,86 @@ address locking
 | Signature verification | Enabled |
 | Signature verification SSL profile | cipher-v1.0-v1.3 |
 
+### Management Security Auto-Certificate Profiles
+
+| Profile | Key | EST Protocol Profile | Digest | Renewal (seconds) |
+| ------- | --- | -------------------- | ------ | ----------------- |
+| AVD_AUTO_CERTIFICATE_PROFILE | SSL_KEY | AVD_EST_PROTOCOL_token | sha512 | - |
+| AVD_AUTO_CERTIFICATE_PROFILE_system | SSL_KEY | AVD_EST_PROTOCOL_secret | - | 86400 |
+
+#### Auto-Certificate Profile AVD_AUTO_CERTIFICATE_PROFILE Parameters
+
+##### Distinguished Name
+
+| Field | Value |
+| ----- | ----- |
+| Common Name | 00:1c:73:ff:ff:ff |
+| Country | US |
+| Email | noreply@arista.com |
+| Locality | Santa Clara |
+| Organization | Arista Networks |
+| Organization Unit | AVD |
+| Serial Number | 123abc |
+| State | CA |
+
+##### Subject Alternative Name
+
+| Field | Value |
+| ----- | ----- |
+| DNS | avd.arista.com, bbb.arista.com |
+| Email | noreply@arista.com, support@arista.com |
+| IP | 198.51.100.42, 198.51.100.43 |
+| URI | https://avd.arista.com/, https://bbb.arista.com/ |
+
+#### Auto-Certificate Profile AVD_AUTO_CERTIFICATE_PROFILE_system Parameters
+
+##### Distinguished Name
+
+| Field | Value |
+| ----- | ----- |
+| Common Name | 00:1c:73:aa:aa:aa |
+| Country | US |
+| Email | noreply@arista.com |
+| Locality | Santa Clara |
+| Organization | Arista Networks |
+| Organization Unit | AVD |
+| Serial Number | system |
+| State | CA |
+
+### Management Security Auto-Certificate Protocols
+
+| Profile | Protocol | Disabled | Server URL | SSL Profile Name | VRF | Retry Count | Retry Interval (seconds) | Exponential Backoff |
+| ------- | -------- | -------- | ---------- | ---------------- | --- | ----------- | ------------------------ | ------------------- |
+| AVD_EST_PROTOCOL_both | EST | True | https://test_est.example.com/test2 | SSL_PROFILE | MGMT | 100 | 30 | False |
+| AVD_EST_PROTOCOL_non_user | EST | - | - | - | - | - | - | - |
+| AVD_EST_PROTOCOL_secret | EST | - | https://test_est.example.com/test1 | SSL_PROFILE | - | 100 | - | - |
+| AVD_EST_PROTOCOL_token | EST | - | https://test_est.example.com/test | SSL_PROFILE | MGMT | 100 | 30 | True |
+
+#### Auto-Certificate Protocol AVD_EST_PROTOCOL_both Credentials
+
+| Operation | Method | Username | Encoding |
+| --------- | ------ | -------- | -------- |
+| Enroll | Token | - | 0 |
+
+#### Auto-Certificate Protocol AVD_EST_PROTOCOL_non_user Credentials
+
+| Operation | Method | Username | Encoding |
+| --------- | ------ | -------- | -------- |
+
+#### Auto-Certificate Protocol AVD_EST_PROTOCOL_secret Credentials
+
+| Operation | Method | Username | Encoding |
+| --------- | ------ | -------- | -------- |
+| Enroll | Username/Secret | est_authentication | 7 |
+| Re-Enroll | Username/Secret | est_authentication | 0 |
+
+#### Auto-Certificate Protocol AVD_EST_PROTOCOL_token Credentials
+
+| Operation | Method | Username | Encoding |
+| --------- | ------ | -------- | -------- |
+| Enroll | Token | - | 7 |
+| Re-Enroll | Token | - | 7 |
+
 ### Management Security SSL Profiles
 
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Ciphers | CRLs | FIPS restrictions enabled |
@@ -1966,6 +2048,65 @@ address locking
 ```eos
 !
 management security
+   auto-certificate profile AVD_AUTO_CERTIFICATE_PROFILE
+      key SSL_KEY
+      parameters distinguished-name common-name "00:1c:73:ff:ff:ff"
+      parameters distinguished-name country US
+      parameters distinguished-name state "CA"
+      parameters distinguished-name locality "Santa Clara"
+      parameters distinguished-name organization "Arista Networks"
+      parameters distinguished-name organization-unit "AVD"
+      parameters distinguished-name email noreply@arista.com
+      parameters distinguished-name serial-number "123abc"
+      parameters subject-alternative-name ip 198.51.100.42 198.51.100.43
+      parameters subject-alternative-name dns avd.arista.com bbb.arista.com
+      parameters subject-alternative-name email noreply@arista.com support@arista.com
+      parameters subject-alternative-name uri https://avd.arista.com/ https://bbb.arista.com/
+      protocol instance AVD_EST_PROTOCOL_token
+      digest sha512
+   !
+   auto-certificate profile AVD_AUTO_CERTIFICATE_PROFILE_system
+      key SSL_KEY
+      parameters distinguished-name common-name "00:1c:73:aa:aa:aa"
+      parameters distinguished-name country US
+      parameters distinguished-name state "CA"
+      parameters distinguished-name locality "Santa Clara"
+      parameters distinguished-name organization "Arista Networks"
+      parameters distinguished-name organization-unit "AVD"
+      parameters distinguished-name email noreply@arista.com
+      parameters distinguished-name serial-number system
+      protocol instance AVD_EST_PROTOCOL_secret
+      renewal 86400 seconds
+   !
+   auto-certificate protocol est AVD_EST_PROTOCOL_both
+      server url https://test_est.example.com/test2
+      server ssl profile SSL_PROFILE
+      server vrf MGMT
+      connection retry interval 30 seconds
+      connection retry count 100
+      disabled
+      credentials enroll token 0 <removed>
+   !
+   auto-certificate protocol est AVD_EST_PROTOCOL_non_user
+      credentials enroll secret 7 <removed>
+      credentials re-enroll secret 0 <removed>
+   !
+   auto-certificate protocol est AVD_EST_PROTOCOL_secret
+      server url https://test_est.example.com/test1
+      server ssl profile SSL_PROFILE
+      connection retry count 100
+      credentials enroll username est_authentication secret 7 <removed>
+      credentials re-enroll username est_authentication secret 0 <removed>
+   !
+   auto-certificate protocol est AVD_EST_PROTOCOL_token
+      server url https://test_est.example.com/test
+      server ssl profile SSL_PROFILE
+      server vrf MGMT
+      connection retry interval 30 seconds backoff exponential
+      connection retry count 100
+      credentials enroll token 7 <removed>
+      credentials re-enroll token 7 <removed>
+   !
    entropy source hardware haveged cpu jitter
    entropy source hardware exclusive
    password minimum length 17
@@ -10247,6 +10388,12 @@ router bgp 65101
       neighbor baz default-originate route-map RM-FOO always
       neighbor baz additional-paths send ecmp limit 20
       no neighbor FOOBAR activate
+      neighbor FOOBAR1 activate
+      neighbor FOOBAR1 default-originate
+      neighbor FOOBAR2 activate
+      neighbor FOOBAR2 default-originate route-map RM-FOO
+      neighbor FOOBAR3 activate
+      neighbor FOOBAR3 default-originate always
       neighbor IPV6-UNDERLAY activate
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH in
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH out
@@ -10263,15 +10410,19 @@ router bgp 65101
       neighbor 2001:db8::1 route-map Address_Family_IPV6_Out out
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-IN in
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-OUT out
+      neighbor 2001:db8::1 default-originate route-map RM-FOO-MATCH3 always
       neighbor 2001:db8::1 additional-paths send ecmp limit 20
       neighbor 2001:db8::1 peer-tag in PEER_TAG_IN_IPV6
       neighbor 2001:db8::1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6
       neighbor 2001:db8::2 activate
       neighbor 2001:db8::2 rcf in Address_Family_IPV6_In()
       neighbor 2001:db8::2 rcf out Address_Family_IPV6_Out()
+      neighbor 2001:db8::2 default-originate always
       neighbor 2001:db8::2 additional-paths send any
       no neighbor 2001:db8::21 activate
+      neighbor 2001:db8::21 default-originate
       no neighbor 2001:db8::21 additional-paths send
+      neighbor 2001:db8::22 default-originate route-map RM-FOO-MATCH3
       neighbor 2001:db8::22 additional-paths send limit 5
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
