@@ -29338,9 +29338,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
                 base: int
-                """First label of the SRGB range."""
+                """First label of range."""
                 size: int
-                """Size of the SRGB range."""
+                """Size of range."""
 
                 if TYPE_CHECKING:
 
@@ -29352,8 +29352,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            base: First label of the SRGB range.
-                            size: Size of the SRGB range.
+                            base: First label of range.
+                            size: Size of range.
 
                         """
 
@@ -29362,9 +29362,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
                 base: int
-                """First label of the dynamic range."""
+                """First label of range."""
                 size: int
-                """Number of labels to reserve."""
+                """Size of range."""
 
                 if TYPE_CHECKING:
 
@@ -29376,8 +29376,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            base: First label of the dynamic range.
-                            size: Number of labels to reserve.
+                            base: First label of range.
+                            size: Size of range.
 
                         """
 
@@ -29385,23 +29385,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ospf_sr: OspfSr
             """
             Label range for OSPF Segment Routing Global Block (SRGB).
-            Renders 'mpls label range ospf-sr <base>
-            <size>'.
             Requires EOS 4.31.1F or later.
 
-
-            Subclass of AvdModel.
+            Subclass
+            of AvdModel.
             """
             dynamic: Dynamic
             """
             Label range for dynamic labels (e.g. adjacency segments).
-            Renders 'mpls label range dynamic <base>
-            <size>'.
-            Must not overlap with the static label range (default static range is 16-1023).
+            Must not overlap with the static label
+            range (default static range is 16-1023).
 
-
-            Subclass
-            of AvdModel.
+            Subclass of AvdModel.
             """
 
             if TYPE_CHECKING:
@@ -29416,21 +29411,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         ospf_sr:
                            Label range for OSPF Segment Routing Global Block (SRGB).
-                           Renders 'mpls label range ospf-sr <base>
-                           <size>'.
                            Requires EOS 4.31.1F or later.
-
-
-                           Subclass of AvdModel.
-                        dynamic:
-                           Label range for dynamic labels (e.g. adjacency segments).
-                           Renders 'mpls label range dynamic <base>
-                           <size>'.
-                           Must not overlap with the static label range (default static range is 16-1023).
-
 
                            Subclass
                            of AvdModel.
+                        dynamic:
+                           Label range for dynamic labels (e.g. adjacency segments).
+                           Must not overlap with the static label
+                           range (default static range is 16-1023).
+
+                           Subclass of AvdModel.
 
                     """
 
