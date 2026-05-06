@@ -109,7 +109,7 @@ http://user1:pass1@proxy-server.local:8081
 
     When setting proxy credentials via environment variables, make sure to quote all special symbols (like `:`, `@`, etc. ) otherwise such proxy URI string will be invalid.
 
-Examples below show invalid values of `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` environment variables which will be ignored by `cv_deploy`:
+Examples below show invalid values of `https_proxy`/`HTTPS_PROXY`/`all_proxy`/`ALL_PROXY` environment variables:
 
 ```code
 # Assuming 10.10.10.10 and proxy-server.local being examples of the proxy servers

@@ -315,10 +315,7 @@ class CVProxyManager:
             # Try accessing proxy port attribute to catch any issues with its value
             _ = self._parsed_env_var_proxy_content.port
         except Exception as e:
-            msg = (
-                f"AVD faced an exception trying to extract proxy server settings from string '{self._env_var_proxy_content}' learned using environment"
-                f" variable '{self._env_var_proxy_name}'"
-            )
+            msg = f"AVD faced an exception trying to extract proxy server settings from environment variable '{self._env_var_proxy_name}'"
             raise AristaAvdInvalidInputsError(msg) from e
 
     def _proxy_candidate_is_valid(
