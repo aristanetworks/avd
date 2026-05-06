@@ -533,16 +533,16 @@ interface Loopback12
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Vlan21 | VRF11 | - | 2001:DB8:21::1/48 | - | - | - | - | - | - | - | - |
-| Vlan31 | VRF12 | - | 2001:DB8:31::1/48 | - | - | - | - | - | - | - | - |
-| Vlan32 | VRF12 | - | 2001:DB8:32::1/48 | - | - | - | - | - | - | - | - |
-| Vlan3009 | VRF10 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan3010 | VRF11 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan3011 | VRF12 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan4093 | default | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - |
-| Vlan4094 | default | 2001:db8:3:2::1/64 | - | - | - | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA Dns Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Vlan21 | VRF11 | - | 2001:DB8:21::1/48 | - | - | - | - | - | - | - | - | - |
+| Vlan31 | VRF12 | - | 2001:DB8:31::1/48 | - | - | - | - | - | - | - | - | - |
+| Vlan32 | VRF12 | - | 2001:DB8:32::1/48 | - | - | - | - | - | - | - | - | - |
+| Vlan3009 | VRF10 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan3010 | VRF11 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan3011 | VRF12 | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan4093 | default | 2001:db8:4:2::1/64 | - | - | - | - | - | - | - | - | - | - |
+| Vlan4094 | default | 2001:db8:3:2::1/64 | - | - | - | - | - | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
