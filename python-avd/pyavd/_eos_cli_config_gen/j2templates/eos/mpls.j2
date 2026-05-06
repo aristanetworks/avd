@@ -41,12 +41,30 @@ mpls icmp fragmentation-needed tunneling
 mpls icmp ttl-exceeded tunneling
 {%     endif %}
 {% endif %}
-{% if mpls.label_ranges.dynamic is arista.avd.defined and mpls.label_ranges.ospf_sr is arista.avd.defined %}
+{% if mpls.label_ranges is arista.avd.defined %}
 !
+{%     if mpls.label_ranges.bgp_sr is arista.avd.defined %}
+mpls label range bgp-sr {{ mpls.label_ranges.bgp_sr.base }} {{ mpls.label_ranges.bgp_sr.size }}
+{%     endif %}
 {%     if mpls.label_ranges.dynamic is arista.avd.defined %}
 mpls label range dynamic {{ mpls.label_ranges.dynamic.base }} {{ mpls.label_ranges.dynamic.size }}
 {%     endif %}
+{%     if mpls.label_ranges.isis_sr is arista.avd.defined %}
+mpls label range isis-sr {{ mpls.label_ranges.isis_sr.base }} {{ mpls.label_ranges.isis_sr.size }}
+{%     endif %}
+{%     if mpls.label_ranges.l2evpn is arista.avd.defined %}
+mpls label range l2evpn {{ mpls.label_ranges.l2evpn.base }} {{ mpls.label_ranges.l2evpn.size }}
+{%     endif %}
+{%     if mpls.label_ranges.l2evpn_ethernet_segment is arista.avd.defined %}
+mpls label range l2evpn ethernet-segment {{ mpls.label_ranges.l2evpn_ethernet_segment.base }} {{ mpls.label_ranges.l2evpn_ethernet_segment.size }}
+{%     endif %}
 {%     if mpls.label_ranges.ospf_sr is arista.avd.defined %}
 mpls label range ospf-sr {{ mpls.label_ranges.ospf_sr.base }} {{ mpls.label_ranges.ospf_sr.size }}
+{%     endif %}
+{%     if mpls.label_ranges.srlb is arista.avd.defined %}
+mpls label range srlb {{ mpls.label_ranges.srlb.base }} {{ mpls.label_ranges.srlb.size }}
+{%     endif %}
+{%     if mpls.label_ranges.static is arista.avd.defined %}
+mpls label range static {{ mpls.label_ranges.static.base }} {{ mpls.label_ranges.static.size }}
 {%     endif %}
 {% endif %}

@@ -10943,8 +10943,14 @@ monitor loop-protection
 | LDP Router ID | 192.168.1.1 |
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
-| OSPF-SR Label Range (SRGB) | Base: 900000, Size: 1000 |
+| BGP-SR Label Range | Base: 900000, Size: 65536 |
 | Dynamic Label Range | Base: 16000, Size: 131072 |
+| IS-IS SR Label Range | Base: 900000, Size: 65536 |
+| L2 EVPN Label Range | Base: 1036288, Size: 12288 |
+| L2 EVPN Ethernet Segment Label Range | Base: 1031072, Size: 1024 |
+| OSPF-SR Label Range | Base: 900000, Size: 1000 |
+| SRLB Label Range | Base: 965536, Size: 65536 |
+| Static Label Range | Base: 16, Size: 1 |
 | ICMP Fragmentation-Needed Tunneling Enabled | True |
 | Tunnel Termination Model | TTL: uniform, DSCP: uniform |
 | Tunnel Termination PHP Model | TTL: pipe, DSCP: pipe |
@@ -11024,8 +11030,14 @@ mpls ldp
 !
 mpls icmp fragmentation-needed tunneling
 !
+mpls label range bgp-sr 900000 65536
 mpls label range dynamic 16000 131072
+mpls label range isis-sr 900000 65536
+mpls label range l2evpn 1036288 12288
+mpls label range l2evpn ethernet-segment 1031072 1024
 mpls label range ospf-sr 900000 1000
+mpls label range srlb 965536 65536
+mpls label range static 16 1
 !
 mpls rsvp
    refresh interval 3

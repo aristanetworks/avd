@@ -11298,13 +11298,15 @@ keys:
             type: bool
             description: Make `shutdown` key false for `no shutdown` cli.
       label_ranges:
-        description: MPLS label ranges configuration.
+        description: 'MPLS label ranges configuration.
+
+          Configured mpls ranges for the various categories must not overlap.
+
+          Requires EOS 4.31.1F or later.'
         type: dict
         keys:
-          ospf_sr:
-            description: 'Label range for OSPF Segment Routing Global Block (SRGB).
-
-              Requires EOS 4.31.1F or later.'
+          bgp_sr:
+            description: Label range for BGP SR global segment identifiers.
             type: dict
             keys:
               base:
@@ -11324,12 +11326,34 @@ keys:
                 min: 1
                 max: 1048560
           dynamic:
-            description: 'Label range for dynamic labels (e.g. adjacency segments).
-
-              Must not overlap with the static label range (default static range is
-              16-1023).'
+            description: Label range for dynamic assignment.
             type: dict
-            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/ospf_sr
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          isis_sr:
+            description: Label range for IS-IS SR global segment identifiers.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          l2evpn:
+            description: Label range for L2 EVPN routes.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          l2evpn_ethernet_segment:
+            description: Labels reserved for L2 EVPN A-D per ES routes for split-horizon
+              filtering.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          ospf_sr:
+            description: Label range for OSPF Segment Routing Global Block (SRGB).
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          srlb:
+            description: Label range for SR local segment identifiers.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          static:
+            description: Label range for static MPLS routes.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
       tunnel:
         description: Configure MPLS tunnel.
         type: dict
