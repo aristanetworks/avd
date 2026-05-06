@@ -157,6 +157,25 @@ ip_name_server:
     - ip_address: 2001:db8::2
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+ipv6_access_lists:
+- name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Vlan132
+  entries:
+  - remark: This remark entry will be skipped and does not require source and destination.
+  - protocol: ipv6
+    source: 2001:db8:132::1
+    destination: any
+    sequence: 30
+    action: deny
+  - protocol: ipv6
+    source: any
+    destination: 2001:db8:132::1
+    action: permit
+- name: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
+  entries:
+  - protocol: ipv6
+    source: 2001:db8::/32
+    destination: any
+    action: permit
 local_users:
 - name: admin
   disabled: true
@@ -512,8 +531,12 @@ vlan_interfaces:
   - 10.1.32.254
   - 10.2.32.254/24
   - 10.3.32.254/24
+  ipv6_addresses:
+  - 2001:db8:132::1/64
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan132
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan132
+  ipv6_access_group_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN_Vlan132
+  ipv6_access_group_out: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
   metadata:
     tenants:
     - Tenant_A
@@ -662,6 +685,7 @@ vrfs:
   ip_routing: false
 - name: Tenant_A_APP_Zone
   ip_routing: true
+  ipv6_routing: true
   metadata:
     tenants:
     - Tenant_A

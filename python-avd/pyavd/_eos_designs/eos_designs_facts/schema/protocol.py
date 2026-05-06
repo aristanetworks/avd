@@ -1293,7 +1293,7 @@ class EosDesignsFactsProtocol(Protocol):
     endpoint_vlans: str | None
     """
     Compressed list of vlans in use by endpoints connected to this switch, downstream switches or MLAG
-    peer and it's downstream switches.
+    peer and its downstream switches.
     """
     local_endpoint_trunk_groups: LocalEndpointTrunkGroups
     """
@@ -1305,7 +1305,7 @@ class EosDesignsFactsProtocol(Protocol):
     endpoint_trunk_groups: EndpointTrunkGroups
     """
     List of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer
-    and it's downstream switches.
+    and its downstream switches.
 
     Subclass of AvdList with `str` items.
     """
@@ -1500,7 +1500,7 @@ class EosDesignsFactsProtocol(Protocol):
                    to ensure that native vlan is not necessarily permitted on the uplink trunk.
                 endpoint_vlans:
                    Compressed list of vlans in use by endpoints connected to this switch, downstream switches or MLAG
-                   peer and it's downstream switches.
+                   peer and its downstream switches.
                 local_endpoint_trunk_groups:
                    List of trunk_groups in use by endpoints connected to this switch.
 
@@ -1508,7 +1508,7 @@ class EosDesignsFactsProtocol(Protocol):
                    items.
                 endpoint_trunk_groups:
                    List of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer
-                   and it's downstream switches.
+                   and its downstream switches.
 
                    Subclass of AvdList with `str` items.
                 wan_path_groups:
