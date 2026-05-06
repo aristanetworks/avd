@@ -445,7 +445,7 @@ The `arista.avd.cv_deploy` role supports connecting to CloudVision through an **
 
 !!! Warning
 
-    Authentication credentials (when used) are sent to the proxy server via ***HTTP Basic authentication*** over an unencrypted HTTP connection (credentials are only Base64-encoded, not encrypted). Proxy server credentials can be exposed by intercepting and analyzing raw TCP/IP traffic between AVD and the proxy server. Please always use additional filtering and identification mechanisms (such as HTTP filtering based on the client’s SRC IP, requested destination domains, etc.) to mitigate security risks.
+    Authentication credentials (when used) are sent to the proxy server via ***HTTP Basic authentication*** over an unencrypted HTTP connection (credentials are only Base64-encoded, not encrypted). Proxy server credentials can be exposed by intercepting and analyzing raw TCP/IP traffic between AVD and the proxy server. Please always use additional filtering and identification mechanisms (such as HTTP filtering based on the client's SRC IP, requested destination domains, etc.) to mitigate security risks.
 
     It is important to note that AVD uses plain HTTP only for the initial CONNECT request to establish a tunnel to CloudVision through the proxy server. After the TCP tunnel to CloudVision through the proxy server is active, all subsequent AVD communication — including both REST and gRPC calls — is protected within a secure TLS session(s) established between AVD and CloudVision ***inside*** the TCP proxy tunnel.
 
