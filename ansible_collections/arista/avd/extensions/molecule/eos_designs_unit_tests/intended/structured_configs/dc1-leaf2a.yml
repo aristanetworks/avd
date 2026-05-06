@@ -1339,7 +1339,18 @@ vlan_interfaces:
   - 2001:db8:310::1/64
   - 2001:db8:311::1/64
   - 2001:db8:312::1/64
+  ipv6_dhcp_relay_destinations:
+  - address: cafe::cafe:64
+    vrf: Tenant_D_OP_Zone
+  - address: ca::ca:64
+    vrf: Tenant_D_OP_Zone
+    local_interface: Loopback44
+    link_address: cafe::cafe:64
   ipv6_nd:
+    ra:
+      dns_servers:
+      - cafe::cafe:64
+      - ca::ca:64
     prefixes:
     - ipv6_prefix: 2001:db8:310::1/64
       valid_lifetime: '200'

@@ -127,6 +127,28 @@ class VlanInterfacesMixin(Protocol):
             vlan_interface_config.ipv6_access_group_out = acl.name
             self._set_ipv6_acl(acl)
 
+        if svi.ipv6_nd.ra_dns_servers:
+            vlan_interface_config.ipv6_nd.ra.dns_servers = svi.ipv6_nd.ra_dns_servers._cast_as(EosCliConfigGen.VlanInterfacesItem.Ipv6Nd.Ra.DnsServers)
+
+        if settings := svi.ipv6_dhcp_relay:
+            for destination in settings.destinations:
+                config = EosCliConfigGen.VlanInterfacesItem.Ipv6DhcpRelayDestinationsItem(
+                    address=destination.address,
+                )
+                if vrf.name != "default":
+                    config.vrf = vrf.name
+
+                if destination.local_interface:
+                    config.local_interface = destination.local_interface
+
+                if destination.source_address:
+                    config.source_address = destination.source_address
+
+                if destination.link_address:
+                    config.link_address = destination.link_address
+
+                vlan_interface_config.ipv6_dhcp_relay_destinations.append(config)
+
         if svi.structured_config:
             self.custom_structured_configs.nested.vlan_interfaces.obtain(interface_name)._deepmerge(
                 svi.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy

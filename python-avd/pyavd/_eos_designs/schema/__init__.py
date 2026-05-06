@@ -32603,10 +32603,16 @@ class EosDesigns(EosDesignsRootModel):
             class Ipv6Nd(AvdModel):
                 """Subclass of AvdModel."""
 
+                class RaDnsServers(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                RaDnsServers._item_type = str
+
                 _fields: ClassVar[dict] = {
                     "advertise_ipv6_address_virtuals": {"type": bool},
                     "valid_lifetime": {"type": str},
                     "preferred_lifetime": {"type": str},
+                    "ra_dns_servers": {"type": RaDnsServers},
                 }
                 advertise_ipv6_address_virtuals: bool | None
                 """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
@@ -32614,6 +32620,13 @@ class EosDesigns(EosDesignsRootModel):
                 """In seconds <0-4294967295> or infinite."""
                 preferred_lifetime: str | None
                 """In seconds <0-4294967295> or infinite."""
+                ra_dns_servers: RaDnsServers
+                """
+                List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+
+                Subclass of
+                AvdList with `str` items.
+                """
 
                 if TYPE_CHECKING:
 
@@ -32623,6 +32636,7 @@ class EosDesigns(EosDesignsRootModel):
                         advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
                         valid_lifetime: str | None | UndefinedType = Undefined,
                         preferred_lifetime: str | None | UndefinedType = Undefined,
+                        ra_dns_servers: RaDnsServers | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv6Nd.
@@ -32634,6 +32648,88 @@ class EosDesigns(EosDesignsRootModel):
                             advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
                             valid_lifetime: In seconds <0-4294967295> or infinite.
                             preferred_lifetime: In seconds <0-4294967295> or infinite.
+                            ra_dns_servers:
+                               List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+
+                               Subclass of
+                               AvdList with `str` items.
+
+                        """
+
+            class Ipv6DhcpRelay(AvdModel):
+                """Subclass of AvdModel."""
+
+                class DestinationsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "address": {"type": str},
+                        "local_interface": {"type": str},
+                        "source_address": {"type": str},
+                        "link_address": {"type": str},
+                    }
+                    address: str
+                    """DHCP server's IPv6 address."""
+                    local_interface: str | None
+                    """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
+                    source_address: str | None
+                    """Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface."""
+                    link_address: str | None
+                    """Override the default link address specified in the relayed DHCP packet."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            address: str | UndefinedType = Undefined,
+                            local_interface: str | None | UndefinedType = Undefined,
+                            source_address: str | None | UndefinedType = Undefined,
+                            link_address: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            DestinationsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                address: DHCP server's IPv6 address.
+                                local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
+                                source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
+                                link_address: Override the default link address specified in the relayed DHCP packet.
+
+                            """
+
+                class Destinations(AvdIndexedList[str, DestinationsItem]):
+                    """Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                Destinations._item_type = DestinationsItem
+
+                _fields: ClassVar[dict] = {"destinations": {"type": Destinations}}
+                destinations: Destinations
+                """
+                TODO
+
+                Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, destinations: Destinations | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv6DhcpRelay.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            destinations:
+                               TODO
+
+                               Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
 
                         """
 
@@ -33255,6 +33351,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ip_address_virtual": {"type": str},
                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
                 "ipv6_nd": {"type": Ipv6Nd},
+                "ipv6_dhcp_relay": {"type": Ipv6DhcpRelay},
                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -33321,6 +33418,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             ipv6_nd: Ipv6Nd
             """Subclass of AvdModel."""
+            ipv6_dhcp_relay: Ipv6DhcpRelay
+            """
+            TODO
+
+            Subclass of AvdModel.
+            """
             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
             """
             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -33522,6 +33625,7 @@ class EosDesigns(EosDesignsRootModel):
                     ip_address_virtual: str | None | UndefinedType = Undefined,
                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
                     ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
+                    ipv6_dhcp_relay: Ipv6DhcpRelay | UndefinedType = Undefined,
                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -33581,6 +33685,10 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdList with `str` items.
                         ipv6_nd: Subclass of AvdModel.
+                        ipv6_dhcp_relay:
+                           TODO
+
+                           Subclass of AvdModel.
                         ip_address_virtual_secondaries:
                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -33732,13 +33840,30 @@ class EosDesigns(EosDesignsRootModel):
         class Ipv6Nd(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"advertise_ipv6_address_virtuals": {"type": bool}, "valid_lifetime": {"type": str}, "preferred_lifetime": {"type": str}}
+            class RaDnsServers(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            RaDnsServers._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "advertise_ipv6_address_virtuals": {"type": bool},
+                "valid_lifetime": {"type": str},
+                "preferred_lifetime": {"type": str},
+                "ra_dns_servers": {"type": RaDnsServers},
+            }
             advertise_ipv6_address_virtuals: bool | None
             """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
             valid_lifetime: str | None
             """In seconds <0-4294967295> or infinite."""
             preferred_lifetime: str | None
             """In seconds <0-4294967295> or infinite."""
+            ra_dns_servers: RaDnsServers
+            """
+            List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+
+            Subclass of
+            AvdList with `str` items.
+            """
 
             if TYPE_CHECKING:
 
@@ -33748,6 +33873,7 @@ class EosDesigns(EosDesignsRootModel):
                     advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
                     valid_lifetime: str | None | UndefinedType = Undefined,
                     preferred_lifetime: str | None | UndefinedType = Undefined,
+                    ra_dns_servers: RaDnsServers | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -33759,6 +33885,88 @@ class EosDesigns(EosDesignsRootModel):
                         advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
                         valid_lifetime: In seconds <0-4294967295> or infinite.
                         preferred_lifetime: In seconds <0-4294967295> or infinite.
+                        ra_dns_servers:
+                           List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+
+                           Subclass of
+                           AvdList with `str` items.
+
+                    """
+
+        class Ipv6DhcpRelay(AvdModel):
+            """Subclass of AvdModel."""
+
+            class DestinationsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "address": {"type": str},
+                    "local_interface": {"type": str},
+                    "source_address": {"type": str},
+                    "link_address": {"type": str},
+                }
+                address: str
+                """DHCP server's IPv6 address."""
+                local_interface: str | None
+                """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
+                source_address: str | None
+                """Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface."""
+                link_address: str | None
+                """Override the default link address specified in the relayed DHCP packet."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        address: str | UndefinedType = Undefined,
+                        local_interface: str | None | UndefinedType = Undefined,
+                        source_address: str | None | UndefinedType = Undefined,
+                        link_address: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        DestinationsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            address: DHCP server's IPv6 address.
+                            local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
+                            source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
+                            link_address: Override the default link address specified in the relayed DHCP packet.
+
+                        """
+
+            class Destinations(AvdIndexedList[str, DestinationsItem]):
+                """Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`)."""
+
+                _primary_key: ClassVar[str] = "address"
+
+            Destinations._item_type = DestinationsItem
+
+            _fields: ClassVar[dict] = {"destinations": {"type": Destinations}}
+            destinations: Destinations
+            """
+            TODO
+
+            Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, destinations: Destinations | UndefinedType = Undefined) -> None:
+                    """
+                    Ipv6DhcpRelay.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        destinations:
+                           TODO
+
+                           Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
 
                     """
 
@@ -34382,6 +34590,7 @@ class EosDesigns(EosDesignsRootModel):
             "ip_address_virtual": {"type": str},
             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
             "ipv6_nd": {"type": Ipv6Nd},
+            "ipv6_dhcp_relay": {"type": Ipv6DhcpRelay},
             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -34464,6 +34673,12 @@ class EosDesigns(EosDesignsRootModel):
         """
         ipv6_nd: Ipv6Nd
         """Subclass of AvdModel."""
+        ipv6_dhcp_relay: Ipv6DhcpRelay
+        """
+        TODO
+
+        Subclass of AvdModel.
+        """
         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
         """
         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -34667,6 +34882,7 @@ class EosDesigns(EosDesignsRootModel):
                 ip_address_virtual: str | None | UndefinedType = Undefined,
                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
                 ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
+                ipv6_dhcp_relay: Ipv6DhcpRelay | UndefinedType = Undefined,
                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -34738,6 +34954,10 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     ipv6_nd: Subclass of AvdModel.
+                    ipv6_dhcp_relay:
+                       TODO
+
+                       Subclass of AvdModel.
                     ip_address_virtual_secondaries:
                        Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -63635,10 +63855,16 @@ class EosDesigns(EosDesignsRootModel):
                             class Ipv6Nd(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                class RaDnsServers(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                RaDnsServers._item_type = str
+
                                 _fields: ClassVar[dict] = {
                                     "advertise_ipv6_address_virtuals": {"type": bool},
                                     "valid_lifetime": {"type": str},
                                     "preferred_lifetime": {"type": str},
+                                    "ra_dns_servers": {"type": RaDnsServers},
                                 }
                                 advertise_ipv6_address_virtuals: bool | None
                                 """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
@@ -63646,6 +63872,13 @@ class EosDesigns(EosDesignsRootModel):
                                 """In seconds <0-4294967295> or infinite."""
                                 preferred_lifetime: str | None
                                 """In seconds <0-4294967295> or infinite."""
+                                ra_dns_servers: RaDnsServers
+                                """
+                                List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+
+                                Subclass of
+                                AvdList with `str` items.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -63655,6 +63888,7 @@ class EosDesigns(EosDesignsRootModel):
                                         advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
                                         valid_lifetime: str | None | UndefinedType = Undefined,
                                         preferred_lifetime: str | None | UndefinedType = Undefined,
+                                        ra_dns_servers: RaDnsServers | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         Ipv6Nd.
@@ -63666,6 +63900,88 @@ class EosDesigns(EosDesignsRootModel):
                                             advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
                                             valid_lifetime: In seconds <0-4294967295> or infinite.
                                             preferred_lifetime: In seconds <0-4294967295> or infinite.
+                                            ra_dns_servers:
+                                               List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+
+                                               Subclass of
+                                               AvdList with `str` items.
+
+                                        """
+
+                            class Ipv6DhcpRelay(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class DestinationsItem(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {
+                                        "address": {"type": str},
+                                        "local_interface": {"type": str},
+                                        "source_address": {"type": str},
+                                        "link_address": {"type": str},
+                                    }
+                                    address: str
+                                    """DHCP server's IPv6 address."""
+                                    local_interface: str | None
+                                    """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
+                                    source_address: str | None
+                                    """Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface."""
+                                    link_address: str | None
+                                    """Override the default link address specified in the relayed DHCP packet."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            address: str | UndefinedType = Undefined,
+                                            local_interface: str | None | UndefinedType = Undefined,
+                                            source_address: str | None | UndefinedType = Undefined,
+                                            link_address: str | None | UndefinedType = Undefined,
+                                        ) -> None:
+                                            """
+                                            DestinationsItem.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                address: DHCP server's IPv6 address.
+                                                local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
+                                                source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
+                                                link_address: Override the default link address specified in the relayed DHCP packet.
+
+                                            """
+
+                                class Destinations(AvdIndexedList[str, DestinationsItem]):
+                                    """Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`)."""
+
+                                    _primary_key: ClassVar[str] = "address"
+
+                                Destinations._item_type = DestinationsItem
+
+                                _fields: ClassVar[dict] = {"destinations": {"type": Destinations}}
+                                destinations: Destinations
+                                """
+                                TODO
+
+                                Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, destinations: Destinations | UndefinedType = Undefined) -> None:
+                                        """
+                                        Ipv6DhcpRelay.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            destinations:
+                                               TODO
+
+                                               Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
 
                                         """
 
@@ -64299,6 +64615,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ip_address_virtual": {"type": str},
                                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
                                 "ipv6_nd": {"type": Ipv6Nd},
+                                "ipv6_dhcp_relay": {"type": Ipv6DhcpRelay},
                                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -64375,6 +64692,12 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ipv6_nd: Ipv6Nd
                             """Subclass of AvdModel."""
+                            ipv6_dhcp_relay: Ipv6DhcpRelay
+                            """
+                            TODO
+
+                            Subclass of AvdModel.
+                            """
                             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                             """
                             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -64577,6 +64900,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ip_address_virtual: str | None | UndefinedType = Undefined,
                                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
                                     ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
+                                    ipv6_dhcp_relay: Ipv6DhcpRelay | UndefinedType = Undefined,
                                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -64642,6 +64966,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass of AvdList with `str` items.
                                         ipv6_nd: Subclass of AvdModel.
+                                        ipv6_dhcp_relay:
+                                           TODO
+
+                                           Subclass of AvdModel.
                                         ip_address_virtual_secondaries:
                                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -64793,10 +65121,16 @@ class EosDesigns(EosDesignsRootModel):
                         class Ipv6Nd(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class RaDnsServers(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            RaDnsServers._item_type = str
+
                             _fields: ClassVar[dict] = {
                                 "advertise_ipv6_address_virtuals": {"type": bool},
                                 "valid_lifetime": {"type": str},
                                 "preferred_lifetime": {"type": str},
+                                "ra_dns_servers": {"type": RaDnsServers},
                             }
                             advertise_ipv6_address_virtuals: bool | None
                             """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
@@ -64804,6 +65138,13 @@ class EosDesigns(EosDesignsRootModel):
                             """In seconds <0-4294967295> or infinite."""
                             preferred_lifetime: str | None
                             """In seconds <0-4294967295> or infinite."""
+                            ra_dns_servers: RaDnsServers
+                            """
+                            List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+
+                            Subclass of
+                            AvdList with `str` items.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -64813,6 +65154,7 @@ class EosDesigns(EosDesignsRootModel):
                                     advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
                                     valid_lifetime: str | None | UndefinedType = Undefined,
                                     preferred_lifetime: str | None | UndefinedType = Undefined,
+                                    ra_dns_servers: RaDnsServers | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     Ipv6Nd.
@@ -64824,6 +65166,88 @@ class EosDesigns(EosDesignsRootModel):
                                         advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
                                         valid_lifetime: In seconds <0-4294967295> or infinite.
                                         preferred_lifetime: In seconds <0-4294967295> or infinite.
+                                        ra_dns_servers:
+                                           List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+
+                                           Subclass of
+                                           AvdList with `str` items.
+
+                                    """
+
+                        class Ipv6DhcpRelay(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class DestinationsItem(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "address": {"type": str},
+                                    "local_interface": {"type": str},
+                                    "source_address": {"type": str},
+                                    "link_address": {"type": str},
+                                }
+                                address: str
+                                """DHCP server's IPv6 address."""
+                                local_interface: str | None
+                                """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
+                                source_address: str | None
+                                """Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface."""
+                                link_address: str | None
+                                """Override the default link address specified in the relayed DHCP packet."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        address: str | UndefinedType = Undefined,
+                                        local_interface: str | None | UndefinedType = Undefined,
+                                        source_address: str | None | UndefinedType = Undefined,
+                                        link_address: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        DestinationsItem.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            address: DHCP server's IPv6 address.
+                                            local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
+                                            source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
+                                            link_address: Override the default link address specified in the relayed DHCP packet.
+
+                                        """
+
+                            class Destinations(AvdIndexedList[str, DestinationsItem]):
+                                """Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`)."""
+
+                                _primary_key: ClassVar[str] = "address"
+
+                            Destinations._item_type = DestinationsItem
+
+                            _fields: ClassVar[dict] = {"destinations": {"type": Destinations}}
+                            destinations: Destinations
+                            """
+                            TODO
+
+                            Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, destinations: Destinations | UndefinedType = Undefined) -> None:
+                                    """
+                                    Ipv6DhcpRelay.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        destinations:
+                                           TODO
+
+                                           Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
 
                                     """
 
@@ -65455,6 +65879,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ip_address_virtual": {"type": str},
                             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
                             "ipv6_nd": {"type": Ipv6Nd},
+                            "ipv6_dhcp_relay": {"type": Ipv6DhcpRelay},
                             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -65561,6 +65986,12 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ipv6_nd: Ipv6Nd
                         """Subclass of AvdModel."""
+                        ipv6_dhcp_relay: Ipv6DhcpRelay
+                        """
+                        TODO
+
+                        Subclass of AvdModel.
+                        """
                         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                         """
                         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -65767,6 +66198,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ip_address_virtual: str | None | UndefinedType = Undefined,
                                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
                                 ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
+                                ipv6_dhcp_relay: Ipv6DhcpRelay | UndefinedType = Undefined,
                                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -65854,6 +66286,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `str` items.
                                     ipv6_nd: Subclass of AvdModel.
+                                    ipv6_dhcp_relay:
+                                       TODO
+
+                                       Subclass of AvdModel.
                                     ip_address_virtual_secondaries:
                                        Secondary IPv4 VXLAN Anycast IP addresses.
 

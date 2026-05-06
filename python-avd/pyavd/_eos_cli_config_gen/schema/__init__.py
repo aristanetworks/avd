@@ -69730,6 +69730,70 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Ipv6Nd(AvdModel):
             """Subclass of AvdModel."""
 
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class DnsServers(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                DnsServers._item_type = str
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    """Accept default route from received Router Advertisements."""
+                    route_preference: bool | None
+                    """Accept route preference from received Router Advertisements."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: Accept default route from received Router Advertisements.
+                                route_preference: Accept route preference from received Router Advertisements.
+
+                            """
+
+                _fields: ClassVar[dict] = {"dns_servers": {"type": DnsServers}, "disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                dns_servers: DnsServers
+                """Subclass of AvdList with `str` items."""
+                disabled: bool | None
+                """Disable Router Advertisement messages on the interface."""
+                rx_accept: RxAccept
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        dns_servers: DnsServers | UndefinedType = Undefined,
+                        disabled: bool | None | UndefinedType = Undefined,
+                        rx_accept: RxAccept | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dns_servers: Subclass of AvdList with `str` items.
+                            disabled: Disable Router Advertisement messages on the interface.
+                            rx_accept: Subclass of AvdModel.
+
+                        """
+
             class Cache(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -69760,56 +69824,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             dynamic_capacity: Capacity of dynamic cache entries.
                             expire: Cache entries expiry in seconds.
                             refresh_always: Force refresh on cache expiry.
-
-                        """
-
-            class Ra(AvdModel):
-                """Subclass of AvdModel."""
-
-                class RxAccept(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
-                    default_route: bool | None
-                    """Accept default route from received Router Advertisements."""
-                    route_preference: bool | None
-                    """Accept route preference from received Router Advertisements."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
-                        ) -> None:
-                            """
-                            RxAccept.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                default_route: Accept default route from received Router Advertisements.
-                                route_preference: Accept route preference from received Router Advertisements.
-
-                            """
-
-                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
-                disabled: bool | None
-                """Disable Router Advertisement messages on the interface."""
-                rx_accept: RxAccept
-                """Subclass of AvdModel."""
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
-                        """
-                        Ra.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            disabled: Disable Router Advertisement messages on the interface.
-                            rx_accept: Subclass of AvdModel.
 
                         """
 
@@ -69862,21 +69876,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Prefixes._item_type = PrefixesItem
 
             _fields: ClassVar[dict] = {
-                "cache": {"type": Cache},
                 "ra": {"type": Ra},
+                "cache": {"type": Cache},
                 "managed_config_flag": {"type": bool},
                 "prefixes": {"type": Prefixes},
                 "other_config_flag": {"type": bool},
             }
-            cache: Cache
-            """
-            Neighbor cache options.
-
-            Subclass of AvdModel.
-            """
             ra: Ra
             """
             Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+            cache: Cache
+            """
+            Neighbor cache options.
 
             Subclass of AvdModel.
             """
@@ -69897,8 +69911,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
+                    cache: Cache | UndefinedType = Undefined,
                     managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
                     other_config_flag: bool | None | UndefinedType = Undefined,
@@ -69910,12 +69924,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        cache:
-                           Neighbor cache options.
-
-                           Subclass of AvdModel.
                         ra:
                            Router Advertisement.
+
+                           Subclass of AvdModel.
+                        cache:
+                           Neighbor cache options.
 
                            Subclass of AvdModel.
                         managed_config_flag: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
