@@ -44,6 +44,11 @@ GRPC_UNKNOWN_STATUS_TESTS = [
         ),
         id="UNKNOWN_STATUS_FIRST_SERVER_MISSING_WWW",
     ),
+    pytest.param(
+        ["www.prod.arista.io", "prod2.arista.io"],
+        pytest.raises(CVGRPCError),
+        id="UNKNOWN_STATUS_FIRST_SERVER_WITH_WWW",
+    ),
 ]
 
 
