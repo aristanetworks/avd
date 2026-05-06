@@ -282,7 +282,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         """
         Return a single uplink dictionary for an L2 uplink.
 
-        Used for both uplink_type port-channel, switchport, lan and TODO: lan-port-channel.
+        Used for both uplink_type port-channel, l2-ethernet, lan and TODO: lan-port-channel.
         """
         uplink_switch_facts = self.get_peer_facts_generator(uplink_switch)
         uplink = EosDesignsFactsProtocol.UplinksItem(

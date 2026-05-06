@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import re
 from functools import cached_property
+from itertools import chain
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
@@ -29,9 +30,9 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
     @cached_property
     def vlans(self: EosDesignsFactsGeneratorProtocol) -> str:
         """
-        Exposed in avd_switch_facts.
-
         Return the compressed list of VLANs to be defined on this switch.
+
+        Exposed in avd_switch_facts.
 
         The returned VLANs are the available VLANs after local network-service
         filtering and any upstream availability filtering for VLAN-carrying uplink types.
@@ -271,7 +272,8 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         """
         return EosDesignsFactsProtocol.EndpointTrunkGroups(natural_sort(self._endpoint_trunk_groups))
 
-    def get_candidate_vlans(self: EosDesignsFactsGeneratorProtocol) -> set[int]:
+    @cached_property
+    def candidate_vlans(self: EosDesignsFactsGeneratorProtocol) -> frozenset[int]:
         """
         Return set of candidate VLANs selected from network services for this switch.
 
@@ -280,25 +282,31 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         They are not yet filtered against VLAN availability on uplink switches.
 
         Ex. {1, 2, 3, 4, 201, 3021}
+
+        Using frozenset to protect against accidental mutation when called indirectly from other devices.
         """
         if not self.shared_utils.any_network_services:
-            return set()
+            return frozenset()
 
-        candidate_vlans = set()
-        for network_services_key in self.inputs._dynamic_keys.network_services:
-            tenants = network_services_key.value
-            for tenant in tenants:
-                if not set(self.shared_utils.node_config.filter.tenants).intersection([tenant.name, "all"]):
-                    # Not matching tenant filters. Skipping this tenant.
-                    continue
+        tenant_filter = set(self.shared_utils.node_config.filter.tenants)
+        accepted_tenants = (
+            tenant
+            for network_services_key in self.inputs._dynamic_keys.network_services
+            for tenant in network_services_key.value
+            if tenant_filter.intersection((tenant.name, "all"))
+        )
 
-                candidate_vlans.update(svi.id for vrf in tenant.vrfs for svi in vrf.svis if self._is_accepted_vlan(svi))
-                candidate_vlans.update(l2vlan.id for l2vlan in tenant.l2vlans if self._is_accepted_vlan(l2vlan))
-
-        return candidate_vlans
+        return frozenset(
+            vlan_id
+            for tenant in accepted_tenants
+            for vlan_id in chain(
+                (svi.id for vrf in tenant.vrfs for svi in vrf.svis if self._is_accepted_vlan(svi)),
+                (l2vlan.id for l2vlan in tenant.l2vlans if self._is_accepted_vlan(l2vlan)),
+            )
+        )
 
     @cached_property
-    def _available_vlans(self: EosDesignsFactsGeneratorProtocol) -> set[int]:
+    def _available_vlans(self: EosDesignsFactsGeneratorProtocol) -> frozenset[int]:
         """
         Return set of VLANs available on this switch.
 
@@ -313,9 +321,9 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         VLAN towards a parent before the parent VLAN fact includes it.
         """
         available_vlans = self.get_available_vlans(frozenset())
-        return available_vlans if available_vlans is not None else set()
+        return available_vlans if available_vlans is not None else frozenset()
 
-    def get_available_vlans(self: EosDesignsFactsGeneratorProtocol, path: frozenset[str]) -> set[int] | None:
+    def get_available_vlans(self: EosDesignsFactsGeneratorProtocol, path: frozenset[str]) -> frozenset[int] | None:
         """
         Return set of VLANs available on this switch.
 
@@ -327,27 +335,31 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
             return None
 
         path = path.union((self.shared_utils.hostname,))
-        available_vlans = self.get_candidate_vlans()
+        candidate_vlans = self.candidate_vlans
 
         if self.shared_utils.uplink_type not in ["port-channel", "l2-ethernet", "lan"]:
-            return available_vlans
+            return candidate_vlans
 
+        available_vlans = set(candidate_vlans)
         uplink_switches = unique(self.shared_utils.uplink_switches)
         uplink_switches = [uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.shared_utils.all_fabric_devices]
         for uplink_switch in uplink_switches:
+            if not available_vlans:
+                break
+
             uplink_switch_facts = self.get_peer_facts_generator(uplink_switch)
             uplink_switch_available_vlans = uplink_switch_facts.get_available_vlans(path)
             if uplink_switch_available_vlans is None:
                 # Not restricting further since this was a cyclic reference.
                 continue
-            available_vlans = available_vlans.intersection(uplink_switch_available_vlans)
+            available_vlans.intersection_update(uplink_switch_available_vlans)
 
         if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
             # Preserve existing behavior where the inband management VLAN is allowed
             # towards a parent even before the parent VLAN fact includes it.
             available_vlans.add(self.shared_utils.node_config.inband_mgmt_vlan)
 
-        return available_vlans
+        return frozenset(available_vlans)
 
     def _is_accepted_vlan(
         self: EosDesignsFactsGeneratorProtocol,
