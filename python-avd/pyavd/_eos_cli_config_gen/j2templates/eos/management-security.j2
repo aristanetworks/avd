@@ -7,6 +7,102 @@
 {% if management_security is arista.avd.defined %}
 !
 management security
+{%     for auto_certificate_profile in management_security.auto_certificate.profiles | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+   auto-certificate profile {{ auto_certificate_profile.name }}
+{%         if auto_certificate_profile.key is arista.avd.defined %}
+      key {{ auto_certificate_profile.key }}
+{%         endif %}
+{%         if auto_certificate_profile.parameters.distinguished_name.common_name is arista.avd.defined %}
+      parameters distinguished-name common-name "{{ auto_certificate_profile.parameters.distinguished_name.common_name }}"
+{%         endif %}
+{%         if auto_certificate_profile.parameters.distinguished_name.country is arista.avd.defined %}
+      parameters distinguished-name country {{ auto_certificate_profile.parameters.distinguished_name.country }}
+{%         endif %}
+{%         if auto_certificate_profile.parameters.distinguished_name.state is arista.avd.defined %}
+      parameters distinguished-name state "{{ auto_certificate_profile.parameters.distinguished_name.state }}"
+{%         endif %}
+{%         if auto_certificate_profile.parameters.distinguished_name.locality is arista.avd.defined %}
+      parameters distinguished-name locality "{{ auto_certificate_profile.parameters.distinguished_name.locality }}"
+{%         endif %}
+{%         if auto_certificate_profile.parameters.distinguished_name.organization is arista.avd.defined %}
+      parameters distinguished-name organization "{{ auto_certificate_profile.parameters.distinguished_name.organization }}"
+{%         endif %}
+{%         if auto_certificate_profile.parameters.distinguished_name.organization_unit is arista.avd.defined %}
+      parameters distinguished-name organization-unit "{{ auto_certificate_profile.parameters.distinguished_name.organization_unit }}"
+{%         endif %}
+{%         if auto_certificate_profile.parameters.distinguished_name.email is arista.avd.defined %}
+      parameters distinguished-name email {{ auto_certificate_profile.parameters.distinguished_name.email }}
+{%         endif %}
+{%         if auto_certificate_profile.parameters.distinguished_name.serial_number is arista.avd.defined %}
+{%             set auto_cert_dn_serial = auto_certificate_profile.parameters.distinguished_name.serial_number %}
+{%             if auto_cert_dn_serial != "system" %}
+{%                 set auto_cert_dn_serial = '"' ~ auto_cert_dn_serial ~ '"' %}
+{%             endif %}
+      parameters distinguished-name serial-number {{ auto_cert_dn_serial }}
+{%         endif %}
+{%         if auto_certificate_profile.parameters.subject_alternative_name.ip is arista.avd.defined %}
+      parameters subject-alternative-name ip {{ auto_certificate_profile.parameters.subject_alternative_name.ip | arista.avd.natural_sort | join(' ') }}
+{%         endif %}
+{%         if auto_certificate_profile.parameters.subject_alternative_name.dns is arista.avd.defined %}
+      parameters subject-alternative-name dns {{ auto_certificate_profile.parameters.subject_alternative_name.dns | arista.avd.natural_sort | join(' ') }}
+{%         endif %}
+{%         if auto_certificate_profile.parameters.subject_alternative_name.email is arista.avd.defined %}
+      parameters subject-alternative-name email {{ auto_certificate_profile.parameters.subject_alternative_name.email | arista.avd.natural_sort | join(' ') }}
+{%         endif %}
+{%         if auto_certificate_profile.parameters.subject_alternative_name.uri is arista.avd.defined %}
+      parameters subject-alternative-name uri {{ auto_certificate_profile.parameters.subject_alternative_name.uri | arista.avd.natural_sort | join(' ') }}
+{%         endif %}
+{%         if auto_certificate_profile.protocol_instance_name is arista.avd.defined %}
+      protocol instance {{ auto_certificate_profile.protocol_instance_name }}
+{%         endif %}
+{%         if auto_certificate_profile.digest is arista.avd.defined %}
+      digest {{ auto_certificate_profile.digest }}
+{%         endif %}
+{%         if auto_certificate_profile.renewal is arista.avd.defined %}
+      renewal {{ auto_certificate_profile.renewal }} seconds
+{%         endif %}
+   !
+{%     endfor %}
+{%     for auto_certificate_protocol in management_security.auto_certificate.protocols | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+   auto-certificate protocol {{ auto_certificate_protocol.protocol }} {{ auto_certificate_protocol.name }}
+{%         if auto_certificate_protocol.server.url is arista.avd.defined %}
+      server url {{ auto_certificate_protocol.server.url }}
+{%         endif %}
+{%         if auto_certificate_protocol.server.ssl_profile is arista.avd.defined %}
+      server ssl profile {{ auto_certificate_protocol.server.ssl_profile }}
+{%         endif %}
+{%         if auto_certificate_protocol.server.vrf is arista.avd.defined %}
+      server vrf {{ auto_certificate_protocol.server.vrf }}
+{%         endif %}
+{%         if auto_certificate_protocol.connection_retry.interval is arista.avd.defined %}
+{%             set conn_retry_interval = "connection retry interval " ~ auto_certificate_protocol.connection_retry.interval ~ " seconds" %}
+{%             if auto_certificate_protocol.connection_retry.exponential_backoff is arista.avd.defined(true) %}
+{%                 set conn_retry_interval = conn_retry_interval ~ " backoff exponential" %}
+{%             endif %}
+      {{ conn_retry_interval }}
+{%         endif %}
+{%         if auto_certificate_protocol.connection_retry.count is arista.avd.defined %}
+      connection retry count {{ auto_certificate_protocol.connection_retry.count }}
+{%         endif %}
+{%         if auto_certificate_protocol.disabled is arista.avd.defined(true) %}
+      disabled
+{%         endif %}
+{%         if auto_certificate_protocol.credentials.enroll.token is arista.avd.defined %}
+      credentials enroll token {{ auto_certificate_protocol.credentials.enroll.token_type | arista.avd.default("7") }} {{ auto_certificate_protocol.credentials.enroll.token | arista.avd.hide_passwords(hide_passwords) }}
+{%         elif auto_certificate_protocol.credentials.enroll.username is arista.avd.defined and auto_certificate_protocol.credentials.enroll.secret is arista.avd.defined %}
+      credentials enroll username {{ auto_certificate_protocol.credentials.enroll.username }} secret {{ auto_certificate_protocol.credentials.enroll.secret_type | arista.avd.default("7") }} {{ auto_certificate_protocol.credentials.enroll.secret | arista.avd.hide_passwords(hide_passwords) }}
+{%         elif auto_certificate_protocol.credentials.enroll.secret is arista.avd.defined %}
+      credentials enroll secret {{ auto_certificate_protocol.credentials.enroll.secret_type | arista.avd.default("7") }} {{ auto_certificate_protocol.credentials.enroll.secret | arista.avd.hide_passwords(hide_passwords) }}
+{%         endif %}
+{%         if auto_certificate_protocol.credentials.re_enroll.token is arista.avd.defined %}
+      credentials re-enroll token {{ auto_certificate_protocol.credentials.re_enroll.token_type | arista.avd.default("7") }} {{ auto_certificate_protocol.credentials.re_enroll.token | arista.avd.hide_passwords(hide_passwords) }}
+{%         elif auto_certificate_protocol.credentials.re_enroll.username is arista.avd.defined and auto_certificate_protocol.credentials.re_enroll.secret is arista.avd.defined %}
+      credentials re-enroll username {{ auto_certificate_protocol.credentials.re_enroll.username }} secret {{ auto_certificate_protocol.credentials.re_enroll.secret_type | arista.avd.default("7") }} {{ auto_certificate_protocol.credentials.re_enroll.secret | arista.avd.hide_passwords(hide_passwords) }}
+{%         elif auto_certificate_protocol.credentials.re_enroll.secret is arista.avd.defined %}
+      credentials re-enroll secret {{ auto_certificate_protocol.credentials.re_enroll.secret_type | arista.avd.default("7") }} {{ auto_certificate_protocol.credentials.re_enroll.secret | arista.avd.hide_passwords(hide_passwords) }}
+{%         endif %}
+   !
+{%     endfor %}
 {%     if management_security.entropy_sources is arista.avd.defined %}
 {%         set entropy_sources = [] %}
 {%         for source in ['hardware', 'haveged', 'cpu_jitter'] %}

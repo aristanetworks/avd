@@ -359,6 +359,15 @@ keys:
 
           since this combination is not supported.'
         default: false
+      configure_inband_mgmt_ipv6_vrf:
+        type: bool
+        description: Configure `inband_mgmt_vrf` for IPv6 inband management.
+        default: false
+      only_configure_ipv6_inband_mgmt_prefix_list_when_used:
+        type: bool
+        description: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when
+          it is needed.
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
