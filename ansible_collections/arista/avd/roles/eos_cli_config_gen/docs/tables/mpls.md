@@ -70,28 +70,28 @@
     | [<samp>&nbsp;&nbsp;label_ranges</samp>](## "mpls.label_ranges") | Dictionary |  |  |  | MPLS label ranges configuration.<br>Configured mpls ranges for the various categories must not overlap.<br>Requires EOS 4.31.1F or later. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_sr</samp>](## "mpls.label_ranges.bgp_sr") | Dictionary |  |  |  | Label range for BGP SR global segment identifiers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.bgp_sr.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.bgp_sr.size") | Integer | Required |  | Min: 1<br>Max: 1048560 | Size of range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.bgp_sr.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "mpls.label_ranges.dynamic") | Dictionary |  |  |  | Label range for dynamic assignment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.dynamic.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.dynamic.size") | Integer | Required |  | Min: 1<br>Max: 1048560 | Size of range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.dynamic.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_sr</samp>](## "mpls.label_ranges.isis_sr") | Dictionary |  |  |  | Label range for IS-IS SR global segment identifiers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.isis_sr.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.isis_sr.size") | Integer | Required |  | Min: 1<br>Max: 1048560 | Size of range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.isis_sr.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2evpn</samp>](## "mpls.label_ranges.l2evpn") | Dictionary |  |  |  | Label range for L2 EVPN routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.l2evpn.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.l2evpn.size") | Integer | Required |  | Min: 1<br>Max: 1048560 | Size of range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.l2evpn.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2evpn_ethernet_segment</samp>](## "mpls.label_ranges.l2evpn_ethernet_segment") | Dictionary |  |  |  | Labels reserved for L2 EVPN A-D per ES routes for split-horizon filtering. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.l2evpn_ethernet_segment.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.l2evpn_ethernet_segment.size") | Integer | Required |  | Min: 1<br>Max: 1048560 | Size of range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.l2evpn_ethernet_segment.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_sr</samp>](## "mpls.label_ranges.ospf_sr") | Dictionary |  |  |  | Label range for OSPF Segment Routing Global Block (SRGB). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.ospf_sr.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.ospf_sr.size") | Integer | Required |  | Min: 1<br>Max: 1048560 | Size of range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.ospf_sr.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;srlb</samp>](## "mpls.label_ranges.srlb") | Dictionary |  |  |  | Label range for SR local segment identifiers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.srlb.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.srlb.size") | Integer | Required |  | Min: 1<br>Max: 1048560 | Size of range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.srlb.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "mpls.label_ranges.static") | Dictionary |  |  |  | Label range for static MPLS routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.static.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.static.size") | Integer | Required |  | Min: 1<br>Max: 1048560 | Size of range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.static.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
     | [<samp>&nbsp;&nbsp;tunnel</samp>](## "mpls.tunnel") | Dictionary |  |  |  | Configure MPLS tunnel. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;termination</samp>](## "mpls.tunnel.termination") | Dictionary |  |  |  | Controls selection of the TTL/DSCP values by LER when decapsulating MPLS packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;model</samp>](## "mpls.tunnel.termination.model") | Dictionary |  |  |  |  |
@@ -262,7 +262,7 @@
           base: <int; 16-1048575; required>
 
           # Size of range.
-          size: <int; 1-1048560; required>
+          size: <int; 0-1048560; required>
 
         # Label range for dynamic assignment.
         dynamic:
@@ -271,7 +271,7 @@
           base: <int; 16-1048575; required>
 
           # Size of range.
-          size: <int; 1-1048560; required>
+          size: <int; 0-1048560; required>
 
         # Label range for IS-IS SR global segment identifiers.
         isis_sr:
@@ -280,7 +280,7 @@
           base: <int; 16-1048575; required>
 
           # Size of range.
-          size: <int; 1-1048560; required>
+          size: <int; 0-1048560; required>
 
         # Label range for L2 EVPN routes.
         l2evpn:
@@ -289,7 +289,7 @@
           base: <int; 16-1048575; required>
 
           # Size of range.
-          size: <int; 1-1048560; required>
+          size: <int; 0-1048560; required>
 
         # Labels reserved for L2 EVPN A-D per ES routes for split-horizon filtering.
         l2evpn_ethernet_segment:
@@ -298,7 +298,7 @@
           base: <int; 16-1048575; required>
 
           # Size of range.
-          size: <int; 1-1048560; required>
+          size: <int; 0-1048560; required>
 
         # Label range for OSPF Segment Routing Global Block (SRGB).
         ospf_sr:
@@ -307,7 +307,7 @@
           base: <int; 16-1048575; required>
 
           # Size of range.
-          size: <int; 1-1048560; required>
+          size: <int; 0-1048560; required>
 
         # Label range for SR local segment identifiers.
         srlb:
@@ -316,7 +316,7 @@
           base: <int; 16-1048575; required>
 
           # Size of range.
-          size: <int; 1-1048560; required>
+          size: <int; 0-1048560; required>
 
         # Label range for static MPLS routes.
         static:
@@ -325,7 +325,7 @@
           base: <int; 16-1048575; required>
 
           # Size of range.
-          size: <int; 1-1048560; required>
+          size: <int; 0-1048560; required>
 
       # Configure MPLS tunnel.
       tunnel:

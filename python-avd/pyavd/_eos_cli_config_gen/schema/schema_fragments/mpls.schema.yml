@@ -308,7 +308,7 @@ keys:
                 convert_types:
                   - str
                 description: Size of range.
-                min: 1
+                min: 0
                 max: 1048560
           dynamic:
             description: |-
