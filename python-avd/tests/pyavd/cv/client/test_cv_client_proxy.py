@@ -610,6 +610,14 @@ async def test_cv_client_proxy_env_vars_preference(
         pytest.param(".arista.io", id="NO_PROXY_WILDCARD_DOMAIN"),
         pytest.param(".arista.io:443", id="NO_PROXY_WILDCARD_DOMAIN_WITH_PORT"),
         pytest.param("*", id="NO_PROXY_STAR"),
+        pytest.param(" www.arista.io", id="NO_PROXY_FQDN_LEADING_SPACE"),
+        pytest.param("www.arista.io ", id="NO_PROXY_FQDN_TRAILING_SPACE"),
+        pytest.param("www.arista.com,  www.arista.io", id="NO_PROXY_FQDN_SPACE_AFTER_COMMA"),
+        pytest.param("www.arista.com , www.arista.io", id="NO_PROXY_FQDN_SPACE_AROUND_COMMA"),
+        pytest.param(" .arista.io", id="NO_PROXY_WILDCARD_DOMAIN_LEADING_SPACE"),
+        pytest.param(".arista.io ", id="NO_PROXY_WILDCARD_DOMAIN_TRAILING_SPACE"),
+        pytest.param(" *", id="NO_PROXY_STAR_LEADING_SPACE"),
+        pytest.param("* ", id="NO_PROXY_STAR_TRAILING_SPACE"),
     ],
 )
 async def test_cv_client_proxy_settings_no_proxy_override_fqdn(
@@ -656,6 +664,11 @@ async def test_cv_client_proxy_settings_no_proxy_override_fqdn(
         pytest.param("192.168.10.10/32", id="NO_PROXY_IPV4_CIDR_32"),
         pytest.param("192.168.10.0/24", id="NO_PROXY_IPV4_CIDR_24"),
         pytest.param("*", id="NO_PROXY_STAR"),
+        pytest.param(" 192.168.10.10", id="NO_PROXY_IPV4_LEADING_SPACE"),
+        pytest.param("192.168.10.10 ", id="NO_PROXY_IPV4_TRAILING_SPACE"),
+        pytest.param(" 192.168.10.10/32", id="NO_PROXY_IPV4_CIDR_32_LEADING_SPACE"),
+        pytest.param("192.168.10.0/24 ", id="NO_PROXY_IPV4_CIDR_24_TRAILING_SPACE"),
+        pytest.param("192.168.10.1,  192.168.10.10", id="NO_PROXY_IPV4_SPACE_AFTER_COMMA"),
     ],
 )
 async def test_cv_client_proxy_settings_no_proxy_override_ipv4(
@@ -702,6 +715,11 @@ async def test_cv_client_proxy_settings_no_proxy_override_ipv4(
         pytest.param("2001::10/128", id="NO_PROXY_IPV6_CIDR_128"),
         pytest.param("2001::/64", id="NO_PROXY_IPV6_CIDR_64"),
         pytest.param("*", id="NO_PROXY_STAR"),
+        pytest.param(" 2001::10", id="NO_PROXY_IPV6_LEADING_SPACE"),
+        pytest.param("2001::10 ", id="NO_PROXY_IPV6_TRAILING_SPACE"),
+        pytest.param(" 2001::10/128", id="NO_PROXY_IPV6_CIDR_128_LEADING_SPACE"),
+        pytest.param("2001::/64 ", id="NO_PROXY_IPV6_CIDR_64_TRAILING_SPACE"),
+        pytest.param("2001::1,  2001::10", id="NO_PROXY_IPV6_SPACE_AFTER_COMMA"),
     ],
 )
 async def test_cv_client_proxy_settings_no_proxy_override_ipv6(

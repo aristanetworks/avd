@@ -530,7 +530,7 @@ class CVProxyBypassManager:
     def _process_env_var_no_proxy_content(self) -> None:
         LOGGER.info("<CVProxyBypassManager>: Parsing content of the environment variable '%s' to form proxy bypass rules...", self._env_var_no_proxy_name)
         for raw_rule_input in self._env_var_no_proxy_content.split(","):
-            rule_candidate = ProxyBypassRule.from_raw_value(raw_rule_input)
+            rule_candidate = ProxyBypassRule.from_raw_value(raw_rule_input.strip())
             match rule_candidate.rule_type:
                 case "all":
                     self._all_no_proxy_rule = True
