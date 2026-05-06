@@ -526,7 +526,7 @@ class FilteredTenantsMixin(Protocol):
             )
             self.update_ospf_authentication(config, svi, vrf, tenant)
 
-        if svi.ipv6_enable and svi.ipv6_ospf.enabled and isinstance(config, EosCliConfigGen.VlanInterfacesItem):
+        if svi.ipv6_enable and svi.ipv6_ospf.enabled:
             if not vrf.ipv6_ospf.enabled:
                 msg = f"OSPFv3 is enabled on SVI '{svi.name}' but not under 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
                 raise AristaAvdError(msg)
