@@ -42,7 +42,7 @@ keys:
                 type: int
                 display_name: sequence_id
                 convert_types:
-                - str
+                  - str
               action:
                 type: str
                 required: true
@@ -69,7 +69,7 @@ keys:
               sequence:
                 type: int
                 convert_types:
-                - str
+                  - str
                 display_name: sequence_id
               action:
                 type: str

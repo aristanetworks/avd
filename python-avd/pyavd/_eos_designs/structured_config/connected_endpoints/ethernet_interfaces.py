@@ -116,8 +116,7 @@ class EthernetInterfacesMixin(Protocol):
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.LinkTrackingGroups),
         )
-
-        ethernet_interface.sflow.enable = self.shared_utils.get_interface_sflow(
+        ethernet_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(
             ethernet_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
         )
 
@@ -220,6 +219,16 @@ class EthernetInterfacesMixin(Protocol):
             shutdown=not (adapter.enabled if adapter.enabled is not None else True),
             poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,
+            metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
+                peer=peer,
+                peer_interface=peer_interface,
+                peer_type=connected_endpoint.type,
+                port_profile=adapter.profile,
+                peer_key=connected_endpoint._internal_data.context,
+                # TODO: Make logic conditional once functionality allows to include (some) connected endpoints into the ACT topology definition file
+                validate_state=self.structured_config_utils.get_interface_validate_state(adapter.validate_state),
+                validate_lldp=adapter.validate_lldp,
+            ),
         )
 
         # 802.1x settings
@@ -227,16 +236,6 @@ class EthernetInterfacesMixin(Protocol):
             ethernet_interface._update(
                 dot1x=self._get_adapter_dot1x(adapter),
             )
-
-        ethernet_interface.metadata._update(
-            peer=peer,
-            peer_interface=peer_interface,
-            peer_type=connected_endpoint.type,
-            port_profile=adapter.profile,
-            peer_key=connected_endpoint._internal_data.context,
-            validate_state=False if adapter.validate_state is False else None,
-            validate_lldp=adapter.validate_lldp,
-        )
 
         # Port-channel member
         if adapter.port_channel.mode:

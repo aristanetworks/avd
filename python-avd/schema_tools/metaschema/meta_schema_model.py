@@ -84,7 +84,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         table: str | None = None
         """
         Setting 'table' will allow for custom grouping of schema fields in the documentation.
-        By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.
+        By default each root key has its own table. By setting the same table-value on multiple keys, they will be merged to a single table.
         If 'table' is set on a 'child' key, all 'ancestor' keys are automatically included in the table so the full path is visible.
         The 'table' option is inherited to all child keys, unless specifically set on the child.
         """
