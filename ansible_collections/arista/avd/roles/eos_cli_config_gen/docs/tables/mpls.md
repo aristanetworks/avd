@@ -73,7 +73,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.bgp_sr.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "mpls.label_ranges.dynamic") | Dictionary |  |  |  | Label range for dynamic assignment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.dynamic.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.dynamic.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.dynamic.size") | Integer | Required |  | Min: 131072<br>Max: 1048560 | Size of range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_sr</samp>](## "mpls.label_ranges.isis_sr") | Dictionary |  |  |  | Label range for IS-IS SR global segment identifiers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.isis_sr.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.isis_sr.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
@@ -271,7 +271,7 @@
           base: <int; 16-1048575; required>
 
           # Size of range.
-          size: <int; 0-1048560; required>
+          size: <int; 131072-1048560; required>
 
         # Label range for IS-IS SR global segment identifiers.
         isis_sr:

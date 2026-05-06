@@ -314,7 +314,25 @@ keys:
             description: |-
               Label range for dynamic assignment.
             type: dict
-            $ref: "eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr"
+            keys:
+              base:
+                type: int
+                required: true
+                convert_types:
+                  - str
+                description: First label of range.
+                min: 16
+                max: 1048575
+              size:
+                type: int
+                required: true
+                convert_types:
+                  - str
+                description: |-
+                  Size of range.
+                # There is a restriction for size.
+                min: 131072
+                max: 1048560
           isis_sr:
             description: |-
               Label range for IS-IS SR global segment identifiers.
