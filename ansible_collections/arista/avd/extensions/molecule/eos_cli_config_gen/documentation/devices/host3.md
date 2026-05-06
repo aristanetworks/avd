@@ -14,9 +14,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -327,6 +327,13 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 
+##### BGP LU RIB
+
+| RIB | Enabled | Route-map |
+| --- | ------- | --------- |
+| IP | True | RM-rib2 |
+| Tunnel | True | RM-rib3 |
+
 #### Router BGP Path-Selection Address Family
 
 #### Router BGP Device Configuration
@@ -334,6 +341,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65101.0001
+   bgp labeled-unicast rib ip route-map RM-rib2 tunnel route-map RM-rib3
    router-id 192.168.255.3
    graceful-restart-helper long-lived
    no bgp default ipv4-unicast

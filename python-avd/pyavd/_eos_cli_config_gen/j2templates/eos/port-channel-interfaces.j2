@@ -266,6 +266,17 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ip_verify_unicast_source_reachable_via is arista.avd.defined %}
    ip verify unicast source reachable-via {{ port_channel_interface.ip_verify_unicast_source_reachable_via }}
 {%     endif %}
+{%     if port_channel_interface.ipv6_nd.cache is arista.avd.defined %}
+{%         if port_channel_interface.ipv6_nd.cache.expire is arista.avd.defined %}
+   ipv6 nd cache expire {{ port_channel_interface.ipv6_nd.cache.expire }}
+{%         endif %}
+{%         if port_channel_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
+   ipv6 nd cache dynamic capacity {{ port_channel_interface.ipv6_nd.cache.dynamic_capacity }}
+{%         endif %}
+{%         if port_channel_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
+   ipv6 nd cache refresh always
+{%         endif %}
+{%     endif %}
 {%     if port_channel_interface.bfd.interval is arista.avd.defined and
           port_channel_interface.bfd.min_rx is arista.avd.defined and
           port_channel_interface.bfd.multiplier is arista.avd.defined %}
@@ -351,6 +362,9 @@ interface {{ port_channel_interface.name }}
 {%     endif %}
 {%     if port_channel_interface.ipv6_nd.managed_config_flag is arista.avd.defined(true) or port_channel_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
    ipv6 nd managed-config-flag
+{%     endif %}
+{%     if port_channel_interface.ipv6_nd.other_config_flag is arista.avd.defined(true) %}
+   ipv6 nd other-config-flag
 {%     endif %}
 {%     set ipv6_nd_prefixes = port_channel_interface.ipv6_nd.prefixes | arista.avd.default(port_channel_interface.ipv6_nd_prefixes) %}
 {%     for ipv6_nd_prefix in ipv6_nd_prefixes | arista.avd.natural_sort(sort_key="ipv6_prefix") %}
@@ -553,6 +567,9 @@ interface {{ port_channel_interface.name }}
 {%     endif %}
 {%     if port_channel_interface.ptp.vlan is arista.avd.defined %}
    ptp vlan {{ port_channel_interface.ptp.vlan }}
+{%     endif %}
+{%     if port_channel_interface.ptp.region.domain_number is arista.avd.defined %}
+   ptp region domain-number {{ port_channel_interface.ptp.region.domain_number }}
 {%     endif %}
 {%     if port_channel_interface.service_policy.qos.input is arista.avd.defined %}
    service-policy type qos input {{ port_channel_interface.service_policy.qos.input }}

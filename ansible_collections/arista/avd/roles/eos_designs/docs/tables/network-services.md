@@ -13,9 +13,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_vrf_id_base</samp>](## "<network_services_keys.name>.[].mac_vrf_id_base") | Integer |  |  | Min: 0<br>Max: 16770000 | If not set, "mac_vrf_vni_base" will be used.<br>Base number for MAC VRF RD/RT ID (Required unless mac_vrf_vni_base is set)<br>ID is derived from the base number with simple addition.<br>i.e. mac_vrf_id_base = 10000, svi 100 = RD/RT 10100, svi 300 = RD/RT 10300.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_aware_bundle_number_base</samp>](## "<network_services_keys.name>.[].vlan_aware_bundle_number_base") | Integer |  | `0` |  | Base number for VLAN aware bundle RD/RT.<br>The "Assigned Number" part of RD/RT is derived from vrf_vni + vlan_aware_bundle_number_base.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_vlan_bundle</samp>](## "<network_services_keys.name>.[].evpn_vlan_bundle") | String |  |  |  | Enable `evpn_vlan_bundle` for all l2vlans and SVIs under the tenant. This `evpn_vlan_bundle` should be present in `evpn_vlan_bundles`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp</samp>](## "<network_services_keys.name>.[].igmp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].igmp.fast_leave") | Boolean |  |  |  | Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the Tenant.<br>On EOS, IGMP fast-leave is enabled on all VLANs by default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "<network_services_keys.name>.[].evpn_l2_multi_domain") | Boolean |  | `True` |  | Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vpws</samp>](## "<network_services_keys.name>.[].vpws") | Dictionary |  |  |  | VPWS pseudowire settings for the tenant.<br>To render `mpls_control_word`, `mtu`, and `label_flow` in the BGP VPWS configuration,<br>both `point_to_point_services` and `pseudowire_rt_base` must be set under the tenant. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_control_word</samp>](## "<network_services_keys.name>.[].vpws.mpls_control_word") | Boolean |  | `False` |  | Enable or disable MPLS control word for VPWS pseudowires. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "<network_services_keys.name>.[].vpws.mtu") | Integer |  |  |  | MTU for VPWS pseudowires. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label_flow</samp>](## "<network_services_keys.name>.[].vpws.label_flow") | Boolean |  |  |  | Enable or disable MPLS label flow for VPWS pseudowires. |
 
 === "YAML"
 
@@ -44,12 +46,21 @@
 
         # Enable `evpn_vlan_bundle` for all l2vlans and SVIs under the tenant. This `evpn_vlan_bundle` should be present in `evpn_vlan_bundles`.
         evpn_vlan_bundle: <str>
-        igmp:
-
-          # Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the Tenant.
-          # On EOS, IGMP fast-leave is enabled on all VLANs by default.
-          fast_leave: <bool>
 
         # Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains.
         evpn_l2_multi_domain: <bool; default=True>
+
+        # VPWS pseudowire settings for the tenant.
+        # To render `mpls_control_word`, `mtu`, and `label_flow` in the BGP VPWS configuration,
+        # both `point_to_point_services` and `pseudowire_rt_base` must be set under the tenant.
+        vpws:
+
+          # Enable or disable MPLS control word for VPWS pseudowires.
+          mpls_control_word: <bool; default=False>
+
+          # MTU for VPWS pseudowires.
+          mtu: <int>
+
+          # Enable or disable MPLS label flow for VPWS pseudowires.
+          label_flow: <bool>
     ```

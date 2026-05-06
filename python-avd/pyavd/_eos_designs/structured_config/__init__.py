@@ -18,7 +18,9 @@ from .metadata import AvdStructuredConfigMetadata
 from .mlag import AvdStructuredConfigMlag
 from .network_services import AvdStructuredConfigNetworkServices
 from .overlay import AvdStructuredConfigOverlay
+from .parent_interfaces import AvdStructuredConfigParentInterfaces
 from .structured_config_generator import StructCfgs
+from .structured_config_utils import StructuredConfigUtils
 from .underlay import AvdStructuredConfigUnderlay
 
 if TYPE_CHECKING:
@@ -40,6 +42,9 @@ AVD_STRUCTURED_CONFIG_CLASSES: list[type[StructuredConfigGenerator]] = [
     AvdStructuredConfigNetworkServices,
     AvdStructuredConfigConnectedEndpoints,
     AvdStructuredConfigInbandManagement,
+    # The Parent Interfaces module must be rendered after all modules that create subinterfaces,
+    # but before the Flows module so that parent interfaces get flow tracking metadata.
+    AvdStructuredConfigParentInterfaces,
     # The Flows module must be rendered after others contributing interfaces,
     # since it parses those interfaces for sFlow or flow tracking (ipfix) config.
     AvdStructuredConfigFlows,
@@ -104,6 +109,11 @@ def get_structured_config(
     #
     custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(inputs.custom_structured_configuration_list_merge)
 
+    # Create a single shared structured config utils instance for all structured config classes.
+    structured_config_utils = StructuredConfigUtils(
+        structured_config=structured_config, inputs=inputs, shared_utils=shared_utils, custom_structured_configs=custom_structured_configs
+    )
+
     for cls in AVD_STRUCTURED_CONFIG_CLASSES:
         eos_designs_module = cls(
             hostvars=hostvars,
@@ -112,6 +122,7 @@ def get_structured_config(
             shared_utils=shared_utils,
             structured_config=structured_config,
             custom_structured_configs=custom_structured_configs,
+            structured_config_utils=structured_config_utils,
         )
         eos_designs_module.render()
 

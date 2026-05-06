@@ -17,5 +17,5 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-- name: MGMT
-  ip_routing: false
+  - name: MGMT
+    ip_routing: false

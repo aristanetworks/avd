@@ -10,6 +10,22 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.as_notation is arista.avd.defined %}
    bgp asn notation {{ router_bgp.as_notation }}
 {%     endif %}
+{%     if router_bgp.bgp.labeled_unicast.rib.ip.enabled is arista.avd.defined(true) or router_bgp.bgp.labeled_unicast.rib.tunnel.enabled is arista.avd.defined(true) %}
+{%         set unicast_rib = "bgp labeled-unicast rib" %}
+{%         if router_bgp.bgp.labeled_unicast.rib.ip.enabled is arista.avd.defined(true) %}
+{%             set unicast_rib = unicast_rib ~ " ip" %}
+{%             if router_bgp.bgp.labeled_unicast.rib.ip.route_map is arista.avd.defined %}
+{%                 set unicast_rib = unicast_rib ~ " route-map " ~ router_bgp.bgp.labeled_unicast.rib.ip.route_map %}
+{%             endif %}
+{%         endif %}
+{%         if router_bgp.bgp.labeled_unicast.rib.tunnel.enabled is arista.avd.defined(true) %}
+{%             set unicast_rib = unicast_rib ~ " tunnel" %}
+{%             if router_bgp.bgp.labeled_unicast.rib.tunnel.route_map is arista.avd.defined %}
+{%                 set unicast_rib = unicast_rib ~ " route-map " ~ router_bgp.bgp.labeled_unicast.rib.tunnel.route_map %}
+{%             endif %}
+{%         endif %}
+   {{ unicast_rib }}
+{%     endif %}
 {%     if router_bgp.router_id is arista.avd.defined %}
    router-id {{ router_bgp.router_id }}
 {%     endif %}
@@ -1973,6 +1989,16 @@ router bgp {{ router_bgp.as }}
 {%             if peer_group.prefix_list_out is arista.avd.defined %}
       neighbor {{ peer_group.name }} prefix-list {{ peer_group.prefix_list_out }} out
 {%             endif %}
+{%             if peer_group.default_originate.enabled is arista.avd.defined(true) %}
+{%                 set neighbor_default_originate_cli = "neighbor " ~ peer_group.name ~ " default-originate" %}
+{%                 if peer_group.default_originate.route_map is arista.avd.defined %}
+{%                     set neighbor_default_originate_cli = neighbor_default_originate_cli ~ " route-map " ~ peer_group.default_originate.route_map %}
+{%                 endif %}
+{%                 if peer_group.default_originate.always is arista.avd.defined(true) %}
+{%                     set neighbor_default_originate_cli = neighbor_default_originate_cli ~ " always" %}
+{%                 endif %}
+      {{ neighbor_default_originate_cli }}
+{%             endif %}
 {%             if peer_group.additional_paths.send is arista.avd.defined %}
 {%                 if peer_group.additional_paths.send == 'disabled' %}
       no neighbor {{ peer_group.name }} additional-paths send
@@ -2027,6 +2053,16 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.prefix_list_out is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} prefix-list {{ neighbor.prefix_list_out }} out
+{%             endif %}
+{%             if neighbor.default_originate.enabled is arista.avd.defined(true) %}
+{%                 set neighbor_default_originate_cli = "neighbor " ~ neighbor.ip_address ~ " default-originate" %}
+{%                 if neighbor.default_originate.route_map is arista.avd.defined %}
+{%                     set neighbor_default_originate_cli = neighbor_default_originate_cli ~ " route-map " ~ neighbor.default_originate.route_map %}
+{%                 endif %}
+{%                 if neighbor.default_originate.always is arista.avd.defined(true) %}
+{%                     set neighbor_default_originate_cli = neighbor_default_originate_cli ~ " always" %}
+{%                 endif %}
+      {{ neighbor_default_originate_cli }}
 {%             endif %}
 {%             if neighbor.additional_paths.send is arista.avd.defined %}
 {%                 if neighbor.additional_paths.send == 'disabled' %}
@@ -2594,6 +2630,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv4.domain_identifier is arista.avd.defined %}
       domain identifier {{ router_bgp.address_family_vpn_ipv4.domain_identifier }}
+{%         endif %}
+{%         if router_bgp.address_family_vpn_ipv4.next_hop.resolution_disabled is arista.avd.defined(true) %}
+      next-hop resolution disabled
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv4.route.import_match_failure_action is arista.avd.defined('discard') %}
       route import match-failure action discard

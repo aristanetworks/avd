@@ -38,7 +38,7 @@ wan_router:
     - name: ebgp-overlay-address-families-vpn-ipv4
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site422
-      overlay_address_families: [ vpn-ipv4 ]
+      overlay_address_families: [vpn-ipv4]
       id: 1
       l3_interfaces:
         - name: Ethernet1

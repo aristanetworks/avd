@@ -7,7 +7,7 @@ wan_router:
       name: missing-parent-of-l3-port-channel-sub-interface
       id: 1
       loopback_ipv4_pool: 192.168.0.0/24
-      vtep_loopback_ipv4_pool: 192.168.1.0/24
+      vtep_loopback_ipv4_pool: 192.168.255.0/24
       cv_pathfinder_site: Site411
       cv_pathfinder_region: AVD_Land_West
       l3_port_channels:
@@ -18,6 +18,16 @@ wan_router:
           peer: peer2
           peer_port_channel: Port-Channel15
           peer_ip: 192.168.1.15
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.255.0/24
 wan_carriers:
   - name: FOO
     path_group: INTERNET

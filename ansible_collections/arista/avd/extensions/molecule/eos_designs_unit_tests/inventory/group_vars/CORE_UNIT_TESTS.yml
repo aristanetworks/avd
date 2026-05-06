@@ -70,6 +70,8 @@ core_interfaces:
       ipv4_pool: 100.64.48.0-100.64.48.3, 100.64.48.4/30, 100.64.48.8-100.64.48.255
     - name: some_other_pool
       ipv4_pool: 100.123.123.0/24
+    - name: ipv6_only_pool
+      ipv6_pool: 2001:db8:64:ff::/64
   p2p_links_profiles:
     - name: isis_bb_profile
       speed: "forced 1000full"
@@ -181,7 +183,7 @@ core_interfaces:
         - CUSTOM_DESCRIPTION_ON_P2P_LINK_A
         - CUSTOM_DESCRIPTION_ON_P2P_LINK_B
       port_channel:
-        description: "CUSTOM_DESCRIPTION_ON_P2P_PORT_CHANNEL_{port_channel_id}"
+        description: "CUSTOM_DESCRIPTION_ON_P2P_PORT_CHANNEL_{interface}_PCID-{port_channel_id}"
         mode: active
         nodes_child_interfaces:
           - node: core-1-isis-sr-ldp
@@ -194,8 +196,8 @@ core_interfaces:
     - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 9
       descriptions:
-        - CUSTOM_DESCRIPTION_ON_P2P_LINK_A
-        - CUSTOM_DESCRIPTION_ON_P2P_LINK_B
+        - CUSTOM_DESCRIPTION_ON_P2P_LINK_A_{interface}
+        - CUSTOM_DESCRIPTION_ON_P2P_LINK_B_{interface}
       port_channel:
         mode: active
         channel_id_offset: 100
@@ -268,6 +270,25 @@ core_interfaces:
       # Structured config applied to member interfaces of the port-channel.
       ethernet_structured_config:
         description: Description set via ethernet_structured_config(core_interfaces)
+
+    # IPv6-only link from pool.
+    - nodes: [core-1-isis-sr-ldp, core-5-isis-sr-ldp]
+      id: 16
+      interfaces: [Ethernet26, Ethernet26]
+      ip_pool: ipv6_only_pool
+      include_in_underlay_protocol: false
+
+    # IPv6-only link with manual addresses.
+    - nodes: [core-1-isis-sr-ldp, core-5-isis-sr-ldp]
+      interfaces: [Ethernet27, Ethernet27]
+      ipv6: [2001:db8:100::1/64, 2001:db8:100::2/64]
+      include_in_underlay_protocol: false
+
+    # IPv6-only link from prefix.
+    - nodes: [core-1-isis-sr-ldp, core-5-isis-sr-ldp]
+      interfaces: [Ethernet28, Ethernet28]
+      ipv6_prefix: 2001:db8:200::/64
+      include_in_underlay_protocol: false
 
 l3_edge:
   p2p_links_ip_pools:

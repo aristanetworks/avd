@@ -53,7 +53,7 @@ generate_cv_tags:
 This specific use case is required to support Hybrid workflow of managing Campus fabrics with both AVD and CloudVision Studios where:
 
 - AVD is leveraged to build the fabric, deploy network services and infrastructure-related endpoints (firewalls, routers, access points, etc.).
-- Access Interface Configuration Studio (including it's Quick Actions sub-feature) is leveraged for day-2 operations to configure port profiles and ports using CloudVision UI.
+- Access Interface Configuration Studio (including its Quick Actions sub-feature) is leveraged for day-2 operations to configure port profiles and ports using CloudVision UI.
 
 Both `generate_cv_tags.topology_hints` an `generate_cv_tags.campus_fabric` must be set to `true` to globally enable generation of the Campus Topology tags:
 
@@ -128,7 +128,7 @@ Providing these input variables will lead to the automatic generation of the fol
 | `Campus` | Device | Identifies Campus fabric. | `<node_type_keys.key>.nodes.[].campus`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus`, else `<node_type_keys.key>.node_groups.[].campus`, else `<node_type_keys.key>.defaults.campus`, else `campus`. |
 | `Campus-Pod` | Device | Identifies Campus pod (spine devices and associated access pods). | `<node_type_keys.key>.nodes.[].campus_pod`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus_pod`, else `<node_type_keys.key>.node_groups.[].campus_pod`, else `<node_type_keys.key>.defaults.campus_pod`, else `campus_pod`. |
 | `Access-Pod` | Device | Identifies Campus access pod (Leaf and Member-Leaf devices). | `<node_type_keys.key>.nodes.[].campus_access_pod`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus_access_pod`, else `<node_type_keys.key>.node_groups.[].campus_access_pod`, else `<node_type_keys.key>.defaults.campus_access_pod`, else `campus_access_pod`. |
-| `Link-Type` | Interface | Identifies system responsible for managing interface (AVD/Studio) and it's purpose (fabric/edge/endpoint/etc.). | `ethernet_interfaces.[].metadata.peer_type`. |
+| `Link-Type` | Interface | Identifies system responsible for managing interface (AVD/Studio) and its purpose (fabric/edge/endpoint/etc.). | `ethernet_interfaces.[].metadata.peer_type`. |
 
 !!! warning
     If `cv_deploy` is targeting Campus devices that are not yet registered with CloudVision `Inventory and Topology` studio - `cv_deploy` will currently register those devices skipping their `Model` and `Interfaces`. This will by default not allow `Quick Actions` feature of the `Access Interface Configuration` CloudVision Studio to manage such devices until all `Network Updates` related to these devices are `Accepted` in CloudVision UI.

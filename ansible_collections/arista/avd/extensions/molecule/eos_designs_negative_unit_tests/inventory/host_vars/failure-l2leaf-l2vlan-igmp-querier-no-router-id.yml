@@ -24,9 +24,10 @@ l2leaf:
 tenants:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
-    igmp_snooping_querier:
-      enabled: true
-      source_address: main_router_id
+    igmp_snooping:
+      querier:
+        enabled: true
+        source_address: main_router_id
     l2vlans:
       - id: 110
         name: test_l2vlan

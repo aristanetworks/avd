@@ -14,9 +14,10 @@ l3leaf:
 tenants:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
-    igmp_snooping_querier:
-      enabled: true
-      source_address: none
+    igmp_snooping:
+      querier:
+        enabled: true
+        source_address: none
     l2vlans:
       - id: 110
         name: research1

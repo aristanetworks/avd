@@ -24,7 +24,7 @@ Configurations for the above tools can be found in:
 
 - [pyproject.toml](https://github.com/aristanetworks/avd/blob/devel/pyproject.toml)
 - [.pre-commit-config.yaml](https://github.com/aristanetworks/avd/blob/devel/.pre-commit-config.yaml)
-- [pylintrc](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/pylintrc) for the Ansible Collection
+- [pylintrc-ansible](https://github.com/aristanetworks/avd/blob/devel/pylintrc-ansible) for the Ansible Collection
 - [pylintrc](https://github.com/aristanetworks/avd/blob/devel/pylintrc) for everything else
 
 ## Jinja2 Syntax and guidelines

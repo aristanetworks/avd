@@ -1,0 +1,49 @@
+type: l3leaf
+
+mgmt_gateway: 192.168.200.1
+
+underlay_multicast_pim_sm: true
+evpn_multicast: true
+
+tenants:
+   # Test deprecated tenant-level igmp_snooping_querier key.
+  - name: Tenant_G
+    mac_vrf_vni_base: 30000
+    igmp_snooping_querier:
+      enabled: true
+      source_address: 1.1.1.1
+      version: 3
+    l2vlans:
+      # Expected: querier enabled, address 1.1.1.1, version 3 (inherited from deprecated tenant igmp_snooping_querier)
+      - id: 301
+        name: "VLAN_301"
+        tags: ["test_l2"]
+      # Expected: querier enabled, address 2.2.2.2, version 2 (deprecated L2VLAN igmp_snooping_querier overrides tenant)
+      - id: 302
+        name: "VLAN_302"
+        tags: ["test_l2"]
+        igmp_snooping_querier:
+          source_address: 2.2.2.2
+          version: 2
+
+  # Test deprecated L2VLAN-level igmp_snooping_enabled key.
+  - name: Tenant_H
+    mac_vrf_vni_base: 40000
+    l2vlans:
+      # Expected: igmp snooping disabled (from deprecated igmp_snooping_enabled: false)
+      - id: 401
+        name: "VLAN_401"
+        tags: ["test_l2"]
+        igmp_snooping_enabled: false
+    vrfs:
+      - name: IGMP_QUERIER_TEST_3
+        description: "IGMP_QUERIER_TEST"
+        vrf_vni: 41
+        svis:
+          - id: 22
+            name: "VLAN_22"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.0.22.1/24
+            igmp_snooping_querier:
+              source_address: main_router_id

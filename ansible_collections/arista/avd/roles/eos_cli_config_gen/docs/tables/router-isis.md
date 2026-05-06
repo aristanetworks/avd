@@ -111,6 +111,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.address_family_ipv6.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_paths</samp>](## "router_isis.address_family_ipv6.maximum_paths") | Integer |  |  | Min: 1<br>Max: 128 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_all_interfaces</samp>](## "router_isis.address_family_ipv6.bfd_all_interfaces") | Boolean |  |  |  | Enable BFD on all interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multi_topology</samp>](## "router_isis.address_family_ipv6.multi_topology") | Boolean |  |  |  | Enable IS-IS multi-topology for the IPv6 address family.<br>Required for forming IPv6 adjacencies on IS-IS interfaces that do not have an IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fast_reroute_ti_lfa</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode") | String |  |  | Valid Values:<br>- <code>link-protection</code><br>- <code>node-protection</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "router_isis.address_family_ipv6.fast_reroute_ti_lfa.level") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code> | Optional, default is to protect all levels. |
@@ -355,6 +356,10 @@
 
         # Enable BFD on all interfaces.
         bfd_all_interfaces: <bool>
+
+        # Enable IS-IS multi-topology for the IPv6 address family.
+        # Required for forming IPv6 adjacencies on IS-IS interfaces that do not have an IPv4 address.
+        multi_topology: <bool>
         fast_reroute_ti_lfa:
           mode: <str; "link-protection" | "node-protection">
 

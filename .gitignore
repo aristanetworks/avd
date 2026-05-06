@@ -54,6 +54,7 @@ uv.lock
 # Hash files created when running pyavd from source
 python-avd/pyavd/*/j2templates/.hash
 python-avd/pyavd/*/schema/schema_fragments/.hash
+schemas/*/schema_fragments/.hash
 
 # gz of schema store
 python-avd/pyavd/_schema/schemas.json.gz
@@ -79,3 +80,9 @@ Cargo.lock
 
 # Coverage
 /lcov.info
+
+# AI configs, skills, etc.
+.codex/*
+.claude/*
+!.claude/skills
+!.agents/skills

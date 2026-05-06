@@ -35,7 +35,7 @@ class RouterBgpMixin(Protocol):
                 raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
             if p2p_link.include_in_underlay_protocol:
-                self.shared_utils.set_once_peer_group_ipv4_underlay_peers(self.structured_config, self.custom_structured_configs)
+                self.structured_config_utils.set_once_peer_group_ipv4_underlay_peers()
 
             # RFC5549
             # When routing protocol is not set, we just add the neighbor_interface and continue.

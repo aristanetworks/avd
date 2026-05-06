@@ -133,6 +133,49 @@ class CVPathfinderMetadata:
 
 
 @dataclass
+class CVWorkspaceBuildConfigValidationError:
+    error_msg: str | None = None
+    """EOS-returned error message."""
+    line_num: int | None = None
+    """Line number of the violating configuration line within the configlet."""
+    configlet_name: str | None = None
+    """Name of the configlet which raised validation error."""
+
+
+@dataclass
+class CVWorkspaceBuildConfigValidationWarning:
+    warning_msg: str | None = None
+    """EOS-returned warning message."""
+    line_num: int | None = None
+    """Line number of the violating configuration line within the configlet."""
+    configlet_name: str | None = None
+    """Name of the configlet which returned validation warning."""
+
+
+@dataclass
+class CVWorkspaceBuildConfigValidationResult:
+    errors: list[CVWorkspaceBuildConfigValidationError] = field(default_factory=list)
+    warnings: list[CVWorkspaceBuildConfigValidationWarning] = field(default_factory=list)
+
+
+@dataclass
+class CVWorkspaceDeviceBuildResult:
+    device: CVDevice
+    config_validation: CVWorkspaceBuildConfigValidationResult
+    """Configuration validation results."""
+
+
+@dataclass
+class CVWorkspaceBuildWarningsConfig:
+    enabled: bool = True
+    """Fetch and expose Workspace build warnings."""
+    suppress_patterns: list[str] = field(default_factory=list)
+    """Arbitrary list of the EOS CLI warning string patterns to suppress."""
+    suppress_portfast: bool = False
+    """Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports."""
+
+
+@dataclass
 class CVWorkspace:
     name: str = field(default_factory=lambda: f"AVD {datetime.now()}")
     description: str | None = None
@@ -155,6 +198,12 @@ class CVWorkspace:
     """The final state of the Workspace. Do not set this manually."""
     change_control_id: str | None = None
     """Do not set this manually."""
+    build_id: str | None = None
+    """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt. Do not set this manually."""
+    build_warnings: CVWorkspaceBuildWarningsConfig = field(default_factory=CVWorkspaceBuildWarningsConfig)
+    """Configuration settings to control fetching and exposing Workspace build warnings."""
+    device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
+    """Details of per-device Workspace build results. Do not set this manually."""
 
 
 @dataclass
@@ -311,6 +360,7 @@ class AvdManifest:
     It can contain a full container hierarchy, only configlets, or both.
     """
 
+    configlet_policy: Literal["managed", "additive"] = field(default="managed")
     configlets: tuple[AvdConfiglet, ...] = field(default_factory=tuple)
     containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
 
@@ -318,13 +368,14 @@ class AvdManifest:
     def from_dict(cls, data: dict[str, Any]) -> AvdManifest:
         """Build an AvdManifest instance from an input dictionary."""
         try:
+            configlet_policy = data.get("configlet_policy", "managed")
             configlets_data = data.get("configlets", [])
             containers_data = data.get("containers", [])
 
             configlets = tuple(AvdConfiglet.from_dict(configlet_data) for configlet_data in configlets_data)
             containers = tuple(AvdContainer.from_dict(container_data) for container_data in containers_data)
 
-            return cls(configlets=configlets, containers=containers)
+            return cls(configlet_policy=configlet_policy, configlets=configlets, containers=containers)
         except (KeyError, TypeError, ValueError) as e:
             msg = f"Failed to build the static configuration manifest. Please check your input data. Original error: {e}"
             raise ValueError(msg) from e
@@ -334,6 +385,7 @@ class AvdManifest:
 class CVManifest:
     """CloudVision manifest to be created/updated to the "Static Configuration" Studio."""
 
+    configlet_policy: Literal["managed", "additive"]
     configlets: tuple[CVConfiglet, ...]
     containers: tuple[CVContainer, ...]
 
@@ -358,7 +410,7 @@ class CVManifest:
             cls._process_container_recursively(container=root_container, parent_path="", cv_configlet_map=cv_configlet_map, cv_container_map=cv_container_map)
 
         # Return the completed manifest.
-        return cls(configlets=tuple(cv_configlet_map.values()), containers=tuple(cv_container_map.values()))
+        return cls(configlet_policy=avd_manifest.configlet_policy, configlets=tuple(cv_configlet_map.values()), containers=tuple(cv_container_map.values()))
 
     @classmethod
     def _process_container_recursively(

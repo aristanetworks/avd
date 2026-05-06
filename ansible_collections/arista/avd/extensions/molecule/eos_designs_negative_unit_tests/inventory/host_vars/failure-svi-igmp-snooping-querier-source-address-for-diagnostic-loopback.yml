@@ -14,9 +14,10 @@ l3leaf:
 tenants:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
-    igmp_snooping_querier:
-      enabled: true
-      source_address: diagnostic_loopback
+    igmp_snooping:
+      querier:
+        enabled: true
+        source_address: diagnostic_loopback
     vrfs:
       - name: IGMP_QUERIER_TEST_3
         description: "IGMP_QUERIER_TEST_3"

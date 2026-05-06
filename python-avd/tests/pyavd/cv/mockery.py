@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+from asyncio.exceptions import TimeoutError as AsyncioTimeoutError
 from hashlib import sha1
 from logging import getLogger
 from os import environ
@@ -11,6 +12,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, NoReturn
 
 from grpclib import GRPCError, Status
+from grpclib.exceptions import ProtocolError, StreamTerminatedError
 
 from pyavd._cv.workflows.models import CVDevice
 from pyavd._utils import get_v2
@@ -59,6 +61,28 @@ def get_recording_file(route: str, request: IProtoMessage, cv_server: str, recor
     return recording_file
 
 
+def _serialize_exception(e: Exception) -> str:
+    """Serialize a known exception raised by the grpclib to a JSON string for recording."""
+    # non-OK gRPC status (e.g. NOT_FOUND, UNAVAILABLE)
+    if isinstance(e, GRPCError):
+        raise_dict = {"type": "GRPCError", "status": str(e.args[0]).removeprefix("Status."), "message": e.args[1]}
+    # RST_STREAM from server, TCP connection lost, GOAWAY frame, or HTTP/2 protocol error.
+    elif isinstance(e, StreamTerminatedError):
+        raise_dict = {"type": "StreamTerminatedError", "message": e.args[0]}
+    # Local grpc-timeout deadline expired
+    elif isinstance(e, AsyncioTimeoutError):
+        raise_dict = {"type": "AsyncioTimeoutError", "message": e.args[0]}
+    # Client code violated the gRPC protocol (e.g. double recv, send after end).
+    elif isinstance(e, ProtocolError):
+        raise_dict = {"type": "ProtocolError", "message": e.args[0]}
+    # Unknown/new exception - serialize dynamically.
+    else:
+        raise_dict = {"type": type(e).__name__}
+        if e.args:
+            raise_dict["message"] = e.args[0]
+    return json.dumps({"raise": raise_dict}, indent=4)
+
+
 async def recording_unary_unary(
     self: ServiceStub,
     route: str,
@@ -76,8 +100,8 @@ async def recording_unary_unary(
     # Catch returned gRPC Exception (like Workspace is not found, etc.)
     except Exception as e:
         LOGGER.debug("recording_unary_unary: Got exception executing request '%s': %s", request, e)
-        # Dump gRPC exception details into the recording file so that it can be easily replayed
-        recording_file.write_text(f'{{\n\t"raise": {{\n\t\t"status": "{str(e.args[0]).removeprefix("Status.")}",\n\t\t"message": "{e.args[1]}"\n\t}}\n}}')
+        # Dump exception details into the recording file so that it can be easily replayed
+        recording_file.write_text(_serialize_exception(e))
         # Re-raise exception so that it is passed to and processed by our gRPC decorator
         raise
     else:
@@ -98,13 +122,31 @@ async def recording_unary_stream(
     LOGGER.info("recording_unary_stream: Recording API request: %s", request)
     recording_file = get_recording_file(route, request, cv_server=self.channel._host)
     messages_as_json = []
+    exception_only = False
     try:
         async for message in self._org_unary_stream(route, request, response_type, timeout=timeout, deadline=deadline, metadata=metadata):
             messages_as_json.append(message.to_json(indent=4))
             yield message
+    # Catch returned gRPC Exception
+    except Exception as e:
+        LOGGER.debug("recording_unary_stream: Got exception executing request '%s': %s", request, e)
+        # If no messages were yet recorded - just dump exception details into the recording file so that exception can be re-raised.
+        if not messages_as_json:
+            recording_file.write_text(_serialize_exception(e))
+            exception_only = True
+        # If some messages were already recorded - dump exception into the list of messages.
+        else:
+            messages_as_json.append(_serialize_exception(e))
+        # Re-raise exception so that it is passed to and processed by our gRPC decorator
+        raise
     finally:
-        result = f"[{', '.join(messages_as_json)}]"
-        recording_file.write_text(result)
+        if not exception_only:
+            # Write messages together with stringified exception if some messages were recorded prior to exception
+            if messages_as_json:
+                recording_file.write_text(f"[{', '.join(messages_as_json)}]")
+            # No messages were received. Write an empty list
+            else:
+                recording_file.write_text("[]")
 
 
 async def playback_unary_unary(
@@ -156,7 +198,7 @@ async def playback_static_recording_unary_unary(
         raise FileNotFoundError(recording_file, "for request", request)
     recording = json.loads(recording_file.read_text())
     if recorded_exception := get_v2(recording, "raise"):
-        raise GRPCError(Status[recorded_exception["status"]], recorded_exception["message"])
+        raise_recorded_exception(recorded_exception)
     return response_type().from_dict(recording["payload"])
 
 
@@ -173,9 +215,14 @@ async def playback_static_recording_unary_stream(
     if not recording_file.exists():
         raise FileNotFoundError(recording_file, "for request", request)
     recording = json.loads(recording_file.read_text())
+    # Raise if recording file only contains exception
     if recorded_exception := get_v2(recording, "raise"):
-        raise GRPCError(Status[recorded_exception["status"]], recorded_exception["message"])
+        raise_recorded_exception(recorded_exception)
+    # Replay messages
     for message_as_dict in recording["payload"]:
+        # If exception was sent between messages during recording - raise it the same way it was raised during recording
+        if recorded_exception := get_v2(message_as_dict, "raise"):
+            raise_recorded_exception(recorded_exception)
         yield response_type().from_dict(message_as_dict)
 
 
@@ -195,3 +242,26 @@ async def mocked_cv_client_aenter(self: CVClient) -> CVClient:
     self._channel._host = self._servers[0]
     self._metadata = {}
     return self
+
+
+# Helper function to raise exception based on the previously recorded (in a form of stringified json) exception
+def raise_recorded_exception(recorded_exception: dict[str, Any]) -> None:
+    exception_type = get_v2(recorded_exception, "type")
+    exception_status = get_v2(recorded_exception, "status")
+    exception_message = get_v2(recorded_exception, "message")
+
+    match exception_type:
+        case "GRPCError":
+            raise GRPCError(Status[exception_status], exception_message)
+        case "StreamTerminatedError":
+            raise StreamTerminatedError(exception_message)
+        case "AsyncioTimeoutError":
+            raise AsyncioTimeoutError(exception_message)
+        case "ProtocolError":
+            raise ProtocolError(exception_message)
+        case _:
+            msg = f"Unknown recorded exception type '{exception_type}'"
+            if exception_message:
+                msg += f": {exception_message}"
+            msg += ". Update mockery.py."
+            raise NotImplementedError(msg)

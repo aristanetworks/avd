@@ -177,9 +177,35 @@ $defs:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
-        igmp:
+        igmp_snooping:
+          documentation_options:
+            table: network-services-multicast-settings
           type: dict
           keys:
+            querier:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                source_address:
+                  type: str
+                  description: |-
+                    The value of `source_address` will be interpreted according to these rules:
+                    - `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                    - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
+                    - `main_router_id` will configure the Loopback0 IP address.
+                    - An IPv4 address will be used directly as the source address.
+                  default: main_router_id
+                version:
+                  type: int
+                  description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                  convert_types:
+                    - str
+                  valid_values:
+                    - 1
+                    - 2
+                    - 3
             fast_leave:
               type: bool
               description: |-
@@ -218,7 +244,7 @@ $defs:
                 warning: true
                 removed: false
                 remove_in_version: 7.0.0
-                new_key: <network_services_key.key>.igmp.fast_leave
+                new_key: igmp_snooping.fast_leave under the Tenant
               description: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
             always_redistribute_igmp:
               type: bool
@@ -340,6 +366,11 @@ $defs:
             Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
             When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: igmp_snooping.querier
           keys:
             enabled:
               type: bool
@@ -455,6 +486,20 @@ $defs:
                   Enable or disable route target export for the VRF for all address families.
                   This setting applies only to the automatically generated route targets
                   and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_import_evpn_remote:
+                type: bool
+                description: |-
+                  Enable or disable route target import for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_export_evpn_remote:
+                type: bool
+                description: |-
+                  Enable or disable route target export for the VRF for EVPN remote.
+                  Only considered when `evpn_gateway.evpn_l3` is enabled and `evpn_gateway.evpn_l3.mode` is `rd-rt-rewrite`.
+                  This setting applies only to the automatically generated route targets and does not affect any entries defined under `additional_route_targets`.
                 default: true
               evpn_vlan_bundle:
                 type: str
@@ -856,7 +901,9 @@ $defs:
                       type: list
                       items:
                         type: str
-                        description: Interface name.
+                        description: |-
+                          Interface name.
+                          For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.
                     encapsulation_dot1q_vlan:
                       type: list
                       description: For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
@@ -997,6 +1044,10 @@ $defs:
                       $ref: "eos_designs#/$defs/flow_tracking_link"
                       description: |-
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                    sflow:
+                      type: bool
+                      description: |-
+                        Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces` setting.
                     monitor_sessions:
                       type: list
                       $ref: "eos_designs#/$defs/monitor_sessions"
@@ -1704,7 +1755,7 @@ $defs:
                 type: str
                 description: |-
                   L2VLAN profile name.
-                  The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+                  The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
               tags:
                 type: list
                 description: |
@@ -1715,6 +1766,28 @@ $defs:
                 items:
                   type: str
                   default: all
+        vpws:
+          type: dict
+          description: |-
+            VPWS pseudowire settings for the tenant.
+            To render `mpls_control_word`, `mtu`, and `label_flow` in the BGP VPWS configuration,
+            both `point_to_point_services` and `pseudowire_rt_base` must be set under the tenant.
+          keys:
+            # TODO: AVD 7.0.0 Change default value true
+            mpls_control_word:
+              type: bool
+              default: false
+              description: |-
+                Enable or disable MPLS control word for VPWS pseudowires.
+            mtu:
+              type: int
+              convert_types:
+                - str
+              description: MTU for VPWS pseudowires.
+            label_flow:
+              type: bool
+              description: |-
+                Enable or disable MPLS label flow for VPWS pseudowires.
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings
@@ -1801,6 +1874,7 @@ $defs:
                       description: |
                         Interfaces patched to the pseudowire on this endpoints.
                         The list of interfaces is mapped to the list of nodes, so they must have the same length.
+                        For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.
                       required: true
                       min_length: 1
                       items:

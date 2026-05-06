@@ -4,34 +4,33 @@
 # when generating molecule artifacts.
 dev = [
     "anta==1.8.0",
-    "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.3",
+    "pyavd-utils==0.0.4",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     # dev requirements"
     {include-group = "pytest"},
     {include-group = "molecule"},
-    "ansible-doc-extractor>=0.1.10",
-    "ansible-lint>=25.1.3",
+    "ansible-doc-extractor>=0.1.11",
+    "ansible-lint>=26.4.0",
     "aristaproto[compiler]==0.1.4",
-    "bump-my-version>=1.2.4",
-    "codespell>=2.2.6",
+    "bump-my-version>=1.3.0",
+    "codespell>=2.4.2",
     "docker>=7.1.0",
-    "identify>=1.4.20",
-    "jsonschema-rs>=0.24",
-    "pre-commit-hooks>=3.3.0",
-    "pre-commit>=3.2.0",
-    "pylint>=3.2.6",
-    "ruff==0.15.6",
-    "setuptools>=77.0", # for pyright check in CI
-    "tox>4",
+    "identify>=2.6.18",
+    "jsonschema-rs>=0.46.0",
+    "pre-commit-hooks>=6.0.0",
+    "pre-commit>=4.5.1",
+    "pylint>=4.0.5",
+    "ruff==0.15.12",
+    "setuptools>=82.0.1", # for pyright check in CI
+    "tox>=4.52.1",
     "twine>=6.2.0",
-    "yamllint>=1.37.1",
+    "yamllint>=1.38.0",
 ]
 coverage = [
-    "coverage[toml]==7.13.4",
+    "coverage[toml]==7.13.5",
 ]
 doc = [
     "mkdocs<2",
@@ -48,16 +47,16 @@ doc = [
     "mkdocstrings[python]",
 ]
 molecule = [
-    "molecule>=25.11.0",
+    "molecule>=26.4.0",
     "molecule-plugins[docker]>=25.8.12",
 ]
 pytest = [
     "ansible-core>=2.16.0,<2.21.0",
     "anta==1.8.0",
-    "pytest>=8.2.0",
-    "pytest-asyncio>=1.2.0",
-    "pydantic>=2.3.0",
-    "referencing>=0.35.0",
+    "pytest>=9.0.3",
+    "pytest-asyncio>=1.3.0",
+    "pydantic>=2.11.10",
+    "referencing>=0.37.0",
 ]
 
 [tool.ruff]
@@ -257,7 +256,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.1.0-dev1"
+current_version = "6.2.0-dev2"
 
 allow_dirty = true
 commit = false

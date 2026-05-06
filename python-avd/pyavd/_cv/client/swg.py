@@ -72,7 +72,7 @@ class SwgMixin(Protocol):
 
         return response.time, response.value
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def wait_for_swg_endpoint_status(
         self: CVClientProtocol,
         device_id: str,

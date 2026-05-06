@@ -112,6 +112,11 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def static_routes(self) -> None:
         """static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf."""
+        # Skip static routes if mgmt_ip is set to "dhcp" and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true,
+        # since DHCP will provide the default route
+        if self.shared_utils.node_config.mgmt_ip == "dhcp" and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+            return
+
         if self.shared_utils.mgmt_gateway is None:
             return
 
@@ -304,10 +309,17 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.queue_monitor_length = queue_monitor_length
 
     @structured_config_contributor
-    def ip_name_server(self) -> None:
-        """Set ip name servers using old name_servers model and new dns_settings model. Results will be combined."""
+    def dns_settings(self) -> None:
+        """
+        Configure DNS settings from the dns_settings input model.
+
+        Sets IP name servers (with VRF and priority), IP hosts, DNS domain, domain list, and domain-lookup source interfaces per VRF.
+        """
         if not self.inputs.dns_settings:
             return
+
+        if self.inputs.dns_settings.ip_hosts:
+            self.structured_config.ip_hosts = self.inputs.dns_settings.ip_hosts
 
         if self.inputs.dns_settings.domain:
             self.structured_config.dns_domain = self.inputs.dns_settings.domain
@@ -357,6 +369,10 @@ class AvdStructuredConfigBaseProtocol(
             level=settings.level,
         )
 
+        # Apply monitor_layer1 settings
+        if settings.monitor_layer1.enabled:
+            self.structured_config.monitor_layer1 = settings.monitor_layer1._cast_as(EosCliConfigGen.MonitorLayer1)
+
         # Temporary structure to detect source interface conflicts
         vrf_logging_config = EosCliConfigGen.Logging.Vrfs()
 
@@ -385,6 +401,54 @@ class AvdStructuredConfigBaseProtocol(
                 protocol=host.protocol,
                 ssl_profile=host.ssl_profile,
                 ports=EosCliConfigGen.Logging.VrfsItem.HostsItem.Ports(items=host.ports),
+            )
+
+    @structured_config_contributor
+    def monitor_connectivity(self) -> None:
+        """Set monitor_connectivity based on the input data model."""
+        if not self.inputs.monitor_connectivity:
+            return
+        monitor_connectivity = self.structured_config.monitor_connectivity._update(
+            shutdown=self.inputs.monitor_connectivity.shutdown,
+            interval=self.inputs.monitor_connectivity.interval,
+            interface_sets=self.inputs.monitor_connectivity.interface_sets._cast_as(EosCliConfigGen.MonitorConnectivity.InterfaceSets),
+            address_only=self.inputs.monitor_connectivity.address_only,
+            name_server_group=self.inputs.monitor_connectivity.name_server_group,
+        )
+        if (local_interfaces := self.inputs.monitor_connectivity.local_interfaces) is not None:
+            if local_interfaces in self.inputs.monitor_connectivity.interface_sets:
+                monitor_connectivity.local_interfaces = local_interfaces
+            else:
+                msg = f"monitor_connectivity.local_interfaces '{local_interfaces}' has to be defined in monitor_connectivity.interface_sets."
+                raise AristaAvdInvalidInputsError(msg)
+        self._set_monitor_connectivity_hosts(
+            self.inputs.monitor_connectivity.hosts,
+            monitor_connectivity.hosts,
+            self.inputs.monitor_connectivity.interface_sets,
+            "monitor_connectivity",
+        )
+        for vrf in self.inputs.monitor_connectivity.vrfs:
+            monitor_connectivity_vrf = monitor_connectivity.vrfs.append_new(
+                name=vrf.name,
+                description=vrf.description,
+                single_line_description=vrf.single_line_description,
+                interface_sets=vrf.interface_sets._cast_as(EosCliConfigGen.MonitorConnectivity.VrfsItem.InterfaceSets),
+                address_only=vrf.address_only,
+            )
+            if (vrf_local_interfaces := vrf.local_interfaces) is not None:
+                if vrf_local_interfaces in vrf.interface_sets:
+                    monitor_connectivity_vrf.local_interfaces = vrf_local_interfaces
+                else:
+                    msg = (
+                        f"monitor_connectivity.vrfs[name={vrf.name}].local_interfaces '{vrf_local_interfaces}' "
+                        f"has to be defined in monitor_connectivity.vrfs[name={vrf.name}].interface_sets."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+            self._set_monitor_connectivity_hosts(
+                vrf.hosts,
+                monitor_connectivity_vrf.hosts,
+                vrf.interface_sets,
+                f"monitor_connectivity.vrfs[name={vrf.name}]",
             )
 
     @structured_config_contributor
@@ -491,15 +555,25 @@ class AvdStructuredConfigBaseProtocol(
     def management_interfaces(self) -> None:
         """management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts, mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables."""
         if self.shared_utils.node_config.mgmt_ip or self.shared_utils.node_config.ipv6_mgmt_ip:
+            # Check if mgmt_ip is set to "dhcp"
+            is_dhcp = self.shared_utils.node_config.mgmt_ip == "dhcp"
+
             interface_settings = EosCliConfigGen.ManagementInterfacesItem(
                 name=self.shared_utils.mgmt_interface,
                 description=self.inputs.mgmt_interface_description,
                 shutdown=False,
                 vrf=self.inputs.mgmt_interface_vrf,
                 ip_address=self.shared_utils.node_config.mgmt_ip,
-                gateway=self.shared_utils.mgmt_gateway,
                 type="oob",
             )
+
+            # For DHCP, automatically accept default route instead of using gateway
+            if is_dhcp and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
+                interface_settings.dhcp_client_accept_default_route = True
+            else:
+                # For static IP, set gateway (metadata field, actual routing done via static_routes)
+                interface_settings.gateway = self.shared_utils.mgmt_gateway
+
             """
             inserting ipv6 variables if ipv6_mgmt_ip is set
             """
@@ -709,6 +783,9 @@ class AvdStructuredConfigBaseProtocol(
         else:
             server_kwargs["key"] = self._get_tacacs_or_radius_server_password(server)
 
+        server_kwargs["timeout"] = server.timeout
+        server_kwargs["retransmit"] = server.retransmit
+
         if server_vrf == "default":
             self.structured_config.radius_server.servers.append_new(**server_kwargs)
         else:
@@ -871,6 +948,41 @@ class AvdStructuredConfigBaseProtocol(
     def _act_ensure_eapi_access(self) -> bool:
         """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
         return self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_ensure_eapi_access
+
+    @structured_config_contributor
+    def management_settings(self) -> None:
+        """Configures management settings based on the input data model."""
+        if not (management_settings := self.inputs.management_settings):
+            return
+
+        # Apply management console settings
+        if management_settings.console:
+            self.structured_config.management_console = management_settings.console._cast_as(EosCliConfigGen.ManagementConsole)
+
+        # Apply banner settings
+        if management_settings.banners:
+            self.structured_config.banners = management_settings.banners._cast_as(EosCliConfigGen.Banners)
+
+    @structured_config_contributor
+    def ip_dhcp_relay(self: AvdStructuredConfigBaseProtocol) -> None:
+        """Set ip dhcp relay global configurations."""
+        if not (relay_settings := self.inputs.general_settings.dhcp_relay):
+            return
+
+        if relay_settings.information_option:
+            self.structured_config.ip_dhcp_relay.information_option = relay_settings.information_option
+
+    @structured_config_contributor
+    def dhcp_relay(self: AvdStructuredConfigBaseProtocol) -> None:
+        """Set general relay agent configuration."""
+        if not (relay_settings := self.inputs.general_settings.dhcp_relay):
+            return
+
+        if self.shared_utils.vtep:
+            if relay_settings.tunnel_requests_disabled:
+                self.structured_config.dhcp_relay.tunnel_requests_disabled = relay_settings.tunnel_requests_disabled
+            if self.shared_utils.mlag and relay_settings.mlag_peerlink_requests_disabled:
+                self.structured_config.dhcp_relay.mlag_peerlink_requests_disabled = relay_settings.mlag_peerlink_requests_disabled
 
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):
