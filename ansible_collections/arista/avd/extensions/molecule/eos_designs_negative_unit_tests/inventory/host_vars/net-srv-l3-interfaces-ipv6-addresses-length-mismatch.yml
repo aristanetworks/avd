@@ -1,0 +1,36 @@
+---
+# Minimum config to only test the specific feature.
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: net-srv-l3-interfaces-ipv6-addresses-length-mismatch
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: TENANT_B
+    vrfs:
+      - name: TENANT_B_WAN
+        vrf_id: 20
+        l3_interfaces:
+          - description: TENANT_B_SITE_3
+            enabled: true
+            interfaces:
+              - Ethernet6
+            # ipv6_addresses length (2) does not match nodes length (1)
+            ip_addresses:
+              - 192.168.48.4/31
+            ipv6_addresses:
+              - 2001:db8::1/64
+              - 2001:db8::2/64
+            nodes:
+              - net-srv-l3-interfaces-ipv6-addresses-length-mismatch
+
+expected_error_message: >-
+  Length of lists 'interfaces', 'nodes', 'ip_addresses'/'ipv6_addresses' and 'descriptions' (if used) must match
+  for l3_interfaces for TENANT_B_WAN in TENANT_B. At least one of 'ip_addresses' or 'ipv6_addresses' must be set.

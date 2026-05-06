@@ -925,6 +925,7 @@ $defs:
                         Length must match `nodes`. Can be used instead of or together with `ip_addresses`.
                       items:
                         type: str
+                        min_length: 1
                         description: IPv6 address/Mask.
                     static_routes:
                       type: list
@@ -1169,6 +1170,7 @@ $defs:
                         For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
                       items:
                         type: str
+                        min_length: 1
                         description: IPv6 address/Mask.
                     encapsulation_dot1q_vlan:
                       description: For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be specified.

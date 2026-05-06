@@ -145,7 +145,8 @@ class EthernetInterfacesMixin(Protocol):
 
                 if l3_interface.ipv6_addresses and (ipv6_address := l3_interface.ipv6_addresses[node_index]):
                     interface.ipv6_addresses.append(ipv6_address)
-                    self.structured_config.ipv6_unicast_routing = True
+                    if vrf.name == "default":
+                        self.structured_config.ipv6_unicast_routing = True
 
                 if l3_interface.structured_config:
                     self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface_name)._deepmerge(
