@@ -1,0 +1,10 @@
+---
+### VRFs ###
+
+vrfs:
+  - name: MGMT
+    ip_routing: false
+  - name: TENANT_A
+    ip_routing: true
+  - name: TENANT_B
+    ip_routing_ipv6_interfaces: true

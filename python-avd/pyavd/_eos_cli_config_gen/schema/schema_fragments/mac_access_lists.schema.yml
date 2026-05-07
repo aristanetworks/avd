@@ -26,8 +26,7 @@ keys:
               sequence:
                 type: int
                 convert_types:
-                - str
-              # Action is not required key as `remark` will be added in future.
+                  - str
               action:
                 type: str
                 required: true
