@@ -108,6 +108,7 @@ keys:
                       type: str
                       default: "7"
                       valid_values:
+                        - "0"
                         - "7"
                         - "8a"
                       convert_types:

@@ -35,7 +35,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cvx.services.openstack.regions.[].name") | String | Required, Unique |  |  | The name of the region. This must match what is in use in the ML2 driver configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "cvx.services.openstack.regions.[].username") | String |  |  |  | 'admin' or valid keystone user. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "cvx.services.openstack.regions.[].password") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "cvx.services.openstack.regions.[].password_type") | String |  | `7` | Valid Values:<br>- <code>7</code><br>- <code>8a</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "cvx.services.openstack.regions.[].password_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "cvx.services.openstack.regions.[].tenant") | String |  |  |  | Tenant name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keystone</samp>](## "cvx.services.openstack.regions.[].keystone") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_url</samp>](## "cvx.services.openstack.regions.[].keystone.auth_url") | String |  |  | Pattern: `http(s?)://[a-zA-Z0-9.]+(:?\d+)?/v(2\.0|3)/` |  |
@@ -93,7 +93,7 @@
               # 'admin' or valid keystone user.
               username: <str>
               password: <str>
-              password_type: <str; "7" | "8a"; default="7">
+              password_type: <str; "0" | "7" | "8a"; default="7">
 
               # Tenant name.
               tenant: <str>

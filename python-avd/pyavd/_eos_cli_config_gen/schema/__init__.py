@@ -3662,7 +3662,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class RegionsItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    PasswordType: TypeAlias = Literal["7", "8a"]
+                    PasswordType: TypeAlias = Literal["0", "7", "8a"]
 
                     class Keystone(AvdModel):
                         """Subclass of AvdModel."""
