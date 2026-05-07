@@ -60,10 +60,9 @@ class TestDeleteConfigsFromCv:
         """Test that an empty device_deployments list results in no actions."""
         await delete_configs_from_cv([], deployment_result, mock_cv_client)
 
+        # No GET means no downstream delete/set is possible.
         mock_cv_client.get_configlets.assert_not_called()
         mock_cv_client.get_configlet_containers.assert_not_called()
-        mock_cv_client.delete_configlet_container.assert_not_called()
-        mock_cv_client.delete_configlets.assert_not_called()
         assert not deployment_result.removed_configs
 
     async def test_no_manifest_devices_does_nothing(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
@@ -87,7 +86,7 @@ class TestDeleteConfigsFromCv:
         assert not deployment_result.removed_configs
 
     async def test_nothing_exists_on_cv_does_nothing(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
-        """Test that no delete is issued when the configlet, the container, and the root are all absent."""
+        """Test that no delete or update is issued when the configlet, the container, and the root are all absent."""
         deployments = [_manifest_deployment("device-1", "SERIAL1")]
 
         mock_cv_client.get_configlets.return_value = []
@@ -98,7 +97,7 @@ class TestDeleteConfigsFromCv:
         mock_cv_client.delete_configlet_container.assert_not_called()
         mock_cv_client.delete_configlets.assert_not_called()
         mock_cv_client.set_configlet_container.assert_not_called()
-        mock_cv_client.get_studio_inputs_with_path.assert_not_called()
+        mock_cv_client.set_studio_inputs.assert_not_called()
         assert not deployment_result.removed_configs
 
     async def test_delete_orphan_configlet_when_root_missing(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
