@@ -6286,13 +6286,19 @@ keys:
     documentation_options:
       table: fabric-settings
     description: "This feature allows pure IPv6 underlay routing protocol with numbered
-      addresses.\nCurrently sets both underlay and overlay, including MLAG, to use
-      IPv6 addresses.\nCurrently BGP peer-groups are named with IPv4 by default. This
-      can be modified under `bgp_peer_groups`.\nRequires:\n  - \"underlay_ipv6: true\"\n
-      \ - \"loopback_ipv6_pool\"\n  - \"underlay_routing_protocol: ebgp\"\nSome settings
-      are not yet supported with IPv6 underlay:\n  - underlay_multicast_pim_sm\n  -
-      underlay_multicast_rp_interfaces\n  - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n
-      \ - inband_ztp\n"
+      addresses.\nSets the underlay and overlay (EVPN) to use IPv6 addresses.\nCurrently
+      BGP peer-groups are named with IPv4 by default. This can be modified under `bgp_peer_groups`.\nRequires
+      (fabric-level):\n  - \"underlay_ipv6: true\"\n  - \"loopback_ipv6_pool\"\n  -
+      \"underlay_routing_protocol: ebgp\"\nRequires (node-level, on each node, node
+      group, or type defaults):\n  - \"uplink_ipv6_pool\" (or `downlink_pools` on
+      the upstream node) for underlay P2P links.\n  - \"vtep_loopback_ipv6_pool\"
+      on VTEPs.\n  - \"router_id_pool\" (an IPv4 subnet, used only for BGP router-id
+      allocation).\nFor MLAG, the peer-link SVI uses IPv4 by default. To run the MLAG
+      peer-link over IPv6, also set on the MLAG nodes:\n  - \"mlag_peer_address_family:
+      ipv6\"\n  - \"mlag_peer_ipv6_pool\" (peer-link SVI)\n  - \"mlag_peer_l3_ipv6_pool\"
+      (L3 peering when `mlag_peer_l3_vlan` is enabled)\nSome settings are not yet
+      supported with IPv6 underlay:\n  - underlay_multicast_pim_sm\n  - underlay_multicast_rp_interfaces\n
+      \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
     type: bool
     default: false
   underlay_isis_authentication_cleartext_key:
