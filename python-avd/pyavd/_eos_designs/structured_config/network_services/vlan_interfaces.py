@@ -132,22 +132,13 @@ class VlanInterfacesMixin(Protocol):
 
         if settings := svi.ipv6_dhcp_relay:
             for destination in settings.destinations:
-                config = EosCliConfigGen.VlanInterfacesItem.Ipv6DhcpRelayDestinationsItem(
+                vlan_interface_config.ipv6_dhcp_relay_destinations.append_new(
                     address=destination.address,
+                    vrf=vrf.name if vrf.name != "default" else None,
+                    local_interface=destination.local_interface,
+                    source_address=destination.source_address,
+                    link_address=destination.link_address,
                 )
-                if vrf.name != "default":
-                    config.vrf = vrf.name
-
-                if destination.local_interface:
-                    config.local_interface = destination.local_interface
-
-                if destination.source_address:
-                    config.source_address = destination.source_address
-
-                if destination.link_address:
-                    config.link_address = destination.link_address
-
-                vlan_interface_config.ipv6_dhcp_relay_destinations.append(config)
 
         if svi.structured_config:
             self.custom_structured_configs.nested.vlan_interfaces.obtain(interface_name)._deepmerge(
