@@ -107,7 +107,7 @@ CVX is enabled
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | - | Redis Password Set |
-| OpenStack | True | Regions: |
+| OpenStack | True | Regions: REGION_2 |
 | VXLAN | - | VTEP MAC learning: control-plane |
 
 ### CVX Device Configuration
@@ -125,6 +125,8 @@ cvx
       ipv6 access-group ACL-V6-IN
       no shutdown
       network type-driver vlan default
+      !
+      region REGION_2
    !
    service vxlan
       vtep mac-learning control-plane
