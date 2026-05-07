@@ -321,8 +321,8 @@ interface Loopback0
    ip address 100.70.0.4/32
    ipv6 address 2001:db8:300:ffff::4/128
    mpls ldp interface
-   node-segment ipv4 index 304
-   node-segment ipv6 index 1304
+   node-segment ipv4 index 344
+   node-segment ipv6 index 1344
    isis enable CUSTOM_NAME
    isis passive
 ```
@@ -418,7 +418,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 304 | 1304 |
+| Loopback0 | 344 | 1344 |
 
 #### ISIS IPv4 Address Family Summary
 

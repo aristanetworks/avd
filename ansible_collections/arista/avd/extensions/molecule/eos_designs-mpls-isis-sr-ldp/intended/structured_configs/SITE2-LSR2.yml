@@ -98,8 +98,8 @@ loopback_interfaces:
   isis_enable: CUSTOM_NAME
   isis_passive: true
   node_segment:
-    ipv4_index: 304
-    ipv6_index: 1304
+    ipv4_index: 344
+    ipv6_index: 1344
 management_api_http:
   enable_https: true
   enable_vrfs:

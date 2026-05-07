@@ -97,18 +97,34 @@ class LoopbackInterfacesMixin(Protocol):
         self.structured_config.loopback_interfaces.extend(self.shared_utils.underlay_multicast_rp_interfaces)
 
     def get_isis_sr_ipv4_node_sid(self: AvdStructuredConfigUnderlayProtocol) -> int:
-        """Calculate ISIS-SR Node SID for IPv4 by adding ID to a base number."""
+        """
+        Returns the ISIS-SR Node SID index for IPv4.
+
+        1. Use the configured value
+        2. Calculate ISIS-SR Node SID by adding ID to a base number.
+        """
+        if self.shared_utils.node_config.isis_sr.ipv4_node_sid_index is not None:
+            return self.shared_utils.node_config.isis_sr.ipv4_node_sid_index
+
         if self.shared_utils.id is None:
             msg = f"'id' is not set on '{self.shared_utils.hostname}' and is required to set node SID"
             raise AristaAvdInvalidInputsError(msg)
 
-        base: int = self.shared_utils.node_config._get("node_sid_base", self.shared_utils.node_config.isis_sr_ipv4_node_sid_base)
+        base: int = self.shared_utils.node_config._get("node_sid_base", self.shared_utils.node_config.isis_sr.ipv4_node_sid_index_base)
         return self.shared_utils.id + base
 
     def get_isis_sr_ipv6_node_sid(self: AvdStructuredConfigUnderlayProtocol) -> int:
-        """Calculate ISIS-SR Node SID for IPv6 by adding ID to a base number."""
+        """
+        Returns the ISIS-SR Node SID index for IPv6.
+
+        1. Use the configured value
+        2. Calculate ISIS-SR Node SID by adding ID to a base number.
+        """
+        if self.shared_utils.node_config.isis_sr.ipv6_node_sid_index is not None:
+            return self.shared_utils.node_config.isis_sr.ipv6_node_sid_index
+
         if self.shared_utils.id is None:
             msg = f"'id' is not set on '{self.shared_utils.hostname}' and is required to set node SID"
             raise AristaAvdInvalidInputsError(msg)
 
-        return self.shared_utils.id + self.shared_utils.node_config.isis_sr_ipv6_node_sid_base
+        return self.shared_utils.id + self.shared_utils.node_config.isis_sr.ipv6_node_sid_index_base
