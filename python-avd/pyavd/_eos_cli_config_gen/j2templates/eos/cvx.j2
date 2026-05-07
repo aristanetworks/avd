@@ -61,7 +61,7 @@ cvx
 {%         if cvx.services.openstack.name_resolution.interval is arista.avd.defined %}
       name-resolution interval {{ cvx.services.openstack.name_resolution.interval }}
 {%         endif %}
-{%         for region in cvx.services.openstack.regions | arista.avd.natural_sort(sort_key='name') %}
+{%         for region in cvx.services.openstack.regions | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
       !
       region {{ region.name }}
 {%             if region.username is arista.avd.defined and region.password is arista.avd.defined and region.password_type is arista.avd.defined and region.tenant is arista.avd.defined %}
