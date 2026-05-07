@@ -6133,6 +6133,7 @@ class EosDesigns(EosDesignsRootModel):
                     "us-central1-a",
                     "us-central1-b",
                     "us-central1-c",
+                    "us-4",
                     "apnortheast-1",
                     "euwest-2",
                     "ausoutheast-1",

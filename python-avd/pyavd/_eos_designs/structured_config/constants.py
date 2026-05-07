@@ -7,6 +7,7 @@ CV_REGION_TO_SERVER_MAP = {
     "us-central1-a": "apiserver.cv-prod-us-central1-a.arista.io",
     "us-central1-b": "apiserver.cv-prod-us-central1-b.arista.io",
     "us-central1-c": "apiserver.cv-prod-us-central1-c.arista.io",
+    "us-4": "apiserver.cv-prod-us-4.arista.io",
     "apnortheast-1": "apiserver.cv-prod-apnortheast-1.arista.io",
     "euwest-2": "apiserver.cv-prod-euwest-2.arista.io",
     "ausoutheast-1": "apiserver.cv-prod-ausoutheast-1.arista.io",
