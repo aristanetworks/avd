@@ -1,0 +1,31 @@
+---
+# Tests that referencing a non-existent ipv6_acls entry via ipv6_acl_in on an SVI raises
+# AristaAvdMissingVariableError with the ACL name in the message.
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: ipv6-acls-missing-acl
+      bgp_as: 65100
+      id: 100
+
+tenants:
+  - name: Test-Tenant
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TEST
+        vrf_id: 1
+        svis:
+          - id: 10
+            name: TEST_SVI
+            enabled: true
+            ipv6_address: 2001:db8:10::1/64
+            ipv6_acl_in: NON-EXISTENT-IPV6-ACL
+
+# ipv6_acls is intentionally omitted / NON-EXISTENT-IPV6-ACL is not defined.
+
+expected_error_message: >-
+  'ipv6_acls[name=NON-EXISTENT-IPV6-ACL]' is required but was not found.

@@ -28,7 +28,6 @@ bgp_peer_groups:
 spine:
   defaults:
     platform: vEOS-LAB
-    bgp_as: 65001
     loopback_ipv4_pool: 192.168.255.0/24
     bgp_defaults:
       - 'distance bgp 20 200 200'
@@ -66,8 +65,7 @@ l3leaf:
     isis_system_id_prefix: '0001.0001'
     isis_maximum_paths: 4
     platform: vEOS-LAB
-    bgp_as: 65100
-    mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    mlag_interfaces: [Ethernet5, Ethernet6]
     spanning_tree_mode: mstp
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
@@ -75,10 +73,9 @@ l3leaf:
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
     - group: DC1_LEAF1
-      bgp_as: 65101
       filter:
-        tenants: [ all ]
-        tags: [ web, app ]
+        tenants: [all]
+        tags: [web, app]
       vtep_loopback: Loopback0
       nodes:
         - name: DC1-LEAF1A
@@ -86,10 +83,9 @@ l3leaf:
           mgmt_ip: 192.168.200.105/24
           uplink_switch_interfaces: ['Ethernet1', 'Ethernet1', 'Ethernet1', 'Ethernet1']
     - group: DC1_LEAF2
-      bgp_as: 65102
       filter:
-        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-        tags: [ opzone, web, app, db, vmotion, nfs ]
+        tenants: [Tenant_A, Tenant_B, Tenant_C]
+        tags: [opzone, web, app, db, vmotion, nfs]
       nodes:
         - name: DC1-LEAF2A
           id: 2
@@ -102,10 +98,9 @@ l3leaf:
           uplink_switch_interfaces: ['Ethernet3', 'Ethernet3', 'Ethernet3', 'Ethernet3']
           vtep_loopback: Loopback10
     - group: DC1_SVC3
-      bgp_as: 65103
       filter:
-        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-        tags: [ opzone, web, app, db, vmotion, nfs, wan ]
+        tenants: [Tenant_A, Tenant_B, Tenant_C]
+        tags: [opzone, web, app, db, vmotion, nfs, wan]
       # Testing reuse of the same vlan for mlag and mlag l3 peering. Observe that isis is configured correctly for the vlan. (interface and no passive)
       mlag_peer_l3_vlan: 4094
       nodes:
@@ -118,26 +113,42 @@ l3leaf:
           mgmt_ip: 192.168.200.109/24
           uplink_switch_interfaces: ['Ethernet5', 'Ethernet5', 'Ethernet5', 'Ethernet5']
     - group: DC1_BL1
-      bgp_as: 65104
       filter:
-        tenants: [ all ]
-        tags: [ wan ]
+        tenants: [all]
+        tags: [wan]
+      evpn_gateway:
+        # Specific BGP EVPN Gateway functionality for route types 2 (MAC-IP), 3 (IMET) and 5 (IP-PREFIX) can be enabled separately as needed.
+        evpn_l2:
+          enabled: true
+        evpn_l3:
+          enabled: true
+          inter_domain: true
       nodes:
         - name: DC1-BL1A
           id: 6
           mgmt_ip: 192.168.200.110/24
           uplink_switch_interfaces: ['Ethernet6', 'Ethernet6', 'Ethernet6', 'Ethernet6']
+          evpn_gateway:
+            remote_peers:
+              - hostname: dc2-leaf2a
+                bgp_as: 65200
+                ip_address: 172.30.22.21
         - name: DC1-BL1B
           id: 7
           mgmt_ip: 192.168.200.111/24
           uplink_switch_interfaces: ['Ethernet7', 'Ethernet7', 'Ethernet7', 'Ethernet7']
+          evpn_gateway:
+            remote_peers:
+              - hostname: dc2-leaf2b
+                bgp_as: 65200
+                ip_address: 172.30.22.22
 
 l2leaf:
   defaults:
     platform: vEOS-LAB
     uplink_switches: ['DC1-SVC3A', 'DC1-SVC3B']
-    uplink_interfaces: [ Ethernet1, Ethernet2 ]
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    mlag_interfaces: [Ethernet3, Ethernet4]
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
@@ -146,8 +157,8 @@ l2leaf:
     - group: DC1_L2LEAF1
       uplink_switches: ['DC1-LEAF2A', 'DC1-LEAF2B']
       filter:
-        tenants: [ Tenant_A ]
-        tags: [ opzone, web, app ]
+        tenants: [Tenant_A]
+        tags: [opzone, web, app]
       nodes:
         - name: DC1-L2LEAF1A
           id: 8
@@ -177,6 +188,6 @@ bfd_multihop:
 core_interfaces:
   p2p_links:
     - id: 1
-      ip: [ 100.64.0.0/31, 100.64.0.1/31 ]
-      nodes: [ DC1-BL1A, ROUTERX ]
-      interfaces: [ Ethernet8, Ethernet8 ]
+      ip: [100.64.0.0/31, 100.64.0.1/31]
+      nodes: [DC1-BL1A, ROUTERX]
+      interfaces: [Ethernet8, Ethernet8]

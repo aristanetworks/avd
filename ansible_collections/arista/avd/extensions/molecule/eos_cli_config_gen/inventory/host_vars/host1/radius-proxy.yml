@@ -40,7 +40,7 @@ radius_proxy:
             - name: host3
               key: 00171605165E1F395E611C0E1A1C0605171F3355
     - name: CG_3
-      server_groups: [ ddd ]
+      server_groups: [ddd]
     - name: CG_2
     - name: CG_4
       vrfs:

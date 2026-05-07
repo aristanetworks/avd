@@ -38,6 +38,10 @@ jobs:
       - galaxy_importer
       - ansible_lint
       - test_pyavd
+      - codespell
+      - j2lint
+      - markdownlint
+      - check_schema_tables_in_docs
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -54,7 +58,7 @@ jobs:
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
     steps:
       - uses: actions/checkout@v6
-      - uses: dorny/paths-filter@v3
+      - uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
@@ -64,6 +68,8 @@ jobs:
               - '.github/workflows/pull-request-management.yml'
               - 'ansible_collections/arista/avd/extensions/molecule/*'
               - 'ansible_collections/arista/avd/extensions/molecule/**/*'
+              - 'ansible_collections/arista/avd/examples/*'
+              - 'ansible_collections/arista/avd/examples/**/*'
               - 'python-avd/pyavd/_eos_designs/*'
               - 'python-avd/pyavd/_eos_designs/**/*'
             config_gen:
@@ -118,7 +124,7 @@ jobs:
           WHEEL_FILE=$(find ./dist/*.whl -print0 -type f | xargs -0 -n 1 basename)
           echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
       - name: Upload pyavd artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: pyavd
           path: ./python-avd/dist/*.whl
@@ -165,7 +171,7 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -203,7 +209,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -255,6 +261,7 @@ jobs:
           - "example-l2ls-fabric"
           - "example-single-dc-l3ls"
           - "example-single-dc-l3ls-ipv6"
+          - "example-single-dc-multipod-l3ls"
           - "example-cv-pathfinder"
           - "howto"
           - "eos_designs_negative_unit_tests"
@@ -282,10 +289,19 @@ jobs:
           - avd_scenario: "eos_designs_negative_unit_tests"
             ansible_version: "ansible-core<2.21.0"
             python_version: "3.14"
+          # Test ansible-core milestone release
+          # We need to ignore requirements checks to avoid raising an error with new ansible versions not officially supported
+          - avd_scenario: "eos_designs_unit_tests -- -e avd_ignore_requirements=True"
+            ansible_version: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
+            python_version: "3.14"
+          - avd_scenario: "eos_designs_negative_unit_tests -- -e avd_ignore_requirements=True"
+            ansible_version: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
+            python_version: "3.14"
+
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -298,6 +314,8 @@ jobs:
           python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
+        env:
+          ANSIBLE_COLLECTIONS_ON_ANSIBLE_VERSION_MISMATCH: ignore
         run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -313,7 +331,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -370,7 +388,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -404,7 +422,7 @@ jobs:
           - ansibe_version: stable
             pip_installation: "ansible-core<2.21.0"
           - ansibe_version: devel
-            pip_installation: "--user https://github.com/ansible/ansible/archive/devel.tar.gz"
+            pip_installation: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
             skip_test: "--skip-test ansible-doc"
     steps:
       - uses: actions/checkout@v6
@@ -418,13 +436,13 @@ jobs:
             3.13
             3.14
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pyavd
           path: /tmp/pyavd/
       - name: Install pyavd and Ansible requirements
         run: |
-          pip install  ${{ matrix.pip_installation }} "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+          pip install "${{ matrix.pip_installation }}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
       - name: Run ansible-test sanity
         working-directory: ansible_collections/arista/avd
         # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
@@ -443,7 +461,7 @@ jobs:
           python-version: |
             3.12
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -457,7 +475,7 @@ jobs:
           ansible-test coverage xml
           mv tests/output/reports/coverage.xml ./units-coverage.xml
       - name: Upload coverage from ansible-test units
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ansible-test-units-coverage
           path: ansible_collections/arista/avd/units-coverage.xml
@@ -487,7 +505,7 @@ jobs:
           ansible-test coverage xml
           mv tests/output/reports/coverage.xml ./integration-coverage.xml
       - name: Upload coverage from ansible-test integration
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ansible-test-integration-coverage
           path: ansible_collections/arista/avd/integration-coverage.xml
@@ -512,7 +530,7 @@ jobs:
         run: |
           ansible-galaxy collection build -vvv --force ansible_collections/arista/avd
       - name: Upload collection
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: avd-collection
           path: ./arista-avd-*.tar.gz
@@ -534,7 +552,7 @@ jobs:
         run: |
           pip install "ansible-core==2.16.0"
       - name: Download collection
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: avd-collection
       - name: Install galaxy-importer
@@ -545,7 +563,7 @@ jobs:
           pip install "galaxy-importer==0.4.31"
       - name: Run galaxy-importer checks
         run: python -m galaxy_importer.main *.tar.gz
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: importer-logs
           path: ./importer_result.json
@@ -572,7 +590,7 @@ jobs:
             3.13
             3.14
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -580,7 +598,7 @@ jobs:
         run: |
           pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group dev --upgrade
       - name: Download collection
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: avd-collection
       - name: Extract collection
@@ -591,6 +609,68 @@ jobs:
         working-directory: collections
         run: |
           ansible-lint --force-color --strict -v
+
+  # ----------------------------------- #
+  # Codespell
+  # ----------------------------------- #
+  codespell:
+    name: Check for common misspellings in text files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install codespell
+        run: pip install codespell==2.4.2
+      - name: Run codespell
+        run: codespell --config .codespellrc
+
+  # ----------------------------------- #
+  # j2lint
+  # ----------------------------------- #
+  j2lint:
+    name: Check for linting errors on Jinja2 files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install j2lint
+        run: pip install j2lint==1.2.0
+      - name: Run j2lint
+        run: j2lint .
+
+  # ----------------------------------- #
+  # markdownlint
+  # ----------------------------------- #
+  markdownlint:
+    name: Check for linting errors on Markdown files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install markdownlint-cli2
+        run: npm install markdownlint-cli2 --global
+      - name: Run markdownlint-cli2
+        # Exclusions are configured in .markdownlint-cli2.yaml
+        run: markdownlint-cli2 "**/*.md"
+      - name: Check GIT status
+        run: sh .github/check-git-status.sh
+
+  # ----------------------------------- #
+  # Check schema tables in docs
+  # ----------------------------------- #
+  check_schema_tables_in_docs:
+    name: Check for schema tables in documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Check for schema tables in documentation
+        run: python development/find_missing_tables.py @.find-missing-tables-args
 
   # ----------------------------------- #
   # Test of pyavd
@@ -644,19 +724,19 @@ jobs:
           mv .coverage coverage-${{ matrix.suite.id }}.dat
       - name: Upload pytest coverage data
         if: matrix.python == '3.11'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-data-${{ matrix.suite.id }}
           path: coverage-${{ matrix.suite.id }}.dat
       - name: Upload eos_designs compiled templates from pytest
         if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: pytest-eos-designs-compiled-templates
           path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
       - name: Upload eos_cli_config_gen compiled templates from pytest
         if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
@@ -674,17 +754,17 @@ jobs:
       - name: Install coverage
         run: pip install --group coverage
       - name: Download coverage artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: coverage-data-*
           merge-multiple: true
       - name: Download eos_designs compiled templates artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pytest-eos-designs-compiled-templates
           path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
       - name: Download eos_cli_config_gen compiled templates artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
@@ -695,7 +775,16 @@ jobs:
           coverage report
           coverage xml
       - name: Upload pytest coverage report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: pytest-coverage
           path: coverage.xml
+
+  codecov:
+    name: Upload coverage to codecov
+    needs:
+      - ansible_test_units
+      - ansible_test_integration
+      - generate_pyavd_coverage_report
+    if: github.repository == 'aristanetworks/avd'
+    uses: ./.github/workflows/codecov.yml

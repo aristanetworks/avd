@@ -1,0 +1,134 @@
+release_summary: |
+  Release 6.1.0 - See documentation on avd.arista.com for details.
+bugfixes:
+### Fixed issues in eos_cli_config_gen
+  - |-
+    Fix(eos_cli_config_gen): Fix typo in router multicast template by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/6631
+### Fixed issues in eos_designs
+  - |-
+    Fix(eos_designs): Fix missing source interface for sflow_settings.export_to_cloudvision by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6610
+  - |-
+    Fix(eos_designs): Fix EOS Config warning message by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/6637
+  - |-
+    Fix(eos_designs): Address template values being None for custom template for ansible-core >= 2.19 by @gmuloc in https://github.com/aristanetworks/avd/pull/6663
+  - |-
+    Fix(eos_designs): Add support to set IGMP fast_leave without setting evpn_l2_multicast.enabled: true by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/6626
+  - |-
+    Fix(eos_designs): Allow VRF across multiple tenants with MLAG IBGP peering  by @gmuloc in https://github.com/aristanetworks/avd/pull/6646
+### Other Fixed issues
+  - |-
+    Fix(plugins): Make ansible global_vars work for ansible-core>=2.19 by @gmuloc in https://github.com/aristanetworks/avd/pull/6619
+  - |-
+    Fix(cv_deploy): Properly clean-up unused AVD-managed container assignments by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/6650
+  - |-
+    Fix(cv_deploy): Use standard 600s timeout for get_tags and delete_tags calls by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/6678
+  - |-
+    Fix(cv_deploy): Wait until new Workspace is ready before trying to use it by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/6670
+minor_changes:
+### Documentation
+  - |-
+    Doc: disable word wrap in mermaid graphs by @noredistribution in https://github.com/aristanetworks/avd/pull/6580
+  - |-
+    Doc: collections install path is incorrect/updated by @fatpelt in https://github.com/aristanetworks/avd/pull/6577
+  - |-
+    Doc: user manual navigation refactor by @joelbreton2 in https://github.com/aristanetworks/avd/pull/6598
+  - |-
+    Doc(eos_designs): Add lab topologies for all examples by @ankudinov in https://github.com/aristanetworks/avd/pull/6483
+  - |-
+    Doc: Cleanup stale artifacts by @JulioPDX in https://github.com/aristanetworks/avd/pull/6600
+  - |-
+    Doc: fixing the link in readme by @ankudinov in https://github.com/aristanetworks/avd/pull/6644
+  - |-
+    Doc: Move the fabric_ip_addressing.loopback.ipv6_prefix_length to Fabric IP Addressing table by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/6685
+  - |-
+    Doc: small add-ons to AVD playground documentation by @ankudinov in https://github.com/aristanetworks/avd/pull/6696
+  - |-
+    Doc(eos_designs,eos_cli_config_gen): New section for Latency Analyzer by @carlbuchmann in https://github.com/aristanetworks/avd/pull/6704
+  - |-
+    Doc(eos_designs): Fix rendering  MD Format `<nn>:<nn>.` is shown as `Format :.` in the description by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/6706
+### New features and enhancements in eos_cli_config_gen
+  - |-
+    Feat(eos_cli_config_gen): Router multicast ipv6 improvements by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/6579
+  - |-
+    Feat(eos_cli_config_gen): Added the support of dhcp client accept default-route under management interface by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/6558
+  - |-
+    Feat(eos_cli_config_gen): Support RCF function with BGP network statement by @RestlessWanderer in https://github.com/aristanetworks/avd/pull/6599
+  - |-
+    Feat(eos_cli_config_gen): Add support for 'spanning-tree link-type' by @vitthalmagadum in https://github.com/aristanetworks/avd/pull/6574
+  - |-
+    Feat(eos_cli_config_gen): Support for BGP Auto-RD by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/6518
+  - |-
+    Feat(eos_cli_config_gen): Add ipv6_nd support to management_interfaces by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/6593
+  - |-
+    Feat(eos_cli_config_gen): Add management api http session timeout by @tkrenn-hc in https://github.com/aristanetworks/avd/pull/6614
+  - |-
+    Feat(eos_cli_config_gen): Add ipv6_nd support to port_channel_interfaces by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/6628
+  - |-
+    Feat(eos_cli_config_gen): Support for cv_loss_timeout flag by @vitthalmagadum in https://github.com/aristanetworks/avd/pull/6654
+  - |-
+    Feat(eos_cli_config_gen): Add ipv6_nd support to ethernet_interfaces by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/6617
+  - |-
+    Feat(eos_cli_config_gen): Add ipv6_nd support to tunnel_interfaces by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/6680
+  - |-
+    Feat(eos_cli_config_gen): Add support for EVPN remote domain VRF by @xaviramon in https://github.com/aristanetworks/avd/pull/6529
+  - |-
+    Feat(eos_cli_config_gen): Add support for latest style of description in `monitor_connectivity` data model by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/6671
+  - |-
+    Feat(eos_cli_config_gen): Add VRF support for anycast_rps by @stiltzkin10 in https://github.com/aristanetworks/avd/pull/6689
+### New features and enhancements in eos_designs
+  - |-
+    Feat(eos_designs): Add support for interface_defaults.ethernet.shutdown by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/6560
+  - |-
+    Feat(eos_designs): Added the support of arp persistent, arp aging and ip icmp redirect under general settings by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/6521
+  - |-
+    Feat(eos_designs): Added the support for arp static entries into network services by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/6544
+  - |-
+    Feat(eos_designs): Add support for 'spanning-tree link-type <>' on connected_endpoints and network_ports by @vitthalmagadum in https://github.com/aristanetworks/avd/pull/6692
+  - |-
+    Feat(eos_designs): Add support for `domain_list` in `dns_settings` by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/6688
+  - |-
+    Feat(eos_designs): Add support for TACACS Server timeout in aaa_settings.tacacs.servers by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/6699
+  - |-
+    Feat(eos_designs): 6.0.0+ workaround for the switch.vlans fact  by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/6524
+  - |-
+    Feat(eos_designs): Add new igmp_snooping model under network_services by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/6712
+  - |-
+    Feat(eos_designs): IPv6 addressing support for core_interfaces and l3_edge by @emilarista in https://github.com/aristanetworks/avd/pull/6193
+### New features and enhancement in both eos_designs and eos_cli_config_gen
+  - |-
+    Feat(eos_cli_config_gen, eos_designs): IPv6 SLAAC support for all interfaces (ipv6_address_auto_config and ipv6_addresses) by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/6559
+  - |-
+    Feat(eos_cli_config_gen, eos_designs): Add ipv6_nd support to vlan_interfaces  by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/6682
+### Other new features and enhancements
+  - |-
+    Feat(cv_deploy): Process GRPC exceptions received during deployment of Static Studio Configlets by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/6681
+### PyAVD Changes
+  - |-
+    Refactor(pyavd): Add AVDTemplar to avoid accessing private Ansible Templar attributes and triggering deprecation by @gmuloc in https://github.com/aristanetworks/avd/pull/6658
+  - |-
+    Feat(pyavd): Add allow_with_new_key field to deprecation metaschema by @gmuloc in https://github.com/aristanetworks/avd/pull/6596
+### Other Changes
+  - |-
+    Refactor(eos_cli_config_gen, eos_designs): Added the support of new ip radius source interface data model by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/6506
+  - |-
+    Bump: grpclib>=0.4.8 by @carlbuchmann in https://github.com/aristanetworks/avd/pull/6590
+  - |-
+    Refactor(eos_designs): Relax the requirement for ip_address for main interface port-channels for nodes.l3_port_channels and nodes.l3_interfaces by @gmuloc in https://github.com/aristanetworks/avd/pull/6633
+  - |-
+    Refactor(eos_designs): Use `avd_design_future` key instead of `avd_7_behaviors` by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/6655
+  - |-
+    Bump: Pre-release 6.1.0-dev1 by @carlbuchmann in https://github.com/aristanetworks/avd/pull/6666
+  - |-
+    Refactor(eos_cli_config_gen, eos_designs): Add support of new ip tacacs data model by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/6651
+  - |-
+    Refactor(eos_designs): Move the dpath_enabled and domain ids under evpn gateway by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/6591
+  - |-
+    Refactor(eos_cli_config_gen): Fix the deprecation warning for IP RADIUS and TACACS source interface data model by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/6683
+  - |-
+    Refactor(eos_designs): Remove redundant command no neighbor activate when no bgp default ipv4-unicast is configured by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/6404
+  - |-
+    Bump: ANTA requirements to v1.8.0 by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/6690
+  - |-
+    Refactor(eos_cli_config_gen): Removing the templates for the 6.0 removed key ip_name_servers by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/6697
+  - |-
+    Refactor(eos_designs): Centralize parent interface generation for subinterfaces by @gmuloc in https://github.com/aristanetworks/avd/pull/6594

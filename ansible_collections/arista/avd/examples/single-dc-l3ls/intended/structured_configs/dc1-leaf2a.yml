@@ -37,7 +37,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_dc1-spine1_Ethernet3
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.9/31
   metadata:
     peer: dc1-spine1
@@ -48,7 +48,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_dc1-spine2_Ethernet3
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.11/31
   metadata:
     peer: dc1-spine2
@@ -133,7 +133,7 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOSLab
   fabric_name: FABRIC
   validate_hardware:
     enabled: false
@@ -424,12 +424,12 @@ vlan_interfaces:
   description: MLAG_L3
   shutdown: false
   ip_address: 10.255.1.100/31
-  mtu: 1500
+  mtu: 9214
 - name: Vlan4094
   description: MLAG
   shutdown: false
   ip_address: 10.255.1.68/31
-  mtu: 1500
+  mtu: 9214
   no_autostate: true
 - name: Vlan11
   description: VRF10_VLAN11
@@ -452,7 +452,7 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address: 10.255.1.100/31
-  mtu: 1500
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1
@@ -478,7 +478,7 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF11
   ip_address: 10.255.1.100/31
-  mtu: 1500
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1

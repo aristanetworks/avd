@@ -13,34 +13,34 @@ l2leaf:
   node_groups:
     - group: SL-LEAF0
       nodes:
-        - name: SL-LEAF0A
+        - name: sl-leaf0a
           id: 1
-        - name: SL-LEAF0B
+        - name: sl-leaf0b
           id: 2
     - group: SL-LEAF1
       uplink_interfaces: ['Ethernet27']
-      uplink_switches: ['SL-LEAF0B']
+      uplink_switches: ['sl-leaf0b']
       nodes:
-        - name: SL-LEAF1A
+        - name: sl-leaf1a
           id: 3
           uplink_switch_interfaces: ['Ethernet27']
-        - name: SL-LEAF1B
+        - name: sl-leaf1b
           id: 4
           uplink_switch_interfaces: ['Ethernet28']
-    - group: SL-MLEAF1
+    - group: sl-mleaf1
       nodes:
-        - name: SL-MLEAF1
+        - name: sl-mleaf1
           id: 5
           uplink_interfaces: ['Ethernet16']
-          uplink_switches: ['SL-LEAF1A']
+          uplink_switches: ['sl-leaf1a']
           uplink_switch_interfaces: ['Ethernet28']
     - group: SL-LEAF2
       uplink_interfaces: [Ethernet41, Ethernet42]
-      uplink_switches: [SL-LEAF0B, SL-LEAF0B]
+      uplink_switches: [sl-leaf0b, sl-leaf0b]
       nodes:
-        - name: SL-LEAF2A
+        - name: sl-leaf2a
           id: 6
           uplink_switch_interfaces: [Ethernet41, Ethernet42]
-        - name: SL-LEAF2B
+        - name: sl-leaf2b
           id: 7
           uplink_switch_interfaces: [Ethernet43, Ethernet44]

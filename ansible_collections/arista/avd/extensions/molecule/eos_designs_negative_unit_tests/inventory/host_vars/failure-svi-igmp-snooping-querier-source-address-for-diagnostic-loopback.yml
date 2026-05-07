@@ -14,9 +14,10 @@ l3leaf:
 tenants:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
-    igmp_snooping_querier:
-      enabled: true
-      source_address: diagnostic_loopback
+    igmp_snooping:
+      querier:
+        enabled: true
+        source_address: diagnostic_loopback
     vrfs:
       - name: IGMP_QUERIER_TEST_3
         description: "IGMP_QUERIER_TEST_3"
@@ -29,4 +30,4 @@ tenants:
 expected_error_message: >-
   Invalid configuration on VRF 'IGMP_QUERIER_TEST_3' in Tenant 'Tenant_A'.
   'vtep_diagnostic.loopback' along with either 'vtep_diagnostic.loopback_ip_pools' or
-  'vtep_diagnostic.loopback_ip_range' must be defined when 'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VRF.
+  'vtep_diagnostic.loopback_ip_range' must be defined when 'igmp_snooping.querier.source_address' is set to 'diagnostic_loopback' on the VRF.

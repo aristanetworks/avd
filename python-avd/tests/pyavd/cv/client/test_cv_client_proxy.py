@@ -66,7 +66,7 @@ async def test_cv_client_unauthenticated_proxy() -> None:
             assert cvclient._proxy_manager.proxy_url == f"http://{proxy_host}:{cvclient._proxy_manager.proxy_port}"
 
 
-@pytest.mark.skipif(environ.get("CV_LIVE_PROXY_TEST") is None, reason="CV_LIVE_PROXY_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
+@pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("targeted_cv"),
@@ -138,7 +138,7 @@ async def test_cvclient_with_cvaas_via_proxy(
         assert result == []
 
 
-@pytest.mark.skipif(environ.get("CV_LIVE_PROXY_TEST") is None, reason="CV_LIVE_PROXY_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
+@pytest.mark.skipif(environ.get("CV_LIVE_TEST") is None, reason="CV_LIVE_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     ("targeted_cv"),

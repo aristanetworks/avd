@@ -432,10 +432,34 @@ keys:
                 description: VRF name.
                 convert_types:
                 - int
+              tls:
+                type: dict
+                description: TLS settings for the RADIUS group server. Only applicable
+                  when the parent server group type is 'radius'.
+                keys:
+                  enabled:
+                    type: bool
+                    description: Enable TLS to secure communication with the RADIUS
+                      group server.
+                    required: true
+                  port:
+                    type: int
+                    min: 1
+                    max: 65535
+                    convert_types:
+                    - str
+                    description: TCP port used for TLS-secured RADIUS communication.
+                      Overrides the default RadSec port (EOS default is 2083).
   access_lists:
     type: list
     primary_key: name
     display_name: IP Extended Access-Lists (legacy model)
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 7.0.0
+      new_key: ip_access_lists
+      allow_with_new_key: true
     items:
       type: dict
       keys:
@@ -906,10 +930,12 @@ keys:
     keys:
       login:
         type: str
-        description: Multiline string ending with EOF on the last line.
+        description: Legal notification or security warning displayed to all users
+          before authentication.
       motd:
         type: str
-        description: Multiline string ending with EOF on the last line.
+        description: Informational or operational message displayed to authorized
+          users after a successful login.
   bgp_groups:
     type: list
     primary_key: name
@@ -1763,6 +1789,14 @@ keys:
           default is false).
 
           '
+      cv_loss_timeout:
+        type: int
+        description: 'Timeout in minutes before the device will revert to ZTP mode
+          in case of losing connectivity to CloudVision after a configuration change.
+
+          The recommended timeout is five minutes.'
+        convert_types:
+        - str
   daemons:
     type: list
     primary_key: name
@@ -1796,6 +1830,21 @@ keys:
         type: bool
       mlag_peerlink_requests_disabled:
         type: bool
+      client_requests:
+        type: dict
+        description: Configure DHCP client request settings.
+        keys:
+          flooding_suppression_vlans:
+            type: list
+            description: Suppress flooding of DHCP/DHCPv6 client requests to other
+              interfaces in the specified VLANs.
+            min_length: 1
+            items:
+              type: str
+              description: "VLAN ID or range of VLAN IDs, <1-4094>.\nExample:\n  -
+                1000\n  - 500-510\n  - 2000,3000"
+              convert_types:
+              - int
   dhcp_servers:
     type: list
     primary_key: vrf
@@ -2032,7 +2081,7 @@ keys:
     description: Domain Name.
   domain_list:
     type: list
-    description: Search list of DNS domains.
+    description: Domain names to complete unqualified host names.
     items:
       type: str
       description: Domain name.
@@ -2367,6 +2416,9 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask.
+        ipv6_address_auto_config:
+          type: bool
+          description: Use SLAAC to automatically configure the IPv6 address.
         flow_tracker:
           type: dict
           keys:
@@ -2521,6 +2573,34 @@ keys:
 
       Depending on your inventory size and the available resources, you may want to
       adjust this number.'
+  eos_config_future:
+    type: dict
+    description: Opt-in to future EOS CLI behaviors which will become default behaviors
+      in a future AVD major version.
+    keys:
+      new_ip_radius_cli_order:
+        type: bool
+        default: false
+        description: 'When `true`, renders the new EOS CLI order using `ip_radius`,
+          sorted by VRF name.
+
+          When `false` (default), renders the legacy CLI order using `ip_radius_source_interfaces`,
+          sorted by source interface name.'
+      new_ip_tacacs_cli_order:
+        type: bool
+        default: false
+        description: 'When `true`, renders the new EOS CLI order using `ip_tacacs`,
+          sorted by VRF name.
+
+          When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`,
+          sorted by source interface name.'
+      always_render_ip_routing_separator:
+        type: bool
+        default: false
+        description: 'Always render a ''!'' before the ''(no) ip routing'' command
+          section.
+
+          Without this the ''!'' is missing when only configuring routing for VRFs.'
   errdisable:
     type: dict
     keys:
@@ -3130,16 +3210,50 @@ keys:
           type: bool
         ipv6_address:
           type: str
+          description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
         ipv6_address_link_local:
           type: str
           description: Link local IPv6 address/mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -3157,6 +3271,9 @@ keys:
                 description: Infinite or lifetime in seconds.
               no_autoconfig_flag:
                 type: bool
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         ipv6_dhcp_relay_destinations:
           type: list
           items:
@@ -3552,6 +3669,15 @@ keys:
                       valid_values:
                       - forwardable
                       - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
+                  convert_types:
+                  - str
             sync_message:
               type: dict
               keys:
@@ -3909,6 +4035,11 @@ keys:
           valid_values:
           - edge
           - network
+        spanning_tree_link_type:
+          type: str
+          valid_values:
+          - shared
+          - point-to-point
         vmtracer:
           type: bool
         priority_flow_control:
@@ -5887,25 +6018,14 @@ keys:
           description: ACL Entries.
           items:
             type: dict
+            $ref: eos_cli_config_gen#/$defs/access_list_entry
             keys:
               sequence:
                 type: int
-                convert_types:
-                - str
-                description: ACL entry sequence number.
               remark:
                 type: str
-                description: 'Comment up to 100 characters.
-
-                  If remark is defined, other keys in the ACL entry will be ignored.'
               action:
                 type: str
-                valid_values:
-                - permit
-                - deny
-                description: 'ACL action.
-
-                  Required except for remarks.'
               protocol:
                 type: str
                 description: '"ip", "tcp", "udp", "icmp" or other protocol name or
@@ -5919,23 +6039,6 @@ keys:
                   "<ip>" without a mask means host.
 
                   Required except for remarks.'
-              source_ports_match:
-                type: str
-                valid_values:
-                - eq
-                - gt
-                - lt
-                - neq
-                - range
-                default: eq
-              source_ports:
-                type: list
-                min_length: 1
-                items:
-                  type: str
-                  convert_types:
-                  - int
-                  description: TCP/UDP source port name or number.
               destination:
                 type: str
                 description: '"any", "<ip>/<mask>" or "<ip>".
@@ -5943,34 +6046,9 @@ keys:
                   "<ip>" without a mask means host.
 
                   Required except for remarks.'
-              destination_ports_match:
-                type: str
-                valid_values:
-                - eq
-                - gt
-                - lt
-                - neq
-                - range
-                default: eq
-              destination_ports:
-                type: list
-                min_length: 1
-                items:
-                  type: str
-                  convert_types:
-                  - int
-                  description: TCP/UDP destination port name or number.
-              tcp_flags:
-                type: list
-                items:
-                  type: str
-                  description: TCP Flag Name.
               fragments:
                 type: bool
                 description: Match non-head fragment packets.
-              log:
-                type: bool
-                description: Log matches against this rule.
               ttl:
                 type: int
                 description: TTL value.
@@ -5986,37 +6064,18 @@ keys:
                 - lt
                 - neq
                 default: eq
-              icmp_type:
-                type: str
-                convert_types:
-                - int
-                description: Message type name/number for ICMP packets.
-              icmp_code:
-                type: str
-                convert_types:
-                - int
-                description: Message code for ICMP packets.
-              nexthop_group:
-                type: str
-                description: nexthop-group name.
-              tracked:
-                type: bool
-                description: Match packets in existing ICMP/UDP/TCP connections.
-              dscp:
-                type: str
-                convert_types:
-                - int
-                description: DSCP value or name.
-              vlan_number:
-                type: int
-                convert_types:
-                - str
               vlan_inner:
                 type: bool
                 default: false
-              vlan_mask:
-                type: str
-                description: 0x000-0xFFF VLAN mask.
+                description: 'Render vlan and mask as inner vlan.
+
+                  Both ''inner_vlan_number'' and ''inner_vlan_mask'' are required
+                  when migrating to the new keys.'
+                deprecation:
+                  warning: true
+                  removed: false
+                  remove_in_version: 7.0.0
+                  new_key: inner_vlan_number
         permit_response_traffic:
           type: str
           valid_values:
@@ -6271,6 +6330,20 @@ keys:
                     max: 7
                     convert_types:
                     - str
+  ip_hosts:
+    type: list
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+        ipv4_addresses:
+          type: list
+          required: true
+          min_length: 1
+          items:
+            type: str
   ip_http_client:
     type: dict
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
@@ -6784,6 +6857,10 @@ keys:
     description: Display DNS-resolved router names for OSPF router IDs.
   ip_radius:
     type: dict
+    description: 'IP RADIUS source interface configuration.
+
+      This requires to set the ''eos_config_future.new_ip_radius_cli_order: true''
+      to render the new CLI order.'
     documentation_options:
       table: ip-radius-source-interfaces
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
@@ -7051,9 +7128,23 @@ keys:
       warning: true
       new_key: ip_ssh_client
       remove_in_version: 6.0.0
+  ip_tacacs:
+    type: dict
+    description: 'IP TACACS source interface configuration.
+
+      This requires to set the ''eos_config_future.new_ip_tacacs_cli_order: true''
+      to render the new CLI order.'
+    documentation_options:
+      table: ip-tacacs-source-interfaces
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_tacacs_source_interfaces:
     type: list
     display_name: IP Tacacs Source Interfaces
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 7.0.0
+      new_key: ip_tacacs
     items:
       type: dict
       keys:
@@ -7117,9 +7208,58 @@ keys:
           - int
         counters_per_entry:
           type: bool
-        sequence_numbers:
+        entries:
           type: list
-          required: true
+          description: ACL Entries.
+          items:
+            type: dict
+            $ref: eos_cli_config_gen#/$defs/access_list_entry
+            keys:
+              protocol:
+                type: str
+                description: '"ipv6", "tcp", "udp", "icmpv6" or other protocol name
+                  or number.
+
+                  Required except for remarks.'
+              source:
+                type: str
+                description: '"any", "<ipv6>/<mask>" or "<ipv6>".
+
+                  "<ipv6>" without a mask means host.
+
+                  Required except for remarks.'
+              destination:
+                type: str
+                description: '"any", "<ipv6>/<mask>" or "<ipv6>".
+
+                  "<ipv6>" without a mask means host.
+
+                  Required except for remarks.'
+              hop_limit:
+                type: int
+                convert_types:
+                - str
+                min: 0
+                description: Match Hop Limit value.
+              hop_limit_match:
+                type: str
+                valid_values:
+                - eq
+                - gt
+                - lt
+                - neq
+                default: eq
+              dscp_mask:
+                type: str
+                convert_types:
+                - int
+                description: DSCP mask ranges from 0x00 to 0x3F.
+        sequence_numbers:
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+          type: list
           primary_key: sequence
           items:
             type: dict
@@ -8210,6 +8350,24 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
         ip_proxy_arp:
           type: bool
         ospf_area:
@@ -8744,6 +8902,15 @@ keys:
       default_services:
         type: bool
         description: 'Enable default services: capi-doc and tapagg.'
+      session_timeout:
+        type: int
+        description: 'User session timeout value in minutes.
+
+          EOS default is 1440 minutes.'
+        convert_types:
+        - str
+        min: 1
+        max: 1440
       enable_vrfs:
         type: list
         primary_key: name
@@ -8890,7 +9057,28 @@ keys:
           type: bool
         ipv6_address:
           type: str
-          description: IPv6_address/Mask.
+          description: IPv6 address with prefix length.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         type:
           type: str
           valid_values:
@@ -8907,6 +9095,10 @@ keys:
         mac_address:
           type: str
           description: MAC address.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP. This is only applicable
+            when `ip_address` is configured as `dhcp`.
         lldp:
           type: dict
           keys:
@@ -8995,6 +9187,266 @@ keys:
   management_security:
     type: dict
     keys:
+      auto_certificate:
+        type: dict
+        keys:
+          profiles:
+            type: list
+            primary_key: name
+            description: Profiles for automatic certificate enrollment and renewal.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Name of the certificate profile.
+                digest:
+                  type: str
+                  description: Digest algorithm used to sign the Certificate Signing
+                    Request. Defaults to sha256 on EOS if unset.
+                  valid_values:
+                  - sha256
+                  - sha384
+                  - sha512
+                key:
+                  type: str
+                  description: Filename of the private key in the switch `sslkey:`
+                    directory.
+                protocol_instance_name:
+                  type: str
+                  description: EST protocol profile name.
+                renewal:
+                  description: Renewal time in seconds. EOS default is 7200 seconds
+                    (2 hours).
+                  type: int
+                  min: 1
+                  max: 4294967295
+                  convert_types:
+                  - str
+                parameters:
+                  description: Parameters of the distinguished name and subject alternative
+                    name for the CSR.
+                  type: dict
+                  keys:
+                    distinguished_name:
+                      type: dict
+                      keys:
+                        common_name:
+                          type: str
+                        country:
+                          type: str
+                          description: 'ISO 3166-1 alpha-2 two-letter country code.
+
+                            Example:
+
+                            "US" for United States,
+
+                            "DE" for Germany,
+
+                            "IN" for India.'
+                          pattern: ^[A-Z]{2}$
+                        email:
+                          type: str
+                          pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+                        locality:
+                          type: str
+                        organization:
+                          type: str
+                        organization_unit:
+                          type: str
+                          convert_types:
+                          - int
+                        serial_number:
+                          type: str
+                          description: 'Serial Number for use in subject.
+
+                            system: Use the device''s serial number in subject.'
+                          convert_types:
+                          - int
+                        state:
+                          type: str
+                    subject_alternative_name:
+                      type: dict
+                      keys:
+                        dns:
+                          type: list
+                          items:
+                            type: str
+                        email:
+                          type: list
+                          items:
+                            type: str
+                            pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+                        ip:
+                          type: list
+                          description: IPv4/IPv6 addresses for use in subject-alternative-name.
+                          items:
+                            type: str
+                        uri:
+                          type: list
+                          items:
+                            type: str
+          protocols:
+            type: list
+            primary_key: name
+            description: Protocols for automatic certificate enrollment and renewal.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Name of the EST profile.
+                protocol:
+                  type: str
+                  valid_values:
+                  - est
+                  required: true
+                  description: Protocol to use to communicate with endpoint; only
+                    EST is supported currently.
+                disabled:
+                  type: bool
+                  description: Temporarily disable sending requests to the server.
+                connection_retry:
+                  type: dict
+                  keys:
+                    count:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 4294967295
+                      description: Number of retries to attempt before giving up,
+                        if not configured the number of retries is infinite.
+                    interval:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 4294967295
+                      description: Number of seconds between retries.
+                    exponential_backoff:
+                      type: bool
+                      description: Exponentially increase the interval between retries
+                        to a maximum of 24 hours.
+                credentials:
+                  type: dict
+                  keys:
+                    enroll:
+                      type: dict
+                      description: 'Token or username/secret for initial certificate
+                        enrollment.
+
+                        If both token and username/secret are defined, token will
+                        take precedence.
+
+                        '
+                      keys:
+                        token:
+                          type: str
+                          description: JSON Web Token for Bearer Authentication.
+                        token_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                        username:
+                          type: str
+                          description: Username for HTTP Basic Authentication.
+                        secret:
+                          type: str
+                          description: Password for HTTP Basic Authentication.
+                        secret_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                    re_enroll:
+                      type: dict
+                      description: 'Token or username/secret for certificate re-enrollment.
+
+                        If both token and username/secret are defined, token will
+                        take precedence.
+
+                        '
+                      keys:
+                        token:
+                          type: str
+                          description: JSON Web Token for Bearer Authentication.
+                        token_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                        username:
+                          type: str
+                          description: Username for HTTP Basic Authentication.
+                        secret:
+                          type: str
+                          description: Password for HTTP Basic Authentication.
+                        secret_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                server:
+                  type: dict
+                  keys:
+                    ssl_profile:
+                      type: str
+                      description: SSL profile name.
+                    url:
+                      type: str
+                      pattern: https://.+[^/]
+                      description: EST server URL. Must begin with `https://`. Should
+                        not end with `/` (the well-known EST paths are appended automatically).
+                    vrf:
+                      type: str
+                      description: VRF used to reach the EST server. If unset, the
+                        default VRF is used on EOS.
       entropy_sources:
         type: dict
         description: Source of entropy.
@@ -10017,6 +10469,19 @@ keys:
           `anta_runner` role.
 
           '
+      interfaces:
+        type: dict
+        description: Interface validation settings.
+        keys:
+          errdisable:
+            type: dict
+            description: Settings for the VerifyInterfaceErrDisabled test.
+            keys:
+              only_avd_interfaces:
+                type: bool
+                description: Only validate interfaces defined in the AVD structured
+                  configuration for errdisabled state.
+                default: false
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -10127,6 +10592,20 @@ keys:
               type: str
             description:
               type: str
+              description: 'Description in the form of
+
+                ```
+
+                description
+
+                <description>
+
+                ```'
+            single_line_description:
+              type: str
+              description: 'Description in the form of `description <description>`.
+
+                Supported in EOS versions 4.32.2F and above.'
             ip:
               type: str
             icmp_echo_size:
@@ -10165,6 +10644,20 @@ keys:
               - int
             description:
               type: str
+              description: 'Description in the form of
+
+                ```
+
+                description
+
+                <description>
+
+                ```'
+            single_line_description:
+              type: str
+              description: 'Description in the form of `description <description>`.
+
+                Supported in EOS versions 4.32.2F and above.'
             interface_sets:
               type: list
               primary_key: name
@@ -10197,6 +10690,20 @@ keys:
                     type: str
                   description:
                     type: str
+                    description: 'Description in the form of
+
+                      ```
+
+                      description
+
+                      <description>
+
+                      ```'
+                  single_line_description:
+                    type: str
+                    description: 'Description in the form of `description <description>`.
+
+                      Supported in EOS versions 4.32.2F and above.'
                   ip:
                     type: str
                   icmp_echo_size:
@@ -12736,6 +13243,11 @@ keys:
           valid_values:
           - edge
           - network
+        spanning_tree_link_type:
+          type: str
+          valid_values:
+          - shared
+          - point-to-point
         vmtracer:
           type: bool
         ptp:
@@ -12774,6 +13286,15 @@ keys:
                       valid_values:
                       - forwardable
                       - non-forwardable
+            region:
+              type: dict
+              keys:
+                domain_number:
+                  type: int
+                  min: 0
+                  max: 255
+                  convert_types:
+                  - str
             sync_message:
               type: dict
               keys:
@@ -12841,16 +13362,49 @@ keys:
         ipv6_address:
           type: str
           description: IPv6 address/mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
         ipv6_address_link_local:
           type: str
           description: Link local IPv6 address/mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -12868,6 +13422,9 @@ keys:
                 description: Infinite or lifetime in seconds.
               no_autoconfig_flag:
                 type: bool
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         access_group_in:
           type: str
           description: Access list name.
@@ -14784,9 +15341,18 @@ keys:
               - str
             key:
               type: str
-              description: 'Encrypted key - only type 7 supported.
+              description: 'Encrypted key.
 
                 When TLS is configured, `key` is ignored.'
+            key_type:
+              type: str
+              convert_types:
+              - int
+              valid_values:
+              - '0'
+              - '7'
+              - 8a
+              default: '7'
       vrfs:
         type: list
         primary_key: name
@@ -15339,6 +15905,51 @@ keys:
             - str
             min: 1
             max: 600
+      route_distinguisher:
+        type: dict
+        keys:
+          assignment_auto:
+            type: dict
+            description: Automatic Route Distinguisher (auto RD) feature.
+            keys:
+              range:
+                type: dict
+                description: 'Range for the 2-byte assigned number field of RD.
+
+                  The range is inclusive of start and end values.'
+                keys:
+                  start:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: Start of range. EOS default is 4096.
+                  end:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: 'End of range. Must be greater than or equal to `start`.
+
+                      EOS default is 65535.'
+              address_families:
+                type: list
+                min_length: 1
+                description: 'Address families for which to enable automatic RD assignment.
+
+                  Each address family has its own range allocation.'
+                items:
+                  type: str
+                  valid_values:
+                  - l2-evpn
+                  - l3-vrf
+                  description: 'l2-evpn: L2 EVPN VXLAN, VPWS, VLAN-aware-bundle, VNI-aware-bundle.
+
+                    l3-vrf: L3 EVPN and MPLS VPN.'
       updates:
         type: dict
         keys:
@@ -15399,6 +16010,33 @@ keys:
             type: bool
             description: Allow redistribution of iBGP routes into an Interior Gateway
               Protocol (IGP). EOS default is true.
+          labeled_unicast:
+            type: dict
+            keys:
+              rib:
+                type: dict
+                description: Configure LU RIB behavior for ip and/or tunnel.
+                keys:
+                  ip:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into IP RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to IP RIB.
+                  tunnel:
+                    type: dict
+                    keys:
+                      enabled:
+                        required: true
+                        type: bool
+                        description: Install LU routes into Tunnel RIB.
+                      route_map:
+                        type: str
+                        description: Route-map applied to tunnel RIB.
       listen_ranges:
         type: list
         description: 'Improved "listen_ranges" data model to support multiple listen
@@ -16852,6 +17490,12 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.'
+                  type: str
           bgp:
             type: dict
             keys:
@@ -17601,6 +18245,12 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.'
+                  type: str
           next_hops:
             type: list
             primary_key: ip_address
@@ -17935,6 +18585,12 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.'
+                  type: str
           bgp:
             type: dict
             keys:
@@ -17999,6 +18655,17 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                default_originate:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    always:
+                      type: bool
+                      description: Always advertise a default route to this peer.
+                    route_map:
+                      type: str
+                      description: Route-map name.
           neighbors:
             type: list
             primary_key: ip_address
@@ -18037,6 +18704,17 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                default_originate:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    always:
+                      type: bool
+                      description: Always advertise a default route to this peer.
+                    route_map:
+                      type: str
+                      description: Route-map name.
                 additional_paths:
                   type: dict
                   $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
@@ -18813,6 +19491,11 @@ keys:
             keys:
               source_interface:
                 type: str
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
       address_family_vpn_ipv6:
         type: dict
         keys:
@@ -18950,6 +19633,19 @@ keys:
             rd:
               type: str
               description: Route distinguisher.
+            rd_evpn_domain:
+              type: dict
+              keys:
+                domain:
+                  type: str
+                  valid_values:
+                  - remote
+                  - all
+                  required: true
+                rd:
+                  type: str
+                  description: Route distinguisher.
+                  required: true
             evpn_multicast:
               type: bool
             evpn_multicast_address_family:
@@ -19074,6 +19770,37 @@ keys:
 
                           Only applicable if `address_family` is one of `vpn-ipv4`
                           or `vpn-ipv6`.'
+                import_evpn_domains:
+                  type: list
+                  description: List of EVPN domains from which to import routes.
+                  primary_key: route_target
+                  items:
+                    type: dict
+                    keys:
+                      route_target:
+                        type: str
+                      domain:
+                        type: str
+                        required: true
+                        valid_values:
+                        - remote
+                        - all
+                export_evpn_domains:
+                  type: list
+                  description: List of EVPN domains to which local routes should be
+                    exported.
+                  primary_key: route_target
+                  items:
+                    type: dict
+                    keys:
+                      route_target:
+                        type: str
+                      domain:
+                        type: str
+                        required: true
+                        valid_values:
+                        - remote
+                        - all
             router_id:
               description: in IP address format A.B.C.D.
               type: str
@@ -19776,6 +20503,12 @@ keys:
                         description: IPv4 prefix "A.B.C.D/E".
                       route_map:
                         type: str
+                      rcf:
+                        description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                          `route_map` and `rcf` are mutually exclusive. `route_map`
+                          takes precedence.'
+                        type: str
                 redistribute:
                   type: dict
                   description: Redistribute routes in to BGP.
@@ -20107,6 +20840,12 @@ keys:
                         type: str
                         description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                       route_map:
+                        type: str
+                      rcf:
+                        description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                          `route_map` and `rcf` are mutually exclusive. `route_map`
+                          takes precedence.'
                         type: str
                 redistribute:
                   type: dict
@@ -21373,6 +22112,12 @@ keys:
           bfd_all_interfaces:
             type: bool
             description: Enable BFD on all interfaces.
+          multi_topology:
+            type: bool
+            description: 'Enable IS-IS multi-topology for the IPv6 address family.
+
+              Required for forming IPv6 adjacencies on IS-IS interfaces that do not
+              have an IPv4 address.'
           fast_reroute_ti_lfa:
             type: dict
             keys:
@@ -21800,6 +22545,13 @@ keys:
             min: 1
             max: 60
             description: MFIB entry activity polling interval.
+          routing:
+            type: bool
+          software_forwarding:
+            type: str
+            valid_values:
+            - kernel
+            - sfe
       vrfs:
         type: list
         primary_key: name
@@ -22522,9 +23274,13 @@ keys:
                         type: str
                         description: Other Anycast RP Address.
                       register_count:
-                        type: int
+                        type: str
+                        description: 'Number of registers to forward before pausing
+                          in range of 0 to 4294967295.
+
+                          Use ''infinity'' to forward all registers.'
                         convert_types:
-                        - str
+                        - int
       vrfs:
         type: list
         primary_key: name
@@ -22575,6 +23331,9 @@ keys:
                         max: 32
                       override:
                         type: bool
+                anycast_rps:
+                  type: list
+                  $ref: eos_cli_config_gen#/keys/router_pim_sparse_mode/keys/ipv4/keys/anycast_rps
                 ssm_range:
                   type: str
                   description: 'Standard access list name or use the specific keyword
@@ -23564,9 +24323,78 @@ keys:
           - int
         counters_per_entry:
           type: bool
+        entries:
+          type: list
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                description: 'Action as string.
+
+                  '
+                valid_values:
+                - permit
+                - deny
+              remark:
+                type: str
+                description: Specify a comment. If remark is specified other keys
+                  of the entry are ignored.
+              source:
+                type: str
+                description: 'Required for non-remark entries.
+
+                  The value can be:
+
+                  1. A single source address.
+
+                  2. Source address with mask. e.g. ''10.0.0.1/8''.
+
+                  3. ''any'' source address.'
+              vlan:
+                type: int
+                description: Match packets by VLAN value.
+                convert_types:
+                - str
+              vlan_mask:
+                type: str
+                description: 'VLAN mask. Range "0x000"-"0xFFF". Required when `vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              inner_vlan:
+                type: int
+                description: Match packets by inner VLAN value.
+                convert_types:
+                - str
+              inner_vlan_mask:
+                type: str
+                description: 'Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
+              log:
+                type: bool
+                description: Enable logging when a packet matches the ACL rule.
+              mirror_session:
+                type: str
+                description: Mirror session to mirror matches against this rule.
         sequence_numbers:
           type: list
-          required: true
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: entries
           primary_key: sequence
           items:
             type: dict
@@ -24023,6 +24851,42 @@ keys:
   traffic_policies:
     type: dict
     keys:
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+              convert_types:
+              - int
+            cpu:
+              type: dict
+              keys:
+                traffic_policy:
+                  type: dict
+                  required: true
+                  keys:
+                    name:
+                      type: str
+                      convert_types:
+                      - int
+                      required: true
+                      description: 'Traffic-policy name.
+
+                        Currently this is always configured with "fallback traffic-policy
+                        none".'
+                    enforcement_management:
+                      type: bool
+                      description: Enforce CPU traffic-policy on management ports.
+            traffic_policy_input_physical:
+              type: str
+              convert_types:
+              - int
+              description: Name of the Traffic Policy applied to traffic arriving
+                on physical interfaces within VRF.
       options:
         type: dict
         keys:
@@ -24419,6 +25283,27 @@ keys:
           type: str
           format: ipv6_cidr
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         access_group_in:
           description: IPv4 ACL Name for ingress.
           type: str
@@ -24692,6 +25577,24 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
         ipv6_address_virtuals:
           type: list
           description: The new "ipv6_address_virtuals" key support multiple virtual
@@ -24710,14 +25613,34 @@ keys:
             description: IPv6 address or IPv6_address/Mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_other_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.other_config_flag
+            removed: false
+            remove_in_version: 7.0.0
           description: Set the "other stateful configuration" flag in IPv6 router
             advertisements.
         ipv6_nd_cache:
           type: dict
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.cache
+            removed: false
+            remove_in_version: 7.0.0
           description: IPv6 neighbor cache options.
           keys:
             dynamic_capacity:
@@ -24739,6 +25662,11 @@ keys:
               description: Force refresh on cache expiry.
         ipv6_nd_prefixes:
           type: list
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           primary_key: ipv6_prefix
           items:
             type: dict
@@ -24787,6 +25715,9 @@ keys:
           type: bool
           description: Allow forwarding requests with additional IPv6 addresses in
             the gateway address "giaddr" field.
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         access_group_in:
           type: str
           description: IPv4 access-list name.
@@ -25622,6 +26553,105 @@ keys:
           new_key: vxlan1
         type: dict
 $defs:
+  access_list_entry:
+    type: dict
+    keys:
+      sequence:
+        type: int
+        convert_types:
+        - str
+        description: ACL entry sequence number.
+      remark:
+        type: str
+        description: 'Comment up to 100 characters.
+
+          If remark is defined, other keys in the ACL entry will be ignored.'
+      action:
+        type: str
+        valid_values:
+        - permit
+        - deny
+        description: 'ACL action.
+
+          Required except for remarks.'
+      source_ports_match:
+        type: str
+        valid_values:
+        - eq
+        - gt
+        - lt
+        - neq
+        - range
+        default: eq
+      source_ports:
+        type: list
+        min_length: 1
+        items:
+          type: str
+          convert_types:
+          - int
+          description: TCP/UDP source port name or number.
+      destination_ports_match:
+        type: str
+        valid_values:
+        - eq
+        - gt
+        - lt
+        - neq
+        - range
+        default: eq
+      destination_ports:
+        type: list
+        min_length: 1
+        items:
+          type: str
+          convert_types:
+          - int
+          description: TCP/UDP destination port name or number.
+      tcp_flags:
+        type: list
+        items:
+          type: str
+          description: TCP Flag Name.
+      log:
+        type: bool
+        description: Log matches against this rule.
+      icmp_type:
+        type: str
+        convert_types:
+        - int
+        description: Message type name/number for ICMP packets.
+      icmp_code:
+        type: str
+        convert_types:
+        - int
+        description: Message code for ICMP packets.
+      nexthop_group:
+        type: str
+        description: nexthop-group name.
+      tracked:
+        type: bool
+        description: Match packets in existing ICMP/UDP/TCP connections.
+      dscp:
+        type: str
+        convert_types:
+        - int
+        description: DSCP value or name.
+      vlan_number:
+        type: int
+        convert_types:
+        - str
+      vlan_mask:
+        type: str
+        description: 0x000-0xFFF VLAN mask.
+      inner_vlan_number:
+        type: int
+        convert_types:
+        - str
+      inner_vlan_mask:
+        type: str
+        description: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number`
+          is set.
   methods:
     type: list
     min_length: 1
@@ -26018,6 +27048,76 @@ $defs:
           min: 1
           max: 65535
           description: requires 'original_port'.
+  ipv6_nd:
+    description: IPv6 Neighbor Discovery protocol.
+    type: dict
+    keys:
+      cache:
+        type: dict
+        description: Neighbor cache options.
+        keys:
+          dynamic_capacity:
+            type: int
+            description: Capacity of dynamic cache entries.
+            convert_types:
+            - str
+            min: 0
+            max: 4294967295
+          expire:
+            type: int
+            description: Cache entries expiry in seconds.
+            convert_types:
+            - str
+            min: 1
+            max: 65535
+          refresh_always:
+            type: bool
+            description: Force refresh on cache expiry.
+      ra:
+        description: Router Advertisement.
+        type: dict
+        keys:
+          disabled:
+            type: bool
+            description: Disable Router Advertisement messages on the interface.
+          rx_accept:
+            type: dict
+            keys:
+              default_route:
+                type: bool
+                description: Accept default route from received Router Advertisements.
+              route_preference:
+                type: bool
+                description: Accept route preference from received Router Advertisements.
+      managed_config_flag:
+        type: bool
+        description: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+      prefixes:
+        type: list
+        primary_key: ipv6_prefix
+        description: IPv6 prefixes to include in Router Advertisements.
+        items:
+          type: dict
+          keys:
+            ipv6_prefix:
+              type: str
+            valid_lifetime:
+              type: str
+              convert_types:
+              - int
+              description: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+            preferred_lifetime:
+              type: str
+              convert_types:
+              - int
+              description: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+            no_autoconfig_flag:
+              type: bool
+              description: Indicate that the prefix cannot be used for stateless address
+                autoconfiguration (SLAAC).
+      other_config_flag:
+        type: bool
+        description: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
   source_interface_per_vrf:
     type: dict
     keys:

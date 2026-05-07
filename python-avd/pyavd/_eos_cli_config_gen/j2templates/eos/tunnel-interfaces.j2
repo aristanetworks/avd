@@ -24,12 +24,57 @@ interface {{ tunnel_interface.name }}
 {%     if tunnel_interface.ip_address is arista.avd.defined %}
    ip address {{ tunnel_interface.ip_address }}
 {%     endif %}
+{%     if tunnel_interface.ipv6_nd.cache is arista.avd.defined %}
+{%         if tunnel_interface.ipv6_nd.cache.expire is arista.avd.defined %}
+   ipv6 nd cache expire {{ tunnel_interface.ipv6_nd.cache.expire }}
+{%         endif %}
+{%         if tunnel_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
+   ipv6 nd cache dynamic capacity {{ tunnel_interface.ipv6_nd.cache.dynamic_capacity }}
+{%         endif %}
+{%         if tunnel_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
+   ipv6 nd cache refresh always
+{%         endif %}
+{%     endif %}
 {%     if tunnel_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
-{%     if tunnel_interface.ipv6_address is arista.avd.defined %}
+{%     if tunnel_interface.ipv6_addresses is arista.avd.defined %}
+{%         for ipv6_address in tunnel_interface.ipv6_addresses | arista.avd.natural_sort %}
+   ipv6 address {{ ipv6_address }}
+{%         endfor %}
+{%     elif tunnel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+   ipv6 address auto-config
+{%     elif tunnel_interface.ipv6_address is arista.avd.defined %}
    ipv6 address {{ tunnel_interface.ipv6_address }}
 {%     endif %}
+{%     if tunnel_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
+   ipv6 nd ra rx accept default-route
+{%     endif %}
+{%     if tunnel_interface.ipv6_nd.ra.rx_accept.route_preference is arista.avd.defined(true) %}
+   ipv6 nd ra rx accept route-preference
+{%     endif %}
+{%     if tunnel_interface.ipv6_nd.ra.disabled is arista.avd.defined(true) %}
+   ipv6 nd ra disabled
+{%     endif %}
+{%     if tunnel_interface.ipv6_nd.managed_config_flag is arista.avd.defined(true) %}
+   ipv6 nd managed-config-flag
+{%     endif %}
+{%     if tunnel_interface.ipv6_nd.other_config_flag is arista.avd.defined(true) %}
+   ipv6 nd other-config-flag
+{%     endif %}
+{%     for prefix in tunnel_interface.ipv6_nd.prefixes | arista.avd.natural_sort("ipv6_prefix") %}
+{%         set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix.ipv6_prefix %}
+{%         if prefix.valid_lifetime is arista.avd.defined %}
+{%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.valid_lifetime %}
+{%             if prefix.preferred_lifetime is arista.avd.defined %}
+{%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.preferred_lifetime %}
+{%             endif %}
+{%         endif %}
+{%         if prefix.no_autoconfig_flag is arista.avd.defined(true) %}
+{%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " no-autoconfig" %}
+{%         endif %}
+   {{ ipv6_nd_prefix_cli }}
+{%     endfor %}
 {%     if tunnel_interface.tcp_mss_ceiling is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
 {%         if tunnel_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined %}

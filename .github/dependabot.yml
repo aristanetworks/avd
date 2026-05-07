@@ -3,10 +3,10 @@ version: 2
 updates:
   # Maintain dependencies for Python
   - package-ecosystem: "pip"
+    versioning-strategy: increase-if-necessary
     directories:
       - "/"
       - "/python-avd/"
-      - "/ansible_collections/arista/avd/"
     schedule:
       interval: "weekly"
       day: "monday"

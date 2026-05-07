@@ -24,7 +24,7 @@ spine:
     loopback_ipv4_pool: 192.168.255.0/24
     bgp_defaults: "{{ spine_bgp_defaults }}"
   nodes:
-    - name: DC1-SPINE1
+    - name: dc1-spine1
       id: 1
       mgmt_ip: 192.168.200.101/24
       mac_address: "0c:1d:c0:1d:62:01"
@@ -43,14 +43,14 @@ l3leaf:
     vtep_loopback_ipv4_pool: 192.168.254.0-192.168.254.127, 192.168.254.128/26, 192.168.254.192-192.168.254.200
     # Commented out for automatic uplink allocation
     # uplink_interfaces: ['Ethernet1', 'Ethernet2']
-    uplink_switches: ["DC1-SPINE1", "DC1-SPINE1"]
+    uplink_switches: ["dc1-spine1", "dc1-spine1"]
     uplink_ipv4_pool: 172.31.254.0/30, 172.31.254.4-172.31.254.127, 172.31.254.128/25, 172.31.255.0/24
     uplink_interface_speed: forced 100gfull
     bgp_defaults: ["distance bgp 20 200 200"]
     platform: 7280R
     bgp_as: 65101
     # Commented out for automatic mlag allocation
-    # mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    # mlag_interfaces: [Ethernet5, Ethernet6]
     mlag_interfaces_speed: 100g
     mlag_peer_l3_vlan: 4090
     mlag_peer_vlan: 4092
@@ -82,13 +82,13 @@ l3leaf:
                 - destination: 10.0.200.90
               source_interface: Management1
       nodes:
-        - name: DC1-BL1A
+        - name: dc1-bl1a
           id: 6
           bgp_as: 65104
           mgmt_ip: 192.168.200.110/24
           mac_address: "0c:1d:c0:1d:62:01"
           uplink_switch_interfaces: [Ethernet1, Ethernet2]
-        - name: DC1-BL1B
+        - name: dc1-bl1b
           id: 7
           bgp_as: 65105
           mgmt_ip: 192.168.200.111/24
