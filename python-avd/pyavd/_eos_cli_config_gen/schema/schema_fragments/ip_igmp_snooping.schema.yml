@@ -16,15 +16,15 @@ keys:
       robustness_variable:
         type: int
         convert_types:
-        - str
+          - str
       restart_query_interval:
         type: int
         convert_types:
-        - str
+          - str
       interface_restart_query:
         type: int
         convert_types:
-        - str
+          - str
       fast_leave:
         type: bool
       querier:
@@ -38,31 +38,31 @@ keys:
           query_interval:
             type: int
             convert_types:
-            - str
+              - str
           max_response_time:
             type: int
             convert_types:
-            - str
+              - str
           last_member_query_interval:
             type: int
             convert_types:
-            - str
+              - str
           last_member_query_count:
             type: int
             convert_types:
-            - str
+              - str
           startup_query_interval:
             type: int
             convert_types:
-            - str
+              - str
           startup_query_count:
             type: int
             convert_types:
-            - str
+              - str
           version:
             type: int
             convert_types:
-            - str
+              - str
       proxy:
         type: bool
       vlans:
@@ -74,7 +74,7 @@ keys:
             id:
               type: int
               convert_types:
-              - str
+                - str
               description: VLAN ID.
             enabled:
               type: bool
@@ -89,35 +89,35 @@ keys:
                 query_interval:
                   type: int
                   convert_types:
-                  - str
+                    - str
                 max_response_time:
                   type: int
                   convert_types:
-                  - str
+                    - str
                 last_member_query_interval:
                   type: int
                   convert_types:
-                  - str
+                    - str
                 last_member_query_count:
                   type: int
                   convert_types:
-                  - str
+                    - str
                 startup_query_interval:
                   type: int
                   convert_types:
-                  - str
+                    - str
                 startup_query_count:
                   type: int
                   convert_types:
-                  - str
+                    - str
                 version:
                   type: int
                   convert_types:
-                  - str
+                    - str
             max_groups:
               type: int
               convert_types:
-              - str
+                - str
             fast_leave:
               type: bool
             proxy:
