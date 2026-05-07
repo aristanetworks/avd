@@ -324,7 +324,7 @@ def _get_collection_version(collection_path: str) -> str:
 
     version = metadata["version"]
     if not isinstance(version, str) or not COLLECTION_VERSION_PATTERN.fullmatch(version):
-        msg = "Invalid collection version found in collection metadata."
+        msg = "Invalid collection version found in collection metadata: {version}"
         raise ValueError(msg)
 
     return version
