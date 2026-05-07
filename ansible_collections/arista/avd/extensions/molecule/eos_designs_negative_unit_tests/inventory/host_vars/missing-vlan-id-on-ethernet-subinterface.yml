@@ -3,7 +3,7 @@ type: l3leaf
 l3leaf:
   defaults:
   nodes:
-    - name: invalid-vlan-id-on-ethernet-subinterface
+    - name: missing-vlan-id-on-ethernet-subinterface
       mgmt_ip: 192.168.1.2
       id: 1
       bgp_as: 65001
@@ -13,7 +13,7 @@ l3leaf:
 servers:
   - name: OLD_SW-1/2
     adapters:
-      - switches: [invalid-vlan-id-on-ethernet-subinterface]
+      - switches: [missing-vlan-id-on-ethernet-subinterface]
         switch_ports: [Ethernet1]
         endpoint_ports: [Endpoint_port1]
         description: "Interface description {interface} {endpoint_type}_{endpoint}{endpoint_port?<_!u}"

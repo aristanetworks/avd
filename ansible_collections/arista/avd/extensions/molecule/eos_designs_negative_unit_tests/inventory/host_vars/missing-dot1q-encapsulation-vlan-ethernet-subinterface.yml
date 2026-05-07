@@ -3,7 +3,7 @@ type: l3leaf
 l3leaf:
   defaults:
   nodes:
-    - name: invalid-dot1q-encapsulation-vlan-ethernet-subinterface
+    - name: missing-dot1q-encapsulation-vlan-ethernet-subinterface
       id: 1
       bgp_as: 65001
       loopback_ipv4_pool: 10.0.0.0/24
@@ -13,7 +13,7 @@ l3leaf:
 servers:
   - name: OLD_SW-1/2
     adapters:
-      - switches: [invalid-dot1q-encapsulation-vlan-ethernet-subinterface]
+      - switches: [missing-dot1q-encapsulation-vlan-ethernet-subinterface]
         switch_ports: [Ethernet1]
         endpoint_ports: [Endpoint_port1]
         description: "Interface description {interface} {endpoint_type}_{endpoint}{endpoint_port?<_!u}"

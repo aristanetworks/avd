@@ -3,7 +3,7 @@ type: l3leaf
 l3leaf:
   defaults:
   nodes:
-    - name: invalid-vlan-id-on-port-channel-subinterface
+    - name: missing-dot1q-encapsulation-vlan-port-channel-subinterface
       id: 1
       bgp_as: 65001
       loopback_ipv4_pool: 10.0.0.0/24
@@ -11,12 +11,11 @@ l3leaf:
       mgmt_ip: 192.168.1.2
 
 servers:
-  # port-channel provide physical and port-channel descriptions as templates with all fields
   - name: OLD_SW-1/2
     adapters:
-      - switches: [invalid-vlan-id-on-port-channel-subinterface, invalid-vlan-id-on-port-channel-subinterface]
-        switch_ports: [Ethernet1, Ethernet2]
-        endpoint_ports: [Endpoint_port1, ENDPOINT_PORT2]
+      - switches: [missing-dot1q-encapsulation-vlan-port-channel-subinterface]
+        switch_ports: [Ethernet1]
+        endpoint_ports: [Endpoint_port1]
         description: "Interface description {interface} {endpoint_type}_{endpoint}{endpoint_port?<_!u}"
         port_channel:
           mode: "active"
@@ -25,7 +24,8 @@ servers:
           subinterfaces:
             - number: 10000
               description: subinterface number greater than 4094
+              vlan_id: 1000
 
 expected_error_message: >-
-  'vlan_id' must be set for 'servers[name=OLD_SW-1/2].adapters[0].port_channel.subinterfaces[number=10000]'
+  'encapsulation_vlan.client_dot1q' must be set for 'servers[name=OLD_SW-1/2].adapters[0].port_channel.subinterfaces[number=10000]'
   since the subinterface number is above 4094.
