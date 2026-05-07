@@ -4,12 +4,16 @@
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 
 import pytest
 
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
 
 @pytest.fixture(autouse=True)
-def reset_avd_logger() -> None:
+def reset_avd_logger() -> Generator[None, None, None]:
     logger = logging.getLogger("ansible_collections.arista.avd")
     original_propagate = logger.propagate
     original_handlers = logger.handlers[:]
