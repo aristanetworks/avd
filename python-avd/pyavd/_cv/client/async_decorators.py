@@ -273,8 +273,16 @@ class GRPCRequestHandler:
                                 # Check if www is missing in CVaaS FQDN
                                 cv_servers = getattr(call_args[0], "_servers", []) if call_args else []
                                 first_cv_server = cv_servers[0] if cv_servers else ""
-                                if first_cv_server.endswith("arista.io") and not first_cv_server.startswith("www."):
-                                    msg = f"CVaaS FQDN '{first_cv_server}' is missing the required 'www.' prefix. Please use 'www.{first_cv_server}' instead."
+                                # Strip the 'apiserver.' prefix if incorrectly used instead of 'www.'.
+                                first_cv_server_base_fqdn = first_cv_server.removeprefix("apiserver.")
+                                if first_cv_server_base_fqdn.endswith("arista.io") and not first_cv_server_base_fqdn.startswith("www."):
+                                    specific_hint = f"www.{first_cv_server_base_fqdn}"
+                                    generic_hint = "" if specific_hint == "www.arista.io" else " or generic 'www.arista.io'"
+                                    msg = (
+                                        f"CVaaS FQDN '{first_cv_server}' is missing the required 'www.' prefix. "
+                                        f"Please use '{specific_hint}'{generic_hint} instead. "
+                                        f"Check 'https://www.arista.io/meta/ip.json' for the full list of available 'www' endpoints."
+                                    )
                                     raise CVClientException(msg)
                                 raise CVGRPCError(*e.args, call_args, call_kwargs)
 
