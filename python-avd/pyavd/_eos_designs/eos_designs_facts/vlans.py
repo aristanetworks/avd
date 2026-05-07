@@ -273,7 +273,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         return EosDesignsFactsProtocol.EndpointTrunkGroups(natural_sort(self._endpoint_trunk_groups))
 
     @cached_property
-    def candidate_vlans(self: EosDesignsFactsGeneratorProtocol) -> frozenset[int]:
+    def _candidate_vlans(self: EosDesignsFactsGeneratorProtocol) -> frozenset[int]:
         """
         Return set of candidate VLANs selected from network services for this switch.
 
@@ -335,7 +335,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
             return None
 
         path = path.union((self.shared_utils.hostname,))
-        candidate_vlans = self.candidate_vlans
+        candidate_vlans = self._candidate_vlans
 
         if self.shared_utils.uplink_type not in ["port-channel", "l2-ethernet", "lan"]:
             return candidate_vlans
