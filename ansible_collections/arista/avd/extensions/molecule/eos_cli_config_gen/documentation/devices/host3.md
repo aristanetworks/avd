@@ -122,7 +122,7 @@ cvx
    !
    service openstack
       ip access-group ACL-OS
-      ipv6 access-group ACL-V6-IN in
+      ipv6 access-group ACL-V6-IN
       no shutdown
       network type-driver vlan default
    !
