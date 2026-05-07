@@ -3614,54 +3614,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class IpAccessGroup(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "field_in": {"type": bool}}
-                    _field_to_key_map: ClassVar[dict] = {"field_in": "in"}
-                    _key_to_field_map: ClassVar[dict] = {"in": "field_in"}
-                    name: str
-                    field_in: bool | None
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, name: str | UndefinedType = Undefined, field_in: bool | None | UndefinedType = Undefined) -> None:
-                            """
-                            IpAccessGroup.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                name: name
-                                field_in: field_in
-
-                            """
-
-                class Ipv6AccessGroup(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "field_in": {"type": bool}}
-                    _field_to_key_map: ClassVar[dict] = {"field_in": "in"}
-                    _key_to_field_map: ClassVar[dict] = {"in": "field_in"}
-                    name: str
-                    field_in: bool | None
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, name: str | UndefinedType = Undefined, field_in: bool | None | UndefinedType = Undefined) -> None:
-                            """
-                            Ipv6AccessGroup.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                name: name
-                                field_in: field_in
-
-                            """
-
                 class NameResolution(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -3790,8 +3742,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {
                     "authentication": {"type": Authentication},
                     "grace_period": {"type": int},
-                    "ip_access_group": {"type": IpAccessGroup},
-                    "ipv6_access_group": {"type": Ipv6AccessGroup},
+                    "ip_access_group_name": {"type": str},
+                    "ipv6_access_group_name": {"type": str},
                     "name_resolution": {"type": NameResolution},
                     "network_type_driver": {"type": NetworkTypeDriver},
                     "regions": {"type": Regions},
@@ -3801,10 +3753,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 grace_period: int | None
                 """Set the grace period for which the OpenStack agent waits for OpenStack region data."""
-                ip_access_group: IpAccessGroup
-                """Subclass of AvdModel."""
-                ipv6_access_group: Ipv6AccessGroup
-                """Subclass of AvdModel."""
+                ip_access_group_name: str | None
+                ipv6_access_group_name: str | None
                 name_resolution: NameResolution
                 """Subclass of AvdModel."""
                 network_type_driver: NetworkTypeDriver
@@ -3820,8 +3770,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         authentication: Authentication | UndefinedType = Undefined,
                         grace_period: int | None | UndefinedType = Undefined,
-                        ip_access_group: IpAccessGroup | UndefinedType = Undefined,
-                        ipv6_access_group: Ipv6AccessGroup | UndefinedType = Undefined,
+                        ip_access_group_name: str | None | UndefinedType = Undefined,
+                        ipv6_access_group_name: str | None | UndefinedType = Undefined,
                         name_resolution: NameResolution | UndefinedType = Undefined,
                         network_type_driver: NetworkTypeDriver | UndefinedType = Undefined,
                         regions: Regions | UndefinedType = Undefined,
@@ -3836,8 +3786,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             authentication: Subclass of AvdModel.
                             grace_period: Set the grace period for which the OpenStack agent waits for OpenStack region data.
-                            ip_access_group: Subclass of AvdModel.
-                            ipv6_access_group: Subclass of AvdModel.
+                            ip_access_group_name: ip_access_group_name
+                            ipv6_access_group_name: ipv6_access_group_name
                             name_resolution: Subclass of AvdModel.
                             network_type_driver: Subclass of AvdModel.
                             regions: Subclass of AvdIndexedList with `RegionsItem` items. Primary key is `name` (`str`).

@@ -30,19 +30,11 @@ cvx
 {%     if cvx.services.openstack is arista.avd.defined %}
    !
    service openstack
-{%         if cvx.services.openstack.ip_access_group.name is arista.avd.defined %}
-{%             set access_group_cli = cvx.services.openstack.ip_access_group.name %}
-{%             if cvx.services.openstack.ip_access_group.in is arista.avd.defined(true) %}
-{%                 set access_group_cli = access_group_cli ~ " in" %}
-{%             endif %}
-      ip access-group {{ access_group_cli }}
+{%         if cvx.services.openstack.ip_access_group_name is arista.avd.defined %}
+      ip access-group {{ cvx.services.openstack.ip_access_group.name }}
 {%         endif %}
-{%         if cvx.services.openstack.ipv6_access_group.name is arista.avd.defined %}
-{%             set access_group_cli = cvx.services.openstack.ipv6_access_group.name %}
-{%             if cvx.services.openstack.ipv6_access_group.in is arista.avd.defined(true) %}
-{%                 set access_group_cli = access_group_cli ~ " in" %}
-{%             endif %}
-      ipv6 access-group {{ access_group_cli }}
+{%         if cvx.services.openstack.ip_access_group_name is arista.avd.defined %}
+      ipv6 access-group {{ cvx.services.openstack.ip_access_group_name }}
 {%         endif %}
 {%         if cvx.services.openstack.shutdown is arista.avd.defined(false) %}
       no shutdown

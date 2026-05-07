@@ -65,22 +65,10 @@ keys:
                 max: 14400
                 convert_types:
                   - str
-              ip_access_group:
-                type: dict
-                keys:
-                  name:
-                    type: str
-                    required: true
-                  in:
-                    type: bool
-              ipv6_access_group:
-                type: dict
-                keys:
-                  name:
-                    type: str
-                    required: true
-                  in:
-                    type: bool
+              ip_access_group_name:
+                type: str
+              ipv6_access_group_name:
+                type: str
               name_resolution:
                 type: dict
                 keys:
