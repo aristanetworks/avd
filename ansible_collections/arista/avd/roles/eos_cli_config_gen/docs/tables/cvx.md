@@ -23,7 +23,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;openstack</samp>](## "cvx.services.openstack") | Dictionary |  |  |  | OpenStack services. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication</samp>](## "cvx.services.openstack.authentication") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "cvx.services.openstack.authentication.role") | String |  |  |  | API authentication user role. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "cvx.services.openstack.grace_period") | Integer |  |  | Min: 0<br>Max: 14400 | Set the grace period for which the OpenStack agent waits for OpenStack region data. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "cvx.services.openstack.grace_period") | Integer |  |  | Min: 0<br>Max: 14400 | Set the grace period in seconds for which the OpenStack agent waits for OpenStack region data. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_access_group</samp>](## "cvx.services.openstack.ip_access_group") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "cvx.services.openstack.ip_access_group.name") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in</samp>](## "cvx.services.openstack.ip_access_group.in") | Boolean |  |  |  |  |
@@ -76,7 +76,7 @@
             # API authentication user role.
             role: <str>
 
-          # Set the grace period for which the OpenStack agent waits for OpenStack region data.
+          # Set the grace period in seconds for which the OpenStack agent waits for OpenStack region data.
           grace_period: <int; 0-14400>
           ip_access_group:
             name: <str; required>
