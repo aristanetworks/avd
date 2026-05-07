@@ -15,5 +15,3 @@ cvx:
       ipv6_access_group_name: ACL-V6-IN
       network_type_driver:
         vlan: default
-      regions:
-        - name: REGION_2
