@@ -1424,8 +1424,8 @@ keys:
                     description: API authentication user role.
               grace_period:
                 type: int
-                description: Set the grace period for which the OpenStack agent waits
-                  for OpenStack region data.
+                description: Set the grace period in seconds for which the OpenStack
+                  agent waits for OpenStack region data.
                 min: 0
                 max: 14400
                 convert_types:

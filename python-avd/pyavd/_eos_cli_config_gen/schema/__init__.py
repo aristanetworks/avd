@@ -3752,7 +3752,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 authentication: Authentication
                 """Subclass of AvdModel."""
                 grace_period: int | None
-                """Set the grace period for which the OpenStack agent waits for OpenStack region data."""
+                """Set the grace period in seconds for which the OpenStack agent waits for OpenStack region data."""
                 ip_access_group_name: str | None
                 ipv6_access_group_name: str | None
                 name_resolution: NameResolution
@@ -3785,7 +3785,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             authentication: Subclass of AvdModel.
-                            grace_period: Set the grace period for which the OpenStack agent waits for OpenStack region data.
+                            grace_period: Set the grace period in seconds for which the OpenStack agent waits for OpenStack region data.
                             ip_access_group_name: ip_access_group_name
                             ipv6_access_group_name: ipv6_access_group_name
                             name_resolution: Subclass of AvdModel.
