@@ -16,4 +16,4 @@ l3leaf:
           ip_address: 172.16.0.2/30
 
 expected_error_message: >-
-  L3 Port-Channel 'Port-Channel5' must have at least one member interface defined.
+  L3 Port-Channel 'Port-Channel5' must have at least one member interface defined for host 'l3-port-channel-without-member-interfaces'.

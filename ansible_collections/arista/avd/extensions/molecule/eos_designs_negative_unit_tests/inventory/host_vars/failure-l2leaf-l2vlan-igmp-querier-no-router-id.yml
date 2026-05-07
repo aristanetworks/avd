@@ -33,5 +33,5 @@ tenants:
         name: test_l2vlan
 expected_error_message: >-
   Invalid IGMP snooping querier source address for VLAN 'test_l2vlan' in Tenant 'Tenant_A'.
-  The value 'None' resolved from 'igmp_snooping_querier.source_address: main_router_id' is not a valid IPv4 address
+  The value 'None' resolved from 'igmp_snooping.querier.source_address: main_router_id' is not a valid IPv4 address
   for host 'failure-l2leaf-l2vlan-igmp-querier-no-router-id'.
