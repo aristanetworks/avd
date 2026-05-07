@@ -71,14 +71,14 @@ $defs:
             description: List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
             items:
               type: str
-              description: IPv6 address of DNS servers
+              description: IPv6 address of DNS servers.
       ipv6_dhcp_relay:
         type: dict
-        description: TODO
+        description: IPv6 DHCP relay settings.
         keys:
           destinations:
             type: list
-            description: TODO
+            description: List of IPv6 DHCP relay destinations.
             primary_key: address
             items:
               type: dict

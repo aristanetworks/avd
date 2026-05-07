@@ -32711,9 +32711,10 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {"destinations": {"type": Destinations}}
                 destinations: Destinations
                 """
-                TODO
+                List of IPv6 DHCP relay destinations.
 
-                Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+                Subclass of AvdIndexedList with `DestinationsItem` items.
+                Primary key is `address` (`str`).
                 """
 
                 if TYPE_CHECKING:
@@ -32727,9 +32728,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             destinations:
-                               TODO
+                               List of IPv6 DHCP relay destinations.
 
-                               Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+                               Subclass of AvdIndexedList with `DestinationsItem` items.
+                               Primary key is `address` (`str`).
 
                         """
 
@@ -33420,7 +33422,7 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
             ipv6_dhcp_relay: Ipv6DhcpRelay
             """
-            TODO
+            IPv6 DHCP relay settings.
 
             Subclass of AvdModel.
             """
@@ -33686,7 +33688,7 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdList with `str` items.
                         ipv6_nd: Subclass of AvdModel.
                         ipv6_dhcp_relay:
-                           TODO
+                           IPv6 DHCP relay settings.
 
                            Subclass of AvdModel.
                         ip_address_virtual_secondaries:
@@ -33948,9 +33950,10 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {"destinations": {"type": Destinations}}
             destinations: Destinations
             """
-            TODO
+            List of IPv6 DHCP relay destinations.
 
-            Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+            Subclass of AvdIndexedList with `DestinationsItem` items.
+            Primary key is `address` (`str`).
             """
 
             if TYPE_CHECKING:
@@ -33964,9 +33967,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         destinations:
-                           TODO
+                           List of IPv6 DHCP relay destinations.
 
-                           Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+                           Subclass of AvdIndexedList with `DestinationsItem` items.
+                           Primary key is `address` (`str`).
 
                     """
 
@@ -34675,7 +34679,7 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         ipv6_dhcp_relay: Ipv6DhcpRelay
         """
-        TODO
+        IPv6 DHCP relay settings.
 
         Subclass of AvdModel.
         """
@@ -34955,7 +34959,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdList with `str` items.
                     ipv6_nd: Subclass of AvdModel.
                     ipv6_dhcp_relay:
-                       TODO
+                       IPv6 DHCP relay settings.
 
                        Subclass of AvdModel.
                     ip_address_virtual_secondaries:
@@ -63963,9 +63967,10 @@ class EosDesigns(EosDesignsRootModel):
                                 _fields: ClassVar[dict] = {"destinations": {"type": Destinations}}
                                 destinations: Destinations
                                 """
-                                TODO
+                                List of IPv6 DHCP relay destinations.
 
-                                Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+                                Subclass of AvdIndexedList with `DestinationsItem` items.
+                                Primary key is `address` (`str`).
                                 """
 
                                 if TYPE_CHECKING:
@@ -63979,9 +63984,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             destinations:
-                                               TODO
+                                               List of IPv6 DHCP relay destinations.
 
-                                               Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+                                               Subclass of AvdIndexedList with `DestinationsItem` items.
+                                               Primary key is `address` (`str`).
 
                                         """
 
@@ -64694,7 +64700,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
                             ipv6_dhcp_relay: Ipv6DhcpRelay
                             """
-                            TODO
+                            IPv6 DHCP relay settings.
 
                             Subclass of AvdModel.
                             """
@@ -64967,7 +64973,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdList with `str` items.
                                         ipv6_nd: Subclass of AvdModel.
                                         ipv6_dhcp_relay:
-                                           TODO
+                                           IPv6 DHCP relay settings.
 
                                            Subclass of AvdModel.
                                         ip_address_virtual_secondaries:
@@ -65229,9 +65235,10 @@ class EosDesigns(EosDesignsRootModel):
                             _fields: ClassVar[dict] = {"destinations": {"type": Destinations}}
                             destinations: Destinations
                             """
-                            TODO
+                            List of IPv6 DHCP relay destinations.
 
-                            Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+                            Subclass of AvdIndexedList with `DestinationsItem` items.
+                            Primary key is `address` (`str`).
                             """
 
                             if TYPE_CHECKING:
@@ -65245,9 +65252,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         destinations:
-                                           TODO
+                                           List of IPv6 DHCP relay destinations.
 
-                                           Subclass of AvdIndexedList with `DestinationsItem` items. Primary key is `address` (`str`).
+                                           Subclass of AvdIndexedList with `DestinationsItem` items.
+                                           Primary key is `address` (`str`).
 
                                     """
 
@@ -65988,7 +65996,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         ipv6_dhcp_relay: Ipv6DhcpRelay
                         """
-                        TODO
+                        IPv6 DHCP relay settings.
 
                         Subclass of AvdModel.
                         """
@@ -66287,7 +66295,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdList with `str` items.
                                     ipv6_nd: Subclass of AvdModel.
                                     ipv6_dhcp_relay:
-                                       TODO
+                                       IPv6 DHCP relay settings.
 
                                        Subclass of AvdModel.
                                     ip_address_virtual_secondaries:
