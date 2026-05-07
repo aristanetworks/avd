@@ -66643,6 +66643,8 @@ class EosDesigns(EosDesignsRootModel):
                         IPv6 addresses for each node in `nodes`, e.g., '2001:db8::1/64'.
                         Length must match `nodes`. Can be
                         used instead of or together with `ip_addresses`.
+                        For subinterfaces, at least one of `ip_addresses`
+                        or `ipv6_addresses` must be set.
 
                         Subclass of AvdList with `str` items.
                         """
@@ -66777,6 +66779,8 @@ class EosDesigns(EosDesignsRootModel):
                                        IPv6 addresses for each node in `nodes`, e.g., '2001:db8::1/64'.
                                        Length must match `nodes`. Can be
                                        used instead of or together with `ip_addresses`.
+                                       For subinterfaces, at least one of `ip_addresses`
+                                       or `ipv6_addresses` must be set.
 
                                        Subclass of AvdList with `str` items.
                                     static_routes:

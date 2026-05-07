@@ -107,10 +107,10 @@ class EthernetInterfacesMixin(Protocol):
             nodes_length = len(l3_interface.nodes)
             if (
                 len(l3_interface.interfaces) != nodes_length
+                or (not l3_interface.ip_addresses and not l3_interface.ipv6_addresses)
                 or (l3_interface.ip_addresses and len(l3_interface.ip_addresses) != nodes_length)
                 or (l3_interface.ipv6_addresses and len(l3_interface.ipv6_addresses) != nodes_length)
                 or (l3_interface.descriptions and len(l3_interface.descriptions) != nodes_length)
-                or (not l3_interface.ip_addresses and not l3_interface.ipv6_addresses)
             ):
                 msg = (
                     "Length of lists 'interfaces', 'nodes', 'ip_addresses'/'ipv6_addresses' and 'descriptions' (if used) must match"
