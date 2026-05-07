@@ -69,7 +69,7 @@ class PortChannelInterfacesMixin(Protocol):
             elif link.vlans is not None:
                 port_channel_interface.switchport.trunk.allowed_vlan = link.vlans
 
-            port_channel_interface.sflow.enable = self.shared_utils.get_interface_sflow(port_channel_interface.name, link.sflow_enabled)
+            port_channel_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(port_channel_interface.name, link.sflow_enabled)
 
             for link_tracking_group in link.link_tracking_groups:
                 port_channel_interface.link_tracking_groups.append_new(

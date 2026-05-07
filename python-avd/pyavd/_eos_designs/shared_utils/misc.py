@@ -193,21 +193,6 @@ class MiscMixin(Protocol):
             return None
         return configured_mtu
 
-    def get_interface_sflow(self: SharedUtilsProtocol, interface: str, configured_sflow: bool | None) -> bool | None:
-        """
-        Get the configured sFlow state if the interface supports it based on platform settings.
-
-        Considers global sFlow support and specific support for subinterfaces.
-
-        Returns:
-            The configured_sflow value if supported, otherwise None.
-        """
-        sflow_supported_on_interface = self.platform_settings.feature_support.sflow and (
-            "." not in interface or self.platform_settings.feature_support.sflow_subinterfaces
-        )
-
-        return configured_sflow if sflow_supported_on_interface else None
-
     def get_ipv4_acl(
         self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None
     ) -> EosDesigns.Ipv4AclsItem:
@@ -239,8 +224,8 @@ class MiscMixin(Protocol):
                 msg = f"{err_context}.destination"
                 raise AristaAvdMissingVariableError(msg)
 
-            entry.source = self._get_ipv4_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
-            entry.destination = self._get_ipv4_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
+            entry.source = self._get_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
+            entry.destination = self._get_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
             if entry.source != org_ipv4_acl.entries[index].source or entry.destination != org_ipv4_acl.entries[index].destination:
                 changed = True
 
@@ -248,8 +233,45 @@ class MiscMixin(Protocol):
             ipv4_acl.name += f"_{self.sanitize_interface_name(interface_name)}"
         return ipv4_acl
 
+    def get_ipv6_acl(self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None) -> EosDesigns.Ipv6AclsItem:
+        """
+        Get one IPv6 ACL from "ipv6_acls" where fields have been substituted.
+
+        If any substitution is done, the ACL name will get "_<interface_name>" appended.
+        """
+        if name not in self.inputs.ipv6_acls:
+            msg = f"ipv6_acls[name={name}]"
+            raise AristaAvdMissingVariableError(msg)
+        org_ipv6_acl = self.inputs.ipv6_acls[name]
+        # deepcopy to avoid inplace updates below from modifying the original.
+        ipv6_acl = org_ipv6_acl._deepcopy()
+        ip_replacements = {
+            "interface_ip": interface_ip,
+        }
+        changed = False
+        for index, entry in enumerate(ipv6_acl.entries):
+            if entry._get("remark"):
+                continue
+
+            err_context = f"ipv6_acls[name={name}].entries[{index}]"
+            if not entry.source:
+                msg = f"{err_context}.source"
+                raise AristaAvdMissingVariableError(msg)
+            if not entry.destination:
+                msg = f"{err_context}.destination"
+                raise AristaAvdMissingVariableError(msg)
+
+            entry.source = self._get_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
+            entry.destination = self._get_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
+            if entry.source != org_ipv6_acl.entries[index].source or entry.destination != org_ipv6_acl.entries[index].destination:
+                changed = True
+
+        if changed:
+            ipv6_acl.name += f"_{self.sanitize_interface_name(interface_name)}"
+        return ipv6_acl
+
     @staticmethod
-    def _get_ipv4_acl_field_with_substitution(field_value: str, replacements: dict[str, str | None], field_context: str, interface_name: str) -> str:
+    def _get_acl_field_with_substitution(field_value: str, replacements: dict[str, str | None], field_context: str, interface_name: str) -> str:
         """
         Checks one field if the value can be substituted.
 

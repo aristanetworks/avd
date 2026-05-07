@@ -37,13 +37,13 @@ keys:
                 load_interval:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   description: |
                     Load Interval in Seconds.
                 threshold:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   description: |
                     Threshold in kbps.
             shutdown:
@@ -52,7 +52,7 @@ keys:
                 max_delay:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   description: |
                     Max delay in seconds.
       bgp_profiles:
@@ -85,7 +85,7 @@ keys:
                 duration:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   min: 300
                   max: 3600
                   description: |

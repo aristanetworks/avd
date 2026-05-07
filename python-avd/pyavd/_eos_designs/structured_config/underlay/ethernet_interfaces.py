@@ -69,7 +69,7 @@ class EthernetInterfacesMixin(Protocol):
                         name=link_tracking_group.name,
                         direction=link_tracking_group.direction,
                     )
-                ethernet_interface.sflow.enable = self.shared_utils.get_interface_sflow(ethernet_interface.name, link.sflow_enabled)
+                ethernet_interface.sflow.enable = self.structured_config_utils.get_interface_sflow(ethernet_interface.name, link.sflow_enabled)
 
                 # PTP
                 if link.ptp.enable:
@@ -203,7 +203,7 @@ class EthernetInterfacesMixin(Protocol):
                     ethernet_subinterface.metadata._update(peer_interface=subinterface.peer_interface, peer=link.peer, peer_type=link.peer_type)
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
 
-                    ethernet_subinterface.sflow.enable = self.shared_utils.get_interface_sflow(ethernet_subinterface.name, link.sflow_enabled)
+                    ethernet_subinterface.sflow.enable = self.structured_config_utils.get_interface_sflow(ethernet_subinterface.name, link.sflow_enabled)
 
                     if subinterface.ip_address:
                         ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
@@ -278,7 +278,7 @@ class EthernetInterfacesMixin(Protocol):
             self.custom_structured_configs.nested.ethernet_interfaces.obtain(l3_interface.name)._deepmerge(
                 l3_interface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
-        interface.sflow.enable = self.shared_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
+        interface.sflow.enable = self.structured_config_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
 
         if (
             self.shared_utils.is_wan_router
@@ -339,8 +339,13 @@ class EthernetInterfacesMixin(Protocol):
                 shutdown=not l3_port_channel.enabled,
                 speed=member_intf.speed or None,
                 channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=int(channel_group_id), mode=l3_port_channel.mode),
+                metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
+                    peer_interface=member_intf.peer_interface,
+                    peer_type="l3_port_channel_member",
+                    peer=peer,
+                    validate_state=self.structured_config_utils.get_interface_validate_state(),
+                ),
             )
-            ethernet_interface.metadata._update(peer_interface=member_intf.peer_interface, peer_type="l3_port_channel_member", peer=peer)
 
             self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(member_intf.name)
 

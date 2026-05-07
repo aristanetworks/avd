@@ -116,6 +116,40 @@ class UtilsMixin(Protocol):
             "redistribute_in_overlay": redistribute_in_overlay,
         }
 
+    def get_ipv4_mlag_peering_ip(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+    ) -> str:
+        """Return the IPv4 address/prefix for the MLAG iBGP peering SVI for the given VRF."""
+        if vrf.mlag_ibgp_peering_ipv4_pool:
+            if self.shared_utils.mlag_role == "primary":
+                return (
+                    f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(vrf.mlag_ibgp_peering_ipv4_pool)}/"
+                    f"{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
+                )
+            return (
+                f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(vrf.mlag_ibgp_peering_ipv4_pool)}/"
+                f"{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
+            )
+        return f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
+
+    def get_ipv6_mlag_peering_ip(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+    ) -> str:
+        """Return the IPv6 address/prefix for the MLAG iBGP peering SVI for the given VRF."""
+        if vrf.mlag_ibgp_peering_ipv6_pool:
+            if self.shared_utils.mlag_role == "primary":
+                return (
+                    f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_primary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                    f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+                )
+            return (
+                f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_secondary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+            )
+        return f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+
     def _mlag_ibgp_peering_enabled(
         self: AvdStructuredConfigNetworkServicesProtocol,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,

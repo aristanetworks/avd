@@ -127,8 +127,11 @@ tenant_a:
             nodes:
               - node: dc1-leaf1a
                 ip_address: 10.1.32.1/24
+                ipv6_address: 2001:db8:132::1/64
                 ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
                 ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
+                ipv6_acl_in: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+                ipv6_acl_out: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
                 static_routes:
                   - prefix: 10.10.10.0/24
                     next_hop: 10.10.10.1
@@ -434,4 +437,28 @@ ipv4_acls:
       - action: permit
         protocol: ip
         source: interface_ip
+        destination: any
+
+ipv6_acls:
+  # ACL with remark + source and destination interface_ip substitution.
+  # Covers: remark skipping, source substitution, destination substitution, name suffix appended.
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-IN
+    entries:
+      - remark: This remark entry will be skipped and does not require source and destination.
+      - sequence: 30
+        action: deny
+        protocol: ipv6
+        source: interface_ip
+        destination: any
+      - action: permit
+        protocol: ipv6
+        source: any
+        destination: interface_ip
+  # ACL with static entries - no substitution, name is not modified.
+  # Covers: static ACL path where changed=False and name stays unchanged.
+  - name: TEST-IPV6-ACL-WITH-NO-FIELDS-OUT
+    entries:
+      - action: permit
+        protocol: ipv6
+        source: 2001:db8::/32
         destination: any
