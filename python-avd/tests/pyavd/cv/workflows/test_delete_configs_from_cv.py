@@ -40,7 +40,7 @@ def _make_configlet(configlet_id: str, display_name: str | None = None) -> Confi
     """Build a minimal Configlet object exposing key.configlet_id and display_name to the workflow."""
     return Configlet(
         key=ConfigletKey(workspace_id="pytest_workspace", configlet_id=configlet_id),
-        display_name=display_name if display_name is not None else f"AVD_{configlet_id}",
+        display_name=display_name if display_name is not None else f"AVD-{configlet_id}",
     )
 
 
@@ -113,7 +113,7 @@ class TestDeleteConfigsFromCv:
         mock_cv_client.delete_configlets.assert_called_once_with(workspace_id="pytest_workspace", configlet_ids=["avd-SERIAL1"])
         mock_cv_client.delete_configlet_container.assert_not_called()
         mock_cv_client.set_configlet_container.assert_not_called()
-        assert deployment_result.removed_configs == ["AVD_avd-SERIAL1"]
+        assert deployment_result.removed_configs == ["AVD-avd-SERIAL1"]
 
     async def test_delete_orphan_container_not_in_root(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test that a leftover container is deleted even if it is no longer a child of the root."""
@@ -171,7 +171,7 @@ class TestDeleteConfigsFromCv:
         # Studio inputs should NOT be touched (root still has children).
         mock_cv_client.get_studio_inputs_with_path.assert_not_called()
         mock_cv_client.set_studio_inputs.assert_not_called()
-        assert deployment_result.removed_configs == ["AVD_avd-SERIAL1"]
+        assert deployment_result.removed_configs == ["AVD-avd-SERIAL1"]
 
     async def test_delete_all_targets_removes_root(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test that deleting configlets and containers for all targets also removes the root container and unregisters it from studio."""
@@ -208,7 +208,37 @@ class TestDeleteConfigsFromCv:
             input_path=["configletAssignmentRoots"],
             inputs=["other-root"],
         )
-        assert deployment_result.removed_configs == ["AVD_avd-SERIAL1", "AVD_avd-SERIAL2"]
+        assert deployment_result.removed_configs == ["AVD-avd-SERIAL1", "AVD-avd-SERIAL2"]
+
+    async def test_delete_existing_empty_root(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that an existing empty root container is deleted and unregistered from studio."""
+        deployments = [_manifest_deployment("device-1", "SERIAL1")]
+
+        mock_cv_client.get_configlets.return_value = []
+        root_container = create_grpc_container(
+            container_id=CONFIGLET_CONTAINER_ID,
+            name="AVD Configurations",
+            description="",
+            query="device:*",
+            child_ids=[],
+        )
+        mock_cv_client.get_configlet_containers.return_value = [root_container]
+        mock_cv_client.get_studio_inputs_with_path.return_value = [CONFIGLET_CONTAINER_ID, "other-root"]
+
+        await delete_configs_from_cv(deployments, deployment_result, mock_cv_client)
+
+        # Root container is deleted, no per-device deletes since none existed.
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id="pytest_workspace", assignment_id=CONFIGLET_CONTAINER_ID)
+        mock_cv_client.delete_configlets.assert_not_called()
+        mock_cv_client.set_configlet_container.assert_not_called()
+        # Root is unregistered from the studio, preserving other roots.
+        mock_cv_client.set_studio_inputs.assert_called_once_with(
+            studio_id="studio-static-configlet",
+            workspace_id="pytest_workspace",
+            input_path=["configletAssignmentRoots"],
+            inputs=["other-root"],
+        )
+        assert not deployment_result.removed_configs
 
     async def test_delete_all_targets_when_root_not_in_studio_inputs(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test that deletion still completes when the root container is already absent from the studio inputs."""

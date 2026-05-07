@@ -226,17 +226,15 @@ async def delete_configs_from_cv(device_deployments: list[CVDeviceDeployment], r
     existing_child_ids = root_cv_container.child_assignment_ids.values
     remaining_child_ids = [child_id for child_id in existing_child_ids if child_id not in target_ids_set]
 
-    if remaining_child_ids == list(existing_child_ids):
-        # Nothing of ours was referenced as a child so leave the root container untouched.
-        return
-
     if remaining_child_ids:
-        LOGGER.info("delete_configs_from_cv: Updating root container children (%s remaining).", len(remaining_child_ids))
-        await cv_client.set_configlet_container(
-            workspace_id=workspace_id,
-            container_id=CONFIGLET_CONTAINER_ID,
-            child_assignment_ids=remaining_child_ids,
-        )
+        # Root still has non-target children. Update its child list only if we actually removed something.
+        if remaining_child_ids != list(existing_child_ids):
+            LOGGER.info("delete_configs_from_cv: Updating root container children (%s remaining).", len(remaining_child_ids))
+            await cv_client.set_configlet_container(
+                workspace_id=workspace_id,
+                container_id=CONFIGLET_CONTAINER_ID,
+                child_assignment_ids=remaining_child_ids,
+            )
         return
 
     # No remaining children, delete the root container and unregister from studio roots.
