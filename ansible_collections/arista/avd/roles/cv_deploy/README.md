@@ -381,13 +381,8 @@ The directories are configured with the same variables as for the other AVD role
 --8<--
 ansible_collections/arista/avd/roles/cv_deploy/defaults/main/directories.yml
 --8<--
-```
-
-To read per-device structured configuration variables from Ansible variables instead (see [Per-device variables](#per-device-variables) → [Non-AVD users](#non-avd-users)):
-
-```yaml
-# Read structured configuration from files in `structured_dir` (default directory also used by the `eos_designs` role).
-# If set to false, `cv_deploy` will read structured configuration from hostvars.
+# Read structured configuration from files in `structured_dir`. If set to false, `cv_deploy` will read structured configuration from hostvars.
+# See the "Per-device variables" section below for more details.
 read_structured_config_from_file: true
 ```
 
@@ -423,9 +418,9 @@ cv_deploy_validate_inputs_batch_size: 10
 
 When using the standard AVD workflow (`eos_designs` → `eos_cli_config_gen` → `cv_deploy`), these variables are populated by `eos_designs` under the `metadata` key of each device structured configuration. No additional configuration is required.
 
-### Non-AVD users
+### cv_deploy-only users
 
-For users *not* using `eos_designs` in their workflow, the `cv_deploy` role can be used independently by providing these variables directly as Ansible variables. Set [`read_structured_config_from_file`](#role-default-input-directories) to `false` so the role reads structured configuration from Ansible variables instead of files.
+For users running `cv_deploy` without the rest of the AVD workflow (no `eos_designs`, no `eos_cli_config_gen`), the role can be used independently by providing these variables directly as Ansible variables. Set [`read_structured_config_from_file`](#role-default-input-directories) to `false` so the role reads structured configuration from Ansible variables instead of files.
 
 The following variables can then be set per device:
 
@@ -457,7 +452,7 @@ AVD Configurations              (root container)
 
 If you want to build your own hierarchy of containers and configlets, use the `cv_static_config_manifest` role variable. See the [Role behavior configuration](#role-behavior-configuration) section above for the full schema.
 
-To deploy configuration via the manifest for a device, you must opt in by setting the `cv_use_static_config_manifest: true` device variable. See the [example for AVD users](#example-for-avd-users) or the [example for non-AVD users](#example-for-non-avd-users) below for how this variable and the manifest fit together. Devices that do not opt in will continue to use the flat layout. When a device is opted in, any leftover flat-layout configlet or container is cleaned up automatically. Onboarding and tag deployment are unaffected by this variable.
+To switch a device's configuration deployment from the flat layout to the manifest, set the `cv_use_static_config_manifest: true` device variable. See the [example for AVD users](#example-for-avd-users) or the [example for cv_deploy-only users](#example-for-cv_deploy-only-users) below for how this variable and the manifest fit together. Devices that do not opt in will continue to use the flat layout. When a device is opted in, any leftover flat-layout configlet or container is cleaned up automatically. Onboarding and tag deployment are unaffected by this variable.
 
 For each opted-in device, you are responsible for ensuring the manifest defines a configlet and a container assigning it.
 
@@ -478,7 +473,7 @@ cv_static_config_manifest:
       file: "{{ eos_config_dir }}/leaf1.cfg"
   containers:
     - name: FABRIC
-      description: "AVD fabric devices"
+      description: "Fabric devices"
       tag_query: "device:*"
       sub_containers:
         - name: DC1
@@ -509,9 +504,12 @@ custom_structured_configuration_metadata:
   cv_use_static_config_manifest: true
 ```
 
-#### Example for non-AVD users
+!!! note
+    AVD users can also layer shared configlets at higher levels of the hierarchy (see the [cv_deploy-only users example](#example-for-cv_deploy-only-users) below for the pattern). This is less common in AVD workflows since `eos_designs` already generates a full configuration for each device, but it works the same way.
 
-The same approach applies when using `cv_deploy` directly with the [Non-AVD users](#non-avd-users) inputs. The example below uses the same hierarchy as above but additionally illustrates how to layer shared configlets at multiple levels of the hierarchy:
+#### Example for cv_deploy-only users
+
+The same approach applies when using `cv_deploy` directly with the [cv_deploy-only users](#cv_deploy-only-users) inputs. The example below uses the same hierarchy as above but additionally illustrates how to layer shared configlets at multiple levels of the hierarchy:
 
 ```yaml title="group_vars/FABRIC.yml"
 # Use cv_deploy schema inputs (Ansible variables) instead of generated structured configuration files.
@@ -534,7 +532,7 @@ cv_static_config_manifest:
       file: configlets/leaf1.txt
   containers:
     - name: FABRIC
-      description: "All fabric devices"
+      description: "Fabric devices"
       tag_query: "device:*"
       configlets:
         - name: COMMON-NTP
