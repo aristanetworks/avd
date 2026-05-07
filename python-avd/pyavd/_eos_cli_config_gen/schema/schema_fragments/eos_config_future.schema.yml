@@ -23,3 +23,9 @@ keys:
         description: |-
           When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.
           When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source interface name.
+      always_render_ip_routing_separator:
+        type: bool
+        default: false
+        description: |-
+          Always render a '!' before the '(no) ip routing' command section.
+          Without this the '!' is missing when only configuring routing for VRFs.

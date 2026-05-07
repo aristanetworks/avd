@@ -1,6 +1,110 @@
 ---
 ### Management Security ###
 management_security:
+  auto_certificate:
+    profiles:
+      - name: AVD_AUTO_CERTIFICATE_PROFILE
+        digest: sha512
+        key: SSL_KEY
+        protocol_instance_name: AVD_EST_PROTOCOL_token
+        parameters:
+          distinguished_name:
+            common_name: 00:1c:73:ff:ff:ff
+            country: US
+            email: noreply@arista.com
+            locality: Santa Clara
+            organization: Arista Networks
+            organization_unit: AVD
+            serial_number: 123abc
+            state: CA
+          subject_alternative_name:
+            dns:
+              - bbb.arista.com
+              - avd.arista.com
+            email:
+              - support@arista.com
+              - noreply@arista.com
+            ip:
+              - 198.51.100.43
+              - 198.51.100.42
+            uri:
+              - https://bbb.arista.com/
+              - https://avd.arista.com/
+      - name: AVD_AUTO_CERTIFICATE_PROFILE_system
+        key: SSL_KEY
+        protocol_instance_name: AVD_EST_PROTOCOL_secret
+        renewal: 86400
+        parameters:
+          distinguished_name:
+            common_name: 00:1c:73:aa:aa:aa
+            country: US
+            email: noreply@arista.com
+            locality: Santa Clara
+            organization: Arista Networks
+            organization_unit: AVD
+            serial_number: system
+            state: CA
+    protocols:
+      - name: AVD_EST_PROTOCOL_token
+        protocol: est
+        connection_retry:
+          interval: 30
+          exponential_backoff: true
+          count: 100
+        server:
+          url: https://test_est.example.com/test
+          vrf: MGMT
+          ssl_profile: SSL_PROFILE
+        credentials:
+          enroll:
+            # token_type defaults to "7"
+            token: 03175E08140A35735D0C1A171206341F012939213C
+          re_enroll:
+            # token_type defaults to "7"
+            token: 03175E08140A35735D0C1A171206341F012939213C
+      - name: AVD_EST_PROTOCOL_non_user
+        protocol: est
+        credentials:
+          enroll:
+            secret: 00171605165E1F
+            secret_type: "7"
+          re_enroll:
+            secret: 00171605165E1F
+            secret_type: "0"
+      - name: AVD_EST_PROTOCOL_secret
+        protocol: est
+        server:
+          url: https://test_est.example.com/test1
+          ssl_profile: SSL_PROFILE
+        connection_retry:
+          count: 100
+        credentials:
+          enroll:
+            username: est_authentication
+            secret: 00171605165E1F
+            secret_type: "7"
+          re_enroll:
+            username: est_authentication
+            secret: 00171605165E1F
+            secret_type: "0"
+      - name: AVD_EST_PROTOCOL_both
+        protocol: est
+        disabled: true
+        connection_retry:
+          interval: 30
+          exponential_backoff: false
+          count: 100
+        server:
+          url: https://test_est.example.com/test2
+          vrf: MGMT
+          ssl_profile: SSL_PROFILE
+        credentials:
+          enroll:
+            # token should take precedence; token_type "0" tested here
+            username: est_authentication
+            secret: 00171605165E1F
+            token: 03175E08140A35735D0C1A171206341F012939213C
+            token_type: "0"
   entropy_sources:
     hardware: true
     haveged: true
