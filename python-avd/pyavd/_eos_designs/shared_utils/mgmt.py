@@ -113,16 +113,6 @@ class MgmtMixin(Protocol):
         return None
 
     @cached_property
-    def default_mgmt_protocol_vrf(self: SharedUtilsProtocol) -> str | None:
-        if self.default_mgmt_method == "oob":
-            return self.mgmt_interface_vrf
-        if self.default_mgmt_method == "inband":
-            # inband_mgmt_vrf returns None for vrf default.
-            return self.inband_mgmt_vrf or "default"
-
-        return None
-
-    @cached_property
     def default_mgmt_protocol_interface(self: SharedUtilsProtocol) -> str | None:
         if self.default_mgmt_method == "oob":
             return self.mgmt_interface
