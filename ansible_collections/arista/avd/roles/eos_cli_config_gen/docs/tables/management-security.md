@@ -8,6 +8,57 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>management_security</samp>](## "management_security") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;auto_certificate</samp>](## "management_security.auto_certificate") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profiles</samp>](## "management_security.auto_certificate.profiles") | List, items: Dictionary |  |  |  | Profiles for automatic certificate enrollment and renewal. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.auto_certificate.profiles.[].name") | String | Required, Unique |  |  | Name of the certificate profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digest</samp>](## "management_security.auto_certificate.profiles.[].digest") | String |  |  | Valid Values:<br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "management_security.auto_certificate.profiles.[].key") | String |  |  |  | Filename of the private key in the switch `sslkey:` directory. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol_instance_name</samp>](## "management_security.auto_certificate.profiles.[].protocol_instance_name") | String |  |  |  | EST protocol profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;renewal</samp>](## "management_security.auto_certificate.profiles.[].renewal") | Integer |  |  | Min: 1<br>Max: 4294967295 | Renewal time in seconds. EOS default is 7200 seconds (2 hours). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameters</samp>](## "management_security.auto_certificate.profiles.[].parameters") | Dictionary |  |  |  | Parameters of the distinguished name and subject alternative name for the CSR. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distinguished_name</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;common_name</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.common_name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;country</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.country") | String |  |  | Pattern: `^[A-Z]{2}$` | ISO 3166-1 alpha-2 two-letter country code.<br>Example:<br>"US" for United States,<br>"DE" for Germany,<br>"IN" for India. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;email</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.email") | String |  |  | Pattern: `[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;locality</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.locality") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;organization</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.organization") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;organization_unit</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.organization_unit") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.serial_number") | String |  |  |  | Serial Number for use in subject.<br>system: Use the device's serial number in subject. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;state</samp>](## "management_security.auto_certificate.profiles.[].parameters.distinguished_name.state") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subject_alternative_name</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.dns") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.dns.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;email</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.email") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.email.[]") | String |  |  | Pattern: `[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.ip") | List, items: String |  |  |  | IPv4/IPv6 addresses for use in subject-alternative-name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.ip.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uri</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.uri") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_security.auto_certificate.profiles.[].parameters.subject_alternative_name.uri.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "management_security.auto_certificate.protocols") | List, items: Dictionary |  |  |  | Protocols for automatic certificate enrollment and renewal. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_security.auto_certificate.protocols.[].name") | String | Required, Unique |  |  | Name of the EST profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "management_security.auto_certificate.protocols.[].protocol") | String | Required |  | Valid Values:<br>- <code>est</code> | Protocol to use to communicate with endpoint; only EST is supported currently. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "management_security.auto_certificate.protocols.[].disabled") | Boolean |  |  |  | Temporarily disable sending requests to the server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection_retry</samp>](## "management_security.auto_certificate.protocols.[].connection_retry") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "management_security.auto_certificate.protocols.[].connection_retry.count") | Integer |  |  | Min: 0<br>Max: 4294967295 | Number of retries to attempt before giving up, if not configured the number of retries is infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "management_security.auto_certificate.protocols.[].connection_retry.interval") | Integer |  |  | Min: 1<br>Max: 4294967295 | Number of seconds between retries. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exponential_backoff</samp>](## "management_security.auto_certificate.protocols.[].connection_retry.exponential_backoff") | Boolean |  |  |  | Exponentially increase the interval between retries to a maximum of 24 hours. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;credentials</samp>](## "management_security.auto_certificate.protocols.[].credentials") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enroll</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll") | Dictionary |  |  |  | Token or username/secret for initial certificate enrollment.<br>If both token and username/secret are defined, token will take precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.token") | String |  |  |  | JSON Web Token for Bearer Authentication. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.token_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.username") | String |  |  |  | Username for HTTP Basic Authentication. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.secret") | String |  |  |  | Password for HTTP Basic Authentication. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.enroll.secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_enroll</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll") | Dictionary |  |  |  | Token or username/secret for certificate re-enrollment.<br>If both token and username/secret are defined, token will take precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.token") | String |  |  |  | JSON Web Token for Bearer Authentication. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.token_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.username") | String |  |  |  | Username for HTTP Basic Authentication. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.secret") | String |  |  |  | Password for HTTP Basic Authentication. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secret_type</samp>](## "management_security.auto_certificate.protocols.[].credentials.re_enroll.secret_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Encoding type of the token:<br>"0" = cleartext,<br>"7" = obfuscated,<br>"8a" = AES-256-GCM encrypted. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server</samp>](## "management_security.auto_certificate.protocols.[].server") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "management_security.auto_certificate.protocols.[].server.ssl_profile") | String |  |  |  | SSL profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "management_security.auto_certificate.protocols.[].server.url") | String |  |  | Pattern: `https://.+[^/]` | EST server URL. Must begin with `https://`. Should not end with `/` (the well-known EST paths are appended automatically). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_security.auto_certificate.protocols.[].server.vrf") | String |  |  |  | VRF used to reach the EST server. If unset, the default VRF is used on EOS. |
     | [<samp>&nbsp;&nbsp;entropy_sources</samp>](## "management_security.entropy_sources") | Dictionary |  |  |  | Source of entropy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "management_security.entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;haveged</samp>](## "management_security.entropy_sources.haveged") | Boolean |  |  |  | Use the HAVEGE algorithm. |
@@ -78,6 +129,140 @@
 
     ```yaml
     management_security:
+      auto_certificate:
+
+        # Profiles for automatic certificate enrollment and renewal.
+        profiles:
+
+            # Name of the certificate profile.
+          - name: <str; required; unique>
+
+            # Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset.
+            digest: <str; "sha256" | "sha384" | "sha512">
+
+            # Filename of the private key in the switch `sslkey:` directory.
+            key: <str>
+
+            # EST protocol profile name.
+            protocol_instance_name: <str>
+
+            # Renewal time in seconds. EOS default is 7200 seconds (2 hours).
+            renewal: <int; 1-4294967295>
+
+            # Parameters of the distinguished name and subject alternative name for the CSR.
+            parameters:
+              distinguished_name:
+                common_name: <str>
+
+                # ISO 3166-1 alpha-2 two-letter country code.
+                # Example:
+                # "US" for United States,
+                # "DE" for Germany,
+                # "IN" for India.
+                country: <str>
+                email: <str>
+                locality: <str>
+                organization: <str>
+                organization_unit: <str>
+
+                # Serial Number for use in subject.
+                # system: Use the device's serial number in subject.
+                serial_number: <str>
+                state: <str>
+              subject_alternative_name:
+                dns:
+                  - <str>
+                email:
+                  - <str>
+
+                # IPv4/IPv6 addresses for use in subject-alternative-name.
+                ip:
+                  - <str>
+                uri:
+                  - <str>
+
+        # Protocols for automatic certificate enrollment and renewal.
+        protocols:
+
+            # Name of the EST profile.
+          - name: <str; required; unique>
+
+            # Protocol to use to communicate with endpoint; only EST is supported currently.
+            protocol: <str; "est"; required>
+
+            # Temporarily disable sending requests to the server.
+            disabled: <bool>
+            connection_retry:
+
+              # Number of retries to attempt before giving up, if not configured the number of retries is infinite.
+              count: <int; 0-4294967295>
+
+              # Number of seconds between retries.
+              interval: <int; 1-4294967295>
+
+              # Exponentially increase the interval between retries to a maximum of 24 hours.
+              exponential_backoff: <bool>
+            credentials:
+
+              # Token or username/secret for initial certificate enrollment.
+              # If both token and username/secret are defined, token will take precedence.
+              enroll:
+
+                # JSON Web Token for Bearer Authentication.
+                token: <str>
+
+                # Encoding type of the token:
+                # "0" = cleartext,
+                # "7" = obfuscated,
+                # "8a" = AES-256-GCM encrypted.
+                token_type: <str; "0" | "7" | "8a"; default="7">
+
+                # Username for HTTP Basic Authentication.
+                username: <str>
+
+                # Password for HTTP Basic Authentication.
+                secret: <str>
+
+                # Encoding type of the token:
+                # "0" = cleartext,
+                # "7" = obfuscated,
+                # "8a" = AES-256-GCM encrypted.
+                secret_type: <str; "0" | "7" | "8a"; default="7">
+
+              # Token or username/secret for certificate re-enrollment.
+              # If both token and username/secret are defined, token will take precedence.
+              re_enroll:
+
+                # JSON Web Token for Bearer Authentication.
+                token: <str>
+
+                # Encoding type of the token:
+                # "0" = cleartext,
+                # "7" = obfuscated,
+                # "8a" = AES-256-GCM encrypted.
+                token_type: <str; "0" | "7" | "8a"; default="7">
+
+                # Username for HTTP Basic Authentication.
+                username: <str>
+
+                # Password for HTTP Basic Authentication.
+                secret: <str>
+
+                # Encoding type of the token:
+                # "0" = cleartext,
+                # "7" = obfuscated,
+                # "8a" = AES-256-GCM encrypted.
+                secret_type: <str; "0" | "7" | "8a"; default="7">
+            server:
+
+              # SSL profile name.
+              ssl_profile: <str>
+
+              # EST server URL. Must begin with `https://`. Should not end with `/` (the well-known EST paths are appended automatically).
+              url: <str>
+
+              # VRF used to reach the EST server. If unset, the default VRF is used on EOS.
+              vrf: <str>
 
       # Source of entropy.
       entropy_sources:
