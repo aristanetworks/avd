@@ -9,14 +9,14 @@ l2leaf:
   defaults:
     platform: vEOS-LAB
     uplink_interfaces: [Ethernet1]
-    uplink_switches: [UNDERLAY-MULTICAST-L3LEAF1A]
+    uplink_switches: [underlay-multicast-l3leaf1a]
   node_groups:
     # Test scenario of child device with underlay_router: false (default for l2leaf).
     # Expected results:
     # - No multicast configuration
     - group: DC1_LEAF1
       nodes:
-        - name: UNDERLAY-MULTICAST-L2LEAF1A
+        - name: underlay-multicast-l2leaf1a
           id: 1
           mgmt_ip: 192.168.200.109/24
           uplink_switch_interfaces: [Ethernet6]

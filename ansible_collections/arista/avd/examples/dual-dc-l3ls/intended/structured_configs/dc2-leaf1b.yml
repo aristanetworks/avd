@@ -27,7 +27,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_dc2-spine1_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.69/31
   metadata:
     peer: dc2-spine1
@@ -38,7 +38,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_dc2-spine2_Ethernet2
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   ip_address: 10.255.255.71/31
   metadata:
     peer: dc2-spine2
@@ -397,12 +397,12 @@ vlan_interfaces:
   description: MLAG_L3
   shutdown: false
   ip_address: 10.255.129.97/31
-  mtu: 1500
+  mtu: 9214
 - name: Vlan4094
   description: MLAG
   shutdown: false
   ip_address: 10.255.129.65/31
-  mtu: 1500
+  mtu: 9214
   no_autostate: true
 - name: Vlan11
   description: VRF10_VLAN11
@@ -425,7 +425,7 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address: 10.255.129.97/31
-  mtu: 1500
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1
@@ -451,7 +451,7 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF11
   ip_address: 10.255.129.97/31
-  mtu: 1500
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1

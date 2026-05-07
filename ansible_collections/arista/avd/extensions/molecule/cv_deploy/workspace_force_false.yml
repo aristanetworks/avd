@@ -1,5 +1,5 @@
 ---
-- name: "{{ test_id | upper }} Converge - cv_submit_workspace_force = false"
+- name: "Converge - cv_submit_workspace_force = false - {{ test_id | upper }}"
   hosts: SITE1_FABRIC:INACTIVE
   connection: local
   gather_facts: false
@@ -14,13 +14,14 @@
     cv_skip_missing_devices: true
     eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
     structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
+    cv_deploy_tmp_dir: "{{ playbook_dir }}/intended/tmp_cv_deploy"
     intended_tag_device: avd-ci-leaf1
     intended_tags: "{{ lookup('file', structured_dir ~ '/' ~ intended_tag_device ~ '.yml')| from_yaml }}"
     test_id: "inactive-device_force-ws-false"
     cv_common_pattern: "avd_cv-deploy_{{ test_id }}"
 
   tasks:
-    - name: "{{ test_id | upper }} Banner"
+    - name: "Banner - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       run_once: true
       ansible.builtin.debug:
@@ -29,27 +30,27 @@
           - "### STARTING MOLECULE TEST {{ test_id[:69] | upper }} ###"
           - "{{ ('#' * (31 + test_id | length))[:100] }}"
 
-    - name: "{{ test_id | upper }} {{ 'Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate' }} molecule execution ID"
+    - name: "{{ (test_id | upper) + ' - ' + ('Read' if lookup('env', 'MOLECULE_EXECUTION_ID') else 'Generate') + ' molecule execution ID' }}"
       tags: ["{{ test_id }}"]
       ansible.builtin.set_fact:
         r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
       run_once: true
 
-    - name: "{{ test_id | upper }} Dynamically add inactive device avd-ci-core1 to group INACTIVE"
+    - name: "Dynamically add inactive device avd-ci-core1 to group INACTIVE - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       run_once: true
       ansible.legacy.add_host:
         name: avd-ci-core1
         groups: INACTIVE
 
-    - name: "{{ test_id | upper }} Code block to provision CVP with AVD configuration"
+    - name: "Code block to provision CVP with AVD configuration - {{ test_id | upper }}"
       tags: ["{{ test_id }}"]
       run_once: true
       delegate_to: localhost
 
       block:
 
-        - name: "(BLOCK) {{ test_id | upper }} Banner"
+        - name: "(BLOCK) Banner - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
@@ -57,7 +58,7 @@
               - "### ENGAGE CV_DEPLOY ROLE TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
 
         # This task is expected to fail
-        - name: "(BLOCK) {{ test_id | upper }} Trigger errors"
+        - name: "(BLOCK) Trigger errors - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           ansible.builtin.import_role:
             name: arista.avd.cv_deploy
@@ -71,7 +72,7 @@
 
         # If task above did not fail for whatever reason - execute following task to catch this
         # Task below is not expected to run under normal conditions
-        - name: "(BLOCK) {{ test_id | upper }} Force failure"
+        - name: "(BLOCK) Force failure - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.fail:
@@ -80,7 +81,7 @@
 
       rescue:
 
-        - name: "(RESCUE) {{ test_id | upper }} Force failure"
+        - name: "(RESCUE) Force failure - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.fail:
@@ -88,11 +89,11 @@
           when: force_failure is defined
 
         # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
-        - name: "(RESCUE) {{ test_id | upper }} Reset ansible_play_hosts for next playbook (no impact within running playbook)"
+        - name: "(RESCUE) Reset ansible_play_hosts for next playbook (no impact within running playbook) - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           ansible.builtin.meta: clear_host_errors
 
-        - name: "(RESCUE) {{ test_id | upper }} Check CVP returns"
+        - name: "(RESCUE) Check CVP returns - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -103,13 +104,13 @@
 
       always:
 
-        - name: "(ALWAYS) {{ test_id | upper }} Display CVP detailed result"
+        - name: "(ALWAYS) Display CVP detailed result - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             var: cv_deploy_results
 
-        - name: "(ALWAYS) {{ test_id | upper }} Cleanup orphan workspace"
+        - name: "(ALWAYS) Cleanup orphan workspace - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.legacy.uri:
@@ -153,14 +154,14 @@
             https_proxy: >-
               http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
-        - name: "(ALWAYS) {{ test_id | upper }} Banner"
+        - name: "(ALWAYS) Banner - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
             msg:
               - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
 
-        - name: "(ALWAYS) {{ test_id | upper }}  Cleanup"
+        - name: "(ALWAYS) Cleanup - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost

@@ -10,6 +10,9 @@ l2leaf:
 
 dns_settings:
   domain: testfabric.local
+  domain_list:
+    - avd.lab
+    - other.net
   servers:
     - ip_address: 10.10.10.1
       priority: 1
@@ -32,3 +35,13 @@ dns_settings:
     # Testing override of source for VRF default - no VRF in output source interface model.
     - name: default
       source_interface: Vlan123
+
+  ip_hosts:
+    - hostname: dns-settings-1
+      ipv4_addresses:
+        - 10.1.1.1
+    - hostname: dns-settings-2
+      ipv4_addresses:
+        - 4.4.4.4
+        - 2.2.2.2
+        - 1.1.1.1

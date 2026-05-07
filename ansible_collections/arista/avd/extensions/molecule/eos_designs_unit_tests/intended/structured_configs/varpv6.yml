@@ -127,7 +127,8 @@ vlan_interfaces:
   description: VARPv6_configured_1
   shutdown: false
   vrf: VRF1
-  ipv6_address: 2001:db8::2/64
+  ipv6_addresses:
+  - 2001:db8::2/64
   ipv6_virtual_router_addresses:
   - fe80::1
   metadata:

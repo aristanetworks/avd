@@ -5,23 +5,23 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_asdot-for-wan-ha-transit1A1_Ethernet52
+  description: P2P_asdot-for-wan-ha-transit1a1_Ethernet52
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.0/31
   metadata:
-    peer: asdot-for-wan-ha-transit1A1
+    peer: asdot-for-wan-ha-transit1a1
     peer_interface: Ethernet52
     peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet2
-  description: P2P_asdot-for-wan-ha-transit1B1_Ethernet52
+  description: P2P_asdot-for-wan-ha-transit1b1_Ethernet52
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.2/31
   metadata:
-    peer: asdot-for-wan-ha-transit1B1
+    peer: asdot-for-wan-ha-transit1b1
     peer_interface: Ethernet52
     peer_type: wan_router
   switchport:
@@ -83,14 +83,14 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '4259840100'
     metadata:
-      peer: asdot-for-wan-ha-transit1A1
-    description: asdot-for-wan-ha-transit1A1_Ethernet52
+      peer: asdot-for-wan-ha-transit1a1
+    description: asdot-for-wan-ha-transit1a1_Ethernet52
   - ip_address: 172.17.0.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '4259840100'
     metadata:
-      peer: asdot-for-wan-ha-transit1B1
-    description: asdot-for-wan-ha-transit1B1_Ethernet52
+      peer: asdot-for-wan-ha-transit1b1
+    description: asdot-for-wan-ha-transit1b1_Ethernet52
   redistribute:
     connected:
       enabled: true

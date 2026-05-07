@@ -492,6 +492,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/hostname.md
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-domain-lookup.md
 --8<--
 
+### IP Host
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-hosts.md
+--8<--
+
 ### IP HTTP client
 
 --8<--
@@ -628,6 +634,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/mcs-client.m
 
 ## Monitoring
 
+### Connectivity Fault Management
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/cfm.md
+--8<--
+
 ### Daemons
 
 --8<--
@@ -682,6 +694,18 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-a
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-connectivity.md
 --8<--
 
+### Monitor layer 1
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-layer1.md
+--8<--
+
+### Monitor link flap policy
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-link-flap-policy.md
+--8<--
+
 ### Monitor loop protection
 
 --8<--
@@ -700,18 +724,6 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-serv
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-sessions.md
 --8<--
 
-### Monitor layer 1
-
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-layer1.md
---8<--
-
-### Monitor link flap policy
-
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-link-flap-policy.md
---8<--
-
 ### Monitor telemetry
 
 --8<--
@@ -724,10 +736,16 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-tele
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-twamp.md
 --8<--
 
-### Connectivity Fault Management
+### Queue monitor-length
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/cfm.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/queue-monitor-length.md
+--8<--
+
+### Queue monitor-streaming
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/queue-monitor-streaming.md
 --8<--
 
 ### SFLOW
@@ -804,18 +822,6 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/qos.md
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/qos-profiles.md
---8<--
-
-### Queue monitor-length
-
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/queue-monitor-length.md
---8<--
-
-### Queue monitor-streaming
-
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/queue-monitor-streaming.md
 --8<--
 
 ### Application traffic recognition
@@ -1182,4 +1188,12 @@ These fields are not generating any configuration. They are meant to be used by 
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/metadata.md
+--8<--
+
+## Future EOS CLI Behaviors
+
+Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major version.
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/eos-config-future.md
 --8<--

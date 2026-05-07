@@ -13,38 +13,73 @@
   run_once: true
   register: avd_requirements
 
-- name: Deploy device configurations and tags to CloudVision
-  run_once: true
-  delegate_to: localhost
-  arista.avd.cv_workflow:
-    cv_servers: [ "{{ cv_server }}" ]
-    cv_token: "{{ cv_token }}"
-    cv_username: "{{ cv_username | arista.avd.default }}"
-    cv_password: "{{ cv_password | arista.avd.default }}"
-    cv_verify_certs: "{{ cv_verify_certs }}"
-    proxy_host: "{{ proxy_host | arista.avd.default }}"
-    proxy_port: "{{ proxy_port }}"
-    proxy_username: "{{ proxy_username | arista.avd.default }}"
-    proxy_password: "{{ proxy_password | arista.avd.default }}"
-    configuration_dir: "{{ eos_config_dir }}"
-    structured_config_dir: "{{ structured_dir }}"
-    structured_config_suffix: "{{ avd_structured_config_file_format }}"
-    device_list: "{{ cv_devices }}"
-    strict_tags: "{{ cv_strict_tags }}"
-    skip_missing_devices: "{{ cv_skip_missing_devices }}"
-    strict_system_mac_address: "{{ cv_strict_system_mac_address }}"
-    configlet_name_template: "{{ cv_configlet_name_template | arista.avd.default }}"
-    workspace:
-      name: "{{ cv_workspace_name | arista.avd.default }}"
-      description: "{{ cv_workspace_description | arista.avd.default }}"
-      requested_state: "{{ 'submitted' if cv_submit_workspace else 'built' }}"
-      force: "{{ cv_submit_workspace_force }}"
-    change_control:
-      name: "{{ cv_change_control_name | arista.avd.default }}"
-      description: "{{ cv_change_control_description | arista.avd.default }}"
-      requested_state: "{{ 'completed' if cv_run_change_control else 'pending approval' }}"
-    timeouts:
-      workspace_build_timeout: "{{ cv_workspace_build_timeout }}"
-    static_config_manifest: "{{ cv_static_config_manifest | arista.avd.default({}) }}"
-    return_details: "{{ cv_register_detailed_results }}"
-  register: cv_deploy_results
+- name: Run cv_deploy
+  block:
+    - name: Validate cv_deploy inputs
+      arista.avd.validate_inputs:
+        tmp_dir: "{{ cv_deploy_tmp_dir }}"
+        device_list: "{{ cv_devices }}"
+        batch_size: "{{ cv_deploy_validate_inputs_batch_size | arista.avd.default(10) }}"
+        schema_name: cv_deploy
+        input_dir: "{{ structured_dir }}"
+        input_suffix: "{{ avd_structured_config_file_format }}"
+        read_from_input_dir: "{{ read_structured_config_from_file | arista.avd.default(true) }}"
+        # Only allow missing files if we are actually in read_structured_config_from_file mode.
+        fail_on_missing_input_files: "{{ false if (read_structured_config_from_file | arista.avd.default(true)) else true }}"
+        fail_on_validation_errors: true
+        vault_id: "{{ avd_vault_id }}"
+      delegate_to: localhost
+      check_mode: false
+      run_once: true
+
+    - name: Deploy device configurations and tags to CloudVision
+      run_once: true
+      delegate_to: localhost
+      arista.avd.cv_workflow:
+        cv_servers: ["{{ cv_server }}"]
+        cv_token: "{{ cv_token }}"
+        cv_username: "{{ cv_username | arista.avd.default }}"
+        cv_password: "{{ cv_password | arista.avd.default }}"
+        cv_verify_certs: "{{ cv_verify_certs }}"
+        proxy_host: "{{ proxy_host | arista.avd.default }}"
+        proxy_port: "{{ proxy_port }}"
+        proxy_username: "{{ proxy_username | arista.avd.default }}"
+        proxy_password: "{{ proxy_password | arista.avd.default }}"
+        configuration_dir: "{{ eos_config_dir }}"
+        device_list: "{{ cv_devices }}"
+        strict_tags: "{{ cv_strict_tags }}"
+        skip_missing_devices: "{{ cv_skip_missing_devices }}"
+        strict_system_mac_address: "{{ cv_strict_system_mac_address }}"
+        configlet_name_template: "{{ cv_configlet_name_template | arista.avd.default }}"
+        workspace:
+          name: "{{ cv_workspace_name | arista.avd.default }}"
+          description: "{{ cv_workspace_description | arista.avd.default }}"
+          id: "{{ cv_workspace_id | arista.avd.default }}"
+          requested_state: "{{ cv_workspace_requested_state | arista.avd.default('submitted' if cv_submit_workspace else 'built') }}"
+          force: "{{ cv_submit_workspace_force }}"
+          build_warnings:
+            enabled: "{{ cv_workspace_build_warnings_enabled }}"
+            suppress_patterns: "{{ cv_workspace_build_warnings_suppress_patterns }}"
+            suppress_portfast: "{{ cv_workspace_build_warnings_suppress_portfast }}"
+        change_control:
+          name: "{{ cv_change_control_name | arista.avd.default }}"
+          description: "{{ cv_change_control_description | arista.avd.default }}"
+          requested_state: "{{ cv_change_control_requested_state | arista.avd.default('completed' if cv_run_change_control else 'pending approval') }}"
+        timeouts:
+          workspace_build_timeout: "{{ cv_workspace_build_timeout }}"
+        static_config_manifest: "{{ cv_static_config_manifest | arista.avd.default({}) }}"
+        return_details: "{{ cv_register_detailed_results }}"
+        preview_features:
+          read_from_validated_inputs: true
+        tmp_dir: "{{ cv_deploy_tmp_dir }}"
+      register: cv_deploy_results
+
+  always:
+    - name: Clean up AVD temporary directory
+      when: not cv_deploy_keep_tmp_files
+      ansible.builtin.file:
+        path: "{{ cv_deploy_tmp_dir }}"
+        state: absent
+      delegate_to: localhost
+      run_once: true
+      changed_when: false

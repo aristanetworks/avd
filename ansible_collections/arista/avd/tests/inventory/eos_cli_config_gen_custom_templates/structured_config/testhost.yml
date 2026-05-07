@@ -18,5 +18,5 @@ vlan_internal_order:
     ending: 1199
 vrfs:
   # Testing that coerced types are exposed to custom templates.
-- name: 123456
-  ip_routing: false
+  - name: 123456
+    ip_routing: false

@@ -2,6 +2,9 @@ aaa_root:
   disabled: true
 config_end: true
 dns_domain: testfabric.local
+domain_list:
+- avd.lab
+- other.net
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -21,6 +24,15 @@ ip_domain_lookup:
   - name: Vlan123
   - name: Management1
     vrf: MGMT
+ip_hosts:
+- hostname: dns-settings-1
+  ipv4_addresses:
+  - 10.1.1.1
+- hostname: dns-settings-2
+  ipv4_addresses:
+  - 4.4.4.4
+  - 2.2.2.2
+  - 1.1.1.1
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_server:

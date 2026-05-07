@@ -1,0 +1,47 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  avd_design_future:
+    type: dict
+    description: |-
+      Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
+    keys:
+      accept_dhcp_default_route_for_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: |-
+          Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
+      remove_redundant_ipv4_unicast_for_peer_groups:
+        type: bool
+        description: |-
+          Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
+        default: false
+      raise_for_port_channels_without_members:
+        type: bool
+        description: |-
+          Raise an error if an L3 Port-Channel is configured without any member interfaces.
+        default: false
+      only_configure_mlag_vrfs_peer_group_when_used:
+        type: bool
+        description: |-
+          Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+        default: false
+      raise_for_underlay_router_with_uplink_type_port_channel:
+        type: bool
+        description: |-
+          Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
+          since this combination is not supported.
+        default: false
+      configure_inband_mgmt_ipv6_vrf:
+        type: bool
+        description: Configure `inband_mgmt_vrf` for IPv6 inband management.
+        default: false
+      only_configure_ipv6_inband_mgmt_prefix_list_when_used:
+        type: bool
+        description: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
+        default: false

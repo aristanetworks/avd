@@ -8,7 +8,7 @@ l3leaf:
     vtep_loopback_ipv4_pool: 10.11.0.0/24
     vtep_loopback: Loopback1
     virtual_router_mac_address: 00:1c:73:00:00:01
-    evpn_route_servers: [DC1-SPINE1]
+    evpn_route_servers: [dc1-spine1]
     ipvpn_gateway:
       enabled: true
       evpn_domain_id: "65100:10"

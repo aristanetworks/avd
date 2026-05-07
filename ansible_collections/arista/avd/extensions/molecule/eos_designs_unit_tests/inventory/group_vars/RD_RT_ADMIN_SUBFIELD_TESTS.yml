@@ -14,39 +14,39 @@ l3leaf:
       always_include_vrfs_in_tenants:
         - TENANT_WITH_VRFS_WITHOUT_SVIS
   nodes:
-    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF1
+    - name: rd-rt-admin-subfield-l3leaf1
       bgp_as: 65001
       id: 1
       mgmt_ip: 192.168.200.101/24
-    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF2
+    - name: rd-rt-admin-subfield-l3leaf2
       bgp_as: 65002
       id: 2
       mgmt_ip: 192.168.200.102/24
-    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF3
+    - name: rd-rt-admin-subfield-l3leaf3
       bgp_as: 65003
       id: 3
       mgmt_ip: 192.168.200.103/24
-    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF4
+    - name: rd-rt-admin-subfield-l3leaf4
       bgp_as: 65004
       id: 4
       mgmt_ip: 192.168.200.104/24
-    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF5
+    - name: rd-rt-admin-subfield-l3leaf5
       bgp_as: 65005
       id: 5
       mgmt_ip: 192.168.200.105/24
-    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF6
+    - name: rd-rt-admin-subfield-l3leaf6
       bgp_as: 65006
       id: 6
       mgmt_ip: 192.168.200.106/24
-    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF7
+    - name: rd-rt-admin-subfield-l3leaf7
       bgp_as: 65007
       id: 7
       mgmt_ip: 192.168.200.107/24
-    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF9
+    - name: rd-rt-admin-subfield-l3leaf9
       bgp_as: 65552
       id: 9
       mgmt_ip: 192.168.200.109/24
-    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF10
+    - name: rd-rt-admin-subfield-l3leaf10
       bgp_as: 65553
       id: 10
       mgmt_ip: 192.168.200.110/24

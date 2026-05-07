@@ -21,6 +21,7 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
+    from pyavd._eos_designs.structured_config.structured_config_utils import StructuredConfigUtils
 
     T_StructuredConfigGeneratorSubclass = TypeVar("T_StructuredConfigGeneratorSubclass", bound="StructuredConfigGeneratorProtocol")
 
@@ -129,6 +130,10 @@ class StructuredConfigGeneratorProtocol(AvdFactsProtocol, Protocol):
     facts: EosDesignsFacts
     structured_config: EosCliConfigGen
     custom_structured_configs: StructCfgs
+    structured_config_utils: StructuredConfigUtils
+    """
+    Shared utilities for structured config generation.
+    """
     _complete_structured_config: EosCliConfigGen
     """
     Temporary store of the complete structured config in case this module is still using the legacy duplication check.
@@ -166,8 +171,10 @@ class StructuredConfigGenerator(AvdFacts, RunOnceMethodStateHelper, StructuredCo
         shared_utils: SharedUtilsProtocol,
         structured_config: EosCliConfigGen,
         custom_structured_configs: StructCfgs,
+        structured_config_utils: StructuredConfigUtils,
     ) -> None:
         self.facts = facts
         self.structured_config = structured_config
         self.custom_structured_configs = custom_structured_configs
+        self.structured_config_utils = structured_config_utils
         super().__init__(hostvars=hostvars, inputs=inputs, shared_utils=shared_utils)

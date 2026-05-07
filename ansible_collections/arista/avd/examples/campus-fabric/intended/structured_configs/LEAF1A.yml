@@ -1698,9 +1698,10 @@ ip_name_server:
     servers:
     - ip_address: 8.8.4.4
     - ip_address: 8.8.8.8
-ip_radius_source_interfaces:
-- name: Management1
-  vrf: MGMT
+ip_radius:
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
 local_users:
 - name: admin
   privilege: 15
@@ -1788,7 +1789,7 @@ vlan_interfaces:
   description: MLAG
   shutdown: false
   ip_address: 192.168.0.4/31
-  mtu: 1500
+  mtu: 9214
   no_autostate: true
 - name: Vlan10
   description: Inband Management

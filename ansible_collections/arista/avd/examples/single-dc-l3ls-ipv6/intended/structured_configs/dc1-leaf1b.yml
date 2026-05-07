@@ -37,8 +37,9 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_dc1-spine1_Ethernet2
   shutdown: false
-  mtu: 1500
-  ipv6_address: 2001:db8:2:2::2/64
+  mtu: 9214
+  ipv6_addresses:
+  - 2001:db8:2:2::2/64
   metadata:
     peer: dc1-spine1
     peer_interface: Ethernet2
@@ -48,8 +49,9 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_dc1-spine2_Ethernet2
   shutdown: false
-  mtu: 1500
-  ipv6_address: 2001:db8:2:3::2/64
+  mtu: 9214
+  ipv6_addresses:
+  - 2001:db8:2:3::2/64
   metadata:
     peer: dc1-spine2
     peer_interface: Ethernet2
@@ -116,11 +118,13 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8:1:2::1/64
+  ipv6_addresses:
+  - 2001:db8:1:2::1/64
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ipv6_address: 2001:db8:5:1::1/64
+  ipv6_addresses:
+  - 2001:db8:5:1::1/64
 - name: Loopback10
   description: DIAG_VRF_VRF10
   shutdown: false
@@ -473,13 +477,15 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_L3
   shutdown: false
-  ipv6_address: 2001:db8:4::2/64
-  mtu: 1500
+  ipv6_addresses:
+  - 2001:db8:4::2/64
+  mtu: 9214
 - name: Vlan4094
   description: MLAG
   shutdown: false
-  ipv6_address: 2001:db8:3::2/64
-  mtu: 1500
+  ipv6_addresses:
+  - 2001:db8:3::2/64
+  mtu: 9214
   no_autostate: true
 - name: Vlan11
   description: VRF10_VLAN11
@@ -501,8 +507,9 @@ vlan_interfaces:
   description: MLAG_L3_VRF_VRF10
   shutdown: false
   vrf: VRF10
-  ipv6_address: 2001:db8:4::2/64
-  mtu: 1500
+  ipv6_addresses:
+  - 2001:db8:4::2/64
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1
@@ -529,8 +536,9 @@ vlan_interfaces:
   description: MLAG_L3_VRF_VRF11
   shutdown: false
   vrf: VRF11
-  ipv6_address: 2001:db8:4::2/64
-  mtu: 1500
+  ipv6_addresses:
+  - 2001:db8:4::2/64
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1
@@ -559,8 +567,9 @@ vlan_interfaces:
   description: MLAG_L3_VRF_VRF12
   shutdown: false
   vrf: VRF12
-  ipv6_address: 2001:db8:4::2/64
-  mtu: 1500
+  ipv6_addresses:
+  - 2001:db8:4::2/64
+  mtu: 9214
   metadata:
     tenants:
     - TENANT1

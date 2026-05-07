@@ -56,14 +56,14 @@ class TagMixin(Protocol):
 
     tags_api_version: Literal["v2"] = "v2"
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_tags(
         self: CVClientProtocol,
         workspace_id: str,
         element_type: Literal["device", "interface"] | None = None,
         creator_type: Literal["user", "system", "external"] | None = None,
         time: datetime | None = None,
-        timeout: float = 30.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[Tag]:
         """
         Get Tags using arista.tag.v2.TagServiceStub.GetAll arista.tag.v2.TagConfigServiceStub.GetAll APIs.
@@ -119,11 +119,11 @@ class TagMixin(Protocol):
 
         return tags
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(list_field="tags")
     async def set_tags(
         self: CVClientProtocol,
         workspace_id: str,
-        tags: set[CVTag],
+        tags: list[CVTag],
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagKey]:
         """
@@ -131,7 +131,7 @@ class TagMixin(Protocol):
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tags: Set of `CVTag` tag objects to be added.
+            tags: List of `CVTag` tag objects to be added.
             timeout: Base timeout in seconds. 0.1 second will be added per `CVTag`.
 
         Returns:
@@ -155,7 +155,7 @@ class TagMixin(Protocol):
 
         return [response.key async for response in responses]
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(retry_on_stream_reset=True)
     async def get_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
@@ -218,11 +218,11 @@ class TagMixin(Protocol):
 
         return tag_assignments
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(list_field="tag_assignments")
     async def set_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
-        tag_assignments: set[CVTagAssignment],
+        tag_assignments: list[CVTagAssignment],
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagAssignmentKey]:
         """
@@ -230,7 +230,7 @@ class TagMixin(Protocol):
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tag_assignments: Set of `CVTagAssignment` tag assignment objects to be added.
+            tag_assignments: List of `CVTagAssignment` tag assignment objects to be added.
             timeout: Base timeout in seconds. 0.1 second will be added per `CVTagAssignment`.
 
         Returns:
@@ -256,19 +256,19 @@ class TagMixin(Protocol):
 
         return [response.key async for response in responses]
 
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(list_field="tag_assignments")
     async def delete_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
-        tag_assignments: set[CVTagAssignment],
-        timeout: float = 30.0,
+        tag_assignments: list[CVTagAssignment],
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagAssignmentKey]:
         """
         Set Tags using arista.tag.v2.TagAssignmentConfigServiceStub.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tag_assignments: Set of `CVTagAssignment` tag assignment objects to be removed.
+            tag_assignments: List of `CVTagAssignment` tag assignment objects to be removed.
             timeout: Base timeout in seconds. 0.1 second will be added per `CVTagAssignment`.
 
         Returns:

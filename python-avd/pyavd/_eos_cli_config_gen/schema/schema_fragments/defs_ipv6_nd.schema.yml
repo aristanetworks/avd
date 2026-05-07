@@ -1,0 +1,77 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  ipv6_nd:
+    description: IPv6 Neighbor Discovery protocol.
+    type: dict
+    keys:
+      cache:
+        type: dict
+        description: Neighbor cache options.
+        keys:
+          dynamic_capacity:
+            type: int
+            description: Capacity of dynamic cache entries.
+            convert_types:
+              - str
+            min: 0
+            max: 4294967295
+          expire:
+            type: int
+            description: Cache entries expiry in seconds.
+            convert_types:
+              - str
+            min: 1
+            max: 65535
+          refresh_always:
+            type: bool
+            description: Force refresh on cache expiry.
+      ra:
+        description: Router Advertisement.
+        type: dict
+        keys:
+          disabled:
+            type: bool
+            description: Disable Router Advertisement messages on the interface.
+          rx_accept:
+            type: dict
+            keys:
+              default_route:
+                type: bool
+                description: Accept default route from received Router Advertisements.
+              route_preference:
+                type: bool
+                description: Accept route preference from received Router Advertisements.
+      managed_config_flag:
+        type: bool
+        description: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+      prefixes:
+        type: list
+        primary_key: ipv6_prefix
+        description: IPv6 prefixes to include in Router Advertisements.
+        items:
+          type: dict
+          keys:
+            ipv6_prefix:
+              type: str
+            valid_lifetime:
+              type: str
+              convert_types:
+                - int
+              description: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+            preferred_lifetime:
+              type: str
+              convert_types:
+                - int
+              description: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+            no_autoconfig_flag:
+              type: bool
+              description: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+      other_config_flag:
+        type: bool
+        description: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
