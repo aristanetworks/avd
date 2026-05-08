@@ -1,0 +1,28 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: host2
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management2
+  description: deprecated_mgmt_interface_description
+  shutdown: false
+  vrf: deprecated_mgmt_interface_vrf
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_DEPRECATED_VARS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: deprecated_mgmt_interface_vrf
+  ip_routing: true
