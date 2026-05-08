@@ -19,62 +19,69 @@ GRPC_UNKNOWN_STATUS_TESTS = [
         id="UNKNOWN_STATUS_NO_SERVERS",
     ),
     pytest.param(
-        "staging.arista.io",
-        pytest.raises(
-            CVClientException,
-            match=r"CVaaS FQDN 'staging\.arista\.io' is missing the required 'www\.' prefix\.",
-        ),
-        id="UNKNOWN_STATUS_CVAAS_MISSING_WWW_PREFIX",
-    ),
-    pytest.param(
-        "www.staging.arista.io",
-        pytest.raises(CVGRPCError),
-        id="UNKNOWN_STATUS_CVAAS_WITH_WWW_PREFIX",
-    ),
-    pytest.param(
         "cvp.example.com",
         pytest.raises(CVGRPCError),
-        id="UNKNOWN_STATUS_NON_CVAAS_FQDN",
+        id="UNKNOWN_STATUS_ONPREM_FQDN",
     ),
     pytest.param(
-        ["prod.arista.io", "www.prod2.arista.io"],
-        pytest.raises(
-            CVClientException,
-            match=r"CVaaS FQDN 'prod\.arista\.io' is missing the required 'www\.' prefix\.",
-        ),
-        id="UNKNOWN_STATUS_FIRST_SERVER_MISSING_WWW",
-    ),
-    pytest.param(
-        ["www.prod.arista.io", "prod2.arista.io"],
+        "www.cv-prod-us-central1-a.arista.io",
         pytest.raises(CVGRPCError),
-        id="UNKNOWN_STATUS_FIRST_SERVER_WITH_WWW",
+        id="UNKNOWN_STATUS_CVAAS_API_ENDPOINT",
     ),
     pytest.param(
-        "apiserver.cv-prod-us-central1-a.arista.io",
+        "cv-prod-us-central1-a.arista.io",
         pytest.raises(
             CVClientException,
-            match=r"CVaaS FQDN 'apiserver\.cv-prod-us-central1-a\.arista\.io' is missing the required 'www\.' prefix\.",
+            match=(
+                r"CVaaS FQDN 'cv-prod-us-central1-a\.arista\.io' is missing the required 'www\.' prefix\. "
+                r"Please use 'www\.cv-prod-us-central1-a\.arista\.io' instead\."
+            ),
         ),
-        id="UNKNOWN_STATUS_CVAAS_APISERVER_PREFIX",
+        id="UNKNOWN_STATUS_CVAAS_BASE_FQDN",
     ),
     pytest.param(
-        "apiserver.arista.io",
+        "apiserver.cv-prod-us-4.arista.io",
         pytest.raises(
             CVClientException,
-            match=r"CVaaS FQDN 'apiserver\.arista\.io' is missing the required 'www\.' prefix\. Please use 'www\.arista\.io' instead\.",
+            match=(
+                r"CVaaS FQDN 'apiserver\.cv-prod-us-4\.arista\.io' is pointing to the streaming endpoint\. "
+                r"Please use API endpoint 'www\.cv-prod-us-4\.arista\.io' instead\."
+            ),
         ),
-        id="UNKNOWN_STATUS_CVAAS_APISERVER_ARISTA_IO",
+        id="UNKNOWN_STATUS_CVAAS_STREAMING_ENDPOINT",
+    ),
+    pytest.param(
+        "www.incorrect-cluster.arista.io",
+        pytest.raises(
+            CVClientException,
+            match=r"Provided CVaaS FQDN 'www\.incorrect-cluster\.arista\.io' may be incorrect\.",
+        ),
+        id="UNKNOWN_STATUS_CVAAS_UNKNOWN_ARISTA_IO_FQDN",
+    ),
+    # Only the first server is checked.
+    pytest.param(
+        ["arista.io", "www.cv-prod-us-central1-a.arista.io"],
+        pytest.raises(
+            CVClientException,
+            match=r"CVaaS FQDN 'arista\.io' is missing the required 'www\.' prefix\.",
+        ),
+        id="UNKNOWN_STATUS_FIRST_SERVER_BASE_FQDN",
+    ),
+    pytest.param(
+        ["www.arista.io", "arista.io"],
+        pytest.raises(CVGRPCError),
+        id="UNKNOWN_STATUS_FIRST_SERVER_CORRECT_API_ENDPOINT",
     ),
 ]
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(("servers", "outer_exception"), GRPC_UNKNOWN_STATUS_TESTS)
-async def test_grpc_unknown_status_www_prefix_check(
+async def test_grpc_unknown_status_cvaas_fqdn_check(
     servers: str | list[str] | None,
     outer_exception: ExpectedExceptionContext,
 ) -> None:
-    """Test Status.UNKNOWN raising CVClientException with a hint when a CVaaS FQDN is missing the 'www.' prefix. Falls back to CVGRPCError otherwise."""
+    """Test Status.UNKNOWN handling."""
     mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING), servers=servers)
     with outer_exception:
         await mocked_cv_client.grpc_unknown_status_method()

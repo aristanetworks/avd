@@ -17,6 +17,7 @@ from grpclib import Status
 from grpclib.exceptions import GRPCError, StreamTerminatedError
 
 from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVClientException, CVGRPCError, CVResourceNotFound, CVTimeoutError
+from pyavd._cv.constants import CV_REGION_TO_SERVER_MAP
 from pyavd._utils import batch
 
 from .constants import CVAAS_VERSION_STRING
@@ -273,19 +274,34 @@ class GRPCRequestHandler:
                                 # Check if www is missing in CVaaS FQDN
                                 cv_servers = getattr(call_args[0], "_servers", []) if call_args else []
                                 first_cv_server = cv_servers[0] if cv_servers else ""
-                                # Strip the 'apiserver.' prefix if incorrectly used instead of 'www.'.
-                                first_cv_server_base_fqdn = first_cv_server.removeprefix("apiserver.")
-                                if first_cv_server_base_fqdn.endswith("arista.io") and not first_cv_server_base_fqdn.startswith("www."):
-                                    specific_hint = f"www.{first_cv_server_base_fqdn}"
-                                    generic_hint = "" if specific_hint == "www.arista.io" else " or generic 'www.arista.io'"
-                                    msg = (
-                                        f"CVaaS FQDN '{first_cv_server}' is missing the required 'www.' prefix. "
-                                        f"Please use '{specific_hint}'{generic_hint} instead. "
-                                        f"Check 'https://www.arista.io/meta/ip.json' for the full list of available 'www' endpoints."
-                                    )
-                                    raise CVClientException(msg)
+                                if first_cv_server.endswith("arista.io"):
+                                    for cvaas_region in CV_REGION_TO_SERVER_MAP.values():
+                                        # Correctly configured API endpoint - fall through to CVGRPCError
+                                        if first_cv_server == f"{cvaas_region['api']}.{cvaas_region['base_fqdn']}":
+                                            break
+                                        # Target CVaaS is missing api prefix
+                                        if first_cv_server == cvaas_region["base_fqdn"]:
+                                            msg = (
+                                                f"CVaaS FQDN '{first_cv_server}' is missing the required '{cvaas_region['api']}.' prefix. "
+                                                f"Please use '{cvaas_region['api']}.{cvaas_region['base_fqdn']}' instead."
+                                            )
+                                            raise CVClientException(msg)
+                                        # Target CVaaS is pointing to the streaming endpoint
+                                        if first_cv_server == f"{cvaas_region['streaming']}.{cvaas_region['base_fqdn']}":
+                                            msg = (
+                                                f"CVaaS FQDN '{first_cv_server}' is pointing to the streaming endpoint. "
+                                                f"Please use API endpoint '{cvaas_region['api']}.{cvaas_region['base_fqdn']}' instead."
+                                            )
+                                            raise CVClientException(msg)
+                                    else:
+                                        # No region matched - generic catch for incorrect CVaaS FQDN
+                                        msg = (
+                                            f"Provided CVaaS FQDN '{first_cv_server}' may be incorrect. "
+                                            "Please check 'https://www.arista.io/help' for the full list of supported CVaaS clusters."
+                                        )
+                                        raise CVClientException(msg)
+                                # gRPC UNKNOWN received from non-CVaaS endpoint or correctly configured CVaaS
                                 raise CVGRPCError(*e.args, call_args, call_kwargs)
-
                             case _:
                                 # All other gRPC errors are converted to CVGRPCError
                                 raise CVGRPCError(*e.args, call_args, call_kwargs)
