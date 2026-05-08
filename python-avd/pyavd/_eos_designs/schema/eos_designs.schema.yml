@@ -14496,7 +14496,6 @@ $defs:
               Router Advertisements (RA).
             items:
               type: str
-              description: IPv6 address of DNS servers.
       ipv6_dhcp_relay:
         type: dict
         description: IPv6 DHCP relay settings.

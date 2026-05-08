@@ -25627,9 +25627,10 @@ keys:
               keys:
                 dns_servers:
                   type: list
+                  min_length: 1
                   items:
                     type: str
-                    description: IPv6 address of DNS servers
+                    description: IPv6 address of DNS servers.
         access_group_in:
           type: str
           description: IPv4 access-list name.
