@@ -186,7 +186,7 @@ def test__get_collection_version_rejects_unsafe_version(tmp_path: Path) -> None:
     """Verify collection version is validated before it can be logged."""
     (tmp_path / "MANIFEST.json").write_text('{"collection_info": {"version": "5.3.0\\nmalicious"}}', encoding="UTF-8")
 
-    with pytest.raises(ValueError, match="Invalid collection version"):
+    with pytest.raises(ValueError, match=r"Invalid collection version found in collection metadata: 5.3.0\nmalicious"):
         _get_collection_version(str(tmp_path))
 
 
