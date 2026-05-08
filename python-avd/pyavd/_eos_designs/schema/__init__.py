@@ -6136,6 +6136,7 @@ class EosDesigns(EosDesignsRootModel):
                     "us-4",
                     "apnortheast-1",
                     "euwest-2",
+                    "eu-3",
                     "ausoutheast-1",
                     "na-northeast1-b",
                     "uk-1",
