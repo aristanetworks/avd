@@ -327,7 +327,7 @@ keys:
                 enabled:
                   type: bool
                   required: true
-                  description: Enable Segment Routing MPLS. When true, renders 'segment-routing mpls'.
+                  description: Enable Segment Routing MPLS.
                 shutdown:
                   type: bool
                 prefix_segments:
