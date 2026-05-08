@@ -136,7 +136,7 @@ repos:
           - 'jsonschema-rs>=0.24'
           # TODO: Do not merge this change, this is for testing this PR only.
           # We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
-          - 'pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils@main'
+          - 'pyavd-utils==0.0.5.dev1'
           - 'pydantic>=2.3.0'
           - 'pytest>=8.2.0'
           - 'pyyaml>=6.0.0'

@@ -29,7 +29,7 @@ dependencies = [
     "grpclib>=0.4.8",
     "jinja2>=3.0",
     # TODO: Do not merge this change, this is for testing this PR only. We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
-    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils@main",
+    "pyavd-utils==0.0.5.dev1",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",
@@ -56,7 +56,7 @@ requires = [
     "jinja2>=3.0",
     "jsonschema-rs>=0.24",
     # TODO: Do not merge this change, this is for testing this PR only. We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
-    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils@main",
+    "pyavd-utils==0.0.5.dev1",
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
