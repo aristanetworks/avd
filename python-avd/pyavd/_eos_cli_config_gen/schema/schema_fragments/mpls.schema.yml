@@ -285,7 +285,7 @@ keys:
       label_ranges:
         description: |-
           MPLS label ranges configuration.
-          Configured mpls ranges for the various categories must not overlap.
+          Few configured mpls ranges for various categories could overlap.
           Requires EOS 4.31.1F or later.
         type: dict
         keys:
