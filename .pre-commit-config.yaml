@@ -134,8 +134,6 @@ repos:
           - 'anta==1.8.0'
           - 'deepmerge>=1.1.0'
           - 'jsonschema-rs>=0.24'
-          # TODO: Do not merge this change, this is for testing this PR only.
-          # We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
           - 'pyavd-utils==0.0.5.dev1'
           - 'pydantic>=2.3.0'
           - 'pytest>=8.2.0'
