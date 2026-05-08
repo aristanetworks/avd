@@ -9,7 +9,7 @@ grpclib>=0.4.8
 jinja2>=3.0
 netaddr>=0.7.19
 pyavd==6.2.0.dev1
-pyavd-utils==0.0.4
+pyavd-utils==0.0.5.dev1
 python-socks[asyncio]>=2.7.2
 pyyaml>=6.0.0
 requests>=2.27.0
