@@ -280,9 +280,8 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-        # TODO: Do not merge this change, this is for testing this PR only.
-        # We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils@main', 'deepmerge>=1.1.0']
+
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.5.dev1', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -290,9 +289,7 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        # TODO: Do not merge this change, this is for testing this PR only.
-        # We can merge this PR once a pyavd-utils dev/stable release with lookaround regex support is published.
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils@main', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.5.dev1', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.22.1
