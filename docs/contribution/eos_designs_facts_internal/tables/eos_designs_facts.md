@@ -141,10 +141,10 @@
     | [<samp>uplink_switch_vrfs</samp>](## "uplink_switch_vrfs") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "uplink_switch_vrfs.[]") | String |  |  |  |  |
     | [<samp>vlans</samp>](## "vlans") | String | Required |  |  | Compressed list of vlans to be defined on this switch after filtering network services.<br>The filter is based on filter.tenants, filter.tags but not filter.only_vlans_in_use.<br><br>Ex. "1-100, 201-202"<br><br>This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.<br>This is to ensure that native vlan is not necessarily permitted on the uplink trunk. |
-    | [<samp>endpoint_vlans</samp>](## "endpoint_vlans") | String |  |  |  | Compressed list of vlans in use by endpoints connected to this switch, downstream switches or MLAG peer and it's downstream switches. |
+    | [<samp>endpoint_vlans</samp>](## "endpoint_vlans") | String |  |  |  | Compressed list of vlans in use by endpoints connected to this switch, downstream switches or MLAG peer and its downstream switches. |
     | [<samp>local_endpoint_trunk_groups</samp>](## "local_endpoint_trunk_groups") | List, items: String |  |  |  | List of trunk_groups in use by endpoints connected to this switch. |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "local_endpoint_trunk_groups.[]") | String |  |  |  |  |
-    | [<samp>endpoint_trunk_groups</samp>](## "endpoint_trunk_groups") | List, items: String |  |  |  | List of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer and it's downstream switches. |
+    | [<samp>endpoint_trunk_groups</samp>](## "endpoint_trunk_groups") | List, items: String |  |  |  | List of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer and its downstream switches. |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "endpoint_trunk_groups.[]") | String |  |  |  |  |
     | [<samp>wan_path_groups</samp>](## "wan_path_groups") | List, items: Dictionary |  |  |  | List of path-groups used for the WAN configuration. |
     | [<samp>&nbsp;&nbsp;-&nbsp;interfaces</samp>](## "wan_path_groups.[].interfaces") | List, items: Dictionary |  |  |  |  |
@@ -386,14 +386,14 @@
     # This is to ensure that native vlan is not necessarily permitted on the uplink trunk.
     vlans: <str; required>
 
-    # Compressed list of vlans in use by endpoints connected to this switch, downstream switches or MLAG peer and it's downstream switches.
+    # Compressed list of vlans in use by endpoints connected to this switch, downstream switches or MLAG peer and its downstream switches.
     endpoint_vlans: <str>
 
     # List of trunk_groups in use by endpoints connected to this switch.
     local_endpoint_trunk_groups:
       - <str>
 
-    # List of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer and it's downstream switches.
+    # List of trunk_groups in use by endpoints connected to this switch, downstream switches or MLAG peer and its downstream switches.
     endpoint_trunk_groups:
       - <str>
 

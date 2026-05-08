@@ -151,6 +151,20 @@ ethernet_interfaces:
     enabled: true
     mode: access
     access_vlan: 107
+- name: Ethernet28
+  description: INBAND-MGMT-IPV6-WITH-ADDRESS_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 28
+    mode: active
+  metadata:
+    peer: inband-mgmt-ipv6-with-address
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 4092
 hostname: inband-mgmt-parent-ipv6-1
 ip_igmp_snooping:
   globally_enabled: true
@@ -236,6 +250,17 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: '107'
+- name: Port-Channel28
+  description: INBAND-MGMT-IPV6-WITH-ADDRESS_Po1
+  shutdown: false
+  mlag: 28
+  lacp_fallback_timeout: 30
+  lacp_fallback_mode: individual
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '4092'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

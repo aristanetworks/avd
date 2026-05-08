@@ -16,7 +16,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import as_path_list_match_from_bgp_asns
+from pyavd._utils import Undefined, UndefinedType, as_path_list_match_from_bgp_asns
 from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.run_once import RunOnceMethodStateHelper, run_once_method
 
@@ -290,6 +290,28 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
                 self.set_once_sflow()
             return configured_sflow
         return None
+
+    def get_interface_validate_state(self, user_input: bool | None = None, peer_in_fabric: bool = False) -> bool | UndefinedType:
+        """
+        Checks if validate_state flag should be set or not.
+
+        Args:
+            user_input: Boolean value of the `validate_state` from the inputs of the interface. `None` if not set in inputs.
+            peer_in_fabric: Flag indicating if the interface peer is a known AVD fabric device.
+
+        Returns:
+            True: If `validate_state` should be enabled (set to True) for the interface.
+            False: If `validate_state` should be disabled (set to False) for the interface.
+            UndefinedType: If `validate_state` should not be set/changed for the interface.
+        """
+        if self.shared_utils.digital_twin:
+            # Peer is not deployed in Digital Twin - interface will be down, so disable state validation.
+            if not peer_in_fabric:
+                return False
+            # Peer is in the fabric - only respect an explicit False from user input; never force True in Digital Twin.
+            return False if user_input is False else Undefined
+        # Non-Digital-Twin: follow the user input if set, otherwise leave unset.
+        return Undefined if user_input is None else user_input
 
 
 __all__ = ["StructuredConfigUtils"]

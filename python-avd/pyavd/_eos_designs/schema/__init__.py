@@ -931,6 +931,8 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_port_channels_without_members": {"type": bool, "default": False},
             "only_configure_mlag_vrfs_peer_group_when_used": {"type": bool, "default": False},
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
+            "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
+            "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -965,6 +967,18 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        configure_inband_mgmt_ipv6_vrf: bool
+        """
+        Configure `inband_mgmt_vrf` for IPv6 inband management.
+
+        Default value: `False`
+        """
+        only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool
+        """
+        Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -976,6 +990,8 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
                 only_configure_mlag_vrfs_peer_group_when_used: bool | UndefinedType = Undefined,
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
+                configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
+                only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -994,6 +1010,8 @@ class EosDesigns(EosDesignsRootModel):
                        Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
                        since
                        this combination is not supported.
+                    configure_inband_mgmt_ipv6_vrf: Configure `inband_mgmt_vrf` for IPv6 inband management.
+                    only_configure_ipv6_inband_mgmt_prefix_list_when_used: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
 
                 """
 
@@ -20422,6 +20440,307 @@ class EosDesigns(EosDesignsRootModel):
 
     Ipv4PrefixListCatalog._item_type = Ipv4PrefixListCatalogItem
 
+    class Ipv6AclsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            HopLimitMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
+            Action: TypeAlias = Literal["permit", "deny"]
+            SourcePortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
+
+            class SourcePorts(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            SourcePorts._item_type = str
+
+            DestinationPortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
+
+            class DestinationPorts(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            DestinationPorts._item_type = str
+
+            class TcpFlags(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            TcpFlags._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "source": {"type": str},
+                "destination": {"type": str},
+                "protocol": {"type": str},
+                "hop_limit": {"type": int},
+                "hop_limit_match": {"type": str, "default": "eq"},
+                "dscp_mask": {"type": str},
+                "sequence": {"type": int},
+                "remark": {"type": str},
+                "action": {"type": str},
+                "source_ports_match": {"type": str, "default": "eq"},
+                "source_ports": {"type": SourcePorts},
+                "destination_ports_match": {"type": str, "default": "eq"},
+                "destination_ports": {"type": DestinationPorts},
+                "tcp_flags": {"type": TcpFlags},
+                "log": {"type": bool},
+                "icmp_type": {"type": str},
+                "icmp_code": {"type": str},
+                "nexthop_group": {"type": str},
+                "tracked": {"type": bool},
+                "dscp": {"type": str},
+                "vlan_number": {"type": int},
+                "vlan_mask": {"type": str},
+                "inner_vlan_number": {"type": int},
+                "inner_vlan_mask": {"type": str},
+            }
+            source: str | None
+            """
+            This field supports substitution of the field "interface_ip" for SVIs.
+            Alternatively it can be set
+            with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means host.
+            Required except for remarks.
+            """
+            destination: str | None
+            """
+            This field supports substitution of the field "interface_ip" for SVIs.
+            Alternatively it can be set
+            with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means host.
+            Required except for remarks.
+            """
+            protocol: str | None
+            """
+            "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
+            Required except for remarks.
+            """
+            hop_limit: int | None
+            """Match Hop Limit value."""
+            hop_limit_match: HopLimitMatch
+            """Default value: `"eq"`"""
+            dscp_mask: str | None
+            """DSCP mask ranges from 0x00 to 0x3F."""
+            sequence: int | None
+            """ACL entry sequence number."""
+            remark: str | None
+            """
+            Comment up to 100 characters.
+            If remark is defined, other keys in the ACL entry will be ignored.
+            """
+            action: Action | None
+            """
+            ACL action.
+            Required except for remarks.
+            """
+            source_ports_match: SourcePortsMatch
+            """Default value: `"eq"`"""
+            source_ports: SourcePorts
+            """Subclass of AvdList with `str` items."""
+            destination_ports_match: DestinationPortsMatch
+            """Default value: `"eq"`"""
+            destination_ports: DestinationPorts
+            """Subclass of AvdList with `str` items."""
+            tcp_flags: TcpFlags
+            """Subclass of AvdList with `str` items."""
+            log: bool | None
+            """Log matches against this rule."""
+            icmp_type: str | None
+            """Message type name/number for ICMP packets."""
+            icmp_code: str | None
+            """Message code for ICMP packets."""
+            nexthop_group: str | None
+            """nexthop-group name."""
+            tracked: bool | None
+            """Match packets in existing ICMP/UDP/TCP connections."""
+            dscp: str | None
+            """DSCP value or name."""
+            vlan_number: int | None
+            vlan_mask: str | None
+            """0x000-0xFFF VLAN mask."""
+            inner_vlan_number: int | None
+            inner_vlan_mask: str | None
+            """0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    source: str | None | UndefinedType = Undefined,
+                    destination: str | None | UndefinedType = Undefined,
+                    protocol: str | None | UndefinedType = Undefined,
+                    hop_limit: int | None | UndefinedType = Undefined,
+                    hop_limit_match: HopLimitMatch | UndefinedType = Undefined,
+                    dscp_mask: str | None | UndefinedType = Undefined,
+                    sequence: int | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
+                    source_ports: SourcePorts | UndefinedType = Undefined,
+                    destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
+                    destination_ports: DestinationPorts | UndefinedType = Undefined,
+                    tcp_flags: TcpFlags | UndefinedType = Undefined,
+                    log: bool | None | UndefinedType = Undefined,
+                    icmp_type: str | None | UndefinedType = Undefined,
+                    icmp_code: str | None | UndefinedType = Undefined,
+                    nexthop_group: str | None | UndefinedType = Undefined,
+                    tracked: bool | None | UndefinedType = Undefined,
+                    dscp: str | None | UndefinedType = Undefined,
+                    vlan_number: int | None | UndefinedType = Undefined,
+                    vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        source:
+                           This field supports substitution of the field "interface_ip" for SVIs.
+                           Alternatively it can be set
+                           with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+                           "<ipv6>" without a mask means host.
+                           Required except for remarks.
+                        destination:
+                           This field supports substitution of the field "interface_ip" for SVIs.
+                           Alternatively it can be set
+                           with a static value of "any", "<ipv6>/<mask>" or "<ipv6>".
+                           "<ipv6>" without a mask means host.
+                           Required except for remarks.
+                        protocol:
+                           "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
+                           Required except for remarks.
+                        hop_limit: Match Hop Limit value.
+                        hop_limit_match: hop_limit_match
+                        dscp_mask: DSCP mask ranges from 0x00 to 0x3F.
+                        sequence: ACL entry sequence number.
+                        remark:
+                           Comment up to 100 characters.
+                           If remark is defined, other keys in the ACL entry will be ignored.
+                        action:
+                           ACL action.
+                           Required except for remarks.
+                        source_ports_match: source_ports_match
+                        source_ports: Subclass of AvdList with `str` items.
+                        destination_ports_match: destination_ports_match
+                        destination_ports: Subclass of AvdList with `str` items.
+                        tcp_flags: Subclass of AvdList with `str` items.
+                        log: Log matches against this rule.
+                        icmp_type: Message type name/number for ICMP packets.
+                        icmp_code: Message code for ICMP packets.
+                        nexthop_group: nexthop-group name.
+                        tracked: Match packets in existing ICMP/UDP/TCP connections.
+                        dscp: DSCP value or name.
+                        vlan_number: vlan_number
+                        vlan_mask: 0x000-0xFFF VLAN mask.
+                        inner_vlan_number: inner_vlan_number
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask. This field is required when `inner_vlan_number` is set.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
+        class SequenceNumbersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"sequence": {"type": int}, "action": {"type": str}}
+            sequence: int
+            """Sequence ID."""
+            action: str
+            """
+            Action as string.
+            Example: "deny ipv6 any any"
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, sequence: int | UndefinedType = Undefined, action: str | UndefinedType = Undefined) -> None:
+                    """
+                    SequenceNumbersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sequence: Sequence ID.
+                        action:
+                           Action as string.
+                           Example: "deny ipv6 any any"
+
+                    """
+
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
+            """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
+
+            _primary_key: ClassVar[str] = "sequence"
+
+        SequenceNumbers._item_type = SequenceNumbersItem
+
+        _fields: ClassVar[dict] = {
+            "name": {"type": str},
+            "entries": {"type": Entries},
+            "counters_per_entry": {"type": bool},
+            "sequence_numbers": {"type": SequenceNumbers},
+        }
+        name: str
+        """
+        Access-list name.
+        When using substitution for any fields, the interface name will be appended to the
+        ACL name.
+        """
+        entries: Entries
+        """
+        ACL Entries.
+
+        Subclass of AvdList with `EntriesItem` items.
+        """
+        counters_per_entry: bool | None
+        sequence_numbers: SequenceNumbers
+        """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                entries: Entries | UndefinedType = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
+                sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
+            ) -> None:
+                """
+                Ipv6AclsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name:
+                       Access-list name.
+                       When using substitution for any fields, the interface name will be appended to the
+                       ACL name.
+                    entries:
+                       ACL Entries.
+
+                       Subclass of AvdList with `EntriesItem` items.
+                    counters_per_entry: counters_per_entry
+                    sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
+
+                """
+
+    class Ipv6Acls(AvdIndexedList[str, Ipv6AclsItem]):
+        """Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    Ipv6Acls._item_type = Ipv6AclsItem
+
     class Ipv6MgmtDestinationNetworks(AvdList[str]):
         """Subclass of AvdList with `str` items."""
 
@@ -32941,6 +33260,8 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
+                "ipv6_acl_in": {"type": str},
+                "ipv6_acl_out": {"type": str},
                 "ip_helpers": {"type": IpHelpers},
                 "static_routes": {"type": StaticRoutes},
                 "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -33041,6 +33362,18 @@ class EosDesigns(EosDesignsRootModel):
             Name of the IPv4 Access-list to be assigned in the egress direction.
             The access-list must be defined
             under `ipv4_acls` and supports substitution of the field "interface_ip".
+            """
+            ipv6_acl_in: str | None
+            """
+            Name of the IPv6 access-list to be assigned in the ingress direction.
+            The access-list must be
+            defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+            """
+            ipv6_acl_out: str | None
+            """
+            Name of the IPv6 access-list to be assigned in the egress direction.
+            The access-list must be defined
+            under `ipv6_acls` and supports substitution of the field "interface_ip".
             """
             ip_helpers: IpHelpers
             """
@@ -33194,6 +33527,8 @@ class EosDesigns(EosDesignsRootModel):
                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
                     ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -33278,6 +33613,14 @@ class EosDesigns(EosDesignsRootModel):
                            Name of the IPv4 Access-list to be assigned in the egress direction.
                            The access-list must be defined
                            under `ipv4_acls` and supports substitution of the field "interface_ip".
+                        ipv6_acl_in:
+                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                           The access-list must be
+                           defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        ipv6_acl_out:
+                           Name of the IPv6 access-list to be assigned in the egress direction.
+                           The access-list must be defined
+                           under `ipv6_acls` and supports substitution of the field "interface_ip".
                         ip_helpers:
                            IP helper for DHCP relay.
 
@@ -34044,6 +34387,8 @@ class EosDesigns(EosDesignsRootModel):
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
             "ipv4_acl_in": {"type": str},
             "ipv4_acl_out": {"type": str},
+            "ipv6_acl_in": {"type": str},
+            "ipv6_acl_out": {"type": str},
             "ip_helpers": {"type": IpHelpers},
             "static_routes": {"type": StaticRoutes},
             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -34160,6 +34505,18 @@ class EosDesigns(EosDesignsRootModel):
         Name of the IPv4 Access-list to be assigned in the egress direction.
         The access-list must be defined
         under `ipv4_acls` and supports substitution of the field "interface_ip".
+        """
+        ipv6_acl_in: str | None
+        """
+        Name of the IPv6 access-list to be assigned in the ingress direction.
+        The access-list must be
+        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+        """
+        ipv6_acl_out: str | None
+        """
+        Name of the IPv6 access-list to be assigned in the egress direction.
+        The access-list must be defined
+        under `ipv6_acls` and supports substitution of the field "interface_ip".
         """
         ip_helpers: IpHelpers
         """
@@ -34315,6 +34672,8 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                ipv6_acl_out: str | None | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -34411,6 +34770,14 @@ class EosDesigns(EosDesignsRootModel):
                        Name of the IPv4 Access-list to be assigned in the egress direction.
                        The access-list must be defined
                        under `ipv4_acls` and supports substitution of the field "interface_ip".
+                    ipv6_acl_in:
+                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                       The access-list must be
+                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                    ipv6_acl_out:
+                       Name of the IPv6 access-list to be assigned in the egress direction.
+                       The access-list must be defined
+                       under `ipv6_acls` and supports substitution of the field "interface_ip".
                     ip_helpers:
                        IP helper for DHCP relay.
 
@@ -63937,6 +64304,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
+                                "ipv6_acl_in": {"type": str},
+                                "ipv6_acl_out": {"type": str},
                                 "ip_helpers": {"type": IpHelpers},
                                 "static_routes": {"type": StaticRoutes},
                                 "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -64047,6 +64416,18 @@ class EosDesigns(EosDesignsRootModel):
                             Name of the IPv4 Access-list to be assigned in the egress direction.
                             The access-list must be defined
                             under `ipv4_acls` and supports substitution of the field "interface_ip".
+                            """
+                            ipv6_acl_in: str | None
+                            """
+                            Name of the IPv6 access-list to be assigned in the ingress direction.
+                            The access-list must be
+                            defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                            """
+                            ipv6_acl_out: str | None
+                            """
+                            Name of the IPv6 access-list to be assigned in the egress direction.
+                            The access-list must be defined
+                            under `ipv6_acls` and supports substitution of the field "interface_ip".
                             """
                             ip_helpers: IpHelpers
                             """
@@ -64201,6 +64582,8 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                    ipv6_acl_out: str | None | UndefinedType = Undefined,
                                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
                                     ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -64291,6 +64674,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Name of the IPv4 Access-list to be assigned in the egress direction.
                                            The access-list must be defined
                                            under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                        ipv6_acl_in:
+                                           Name of the IPv6 access-list to be assigned in the ingress direction.
+                                           The access-list must be
+                                           defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                        ipv6_acl_out:
+                                           Name of the IPv6 access-list to be assigned in the egress direction.
+                                           The access-list must be defined
+                                           under `ipv6_acls` and supports substitution of the field "interface_ip".
                                         ip_helpers:
                                            IP helper for DHCP relay.
 
@@ -65069,6 +65460,8 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "ip_helpers": {"type": IpHelpers},
                             "static_routes": {"type": StaticRoutes},
                             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -65209,6 +65602,18 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the IPv4 Access-list to be assigned in the egress direction.
                         The access-list must be defined
                         under `ipv4_acls` and supports substitution of the field "interface_ip".
+                        """
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls` and supports substitution of the field "interface_ip".
                         """
                         ip_helpers: IpHelpers
                         """
@@ -65367,6 +65772,8 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -65479,6 +65886,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the IPv4 Access-list to be assigned in the egress direction.
                                        The access-list must be defined
                                        under `ipv4_acls` and supports substitution of the field "interface_ip".
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls` and supports substitution of the field "interface_ip".
+                                    ipv6_acl_out:
+                                       Name of the IPv6 access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls` and supports substitution of the field "interface_ip".
                                     ip_helpers:
                                        IP helper for DHCP relay.
 
@@ -69682,7 +70097,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     L2VLAN profile name.
                     The profile must be defined under `l2vlan_profiles`. The profile may refer to
-                    another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                    another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                     l2vlan_profile -> l2vlan_parent_profile).
                     """
                     tags: Tags
@@ -69827,7 +70242,7 @@ class EosDesigns(EosDesignsRootModel):
                                 profile:
                                    L2VLAN profile name.
                                    The profile must be defined under `l2vlan_profiles`. The profile may refer to
-                                   another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                                   another l2vlan_profile as its `parent_profile` to inherit settings in up to two levels (l2vlan ->
                                    l2vlan_profile -> l2vlan_parent_profile).
                                 tags:
                                    Tags leveraged for networks services filtering.
@@ -91366,6 +91781,7 @@ class EosDesigns(EosDesignsRootModel):
         "ipsec_settings": {"type": IpsecSettings},
         "ipv4_acls": {"type": Ipv4Acls},
         "ipv4_prefix_list_catalog": {"type": Ipv4PrefixListCatalog},
+        "ipv6_acls": {"type": Ipv6Acls},
         "ipv6_mgmt_destination_networks": {"type": Ipv6MgmtDestinationNetworks},
         "ipv6_mgmt_gateway": {"type": str},
         "is_deployed": {"type": bool, "default": True},
@@ -92915,6 +93331,27 @@ class EosDesigns(EosDesignsRootModel):
     - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
     Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
     """
+    ipv6_acls: Ipv6Acls
+    """
+    IPv6 extended access-lists supporting substitution on certain fields.
+    These access-lists can be
+    referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be
+    configured on devices where they are in use.
+
+    The substitution is useful when assigning the same
+    access-list on multiple interfaces where certain fields require unique values.
+    When using
+    substitution, the interface name will be appended to the ACL name.
+
+    The "interface_ip" substitution
+    field is resolved from `ipv6_address` set on the SVI.
+    If `ipv6_address` is not set, the first entry
+    of `ipv6_address_virtuals` is used as a fallback.
+    If neither is set, the substitution will fail with
+    an error.
+
+    Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
+    """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
     """
     List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
@@ -94115,6 +94552,7 @@ class EosDesigns(EosDesignsRootModel):
             ipsec_settings: IpsecSettings | UndefinedType = Undefined,
             ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
             ipv4_prefix_list_catalog: Ipv4PrefixListCatalog | UndefinedType = Undefined,
+            ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
             ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks | UndefinedType = Undefined,
             ipv6_mgmt_gateway: str | None | UndefinedType = Undefined,
             is_deployed: bool | UndefinedType = Undefined,
@@ -94931,6 +95369,25 @@ class EosDesigns(EosDesignsRootModel):
                    `l3_port_channels.[].bgp.ipv4_prefix_list_in`
                    - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
                    Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
+                ipv6_acls:
+                   IPv6 extended access-lists supporting substitution on certain fields.
+                   These access-lists can be
+                   referenced under network services `svis` using `ipv6_acl_in` / `ipv6_acl_out`, and will only be
+                   configured on devices where they are in use.
+
+                   The substitution is useful when assigning the same
+                   access-list on multiple interfaces where certain fields require unique values.
+                   When using
+                   substitution, the interface name will be appended to the ACL name.
+
+                   The "interface_ip" substitution
+                   field is resolved from `ipv6_address` set on the SVI.
+                   If `ipv6_address` is not set, the first entry
+                   of `ipv6_address_virtuals` is used as a fallback.
+                   If neither is set, the substitution will fail with
+                   an error.
+
+                   Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.

@@ -77,8 +77,14 @@ class EthernetInterfacesMixin(Protocol):
                     description=interface_description or None,
                     shutdown=not l3_port_channel.enabled,
                     speed=member_intf.speed or None,
+                    metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
+                        peer_interface=member_intf.peer_interface or None,
+                        peer_type="l3_port_channel_member",
+                        peer=peer or None,
+                        validate_state=self.structured_config_utils.get_interface_validate_state(),
+                    ),
                 )
-                ethernet_interface.metadata._update(peer_interface=member_intf.peer_interface or None, peer_type="l3_port_channel_member", peer=peer or None)
+
                 ethernet_interface.channel_group.id = int(channel_group_id)
                 ethernet_interface.channel_group.mode = l3_port_channel.mode
 
@@ -129,8 +135,11 @@ class EthernetInterfacesMixin(Protocol):
                     description=interface_description,
                     eos_cli=l3_interface.raw_eos_cli,
                     flow_tracker=self.shared_utils.get_flow_tracker(l3_interface.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
+                    metadata=EosCliConfigGen.EthernetInterfacesItem.Metadata(
+                        peer_type="l3_interface",
+                        validate_state=self.structured_config_utils.get_interface_validate_state(),
+                    ),
                 )
-                interface.metadata.peer_type = "l3_interface"
 
                 if l3_interface.structured_config:
                     self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface_name)._deepmerge(
