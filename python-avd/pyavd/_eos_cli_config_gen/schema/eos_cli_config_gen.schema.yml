@@ -11560,7 +11560,7 @@ keys:
       label_ranges:
         description: 'MPLS label ranges configuration.
 
-          Few configured mpls ranges for various categories could overlap.
+          Few configured MPLS ranges for various categories could overlap.
 
           Requires EOS 4.31.1F or later.'
         type: dict

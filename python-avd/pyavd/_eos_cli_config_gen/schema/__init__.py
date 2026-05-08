@@ -30384,7 +30384,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         label_ranges: LabelRanges
         """
         MPLS label ranges configuration.
-        Few configured mpls ranges for various categories could overlap.
+        Few configured MPLS ranges for various categories could overlap.
         Requires EOS 4.31.1F or later.
 
         Subclass of AvdModel.
@@ -30425,7 +30425,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     rsvp: Subclass of AvdModel.
                     label_ranges:
                        MPLS label ranges configuration.
-                       Few configured mpls ranges for various categories could overlap.
+                       Few configured MPLS ranges for various categories could overlap.
                        Requires EOS 4.31.1F or later.
 
                        Subclass of AvdModel.
