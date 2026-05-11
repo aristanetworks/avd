@@ -59,10 +59,11 @@ class ResolvedState:
         """
         Compute the final root container list.
 
-        When new manifest root container IDs are introduced, all manifest containers are placed first,
-        followed by any existing root containers.
-        When only removing manifest root containers, the existing order is preserved and removed entries
-        are filtered out, keeping existing root containers in their current positions.
+        Note:
+            When new manifest root container IDs are introduced, all manifest containers are placed first,
+            followed by any existing root containers.
+            When only removing manifest root containers, the existing order is preserved and removed entries
+            are filtered out, keeping existing root containers in their current positions.
         """
         # TODO: Add root_policy handling here in the future.
         declared_root_ids_set = set(desired.root_ids)
@@ -109,17 +110,15 @@ class ResolvedState:
 
     @staticmethod
     def _compute_assigned_configlet_ids(reachable_container_ids: set[str], desired: DesiredState, existing: ExistingState) -> set[str]:
-        """Compute the set of configlet IDs assigned to reachable AVD-managed containers in the final hierarchy."""
+        """Compute the set of configlet IDs assigned to any reachable container in the final hierarchy."""
         assigned: set[str] = set()
 
         for container_id in reachable_container_ids:
-            if not AvdId.is_managed(container_id):
-                continue
-
             if container_id in desired.containers_by_id:
+                # Container is in the new manifest. Use its proposed configlets.
                 assigned.update(desired.containers_by_id[container_id].configlet_ids)
             elif container_id in existing.containers_by_id:
-                # Existing AVD container reachable through a non-AVD parent: keep its current configlets.
+                # Container exists but isn't in the current manifest. Keep its existing configlets.
                 assigned.update(existing.containers_by_id[container_id].configlet_ids.values)
 
         return assigned
@@ -127,7 +126,7 @@ class ResolvedState:
 
 @dataclass
 class DeploymentPlan:
-    """All decisions for a single deployment, computed from the desired state, the existing state, and the resolved graph."""
+    """All decisions for a single deployment, computed from the desired state, the existing state, and the resolved state."""
 
     configlets_to_upsert: list[CVConfiglet] = field(default_factory=list)
     containers_to_upsert: list[CVContainer] = field(default_factory=list)
@@ -144,16 +143,20 @@ class DeploymentPlan:
         """Build the deployment plan from the desired state, the existing CloudVision state, and the resolved state."""
         plan = cls()
 
+        # Always push configlets for now.
         plan.configlets_to_upsert = list(desired.configlets_by_id.values())
 
         for container_id, desired_container in desired.containers_by_id.items():
+            # Rebuild the container with resolved children from the final hierarchy.
             resolved_children = resolved.child_ids_by_container_id[container_id]
             proposed_container = replace(desired_container, child_ids=tuple(resolved_children))
 
             existing_container = existing.containers_by_id.get(container_id)
             if not existing_container or not proposed_container.matches_configlet_assignment(existing_container):
+                # Container is new or has changed, so it needs to be pushed.
                 plan.containers_to_upsert.append(proposed_container)
             else:
+                # Container is unchanged.
                 plan.containers_unchanged.append(proposed_container)
 
         if resolved.root_ids != existing.root_ids:
@@ -166,12 +169,13 @@ class DeploymentPlan:
             if AvdId.is_managed(container_id) and container_id not in resolved.reachable_container_ids
         }
 
-        # In "additive" mode, don't delete any configlets.
+        # In "managed" mode, delete AVD-managed configlets not declared in this manifest and not assigned to any container.
         if desired.configlet_policy == "managed":
             plan.configlets_to_delete = {
                 configlet_id: cast("str", configlet.display_name)
                 for configlet_id, configlet in existing.configlets_by_id.items()
                 if AvdId.is_managed(configlet_id) and configlet_id not in desired.configlets_by_id and configlet_id not in resolved.assigned_configlet_ids
             }
+        # In "additive" mode, don't delete any configlets.
 
         return plan

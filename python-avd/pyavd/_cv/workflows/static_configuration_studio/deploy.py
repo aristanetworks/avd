@@ -47,14 +47,14 @@ async def execute_plan(plan: DeploymentPlan, workspace_id: str, deployment_resul
     if plan.configlets_to_upsert:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Applying changes for %d configlets (create/update)...", len(plan.configlets_to_upsert))
         deployment_result.deployed_static_config_configlets.extend(configlet.avd_configlet for configlet in plan.configlets_to_upsert)
-        await cv_client.set_configlets_from_files(workspace_id=workspace_id, configlets=[c.api_tuple for c in plan.configlets_to_upsert])
+        await cv_client.set_configlets_from_files(workspace_id=workspace_id, configlets=[configlet.api_tuple for configlet in plan.configlets_to_upsert])
     else:
         LOGGER.debug("deploy_static_config_studio_manifest_to_cv: No configlet creations or updates are needed.")
 
     if plan.containers_to_upsert:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Applying changes for %d containers (create/update)...", len(plan.containers_to_upsert))
         deployment_result.deployed_static_config_containers.extend(container.avd_container for container in plan.containers_to_upsert)
-        await cv_client.set_configlet_containers(workspace_id=workspace_id, containers=[c.api_tuple for c in plan.containers_to_upsert])
+        await cv_client.set_configlet_containers(workspace_id=workspace_id, containers=[container.api_tuple for container in plan.containers_to_upsert])
     else:
         LOGGER.debug("deploy_static_config_studio_manifest_to_cv: No container creations or updates are needed.")
 
