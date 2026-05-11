@@ -7,89 +7,102 @@ daemon_terminattr:
   cvauth:
     method: token-secure
     token_file: /tmp/cv-onboarding-token
-  cvvrf: INBANDMGMT
+  cvvrf: MGMT
   disable_aaa: false
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet1
-  description: INBAND-MGMT-PARENT-IPV6-1_Ethernet27
+- name: Ethernet27
+  description: INBAND-MGMT-IPV6-ONLY-VRF_Ethernet3
   shutdown: false
   channel_group:
-    id: 1
+    id: 27
     mode: active
   metadata:
-    peer: inband-mgmt-parent-ipv6-1
-    peer_interface: Ethernet27
-    peer_type: l3leaf
-- name: Ethernet2
-  description: INBAND-MGMT-PARENT-IPV6-2_Ethernet27
-  shutdown: false
-  channel_group:
-    id: 1
-    mode: active
-  metadata:
-    peer: inband-mgmt-parent-ipv6-2
-    peer_interface: Ethernet27
-    peer_type: l3leaf
-- name: Ethernet3
-  description: INBAND-MGMT-PARENT-IPV6-3_Ethernet27
-  shutdown: false
-  channel_group:
-    id: 1
-    mode: active
-  metadata:
-    peer: inband-mgmt-parent-ipv6-3
-    peer_interface: Ethernet27
-    peer_type: l3leaf
-hostname: inband-mgmt-ipv6-only-vrf
+    peer: inband-mgmt-ipv6-only-vrf
+    peer_interface: Ethernet3
+    peer_type: l2leaf
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 107
+hostname: inband-mgmt-parent-ipv6-3
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_server:
   vrfs:
-  - name: INBANDMGMT
+  - name: MGMT
     servers:
     - ip_address: 1.1.1.1
     - ip_address: 8.8.8.8
-ipv6_static_routes:
-- vrf: INBANDMGMT
-  prefix: ::/0
-  next_hop: 2a00:107::1
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.0.255.7/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.100.17/24
+  type: oob
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:
   local_interface:
-    name: Vlan107
-    vrf: INBANDMGMT
+    name: Management1
+    vrf: MGMT
   servers:
   - name: 2.2.2.55
     preferred: true
   - name: pool.ntp.org
-  vrf: INBANDMGMT
+  vrf: MGMT
 port_channel_interfaces:
-- name: Port-Channel1
-  description: inband-mgmt-parents-ipv6_Po27
+- name: Port-Channel27
+  description: INBAND-MGMT-IPV6-ONLY-VRF_Po1
   shutdown: false
+  lacp_fallback_timeout: 30
+  lacp_fallback_mode: individual
   switchport:
     enabled: true
     mode: trunk
     trunk:
       allowed_vlan: '107'
+router_bgp:
+  as: '65006'
+  router_id: 10.0.255.7
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    attached_host:
+      enabled: true
+    connected:
+      enabled: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan107
   description: Inband Management
   shutdown: false
-  vrf: INBANDMGMT
   ipv6_enable: true
   ipv6_addresses:
-  - 2a00:107::a/64
+  - 2a00:107::2/64
+  ipv6_virtual_router_addresses:
+  - 2a00:107::1
   mtu: 1500
-  metadata:
-    type: inband_mgmt
+  ipv6_attached_host_route_export:
+    enabled: true
+    distance: 19
 vlan_internal_order:
   allocation: ascending
   range:

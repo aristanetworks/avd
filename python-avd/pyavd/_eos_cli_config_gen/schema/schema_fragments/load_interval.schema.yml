@@ -13,4 +13,4 @@ keys:
         type: int
         description: Default load interval in seconds.
         convert_types:
-        - str
+          - str
