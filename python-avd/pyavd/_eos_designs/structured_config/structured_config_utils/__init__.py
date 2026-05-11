@@ -15,20 +15,23 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
 from pyavd._utils.run_once import RunOnceMethodStateHelper
+
+from .mlag import MlagMixin
 from .sflow import SflowMixin
 from .underlay import UnderlayMixin
-from .mlag import MlagMixin
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
     from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
 
+
 class StructuredConfigUtilsProtocol(UtilsMixin, MlagMixin, UnderlayMixin, SflowMixin, Protocol):
     structured_config: EosCliConfigGen
     custom_structured_configs: StructCfgs
     shared_utils: SharedUtilsProtocol
     inputs: EosDesigns
+
 
 class StructuredConfigUtils(RunOnceMethodStateHelper, StructuredConfigUtilsProtocol):
     """
@@ -50,4 +53,3 @@ class StructuredConfigUtils(RunOnceMethodStateHelper, StructuredConfigUtilsProto
         self.custom_structured_configs = custom_structured_configs
         """Tracker for parent interfaces that need to be created for subinterfaces."""
         self.parent_interfaces_tracker = ParentInterfacesTracker()
-

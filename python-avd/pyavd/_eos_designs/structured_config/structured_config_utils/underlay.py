@@ -11,11 +11,10 @@ from pyavd._utils import as_path_list_match_from_bgp_asns
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
-
     from . import StructuredConfigUtils
 
-class UnderlayMixin(Protocol):
 
+class UnderlayMixin(Protocol):
     @run_once_method
     def set_once_peer_group_ipv4_underlay_peers(self: StructuredConfigUtils) -> None:
         """

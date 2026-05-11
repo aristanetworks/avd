@@ -11,11 +11,10 @@ from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
-
     from . import StructuredConfigUtils
 
-class MlagMixin(Protocol):
 
+class MlagMixin(Protocol):
     @run_once_method
     def set_once_route_map_mlag_peer_in(self: StructuredConfigUtils) -> None:
         """
