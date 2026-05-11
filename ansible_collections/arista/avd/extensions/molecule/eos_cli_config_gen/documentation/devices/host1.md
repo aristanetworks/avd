@@ -11098,7 +11098,7 @@ monitor loop-protection
 | Tunnel Termination Model | TTL: uniform, DSCP: uniform |
 | Tunnel Termination PHP Model | TTL: pipe, DSCP: pipe |
 
-#### Label Ranges
+### MPLS Label Ranges
 
 | Range | Base | Size |
 | ----- | ---- | ---- |
