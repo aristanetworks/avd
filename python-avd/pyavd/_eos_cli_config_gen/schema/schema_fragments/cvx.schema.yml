@@ -67,6 +67,8 @@ keys:
                   - str
               ip_access_group_name:
                 type: str
+                convert_types:
+                  - int
               ipv6_access_group_name:
                 type: str
               name_resolution:
