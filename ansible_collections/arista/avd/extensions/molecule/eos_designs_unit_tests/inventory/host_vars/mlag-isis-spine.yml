@@ -7,7 +7,7 @@ type: spine
 
 spine:
   nodes:
-  - name: mlag-isis-spine
-    bgp_as: 65000
-    loopback_ipv4_pool: 10.10.10.0/24
-    id: 1
+    - name: mlag-isis-spine
+      bgp_as: 65000
+      loopback_ipv4_pool: 10.10.10.0/24
+      id: 1
