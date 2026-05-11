@@ -98,7 +98,7 @@ $defs:
               default: true
               description: |-
                 Support for monitor session configuration on sub-interfaces.
-                When this key is set to false, an error will be raised if a monitor session is configured on a sub-interface in the network services inputs.
+                When this key is set to false, an error will be raised if a monitor session is configured on a sub-interface.
             per_interface_mtu:
               type: bool
               default: true

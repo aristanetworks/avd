@@ -27792,7 +27792,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Support for monitor session configuration on sub-interfaces.
             When this key is set to false, an error
-            will be raised if a monitor session is configured on a sub-interface in the network services inputs.
+            will be raised if a monitor session is configured on a sub-interface.
 
             Default value: `True`
             """
@@ -27996,7 +27996,7 @@ class EosDesigns(EosDesignsRootModel):
                         subinterface_monitor_session:
                            Support for monitor session configuration on sub-interfaces.
                            When this key is set to false, an error
-                           will be raised if a monitor session is configured on a sub-interface in the network services inputs.
+                           will be raised if a monitor session is configured on a sub-interface.
                         per_interface_mtu:
                            Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
@@ -28577,7 +28577,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Support for monitor session configuration on sub-interfaces.
             When this key is set to false, an error
-            will be raised if a monitor session is configured on a sub-interface in the network services inputs.
+            will be raised if a monitor session is configured on a sub-interface.
 
             Default value: `True`
             """
@@ -28781,7 +28781,7 @@ class EosDesigns(EosDesignsRootModel):
                         subinterface_monitor_session:
                            Support for monitor session configuration on sub-interfaces.
                            When this key is set to false, an error
-                           will be raised if a monitor session is configured on a sub-interface in the network services inputs.
+                           will be raised if a monitor session is configured on a sub-interface.
                         per_interface_mtu:
                            Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.

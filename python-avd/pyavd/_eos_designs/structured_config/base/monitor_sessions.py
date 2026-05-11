@@ -113,15 +113,22 @@ class MonitorSessionsMixin(Protocol):
                         and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session
                     ):
                         msg = (
-                            f"Monitor session on sub-interfaces is not supported on this platform. "
+                            "Monitor session on sub-interfaces is not supported on this platform. "
                             f"Got monitor session on interface '{ethernet_interface_name}' under {context}."
                         )
                         raise AristaAvdInvalidInputsError(msg)
                     for monitor_session in adapter.monitor_sessions:
                         if "." in ethernet_interface_name and monitor_session.role != "destination" and monitor_session.source_settings.direction != "rx":
                             msg = (
-                                f"Only 'direction: rx' supported on sub-interfaces for monitor session. "
+                                "Only 'direction: rx' supported on sub-interfaces for monitor session. "
                                 f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
+                                f"on interface '{ethernet_interface_name}' under {context}."
+                            )
+                            raise AristaAvdInvalidInputsError(msg)
+                        if "." in ethernet_interface_name and monitor_session.role == "destination":
+                            msg = (
+                                "Port mirroring destination on sub-interface is not supported. "
+                                f"Got 'role: {monitor_session.role}' for monitor session '{monitor_session.name}' "
                                 f"on interface '{ethernet_interface_name}' under {context}."
                             )
                             raise AristaAvdInvalidInputsError(msg)
@@ -157,15 +164,22 @@ class MonitorSessionsMixin(Protocol):
                     and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session
                 ):
                     msg = (
-                        f"Monitor session on sub-interfaces is not supported on this platform. "
+                        "Monitor session on sub-interfaces is not supported on this platform. "
                         f"Got monitor session on interface '{ethernet_interface_name}' under {context}."
                     )
                     raise AristaAvdInvalidInputsError(msg)
                 for monitor_session in network_port.monitor_sessions:
                     if "." in ethernet_interface_name and monitor_session.role != "destination" and monitor_session.source_settings.direction != "rx":
                         msg = (
-                            f"Only 'direction: rx' supported on sub-interfaces for monitor session. "
+                            "Only 'direction: rx' supported on sub-interfaces for monitor session. "
                             f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
+                            f"on interface '{ethernet_interface_name}' under {context}."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
+                    if "." in ethernet_interface_name and monitor_session.role == "destination":
+                        msg = (
+                            "Port mirroring destination on sub-interface is not supported. "
+                            f"Got 'role: {monitor_session.role}' for monitor session '{monitor_session.name}' "
                             f"on interface '{ethernet_interface_name}' under {context}."
                         )
                         raise AristaAvdInvalidInputsError(msg)
@@ -188,7 +202,7 @@ class MonitorSessionsMixin(Protocol):
                             and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session
                         ):
                             msg = (
-                                f"Monitor session on sub-interfaces is not supported on this platform. "
+                                "Monitor session on sub-interfaces is not supported on this platform. "
                                 f"Got monitor session on interface '{interface_name}' under {context}."
                             )
                             raise AristaAvdInvalidInputsError(msg)
@@ -197,6 +211,13 @@ class MonitorSessionsMixin(Protocol):
                                 msg = (
                                     f"Only 'direction: rx' supported on sub-interfaces for monitor session. "
                                     f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
+                                    f"on interface '{interface_name}' under {context}."
+                                )
+                                raise AristaAvdInvalidInputsError(msg)
+                            if "." in interface_name and monitor_session.role == "destination":
+                                msg = (
+                                    "Port mirroring destination on sub-interface is not supported. "
+                                    f"Got 'role: {monitor_session.role}' for monitor session '{monitor_session.name}' "
                                     f"on interface '{interface_name}' under {context}."
                                 )
                                 raise AristaAvdInvalidInputsError(msg)
