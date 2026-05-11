@@ -7504,7 +7504,7 @@ class EosDesigns(EosDesignsRootModel):
             ipv4_node_sid_index: int | None
             """
             Optional static IPv4 Node-SID Index.
-            Takes precedence the default node ID +
+            Takes precedence over the default node ID +
             `ipv4_node_sid_index_base`
             """
             ipv4_node_sid_index_base: int
@@ -7516,7 +7516,7 @@ class EosDesigns(EosDesignsRootModel):
             ipv6_node_sid_index: int | None
             """
             Optional static IPv6 Node-SID Index.
-            Takes precedence the default node ID +
+            Takes precedence over the default node ID +
             `ipv6_node_sid_index_base`
             """
             ipv6_node_sid_index_base: int
@@ -7545,12 +7545,12 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         ipv4_node_sid_index:
                            Optional static IPv4 Node-SID Index.
-                           Takes precedence the default node ID +
+                           Takes precedence over the default node ID +
                            `ipv4_node_sid_index_base`
                         ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                         ipv6_node_sid_index:
                            Optional static IPv6 Node-SID Index.
-                           Takes precedence the default node ID +
+                           Takes precedence over the default node ID +
                            `ipv6_node_sid_index_base`
                         ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
 
@@ -12731,7 +12731,7 @@ class EosDesigns(EosDesignsRootModel):
             ipv4_node_sid_index: int | None
             """
             Optional static IPv4 Node-SID Index.
-            Takes precedence the default node ID +
+            Takes precedence over the default node ID +
             `ipv4_node_sid_index_base`
             """
             ipv4_node_sid_index_base: int
@@ -12743,7 +12743,7 @@ class EosDesigns(EosDesignsRootModel):
             ipv6_node_sid_index: int | None
             """
             Optional static IPv6 Node-SID Index.
-            Takes precedence the default node ID +
+            Takes precedence over the default node ID +
             `ipv6_node_sid_index_base`
             """
             ipv6_node_sid_index_base: int
@@ -12772,12 +12772,12 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         ipv4_node_sid_index:
                            Optional static IPv4 Node-SID Index.
-                           Takes precedence the default node ID +
+                           Takes precedence over the default node ID +
                            `ipv4_node_sid_index_base`
                         ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                         ipv6_node_sid_index:
                            Optional static IPv6 Node-SID Index.
-                           Takes precedence the default node ID +
+                           Takes precedence over the default node ID +
                            `ipv6_node_sid_index_base`
                         ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
 
@@ -37942,7 +37942,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4_node_sid_index: int | None
                         """
                         Optional static IPv4 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv4_node_sid_index_base`
                         """
                         ipv4_node_sid_index_base: int
@@ -37954,7 +37954,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_node_sid_index: int | None
                         """
                         Optional static IPv6 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv6_node_sid_index_base`
                         """
                         ipv6_node_sid_index_base: int
@@ -37983,12 +37983,12 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4_node_sid_index:
                                        Optional static IPv4 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv4_node_sid_index_base`
                                     ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                                     ipv6_node_sid_index:
                                        Optional static IPv6 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv6_node_sid_index_base`
                                     ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
 
@@ -43146,7 +43146,7 @@ class EosDesigns(EosDesignsRootModel):
                             ipv4_node_sid_index: int | None
                             """
                             Optional static IPv4 Node-SID Index.
-                            Takes precedence the default node ID +
+                            Takes precedence over the default node ID +
                             `ipv4_node_sid_index_base`
                             """
                             ipv4_node_sid_index_base: int
@@ -43158,7 +43158,7 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_node_sid_index: int | None
                             """
                             Optional static IPv6 Node-SID Index.
-                            Takes precedence the default node ID +
+                            Takes precedence over the default node ID +
                             `ipv6_node_sid_index_base`
                             """
                             ipv6_node_sid_index_base: int
@@ -43187,12 +43187,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         ipv4_node_sid_index:
                                            Optional static IPv4 Node-SID Index.
-                                           Takes precedence the default node ID +
+                                           Takes precedence over the default node ID +
                                            `ipv4_node_sid_index_base`
                                         ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                                         ipv6_node_sid_index:
                                            Optional static IPv6 Node-SID Index.
-                                           Takes precedence the default node ID +
+                                           Takes precedence over the default node ID +
                                            `ipv6_node_sid_index_base`
                                         ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
 
@@ -48313,7 +48313,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4_node_sid_index: int | None
                         """
                         Optional static IPv4 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv4_node_sid_index_base`
                         """
                         ipv4_node_sid_index_base: int
@@ -48325,7 +48325,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_node_sid_index: int | None
                         """
                         Optional static IPv6 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv6_node_sid_index_base`
                         """
                         ipv6_node_sid_index_base: int
@@ -48354,12 +48354,12 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4_node_sid_index:
                                        Optional static IPv4 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv4_node_sid_index_base`
                                     ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                                     ipv6_node_sid_index:
                                        Optional static IPv6 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv6_node_sid_index_base`
                                     ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
 
@@ -53543,7 +53543,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4_node_sid_index: int | None
                         """
                         Optional static IPv4 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv4_node_sid_index_base`
                         """
                         ipv4_node_sid_index_base: int
@@ -53555,7 +53555,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_node_sid_index: int | None
                         """
                         Optional static IPv6 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv6_node_sid_index_base`
                         """
                         ipv6_node_sid_index_base: int
@@ -53584,12 +53584,12 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4_node_sid_index:
                                        Optional static IPv4 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv4_node_sid_index_base`
                                     ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                                     ipv6_node_sid_index:
                                        Optional static IPv6 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv6_node_sid_index_base`
                                     ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
 
@@ -72184,7 +72184,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4_node_sid_index: int | None
                         """
                         Optional static IPv4 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv4_node_sid_index_base`
                         """
                         ipv4_node_sid_index_base: int
@@ -72196,7 +72196,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_node_sid_index: int | None
                         """
                         Optional static IPv6 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv6_node_sid_index_base`
                         """
                         ipv6_node_sid_index_base: int
@@ -72225,12 +72225,12 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4_node_sid_index:
                                        Optional static IPv4 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv4_node_sid_index_base`
                                     ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                                     ipv6_node_sid_index:
                                        Optional static IPv6 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv6_node_sid_index_base`
                                     ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
 
@@ -77388,7 +77388,7 @@ class EosDesigns(EosDesignsRootModel):
                             ipv4_node_sid_index: int | None
                             """
                             Optional static IPv4 Node-SID Index.
-                            Takes precedence the default node ID +
+                            Takes precedence over the default node ID +
                             `ipv4_node_sid_index_base`
                             """
                             ipv4_node_sid_index_base: int
@@ -77400,7 +77400,7 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_node_sid_index: int | None
                             """
                             Optional static IPv6 Node-SID Index.
-                            Takes precedence the default node ID +
+                            Takes precedence over the default node ID +
                             `ipv6_node_sid_index_base`
                             """
                             ipv6_node_sid_index_base: int
@@ -77429,12 +77429,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         ipv4_node_sid_index:
                                            Optional static IPv4 Node-SID Index.
-                                           Takes precedence the default node ID +
+                                           Takes precedence over the default node ID +
                                            `ipv4_node_sid_index_base`
                                         ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                                         ipv6_node_sid_index:
                                            Optional static IPv6 Node-SID Index.
-                                           Takes precedence the default node ID +
+                                           Takes precedence over the default node ID +
                                            `ipv6_node_sid_index_base`
                                         ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
 
@@ -82555,7 +82555,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4_node_sid_index: int | None
                         """
                         Optional static IPv4 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv4_node_sid_index_base`
                         """
                         ipv4_node_sid_index_base: int
@@ -82567,7 +82567,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_node_sid_index: int | None
                         """
                         Optional static IPv6 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv6_node_sid_index_base`
                         """
                         ipv6_node_sid_index_base: int
@@ -82596,12 +82596,12 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4_node_sid_index:
                                        Optional static IPv4 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv4_node_sid_index_base`
                                     ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                                     ipv6_node_sid_index:
                                        Optional static IPv6 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv6_node_sid_index_base`
                                     ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
 
@@ -87785,7 +87785,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4_node_sid_index: int | None
                         """
                         Optional static IPv4 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv4_node_sid_index_base`
                         """
                         ipv4_node_sid_index_base: int
@@ -87797,7 +87797,7 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_node_sid_index: int | None
                         """
                         Optional static IPv6 Node-SID Index.
-                        Takes precedence the default node ID +
+                        Takes precedence over the default node ID +
                         `ipv6_node_sid_index_base`
                         """
                         ipv6_node_sid_index_base: int
@@ -87826,12 +87826,12 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4_node_sid_index:
                                        Optional static IPv4 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv4_node_sid_index_base`
                                     ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                                     ipv6_node_sid_index:
                                        Optional static IPv6 Node-SID Index.
-                                       Takes precedence the default node ID +
+                                       Takes precedence over the default node ID +
                                        `ipv6_node_sid_index_base`
                                     ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
 
