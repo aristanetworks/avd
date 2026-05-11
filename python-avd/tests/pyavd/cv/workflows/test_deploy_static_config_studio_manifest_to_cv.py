@@ -741,13 +741,13 @@ class TestDeployStaticConfigStudio:
                 description="",
                 query="device:*",
                 child_ids=[legacy_avd_container_id],
+                configlet_ids=[legacy_avd_configlet_id],
             ),
             create_grpc_container(
                 container_id=legacy_avd_container_id,
                 name="LEGACY_AVD_CONTAINER",
                 description="",
                 query="device:LEAF",
-                configlet_ids=[legacy_avd_configlet_id],
             ),
         ]
         existing_configlets = [
@@ -766,7 +766,7 @@ class TestDeployStaticConfigStudio:
         mock_cv_client.delete_configlet_container.assert_not_called()
         assert "LEGACY_AVD_CONTAINER" not in deployment_result.removed_static_config_containers
 
-        # Legacy AVD configlet is preserved (still assigned to a reachable AVD container, even in 'managed' mode).
+        # Legacy AVD configlet is preserved (still assigned to a reachable container, even in 'managed' mode).
         mock_cv_client.delete_configlets.assert_not_called()
         assert "LEGACY_AVD_CONFIGLET" not in deployment_result.removed_static_config_configlets
 
