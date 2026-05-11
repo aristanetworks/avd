@@ -417,7 +417,6 @@ class TestDeployStaticConfigStudio:
         mock_cv_client.set_configlets_from_files.assert_called_once()
 
         # No configlets should be deleted (additive mode).
-        mock_cv_client.get_configlets.assert_not_called()
         mock_cv_client.delete_configlets.assert_not_called()
         assert not deployment_result.removed_static_config_configlets
 

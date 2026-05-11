@@ -16,7 +16,7 @@ from pyavd._cv.api.arista.tag.v2 import (
     TagKey,
 )
 from pyavd._cv.api.fmp import RepeatedString
-from pyavd._cv.workflows.models import CVManifest
+from pyavd._cv.workflows.static_configuration_studio.ids import AvdId
 
 DEFAULT_TIMESTAMP = _DateTime.fromisoformat("2025-10-03T00:00:00")
 
@@ -153,4 +153,4 @@ def get_interface_tag_assignments_cv_state() -> list[TagAssignment]:
 
 def generate_id(key: str) -> str:
     """Helper to consistently generate expected IDs for tests."""
-    return CVManifest._generate_deterministic_id(key)
+    return AvdId.generate(key)

@@ -10,7 +10,8 @@ import pytest
 from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
 from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVManifestError
-from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVManifest
+from pyavd._cv.workflows.models import AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVManifest
+from pyavd._cv.workflows.static_configuration_studio.ids import AvdId
 
 from .helpers import generate_id
 
@@ -67,12 +68,12 @@ class TestCVManifestGeneration:
         cv_manifest = CVManifest.from_avd_manifest(complex_avd_manifest)
 
         # Verify counts.
-        assert len(cv_manifest.configlets) == 3
-        assert len(cv_manifest.containers) == 4  # 2 roots + 2 children
+        assert len(cv_manifest.configlets_by_id) == 3
+        assert len(cv_manifest.containers_by_id) == 4  # 2 roots + 2 children
 
         # Organize results for easier lookup.
-        container_map = {c.name: c for c in cv_manifest.containers}
-        configlet_map = {c.name: c for c in cv_manifest.configlets}
+        container_map = {c.name: c for c in cv_manifest.containers_by_id.values()}
+        configlet_map = {c.name: c for c in cv_manifest.configlets_by_id.values()}
 
         # Verify configlet properties (CVConfiglet).
         assert "configlet_leaf" in configlet_map
@@ -154,8 +155,8 @@ class TestCVManifestGeneration:
 
         cv_manifest = CVManifest.from_avd_manifest(avd_manifest)
 
-        assert len(cv_manifest.configlets) == 1
-        assert len(cv_manifest.containers) == 0
+        assert len(cv_manifest.configlets_by_id) == 1
+        assert len(cv_manifest.containers_by_id) == 0
 
     def test_manifest_with_containers_only(self) -> None:
         """Tests a manifest that has containers but no configlets defined globally."""
@@ -165,28 +166,28 @@ class TestCVManifestGeneration:
         avd_manifest = AvdManifest(configlets=(), containers=(container,))
 
         cv_manifest = CVManifest.from_avd_manifest(avd_manifest)
-        container_map = {c.name: c for c in cv_manifest.containers}
+        container_map = {c.name: c for c in cv_manifest.containers_by_id.values()}
 
-        assert len(cv_manifest.configlets) == 0
-        assert len(cv_manifest.containers) == 1
+        assert len(cv_manifest.configlets_by_id) == 0
+        assert len(cv_manifest.containers_by_id) == 1
         assert container_map["ROOT"].name == "ROOT"
 
     def test_empty_manifest(self) -> None:
         """Tests an entirely empty manifest."""
         avd_manifest = AvdManifest(configlets=(), containers=())
         cv_manifest = CVManifest.from_avd_manifest(avd_manifest)
-        assert len(cv_manifest.configlets) == 0
-        assert len(cv_manifest.containers) == 0
+        assert len(cv_manifest.configlets_by_id) == 0
+        assert len(cv_manifest.containers_by_id) == 0
 
     def test_deterministic_id_generation(self) -> None:
         """Ensures the ID generation function is deterministic and consistent."""
-        id1 = CVManifest._generate_deterministic_id("my_key")
-        id2 = CVManifest._generate_deterministic_id("my_key")
-        id3 = CVManifest._generate_deterministic_id("another_key")
+        id1 = AvdId.generate("my_key")
+        id2 = AvdId.generate("my_key")
+        id3 = AvdId.generate("another_key")
 
         assert id1 == id2
         assert id1 != id3
-        assert id1.startswith(AVD_ENTITY_PREFIX)
+        assert id1.startswith(AvdId.PREFIX)
 
 
 class TestCVContainerMatching:

@@ -7,14 +7,13 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
-from uuid import NAMESPACE_DNS, uuid4, uuid5
+from uuid import uuid4
 
 from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.client.models import CVTag, CVTagAssignment
 
-AVD_NAMESPACE = uuid5(NAMESPACE_DNS, "avd.arista.com")
-AVD_ENTITY_PREFIX = "avd_"
+from .static_configuration_studio.ids import AvdId
 
 if TYPE_CHECKING:
     from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment
@@ -395,78 +394,91 @@ class AvdManifest:
             raise ValueError(msg) from e
 
 
+# TODO: Rename this class to DesiredState and move it to the workflows/static_configuration_studio package.
 @dataclass(frozen=True)
 class CVManifest:
     """CloudVision manifest to be created/updated to the "Static Configuration" Studio."""
 
     configlet_policy: Literal["managed", "additive"]
-    configlets: tuple[CVConfiglet, ...]
-    containers: tuple[CVContainer, ...]
+    configlets_by_id: dict[str, CVConfiglet]
+    containers_by_id: dict[str, CVContainer]
+    root_ids: list[str]
 
     @classmethod
     def from_avd_manifest(cls, avd_manifest: AvdManifest) -> CVManifest:
         """Build the desired CVManifest from the AVD input manifest."""
-        cv_configlet_map: dict[str, CVConfiglet] = {}
-        cv_container_map: dict[str, CVContainer] = {}
+        configlets_by_id: dict[str, CVConfiglet] = {}
+        containers_by_id: dict[str, CVContainer] = {}
+        root_ids: list[str] = []
 
-        # Create all CVConfiglet objects first.
+        # Create all CVConfiglet objects first so containers can resolve their configlet name references.
         for avd_configlet in avd_manifest.configlets:
             cv_configlet = CVConfiglet(
-                avd_configlet=avd_configlet, id=cls._generate_deterministic_id(avd_configlet.name), description="Configlet created and uploaded by AVD."
+                avd_configlet=avd_configlet,
+                id=AvdId.generate(avd_configlet.name),
+                description="Configlet created and uploaded by AVD.",
             )
-            if cv_configlet.name in cv_configlet_map:
+            if cv_configlet.id in configlets_by_id:
                 msg = f"Duplicate configlet name found: '{cv_configlet.name}'. All AVD-managed configlet names must be unique."
                 raise CVManifestError(msg)
-            cv_configlet_map[cv_configlet.name] = cv_configlet
+            configlets_by_id[cv_configlet.id] = cv_configlet
 
-        # Recursively process all containers.
+        # Build each declared root container (and its subtree) into the by-id mappings.
         for root_container in avd_manifest.containers:
-            cls._process_container_recursively(container=root_container, parent_path="", cv_configlet_map=cv_configlet_map, cv_container_map=cv_container_map)
+            root_id = cls._build_container_subtree(
+                container=root_container, parent_path="", configlets_by_id=configlets_by_id, containers_by_id=containers_by_id
+            )
+            root_ids.append(root_id)
 
         # Return the completed manifest.
-        return cls(configlet_policy=avd_manifest.configlet_policy, configlets=tuple(cv_configlet_map.values()), containers=tuple(cv_container_map.values()))
+        return cls(
+            configlet_policy=avd_manifest.configlet_policy,
+            configlets_by_id=configlets_by_id,
+            containers_by_id=containers_by_id,
+            root_ids=root_ids,
+        )
 
     @classmethod
-    def _process_container_recursively(
-        cls, container: AvdContainer, parent_path: str, cv_configlet_map: dict[str, CVConfiglet], cv_container_map: dict[str, CVContainer]
+    def _build_container_subtree(
+        cls,
+        container: AvdContainer,
+        parent_path: str,
+        configlets_by_id: dict[str, CVConfiglet],
+        containers_by_id: dict[str, CVContainer],
     ) -> str:
-        """Recursively traverse the container tree, populating the cv_ mappings along the way. Returns the generated ID for the current container."""
+        """Recursively build the given container and all its sub-containers into the by-id mappings. Returns the generated ID of the current container."""
         current_path = f"{parent_path}/{container.name}" if parent_path else container.name
 
-        # Process sub-containers.
+        # Process sub-containers first so their IDs are available when populating the current container child_ids.
         child_ids = [
-            cls._process_container_recursively(sub_container, current_path, cv_configlet_map, cv_container_map) for sub_container in container.sub_containers
+            cls._build_container_subtree(sub_container, current_path, configlets_by_id, containers_by_id) for sub_container in container.sub_containers
         ]
 
         # Process configlets attached to this container.
         configlet_ids = []
         for configlet_name in container.configlets:
-            if configlet_name not in cv_configlet_map:
+            configlet_id = AvdId.generate(configlet_name)
+            if configlet_id not in configlets_by_id:
                 msg = f"Configlet '{configlet_name}' is assigned to a container but is not found in the input definition."
                 raise CVManifestError(msg)
-            configlet_ids.append(cv_configlet_map[configlet_name].id)
+            configlet_ids.append(configlet_id)
 
         # Create the parent CVContainer object.
         cv_container = CVContainer(
             avd_container=container,
-            id=cls._generate_deterministic_id(current_path),
+            id=AvdId.generate(current_path),
             is_root=(parent_path == ""),
             configlet_ids=tuple(configlet_ids),
             child_ids=tuple(child_ids),
         )
 
         # Store it in the main dictionary.
-        if current_path in cv_container_map:
+        if cv_container.id in containers_by_id:
             msg = f"Duplicate container name found: '{current_path}'. All AVD-managed sibling containers must have unique names."
             raise CVManifestError(msg)
-        cv_container_map[current_path] = cv_container
+        containers_by_id[cv_container.id] = cv_container
 
         return cv_container.id
-
-    @staticmethod
-    def _generate_deterministic_id(key: str) -> str:
-        """Generate a deterministic ID from AVD_NAMESPACE and the provided key."""
-        return f"{AVD_ENTITY_PREFIX}{uuid5(AVD_NAMESPACE, key)}"
 
 
 @dataclass(frozen=True)
