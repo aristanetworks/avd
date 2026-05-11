@@ -497,7 +497,7 @@ $defs:
                 type: int
                 description: |-
                   Optional static IPv4 Node-SID Index.
-                  Takes precedence the default node ID + `ipv4_node_sid_index_base`
+                  Takes precedence over the default node ID + `ipv4_node_sid_index_base`
               ipv4_node_sid_index_base:
                 description: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                 type: int
@@ -508,7 +508,7 @@ $defs:
                 type: int
                 description: |-
                   Optional static IPv6 Node-SID Index.
-                  Takes precedence the default node ID + `ipv6_node_sid_index_base`
+                  Takes precedence over the default node ID + `ipv6_node_sid_index_base`
               ipv6_node_sid_index_base:
                 description: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
                 type: int
