@@ -719,10 +719,25 @@ router_bgp:
           send_limit: 20
           prefix_list: PL2
         default_originate:
+          enabled: true
           route_map: RM-FOO
           always: true
       - name: FOOBAR
         activate: false
+      - name: FOOBAR1
+        activate: true
+        default_originate:
+          enabled: true
+      - name: FOOBAR2
+        activate: true
+        default_originate:
+          enabled: true
+          route_map: RM-FOO
+      - name: FOOBAR3
+        activate: true
+        default_originate:
+          enabled: true
+          always: true
     neighbors:
       - ip_address: 2001:db8::1
         prefix_list_in: PL-FOO-v6-IN
@@ -731,6 +746,10 @@ router_bgp:
         route_map_out: Address_Family_IPV6_Out
         peer_tag_in: PEER_TAG_IN_IPV6
         peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6
+        default_originate:
+          enabled: true
+          route_map: RM-FOO-MATCH3
+          always: true
         additional_paths:
           receive: true
           send: ecmp
@@ -741,14 +760,22 @@ router_bgp:
           send: any
         rcf_in: Address_Family_IPV6_In()
         rcf_out: Address_Family_IPV6_Out()
+        default_originate:
+          enabled: true
+          always: true
       - ip_address: 2001:db8::21
         activate: false
         additional_paths:
           send: disabled
+        default_originate:
+          enabled: true
       - ip_address: 2001:db8::22
         additional_paths:
           send: limit
           send_limit: 5
+        default_originate:
+          enabled: true
+          route_map: RM-FOO-MATCH3
     redistribute:
       ospfv3:
         enabled: true

@@ -18,28 +18,28 @@ keys:
           type: str
           description: VRF in which to configure the DHCP server, use `default` to indicate default VRF.
           convert_types:
-          - int
+            - int
         lease_time_ipv4:
           type: dict
           keys:
             days:
               type: int
               convert_types:
-              - str
+                - str
               min: 0
               max: 2000
               required: true
             hours:
               type: int
               convert_types:
-              - str
+                - str
               min: 0
               max: 23
               required: true
             minutes:
               type: int
               convert_types:
-              - str
+                - str
               min: 0
               max: 59
               required: true
@@ -49,21 +49,21 @@ keys:
             days:
               type: int
               convert_types:
-              - str
+                - str
               min: 0
               max: 2000
               required: true
             hours:
               type: int
               convert_types:
-              - str
+                - str
               min: 0
               max: 23
               required: true
             minutes:
               type: int
               convert_types:
-              - str
+                - str
               min: 0
               max: 59
               required: true
@@ -119,7 +119,7 @@ keys:
               vendor_id:
                 type: str
                 convert_types:
-                - int
+                  - int
               sub_options:
                 type: list
                 primary_key: code
@@ -132,7 +132,7 @@ keys:
                       min: 1
                       max: 254
                       convert_types:
-                      - str
+                        - str
                     string:
                       type: str
                       description: |-
