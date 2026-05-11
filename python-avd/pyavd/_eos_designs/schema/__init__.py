@@ -102,7 +102,7 @@ class EosDesigns(EosDesignsRootModel):
                 groups: Groups
                 """
                 List of Tacacs group names.
-                The group names `radius`, `tacacs+` and `ldap` are reserved by EOS and
+                The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
                 must not be used.
 
                 Subclass of AvdList with `str` items.
@@ -168,7 +168,7 @@ class EosDesigns(EosDesignsRootModel):
                                Combination of `host` and `vrf` should be unique.
                             groups:
                                List of Tacacs group names.
-                               The group names `radius`, `tacacs+` and `ldap` are reserved by EOS and
+                               The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
                                must not be used.
 
                                Subclass of AvdList with `str` items.
@@ -330,7 +330,7 @@ class EosDesigns(EosDesignsRootModel):
                 groups: Groups
                 """
                 List of Radius group names.
-                The group names `radius`, `tacacs+` and `ldap` are reserved by EOS and
+                The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
                 must not be used.
 
                 Subclass of AvdList with `str` items.
@@ -396,7 +396,7 @@ class EosDesigns(EosDesignsRootModel):
                                TLS and no TLS.
                             groups:
                                List of Radius group names.
-                               The group names `radius`, `tacacs+` and `ldap` are reserved by EOS and
+                               The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
                                must not be used.
 
                                Subclass of AvdList with `str` items.
