@@ -131,8 +131,8 @@ async def deploy_to_cv(
     configs, device_tags, interface_tags, cv_pathfinder_metadata = extract_from_device_deployments(device_deployments)
 
     # Warn if devices are opted into the manifest but no manifest is provided.
-    manifest_device_count = sum(1 for device_deployment in device_deployments if device_deployment.use_static_config_manifest)
-    if manifest_device_count and static_config_manifest is None:
+    if static_config_manifest is None and any(device_deployment.use_static_config_manifest for device_deployment in device_deployments):
+        manifest_device_count = sum(1 for device_deployment in device_deployments if device_deployment.use_static_config_manifest)
         result.warnings.append(
             f"{manifest_device_count} device(s) have 'cv_use_static_config_manifest' set to 'true' but no static config manifest was provided. "
             "These devices will not have their configuration deployed to CloudVision."

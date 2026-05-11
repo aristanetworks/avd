@@ -27154,7 +27154,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
 
-        When set to `true`, the device configuration is expected to be deployed via the
+        The device configuration is expected to be deployed via the
         `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
         flat "AVD
         Configurations" layout in the Static Configlet Studio.
@@ -27249,7 +27249,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
 
-                       When set to `true`, the device configuration is expected to be deployed via the
+                       The device configuration is expected to be deployed via the
                        `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
                        flat "AVD
                        Configurations" layout in the Static Configlet Studio.

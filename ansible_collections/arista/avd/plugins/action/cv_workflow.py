@@ -200,7 +200,7 @@ class ActionModule(ActionBase):
                 structured_config_suffix = validated_args.get("structured_config_suffix")
 
             # Build list of CVDeviceDeployment objects (one per deployed device).
-            device_deployments = await self.build_objects(
+            device_deployments = await self.build_device_deployments(
                 device_list=get(validated_args, "device_list", default=[]),
                 structured_config_dir=structured_config_dir,
                 structured_config_suffix=structured_config_suffix,
@@ -305,7 +305,7 @@ class ActionModule(ActionBase):
 
         return result
 
-    async def build_objects(
+    async def build_device_deployments(
         self,
         device_list: list[str],
         structured_config_dir: str | None,
@@ -323,7 +323,7 @@ class ActionModule(ActionBase):
             configuration_dir: Path to EOS config files.
             configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
         Return:
-            List of CVDeviceDeployment objects (one per deployed device).
+            List of CVDeviceDeployment objects (one per deployed device, skipping devices where is_deployed is false).
 
         Workflow:
             Per device:
@@ -337,14 +337,14 @@ class ActionModule(ActionBase):
               - Return CVDeviceDeployment object bundling all per-device objects.
         """
         coroutines = [
-            self.build_object_for_device(hostname, structured_config_dir, structured_config_suffix, configuration_dir, configlet_name_template)
+            self.build_device_deployment(hostname, structured_config_dir, structured_config_suffix, configuration_dir, configlet_name_template)
             for hostname in device_list
         ]
         results = await gather(*coroutines)
 
         return [deployment for deployment in results if deployment is not None]
 
-    async def build_object_for_device(
+    async def build_device_deployment(
         self,
         hostname: str,
         structured_config_dir: str | None,
@@ -366,7 +366,7 @@ class ActionModule(ActionBase):
 
         TODO: Refactor into smaller functions.
         """
-        LOGGER.info("build_object_for_device: %s", hostname)
+        LOGGER.info("build_device_deployment: %s", hostname)
 
         structured_config = self.load_structured_config(hostname, structured_config_dir, structured_config_suffix)
 

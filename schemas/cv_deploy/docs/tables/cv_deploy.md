@@ -117,7 +117,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_defined_applications</samp>](## "cv_pathfinder_metadata.applications.categories.user_defined_applications") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_pathfinder_metadata.applications.categories.user_defined_applications.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;category</samp>](## "cv_pathfinder_metadata.applications.categories.user_defined_applications.[].category") | String |  |  |  |  |
-    | [<samp>cv_use_static_config_manifest</samp>](## "cv_use_static_config_manifest") | Boolean |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br><br>When set to `true`, the device configuration is expected to be deployed via the<br>`static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the<br>flat "AVD Configurations" layout in the Static Configlet Studio.<br>The device will still be verified and onboarded in the Inventory & Topology Studio. |
+    | [<samp>cv_use_static_config_manifest</samp>](## "cv_use_static_config_manifest") | Boolean |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br><br>The device configuration is expected to be deployed via the<br>`static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the<br>flat "AVD Configurations" layout in the Static Configlet Studio.<br>The device will still be verified and onboarded in the Inventory & Topology Studio. |
 
 === "YAML"
 
@@ -259,7 +259,7 @@
 
     # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
     #
-    # When set to `true`, the device configuration is expected to be deployed via the
+    # The device configuration is expected to be deployed via the
     # `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
     # flat "AVD Configurations" layout in the Static Configlet Studio.
     # The device will still be verified and onboarded in the Inventory & Topology Studio.
