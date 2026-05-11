@@ -1,6 +1,7 @@
 # Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+# pylint: disable=too-many-lines
 from pathlib import Path
 from unittest.mock import MagicMock
 
@@ -724,6 +725,57 @@ class TestDeployStaticConfigStudio:
             workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=[new_root_id],
+        )
+
+    async def test_avd_entities_reachable_through_non_avd_parent_are_preserved(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that AVD-managed containers (and their assigned configlets) are preserved when reachable through a non-AVD parent."""
+        manual_root_id = "manually-created-root-xyz"
+        legacy_avd_container_id = generate_id("LEGACY_AVD_CONTAINER")
+        legacy_avd_configlet_id = generate_id("LEGACY_AVD_CONFIGLET")
+        new_root_id = generate_id("NEW_ROOT")
+
+        existing_containers = [
+            create_grpc_container(
+                container_id=manual_root_id,
+                name="MANUAL_ROOT",
+                description="",
+                query="device:*",
+                child_ids=[legacy_avd_container_id],
+            ),
+            create_grpc_container(
+                container_id=legacy_avd_container_id,
+                name="LEGACY_AVD_CONTAINER",
+                description="",
+                query="device:LEAF",
+                configlet_ids=[legacy_avd_configlet_id],
+            ),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=legacy_avd_configlet_id), display_name="LEGACY_AVD_CONFIGLET"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [manual_root_id]
+
+        new_root = AvdContainer(name="NEW_ROOT", tag_query="device:*")
+        manifest = AvdManifest(configlet_policy="managed", containers=(new_root,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Legacy AVD container is preserved (reachable through the non-AVD parent).
+        mock_cv_client.delete_configlet_container.assert_not_called()
+        assert "LEGACY_AVD_CONTAINER" not in deployment_result.removed_static_config_containers
+
+        # Legacy AVD configlet is preserved (still assigned to a reachable AVD container, even in 'managed' mode).
+        mock_cv_client.delete_configlets.assert_not_called()
+        assert "LEGACY_AVD_CONFIGLET" not in deployment_result.removed_static_config_configlets
+
+        # The Studio root list is updated to include the new root alongside the manual one.
+        mock_cv_client.set_studio_inputs.assert_called_once_with(
+            studio_id="studio-static-configlet",
+            workspace_id=deployment_result.workspace.id,
+            input_path=["configletAssignmentRoots"],
+            inputs=[new_root_id, manual_root_id],
         )
 
     async def test_avd_parent_unassigns_non_avd_sub_container(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
