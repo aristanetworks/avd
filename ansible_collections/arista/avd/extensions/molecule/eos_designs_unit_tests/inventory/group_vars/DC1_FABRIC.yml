@@ -491,7 +491,6 @@ override_boot:
   secret:
     key: a153de6290ff1409257ade45f
 
-
 bgp_peer_filters_catalog:
   - name: peerfilter
     sequence_numbers:
