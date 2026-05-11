@@ -115,7 +115,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>For EOS version 4.31 and higher. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>Key `ipv4` can only be set to false.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
@@ -316,7 +316,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>For EOS version 4.31 and higher. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>Key `ipv4` can only be set to false.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
@@ -517,7 +517,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "connected_endpoints.[].adapters.[].address_locking") | Dictionary |  |  |  | Address locking settings applied on the port. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "connected_endpoints.[].adapters.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>For EOS version 4.31 and higher. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "connected_endpoints.[].adapters.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4.<br>Key `ipv4` can only be set to false.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "connected_endpoints.[].adapters.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6.<br>For EOS version 4.31 and higher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "connected_endpoints.[].adapters.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "connected_endpoints.[].adapters.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
@@ -910,6 +910,7 @@
             address_locking:
 
               # Enable address locking for IPv4.
+              # Key `ipv4` can only be set to false.
               # For EOS version 4.31 and higher.
               ipv4: <bool>
 
@@ -1495,6 +1496,7 @@
             address_locking:
 
               # Enable address locking for IPv4.
+              # Key `ipv4` can only be set to false.
               # For EOS version 4.31 and higher.
               ipv4: <bool>
 
@@ -2078,6 +2080,7 @@
             address_locking:
 
               # Enable address locking for IPv4.
+              # Key `ipv4` can only be set to false.
               # For EOS version 4.31 and higher.
               ipv4: <bool>
 

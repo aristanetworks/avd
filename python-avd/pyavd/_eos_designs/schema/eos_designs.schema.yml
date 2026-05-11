@@ -7561,6 +7561,8 @@ $defs:
             type: bool
             description: 'Enable address locking for IPv4.
 
+              Key `ipv4` can only be set to false.
+
               For EOS version 4.31 and higher.'
           ipv6:
             type: bool
