@@ -136,7 +136,7 @@ class RouterBgpMixin(Protocol):
             for bgp_peer_group in tenant.bgp_peer_groups:
                 bgp_vrf = self.structured_config.router_bgp
                 if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
-                    self._update_listen_ranges(bgp_peer_group, bgp_vrf)
+                    self._set_bgp_listen_ranges(bgp_peer_group, bgp_vrf)
 
             for vrf in tenant.vrfs:
                 if not self.shared_utils.bgp_enabled_for_vrf(vrf):
@@ -163,10 +163,6 @@ class RouterBgpMixin(Protocol):
 
                 if vrf.name != "default":
                     bgp_vrf.router_id = self.get_protocol_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
-
-                    for bgp_peer_group in vrf.bgp_peer_groups:
-                        if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
-                            self._update_listen_ranges(bgp_peer_group, bgp_vrf)
 
                     if vrf.redistribute_connected:
                         bgp_vrf.redistribute.connected.enabled = True
@@ -202,15 +198,15 @@ class RouterBgpMixin(Protocol):
                         # We need to add redistribute connected for the default VRF when underlay_routing_protocol is "none"
                         bgp_vrf.redistribute.connected.enabled = True
 
-                    for bgp_peer_group in vrf.bgp_peer_groups:
-                        if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
-                            self._update_listen_ranges(bgp_peer_group, bgp_vrf)
-
                     # Common things but need it repeated between default and non-default since type checker gets too confused
                     # about the type of bgp_vrf vs. bgp_peer_config.
                     for aggregate_address in vrf.aggregate_addresses:
                         # Below we recast directly to eos_cli_config_gen. Losing incompatible keys, but relaying everything else.
                         bgp_vrf.aggregate_addresses.append(aggregate_address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True))
+
+                for bgp_peer_group in vrf.bgp_peer_groups:
+                    if self.shared_utils.match_regexes(bgp_peer_group.nodes, self.shared_utils.hostname) and bgp_peer_group.listen_ranges:
+                        self._set_bgp_listen_ranges(bgp_peer_group, bgp_vrf)
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
@@ -819,7 +815,7 @@ class RouterBgpMixin(Protocol):
                     label_flow=tenant.vpws.label_flow or None,  # Using 'or None' to only render True in structured config.
                 )
 
-    def _update_listen_ranges(
+    def _set_bgp_listen_ranges(
         self: AvdStructuredConfigNetworkServicesProtocol,
         bgp_peer_group: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.BgpPeerGroupsItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.BgpPeerGroupsItem,
