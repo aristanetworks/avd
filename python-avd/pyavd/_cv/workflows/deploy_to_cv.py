@@ -25,8 +25,8 @@ from .models import (
     CVTimeOuts,
     CVWorkspace,
     DeployToCvResult,
-    extract_from_device_deployments,
 )
+from .utils import extract_from_device_deployments
 from .verify_devices_on_cv import verify_devices_on_cv
 from .verify_inputs import verify_device_inputs
 
