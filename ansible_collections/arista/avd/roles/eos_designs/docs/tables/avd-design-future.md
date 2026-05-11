@@ -13,6 +13,8 @@
     | [<samp>&nbsp;&nbsp;raise_for_port_channels_without_members</samp>](## "avd_design_future.raise_for_port_channels_without_members") | Boolean |  | `False` |  | Raise an error if an L3 Port-Channel is configured without any member interfaces. |
     | [<samp>&nbsp;&nbsp;only_configure_mlag_vrfs_peer_group_when_used</samp>](## "avd_design_future.only_configure_mlag_vrfs_peer_group_when_used") | Boolean |  | `False` |  | Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed. |
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
+    | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Configure `inband_mgmt_vrf` for IPv6 inband management. |
+    | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
 
 === "YAML"
 
@@ -35,4 +37,10 @@
       # Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
       # since this combination is not supported.
       raise_for_underlay_router_with_uplink_type_port_channel: <bool; default=False>
+
+      # Configure `inband_mgmt_vrf` for IPv6 inband management.
+      configure_inband_mgmt_ipv6_vrf: <bool; default=False>
+
+      # Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
+      only_configure_ipv6_inband_mgmt_prefix_list_when_used: <bool; default=False>
     ```
