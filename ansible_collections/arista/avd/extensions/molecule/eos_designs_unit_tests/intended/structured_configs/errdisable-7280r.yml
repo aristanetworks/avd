@@ -6,9 +6,9 @@ enable_password:
 errdisable:
   detect:
     causes:
-    - link-change
     - acl
     - arp-inspection
+    - link-change
     - error-correction-encoding
     - hardware-speed-group
     - transceiver-adapter
@@ -21,12 +21,12 @@ errdisable:
       interval: 90
     - name: bpduguard
       interval: 300
+    - name: link-flap
+      interval: 60
     - name: error-correction-encoding
       interval: 300
     - name: hardware-speed-group
       interval: 300
-    - name: link-flap
-      interval: 60
     - name: transceiver-adapter
       interval: 300
     - name: xcvr-misconfigured

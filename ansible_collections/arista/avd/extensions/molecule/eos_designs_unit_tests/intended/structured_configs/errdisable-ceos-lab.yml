@@ -6,9 +6,9 @@ enable_password:
 errdisable:
   detect:
     causes:
-    - link-change
     - acl
     - arp-inspection
+    - link-change
   recovery:
     causes:
     - name: acl

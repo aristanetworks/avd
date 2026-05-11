@@ -18096,9 +18096,10 @@ class EosDesigns(EosDesignsRootModel):
             class Acl(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18108,7 +18109,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18127,9 +18128,10 @@ class EosDesigns(EosDesignsRootModel):
             class ArpInspection(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18139,7 +18141,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18158,14 +18160,15 @@ class EosDesigns(EosDesignsRootModel):
             class Bpduguard(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Bpduguard.
 
@@ -18181,9 +18184,10 @@ class EosDesigns(EosDesignsRootModel):
             class Dot1x(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18193,7 +18197,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18212,9 +18216,10 @@ class EosDesigns(EosDesignsRootModel):
             class Dot1xCoa(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18224,7 +18229,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18243,9 +18248,10 @@ class EosDesigns(EosDesignsRootModel):
             class Dot1xPhoneClassification(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18255,7 +18261,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18274,9 +18280,10 @@ class EosDesigns(EosDesignsRootModel):
             class Dot1xSessionReplace(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18286,7 +18293,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18305,9 +18312,10 @@ class EosDesigns(EosDesignsRootModel):
             class ErrorCorrectionEncoding(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18317,7 +18325,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18336,9 +18344,10 @@ class EosDesigns(EosDesignsRootModel):
             class HardwareSpeedGroup(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18348,7 +18357,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18367,14 +18376,15 @@ class EosDesigns(EosDesignsRootModel):
             class HitlessReloadDown(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         HitlessReloadDown.
 
@@ -18390,9 +18400,10 @@ class EosDesigns(EosDesignsRootModel):
             class InterfaceSpeed(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18402,7 +18413,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18421,9 +18432,10 @@ class EosDesigns(EosDesignsRootModel):
             class InternalError(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18433,7 +18445,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18452,14 +18464,15 @@ class EosDesigns(EosDesignsRootModel):
             class LacpRateLimit(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         LacpRateLimit.
 
@@ -18495,14 +18508,15 @@ class EosDesigns(EosDesignsRootModel):
             class LinkFlap(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         LinkFlap.
 
@@ -18518,14 +18532,15 @@ class EosDesigns(EosDesignsRootModel):
             class NoInternalVlan(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         NoInternalVlan.
 
@@ -18541,9 +18556,10 @@ class EosDesigns(EosDesignsRootModel):
             class PortBreakout(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18553,7 +18569,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18572,14 +18588,15 @@ class EosDesigns(EosDesignsRootModel):
             class Portchannelguard(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Portchannelguard.
 
@@ -18595,14 +18612,15 @@ class EosDesigns(EosDesignsRootModel):
             class Portsec(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Portsec.
 
@@ -18618,14 +18636,15 @@ class EosDesigns(EosDesignsRootModel):
             class SpeedMisconfigured(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         SpeedMisconfigured.
 
@@ -18641,9 +18660,10 @@ class EosDesigns(EosDesignsRootModel):
             class StormControl(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18653,7 +18673,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18672,14 +18692,15 @@ class EosDesigns(EosDesignsRootModel):
             class StuckQueue(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         StuckQueue.
 
@@ -18695,9 +18716,10 @@ class EosDesigns(EosDesignsRootModel):
             class SwitchcardUnreachable(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18707,7 +18729,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18726,14 +18748,15 @@ class EosDesigns(EosDesignsRootModel):
             class TapPortInit(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         TapPortInit.
 
@@ -18749,9 +18772,10 @@ class EosDesigns(EosDesignsRootModel):
             class Tapagg(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18761,7 +18785,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18780,9 +18804,10 @@ class EosDesigns(EosDesignsRootModel):
             class TransceiverAdapter(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18792,7 +18817,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18811,14 +18836,15 @@ class EosDesigns(EosDesignsRootModel):
             class UplinkFailureDetection(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         UplinkFailureDetection.
 
@@ -18834,9 +18860,10 @@ class EosDesigns(EosDesignsRootModel):
             class XcvrMisconfigured(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18846,7 +18873,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18865,9 +18892,10 @@ class EosDesigns(EosDesignsRootModel):
             class XcvrOverheat(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18877,7 +18905,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18896,9 +18924,10 @@ class EosDesigns(EosDesignsRootModel):
             class XcvrPowerUnsupported(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}, "recovery_interval": {"type": int}}
+                _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
                 detection: bool | None
-                recovery: bool | None
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
@@ -18908,7 +18937,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         detection: bool | None | UndefinedType = Undefined,
-                        recovery: bool | None | UndefinedType = Undefined,
+                        recovery: bool | UndefinedType = Undefined,
                         recovery_interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -18927,14 +18956,15 @@ class EosDesigns(EosDesignsRootModel):
             class XcvrUnsupported(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"recovery": {"type": bool}, "recovery_interval": {"type": int}}
-                recovery: bool | None
+                _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": False}, "recovery_interval": {"type": int}}
+                recovery: bool
+                """Default value: `False`"""
                 recovery_interval: int | None
                 """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, recovery: bool | None | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, recovery: bool | UndefinedType = Undefined, recovery_interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         XcvrUnsupported.
 
@@ -29106,13 +29136,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Acl(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Acl.
 
@@ -29128,13 +29160,15 @@ class EosDesigns(EosDesignsRootModel):
                 class ArpInspection(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             ArpInspection.
 
@@ -29150,12 +29184,13 @@ class EosDesigns(EosDesignsRootModel):
                 class Bpduguard(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Bpduguard.
 
@@ -29170,13 +29205,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Dot1x(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Dot1x.
 
@@ -29192,13 +29229,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Dot1xCoa(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Dot1xCoa.
 
@@ -29214,13 +29253,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Dot1xPhoneClassification(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Dot1xPhoneClassification.
 
@@ -29236,13 +29277,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Dot1xSessionReplace(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Dot1xSessionReplace.
 
@@ -29258,13 +29301,15 @@ class EosDesigns(EosDesignsRootModel):
                 class ErrorCorrectionEncoding(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             ErrorCorrectionEncoding.
 
@@ -29280,13 +29325,15 @@ class EosDesigns(EosDesignsRootModel):
                 class HardwareSpeedGroup(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             HardwareSpeedGroup.
 
@@ -29302,12 +29349,13 @@ class EosDesigns(EosDesignsRootModel):
                 class HitlessReloadDown(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             HitlessReloadDown.
 
@@ -29322,13 +29370,15 @@ class EosDesigns(EosDesignsRootModel):
                 class InterfaceSpeed(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             InterfaceSpeed.
 
@@ -29344,13 +29394,15 @@ class EosDesigns(EosDesignsRootModel):
                 class InternalError(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             InternalError.
 
@@ -29366,12 +29418,13 @@ class EosDesigns(EosDesignsRootModel):
                 class LacpRateLimit(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             LacpRateLimit.
 
@@ -29386,12 +29439,13 @@ class EosDesigns(EosDesignsRootModel):
                 class LinkChange(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}}
-                    detection: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined) -> None:
                             """
                             LinkChange.
 
@@ -29406,12 +29460,13 @@ class EosDesigns(EosDesignsRootModel):
                 class LinkFlap(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             LinkFlap.
 
@@ -29426,12 +29481,13 @@ class EosDesigns(EosDesignsRootModel):
                 class NoInternalVlan(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             NoInternalVlan.
 
@@ -29446,13 +29502,15 @@ class EosDesigns(EosDesignsRootModel):
                 class PortBreakout(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             PortBreakout.
 
@@ -29468,12 +29526,13 @@ class EosDesigns(EosDesignsRootModel):
                 class Portchannelguard(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Portchannelguard.
 
@@ -29488,12 +29547,13 @@ class EosDesigns(EosDesignsRootModel):
                 class Portsec(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Portsec.
 
@@ -29508,12 +29568,13 @@ class EosDesigns(EosDesignsRootModel):
                 class SpeedMisconfigured(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             SpeedMisconfigured.
 
@@ -29528,13 +29589,15 @@ class EosDesigns(EosDesignsRootModel):
                 class StormControl(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             StormControl.
 
@@ -29550,12 +29613,13 @@ class EosDesigns(EosDesignsRootModel):
                 class StuckQueue(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             StuckQueue.
 
@@ -29570,13 +29634,15 @@ class EosDesigns(EosDesignsRootModel):
                 class SwitchcardUnreachable(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             SwitchcardUnreachable.
 
@@ -29592,12 +29658,13 @@ class EosDesigns(EosDesignsRootModel):
                 class TapPortInit(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             TapPortInit.
 
@@ -29612,13 +29679,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Tapagg(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Tapagg.
 
@@ -29634,13 +29703,15 @@ class EosDesigns(EosDesignsRootModel):
                 class TransceiverAdapter(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             TransceiverAdapter.
 
@@ -29656,12 +29727,13 @@ class EosDesigns(EosDesignsRootModel):
                 class UplinkFailureDetection(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             UplinkFailureDetection.
 
@@ -29676,13 +29748,15 @@ class EosDesigns(EosDesignsRootModel):
                 class XcvrMisconfigured(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             XcvrMisconfigured.
 
@@ -29698,13 +29772,15 @@ class EosDesigns(EosDesignsRootModel):
                 class XcvrOverheat(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             XcvrOverheat.
 
@@ -29720,13 +29796,15 @@ class EosDesigns(EosDesignsRootModel):
                 class XcvrPowerUnsupported(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             XcvrPowerUnsupported.
 
@@ -29742,12 +29820,13 @@ class EosDesigns(EosDesignsRootModel):
                 class XcvrUnsupported(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             XcvrUnsupported.
 
@@ -30145,8 +30224,8 @@ class EosDesigns(EosDesignsRootModel):
             suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
             Causes with `recovery: false` will suppress recovery for that cause even if enabled in
             `errdisable_settings.causes.<cause>.recovery`.
-            The list of supported causes depends on the EOS
-            version and the hardware platform.
+            The supported causes depends on the EOS version and
+            the hardware platform.
 
             Subclass of AvdModel.
             """
@@ -30289,8 +30368,8 @@ class EosDesigns(EosDesignsRootModel):
                            suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
                            Causes with `recovery: false` will suppress recovery for that cause even if enabled in
                            `errdisable_settings.causes.<cause>.recovery`.
-                           The list of supported causes depends on the EOS
-                           version and the hardware platform.
+                           The supported causes depends on the EOS version and
+                           the hardware platform.
 
                            Subclass of AvdModel.
 
@@ -30734,13 +30813,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Acl(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Acl.
 
@@ -30756,13 +30837,15 @@ class EosDesigns(EosDesignsRootModel):
                 class ArpInspection(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             ArpInspection.
 
@@ -30778,12 +30861,13 @@ class EosDesigns(EosDesignsRootModel):
                 class Bpduguard(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Bpduguard.
 
@@ -30798,13 +30882,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Dot1x(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Dot1x.
 
@@ -30820,13 +30906,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Dot1xCoa(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Dot1xCoa.
 
@@ -30842,13 +30930,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Dot1xPhoneClassification(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Dot1xPhoneClassification.
 
@@ -30864,13 +30954,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Dot1xSessionReplace(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Dot1xSessionReplace.
 
@@ -30886,13 +30978,15 @@ class EosDesigns(EosDesignsRootModel):
                 class ErrorCorrectionEncoding(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             ErrorCorrectionEncoding.
 
@@ -30908,13 +31002,15 @@ class EosDesigns(EosDesignsRootModel):
                 class HardwareSpeedGroup(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             HardwareSpeedGroup.
 
@@ -30930,12 +31026,13 @@ class EosDesigns(EosDesignsRootModel):
                 class HitlessReloadDown(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             HitlessReloadDown.
 
@@ -30950,13 +31047,15 @@ class EosDesigns(EosDesignsRootModel):
                 class InterfaceSpeed(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             InterfaceSpeed.
 
@@ -30972,13 +31071,15 @@ class EosDesigns(EosDesignsRootModel):
                 class InternalError(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             InternalError.
 
@@ -30994,12 +31095,13 @@ class EosDesigns(EosDesignsRootModel):
                 class LacpRateLimit(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             LacpRateLimit.
 
@@ -31014,12 +31116,13 @@ class EosDesigns(EosDesignsRootModel):
                 class LinkChange(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}}
-                    detection: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined) -> None:
                             """
                             LinkChange.
 
@@ -31034,12 +31137,13 @@ class EosDesigns(EosDesignsRootModel):
                 class LinkFlap(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             LinkFlap.
 
@@ -31054,12 +31158,13 @@ class EosDesigns(EosDesignsRootModel):
                 class NoInternalVlan(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             NoInternalVlan.
 
@@ -31074,13 +31179,15 @@ class EosDesigns(EosDesignsRootModel):
                 class PortBreakout(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             PortBreakout.
 
@@ -31096,12 +31203,13 @@ class EosDesigns(EosDesignsRootModel):
                 class Portchannelguard(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Portchannelguard.
 
@@ -31116,12 +31224,13 @@ class EosDesigns(EosDesignsRootModel):
                 class Portsec(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Portsec.
 
@@ -31136,12 +31245,13 @@ class EosDesigns(EosDesignsRootModel):
                 class SpeedMisconfigured(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             SpeedMisconfigured.
 
@@ -31156,13 +31266,15 @@ class EosDesigns(EosDesignsRootModel):
                 class StormControl(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             StormControl.
 
@@ -31178,12 +31290,13 @@ class EosDesigns(EosDesignsRootModel):
                 class StuckQueue(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             StuckQueue.
 
@@ -31198,13 +31311,15 @@ class EosDesigns(EosDesignsRootModel):
                 class SwitchcardUnreachable(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             SwitchcardUnreachable.
 
@@ -31220,12 +31335,13 @@ class EosDesigns(EosDesignsRootModel):
                 class TapPortInit(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             TapPortInit.
 
@@ -31240,13 +31356,15 @@ class EosDesigns(EosDesignsRootModel):
                 class Tapagg(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             Tapagg.
 
@@ -31262,13 +31380,15 @@ class EosDesigns(EosDesignsRootModel):
                 class TransceiverAdapter(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             TransceiverAdapter.
 
@@ -31284,12 +31404,13 @@ class EosDesigns(EosDesignsRootModel):
                 class UplinkFailureDetection(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             UplinkFailureDetection.
 
@@ -31304,13 +31425,15 @@ class EosDesigns(EosDesignsRootModel):
                 class XcvrMisconfigured(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             XcvrMisconfigured.
 
@@ -31326,13 +31449,15 @@ class EosDesigns(EosDesignsRootModel):
                 class XcvrOverheat(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             XcvrOverheat.
 
@@ -31348,13 +31473,15 @@ class EosDesigns(EosDesignsRootModel):
                 class XcvrPowerUnsupported(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"detection": {"type": bool}, "recovery": {"type": bool}}
-                    detection: bool | None
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"detection": {"type": bool, "default": True}, "recovery": {"type": bool, "default": True}}
+                    detection: bool
+                    """Default value: `True`"""
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, detection: bool | None | UndefinedType = Undefined, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, detection: bool | UndefinedType = Undefined, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             XcvrPowerUnsupported.
 
@@ -31370,12 +31497,13 @@ class EosDesigns(EosDesignsRootModel):
                 class XcvrUnsupported(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"recovery": {"type": bool}}
-                    recovery: bool | None
+                    _fields: ClassVar[dict] = {"recovery": {"type": bool, "default": True}}
+                    recovery: bool
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, recovery: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, recovery: bool | UndefinedType = Undefined) -> None:
                             """
                             XcvrUnsupported.
 
@@ -31773,8 +31901,8 @@ class EosDesigns(EosDesignsRootModel):
             suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
             Causes with `recovery: false` will suppress recovery for that cause even if enabled in
             `errdisable_settings.causes.<cause>.recovery`.
-            The list of supported causes depends on the EOS
-            version and the hardware platform.
+            The supported causes depends on the EOS version and
+            the hardware platform.
 
             Subclass of AvdModel.
             """
@@ -31917,8 +32045,8 @@ class EosDesigns(EosDesignsRootModel):
                            suppress detection for that cause even if enabled in `errdisable_settings.causes.<cause>.detection`.
                            Causes with `recovery: false` will suppress recovery for that cause even if enabled in
                            `errdisable_settings.causes.<cause>.recovery`.
-                           The list of supported causes depends on the EOS
-                           version and the hardware platform.
+                           The supported causes depends on the EOS version and
+                           the hardware platform.
 
                            Subclass of AvdModel.
 
