@@ -53,7 +53,7 @@ keys:
                     pattern: "^(?!radius$|tacacs\\+$|ldap$).+$"
                   description: |-
                     List of Tacacs group names.
-                    The group names `radius`, `tacacs+` and `ldap` are reserved by EOS and must not be used.
+                    The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
                 vrf:
                   type: str
                   description: |-
@@ -131,7 +131,7 @@ keys:
                     pattern: "^(?!radius$|tacacs\\+$|ldap$).+$"
                   description: |-
                     List of Radius group names.
-                    The group names `radius`, `tacacs+` and `ldap` are reserved by EOS and must not be used.
+                    The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
                 vrf:
                   type: str
                   description: |-

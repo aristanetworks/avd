@@ -280,7 +280,6 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-
         additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.5.dev1', 'deepmerge>=1.1.0']
 
       - id: templates
