@@ -1,0 +1,167 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: monitor-connectivity-settings
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.159/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.159/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 1.1.10.51
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+monitor_connectivity:
+  shutdown: false
+  interval: 5
+  interface_sets:
+  - name: SET_INTERNET
+    interfaces: Ethernet1-2
+  - name: SET_INTERNET_1
+    interfaces: Ethernet3-4
+  - name: SET_INTERNET_2
+    interfaces: Ethernet5-6
+  - name: SET_LOOPBACK0
+    interfaces: Loopback0
+  local_interfaces: SET_LOOPBACK0
+  address_only: true
+  hosts:
+  - name: DNS1
+    description: Primary DNS Server
+    ip: 8.8.8.8
+    icmp_echo_size: 100
+    local_interfaces: SET_INTERNET
+    address_only: false
+    url: http://www.dummy.com
+  - name: DNS2
+    description: Secondary DNS Server
+    ip: 1.1.1.1
+    icmp_echo_size: 100
+    local_interfaces: SET_INTERNET_1
+    address_only: false
+  - name: DNS3
+    description: Tertiory DNS Server
+    ip: 1.1.1.2
+    local_interfaces: SET_INTERNET_2
+    address_only: true
+  vrfs:
+  - name: MGMT
+    description: Management VRF monitoring
+    interface_sets:
+    - name: SET_MGMT
+      interfaces: Management0
+    - name: SET_MGMT_1
+      interfaces: Loopback100
+    - name: SET_MGMT_2
+      interfaces: Loopback101
+    address_only: false
+    hosts:
+    - name: MGMT_SERVER
+      description: Management server
+      ip: 10.0.0.1
+      local_interfaces: SET_MGMT
+      address_only: false
+    - name: MGMT_SERVER_1
+      description: Management server 1
+      ip: 10.0.0.2
+      local_interfaces: SET_MGMT_1
+      address_only: true
+    - name: MGMT_SERVER_2
+      description: Management server 2
+      ip: 10.0.0.3
+      local_interfaces: SET_MGMT_2
+      address_only: false
+  - name: MGMT_1
+    description: Management VRF monitoring 1
+    interface_sets:
+    - name: Vrf_Set_MGMT
+      interfaces: Management0
+    - name: SET_MGMT_1
+      interfaces: Loopback200
+    - name: SET_MGMT_2
+      interfaces: Loopback201
+    - name: SET_MGMT_3
+      interfaces: Loopback202
+    local_interfaces: Vrf_Set_MGMT
+    address_only: true
+    hosts:
+    - name: MGMT_SERVER_1
+      description: Management server 1
+      ip: 11.0.0.1
+      local_interfaces: SET_MGMT_1
+      address_only: false
+    - name: MGMT_SERVER_2
+      description: Management server 2
+      ip: 11.0.0.2
+      local_interfaces: SET_MGMT_2
+      address_only: true
+    - name: MGMT_SERVER_3
+      description: Management server 3
+      ip: 11.0.0.3
+      local_interfaces: SET_MGMT_3
+      address_only: false
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '151'
+  router_id: 192.168.255.159
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: monitor-connectivity-settings_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
