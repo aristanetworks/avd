@@ -67,7 +67,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2mp</samp>](## "mpls.rsvp.p2mp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "mpls.rsvp.p2mp.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "mpls.rsvp.shutdown") | Boolean |  |  |  | Make `shutdown` key false for `no shutdown` cli. |
-    | [<samp>&nbsp;&nbsp;label_ranges</samp>](## "mpls.label_ranges") | Dictionary |  |  |  | MPLS label ranges configuration.<br>Few configured MPLS ranges for various categories could overlap.<br>Requires EOS 4.31.1F or later. |
+    | [<samp>&nbsp;&nbsp;label_ranges</samp>](## "mpls.label_ranges") | Dictionary |  |  |  | MPLS label ranges configuration.<br>Ranges cannot overlap except for `bgp_sr`, `ospf_sr` and `isis_sr`.<br>Requires EOS 4.31.1F or later. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_sr</samp>](## "mpls.label_ranges.bgp_sr") | Dictionary |  |  |  | Label range for BGP SR global segment identifiers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base</samp>](## "mpls.label_ranges.bgp_sr.base") | Integer | Required |  | Min: 16<br>Max: 1048575 | First label of range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "mpls.label_ranges.bgp_sr.size") | Integer | Required |  | Min: 0<br>Max: 1048560 | Size of range. |
@@ -251,7 +251,7 @@
         shutdown: <bool>
 
       # MPLS label ranges configuration.
-      # Few configured MPLS ranges for various categories could overlap.
+      # Ranges cannot overlap except for `bgp_sr`, `ospf_sr` and `isis_sr`.
       # Requires EOS 4.31.1F or later.
       label_ranges:
 
