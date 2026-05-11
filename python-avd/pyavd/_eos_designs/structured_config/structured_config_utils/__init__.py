@@ -11,8 +11,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
 from pyavd._utils.run_once import RunOnceMethodStateHelper
 
@@ -24,6 +22,8 @@ from .utils import UtilsMixin
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
     from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
+    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+    from pyavd._eos_designs.schema import EosDesigns
 
 
 class StructuredConfigUtilsProtocol(UtilsMixin, MlagMixin, UnderlayMixin, SflowMixin, Protocol):

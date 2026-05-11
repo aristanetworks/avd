@@ -5,12 +5,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import StructuredConfigUtils
+    from pyavd._eos_designs.schema import EosDesigns
 
 
 class SflowMixin(Protocol):
