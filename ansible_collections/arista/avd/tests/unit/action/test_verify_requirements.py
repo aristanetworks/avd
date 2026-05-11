@@ -14,6 +14,7 @@ import pytest
 
 from ansible_collections.arista.avd.plugins.action.verify_requirements import (
     MIN_PYTHON_SUPPORTED_VERSION,
+    _get_collection_version,
     _get_running_collection_version,
     _validate_ansible_collections,
     _validate_ansible_version,
@@ -165,6 +166,28 @@ def test__validate_python_requirements_pyavd(running_from_source: bool, expected
         assert python_req_result["valid"]["pyavd"]["installed"] == "running from source"
     else:
         assert python_req_result["valid"]["pyavd"]["installed"] == "5.3.0"
+
+
+@pytest.mark.parametrize(
+    ("metadata_file", "content"),
+    [
+        pytest.param("galaxy.yml", "version: 5.3.0\n", id="galaxy"),
+        pytest.param("MANIFEST.json", '{"collection_info": {"version": "5.3.0"}}', id="manifest"),
+    ],
+)
+def test__get_collection_version(metadata_file: str, content: str, tmp_path: Path) -> None:
+    """Verify collection version is loaded from galaxy.yml or MANIFEST.json."""
+    (tmp_path / metadata_file).write_text(content, encoding="UTF-8")
+
+    assert _get_collection_version(str(tmp_path)) == "5.3.0"
+
+
+def test__get_collection_version_rejects_unsafe_version(tmp_path: Path) -> None:
+    """Verify collection version is validated before it can be logged."""
+    (tmp_path / "MANIFEST.json").write_text('{"collection_info": {"version": "5.3.0\\nmalicious"}}', encoding="UTF-8")
+
+    with pytest.raises(ValueError, match=r"Invalid collection version found in collection metadata: 5.3.0\nmalicious"):
+        _get_collection_version(str(tmp_path))
 
 
 @pytest.mark.parametrize(

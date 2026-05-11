@@ -6284,7 +6284,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class EosConfigFuture(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"new_ip_radius_cli_order": {"type": bool, "default": False}, "new_ip_tacacs_cli_order": {"type": bool, "default": False}}
+        _fields: ClassVar[dict] = {
+            "new_ip_radius_cli_order": {"type": bool, "default": False},
+            "new_ip_tacacs_cli_order": {"type": bool, "default": False},
+            "always_render_ip_routing_separator": {"type": bool, "default": False},
+        }
         new_ip_radius_cli_order: bool
         """
         When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
@@ -6303,10 +6307,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        always_render_ip_routing_separator: bool
+        """
+        Always render a '!' before the '(no) ip routing' command section.
+        Without this the '!' is missing
+        when only configuring routing for VRFs.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, new_ip_radius_cli_order: bool | UndefinedType = Undefined, new_ip_tacacs_cli_order: bool | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                new_ip_radius_cli_order: bool | UndefinedType = Undefined,
+                new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
+                always_render_ip_routing_separator: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
                 EosConfigFuture.
 
@@ -6324,6 +6342,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        When `false`
                        (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
                        interface name.
+                    always_render_ip_routing_separator:
+                       Always render a '!' before the '(no) ip routing' command section.
+                       Without this the '!' is missing
+                       when only configuring routing for VRFs.
 
                 """
 
@@ -27088,6 +27110,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "serial_number": {"type": str},
             "validate_hardware": {"type": ValidateHardware},
             "cv_tags": {"type": CvTags},
+            "cv_use_static_config_manifest": {"type": bool},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
             "validate_no_errors_period": {"type": int},
@@ -27126,6 +27149,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         cv_tags: CvTags
         """Subclass of AvdModel."""
+        cv_use_static_config_manifest: bool | None
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+
+        The device configuration is expected to be deployed via the
+        `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+        flat "AVD
+        Configurations" layout in the Static Configlet Studio.
+        The device will still be verified and
+        onboarded in the Inventory & Topology Studio.
+        """
         cv_pathfinder: CvPathfinder
         """
         Metadata used for CV Pathfinder visualization on CloudVision.
@@ -27170,6 +27205,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 serial_number: str | None | UndefinedType = Undefined,
                 validate_hardware: ValidateHardware | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
+                cv_use_static_config_manifest: bool | None | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validate_no_errors_period: int | None | UndefinedType = Undefined,
@@ -27209,6 +27245,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdModel.
                     cv_tags: Subclass of AvdModel.
+                    cv_use_static_config_manifest:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+
+                       The device configuration is expected to be deployed via the
+                       `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+                       flat "AVD
+                       Configurations" layout in the Static Configlet Studio.
+                       The device will still be verified and
+                       onboarded in the Inventory & Topology Studio.
                     cv_pathfinder:
                        Metadata used for CV Pathfinder visualization on CloudVision.
 
@@ -29938,6 +29984,316 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class LabelRanges(AvdModel):
+            """Subclass of AvdModel."""
+
+            class BgpSr(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        BgpSr.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class Dynamic(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        Dynamic.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class IsisSr(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        IsisSr.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class L2evpn(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        L2evpn.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class L2evpnEthernetSegment(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        L2evpnEthernetSegment.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class OspfSr(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        OspfSr.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class Srlb(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        Srlb.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class Static(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        Static.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "bgp_sr": {"type": BgpSr},
+                "dynamic": {"type": Dynamic},
+                "isis_sr": {"type": IsisSr},
+                "l2evpn": {"type": L2evpn},
+                "l2evpn_ethernet_segment": {"type": L2evpnEthernetSegment},
+                "ospf_sr": {"type": OspfSr},
+                "srlb": {"type": Srlb},
+                "static": {"type": Static},
+            }
+            bgp_sr: BgpSr
+            """
+            Label range for BGP SR global segment identifiers.
+
+            Subclass of AvdModel.
+            """
+            dynamic: Dynamic
+            """
+            Label range for dynamic assignment.
+
+            Subclass of AvdModel.
+            """
+            isis_sr: IsisSr
+            """
+            Label range for IS-IS SR global segment identifiers.
+
+            Subclass of AvdModel.
+            """
+            l2evpn: L2evpn
+            """
+            Label range for L2 EVPN routes.
+
+            Subclass of AvdModel.
+            """
+            l2evpn_ethernet_segment: L2evpnEthernetSegment
+            """
+            Labels reserved for L2 EVPN A-D per ES routes for split-horizon filtering.
+
+            Subclass of AvdModel.
+            """
+            ospf_sr: OspfSr
+            """
+            Label range for OSPF Segment Routing Global Block (SRGB).
+
+            Subclass of AvdModel.
+            """
+            srlb: Srlb
+            """
+            Label range for SR local segment identifiers.
+
+            Subclass of AvdModel.
+            """
+            static: Static
+            """
+            Label range for static MPLS routes.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    bgp_sr: BgpSr | UndefinedType = Undefined,
+                    dynamic: Dynamic | UndefinedType = Undefined,
+                    isis_sr: IsisSr | UndefinedType = Undefined,
+                    l2evpn: L2evpn | UndefinedType = Undefined,
+                    l2evpn_ethernet_segment: L2evpnEthernetSegment | UndefinedType = Undefined,
+                    ospf_sr: OspfSr | UndefinedType = Undefined,
+                    srlb: Srlb | UndefinedType = Undefined,
+                    static: Static | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    LabelRanges.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        bgp_sr:
+                           Label range for BGP SR global segment identifiers.
+
+                           Subclass of AvdModel.
+                        dynamic:
+                           Label range for dynamic assignment.
+
+                           Subclass of AvdModel.
+                        isis_sr:
+                           Label range for IS-IS SR global segment identifiers.
+
+                           Subclass of AvdModel.
+                        l2evpn:
+                           Label range for L2 EVPN routes.
+
+                           Subclass of AvdModel.
+                        l2evpn_ethernet_segment:
+                           Labels reserved for L2 EVPN A-D per ES routes for split-horizon filtering.
+
+                           Subclass of AvdModel.
+                        ospf_sr:
+                           Label range for OSPF Segment Routing Global Block (SRGB).
+
+                           Subclass of AvdModel.
+                        srlb:
+                           Label range for SR local segment identifiers.
+
+                           Subclass of AvdModel.
+                        static:
+                           Label range for static MPLS routes.
+
+                           Subclass of AvdModel.
+
+                    """
+
         class Tunnel(AvdModel):
             """Subclass of AvdModel."""
 
@@ -30051,7 +30407,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"ip": {"type": bool}, "ldp": {"type": Ldp}, "icmp": {"type": Icmp}, "rsvp": {"type": Rsvp}, "tunnel": {"type": Tunnel}}
+        _fields: ClassVar[dict] = {
+            "ip": {"type": bool},
+            "ldp": {"type": Ldp},
+            "icmp": {"type": Icmp},
+            "rsvp": {"type": Rsvp},
+            "label_ranges": {"type": LabelRanges},
+            "tunnel": {"type": Tunnel},
+        }
         ip: bool | None
         ldp: Ldp
         """Subclass of AvdModel."""
@@ -30064,6 +30427,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         rsvp: Rsvp
         """Subclass of AvdModel."""
+        label_ranges: LabelRanges
+        """
+        MPLS label ranges configuration.
+        Ranges cannot overlap except for `bgp_sr`, `ospf_sr` and `isis_sr`.
+        Requires EOS 4.31.1F or later.
+
+        Subclass of AvdModel.
+        """
         tunnel: Tunnel
         """
         Configure MPLS tunnel.
@@ -30080,6 +30451,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ldp: Ldp | UndefinedType = Undefined,
                 icmp: Icmp | UndefinedType = Undefined,
                 rsvp: Rsvp | UndefinedType = Undefined,
+                label_ranges: LabelRanges | UndefinedType = Undefined,
                 tunnel: Tunnel | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -30097,6 +30469,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass
                        of AvdModel.
                     rsvp: Subclass of AvdModel.
+                    label_ranges:
+                       MPLS label ranges configuration.
+                       Ranges cannot overlap except for `bgp_sr`, `ospf_sr` and `isis_sr`.
+                       Requires EOS 4.31.1F or later.
+
+                       Subclass of AvdModel.
                     tunnel:
                        Configure MPLS tunnel.
 
