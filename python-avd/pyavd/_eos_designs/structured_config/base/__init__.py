@@ -414,9 +414,8 @@ class AvdStructuredConfigBaseProtocol(
             address_only=self.inputs.monitor_connectivity.address_only,
             name_server_group=self.inputs.monitor_connectivity.name_server_group,
         )
-        if self.inputs.monitor_connectivity.interface_sets is not None:
-            for interface_set in self.inputs.monitor_connectivity.interface_sets:
-                monitor_connectivity.interface_sets.append_new(name=interface_set.name, interfaces=", ".join(range_expand(interface_set.interfaces)))
+        for interface_set in self.inputs.monitor_connectivity.interface_sets:
+            monitor_connectivity.interface_sets.append_new(name=interface_set.name, interfaces=", ".join(range_expand(interface_set.interfaces)))
         if (local_interfaces := self.inputs.monitor_connectivity.local_interfaces) is not None:
             if local_interfaces in self.inputs.monitor_connectivity.interface_sets:
                 monitor_connectivity.local_interfaces = local_interfaces
@@ -436,14 +435,12 @@ class AvdStructuredConfigBaseProtocol(
                 single_line_description=vrf.single_line_description,
                 address_only=vrf.address_only,
             )
-            if vrf.interface_sets is not None:
-                for interface_set in vrf.interface_sets:
-                    # Had to add the below condition to make type check happy.
-                    # Remove this condition once TODO is resolved.
-                    if interface_set.interfaces is not None:
-                        monitor_connectivity_vrf.interface_sets.append_new(
-                            name=interface_set.name, interfaces=", ".join(range_expand(interface_set.interfaces))
-                        )
+            for interface_set in vrf.interface_sets:
+                # Had to add the below condition to make type check happy, Remove it once TODO is resolved.
+                if interface_set.interfaces is not None:
+                    monitor_connectivity_vrf.interface_sets.append_new(
+                        name=interface_set.name, interfaces=", ".join(range_expand(interface_set.interfaces))
+                    )
             if (vrf_local_interfaces := vrf.local_interfaces) is not None:
                 if vrf_local_interfaces in vrf.interface_sets:
                     monitor_connectivity_vrf.local_interfaces = vrf_local_interfaces
