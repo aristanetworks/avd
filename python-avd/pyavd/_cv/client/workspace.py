@@ -184,6 +184,35 @@ class WorkspaceMixin(Protocol):
         return response.value
 
     @GRPCRequestHandler()
+    async def rebase_workspace(
+        self: CVClientProtocol,
+        workspace_id: str,
+        timeout: float = DEFAULT_API_TIMEOUT,
+    ) -> WorkspaceConfig:
+        """
+        Request a rebase of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
+
+        Parameters:
+            workspace_id: Unique identifier the workspace.
+            timeout: Timeout in seconds.
+
+        Returns:
+            WorkspaceConfig object after being set including any server-generated values.
+        """
+        request = WorkspaceConfigSetRequest(
+            WorkspaceConfig(
+                key=WorkspaceKey(workspace_id=workspace_id),
+                request=Request.REBASE,
+                request_params=RequestParams(
+                    request_id=f"req-{uuid4()}",
+                ),
+            ),
+        )
+        client = WorkspaceConfigServiceStub(self._channel)
+        response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        return response.value
+
+    @GRPCRequestHandler()
     async def delete_workspace(
         self: CVClientProtocol,
         workspace_id: str,

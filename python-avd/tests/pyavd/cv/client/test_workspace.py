@@ -10,8 +10,13 @@ from unittest.mock import patch
 
 import pytest
 
+from pyavd._cv.api.arista.workspace.v1 import Request
 from pyavd._cv.client.exceptions import CVTimeoutError, CVWorkspaceFailed
-from tests.pyavd.cv.constants import MOCKED_WORKSPACE_ID
+from tests.pyavd.cv.constants import (
+    MOCKED_REBASE_WORKSPACE_ID,
+    MOCKED_REBASE_WORKSPACE_REQUEST_ID_REBASE_NEEDSBUILD_FALSE_NEEDSREBASE_FALSE_SUCCESS,
+    MOCKED_WORKSPACE_ID,
+)
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -66,3 +71,28 @@ async def test_wait_for_workspace_state_timeout(cv_client: CVClient) -> None:
         ),
     ):
         _ = await cv_client.wait_for_workspace_state(workspace_id=MOCKED_WORKSPACE_ID, state="rolled_back", timeout=1.0)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
+async def test_rebase_workspace(cv_client: CVClient) -> None:
+    """
+    Test rebasing of the Workspace.
+
+    Exact test steps:
+    -   description: Request rebasing of the Workspace
+        request: WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-833a9e6b-9cc0-484b-a5bb-a57f7fa1438f'), "
+            "request=Request.REBASE, request_params=RequestParams(request_id='req-73d17f5a-3db7-4527-ae9a-e43ca99d983c')))'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/6343b1d9dd797d90a6b6544c468eeb02d3c5daf7.json'
+    """
+    with (
+        patch(
+            "pyavd._cv.client.workspace.uuid4",
+            side_effect=[MOCKED_REBASE_WORKSPACE_REQUEST_ID_REBASE_NEEDSBUILD_FALSE_NEEDSREBASE_FALSE_SUCCESS["id"].removeprefix("req-")],
+        ),
+    ):
+        response_workspace_config = await cv_client.rebase_workspace(workspace_id=MOCKED_REBASE_WORKSPACE_ID)
+
+    assert response_workspace_config.key.workspace_id == MOCKED_REBASE_WORKSPACE_ID
+    assert response_workspace_config.request == Request.REBASE
+    assert response_workspace_config.request_params.request_id == MOCKED_REBASE_WORKSPACE_REQUEST_ID_REBASE_NEEDSBUILD_FALSE_NEEDSREBASE_FALSE_SUCCESS["id"]
