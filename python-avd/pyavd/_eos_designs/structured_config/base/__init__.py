@@ -438,9 +438,7 @@ class AvdStructuredConfigBaseProtocol(
             for interface_set in vrf.interface_sets:
                 # Had to add the below condition to make type check happy, Remove it once TODO is resolved.
                 if interface_set.interfaces is not None:
-                    monitor_connectivity_vrf.interface_sets.append_new(
-                        name=interface_set.name, interfaces=", ".join(range_expand(interface_set.interfaces))
-                    )
+                    monitor_connectivity_vrf.interface_sets.append_new(name=interface_set.name, interfaces=", ".join(range_expand(interface_set.interfaces)))
             if (vrf_local_interfaces := vrf.local_interfaces) is not None:
                 if vrf_local_interfaces in vrf.interface_sets:
                     monitor_connectivity_vrf.local_interfaces = vrf_local_interfaces
