@@ -20,10 +20,10 @@ from .underlay import UnderlayMixin
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
-    from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
     from pyavd._eos_designs.schema import EosDesigns
+    from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
+    from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
 
 
 class StructuredConfigUtilsProtocol(UtilsMixin, MlagMixin, UnderlayMixin, SflowMixin, Protocol):

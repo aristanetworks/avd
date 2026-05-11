@@ -10,8 +10,9 @@ from pyavd._utils.format_string import AvdStringFormatter
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
-    from . import StructuredConfigUtils
     from pyavd._eos_designs.schema import EosDesigns
+
+    from . import StructuredConfigUtils
 
 
 class MlagMixin(Protocol):
