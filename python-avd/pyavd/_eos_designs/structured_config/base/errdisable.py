@@ -23,8 +23,7 @@ def _evaluate_errdisable_cause(
 
     The schema field name (snake_case) is translated to the EOS cause name.
     A cause is enabled only when both the user input and the platform support evaluate to True.
-    `getattr` defaults to None to handle causes whose class doesn't define detection or recovery
-    (e.g. recovery-only causes have no `detection` field).
+    `getattr` defaults to None to handle causes whose class doesn't define detection or recovery.
     """
     cause_name = cause_field.replace("_", "-")
     detection_enabled = bool(getattr(errdisable_cause, "detection", None) and getattr(platform_cause, "detection", None))
