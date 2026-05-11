@@ -5180,6 +5180,7 @@ interface Ethernet1
    switchport backup mac-move-burst-interval 30
    switchport backup initial-mac-move-delay 10
    switchport backup dest-macaddr 01:00:00:00:00:00
+   cpu traffic-policy CPU_TRAFFIC_POLICY fallback traffic-policy vrf
    link tracking group EVPN_MH_ES1 upstream
    link tracking group EVPN_MH_ES3 upstream
    link tracking group EVPN_MH_ES4 upstream
@@ -6630,6 +6631,7 @@ interface Port-Channel15
    isis authentication key 0 <removed>
    spanning-tree link-type point-to-point
    spanning-tree guard loop
+   cpu traffic-policy CPU_TRAFFIC_POLICY fallback traffic-policy vrf
    link tracking group EVPN_MH_ES2 upstream
 !
 interface Port-Channel16

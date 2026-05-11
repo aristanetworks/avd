@@ -4008,6 +4008,12 @@ keys:
                   type: str
                   required: true
                   description: Quality of Service Policy-map name.
+        cpu_traffic_policy_fallback_vrf:
+          type: str
+          description: 'CPU traffic policy name.
+
+            Fallback to the CPU traffic policy applied to the VRF in which this interface
+            is configured.'
         mpls:
           type: dict
           keys:
@@ -12925,6 +12931,12 @@ keys:
                   type: str
                   required: true
                   description: Quality of Service Policy-map name.
+        cpu_traffic_policy_fallback_vrf:
+          type: str
+          description: 'CPU traffic policy name.
+
+            Fallback to the CPU traffic policy applied to the VRF in which this interface
+            is configured.'
         mpls:
           type: dict
           keys:

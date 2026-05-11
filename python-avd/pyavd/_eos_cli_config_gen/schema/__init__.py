@@ -13091,6 +13091,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "priority_flow_control": {"type": PriorityFlowControl},
             "bfd": {"type": Bfd},
             "service_policy": {"type": ServicePolicy},
+            "cpu_traffic_policy_fallback_vrf": {"type": str},
             "mpls": {"type": Mpls},
             "lacp_timer": {"type": LacpTimer},
             "lacp_port_priority": {"type": int},
@@ -13303,6 +13304,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         service_policy: ServicePolicy
         """Subclass of AvdModel."""
+        cpu_traffic_policy_fallback_vrf: str | None
+        """
+        CPU traffic policy name.
+        Fallback to the CPU traffic policy applied to the VRF in which this
+        interface is configured.
+        """
         mpls: Mpls
         """Subclass of AvdModel."""
         lacp_timer: LacpTimer
@@ -13442,6 +13449,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
+                cpu_traffic_policy_fallback_vrf: str | None | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
                 lacp_timer: LacpTimer | UndefinedType = Undefined,
                 lacp_port_priority: int | None | UndefinedType = Undefined,
@@ -13584,6 +13592,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     priority_flow_control: Subclass of AvdModel.
                     bfd: Subclass of AvdModel.
                     service_policy: Subclass of AvdModel.
+                    cpu_traffic_policy_fallback_vrf:
+                       CPU traffic policy name.
+                       Fallback to the CPU traffic policy applied to the VRF in which this
+                       interface is configured.
                     mpls: Subclass of AvdModel.
                     lacp_timer: Subclass of AvdModel.
                     lacp_port_priority: lacp_port_priority
@@ -37031,6 +37043,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "qos": {"type": Qos},
             "bfd": {"type": Bfd},
             "service_policy": {"type": ServicePolicy},
+            "cpu_traffic_policy_fallback_vrf": {"type": str},
             "mpls": {"type": Mpls},
             "ntp_serve": {"type": bool},
             "shape": {"type": Shape},
@@ -37149,6 +37162,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         service_policy: ServicePolicy
         """Subclass of AvdModel."""
+        cpu_traffic_policy_fallback_vrf: str | None
+        """
+        CPU traffic policy name.
+        Fallback to the CPU traffic policy applied to the VRF in which this
+        interface is configured.
+        """
         mpls: Mpls
         """Subclass of AvdModel."""
         ntp_serve: bool | None
@@ -37303,6 +37322,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 qos: Qos | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
+                cpu_traffic_policy_fallback_vrf: str | None | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
                 ntp_serve: bool | None | UndefinedType = Undefined,
                 shape: Shape | UndefinedType = Undefined,
@@ -37406,6 +37426,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     qos: Subclass of AvdModel.
                     bfd: Subclass of AvdModel.
                     service_policy: Subclass of AvdModel.
+                    cpu_traffic_policy_fallback_vrf:
+                       CPU traffic policy name.
+                       Fallback to the CPU traffic policy applied to the VRF in which this
+                       interface is configured.
                     mpls: Subclass of AvdModel.
                     ntp_serve: Enable/disable serving NTP to clients.
                     shape: Subclass of AvdModel.
