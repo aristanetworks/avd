@@ -7,6 +7,25 @@
 {% if traffic_policies is arista.avd.defined %}
 
 ### Traffic Policies information
+{%     if traffic_policies.cpu_traffic_policy is arista.avd.defined %}
+
+#### CPU Traffic Policy
+
+| Setting | Value |
+| ------- | ----- |
+{%         if traffic_policies.cpu_traffic_policy.vrf_all.name is arista.avd.defined %}
+| Traffic-policy for all VRFs | {{ traffic_policies.cpu_traffic_policy.vrf_all.name }} |
+{%         endif %}
+{%         if traffic_policies.cpu_traffic_policy.vrf_all.enforcement_management is arista.avd.defined %}
+| Enforcement on management ports | {{ traffic_policies.cpu_traffic_policy.vrf_all.enforcement_management }} |
+{%         endif %}
+{%         if traffic_policies.cpu_traffic_policy.fragment_implicit_permit_disabled is arista.avd.defined %}
+| Implicit permit-fragment rules disabled | {{ traffic_policies.cpu_traffic_policy.fragment_implicit_permit_disabled }} |
+{%         endif %}
+{%         if traffic_policies.cpu_traffic_policy.enforcement_ip_ttl_expired is arista.avd.defined %}
+| Enforcement on IP TTL expired packets | {{ traffic_policies.cpu_traffic_policy.enforcement_ip_ttl_expired }} |
+{%         endif %}
+{%     endif %}
 {%     if traffic_policies.vrfs is arista.avd.defined %}
 
 #### Traffic Policies VRF Interfaces

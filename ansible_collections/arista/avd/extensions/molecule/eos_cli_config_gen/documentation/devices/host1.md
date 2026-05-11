@@ -13816,6 +13816,15 @@ mac security
 
 ### Traffic Policies information
 
+#### CPU Traffic Policy
+
+| Setting | Value |
+| ------- | ----- |
+| Traffic-policy for all VRFs | CPU_TP_ALL |
+| Enforcement on management ports | True |
+| Implicit permit-fragment rules disabled | True |
+| Enforcement on IP TTL expired packets | True |
+
 #### Traffic Policies VRF Interfaces
 
 | VRF | CPU Traffic Policy | Management Ports | Physical Interfaces Traffic Policy |
@@ -13906,6 +13915,10 @@ Counters: test
 ```eos
 !
 traffic-policies
+   cpu traffic-policy CPU_TP_ALL vrf all
+      enforcement management
+   cpu traffic-policy fragment implicit-permit disabled
+   cpu traffic-policy enforcement ip ttl expired
    vrf VRF1
       cpu traffic-policy TP1 fallback traffic-policy none
          enforcement management

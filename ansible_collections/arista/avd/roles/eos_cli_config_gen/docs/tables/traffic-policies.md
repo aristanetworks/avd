@@ -8,6 +8,12 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>traffic_policies</samp>](## "traffic_policies") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;cpu_traffic_policy</samp>](## "traffic_policies.cpu_traffic_policy") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf_all</samp>](## "traffic_policies.cpu_traffic_policy.vrf_all") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "traffic_policies.cpu_traffic_policy.vrf_all.name") | String | Required |  |  | Traffic policy name for all VRFs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enforcement_management</samp>](## "traffic_policies.cpu_traffic_policy.vrf_all.enforcement_management") | Boolean |  |  |  | Enforce CPU traffic-policy on management ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enforcement_ip_ttl_expired</samp>](## "traffic_policies.cpu_traffic_policy.enforcement_ip_ttl_expired") | Boolean |  |  |  | Enforce CPU traffic-policy on IP TTL expired packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fragment_implicit_permit_disabled</samp>](## "traffic_policies.cpu_traffic_policy.fragment_implicit_permit_disabled") | Boolean |  |  |  | Disable implicit permit-fragment rules. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "traffic_policies.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "traffic_policies.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu</samp>](## "traffic_policies.vrfs.[].cpu") | Dictionary |  |  |  |  |
@@ -109,6 +115,20 @@
 
     ```yaml
     traffic_policies:
+      cpu_traffic_policy:
+        vrf_all:
+
+          # Traffic policy name for all VRFs.
+          name: <str; required>
+
+          # Enforce CPU traffic-policy on management ports.
+          enforcement_management: <bool>
+
+        # Enforce CPU traffic-policy on IP TTL expired packets.
+        enforcement_ip_ttl_expired: <bool>
+
+        # Disable implicit permit-fragment rules.
+        fragment_implicit_permit_disabled: <bool>
       vrfs:
 
           # VRF name.
