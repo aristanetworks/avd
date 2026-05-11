@@ -123,6 +123,11 @@ ntp:
     preferred: true
   - name: 2001:db8::3
   vrf: MGMT
+peer_filters:
+- name: peerfilter
+  sequence_numbers:
+  - sequence: 20
+    match: as-range 1-2 result reject
 platform:
   sand:
     lag:

@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
 from pyavd.j2filters import list_compress
 
@@ -829,4 +829,12 @@ class RouterBgpMixin(Protocol):
                 peer_filter=listen_range.peer_filter,
                 peer_id_include_router_id=listen_range.peer_id_include_router_id,
             )
+            if listen_range.peer_filter:
+                self._set_bgp_peer_filter(listen_range.peer_filter)
         return bgp_vrf
+    
+    def _set_bgp_peer_filter(self: AvdStructuredConfigNetworkServicesProtocol, peer_filter: str) -> None:
+        if peer_filter not in self.inputs.bgp_peer_filters_catalog:
+            msg = f"self.inputs.bgp_peer_filters_catalog[name={peer_filter}]"
+            raise AristaAvdMissingVariableError(msg)
+        self.structured_config.peer_filters.append(self.inputs.bgp_peer_filters_catalog[peer_filter])

@@ -307,6 +307,11 @@ monitor_sessions:
       name: myIpAVL
       priority: 5
 ntp: null
+peer_filters:
+- name: peerfilter
+  sequence_numbers:
+  - sequence: 20
+    match: as-range 1-2 result reject
 platform:
   sand:
     lag:

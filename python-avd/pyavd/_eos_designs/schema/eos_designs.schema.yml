@@ -573,6 +573,15 @@ keys:
       Only supported in combination with MPLS overlay.
 
       '
+  bgp_peer_filters_catalog:
+    type: list
+    description: 'BGP peer filter catalog.
+
+      Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in the
+      configuration when
+
+      they are explicitly referenced in listen ranges.'
+    $ref: eos_cli_config_gen#/keys/peer_filters
   bgp_peer_groups:
     documentation_options:
       table: bgp-settings

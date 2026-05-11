@@ -490,3 +490,16 @@ platform_speed_groups:
 override_boot:
   secret:
     key: a153de6290ff1409257ade45f
+
+
+bgp_peer_filters_catalog:
+  - name: peerfilter
+    sequence_numbers:
+      - sequence: 20
+        match: "as-range 1-2 result reject"
+  - name: PF1
+    sequence_numbers:
+      - sequence: 10
+        match: "as-range 1-2 result reject"
+      - sequence: 20
+        match: "as-range 1-100 result accept"

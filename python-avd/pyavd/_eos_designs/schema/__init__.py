@@ -91822,6 +91822,7 @@ class EosDesigns(EosDesignsRootModel):
         "bgp_graceful_restart": {"type": BgpGracefulRestart},
         "bgp_maximum_paths": {"type": int},
         "bgp_mesh_pes": {"type": bool, "default": False},
+        "bgp_peer_filters_catalog": {"type": EosCliConfigGen.PeerFilters},
         "bgp_peer_groups": {"type": BgpPeerGroups},
         "bgp_update_wait_install": {"type": bool, "default": True},
         "bgp_update_wait_for_convergence": {"type": bool, "default": False},
@@ -92658,6 +92659,13 @@ class EosDesigns(EosDesignsRootModel):
     supported in combination with MPLS overlay.
 
     Default value: `False`
+    """
+    bgp_peer_filters_catalog: EosCliConfigGen.PeerFilters
+    """
+    BGP peer filter catalog.
+    Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in
+    the configuration when
+    they are explicitly referenced in listen ranges.
     """
     bgp_peer_groups: BgpPeerGroups
     """
@@ -94618,6 +94626,7 @@ class EosDesigns(EosDesignsRootModel):
             bgp_graceful_restart: BgpGracefulRestart | UndefinedType = Undefined,
             bgp_maximum_paths: int | None | UndefinedType = Undefined,
             bgp_mesh_pes: bool | UndefinedType = Undefined,
+            bgp_peer_filters_catalog: EosCliConfigGen.PeerFilters | UndefinedType = Undefined,
             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
             bgp_update_wait_install: bool | UndefinedType = Undefined,
             bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
@@ -94900,6 +94909,11 @@ class EosDesigns(EosDesignsRootModel):
                    Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
                    Only
                    supported in combination with MPLS overlay.
+                bgp_peer_filters_catalog:
+                   BGP peer filter catalog.
+                   Note: Entries defined in `bgp_peer_filters_catalog` are only rendered in
+                   the configuration when
+                   they are explicitly referenced in listen ranges.
                 bgp_peer_groups:
                    Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
                    Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
