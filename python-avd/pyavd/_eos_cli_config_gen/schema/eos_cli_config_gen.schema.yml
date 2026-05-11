@@ -2504,6 +2504,13 @@ keys:
 
           When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`,
           sorted by source interface name.'
+      always_render_ip_routing_separator:
+        type: bool
+        default: false
+        description: 'Always render a ''!'' before the ''(no) ip routing'' command
+          section.
+
+          Without this the ''!'' is missing when only configuring routing for VRFs.'
   errdisable:
     type: dict
     keys:
@@ -9090,6 +9097,266 @@ keys:
   management_security:
     type: dict
     keys:
+      auto_certificate:
+        type: dict
+        keys:
+          profiles:
+            type: list
+            primary_key: name
+            description: Profiles for automatic certificate enrollment and renewal.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Name of the certificate profile.
+                digest:
+                  type: str
+                  description: Digest algorithm used to sign the Certificate Signing
+                    Request. Defaults to sha256 on EOS if unset.
+                  valid_values:
+                  - sha256
+                  - sha384
+                  - sha512
+                key:
+                  type: str
+                  description: Filename of the private key in the switch `sslkey:`
+                    directory.
+                protocol_instance_name:
+                  type: str
+                  description: EST protocol profile name.
+                renewal:
+                  description: Renewal time in seconds. EOS default is 7200 seconds
+                    (2 hours).
+                  type: int
+                  min: 1
+                  max: 4294967295
+                  convert_types:
+                  - str
+                parameters:
+                  description: Parameters of the distinguished name and subject alternative
+                    name for the CSR.
+                  type: dict
+                  keys:
+                    distinguished_name:
+                      type: dict
+                      keys:
+                        common_name:
+                          type: str
+                        country:
+                          type: str
+                          description: 'ISO 3166-1 alpha-2 two-letter country code.
+
+                            Example:
+
+                            "US" for United States,
+
+                            "DE" for Germany,
+
+                            "IN" for India.'
+                          pattern: ^[A-Z]{2}$
+                        email:
+                          type: str
+                          pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+                        locality:
+                          type: str
+                        organization:
+                          type: str
+                        organization_unit:
+                          type: str
+                          convert_types:
+                          - int
+                        serial_number:
+                          type: str
+                          description: 'Serial Number for use in subject.
+
+                            system: Use the device''s serial number in subject.'
+                          convert_types:
+                          - int
+                        state:
+                          type: str
+                    subject_alternative_name:
+                      type: dict
+                      keys:
+                        dns:
+                          type: list
+                          items:
+                            type: str
+                        email:
+                          type: list
+                          items:
+                            type: str
+                            pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+                        ip:
+                          type: list
+                          description: IPv4/IPv6 addresses for use in subject-alternative-name.
+                          items:
+                            type: str
+                        uri:
+                          type: list
+                          items:
+                            type: str
+          protocols:
+            type: list
+            primary_key: name
+            description: Protocols for automatic certificate enrollment and renewal.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Name of the EST profile.
+                protocol:
+                  type: str
+                  valid_values:
+                  - est
+                  required: true
+                  description: Protocol to use to communicate with endpoint; only
+                    EST is supported currently.
+                disabled:
+                  type: bool
+                  description: Temporarily disable sending requests to the server.
+                connection_retry:
+                  type: dict
+                  keys:
+                    count:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 4294967295
+                      description: Number of retries to attempt before giving up,
+                        if not configured the number of retries is infinite.
+                    interval:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 4294967295
+                      description: Number of seconds between retries.
+                    exponential_backoff:
+                      type: bool
+                      description: Exponentially increase the interval between retries
+                        to a maximum of 24 hours.
+                credentials:
+                  type: dict
+                  keys:
+                    enroll:
+                      type: dict
+                      description: 'Token or username/secret for initial certificate
+                        enrollment.
+
+                        If both token and username/secret are defined, token will
+                        take precedence.
+
+                        '
+                      keys:
+                        token:
+                          type: str
+                          description: JSON Web Token for Bearer Authentication.
+                        token_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                        username:
+                          type: str
+                          description: Username for HTTP Basic Authentication.
+                        secret:
+                          type: str
+                          description: Password for HTTP Basic Authentication.
+                        secret_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                    re_enroll:
+                      type: dict
+                      description: 'Token or username/secret for certificate re-enrollment.
+
+                        If both token and username/secret are defined, token will
+                        take precedence.
+
+                        '
+                      keys:
+                        token:
+                          type: str
+                          description: JSON Web Token for Bearer Authentication.
+                        token_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                        username:
+                          type: str
+                          description: Username for HTTP Basic Authentication.
+                        secret:
+                          type: str
+                          description: Password for HTTP Basic Authentication.
+                        secret_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          - 8a
+                          default: '7'
+                          description: 'Encoding type of the token:
+
+                            "0" = cleartext,
+
+                            "7" = obfuscated,
+
+                            "8a" = AES-256-GCM encrypted.'
+                server:
+                  type: dict
+                  keys:
+                    ssl_profile:
+                      type: str
+                      description: SSL profile name.
+                    url:
+                      type: str
+                      pattern: https://.+[^/]
+                      description: EST server URL. Must begin with `https://`. Should
+                        not end with `/` (the well-known EST paths are appended automatically).
+                    vrf:
+                      type: str
+                      description: VRF used to reach the EST server. If unset, the
+                        default VRF is used on EOS.
       entropy_sources:
         type: dict
         description: Source of entropy.
