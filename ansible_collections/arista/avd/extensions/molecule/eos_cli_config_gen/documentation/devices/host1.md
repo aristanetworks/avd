@@ -13904,11 +13904,11 @@ Counters: test
 
 ##### Traffic-Policy Interfaces
 
-| Interface | Input Traffic-Policy | Output Traffic-Policy |
-| --------- | -------------------- | --------------------- |
-| Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
-| Port-Channel15 | BLUE-C1-POLICY | BLUE-C2-POLICY |
-| Vlan2001 | Policy-01 | Policy-02 |
+| Interface | Input Traffic-Policy | Output Traffic-Policy | CPU Traffic-Policy Fallback VRF |
+| --------- | -------------------- | --------------------- | ------------------------------- |
+| Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY | CPU_TRAFFIC_POLICY |
+| Port-Channel15 | BLUE-C1-POLICY | BLUE-C2-POLICY | CPU_TRAFFIC_POLICY |
+| Vlan2001 | Policy-01 | Policy-02 | - |
 
 #### Traffic Policies Device Configuration
 
