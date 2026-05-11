@@ -415,8 +415,6 @@ mpls ip
 mpls ldp
    router-id 192.168.1.2
    interface disabled default
-!
-mpls rsvp
 ```
 
 ## Multicast

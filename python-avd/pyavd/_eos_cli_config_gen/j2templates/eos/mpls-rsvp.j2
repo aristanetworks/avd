@@ -5,8 +5,7 @@
 #}
 {# eos - mpls rsvp #}
 {% if mpls.rsvp is arista.avd.defined %}
-!
-mpls rsvp
+{%     set mpls_rsvp_body %}
 {%     if mpls.rsvp.refresh is arista.avd.defined %}
 {%         if mpls.rsvp.refresh.interval is arista.avd.defined %}
    refresh interval {{ mpls.rsvp.refresh.interval }}
@@ -133,5 +132,11 @@ mpls rsvp
    shutdown
 {%     elif mpls.rsvp.shutdown is arista.avd.defined(false) %}
    no shutdown
+{%     endif %}
+{%     endset %}
+{%     if mpls_rsvp_body | trim %}
+!
+mpls rsvp
+{{ mpls_rsvp_body -}}
 {%     endif %}
 {% endif %}
