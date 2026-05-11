@@ -832,7 +832,7 @@ class RouterBgpMixin(Protocol):
             if listen_range.peer_filter:
                 self._set_bgp_peer_filter(listen_range.peer_filter)
         return bgp_vrf
-    
+
     def _set_bgp_peer_filter(self: AvdStructuredConfigNetworkServicesProtocol, peer_filter: str) -> None:
         if peer_filter not in self.inputs.bgp_peer_filters_catalog:
             msg = f"self.inputs.bgp_peer_filters_catalog[name={peer_filter}]"
