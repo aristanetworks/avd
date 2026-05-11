@@ -245,7 +245,7 @@ class UtilsMixin(Protocol):
         address_locking = output_type()
         if isinstance(address_locking, EosCliConfigGen.PortChannelInterfacesItem.AddressLocking) and adapter.address_locking.ipv4 is False:
             address_locking.address_family.ipv4 = adapter.address_locking.ipv4
-        elif isinstance(address_locking, EosCliConfigGen.EthernetInterfacesItem.AddressLocking):
+        else:  # EosCliConfigGen.EthernetInterfacesItem.AddressLocking
             address_locking.address_family.ipv4 = adapter.address_locking.ipv4
             address_locking.address_family.ipv6 = adapter.address_locking.ipv6
         return address_locking
