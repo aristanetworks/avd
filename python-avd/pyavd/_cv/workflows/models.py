@@ -271,6 +271,20 @@ class CVEosConfig:
 
 
 @dataclass
+class CVDeviceDeployment:
+    """All deployment objects for a single device."""
+
+    device: CVDevice
+    use_static_config_manifest: bool = False
+    """When `True`, the device configuration is expected to be deployed via the static config manifest hierarchy
+    instead of the flat "AVD Configurations" layout."""
+    eos_config: CVEosConfig | None = None
+    device_tags: list[CVDeviceTag] = field(default_factory=list)
+    interface_tags: list[CVInterfaceTag] = field(default_factory=list)
+    cv_pathfinder_metadata: CVPathfinderMetadata | None = None
+
+
+@dataclass
 class CVTimeOuts:
     """Timeouts in seconds."""
 
