@@ -113,18 +113,9 @@ servers:
           mode: active
           subinterfaces:
             - number: 100
-            - short_esi: auto
             - number: 200
               vlan_id: 200
-  - name: OLD_SW-1/12
-    adapters:
-      - switches: [connected-endpoints]
-        switch_ports: [Ethernet25]
-        endpoint_ports: [Endpoint_port6]
-        port_channel:
-          mode: active
-          subinterfaces:
-            - short_esi: auto
+              description: "{subinterface}-{subinterface_number}-{vlan_id}-{dot1q_client_vlan}-{endpoint_type}-{endpoint}"
   # port-channel with lacp fallback individual and profile for member interfaces
   - name: INDIVIDUAL_1
     adapters:

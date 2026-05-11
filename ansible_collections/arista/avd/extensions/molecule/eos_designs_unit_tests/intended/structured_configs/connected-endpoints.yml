@@ -153,17 +153,6 @@ ethernet_interfaces:
     peer: OLD_SW-1/9
     peer_type: custom_server
     peer_key: servers
-- name: Ethernet25
-  description: CUSTOM_SERVER_OLD_SW-1/12_Endpoint_port6
-  shutdown: false
-  channel_group:
-    id: 25
-    mode: active
-  metadata:
-    peer: OLD_SW-1/12
-    peer_interface: Endpoint_port6
-    peer_type: custom_server
-    peer_key: servers
 - name: Ethernet12
   description: CUSTOM_SERVER_INDIVIDUAL_1
   shutdown: false
@@ -714,6 +703,7 @@ port_channel_interfaces:
       encapsulation: client
   vlan_id: 100
 - name: Port-Channel20.200
+  description: Port-Channel20.200-200-200-200-custom_server-OLD_SW-1/9
   encapsulation_vlan:
     client:
       encapsulation: dot1q
@@ -721,11 +711,6 @@ port_channel_interfaces:
     network:
       encapsulation: client
   vlan_id: 200
-- name: Port-Channel25
-  description: CUSTOM_SERVER_OLD_SW-1/12
-  shutdown: false
-  switchport:
-    enabled: false
 - name: Port-Channel12
   description: CUSTOM_SERVER_INDIVIDUAL_1_INDIVIDUAL_1
   shutdown: false

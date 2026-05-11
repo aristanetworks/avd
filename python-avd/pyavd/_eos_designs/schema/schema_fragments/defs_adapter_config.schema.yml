@@ -390,10 +390,10 @@ $defs:
                 description: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
           subinterfaces:
             type: list
+            primary_key: number
             description: |
-              Port-Channel L2 Subinterfaces
+              Port-Channel L2 Subinterfaces.
               Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
-              The parent Port-Channel interface is automatically created if not defined elsewhere.
               Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
               Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
             items:
@@ -404,6 +404,20 @@ $defs:
                   convert_types:
                     - str
                   description: Subinterface number.
+                  min: 1
+                  max: 1048575
+                description:
+                  type: str
+                  description: |-
+                    Description for subinterface.
+                    This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                    The available template fields are:
+                      - `subinterface` - The full subinterface name.
+                      - `subinterface_number` - The number for the subinterface.
+                      - `vlan_id` - The VLAN ID bridged to this subinterface.
+                      - `dot1q_client_vlan` - The Client VLAN ID encapsulation.
+                      - `endpoint_type` - The `type` of the connected endpoint either set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                      - `endpoint` - The name of the connected endpoint
                 short_esi:
                   type: str
                   description: |
