@@ -76,6 +76,34 @@ class MonitorSessionsMixin(Protocol):
 
             self.structured_config.monitor_sessions.append(monitor_session)
 
+    @staticmethod
+    def _validate_monitor_session_on_subinterface(
+        interface_name: str,
+        monitor_session: (
+            EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem
+            | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.MonitorSessionsItem
+            | EosDesigns.NetworkPortsItem.MonitorSessionsItem
+        ),
+        context: str,
+    ) -> None:
+        """Raise on per-session sub-interface constraints."""
+        if "." not in interface_name:
+            return
+        if monitor_session.role == "destination":
+            msg = (
+                "Port mirroring destination on sub-interface is not supported. "
+                f"Got 'role: {monitor_session.role}' for monitor session '{monitor_session.name}' "
+                f"on interface '{interface_name}' under {context}."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+        if monitor_session.source_settings.direction != "rx":
+            msg = (
+                "Only 'direction: rx' supported on sub-interfaces for monitor session. "
+                f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
+                f"on interface '{interface_name}' under {context}."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
     @cached_property
     def _monitor_session_configs(
         self: AvdStructuredConfigBaseProtocol,
@@ -118,20 +146,7 @@ class MonitorSessionsMixin(Protocol):
                         )
                         raise AristaAvdInvalidInputsError(msg)
                     for monitor_session in adapter.monitor_sessions:
-                        if "." in ethernet_interface_name and monitor_session.role != "destination" and monitor_session.source_settings.direction != "rx":
-                            msg = (
-                                "Only 'direction: rx' supported on sub-interfaces for monitor session. "
-                                f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
-                                f"on interface '{ethernet_interface_name}' under {context}."
-                            )
-                            raise AristaAvdInvalidInputsError(msg)
-                        if "." in ethernet_interface_name and monitor_session.role == "destination":
-                            msg = (
-                                "Port mirroring destination on sub-interface is not supported. "
-                                f"Got 'role: {monitor_session.role}' for monitor session '{monitor_session.name}' "
-                                f"on interface '{ethernet_interface_name}' under {context}."
-                            )
-                            raise AristaAvdInvalidInputsError(msg)
+                        self._validate_monitor_session_on_subinterface(ethernet_interface_name, monitor_session, context)
                         per_interface_monitor_session = monitor_session._deepcopy()
                         per_interface_monitor_session._internal_data.interface = ethernet_interface_name
                         per_interface_monitor_session._internal_data.context = adapter._internal_data.context
@@ -169,20 +184,7 @@ class MonitorSessionsMixin(Protocol):
                     )
                     raise AristaAvdInvalidInputsError(msg)
                 for monitor_session in network_port.monitor_sessions:
-                    if "." in ethernet_interface_name and monitor_session.role != "destination" and monitor_session.source_settings.direction != "rx":
-                        msg = (
-                            "Only 'direction: rx' supported on sub-interfaces for monitor session. "
-                            f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
-                            f"on interface '{ethernet_interface_name}' under {context}."
-                        )
-                        raise AristaAvdInvalidInputsError(msg)
-                    if "." in ethernet_interface_name and monitor_session.role == "destination":
-                        msg = (
-                            "Port mirroring destination on sub-interface is not supported. "
-                            f"Got 'role: {monitor_session.role}' for monitor session '{monitor_session.name}' "
-                            f"on interface '{ethernet_interface_name}' under {context}."
-                        )
-                        raise AristaAvdInvalidInputsError(msg)
+                    self._validate_monitor_session_on_subinterface(ethernet_interface_name, monitor_session, context)
                     per_interface_monitor_session = monitor_session._deepcopy()
                     per_interface_monitor_session._internal_data.interface = ethernet_interface_name
                     per_interface_monitor_session._internal_data.context = network_port._internal_data.context
@@ -207,20 +209,7 @@ class MonitorSessionsMixin(Protocol):
                             )
                             raise AristaAvdInvalidInputsError(msg)
                         for monitor_session in l3_interface.monitor_sessions:
-                            if "." in interface_name and monitor_session.role != "destination" and monitor_session.source_settings.direction != "rx":
-                                msg = (
-                                    f"Only 'direction: rx' supported on sub-interfaces for monitor session. "
-                                    f"Got 'direction: {monitor_session.source_settings.direction}' for monitor session '{monitor_session.name}' "
-                                    f"on interface '{interface_name}' under {context}."
-                                )
-                                raise AristaAvdInvalidInputsError(msg)
-                            if "." in interface_name and monitor_session.role == "destination":
-                                msg = (
-                                    "Port mirroring destination on sub-interface is not supported. "
-                                    f"Got 'role: {monitor_session.role}' for monitor session '{monitor_session.name}' "
-                                    f"on interface '{interface_name}' under {context}."
-                                )
-                                raise AristaAvdInvalidInputsError(msg)
+                            self._validate_monitor_session_on_subinterface(interface_name, monitor_session, context)
 
                             # We merge using the adapter datamodel to catch conflicts in direction.
                             per_interface_monitor_session = monitor_session._deepcopy()._cast_as(
