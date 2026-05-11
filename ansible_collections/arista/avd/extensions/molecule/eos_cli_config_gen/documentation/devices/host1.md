@@ -194,6 +194,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
+  - [MPLS Label Ranges](#mpls-label-ranges)
   - [MPLS Interfaces](#mpls-interfaces)
   - [MPLS RSVP](#mpls-rsvp)
   - [MPLS Device Configuration](#mpls-device-configuration)
