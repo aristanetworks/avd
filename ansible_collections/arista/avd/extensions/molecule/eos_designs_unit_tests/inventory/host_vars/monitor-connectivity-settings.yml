@@ -55,7 +55,7 @@ monitor_connectivity:
         - name: SET_MGMT_1
           interfaces: Loopback100
         - name: SET_MGMT_2
-          interfaces: Loopback101
+          interfaces: Loopback101-104
       hosts:
         - name: MGMT_SERVER
           description: Management server
