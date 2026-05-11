@@ -10,7 +10,6 @@ from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
-
     from . import StructuredConfigUtils
 
 
