@@ -71,6 +71,8 @@ keys:
                   - int
               ipv6_access_group_name:
                 type: str
+                convert_types:
+                  - int
               name_resolution:
                 type: dict
                 keys:
