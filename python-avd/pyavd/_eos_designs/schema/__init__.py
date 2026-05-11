@@ -3130,14 +3130,34 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {
                         "number": {"type": int},
+                        "description": {"type": str},
                         "short_esi": {"type": str},
                         "vlan_id": {"type": int},
                         "encapsulation_vlan": {"type": EncapsulationVlan},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                     }
-                    number: int | None
+                    number: int
                     """Subinterface number."""
+                    description: str | None
+                    """
+                    Description for subinterface.
+                    This can be a template using the AVD string formatter syntax:
+                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                    descriptions-names.html#avd-string-formatter-syntax.
+                    The available template fields are:
+                      -
+                    `subinterface` - The full subinterface name.
+                      - `subinterface_number` - The number for the
+                    subinterface.
+                      - `vlan_id` - The VLAN ID bridged to this subinterface.
+                      - `dot1q_client_vlan` -
+                    The Client VLAN ID encapsulation.
+                      - `endpoint_type` - The `type` of the connected endpoint either
+                    set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                      -
+                    `endpoint` - The name of the connected endpoint
+                    """
                     short_esi: str | None
                     """
                     In format xxxx:xxxx:xxxx or "auto".
@@ -3163,7 +3183,8 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            number: int | None | UndefinedType = Undefined,
+                            number: int | UndefinedType = Undefined,
+                            description: str | None | UndefinedType = Undefined,
                             short_esi: str | None | UndefinedType = Undefined,
                             vlan_id: int | None | UndefinedType = Undefined,
                             encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -3178,6 +3199,23 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 number: Subinterface number.
+                                description:
+                                   Description for subinterface.
+                                   This can be a template using the AVD string formatter syntax:
+                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                   descriptions-names.html#avd-string-formatter-syntax.
+                                   The available template fields are:
+                                     -
+                                   `subinterface` - The full subinterface name.
+                                     - `subinterface_number` - The number for the
+                                   subinterface.
+                                     - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                     - `dot1q_client_vlan` -
+                                   The Client VLAN ID encapsulation.
+                                     - `endpoint_type` - The `type` of the connected endpoint either
+                                   set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                     -
+                                   `endpoint` - The name of the connected endpoint
                                 short_esi:
                                    In format xxxx:xxxx:xxxx or "auto".
                                    Required for multihomed port-channels with subinterfaces.
@@ -3192,8 +3230,10 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
-                class Subinterfaces(AvdList[SubinterfacesItem]):
-                    """Subclass of AvdList with `SubinterfacesItem` items."""
+                class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                    """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                    _primary_key: ClassVar[str] = "number"
 
                 Subinterfaces._item_type = SubinterfacesItem
 
@@ -3283,19 +3323,17 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 subinterfaces: Subinterfaces
                 """
-                Port-Channel L2 Subinterfaces
+                Port-Channel L2 Subinterfaces.
                 Subinterfaces are only supported on routed port-channels, which means
                 they cannot be configured on MLAG port-channels.
-                The parent Port-Channel interface is automatically
-                created if not defined elsewhere.
-                Setting short_esi: auto generates the short_esi automatically
-                using a hash of configuration elements.
-                Please see the notes under "EVPN A/A ESI dual-attached
-                endpoint scenario" before setting short_esi: auto.
+                Setting short_esi: auto generates the short_esi
+                automatically using a hash of configuration elements.
+                Please see the notes under "EVPN A/A ESI dual-
+                attached endpoint scenario" before setting short_esi: auto.
 
 
-                Subclass of AvdList with `SubinterfacesItem`
-                items.
+                Subclass of AvdIndexedList with
+                `SubinterfacesItem` items. Primary key is `number` (`int`).
                 """
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -3382,19 +3420,17 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of AvdModel.
                             subinterfaces:
-                               Port-Channel L2 Subinterfaces
+                               Port-Channel L2 Subinterfaces.
                                Subinterfaces are only supported on routed port-channels, which means
                                they cannot be configured on MLAG port-channels.
-                               The parent Port-Channel interface is automatically
-                               created if not defined elsewhere.
-                               Setting short_esi: auto generates the short_esi automatically
-                               using a hash of configuration elements.
-                               Please see the notes under "EVPN A/A ESI dual-attached
-                               endpoint scenario" before setting short_esi: auto.
+                               Setting short_esi: auto generates the short_esi
+                               automatically using a hash of configuration elements.
+                               Please see the notes under "EVPN A/A ESI dual-
+                               attached endpoint scenario" before setting short_esi: auto.
 
 
-                               Subclass of AvdList with `SubinterfacesItem`
-                               items.
+                               Subclass of AvdIndexedList with
+                               `SubinterfacesItem` items. Primary key is `number` (`int`).
                             raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                             structured_config:
                                Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -6133,8 +6169,10 @@ class EosDesigns(EosDesignsRootModel):
                     "us-central1-a",
                     "us-central1-b",
                     "us-central1-c",
+                    "us-4",
                     "apnortheast-1",
                     "euwest-2",
+                    "eu-3",
                     "ausoutheast-1",
                     "na-northeast1-b",
                     "uk-1",
@@ -25498,14 +25536,34 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {
                     "number": {"type": int},
+                    "description": {"type": str},
                     "short_esi": {"type": str},
                     "vlan_id": {"type": int},
                     "encapsulation_vlan": {"type": EncapsulationVlan},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                 }
-                number: int | None
+                number: int
                 """Subinterface number."""
+                description: str | None
+                """
+                Description for subinterface.
+                This can be a template using the AVD string formatter syntax:
+                https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                descriptions-names.html#avd-string-formatter-syntax.
+                The available template fields are:
+                  -
+                `subinterface` - The full subinterface name.
+                  - `subinterface_number` - The number for the
+                subinterface.
+                  - `vlan_id` - The VLAN ID bridged to this subinterface.
+                  - `dot1q_client_vlan` -
+                The Client VLAN ID encapsulation.
+                  - `endpoint_type` - The `type` of the connected endpoint either
+                set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                  -
+                `endpoint` - The name of the connected endpoint
+                """
                 short_esi: str | None
                 """
                 In format xxxx:xxxx:xxxx or "auto".
@@ -25531,7 +25589,8 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        number: int | None | UndefinedType = Undefined,
+                        number: int | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
                         short_esi: str | None | UndefinedType = Undefined,
                         vlan_id: int | None | UndefinedType = Undefined,
                         encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -25546,6 +25605,23 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             number: Subinterface number.
+                            description:
+                               Description for subinterface.
+                               This can be a template using the AVD string formatter syntax:
+                               https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                               descriptions-names.html#avd-string-formatter-syntax.
+                               The available template fields are:
+                                 -
+                               `subinterface` - The full subinterface name.
+                                 - `subinterface_number` - The number for the
+                               subinterface.
+                                 - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                 - `dot1q_client_vlan` -
+                               The Client VLAN ID encapsulation.
+                                 - `endpoint_type` - The `type` of the connected endpoint either
+                               set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                 -
+                               `endpoint` - The name of the connected endpoint
                             short_esi:
                                In format xxxx:xxxx:xxxx or "auto".
                                Required for multihomed port-channels with subinterfaces.
@@ -25560,8 +25636,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class Subinterfaces(AvdList[SubinterfacesItem]):
-                """Subclass of AvdList with `SubinterfacesItem` items."""
+            class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                _primary_key: ClassVar[str] = "number"
 
             Subinterfaces._item_type = SubinterfacesItem
 
@@ -25651,19 +25729,17 @@ class EosDesigns(EosDesignsRootModel):
             """
             subinterfaces: Subinterfaces
             """
-            Port-Channel L2 Subinterfaces
+            Port-Channel L2 Subinterfaces.
             Subinterfaces are only supported on routed port-channels, which means
             they cannot be configured on MLAG port-channels.
-            The parent Port-Channel interface is automatically
-            created if not defined elsewhere.
-            Setting short_esi: auto generates the short_esi automatically
-            using a hash of configuration elements.
-            Please see the notes under "EVPN A/A ESI dual-attached
-            endpoint scenario" before setting short_esi: auto.
+            Setting short_esi: auto generates the short_esi
+            automatically using a hash of configuration elements.
+            Please see the notes under "EVPN A/A ESI dual-
+            attached endpoint scenario" before setting short_esi: auto.
 
 
-            Subclass of AvdList with `SubinterfacesItem`
-            items.
+            Subclass of AvdIndexedList with
+            `SubinterfacesItem` items. Primary key is `number` (`int`).
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -25750,19 +25826,17 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         subinterfaces:
-                           Port-Channel L2 Subinterfaces
+                           Port-Channel L2 Subinterfaces.
                            Subinterfaces are only supported on routed port-channels, which means
                            they cannot be configured on MLAG port-channels.
-                           The parent Port-Channel interface is automatically
-                           created if not defined elsewhere.
-                           Setting short_esi: auto generates the short_esi automatically
-                           using a hash of configuration elements.
-                           Please see the notes under "EVPN A/A ESI dual-attached
-                           endpoint scenario" before setting short_esi: auto.
+                           Setting short_esi: auto generates the short_esi
+                           automatically using a hash of configuration elements.
+                           Please see the notes under "EVPN A/A ESI dual-
+                           attached endpoint scenario" before setting short_esi: auto.
 
 
-                           Subclass of AvdList with `SubinterfacesItem`
-                           items.
+                           Subclass of AvdIndexedList with
+                           `SubinterfacesItem` items. Primary key is `number` (`int`).
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
                            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -30391,14 +30465,34 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {
                     "number": {"type": int},
+                    "description": {"type": str},
                     "short_esi": {"type": str},
                     "vlan_id": {"type": int},
                     "encapsulation_vlan": {"type": EncapsulationVlan},
                     "raw_eos_cli": {"type": str},
                     "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                 }
-                number: int | None
+                number: int
                 """Subinterface number."""
+                description: str | None
+                """
+                Description for subinterface.
+                This can be a template using the AVD string formatter syntax:
+                https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                descriptions-names.html#avd-string-formatter-syntax.
+                The available template fields are:
+                  -
+                `subinterface` - The full subinterface name.
+                  - `subinterface_number` - The number for the
+                subinterface.
+                  - `vlan_id` - The VLAN ID bridged to this subinterface.
+                  - `dot1q_client_vlan` -
+                The Client VLAN ID encapsulation.
+                  - `endpoint_type` - The `type` of the connected endpoint either
+                set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                  -
+                `endpoint` - The name of the connected endpoint
+                """
                 short_esi: str | None
                 """
                 In format xxxx:xxxx:xxxx or "auto".
@@ -30424,7 +30518,8 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        number: int | None | UndefinedType = Undefined,
+                        number: int | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
                         short_esi: str | None | UndefinedType = Undefined,
                         vlan_id: int | None | UndefinedType = Undefined,
                         encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -30439,6 +30534,23 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             number: Subinterface number.
+                            description:
+                               Description for subinterface.
+                               This can be a template using the AVD string formatter syntax:
+                               https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                               descriptions-names.html#avd-string-formatter-syntax.
+                               The available template fields are:
+                                 -
+                               `subinterface` - The full subinterface name.
+                                 - `subinterface_number` - The number for the
+                               subinterface.
+                                 - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                 - `dot1q_client_vlan` -
+                               The Client VLAN ID encapsulation.
+                                 - `endpoint_type` - The `type` of the connected endpoint either
+                               set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                 -
+                               `endpoint` - The name of the connected endpoint
                             short_esi:
                                In format xxxx:xxxx:xxxx or "auto".
                                Required for multihomed port-channels with subinterfaces.
@@ -30453,8 +30565,10 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class Subinterfaces(AvdList[SubinterfacesItem]):
-                """Subclass of AvdList with `SubinterfacesItem` items."""
+            class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                _primary_key: ClassVar[str] = "number"
 
             Subinterfaces._item_type = SubinterfacesItem
 
@@ -30544,19 +30658,17 @@ class EosDesigns(EosDesignsRootModel):
             """
             subinterfaces: Subinterfaces
             """
-            Port-Channel L2 Subinterfaces
+            Port-Channel L2 Subinterfaces.
             Subinterfaces are only supported on routed port-channels, which means
             they cannot be configured on MLAG port-channels.
-            The parent Port-Channel interface is automatically
-            created if not defined elsewhere.
-            Setting short_esi: auto generates the short_esi automatically
-            using a hash of configuration elements.
-            Please see the notes under "EVPN A/A ESI dual-attached
-            endpoint scenario" before setting short_esi: auto.
+            Setting short_esi: auto generates the short_esi
+            automatically using a hash of configuration elements.
+            Please see the notes under "EVPN A/A ESI dual-
+            attached endpoint scenario" before setting short_esi: auto.
 
 
-            Subclass of AvdList with `SubinterfacesItem`
-            items.
+            Subclass of AvdIndexedList with
+            `SubinterfacesItem` items. Primary key is `number` (`int`).
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -30643,19 +30755,17 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         subinterfaces:
-                           Port-Channel L2 Subinterfaces
+                           Port-Channel L2 Subinterfaces.
                            Subinterfaces are only supported on routed port-channels, which means
                            they cannot be configured on MLAG port-channels.
-                           The parent Port-Channel interface is automatically
-                           created if not defined elsewhere.
-                           Setting short_esi: auto generates the short_esi automatically
-                           using a hash of configuration elements.
-                           Please see the notes under "EVPN A/A ESI dual-attached
-                           endpoint scenario" before setting short_esi: auto.
+                           Setting short_esi: auto generates the short_esi
+                           automatically using a hash of configuration elements.
+                           Please see the notes under "EVPN A/A ESI dual-
+                           attached endpoint scenario" before setting short_esi: auto.
 
 
-                           Subclass of AvdList with `SubinterfacesItem`
-                           items.
+                           Subclass of AvdIndexedList with
+                           `SubinterfacesItem` items. Primary key is `number` (`int`).
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
                            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -59041,14 +59151,34 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "number": {"type": int},
+                                "description": {"type": str},
                                 "short_esi": {"type": str},
                                 "vlan_id": {"type": int},
                                 "encapsulation_vlan": {"type": EncapsulationVlan},
                                 "raw_eos_cli": {"type": str},
                                 "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             }
-                            number: int | None
+                            number: int
                             """Subinterface number."""
+                            description: str | None
+                            """
+                            Description for subinterface.
+                            This can be a template using the AVD string formatter syntax:
+                            https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                            descriptions-names.html#avd-string-formatter-syntax.
+                            The available template fields are:
+                              -
+                            `subinterface` - The full subinterface name.
+                              - `subinterface_number` - The number for the
+                            subinterface.
+                              - `vlan_id` - The VLAN ID bridged to this subinterface.
+                              - `dot1q_client_vlan` -
+                            The Client VLAN ID encapsulation.
+                              - `endpoint_type` - The `type` of the connected endpoint either
+                            set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                              -
+                            `endpoint` - The name of the connected endpoint
+                            """
                             short_esi: str | None
                             """
                             In format xxxx:xxxx:xxxx or "auto".
@@ -59074,7 +59204,8 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    number: int | None | UndefinedType = Undefined,
+                                    number: int | UndefinedType = Undefined,
+                                    description: str | None | UndefinedType = Undefined,
                                     short_esi: str | None | UndefinedType = Undefined,
                                     vlan_id: int | None | UndefinedType = Undefined,
                                     encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -59089,6 +59220,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         number: Subinterface number.
+                                        description:
+                                           Description for subinterface.
+                                           This can be a template using the AVD string formatter syntax:
+                                           https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                           descriptions-names.html#avd-string-formatter-syntax.
+                                           The available template fields are:
+                                             -
+                                           `subinterface` - The full subinterface name.
+                                             - `subinterface_number` - The number for the
+                                           subinterface.
+                                             - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                             - `dot1q_client_vlan` -
+                                           The Client VLAN ID encapsulation.
+                                             - `endpoint_type` - The `type` of the connected endpoint either
+                                           set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                             -
+                                           `endpoint` - The name of the connected endpoint
                                         short_esi:
                                            In format xxxx:xxxx:xxxx or "auto".
                                            Required for multihomed port-channels with subinterfaces.
@@ -59103,8 +59251,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Subinterfaces(AvdList[SubinterfacesItem]):
-                            """Subclass of AvdList with `SubinterfacesItem` items."""
+                        class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                            """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "number"
 
                         Subinterfaces._item_type = SubinterfacesItem
 
@@ -59194,19 +59344,17 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         subinterfaces: Subinterfaces
                         """
-                        Port-Channel L2 Subinterfaces
+                        Port-Channel L2 Subinterfaces.
                         Subinterfaces are only supported on routed port-channels, which means
                         they cannot be configured on MLAG port-channels.
-                        The parent Port-Channel interface is automatically
-                        created if not defined elsewhere.
-                        Setting short_esi: auto generates the short_esi automatically
-                        using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-attached
-                        endpoint scenario" before setting short_esi: auto.
+                        Setting short_esi: auto generates the short_esi
+                        automatically using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-
+                        attached endpoint scenario" before setting short_esi: auto.
 
 
-                        Subclass of AvdList with `SubinterfacesItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `SubinterfacesItem` items. Primary key is `number` (`int`).
                         """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -59293,19 +59441,17 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     subinterfaces:
-                                       Port-Channel L2 Subinterfaces
+                                       Port-Channel L2 Subinterfaces.
                                        Subinterfaces are only supported on routed port-channels, which means
                                        they cannot be configured on MLAG port-channels.
-                                       The parent Port-Channel interface is automatically
-                                       created if not defined elsewhere.
-                                       Setting short_esi: auto generates the short_esi automatically
-                                       using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-attached
-                                       endpoint scenario" before setting short_esi: auto.
+                                       Setting short_esi: auto generates the short_esi
+                                       automatically using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-
+                                       attached endpoint scenario" before setting short_esi: auto.
 
 
-                                       Subclass of AvdList with `SubinterfacesItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `SubinterfacesItem` items. Primary key is `number` (`int`).
                                     raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                                     structured_config:
                                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -60997,14 +61143,34 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "number": {"type": int},
+                                "description": {"type": str},
                                 "short_esi": {"type": str},
                                 "vlan_id": {"type": int},
                                 "encapsulation_vlan": {"type": EncapsulationVlan},
                                 "raw_eos_cli": {"type": str},
                                 "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             }
-                            number: int | None
+                            number: int
                             """Subinterface number."""
+                            description: str | None
+                            """
+                            Description for subinterface.
+                            This can be a template using the AVD string formatter syntax:
+                            https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                            descriptions-names.html#avd-string-formatter-syntax.
+                            The available template fields are:
+                              -
+                            `subinterface` - The full subinterface name.
+                              - `subinterface_number` - The number for the
+                            subinterface.
+                              - `vlan_id` - The VLAN ID bridged to this subinterface.
+                              - `dot1q_client_vlan` -
+                            The Client VLAN ID encapsulation.
+                              - `endpoint_type` - The `type` of the connected endpoint either
+                            set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                              -
+                            `endpoint` - The name of the connected endpoint
+                            """
                             short_esi: str | None
                             """
                             In format xxxx:xxxx:xxxx or "auto".
@@ -61030,7 +61196,8 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    number: int | None | UndefinedType = Undefined,
+                                    number: int | UndefinedType = Undefined,
+                                    description: str | None | UndefinedType = Undefined,
                                     short_esi: str | None | UndefinedType = Undefined,
                                     vlan_id: int | None | UndefinedType = Undefined,
                                     encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
@@ -61045,6 +61212,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         number: Subinterface number.
+                                        description:
+                                           Description for subinterface.
+                                           This can be a template using the AVD string formatter syntax:
+                                           https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                           descriptions-names.html#avd-string-formatter-syntax.
+                                           The available template fields are:
+                                             -
+                                           `subinterface` - The full subinterface name.
+                                             - `subinterface_number` - The number for the
+                                           subinterface.
+                                             - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                             - `dot1q_client_vlan` -
+                                           The Client VLAN ID encapsulation.
+                                             - `endpoint_type` - The `type` of the connected endpoint either
+                                           set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                             -
+                                           `endpoint` - The name of the connected endpoint
                                         short_esi:
                                            In format xxxx:xxxx:xxxx or "auto".
                                            Required for multihomed port-channels with subinterfaces.
@@ -61059,8 +61243,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Subinterfaces(AvdList[SubinterfacesItem]):
-                            """Subclass of AvdList with `SubinterfacesItem` items."""
+                        class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                            """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "number"
 
                         Subinterfaces._item_type = SubinterfacesItem
 
@@ -61150,19 +61336,17 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         subinterfaces: Subinterfaces
                         """
-                        Port-Channel L2 Subinterfaces
+                        Port-Channel L2 Subinterfaces.
                         Subinterfaces are only supported on routed port-channels, which means
                         they cannot be configured on MLAG port-channels.
-                        The parent Port-Channel interface is automatically
-                        created if not defined elsewhere.
-                        Setting short_esi: auto generates the short_esi automatically
-                        using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-attached
-                        endpoint scenario" before setting short_esi: auto.
+                        Setting short_esi: auto generates the short_esi
+                        automatically using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-
+                        attached endpoint scenario" before setting short_esi: auto.
 
 
-                        Subclass of AvdList with `SubinterfacesItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `SubinterfacesItem` items. Primary key is `number` (`int`).
                         """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -61249,19 +61433,17 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     subinterfaces:
-                                       Port-Channel L2 Subinterfaces
+                                       Port-Channel L2 Subinterfaces.
                                        Subinterfaces are only supported on routed port-channels, which means
                                        they cannot be configured on MLAG port-channels.
-                                       The parent Port-Channel interface is automatically
-                                       created if not defined elsewhere.
-                                       Setting short_esi: auto generates the short_esi automatically
-                                       using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-attached
-                                       endpoint scenario" before setting short_esi: auto.
+                                       Setting short_esi: auto generates the short_esi
+                                       automatically using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-
+                                       attached endpoint scenario" before setting short_esi: auto.
 
 
-                                       Subclass of AvdList with `SubinterfacesItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `SubinterfacesItem` items. Primary key is `number` (`int`).
                                     raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                                     structured_config:
                                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
