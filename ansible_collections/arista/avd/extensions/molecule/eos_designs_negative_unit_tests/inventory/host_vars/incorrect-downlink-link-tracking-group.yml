@@ -21,4 +21,4 @@ l3leaf:
 
 expected_error_message: >-
   Link tracking group 'DOWNLINK_GROUP1' referenced under node setting 'link_tracking.downlinks.group' is
-  not defined in 'link_tracking.groups' for device 'incorrect-downlink-link-tracking-group'.
+  not defined in 'link_tracking.groups' for host 'incorrect-downlink-link-tracking-group'.

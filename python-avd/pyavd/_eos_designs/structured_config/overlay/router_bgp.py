@@ -663,7 +663,7 @@ class RouterBgpMixin(Protocol):
                 bgp_as = remote_peer.bgp_as or peer_facts.bgp_as
                 if not (ip_address := remote_peer.ip_address or peer_facts.overlay.peering_address):
                     msg = f"Unable to determine the remote IP address to use for the EVPN Gateway peer '{remote_peer_name}'."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 overlay_peering_address = "Loopback0"
 
             # In both cases if any key is missing raise

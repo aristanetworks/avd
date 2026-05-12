@@ -51,4 +51,4 @@ wan_carriers:
     path_group: INET
     trusted: true
 
-expected_error_message: "'wan_ipsec_profiles' is required but was not found."
+expected_error_message: "'wan_ipsec_profiles' is required but was not found for host 'missing-wan-ipsec-profiles'."

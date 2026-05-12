@@ -18,4 +18,4 @@ l3leaf:
 
 expected_error_message: >-
   Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under l3_interface 'Ethernet1' does
-  not exist in `l3_interface_profiles`.
+  not exist in `l3_interface_profiles` for host 'failure-l3-interface-profile-does-not-exist'.

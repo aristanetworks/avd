@@ -149,13 +149,13 @@ class FilteredTenantsMixin(Protocol):
         """Resolve one l2vlan profile and return it."""
         if profile_name not in self.inputs.l2vlan_profiles:
             msg = f"Profile '{profile_name}' applied under l2vlan '{context}' does not exist in 'l2vlan_profiles'."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]
         if l2vlan_profile.parent_profile:
             if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
                 msg = f"Profile '{l2vlan_profile.parent_profile}' applied under L2VLAN Profile '{profile_name}' does not exist in 'l2vlan_profiles'."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
             parent_profile = self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile]
 
@@ -286,7 +286,7 @@ class FilteredTenantsMixin(Protocol):
                             if not rp_entry.rps:
                                 # TODO: Evaluate if schema should just have required for this key.
                                 msg = f"'pim_rp_addresses.rps' under VRF '{vrf.name}' in Tenant '{tenant.name}' is required."
-                                raise AristaAvdInvalidInputsError(msg)
+                                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                             for rp_ip in rp_entry.rps:
                                 rp_address: dict[str, Any] = {"address": rp_ip}
                                 if rp_entry.groups:
@@ -331,13 +331,13 @@ class FilteredTenantsMixin(Protocol):
         if svi.profile:
             if svi.profile not in self.inputs.svi_profiles:
                 msg = f"Profile '{svi.profile}' applied under SVI '{svi.name}' does not exist in `svi_profiles`."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             svi_profile = self.inputs.svi_profiles[svi.profile]._deepcopy()
 
             if svi_profile.parent_profile:
                 if svi_profile.parent_profile not in self.inputs.svi_profiles:
                     msg = f"Profile '{svi_profile.parent_profile}' applied under SVI Profile '{svi_profile.profile}' does not exist in `svi_profiles`."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
                 # Inherit from the parent profile
                 svi_profile._deepinherit(self.inputs.svi_profiles[svi_profile.parent_profile])
@@ -457,27 +457,29 @@ class FilteredTenantsMixin(Protocol):
         return [int(vlan_id) for vlan_id in range_expand(endpoint_vlans)]
 
     @overload
-    @staticmethod
-    def get_vrf_id(vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: Literal[True] = True) -> int: ...
+    def get_vrf_id(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: Literal[True] = True
+    ) -> int: ...
 
     @overload
-    @staticmethod
-    def get_vrf_id(vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: Literal[False]) -> int | None: ...
+    def get_vrf_id(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: Literal[False]
+    ) -> int | None: ...
 
-    @staticmethod
-    def get_vrf_id(vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: bool = True) -> int | None:
+    def get_vrf_id(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: bool = True
+    ) -> int | None:
         vrf_id = default(vrf.vrf_id, vrf.vrf_vni)
         if vrf_id is None and required:
             msg = f"'vrf_id' or 'vrf_vni' for VRF '{vrf.name}' must be set."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
         return vrf_id
 
-    @staticmethod
-    def get_vrf_vni(vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem) -> int:
+    def get_vrf_vni(self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem) -> int:
         vrf_vni = default(vrf.vrf_vni, vrf.vrf_id)
         if vrf_vni is None:
             msg = f"'vrf_vni' or 'vrf_id' for VRF '{vrf.name}' must be set."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
         return vrf_vni
 
     @cached_property
@@ -580,7 +582,7 @@ class FilteredTenantsMixin(Protocol):
                         f"or `{interface_ospf_path}.cleartext_simple_auth_key`"
                     )
 
-                    raise AristaAvdMissingVariableError(msg)
+                    raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
                 interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
 
@@ -643,7 +645,7 @@ class FilteredTenantsMixin(Protocol):
                     )
                     msg = f"`{interface_ospf_path}.key` or `{interface_ospf_path}.cleartext_key`"
 
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
         interface.ospf_message_digest_keys.append_new(
             id=ospf_key.id,

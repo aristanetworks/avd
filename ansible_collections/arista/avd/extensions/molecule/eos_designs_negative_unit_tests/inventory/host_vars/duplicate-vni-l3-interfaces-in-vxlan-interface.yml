@@ -35,4 +35,5 @@ tenants:
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for VXLAN VNI 1010.
-  The following items are conflicting: SVI 10 in tenant Tenant_A, VRF Tenant_A_WAN_Zone in tenant Tenant_A.
+  The following items are conflicting: SVI 10 in tenant Tenant_A, VRF Tenant_A_WAN_Zone in tenant Tenant_A
+  for host 'duplicate-vni-l3-interfaces-in-vxlan-interface'.

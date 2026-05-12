@@ -66,4 +66,4 @@ wan_carriers:
 
 expected_error_message: >-
   'vtep_ip' is missing for peering with missing-vtep-ip-wan-server which was not found in the inventory.
-  Either set it under 'wan_route_servers' or check your inventory.
+  Either set it under 'wan_route_servers' or check your inventory for host 'missing-vtep-ip-wan-server-not-found-in-the-inventory'.

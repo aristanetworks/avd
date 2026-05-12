@@ -46,4 +46,5 @@ tenants:
                 peer: inet-cloud
 
 expected_error_message: >-
-  L3 Port-Channel sub-interface 'Port-Channel1111.100' has 'member_interfaces' set. This is not a valid setting.
+  L3 Port-Channel sub-interface 'Port-Channel1111.100' has 'member_interfaces' set. This is not a valid setting
+  for host 'net-srv-l3-po-sub-interface-with-members'.

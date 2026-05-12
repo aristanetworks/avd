@@ -12,4 +12,4 @@ l3leaf:
       bgp_as: dd.s2d
 
 expected_error_message: >-
-  Failed to convert 'dd' or 's2 to an integer when converting the BGP AS 'dd.s2' to asplain notation`.
+  Failed to convert 'dd' or 's2' to an integer when converting the BGP AS 'dd.s2' to asplain notation for host 'invalid-value-bgp-as-asplain-notation'.

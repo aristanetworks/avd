@@ -15,4 +15,5 @@ ntp_settings:
       # missing key and cleartext_key so raising
 
 expected_error_message: >-
-  '`ntp_settings.authentication_keys[id=666].key` or `ntp_settings.authentication_keys[id=666].cleartext_key`' is required but was not found.
+  '`ntp_settings.authentication_keys[id=666].key` or `ntp_settings.authentication_keys[id=666].cleartext_key`' is required but was not found
+  for host 'missing-ntp-authentication-key'.

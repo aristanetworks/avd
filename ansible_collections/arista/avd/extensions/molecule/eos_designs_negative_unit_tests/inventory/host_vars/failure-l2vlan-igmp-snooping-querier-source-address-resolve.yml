@@ -24,4 +24,5 @@ tenants:
 
 expected_error_message: >-
   Invalid IGMP snooping querier source address for VLAN 'research1' in Tenant 'Tenant_A'.
-  The value 'none' resolved from 'igmp_snooping.querier.source_address: none' is not a valid IPv4 address.
+  The value 'none' resolved from 'igmp_snooping.querier.source_address: none' is not a valid IPv4 address
+  for host 'failure-l2vlan-igmp-snooping-querier-source-address-resolve'.

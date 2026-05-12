@@ -114,16 +114,16 @@ class RoutingMixin(Protocol):
                     return f"{prefix}.{int(asn) % 65536}"
                 return f"{int(asn) % 65536}"
             except ValueError as e:
-                msg = f"Failed to convert '{asn}' to an integer when converting the BGP AS asdot notation`."
-                raise AristaAvdInvalidInputsError(msg) from e
+                msg = f"Failed to convert '{asn}' to an integer when converting the BGP AS asdot notation."
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname) from e
 
         if self.bgp_as_notation == "asplain" and "." in str(asn):
             prefix, suffix = str(asn).split(".")
             try:
                 return str(int(prefix) * 65536 + int(suffix))
             except ValueError as e:
-                msg = f"Failed to convert '{prefix}' or '{suffix} to an integer when converting the BGP AS '{asn}' to asplain notation`."
-                raise AristaAvdInvalidInputsError(msg) from e
+                msg = f"Failed to convert '{prefix}' or '{suffix}' to an integer when converting the BGP AS '{asn}' to asplain notation."
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname) from e
 
         return str(asn)
 
@@ -164,8 +164,8 @@ class RoutingMixin(Protocol):
                 return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
 
             if self.id is None:
-                msg = f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'"
-                raise AristaAvdInvalidInputsError(msg)
+                msg = "'id' is not set and is required when expanding 'bgp_as'."
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             return bgp_as_range_expanded[self.id - 1]
         except IndexError as exc:
             msg = f"Unable to allocate BGP AS: bgp_as range '{self.node_config.bgp_as}' is too small ({len(bgp_as_range_expanded)}) for the id '{self.id}'."

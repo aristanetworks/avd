@@ -10,4 +10,5 @@ dot1x_settings:
   enabled: true
 
 expected_error_message: >-
-  At least one RADIUS server must be defined under `aaa_settings.radius.servers` for 802.1X authentication.
+  At least one RADIUS server must be defined under `aaa_settings.radius.servers` for 802.1X authentication
+  for host 'dot1x-aaa-authentication-radius-servers-not-defined'.

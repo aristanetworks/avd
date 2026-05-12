@@ -149,7 +149,7 @@ class EthernetInterfacesMixin(Protocol):
                     "Adapter 'vlans' value must be a single vlan ID when mode is 'access' or 'dot1q-tunnel'. "
                     f"Got {adapter.vlans} for interface {ethernet_interface.name}."
                 )
-                raise AristaAvdInvalidInputsError(msg) from e
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname) from e
 
         elif adapter.mode in ["trunk", "trunk phone"]:
             ethernet_interface.switchport.trunk._update(
@@ -256,7 +256,7 @@ class EthernetInterfacesMixin(Protocol):
                         "A Port-channel which is set to LACP fallback mode 'individual' must have either 'profile' or ('mode' and 'vlans') set under "
                         f"'port_channel.lacp_fallback.individual'. This is missing for the connected endpoint with the name '{connected_endpoint.name}'."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                 self._update_ethernet_interface_cfg(individual_adapter_settings, ethernet_interface, connected_endpoint)
 

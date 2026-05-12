@@ -107,4 +107,4 @@ cv_pathfinder_internet_exit_policies:
 
 expected_error_message: >-
   'l3_interfaces[name=Ethernet1].dhcp_ip' needs to be set. When using WAN interface for 'direct' type Internet exit,
-  'dhcp_ip' is used in the NAT ACL.
+  'dhcp_ip' is used in the NAT ACL for host 'missing-internet-exit-policy-direct-wan-interface-dhcp-ip'.

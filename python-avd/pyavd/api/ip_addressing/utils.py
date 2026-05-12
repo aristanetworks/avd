@@ -128,8 +128,8 @@ class UtilsMixin(Protocol):
         """
         # Verify a mix of odd and even IDs
         if (self._mlag_primary_id % 2) == (self._mlag_secondary_id % 2):
-            msg = "MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID"
-            raise AristaAvdError(msg)
+            msg = "MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         odd_id = self._mlag_primary_id
         if odd_id % 2 == 0:
@@ -219,7 +219,7 @@ class UtilsMixin(Protocol):
                 f"Unable to assign IPs for uplinks. 'uplink_ipv4_pool' ({uplink_pool}) on this switch cannot be combined "
                 f"with 'downlink_pools' ({downlink_pool}) on any uplink switch."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         if uplink_pool is not None:
             uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
@@ -229,7 +229,7 @@ class UtilsMixin(Protocol):
             return (downlink_pool, downlink_offset)
 
         msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches must be set."
-        raise AristaAvdInvalidInputsError(msg)
+        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _get_p2p_ipv6_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str, int]:
         """
@@ -250,7 +250,7 @@ class UtilsMixin(Protocol):
                 f"Unable to assign IPs for uplinks. 'uplink_ipv6_pool' ({uplink_pool}) on this switch cannot be combined "
                 f"with 'downlink_pools' ({downlink_pool}) on any uplink switch."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         if uplink_pool is not None:
             uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
@@ -260,4 +260,4 @@ class UtilsMixin(Protocol):
             return (downlink_pool, downlink_offset)
 
         msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv6_pool' on this switch or 'downlink_pools' on all the uplink switches must be set."
-        raise AristaAvdInvalidInputsError(msg)
+        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)

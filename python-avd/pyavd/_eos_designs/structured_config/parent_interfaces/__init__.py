@@ -221,7 +221,7 @@ class AvdStructuredConfigParentInterfacesProtocol(
                 f"One or more L3 Port-Channels '{', '.join(natural_sort(missing_port_channel_parents))}' "
                 "need to be specified as they have sub-interfaces referencing them."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
 
 class AvdStructuredConfigParentInterfaces(StructuredConfigGenerator, AvdStructuredConfigParentInterfacesProtocol):

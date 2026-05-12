@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -48,8 +48,8 @@ class RouterPimSparseModeMixin(Protocol):
             for node in rp_entry.nodes:
                 peer_facts = self.shared_utils.get_peer_facts(node.name)
                 if not peer_facts.router_id:
-                    msg = f"'router_id' is required but was not found for {node.name}."
-                    raise AristaAvdInvalidInputsError(msg)
+                    msg = "router_id"
+                    raise AristaAvdMissingVariableError(msg, host=node.name)
 
                 other_anycast_rp_addresses.append_new(address=peer_facts.router_id)
             self.structured_config.router_pim_sparse_mode.ipv4.anycast_rps.append_new(

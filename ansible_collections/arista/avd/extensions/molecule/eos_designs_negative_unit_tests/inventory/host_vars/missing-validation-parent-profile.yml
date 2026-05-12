@@ -18,4 +18,5 @@ validation_profiles:
       min_power_supplies: 2
 
 expected_error_message: >-
-  Parent validation profile 'profile2' referenced by validation profile 'profile1' is not defined under 'validation_profiles'.
+  Parent validation profile 'profile2' referenced by validation profile 'profile1' is not defined under 'validation_profiles'
+  for host 'missing-validation-parent-profile'.

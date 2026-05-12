@@ -29,4 +29,5 @@ tenants:
           primary_vlan: 3
 
 expected_error_message: >-
-  The primary VLANs '2-3' referenced in a private_vlan definition, do not exist. The primary VLANs must be defined under 'l2vlans' or 'svis'.
+  The primary VLANs '2-3' referenced in a private_vlan definition, do not exist. The primary VLANs must be defined under 'l2vlans' or 'svis'
+  for host 'network-services-l2vlan-pvlan-missing-primary'.

@@ -50,7 +50,7 @@ class NtpMixin(Protocol):
             else:
                 path_prefix = f"ntp_settings.authentication_keys[id={authentication_key.id}]"
                 msg = f"`{path_prefix}.key` or `{path_prefix}.cleartext_key`"
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
         if not ntp_settings.servers:
             # Quick return if we have no servers.

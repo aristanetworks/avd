@@ -1,2 +1,3 @@
 expected_error_message: >-
-  The uplink interface Ethernet52 used as WAN LAN HA on the remote peer missing-ip-address-on-uplink-used-as-wan-lan-ha does not have an IP address.
+  The uplink interface Ethernet52 used as WAN LAN HA on the remote peer missing-ip-address-on-uplink-used-as-wan-lan-ha does not have an IP address
+  for host 'missing-ip-address-on-wan-lan-ha-uplink-for-peer'.

@@ -109,4 +109,5 @@ cv_pathfinder_internet_exit_policies:
       ipsec_key_salt: THIS_SHOULD_BE_VAULTED
 
 expected_error_message: >-
-  The configured internet-exit policy requires `peer_ip` configured under the WAN Interface Ethernet1.
+  The configured internet-exit policy requires `peer_ip` configured under the WAN Interface Ethernet1
+  for host 'missing-internet-exit-policy-zscaler-wan-interface-peer-ip'.

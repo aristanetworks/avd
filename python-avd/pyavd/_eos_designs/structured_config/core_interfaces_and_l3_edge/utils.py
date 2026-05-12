@@ -182,7 +182,7 @@ class UtilsMixin(Protocol):
 
             if peer not in p2p_link.port_channel.nodes_child_interfaces:
                 msg = f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces"
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
             peer_data = p2p_link.port_channel.nodes_child_interfaces[peer]
             default_peer_channel_id = int("".join(re.findall(r"\d", peer_data.interfaces[0])))
@@ -221,7 +221,7 @@ class UtilsMixin(Protocol):
             return data
 
         msg = f"{self.data_model}.p2p_links must have either 'interfaces' or 'port_channel' with correct members set."
-        raise AristaAvdInvalidInputsError(msg)
+        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _get_ptp_config_interface(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem, output_type: type[T_Ptp]) -> T_Ptp:
         """
@@ -244,7 +244,7 @@ class UtilsMixin(Protocol):
             # Apply PTP profile defined for the p2p_link
             elif p2p_link.ptp.profile not in self.inputs.ptp_profiles:
                 msg = f"PTP Profile '{p2p_link.ptp.profile}' referenced under {self.data_model}.p2p_links does not exist in `ptp_profiles`."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             else:
                 ptp_profile_config = self.inputs.ptp_profiles[p2p_link.ptp.profile]._deepcopy()
@@ -393,8 +393,8 @@ class UtilsMixin(Protocol):
             return node_data.channel_id
         if p2p_link.port_channel.channel_id_algorithm == "p2p_link_id":
             if not p2p_link.id:
-                msg = f"'id' is not set for p2p link on {self.shared_utils.hostname} but the selected 'channel_id_algorithm' is 'p2p_link_id'."
-                raise AristaAvdInvalidInputsError(msg)
+                msg = "'id' is not set for p2p link but the selected 'channel_id_algorithm' is 'p2p_link_id'."
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             return p2p_link.id + p2p_link.port_channel._get("channel_id_offset", 0)
 
         # channel_id_algorithm "first_port"

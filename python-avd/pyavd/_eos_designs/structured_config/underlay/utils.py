@@ -96,9 +96,9 @@ class UtilsMixin(Protocol):
                     elif downlink_group not in self.shared_utils.link_tracking_groups:
                         msg = (
                             f"Link tracking group '{downlink_group}' referenced under node setting 'link_tracking.downlinks.group' "
-                            f"is not defined in 'link_tracking.groups' for device '{self.shared_utils.hostname}'."
+                            f"is not defined in 'link_tracking.groups'."
                         )
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     else:
                         downlink.link_tracking_groups.append_new(name=downlink_group, direction="downstream")
                 if peer_facts.inband_ztp:
@@ -165,7 +165,7 @@ class UtilsMixin(Protocol):
         if is_subinterface and not l3_generic_interface.ip_address:
             msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
             msg += f"[name={l3_generic_interface.name}].ip_address"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
         interface._update(
             name=l3_generic_interface.name,

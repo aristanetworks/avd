@@ -206,7 +206,7 @@ class PortChannelInterfacesMixin(Protocol):
                         "Adapter 'vlans' value must be a single vlan ID when mode is 'access' or 'dot1q-tunnel'. "
                         f"Got {adapter.vlans} for interface {port_channel_interface.name}."
                     )
-                    raise AristaAvdInvalidInputsError(msg) from e
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname) from e
 
             elif adapter.mode in ["trunk", "trunk phone"]:
                 port_channel_interface.switchport.trunk._update(

@@ -40,4 +40,4 @@ tenants:
 expected_error_message: >-
   '`tenants[name=L3PO].vrfs[name=TESTING].l3_interfaces[name=Ethernet6].ospf.message_digest_keys[key=1].key`
   or `tenants[name=L3PO].vrfs[name=TESTING].l3_interfaces[name=Ethernet6].ospf.message_digest_keys[key=1].cleartext_key`'
-  is required but was not found.
+  is required but was not found for host 'missing-network-services-l3-interface-ospf-authentication-message-digest-key'.

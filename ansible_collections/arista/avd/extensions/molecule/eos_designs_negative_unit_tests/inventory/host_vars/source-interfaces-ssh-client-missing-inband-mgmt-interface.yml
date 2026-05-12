@@ -14,4 +14,5 @@ source_interfaces:
     inband_mgmt_interface: true
 
 expected_error_message: >-
-  Unable to configure IP SSH Client source-interface since 'inband_mgmt_interface' is not set.
+  Unable to configure IP SSH Client source-interface since 'inband_mgmt_interface' is not set
+  for host 'source-interfaces-ssh-client-missing-inband-mgmt-interface'.

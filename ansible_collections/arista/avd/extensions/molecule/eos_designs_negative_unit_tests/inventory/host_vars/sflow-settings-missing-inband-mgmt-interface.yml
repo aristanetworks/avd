@@ -18,4 +18,5 @@ servers:
         sflow: true
 
 expected_error_message: >-
-  'sflow_settings.destinations[destination=10.10.10.10].vrf' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management.
+  'sflow_settings.destinations[destination=10.10.10.10].vrf' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management
+  for host 'sflow-settings-missing-inband-mgmt-interface'.

@@ -26,4 +26,4 @@ tenants:
 
 expected_error_message: >-
   The private VLAN feature is not enabled by default for this platform. It can be enabled in the platform settings, but might need additional configurations
-  to work.
+  to work for host 'network-services-l2vlan-pvlan-platform-disabled'.

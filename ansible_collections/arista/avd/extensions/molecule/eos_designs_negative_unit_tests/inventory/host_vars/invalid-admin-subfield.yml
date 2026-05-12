@@ -28,4 +28,4 @@ tenants:
 
 expected_error_message: >-
   Invalid value '1.1.2' for 'overlay_rd_type.admin_subfield'.
-  Expected 'router_id', 'vtep_loopback', 'bgp_as', 'switch_id', a valid IPv4 address, or a numeric value from 0 to 4294967295.
+  Expected 'router_id', 'vtep_loopback', 'bgp_as', 'switch_id', a valid IPv4 address, or a numeric value from 0 to 4294967295 for host 'invalid-admin-subfield'.

@@ -79,4 +79,5 @@ wan_virtual_topologies:
 #     type: direct
 
 expected_error_message: >-
-  The Internet Exit policy 'DIRECT-EXIT-POLICY-1' configured under node l3_interface 'Ethernet3' is not defined under 'cv_pathfinder_internet_exit_policies'.
+  The Internet Exit policy 'DIRECT-EXIT-POLICY-1' configured under node l3_interface 'Ethernet3' is not defined under 'cv_pathfinder_internet_exit_policies'
+  for host 'missing-cv-pathfinder-internet-exit-policy-configured-under-l3-interface'.

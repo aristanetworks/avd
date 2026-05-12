@@ -8,7 +8,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import remove_cached_property_type
 from pyavd.j2filters import list_compress, natural_sort, range_expand
 
@@ -59,7 +59,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     f"'uplink_port_channel_id' is set to {uplink_port_channel_id} and is not matching {peer_uplink_port_channel_id} set on MLAG peer."
                     " The 'uplink_port_channel_id' must be matching on MLAG peers."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             return peer_uplink_port_channel_id
 
         # MLAG Primary or not MLAG.
@@ -70,7 +70,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         # produce an error if the switch is MLAG and port-channel ID is above 2000
         if self.shared_utils.mlag and not 1 <= uplink_port_channel_id <= 2000:
             msg = f"'uplink_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_port_channel_id}'."
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         return uplink_port_channel_id
 
@@ -98,7 +98,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     f"'uplink_switch_port_channel_id' is set to {uplink_switch_port_channel_id} and is not matching {peer_uplink_switch_port_channel_id} "
                     "set on MLAG peer. The 'uplink_switch_port_channel_id' must be matching on MLAG peers."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             return peer_uplink_switch_port_channel_id
 
         # MLAG Primary or not MLAG.
@@ -110,7 +110,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         uplink_switch_facts = self.get_peer_facts_generator(self.shared_utils.uplink_switches[0])
         if uplink_switch_facts.shared_utils.mlag and not 1 <= uplink_switch_port_channel_id <= 2000:
             msg = f"'uplink_switch_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_switch_port_channel_id}'."
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         return uplink_switch_port_channel_id
 
@@ -128,20 +128,20 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         if self.shared_utils.uplink_type == "port-channel":
             if self.inputs.avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel and self.shared_utils.underlay_router is True:
                 msg = "'underlay_router: true' is not supported with 'uplink_type: port-channel'."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             get_uplink = self._get_port_channel_uplink
         elif self.shared_utils.uplink_type == "p2p-vrfs":
             if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
                 msg = "'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'p2p-vrfs' as 'uplink_type'."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             get_uplink = self._get_p2p_vrfs_uplink
         elif self.shared_utils.uplink_type == "lan":
             if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
                 msg = "'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when using 'lan' as 'uplink_type'."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             if len(self.shared_utils.uplink_interfaces) > 1:
                 msg = f"'uplink_type: lan' only supports a single uplink interface. Got {self.shared_utils.uplink_interfaces}."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 # TODO: Adjust error message when we add lan-port-channel support.
                 # uplink_type: lan' only supports a single uplink interface.
                 # Got {self._uplink_interfaces}. Consider 'uplink_type: lan-port-channel' if applicable.
@@ -473,7 +473,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     f"Either 'downlink_interfaces' must be set under 'default_interfaces' for uplink_switch' '{uplink_switch}' "
                     "or 'uplink_switch_interfaces' must be set."
                 )
-                raise AristaAvdError(msg, host=self.shared_utils.hostname)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             else:
                 msg = (
                     f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
@@ -481,6 +481,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     f"The uplink switch requires at least {downlink_index + 1} downlink_interfaces, but "
                     f"only {uplink_switch_downlink_interfaces_length} are configured."
                 )
-                raise AristaAvdError(msg, host=uplink_switch)
+                raise AristaAvdInvalidInputsError(msg, host=uplink_switch)
 
         return uplink_switch_interfaces

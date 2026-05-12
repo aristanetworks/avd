@@ -78,7 +78,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                         f"'export_to_cloudvision'. One exporter defined for tracker '{tracker.name}' is conflicting with the 'cloudvision_exporter.name' "
                         "configuration."
                     )
-                    raise AristaAvdInvalidInputsError(msg) from None
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname) from None
 
     def _set_sampled_flow_tracking(self) -> None:
         """Set the structured configuration for sampled flow tracking if any interface is configured."""
@@ -139,7 +139,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                         f"'export_to_cloudvision'. One exporter defined for tracker '{tracker.name}' is conflicting with the 'cloudvision_exporter.name' "
                         "configuration."
                     )
-                    raise AristaAvdInvalidInputsError(msg) from None
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname) from None
 
     def _get_tracker_input_config(self, tracker_name: str) -> EosDesigns.FlowTrackingSettings.TrackersItem:
         """
@@ -158,4 +158,4 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
             return default_tracker
 
         msg = f"The flow tracker '{tracker_name}' is being used for at least one interface, but is not configured in 'self.inputs.flow_tracking_settings'."
-        raise AristaAvdInvalidInputsError(msg)
+        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)

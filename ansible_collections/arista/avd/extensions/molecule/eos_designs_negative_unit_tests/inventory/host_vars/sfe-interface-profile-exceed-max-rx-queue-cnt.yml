@@ -18,4 +18,4 @@ l3leaf:
                 count: 10
 
 expected_error_message: >-
-  'rx_queue.count' for interface 'Ethernet1/19' exceeds maximum supported '6' for this platform.
+  'rx_queue.count' for interface 'Ethernet1/19' exceeds maximum supported '6' for this platform for host 'sfe-interface-profile-exceed-max-rx-queue-cnt'.

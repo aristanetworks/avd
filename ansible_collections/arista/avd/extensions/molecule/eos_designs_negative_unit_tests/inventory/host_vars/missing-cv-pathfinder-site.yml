@@ -51,4 +51,5 @@ wan_carriers:
     trusted: true
 
 expected_error_message: >-
-  A node variable 'cv_pathfinder_site' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'.
+  A node variable 'cv_pathfinder_site' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'
+  for host 'missing-cv-pathfinder-site'.

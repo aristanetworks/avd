@@ -74,7 +74,7 @@ class MiscMixin(Protocol):
                 msg += (
                     f" The 'id' setting must either be removed or changed. If you prefer to keep the 'id' setting, the next available value is {id_from_pool}."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
             return id_from_pool
 
@@ -162,7 +162,7 @@ class MiscMixin(Protocol):
     def fabric_name(self: SharedUtilsProtocol) -> str:
         if not self.inputs.fabric_name:
             msg = "fabric_name"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
         return self.inputs.fabric_name
 
@@ -201,7 +201,7 @@ class MiscMixin(Protocol):
         """
         if name not in self.inputs.ipv4_acls:
             msg = f"ipv4_acls[name={name}]"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
         org_ipv4_acl = self.inputs.ipv4_acls[name]
         # deepcopy to avoid inplace updates below from modifying the original.
         ipv4_acl = org_ipv4_acl._deepcopy()
@@ -217,10 +217,10 @@ class MiscMixin(Protocol):
             err_context = f"ipv4_acls[name={name}].entries[{index}]"
             if not entry.source:
                 msg = f"{err_context}.source"
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(msg, host=self.hostname)
             if not entry.destination:
                 msg = f"{err_context}.destination"
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
             entry.source = self._get_acl_field_with_substitution(entry.source, ip_replacements, f"{err_context}.source", interface_name)
             entry.destination = self._get_acl_field_with_substitution(entry.destination, ip_replacements, f"{err_context}.destination", interface_name)
@@ -296,7 +296,7 @@ class MiscMixin(Protocol):
         """Retrieve prefix list from self.inputs.ipv4_prefix_list_catalog."""
         if name not in self.inputs.ipv4_prefix_list_catalog:
             msg = f"ipv4_prefix_list_catalog[name={name}]"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
         return self.inputs.ipv4_prefix_list_catalog[name]._cast_as(EosCliConfigGen.PrefixListsItem)
 
     def get_l3_bgp_route_map_in(self: SharedUtilsProtocol, name: str, prefix_list_name: str, *, no_advertise: bool = False) -> EosCliConfigGen.RouteMapsItem:
@@ -369,7 +369,7 @@ class MiscMixin(Protocol):
         if is_wan_interface and not interface.bgp.ipv4_prefix_list_in:
             # TODO: Use source here when available.
             msg = f"BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for '{context}'."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         description = (
             interface.description

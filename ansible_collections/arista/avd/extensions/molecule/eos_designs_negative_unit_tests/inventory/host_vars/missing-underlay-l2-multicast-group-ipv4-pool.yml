@@ -31,4 +31,6 @@ tenants:
           - id: "110"
             name: Tenant_A_OP_Zone_1
 
-expected_error_message: "'evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: Tenant_A is required."
+expected_error_message: >-
+  'evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: Tenant_A is required
+  for host 'missing-underlay-l2-multicast-group-ipv4-pool'.

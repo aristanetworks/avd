@@ -30,4 +30,5 @@ tenants:
 expected_error_message: >-
   Invalid configuration on VRF 'IGMP_QUERIER_TEST_3' in Tenant 'Tenant_A'.
   'vtep_diagnostic.loopback' along with either 'vtep_diagnostic.loopback_ip_pools' or
-  'vtep_diagnostic.loopback_ip_range' must be defined when 'igmp_snooping.querier.source_address' is set to 'diagnostic_loopback' on the VRF.
+  'vtep_diagnostic.loopback_ip_range' must be defined when 'igmp_snooping.querier.source_address' is set to 'diagnostic_loopback' on the VRF
+  for host 'failure-svi-igmp-snooping-querier-source-address-for-diagnostic-loopback'.

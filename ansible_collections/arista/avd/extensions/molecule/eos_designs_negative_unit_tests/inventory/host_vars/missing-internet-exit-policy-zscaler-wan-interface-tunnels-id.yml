@@ -111,4 +111,4 @@ cv_pathfinder_internet_exit_policies:
 
 expected_error_message: >-
   Ethernet1.cv_pathfinder_internet_exit.policies[ZSCALER-EXIT-POLICY-1].tunnel_interface_numbers needs to be set,
-  when using wan interface for zscaler type internet exit.
+  when using wan interface for zscaler type internet exit for host 'missing-internet-exit-policy-zscaler-wan-interface-tunnels-id'.

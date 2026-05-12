@@ -103,7 +103,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
     def _set_ip_virtual_router_mac_address(self) -> None:
         if self.shared_utils.node_config.virtual_router_mac_address is None:
             msg = "'virtual_router_mac_address' must be set for inband management parent."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         self.structured_config.ip_virtual_router_mac_address = self.shared_utils.node_config.virtual_router_mac_address.lower()
 
     @run_once_method

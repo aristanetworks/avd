@@ -43,4 +43,4 @@ l3_edge:
 
 expected_error_message: >-
   CloudVision export is enabled for sFlow, but 'cv_settings' is not defined.
-  Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'.
+  Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled' for host 'missing-cv-settings-for-sflow-export-cloudvision-vrf'.

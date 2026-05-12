@@ -37,8 +37,8 @@ class DeviceConfigMixin(Protocol):
 
         if device_profile_name := default(device_config.profile, self.inputs.device_profile):
             if not (device_profile := self.inputs.device_profiles.get(device_profile_name)):
-                msg = f"The Device Profile '{device_profile_name}' applied for the device '{self.hostname}' does not exist under `device_profiles`."
-                raise AristaAvdInvalidInputsError(msg)
+                msg = f"The Device Profile '{device_profile_name}' does not exist under `device_profiles`."
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
             device_config._deepinherit(device_profile._cast_as(EosDesigns.DevicesItem, ignore_extra_keys=True))
 

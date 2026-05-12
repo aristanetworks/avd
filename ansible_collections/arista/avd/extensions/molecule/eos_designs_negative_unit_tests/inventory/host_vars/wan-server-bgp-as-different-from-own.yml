@@ -63,4 +63,5 @@ wan_carriers:
     trusted: true
 
 expected_error_message: >-
-  Only iBGP is supported for WAN, the BGP AS 65000 on missing-cv-pathfinder-site-under-cv-pathfinder-global-sites is different from our own: 65001.
+  Only iBGP is supported for WAN, the BGP AS 65000 on missing-cv-pathfinder-site-under-cv-pathfinder-global-sites is different from our own: 65001
+  for host 'wan-server-bgp-as-different-from-own'.

@@ -26,7 +26,7 @@ class IpAddressingMixin(Protocol):
     def loopback_ipv6_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.loopback_ipv6_pool:
             msg = "loopback_ipv6_pool"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
         return self.node_config.loopback_ipv6_pool
 
@@ -34,7 +34,7 @@ class IpAddressingMixin(Protocol):
     def loopback_ipv4_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.loopback_ipv4_pool:
             msg = "loopback_ipv4_pool"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
         return self.node_config.loopback_ipv4_pool
 
@@ -42,7 +42,7 @@ class IpAddressingMixin(Protocol):
     def vtep_loopback_ipv6_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.vtep_loopback_ipv6_pool:
             msg = "vtep_loopback_ipv6_pool"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
         return self.node_config.vtep_loopback_ipv6_pool
 
@@ -50,7 +50,7 @@ class IpAddressingMixin(Protocol):
     def router_id_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.router_id_pool:
             msg = "router_id_pool"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
         return self.node_config.router_id_pool
 
@@ -58,7 +58,7 @@ class IpAddressingMixin(Protocol):
     def vtep_loopback_ipv4_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.vtep_loopback_ipv4_pool:
             msg = "vtep_loopback_ipv4_pool"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
         return self.node_config.vtep_loopback_ipv4_pool
 

@@ -50,16 +50,16 @@ class UtilsZscalerMixin(Protocol):
         context = "The WAN Internet-exit integration with Zscaler fetches information from CloudVision"
         if not (cv_server := self.inputs.cv_server):
             msg = f"{context} and requires 'cv_server' to be set."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         if not (cv_token := self.inputs.cv_token):
             msg = f"{context} and requires 'cv_token' to be set."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         if self.shared_utils.wan_site is None or not self.shared_utils.wan_site.location:
             region_key = f"name={self.shared_utils.wan_region.name}" if self.shared_utils.wan_region is not None else ""
             site_key = f"name={self.shared_utils.wan_site.name}" if self.shared_utils.wan_site is not None else ""
             msg = f"{context} and requires 'cv_pathfinder_regions[{region_key}].sites[{site_key}].location' to be set."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         wan_site_location = self.shared_utils.wan_site.location
 

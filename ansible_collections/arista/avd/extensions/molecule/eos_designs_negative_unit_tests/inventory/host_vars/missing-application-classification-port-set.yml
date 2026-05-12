@@ -103,4 +103,4 @@ application_classification:
 
 expected_error_message: >-
   L4 Ports field set 'MISSING-PORT-SET' referenced in the application 'TEST-APPLICATION' is not defined
-  in 'application_classification.fields_sets.l4_ports'.
+  in 'application_classification.fields_sets.l4_ports' for host 'missing-application-classification-port-set'.

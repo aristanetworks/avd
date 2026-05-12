@@ -28,4 +28,5 @@ core_interfaces:
       interfaces: [Ethernet1, Ethernet1]
       include_in_underlay_protocol: true
 
-expected_error_message: "core_interfaces.p2p_links.[].as or core_interfaces.p2p_links_profiles.[].as"
+expected_error_message: >-
+  'core_interfaces.p2p_links.[].as or core_interfaces.p2p_links_profiles.[].as' is required but was not found for host 'core-interfaces-p2p-links-as'.

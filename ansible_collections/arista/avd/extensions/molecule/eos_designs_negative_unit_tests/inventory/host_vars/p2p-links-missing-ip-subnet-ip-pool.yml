@@ -17,4 +17,4 @@ l3_edge:
       as: [65000, 65002]
 
 expected_error_message: >-
-  'l3_edge.p2p_links.[].ip, .subnet or .ip_pool' is required but was not found.
+  'l3_edge.p2p_links.[].ip, .subnet or .ip_pool' is required but was not found for host 'p2p-links-missing-ip-subnet-ip-pool'.

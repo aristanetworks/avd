@@ -35,7 +35,7 @@ class WanMixin(Protocol):
         wan_role = self.node_config.wan_role or default_wan_role
         if wan_role is not None and not self.platform_settings.feature_support.wan:
             msg = f"The WAN features are not compatible with the '{self.node_config.platform}' platform"
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
         return wan_role
 
     @cached_property
@@ -54,7 +54,7 @@ class WanMixin(Protocol):
     def wan_listen_ranges(self: SharedUtilsProtocol) -> EosDesigns.BgpPeerGroups.WanOverlayPeers.ListenRangePrefixes:
         if not self.inputs.bgp_peer_groups.wan_overlay_peers.listen_range_prefixes:
             msg = "bgp_peer_groups.wan_overlay_peers.listen_range_prefixes"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
         return self.inputs.bgp_peer_groups.wan_overlay_peers.listen_range_prefixes
 
     @cached_property
@@ -94,7 +94,7 @@ class WanMixin(Protocol):
                 "At least one WAN interface must be configured on a WAN router. "
                 "Add WAN interfaces under 'l3_interfaces' or 'l3_port_channels' node setting with 'wan_carrier' set."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         wan_carriers_dict = {}
         # Collect WAN carriers information for WAN l3_interfaces
@@ -125,7 +125,7 @@ class WanMixin(Protocol):
             if interface.wan_carrier and interface.wan_carrier not in local_carriers_dict:
                 if interface.wan_carrier not in self.inputs.wan_carriers:
                     msg = f"WAN carrier {interface.wan_carrier} is not in the available carriers defined in `wan_carriers`"
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
                 local_carriers_dict[interface.wan_carrier] = self.inputs.wan_carriers[interface.wan_carrier]._as_dict(include_default_values=True)
                 local_carriers_dict[interface.wan_carrier]["interfaces"] = []
@@ -158,7 +158,7 @@ class WanMixin(Protocol):
             if path_group_name not in local_path_groups:
                 if path_group_name not in self.inputs.wan_path_groups:
                     msg = f"WAN path_group {path_group_name} defined for a WAN carrier is not in the available path_groups defined in `wan_path_groups`"
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
                 local_path_groups[path_group_name] = self.inputs.wan_path_groups[path_group_name]._deepcopy()
                 local_path_groups[path_group_name]._internal_data.interfaces = []
@@ -217,7 +217,7 @@ class WanMixin(Protocol):
                     f"The IP address for WAN interface '{interface.name}' on Route Server '{self.hostname}' is not defined'. "
                     "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             # Returning None for WAN client is not important as it is not used in AVD
             return None
 
@@ -227,7 +227,7 @@ class WanMixin(Protocol):
                     f"The IP address for WAN interface '{interface.name}' on Route Server '{self.hostname}' is set to 'dhcp'. "
                     "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             return "dhcp"
 
         return get_ip_from_ip_prefix(interface.ip_address)
@@ -242,7 +242,7 @@ class WanMixin(Protocol):
         node_defined_site = self.node_config.cv_pathfinder_site
         if not node_defined_site and self.is_cv_pathfinder_client:
             msg = "A node variable 'cv_pathfinder_site' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         if not node_defined_site:
             return None
@@ -251,7 +251,7 @@ class WanMixin(Protocol):
         if self.is_cv_pathfinder_server and self.wan_region is None:
             if node_defined_site not in self.inputs.cv_pathfinder_global_sites:
                 msg = f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'cv_pathfinder_global_sites' list"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             return self.inputs.cv_pathfinder_global_sites[node_defined_site]
 
         if self.wan_region is None or node_defined_site not in self.wan_region.sites:
@@ -259,7 +259,7 @@ class WanMixin(Protocol):
                 f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'sites' list for the region"
                 f" '{self.wan_region.name if self.wan_region is not None else '.'}'."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         return self.wan_region.sites[node_defined_site]
 
@@ -273,14 +273,14 @@ class WanMixin(Protocol):
         node_defined_region = self.node_config.cv_pathfinder_region
         if not node_defined_region and self.is_cv_pathfinder_client:
             msg = "A node variable 'cv_pathfinder_region' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         if node_defined_region is None:
             return None
 
         if node_defined_region not in self.inputs.cv_pathfinder_regions:
             msg = "The 'cv_pathfinder_region' defined at the node level could not be found under the 'cv_pathfinder_regions' key."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         return self.inputs.cv_pathfinder_regions[node_defined_region]
 
@@ -295,7 +295,7 @@ class WanMixin(Protocol):
         if self.wan_region is None:
             # Should never happen but just in case.
             msg = "Could not find 'cv_pathfinder_region' so it is not possible to auto-generate the zone."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         return EosCliConfigGen.RouterAdaptiveVirtualTopology.Zone(name=f"{self.wan_region.name}-ZONE", id=1)
 
@@ -326,7 +326,7 @@ class WanMixin(Protocol):
                 # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
                 if bgp_as != self.bgp_as:
                     msg = f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs.hostname} is different from our own: {self.bgp_as}."
-                    raise AristaAvdError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
                 # Prefer values coming from the input variables over peer facts
                 if not wan_rs.vtep_ip:
@@ -335,7 +335,7 @@ class WanMixin(Protocol):
                             f"'vtep_ip' is missing for peering with {wan_rs.hostname}, either set it under 'wan_route_servers' or something is wrong with"
                             " the peer facts."
                         )
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                     wan_rs.vtep_ip = peer_vtep_ip
 
                 if not wan_rs.path_groups:
@@ -344,7 +344,7 @@ class WanMixin(Protocol):
                             f"'wan_path_groups' is missing for peering with {wan_rs.hostname}, either set it under 'wan_route_servers'"
                             " or something is wrong with the peer facts."
                         )
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
                     # We cannot coerce or load with _from_list() since the data models are not compatible.
                     wan_rs.path_groups = EosDesigns.WanRouteServersItem.PathGroups(
@@ -369,14 +369,14 @@ class WanMixin(Protocol):
                         f"'vtep_ip' is missing for peering with {wan_rs.hostname} which was not found in the inventory. Either set it under"
                         " 'wan_route_servers' or check your inventory."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
                 if not wan_rs.path_groups:
                     msg = (
                         f"'path_groups' is missing for peering with {wan_rs.hostname} which was not found in the inventory,"
                         " Either set it under 'wan_route_servers' or check your inventory."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
             # Filtering wan_path_groups to only take the ones this device uses to connect to pathfinders.
             wan_rs.path_groups = EosDesigns.WanRouteServersItem.PathGroups(
@@ -559,7 +559,7 @@ class WanMixin(Protocol):
                 if not interfaces or uplink.interface in interfaces:
                     if not uplink.ip_address:
                         msg = f"The uplink interface {uplink.interface} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address."
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                     ip_addresses.append(f"{uplink.ip_address}/{uplink.prefix_length}")
         else:
             # Only one supported HA interface today when not using uplinks
@@ -581,7 +581,7 @@ class WanMixin(Protocol):
                 if not interfaces or uplink.interface in interfaces:
                     if not uplink.ip_address:
                         msg = f"The uplink interface {uplink.interface} used as WAN LAN HA does not have an IP address."
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.hostname)
                     ip_addresses.append(f"{uplink.ip_address}/{uplink.prefix_length}")
         else:
             # Only one supported HA interface today when not using uplinks
@@ -593,7 +593,7 @@ class WanMixin(Protocol):
         """Return the configured wan_ha.ha_ipv4_pool."""
         if not self.node_config.wan_ha.ha_ipv4_pool:
             msg = "Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
         return self.node_config.wan_ha.ha_ipv4_pool
 
     def generate_lb_policy_name(self: SharedUtilsProtocol, name: str) -> str:

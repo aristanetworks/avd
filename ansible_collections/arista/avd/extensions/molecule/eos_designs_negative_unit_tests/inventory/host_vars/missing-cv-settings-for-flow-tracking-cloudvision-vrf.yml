@@ -28,4 +28,5 @@ flow_tracking_settings:
 
 expected_error_message: >-
   CloudVision export is enabled for flow_tracking_settings, but 'cv_settings' is not defined.
-  Please configure 'cv_settings' when enabling 'flow_tracking_settings.trackers[name=FLOW-TRACKER-11].export_to_cloudvision'.
+  Please configure 'cv_settings' when enabling 'flow_tracking_settings.trackers[name=FLOW-TRACKER-11].export_to_cloudvision'
+  for host 'missing-cv-settings-for-flow-tracking-cloudvision-vrf'.

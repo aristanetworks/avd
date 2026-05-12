@@ -27,16 +27,16 @@ class ManagementCvxMixin(Protocol):
 
         if not self.inputs.overlay_cvx_servers:
             msg = "overlay_cvx_servers"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
         for overlay_cvx_server in self.inputs.overlay_cvx_servers:
             peer_switch_facts = self.shared_utils.get_peer_facts(overlay_cvx_server)
             if not peer_switch_facts.mgmt_ip:
                 msg = f"'mgmt_ip' for CVX Server {overlay_cvx_server} is required."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             if peer_switch_facts.mgmt_ip == "dhcp":
                 msg = f"'mgmt_ip' for CVX Server '{overlay_cvx_server}' must be a static management IP address, 'dhcp' is not supported."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             cvx_server_ip = peer_switch_facts.mgmt_ip
             self.structured_config.management_cvx.server_hosts.append(get_ip_from_ip_prefix(cvx_server_ip))
 

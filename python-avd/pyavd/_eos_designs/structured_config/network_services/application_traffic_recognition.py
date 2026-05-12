@@ -52,7 +52,7 @@ class ApplicationTrafficRecognitionMixin(Protocol):
                     f"Application Profile '{virtual_topology.application_profile}' referenced in policy '{policy_name}' "
                     "is not defined in 'application_classification.application_profiles'."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         else:
             atr.application_profiles.append(self.inputs.application_classification.application_profiles[virtual_topology.application_profile])
@@ -88,7 +88,7 @@ class ApplicationTrafficRecognitionMixin(Protocol):
                     f"Category '{category.name}' referenced in the Application Profile '{application_profile.name}' "
                     "is not defined in 'application_classification.categories'."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             atr.categories.append(self.inputs.application_classification.categories[category.name])
 
@@ -170,7 +170,7 @@ class ApplicationTrafficRecognitionMixin(Protocol):
                 f"IPv4 prefix field set '{prefix_set_name}' referenced in the application '{application_name}' "
                 "is not defined in 'application_classification.fields_sets.ipv4_prefixes'."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _update_port_set(
         self: AvdStructuredConfigNetworkServicesProtocol, atr: EosCliConfigGen.ApplicationTrafficRecognition, port_set_name: str, application_name: str
@@ -191,7 +191,7 @@ class ApplicationTrafficRecognitionMixin(Protocol):
                 f"L4 Ports field set '{port_set_name}' referenced in the application '{application_name}' "
                 "is not defined in 'application_classification.fields_sets.l4_ports'."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         atr.field_sets.l4_ports.append(self.inputs.application_classification.field_sets.l4_ports[port_set_name])
 

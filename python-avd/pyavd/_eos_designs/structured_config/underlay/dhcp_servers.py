@@ -112,7 +112,7 @@ class DhcpServersMixin(Protocol):
 
         if not ntp_servers:
             msg = "When in-band ZTP is enabled, at least one NTP server's `name` field provided under `ntp_settings.servers` must be a valid IPv4 address."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         suboptions = EosCliConfigGen.DhcpServersItem.Ipv4VendorOptionsItem.SubOptions()
         suboptions.append_new(code=42, array_ipv4_address=ntp_servers)

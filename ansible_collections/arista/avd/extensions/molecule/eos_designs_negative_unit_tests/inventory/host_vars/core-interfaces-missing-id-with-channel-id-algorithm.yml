@@ -35,4 +35,4 @@ core_interfaces:
             interfaces: [Ethernet26, Ethernet27]
 
 expected_error_message: >-
-  'id' is not set for p2p link on core-interfaces-missing-id-with-channel-id-algorithm but the selected 'channel_id_algorithm' is 'p2p_link_id'.
+  'id' is not set for p2p link but the selected 'channel_id_algorithm' is 'p2p_link_id' for host 'core-interfaces-missing-id-with-channel-id-algorithm'.

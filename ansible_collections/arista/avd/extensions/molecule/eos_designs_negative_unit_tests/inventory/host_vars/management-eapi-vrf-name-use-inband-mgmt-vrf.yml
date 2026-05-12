@@ -18,4 +18,5 @@ management_eapi:
       enabled: true
 
 expected_error_message: >-
-  'self.inputs.management_eapi.vrfs[name=use_inband_mgmt_vrf]' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management.
+  'self.inputs.management_eapi.vrfs[name=use_inband_mgmt_vrf]' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management
+  for host 'management-eapi-vrf-name-use-inband-mgmt-vrf'.

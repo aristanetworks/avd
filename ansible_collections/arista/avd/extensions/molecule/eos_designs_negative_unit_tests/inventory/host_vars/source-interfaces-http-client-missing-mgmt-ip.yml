@@ -14,4 +14,4 @@ source_interfaces:
     inband_mgmt_interface: true
 
 expected_error_message: >-
-  Unable to configure IP HTTP Client source-interface since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set.
+  Unable to configure IP HTTP Client source-interface since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set for host 'source-interfaces-http-client-missing-mgmt-ip'.

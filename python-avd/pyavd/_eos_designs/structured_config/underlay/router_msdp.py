@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdMissingVariableError
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -50,8 +50,8 @@ class RouterMsdpMixin(Protocol):
             peer_facts = self.shared_utils.get_peer_facts(peer)
             # TODO: router_id is always set by method router_id in python-avd/pyavd/api/ip_addressing/__init__.py.
             if not peer_facts.router_id:
-                msg = f"'router_id' is required but was not found for {peer}."
-                raise AristaAvdInvalidInputsError(msg)
+                msg = "router_id"
+                raise AristaAvdMissingVariableError(msg, host=peer)
             self.structured_config.router_msdp.peers.append_new(
                 ipv4_address=peer_facts.router_id,
                 local_interface="Loopback0",

@@ -22,4 +22,4 @@ l3leaf:
       id: 1
 
 expected_error_message: >-
-  'router_id' is required but was not found for missing-mgmt-ip-cvx-servers.
+  'router_id' is required but was not found for host 'missing-mgmt-ip-cvx-servers'.

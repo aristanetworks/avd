@@ -132,7 +132,7 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
                     f"`wan_virtual_topologies.policies[{policy.name}].application_virtual_topologies[{application_virtual_topology.application_profile}]` "
                     "when `wan_mode` is 'cv-pathfinder."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             output_policy.matches.append_new(
                 application_profile=application_virtual_topology.application_profile,

@@ -10,4 +10,5 @@ snmp_settings:
   # missing inband IP to compute properly the engine ID
 #
 expected_error_message: >-
-  'snmp_settings.local_engineid_ip' is set to 'use_inband_mgmt_interface' but this node is missing configuration for inband management.
+  'snmp_settings.local_engineid_ip' is set to 'use_inband_mgmt_interface' but this node is missing configuration for inband management
+  for host 'snmp-settings-missing-inband-mgmt'.

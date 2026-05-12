@@ -167,10 +167,10 @@ class IpIgmpSnoopingMixin(Protocol):
             try:
                 IPv4Address(source_address)
             except AddressValueError:
-                raise AristaAvdInvalidInputsError(msg) from None
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname) from None
             else:
                 return source_address
-        raise AristaAvdInvalidInputsError(msg)
+        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _get_svi_igmp_querier_source_address(
         self: AvdStructuredConfigNetworkServicesProtocol,
@@ -204,7 +204,7 @@ class IpIgmpSnoopingMixin(Protocol):
                         "'vtep_diagnostic.loopback_ip_pools' or 'vtep_diagnostic.loopback_ip_range' must be defined "
                         "when 'igmp_snooping.querier.source_address' is set to 'diagnostic_loopback' on the VRF."
                     )
-                    raise AristaAvdInvalidInputsError(msg) from None
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname) from None
             case _:
                 source_address = source_address_key
 
@@ -219,8 +219,8 @@ class IpIgmpSnoopingMixin(Protocol):
             try:
                 IPv4Address(source_address)
             except AddressValueError:
-                raise AristaAvdInvalidInputsError(msg) from None
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname) from None
             else:
                 return source_address
 
-        raise AristaAvdInvalidInputsError(msg)
+        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)

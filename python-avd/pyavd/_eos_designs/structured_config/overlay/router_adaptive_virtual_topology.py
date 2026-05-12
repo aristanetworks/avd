@@ -33,12 +33,12 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
         if (wan_region := self.shared_utils.wan_region) is None:
             # Should never happen but just in case.
             msg = "Could not find 'cv_pathfinder_region' so it is not possible to generate config for router_adaptive_virtual_topology."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         if (wan_site := self.shared_utils.wan_site) is None:
             # Should never happen but just in case.
             msg = "Could not find 'cv_pathfinder_site' so it is not possible to generate config for router_adaptive_virtual_topology."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         # Edge or Transit
         self.structured_config.router_adaptive_virtual_topology._update(

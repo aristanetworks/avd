@@ -21,4 +21,4 @@ cvxserver:
       id: 1
 
 expected_error_message: >-
-  'mgmt_ip' for CVX Server missing-mgmt-ip-overlay-cvx-servers is required.
+  'mgmt_ip' for CVX Server missing-mgmt-ip-overlay-cvx-servers is required for host 'missing-mgmt-ip-overlay-cvx-servers'.

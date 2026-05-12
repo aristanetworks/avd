@@ -43,12 +43,12 @@ class RouterOspfMixin(Protocol):
                 if vrf.ospf.process_id == self.inputs.underlay_ospf_process_id and vrf.name != "default":
                     msg = f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.process_id[process_id={vrf.ospf.process_id}]' should not match the \
 underlay OSPF process id '{self.inputs.underlay_ospf_process_id}'."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                 process_id = default(vrf.ospf.process_id, vrf.vrf_id)
                 if not process_id:
-                    msg = f"Missing or invalid 'ospf.process_id' or 'vrf_id' under vrf '{vrf.name}"
-                    raise AristaAvdInvalidInputsError(msg)
+                    msg = f"Missing or invalid 'ospf.process_id' or 'vrf_id' under vrf '{vrf.name}'."
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                 process = EosCliConfigGen.RouterOspf.ProcessIdsItem(
                     id=process_id, passive_interface_default=True, router_id=self.get_protocol_vrf_router_id(vrf, tenant, vrf.ospf.router_id)

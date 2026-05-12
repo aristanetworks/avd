@@ -51,7 +51,7 @@ class UtilsMixin(Protocol):
         if include_mgmt_interface:
             if (self.shared_utils.node_config.mgmt_ip is None) and (self.shared_utils.node_config.ipv6_mgmt_ip is None):
                 msg = f"Unable to configure {error_context} source-interface since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             # mgmt_interface is always set (defaults to "Management1") so no need for error handling missing interface.
             if self.inputs.mgmt_interface_vrf != "default":
@@ -63,7 +63,7 @@ class UtilsMixin(Protocol):
             # Check for missing interface
             if self.shared_utils.inband_mgmt_interface is None:
                 msg = f"Unable to configure {error_context} source-interface since 'inband_mgmt_interface' is not set."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             # Check for duplicate VRF
             # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
@@ -113,7 +113,7 @@ class UtilsMixin(Protocol):
             return encrypt_func(radius_or_tacacs_server.cleartext_key, salt)
 
         msg = f"`{path_prefix}.key` or `{path_prefix}.cleartext_key`"
-        raise AristaAvdMissingVariableError(msg)
+        raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
     def get_salt(self: AvdStructuredConfigBaseProtocol, string: str) -> str:
         """

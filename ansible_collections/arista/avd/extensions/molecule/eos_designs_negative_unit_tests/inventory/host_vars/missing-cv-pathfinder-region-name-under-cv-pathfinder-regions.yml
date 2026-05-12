@@ -52,4 +52,5 @@ wan_carriers:
     trusted: true
 
 expected_error_message: >-
-  The 'cv_pathfinder_region' defined at the node level could not be found under the 'cv_pathfinder_regions' key.
+  The 'cv_pathfinder_region' defined at the node level could not be found under the 'cv_pathfinder_regions' key
+  for host 'missing-cv-pathfinder-region-name-under-cv-pathfinder-regions'.

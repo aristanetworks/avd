@@ -22,4 +22,5 @@ servers:
           short_esi: '0303:0202:0101'
 
 expected_error_message: >-
-  The length of 'servers[name=server01_ESI].adapters[0].switches' should be greater than 1 to configure short ESI.
+  The length of 'servers[name=server01_ESI].adapters[0].switches' should be greater than 1 to configure short ESI
+  for host 'connected-endpoints-short-esi-single-homed'.

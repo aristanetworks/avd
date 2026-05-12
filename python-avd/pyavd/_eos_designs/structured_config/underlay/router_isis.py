@@ -76,16 +76,13 @@ class RouterIsisMixin(Protocol):
         if self.inputs.isis_system_id_format == "node_id":
             isis_system_id_prefix = self.shared_utils.node_config.isis_system_id_prefix
             if self.shared_utils.underlay_isis is True and isis_system_id_prefix is None:
-                msg = (
-                    f"'isis_system_id_prefix' is required when 'isis_system_id_format' is set to 'node_id'."
-                    f" 'isis_system_id_prefix' was not set for '{self.shared_utils.hostname}'"
-                )
-                raise AristaAvdInvalidInputsError(msg)
+                msg = "'isis_system_id_prefix' is required when 'isis_system_id_format' is set to 'node_id'. 'isis_system_id_prefix' was not set."
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             # This condition is not covered by current tests but is retained for potential unexpected behavior.
             if self.shared_utils.id is None:
-                msg = f"'id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using the node ID"
-                raise AristaAvdInvalidInputsError(msg)
+                msg = "'id' is required to set ISIS NET address using the node ID."
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             system_id = f"{isis_system_id_prefix}.{self.shared_utils.id:04d}"
         else:
             system_id = self.ipv4_to_isis_system_id(cast("str", self.shared_utils.router_id))

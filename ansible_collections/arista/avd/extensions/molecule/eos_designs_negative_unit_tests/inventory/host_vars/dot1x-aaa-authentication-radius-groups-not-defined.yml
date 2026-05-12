@@ -13,4 +13,4 @@ dot1x_settings:
 
 expected_error_message: >-
   The RADIUS authentication server group(s) 'agni-server-group, backup-agni-server-group'
-  are not defined on any server under 'aaa_settings.radius.servers'.
+  are not defined on any server under 'aaa_settings.radius.servers' for host 'dot1x-aaa-authentication-radius-groups-not-defined'.

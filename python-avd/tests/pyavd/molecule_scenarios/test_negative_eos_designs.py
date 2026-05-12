@@ -31,8 +31,7 @@ def test_negative_eos_designs(molecule_scenario: MoleculeScenario, molecule_host
 
     if molecule_host.name in host_inputs["groups"].get("EOS_DESIGNS_FACTS_FAILURES"):
         # Run get_avd_facts and expecting an error to be raised.
-        # Patching the expected error message since the suffix is added by the ansible action plugin which we are not using here...
-        expected_error_message = re.sub(r" for host '[a-zA-Z0-9-_]+'.", "", host_inputs["expected_error_message"])
+        expected_error_message = host_inputs["expected_error_message"]
         validation_data_result = validate_inputs(host_inputs)
         if expected_error_message.endswith(" found during schema validation of input variables."):
             assert validation_data_result.validated_data is None

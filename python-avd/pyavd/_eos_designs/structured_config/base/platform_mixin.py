@@ -49,7 +49,7 @@ class PlatformMixin(Protocol):
             # For AutoVPN Route Reflectors and Pathfinders, running on CloudEOS, setting
             # this value is required for the solution to work.
             msg = "For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set"
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         # populate interface profile for SFE platform (if supported)
         if self.shared_utils.is_sfe_interface_profile_supported and (sfe_member_interfaces_for_profile := self._get_sfe_interface_profile_member_interfaces):
@@ -126,7 +126,7 @@ class PlatformMixin(Protocol):
                 f"'rx_queue.count' for interface '{l3_ethernet_interface_name}' exceeds maximum supported "
                 f"'{self.shared_utils.max_rx_queues}' for this platform."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _validate_rx_queue_worker(self: AvdStructuredConfigBaseProtocol, worker_id: int, l3_ethernet_interface_name: str) -> None:
         if worker_id >= self.shared_utils.max_rx_queues:
@@ -134,4 +134,4 @@ class PlatformMixin(Protocol):
                 f"Worker id '{worker_id}' specified under 'rx_queue.workers' for interface '{l3_ethernet_interface_name}' "
                 f"equals or exceeds maximum supported '{self.shared_utils.max_rx_queues}' for this platform."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)

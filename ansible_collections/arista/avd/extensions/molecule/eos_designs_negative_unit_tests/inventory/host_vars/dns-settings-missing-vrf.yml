@@ -9,4 +9,5 @@ dns_settings:
     - ip_address: 10.10.10.10
 
 expected_error_message: >-
-  The VRF 'dns_settings.servers[ip_address=10.10.10.10].vrf' must be set when 'default_mgmt_method' is set to 'none'. Use 'default' for the default VRF.
+  The VRF 'dns_settings.servers[ip_address=10.10.10.10].vrf' must be set when 'default_mgmt_method' is set to 'none'. Use 'default' for the default VRF
+  for host 'dns-settings-missing-vrf'.

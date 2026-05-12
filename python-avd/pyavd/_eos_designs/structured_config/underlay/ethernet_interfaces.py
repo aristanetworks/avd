@@ -286,7 +286,7 @@ class EthernetInterfacesMixin(Protocol):
                 "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
                 f"under 'wan_carriers'. 'ipv4_acl_in' is missing on L3 interface '{l3_interface.name}'."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         if self.shared_utils.is_cv_pathfinder_client and len(l3_interface.cv_pathfinder_internet_exit.policies) > 0:
             for policy in l3_interface.cv_pathfinder_internet_exit.policies:
@@ -295,7 +295,7 @@ class EthernetInterfacesMixin(Protocol):
                         f"The Internet Exit policy '{policy.name}' configured under node l3_interface '{l3_interface.name}' "
                         "is not defined under 'cv_pathfinder_internet_exit_policies'."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 if self.inputs.cv_pathfinder_internet_exit_policies[policy.name].type == "direct":
                     interface.ip_nat.service_profile = INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME
                     break
@@ -366,7 +366,7 @@ class EthernetInterfacesMixin(Protocol):
 
         if not self.shared_utils.node_config.wan_ha.ha_interfaces:
             msg = "wan_ha.ha_interfaces"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
         for index, interface in enumerate(self.shared_utils.node_config.wan_ha.ha_interfaces):
             description = self.shared_utils.interface_descriptions.wan_ha_ethernet_interface(

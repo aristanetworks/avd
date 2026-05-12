@@ -123,14 +123,14 @@ class DaemonTerminattrMixin(Protocol):
                 "CloudVision export is enabled for flow_tracking_settings, but 'cv_settings' is not defined. Please configure"
                 f" 'cv_settings' when enabling 'flow_tracking_settings.trackers[name={first_tracker_exporting_to_cloudvision}].export_to_cloudvision'."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         if self.inputs.sflow_settings.export_to_cloudvision.enabled:
             msg = (
                 "CloudVision export is enabled for sFlow, but 'cv_settings' is not defined."
                 " Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _validate_onprem_or_cvaas_clusters_dependencies(
         self: AvdStructuredConfigBaseProtocol,
@@ -154,7 +154,7 @@ class DaemonTerminattrMixin(Protocol):
                 "'ntp_settings.servers' must be configured when CloudVision "
                 "clusters 'cv_settings.onprem_clusters[].servers[]' or 'cv_settings.cvaas.clusters[]' are defined."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         # If DNS is already configured, no further DNS validation is needed
         if self.inputs.dns_settings.servers:
@@ -164,12 +164,12 @@ class DaemonTerminattrMixin(Protocol):
                 # DNS is always required for CVaaS
                 case EosDesigns.CvSettings.Cvaas.ClustersItem():
                     msg = "'dns_settings' must be configured when 'cv_settings.cvaas.clusters[]' are defined with 'cv_settings.cvaas.enabled: true'."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 # DNS is required for on-prem clusters using DNS names
                 case EosDesigns.CvSettings.OnpremClustersItem():
                     if any(self._is_dns_name(server.name) for server in cluster.servers):
                         msg = "'dns_settings' must be configured when 'cv_settings.onprem_clusters[].servers[].name' is set to a DNS name."
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     @staticmethod
     def _is_dns_name(value: str) -> bool:

@@ -247,7 +247,7 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
 
         if not destinations:
             msg = "Either `sflow_settings.destinations` or `sflow_settings.export_to_cloudvision.enabled: true` is required to configure `sflow`."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         # At this point we have at least one interface with sFlow enabled
         # and at least one destination.
