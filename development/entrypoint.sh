@@ -13,18 +13,18 @@ git config --global --add safe.directory /site
 echo "Installing Documentation python requirements"
 pip install --group doc --upgrade
 
-# Build the Schema Explorer SQLite consumed by docs/schema-explorer/index.html.
-# Skipped when the file is already present and newer than the eos_designs YAML
+# Build the Schema Explorer (static assets + per-release SQLite) into
+# docs/schema-explorer/. Source lives at tools/schema-explorer/. Skipped
+# when the SQLite is already present and newer than the eos_designs YAML
 # (rough mtime check) — keeps container restarts fast during iteration.
 SCHEMA_OUT=/data/docs/schema-explorer/data/devel/schema.sqlite
 SCHEMA_SRC=/data/python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml
 if [ ! -f "$SCHEMA_OUT" ] || [ "$SCHEMA_SRC" -nt "$SCHEMA_OUT" ]; then
-    echo "Building Schema Explorer SQLite"
-    mkdir -p "$(dirname "$SCHEMA_OUT")"
-    python /data/docs/schema-explorer/generate.py \
-        --avd-root /data --release devel --out "$SCHEMA_OUT"
+    echo "Building Schema Explorer"
+    python /data/tools/schema-explorer/generate.py \
+        --avd-root /data --release devel --site-dir /data/docs/schema-explorer
 else
-    echo "Schema Explorer SQLite is up to date — skipping rebuild"
+    echo "Schema Explorer is up to date — skipping rebuild"
 fi
 
 # Start mkdocs

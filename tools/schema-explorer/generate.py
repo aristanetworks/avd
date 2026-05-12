@@ -1,33 +1,38 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""
-Generate a schema.sqlite for the AVD Schema Explorer.
+"""Build the AVD Schema Explorer for the docs site.
 
-Loads the eos_designs and eos_cli_config_gen schemas through pyavd's
-``schema_tools`` so all same-schema ``$ref`` references and ``dynamic_keys``
-subtrees are expanded before flattening, then writes a self-contained SQLite
-file consumed by the static (sql.js) explorer in ``docs/schema-explorer/``.
+Two responsibilities:
 
-Cross-schema ``$ref``s (e.g. ``eos_cli_config_gen#/...`` from inside
-``eos_designs``) are stripped before resolution and surfaced as a ``cross_ref``
-column on the leaf row, so the SQLite stays small instead of materializing the
-entire ``eos_cli_config_gen`` tree under every ``structured_config``.
+1. Generate a ``schema.sqlite`` by loading the eos_designs and
+   eos_cli_config_gen schemas through pyavd's ``schema_tools`` resolver, so
+   ``dynamic_keys`` placeholders and same-schema ``$ref`` blocks are fully
+   expanded. Cross-schema ``$ref`` (e.g. ``eos_cli_config_gen#/...`` from
+   inside ``eos_designs``) is stripped before resolution and surfaced as a
+   ``cross_ref`` column on the leaf row, so the SQLite stays small instead
+   of materializing the entire ``eos_cli_config_gen`` tree under every
+   ``structured_config``.
+2. Copy the static SPA assets (``static/index.html``, ``static/css/``,
+   ``static/js/``) alongside the SQLite into ``--site-dir`` so MkDocs picks
+   up a self-contained Schema Explorer page.
+
+Source lives at ``tools/schema-explorer/``; build output goes to
+``docs/schema-explorer/`` (gitignored). The MkDocs wrapper page
+``docs/schema-explorer.md`` references the built path.
 
 Usage:
-    python generate.py --avd-root <path> --release <tag> --out <file>
-
-Example (run from the avd repo root):
-    python docs/schema-explorer/generate.py \\
-        --avd-root . \\
-        --release devel \\
-        --out docs/schema-explorer/data/devel/schema.sqlite
+    python tools/schema-explorer/generate.py \\
+        --avd-root <repo-root> \\
+        --release <tag> \\
+        --site-dir docs/schema-explorer
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import sqlite3
 import sys
 import time
@@ -37,6 +42,8 @@ from pathlib import Path
 from categories import get_category
 
 SCHEMA_IDS = ("eos_designs", "eos_cli_config_gen")
+HERE = Path(__file__).resolve().parent
+STATIC_DIR = HERE / "static"
 
 
 def _path_depth(key_path: str) -> int:
@@ -296,17 +303,44 @@ def build(avd_root: Path, release: str, out: Path) -> dict[str, int]:
         conn.close()
 
 
+def _copy_static_assets(site_dir: Path) -> None:
+    """Copy index.html / css/ / js/ from ``static/`` into ``site_dir``."""
+    if not STATIC_DIR.is_dir():
+        raise FileNotFoundError(f"Static asset dir not found: {STATIC_DIR}")
+    site_dir.mkdir(parents=True, exist_ok=True)
+    for entry in STATIC_DIR.iterdir():
+        target = site_dir / entry.name
+        if entry.is_dir():
+            if target.exists():
+                shutil.rmtree(target)
+            shutil.copytree(entry, target)
+        else:
+            shutil.copy2(entry, target)
+    print(f"  copied static assets → {site_dir}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.strip().splitlines()[0])
     parser.add_argument("--avd-root", type=Path, required=True, help="Path to the avd repo root (the directory containing python-avd/)")
     parser.add_argument("--release", required=True, help="Release tag to embed (e.g. 'devel', '5.7', '5.8')")
-    parser.add_argument("--out", type=Path, required=True, help="Output .sqlite path")
+    parser.add_argument(
+        "--site-dir",
+        type=Path,
+        required=True,
+        help="Output directory for the built explorer (e.g. docs/schema-explorer). "
+             "Static assets are copied here and the SQLite is written under "
+             "data/<release>/schema.sqlite.",
+    )
     args = parser.parse_args()
 
-    print(f"Building schema.sqlite for release={args.release}")
-    counts = build(args.avd_root.resolve(), args.release, args.out)
+    site_dir = args.site_dir.resolve()
+    print(f"Building Schema Explorer for release={args.release}")
+    _copy_static_assets(site_dir)
+
+    sqlite_out = site_dir / "data" / args.release / "schema.sqlite"
+    counts = build(args.avd_root.resolve(), args.release, sqlite_out)
     total = sum(counts.values())
-    print(f"Wrote {args.out} ({total} variables across {len(counts)} modules)")
+    print(f"Wrote {sqlite_out} ({total} variables across {len(counts)} modules)")
     return 0
 
 

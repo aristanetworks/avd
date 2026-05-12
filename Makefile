@@ -136,12 +136,13 @@ config-diff: ## Run git diff comparing molecule configs with 'devel' using our s
 # Documentation                         #
 #########################################
 
-SCHEMA_EXPLORER_OUT = docs/schema-explorer/data/devel/schema.sqlite
+SCHEMA_EXPLORER_SRC = tools/schema-explorer
+SCHEMA_EXPLORER_SITE = docs/schema-explorer
 
 .PHONY: schema-explorer-build
-schema-explorer-build: ## Build docs/schema-explorer/data/devel/schema.sqlite from local pyavd.
-	uv run --group doc python docs/schema-explorer/generate.py \
-		--avd-root . --release devel --out $(SCHEMA_EXPLORER_OUT)
+schema-explorer-build: ## Build the Schema Explorer (copies static assets + SQLite) into docs/schema-explorer/.
+	uv run --group doc python $(SCHEMA_EXPLORER_SRC)/generate.py \
+		--avd-root . --release devel --site-dir $(SCHEMA_EXPLORER_SITE)
 
 .PHONY: docs-serve
 docs-serve: schema-explorer-build ## Build the Schema Explorer SQLite then `mkdocs serve` on http://127.0.0.1:8000.

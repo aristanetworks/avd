@@ -7,7 +7,7 @@ copyright: Copyright &copy; 2019 - 2025 Arista Networks
 strict: true
 exclude_docs: |
   /README.md
-  /docs/schema-explorer/README.md
+  /tools/
   /.venv/
   /venv/
   /.tox/
@@ -78,10 +78,10 @@ plugins:
         - .venv/*
         - venv/*
         - .tox/*
+        # Schema Explorer source (generator + SPA assets) lives outside docs/
+        # and is built into docs/schema-explorer/ by `make schema-explorer-build`.
+        - tools/*
         - README.md
-        # Schema Explorer ships an index.html as its entrypoint; the sibling
-        # README.md collides with it under strict mode.
-        - docs/schema-explorer/README.md
         - contributing.md
         - pylintrc-ansible
         - ansible_collections/arista/avd/bindep.txt
