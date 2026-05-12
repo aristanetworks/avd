@@ -43,7 +43,6 @@ async def fetch_existing_state(cv_client: CVClient, workspace_id: str) -> Existi
 
 async def execute_plan(plan: DeploymentPlan, workspace_id: str, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
     """Execute the deployment plan and populate the deployment result."""
-    # Configlets must exist before containers reference them.
     if plan.configlets_to_upsert:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Applying changes for %d configlets (create/update)...", len(plan.configlets_to_upsert))
         deployment_result.deployed_static_config_configlets.extend(configlet.avd_configlet for configlet in plan.configlets_to_upsert)

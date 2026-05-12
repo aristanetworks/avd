@@ -778,6 +778,103 @@ class TestDeployStaticConfigStudio:
             inputs=[new_root_id, manual_root_id],
         )
 
+    async def test_avd_configlet_assigned_to_non_avd_container_is_preserved(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """
+        Test that an AVD-managed configlet is preserved when assigned to a non-AVD container, even if not declared in the new manifest.
+
+        The non-AVD container is reachable from the Studio root list. The AVD configlet attached to it must not be deleted because it is
+        still in use. Deleting it would leave a dangling reference and trigger a workspace build error on CloudVision.
+        """
+        manual_container_id = "manually-created-container-xyz"
+        legacy_avd_configlet_id = generate_id("LEGACY_AVD_CONFIGLET")
+        new_root_id = generate_id("NEW_ROOT")
+
+        # A manually-created (non-AVD) container that holds an AVD-managed configlet.
+        existing_containers = [
+            create_grpc_container(
+                container_id=manual_container_id,
+                name="MANUAL_CONTAINER",
+                description="",
+                query="device:*",
+                configlet_ids=[legacy_avd_configlet_id],
+            ),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=legacy_avd_configlet_id), display_name="LEGACY_AVD_CONFIGLET"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [manual_container_id]
+
+        # The new manifest declares an unrelated root and no configlets.
+        new_root = AvdContainer(name="NEW_ROOT", tag_query="device:*")
+        manifest = AvdManifest(configlet_policy="managed", containers=(new_root,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # The AVD configlet is preserved because it's still assigned to a reachable (non-AVD) container.
+        mock_cv_client.delete_configlets.assert_not_called()
+        assert "LEGACY_AVD_CONFIGLET" not in deployment_result.removed_static_config_configlets
+
+        # The Studio root list is updated to include the new root alongside the manual container.
+        mock_cv_client.set_studio_inputs.assert_called_once_with(
+            studio_id="studio-static-configlet",
+            workspace_id=deployment_result.workspace.id,
+            input_path=["configletAssignmentRoots"],
+            inputs=[new_root_id, manual_container_id],
+        )
+
+    async def test_avd_configlet_assigned_only_to_orphan_avd_container_is_deleted(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """
+        Test that an AVD-managed configlet is still deleted when its only assigner is an orphan AVD container (in 'managed' mode).
+
+        Orphan AVD containers are themselves deleted, so the configlet has no surviving assignment and must also be cleaned up.
+        Confirms the "any reachable container" rule does not over-preserve configlets attached only to entities that will be deleted.
+        """
+        orphan_avd_container_id = generate_id("ORPHAN_AVD_CONTAINER")
+        orphan_avd_configlet_id = generate_id("ORPHAN_AVD_CONFIGLET")
+        new_root_id = generate_id("NEW_ROOT")
+
+        # An orphan AVD container holding an AVD configlet, neither referenced by the studio root list nor the new manifest.
+        existing_containers = [
+            create_grpc_container(
+                container_id=orphan_avd_container_id,
+                name="ORPHAN_AVD_CONTAINER",
+                description="",
+                query="device:LEAF",
+                configlet_ids=[orphan_avd_configlet_id],
+            ),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=orphan_avd_configlet_id), display_name="ORPHAN_AVD_CONFIGLET"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = []
+
+        new_root = AvdContainer(name="NEW_ROOT", tag_query="device:*")
+        manifest = AvdManifest(configlet_policy="managed", containers=(new_root,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # The orphan AVD container is deleted.
+        mock_cv_client.delete_configlet_container.assert_called_once()
+        assert "ORPHAN_AVD_CONTAINER" in deployment_result.removed_static_config_containers
+
+        # The AVD configlet is deleted because its only assigner is the orphan container that's also being removed.
+        mock_cv_client.delete_configlets.assert_called_once()
+        deleted_configlet_ids = mock_cv_client.delete_configlets.call_args[1]["configlet_ids"]
+        assert orphan_avd_configlet_id in deleted_configlet_ids
+        assert "ORPHAN_AVD_CONFIGLET" in deployment_result.removed_static_config_configlets
+
+        # New root is added.
+        mock_cv_client.set_studio_inputs.assert_called_once_with(
+            studio_id="studio-static-configlet",
+            workspace_id=deployment_result.workspace.id,
+            input_path=["configletAssignmentRoots"],
+            inputs=[new_root_id],
+        )
+
     async def test_avd_parent_unassigns_non_avd_sub_container(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test that a non-AVD sub-container under an AVD parent is unassigned (not deleted) when the parent is re-pushed."""
         avd_parent_id = generate_id("PARENT")

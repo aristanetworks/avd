@@ -179,6 +179,8 @@ class TestCVManifestGeneration:
         assert len(cv_manifest.configlets_by_id) == 0
         assert len(cv_manifest.containers_by_id) == 0
 
+
+class TestAvdId:
     def test_deterministic_id_generation(self) -> None:
         """Ensures the ID generation function is deterministic and consistent."""
         id1 = AvdId.generate("my_key")
@@ -188,6 +190,20 @@ class TestCVManifestGeneration:
         assert id1 == id2
         assert id1 != id3
         assert id1.startswith(AvdId.PREFIX)
+
+    @pytest.mark.parametrize(
+        ("entity_id", "expected"),
+        [
+            pytest.param("avd_b73a8c2c-3b51-543a-8eaf-3a5e63a9b67e", True, id="generated_avd_id"),
+            pytest.param("avd_anything", True, id="prefix_only"),
+            pytest.param("manually-created-id", False, id="manual_id"),
+            pytest.param("AVD_uppercase_prefix", False, id="case_sensitive"),
+            pytest.param("", False, id="empty_string"),
+        ],
+    )
+    def test_is_managed_recognizes_avd_prefix(self, entity_id: str, expected: bool) -> None:
+        """Tests that AvdId.is_managed correctly identifies AVD-prefixed entity IDs."""
+        assert AvdId.is_managed(entity_id) is expected
 
 
 class TestCVContainerMatching:
