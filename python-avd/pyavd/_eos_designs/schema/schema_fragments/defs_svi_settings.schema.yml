@@ -69,6 +69,7 @@ $defs:
           ra_dns_servers:
             type: list
             description: List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
+            min_length: 1
             items:
               type: str
       ipv6_dhcp_relay:
