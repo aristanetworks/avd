@@ -1,4 +1,8 @@
-"""Generate a schema.sqlite for the AVD Schema Explorer.
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+"""
+Generate a schema.sqlite for the AVD Schema Explorer.
 
 Loads the eos_designs and eos_cli_config_gen schemas through pyavd's
 ``schema_tools`` so all same-schema ``$ref`` references and ``dynamic_keys``
@@ -19,6 +23,7 @@ Example (run from the avd repo root):
         --release devel \\
         --out docs/schema-explorer/data/devel/schema.sqlite
 """
+
 from __future__ import annotations
 
 import argparse
@@ -35,7 +40,8 @@ SCHEMA_IDS = ("eos_designs", "eos_cli_config_gen")
 
 
 def _path_depth(key_path: str) -> int:
-    """Count path segments, treating ``<...>`` placeholders as one segment.
+    """
+    Count path segments, treating ``<...>`` placeholders as one segment.
 
     AVD's dynamic_keys placeholders (e.g. ``<node_type_keys.key>``) contain a
     literal dot, so a naive ``key_path.split(".")`` over-counts depth.
@@ -53,7 +59,8 @@ def _path_depth(key_path: str) -> int:
 
 
 def _strip_cross_schema_refs(node: dict, own_schema_id: str) -> None:
-    """Strip any ``$ref`` that targets a different schema.
+    """
+    Strip any ``$ref`` that targets a different schema.
 
     Without this step the resolver would materialize the entire
     ``eos_cli_config_gen`` tree under every ``structured_config`` key in
@@ -87,7 +94,8 @@ def _strip_cross_schema_refs(node: dict, own_schema_id: str) -> None:
 
 
 def _load_resolved_store(avd_root: Path) -> dict[str, dict]:
-    """Load both AVD schemas as resolved dicts.
+    """
+    Load both AVD schemas as resolved dicts.
 
     ``dynamic_keys`` subtrees and same-schema ``$ref``s are expanded;
     cross-schema ``$ref``s (e.g. ``eos_cli_config_gen#/...`` from inside
@@ -117,8 +125,7 @@ def _load_resolved_store(avd_root: Path) -> dict[str, dict]:
     return raw_store
 
 
-def _flatten(keys: dict, module: str, release: str, prefix: str = "", parent: str = "",
-             inherited_doc_table: str = "") -> list[dict]:
+def _flatten(keys: dict, module: str, release: str, prefix: str = "", parent: str = "", inherited_doc_table: str = "") -> list[dict]:
     rows: list[dict] = []
     for key_name, props in keys.items():
         if not isinstance(props, dict):
@@ -148,33 +155,32 @@ def _flatten(keys: dict, module: str, release: str, prefix: str = "", parent: st
             doc_table = key_name.replace("<", "").replace(">", "").replace("_", "-")
 
         constraints: dict = {}
-        for k in ("valid_values", "min", "max", "min_length", "max_length",
-                  "pattern", "format", "convert_types"):
+        for k in ("valid_values", "min", "max", "min_length", "max_length", "pattern", "format", "convert_types"):
             if k in props:
                 constraints[k] = props[k]
 
-        rows.append({
-            "release": release,
-            "module": module,
-            "key_path": key_path,
-            "var_type": var_type,
-            "description": description,
-            "default_value": default_value,
-            "required": required,
-            "parent_path": parent,
-            "depth": depth_value,
-            "category": get_category(module, key_path),
-            "doc_table": doc_table,
-            "deprecated": deprecated,
-            "removed": removed,
-            "cross_ref": props.get("_cross_ref"),
-            "constraints": json.dumps(constraints) if constraints else None,
-        })
+        rows.append(
+            {
+                "release": release,
+                "module": module,
+                "key_path": key_path,
+                "var_type": var_type,
+                "description": description,
+                "default_value": default_value,
+                "required": required,
+                "parent_path": parent,
+                "depth": depth_value,
+                "category": get_category(module, key_path),
+                "doc_table": doc_table,
+                "deprecated": deprecated,
+                "removed": removed,
+                "cross_ref": props.get("_cross_ref"),
+                "constraints": json.dumps(constraints) if constraints else None,
+            }
+        )
 
         if isinstance(props.get("keys"), dict):
-            rows.extend(_flatten(props["keys"], module, release,
-                                 prefix=key_path + ".", parent=key_path,
-                                 inherited_doc_table=doc_table))
+            rows.extend(_flatten(props["keys"], module, release, prefix=key_path + ".", parent=key_path, inherited_doc_table=doc_table))
 
         # dynamic_keys: variable-name placeholders rendered as <name> in the
         # path, matching the convention used by pyavd's schema_tools docs.
@@ -183,24 +189,18 @@ def _flatten(keys: dict, module: str, release: str, prefix: str = "", parent: st
                 if not isinstance(dyn_schema, dict):
                     continue
                 dyn_key = f"<{dyn_name}>"
-                rows.extend(_flatten({dyn_key: dyn_schema}, module, release,
-                                     prefix=key_path + ".", parent=key_path,
-                                     inherited_doc_table=doc_table))
+                rows.extend(_flatten({dyn_key: dyn_schema}, module, release, prefix=key_path + ".", parent=key_path, inherited_doc_table=doc_table))
 
         items = props.get("items")
         if isinstance(items, dict):
             if isinstance(items.get("keys"), dict):
-                rows.extend(_flatten(items["keys"], module, release,
-                                     prefix=key_path + "[].", parent=key_path,
-                                     inherited_doc_table=doc_table))
+                rows.extend(_flatten(items["keys"], module, release, prefix=key_path + "[].", parent=key_path, inherited_doc_table=doc_table))
             if isinstance(items.get("dynamic_keys"), dict):
                 for dyn_name, dyn_schema in items["dynamic_keys"].items():
                     if not isinstance(dyn_schema, dict):
                         continue
                     dyn_key = f"<{dyn_name}>"
-                    rows.extend(_flatten({dyn_key: dyn_schema}, module, release,
-                                         prefix=key_path + "[].", parent=key_path,
-                                         inherited_doc_table=doc_table))
+                    rows.extend(_flatten({dyn_key: dyn_schema}, module, release, prefix=key_path + "[].", parent=key_path, inherited_doc_table=doc_table))
 
     return rows
 
@@ -298,10 +298,8 @@ def build(avd_root: Path, release: str, out: Path) -> dict[str, int]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.strip().splitlines()[0])
-    parser.add_argument("--avd-root", type=Path, required=True,
-                        help="Path to the avd repo root (the directory containing python-avd/)")
-    parser.add_argument("--release", required=True,
-                        help="Release tag to embed (e.g. 'devel', '5.7', '5.8')")
+    parser.add_argument("--avd-root", type=Path, required=True, help="Path to the avd repo root (the directory containing python-avd/)")
+    parser.add_argument("--release", required=True, help="Release tag to embed (e.g. 'devel', '5.7', '5.8')")
     parser.add_argument("--out", type=Path, required=True, help="Output .sqlite path")
     args = parser.parse_args()
 
