@@ -1,7 +1,8 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""Build the AVD Schema Explorer for the docs site.
+"""
+Build the AVD Schema Explorer for the docs site.
 
 Two responsibilities:
 
@@ -328,8 +329,8 @@ def main() -> int:
         type=Path,
         required=True,
         help="Output directory for the built explorer (e.g. docs/schema-explorer). "
-             "Static assets are copied here and the SQLite is written under "
-             "data/<release>/schema.sqlite.",
+        "Static assets are copied here and the SQLite is written under "
+        "data/<release>/schema.sqlite.",
     )
     args = parser.parse_args()
 
