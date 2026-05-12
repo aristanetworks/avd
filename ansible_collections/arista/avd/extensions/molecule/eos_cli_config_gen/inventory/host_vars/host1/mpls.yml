@@ -92,3 +92,28 @@ mpls:
       - ip_address: 1.10.1.2
         authentication:
           type: none
+  label_ranges:
+    bgp_sr:
+      base: 900000
+      size: 65536
+    dynamic:
+      base: 16000
+      size: 131072
+    isis_sr:
+      base: 900000
+      size: 65536
+    l2evpn:
+      base: 1036288
+      size: 12288
+    l2evpn_ethernet_segment:
+      base: 1031072
+      size: 1024
+    ospf_sr:
+      base: 900000
+      size: 1000
+    srlb:
+      base: 965536
+      size: 65536
+    static:
+      base: 16
+      size: 1
