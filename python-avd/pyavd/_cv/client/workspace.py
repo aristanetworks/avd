@@ -183,6 +183,7 @@ class WorkspaceMixin(Protocol):
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
+    # TODO: Update min_ver once first on-prem release support this under Beta toggle
     @LimitCvVersion(min_ver=CVAAS_VERSION_STRING)
     @GRPCRequestHandler()
     async def rebase_workspace(
