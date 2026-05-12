@@ -45,7 +45,7 @@ class PtpMixin(Protocol):
         priority2 = self.shared_utils.node_config.ptp.priority2
         if priority2 is None:
             if self.shared_utils.id is None:
-                msg = f"'id' must be set on '{self.shared_utils.hostname}' to set ptp priority2"
+                msg = f"'id' must be set on '{self.shared_utils.hostname}' to set ptp priority2."
                 raise AristaAvdInvalidInputsError(msg)
 
             priority2 = self.shared_utils.id % 256

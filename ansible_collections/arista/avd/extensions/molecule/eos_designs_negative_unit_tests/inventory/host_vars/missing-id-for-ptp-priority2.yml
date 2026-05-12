@@ -13,4 +13,4 @@ overlay_controller:
         enabled: true
 
 expected_error_message: >-
-  'id' must be set on 'missing-id-for-ptp-priority2' to set ptp priority2
+  'id' must be set on 'missing-id-for-ptp-priority2' to set ptp priority2.
