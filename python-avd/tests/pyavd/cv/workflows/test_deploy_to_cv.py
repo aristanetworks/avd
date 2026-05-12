@@ -12,7 +12,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
-from pyavd._cv.workflows.models import CloudVision, CVDeployFuture, CVDeviceDeployment, CVEosConfig, CVGRPCKeepalives, CVWorkspace
+from pyavd._cv.workflows.models import CloudVision, CVDeviceDeployment, CVEosConfig, CVGRPCKeepalives, CVWorkspace
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
@@ -185,30 +185,22 @@ async def test_deploy_to_cv(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    ("deploy_future", "grpc_keepalives", "grpc_config_is_expected"),
+    ("grpc_keepalives", "grpc_config_is_expected"),
     [
-        pytest.param(CVDeployFuture(enable_grpc_keepalives=False), CVGRPCKeepalives(), False, id="FUTURE_FLAG_OFF"),
-        pytest.param(CVDeployFuture(enable_grpc_keepalives=True), CVGRPCKeepalives(), True, id="FUTURE_FLAG_ON_DEFAULTS"),
+        pytest.param(CVGRPCKeepalives(), False, id="KEEPALIVES_DISABLED_DEFAULTS"),
+        pytest.param(CVGRPCKeepalives(enabled=True), True, id="KEEPALIVES_ENABLED_DEFAULTS"),
         pytest.param(
-            CVDeployFuture(enable_grpc_keepalives=True),
-            CVGRPCKeepalives(keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
+            CVGRPCKeepalives(enabled=True, keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
             True,
-            id="FUTURE_FLAG_ON_CUSTOM",
-        ),
-        pytest.param(
-            CVDeployFuture(enable_grpc_keepalives=True),
-            CVGRPCKeepalives(enabled=False),
-            False,
-            id="FUTURE_FLAG_ON_EXPLICITLY_DISABLED",
+            id="KEEPALIVES_ENABLED_CUSTOM",
         ),
     ],
 )
 async def test_deploy_to_cv_grpc_keepalives(
-    deploy_future: CVDeployFuture,
     grpc_keepalives: CVGRPCKeepalives,
     grpc_config_is_expected: bool,
 ) -> None:
-    """Tests that deploy_to_cv builds a grpclib Configuration only when cv_deploy_future.enable_grpc_keepalives is True."""
+    """Tests that deploy_to_cv builds a grpclib Configuration only when cloudvision.grpc_keepalives.enabled is True."""
     mock_cv_client = AsyncMock()
 
     with patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client) as mocked_cv_client_cls:
@@ -224,7 +216,6 @@ async def test_deploy_to_cv_grpc_keepalives(
                 proxy_username=None,
                 proxy_password=None,
                 grpc_keepalives=grpc_keepalives,
-                deploy_future=deploy_future,
             ),
         )
 
@@ -264,7 +255,7 @@ async def test_deploy_to_cv_grpc_keepalives_configuration_type_error(caplog: pyt
                 proxy_port=None,
                 proxy_username=None,
                 proxy_password=None,
-                deploy_future=CVDeployFuture(enable_grpc_keepalives=True),
+                grpc_keepalives=CVGRPCKeepalives(enabled=True),
             ),
         )
 

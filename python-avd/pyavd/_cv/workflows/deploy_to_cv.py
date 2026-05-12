@@ -141,7 +141,7 @@ async def deploy_to_cv(
         )
 
     grpc_config: Configuration | None = None
-    if cloudvision.deploy_future.enable_grpc_keepalives and cloudvision.grpc_keepalives.enabled:
+    if cloudvision.grpc_keepalives.enabled:
         try:
             grpc_config = Configuration(
                 _keepalive_time=cloudvision.grpc_keepalives.keepalive_time,

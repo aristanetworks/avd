@@ -12,7 +12,7 @@ import pytest
 from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
 from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVManifestError
-from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVDeployFuture, CVGRPCKeepalives, CVManifest
+from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVGRPCKeepalives, CVManifest
 
 from .helpers import generate_id
 
@@ -480,15 +480,15 @@ class TestCVGRPCKeepalives:
     def test_defaults(self) -> None:
         """Tests that CVGRPCKeepalives is created with expected default values."""
         keepalives = CVGRPCKeepalives()
-        assert keepalives.enabled is True
+        assert keepalives.enabled is False
         assert keepalives.keepalive_time == 60
         assert keepalives.keepalive_timeout == 20
         assert keepalives.permit_without_calls is False
 
     def test_custom_values(self) -> None:
-        """Tests that CVGRPCKeepalives accepts custom values including explicit disable."""
-        keepalives = CVGRPCKeepalives(enabled=False, keepalive_time=30, keepalive_timeout=10, permit_without_calls=True)
-        assert keepalives.enabled is False
+        """Tests that CVGRPCKeepalives accepts custom values including explicit enable."""
+        keepalives = CVGRPCKeepalives(enabled=True, keepalive_time=30, keepalive_timeout=10, permit_without_calls=True)
+        assert keepalives.enabled is True
         assert keepalives.keepalive_time == 30
         assert keepalives.keepalive_timeout == 10
         assert keepalives.permit_without_calls is True
@@ -507,18 +507,3 @@ class TestCVGRPCKeepalives:
         """Tests that keepalive_time >= 30 is enforced only when enabled=True."""
         with expected_exception:
             CVGRPCKeepalives(enabled=enabled, keepalive_time=keepalive_time)
-
-
-# === CVDeployFuture Tests ===
-
-
-class TestCVDeployFuture:
-    def test_defaults(self) -> None:
-        """Tests that CVDeployFuture is created with all future behaviors disabled by default."""
-        future = CVDeployFuture()
-        assert future.enable_grpc_keepalives is False
-
-    def test_enable_grpc_keepalives(self) -> None:
-        """Tests that enable_grpc_keepalives can be opted in."""
-        future = CVDeployFuture(enable_grpc_keepalives=True)
-        assert future.enable_grpc_keepalives is True

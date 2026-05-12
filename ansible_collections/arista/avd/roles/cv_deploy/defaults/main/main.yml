@@ -26,17 +26,10 @@ cv_token: "{{ hostvars[cv_inventory_hostname].ansible_password | arista.avd.defa
 # Verify Certificate for CloudVision (Always use valid certificates for production)
 cv_verify_certs: true
 
-# Opt-in to future cv_deploy behaviors that will become defaults in a future major release.
-# cv_deploy_future:
-#   # enable_grpc_keepalives: Enable gRPC keepalives. Will become the default in AVD 7.0.
-#   enable_grpc_keepalives: false
-cv_deploy_future: {}
-
 # gRPC keepalive settings for the CloudVision connection.
-# Only used when cv_deploy_future.enable_grpc_keepalives is true.
 # keepalive_time must be >= 30s.
 cv_grpc_keepalives:
-  enabled: true
+  enabled: false
   keepalive_time: 60
   keepalive_timeout: 20
   permit_without_calls: false
