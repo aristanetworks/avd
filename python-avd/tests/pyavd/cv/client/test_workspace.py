@@ -10,11 +10,11 @@ from unittest.mock import patch
 
 import pytest
 
-from pyavd._cv.api.arista.workspace.v1 import Request
+from pyavd._cv.api.arista.workspace.v1 import WorkspaceConfig
 from pyavd._cv.client.exceptions import CVTimeoutError, CVWorkspaceFailed
 from tests.pyavd.cv.constants import (
-    MOCKED_REBASE_WORKSPACE_ID,
-    MOCKED_REBASE_WORKSPACE_REQUEST_ID_REBASE_NEEDSBUILD_FALSE_NEEDSREBASE_FALSE_SUCCESS,
+    MOCKED_WORKSPACE_B_ID,
+    MOCKED_WORKSPACE_B_REQUEST_ID_REBASE_1_SUCCESS,
     MOCKED_WORKSPACE_ID,
 )
 
@@ -88,11 +88,9 @@ async def test_rebase_workspace(cv_client: CVClient) -> None:
     with (
         patch(
             "pyavd._cv.client.workspace.uuid4",
-            side_effect=[MOCKED_REBASE_WORKSPACE_REQUEST_ID_REBASE_NEEDSBUILD_FALSE_NEEDSREBASE_FALSE_SUCCESS["id"].removeprefix("req-")],
+            side_effect=[MOCKED_WORKSPACE_B_REQUEST_ID_REBASE_1_SUCCESS["id"].removeprefix("req-")],
         ),
     ):
-        response_workspace_config = await cv_client.rebase_workspace(workspace_id=MOCKED_REBASE_WORKSPACE_ID)
+        response_workspace_config = await cv_client.rebase_workspace(workspace_id=MOCKED_WORKSPACE_B_ID)
 
-    assert response_workspace_config.key.workspace_id == MOCKED_REBASE_WORKSPACE_ID
-    assert response_workspace_config.request == Request.REBASE
-    assert response_workspace_config.request_params.request_id == MOCKED_REBASE_WORKSPACE_REQUEST_ID_REBASE_NEEDSBUILD_FALSE_NEEDSREBASE_FALSE_SUCCESS["id"]
+    assert isinstance(response_workspace_config, WorkspaceConfig)

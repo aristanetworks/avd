@@ -28,8 +28,8 @@ from pyavd._cv.api.arista.workspace.v1 import (
     WorkspaceStreamRequest,
 )
 
-from .async_decorators import GRPCRequestHandler
-from .constants import DEFAULT_API_TIMEOUT
+from .async_decorators import GRPCRequestHandler, LimitCvVersion
+from .constants import CVAAS_VERSION_STRING, DEFAULT_API_TIMEOUT
 from .exceptions import CVResourceNotFound, CVWorkspaceFailed
 
 if TYPE_CHECKING:
@@ -183,6 +183,7 @@ class WorkspaceMixin(Protocol):
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
+    @LimitCvVersion(min_ver=CVAAS_VERSION_STRING)
     @GRPCRequestHandler()
     async def rebase_workspace(
         self: CVClientProtocol,
