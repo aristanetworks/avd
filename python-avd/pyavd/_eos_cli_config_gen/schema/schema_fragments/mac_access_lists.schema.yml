@@ -26,7 +26,7 @@ keys:
               sequence:
                 type: int
                 convert_types:
-                - str
+                  - str
               action:
                 type: str
                 required: true

@@ -6284,7 +6284,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class EosConfigFuture(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"new_ip_radius_cli_order": {"type": bool, "default": False}, "new_ip_tacacs_cli_order": {"type": bool, "default": False}}
+        _fields: ClassVar[dict] = {
+            "new_ip_radius_cli_order": {"type": bool, "default": False},
+            "new_ip_tacacs_cli_order": {"type": bool, "default": False},
+            "always_render_ip_routing_separator": {"type": bool, "default": False},
+        }
         new_ip_radius_cli_order: bool
         """
         When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
@@ -6303,10 +6307,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        always_render_ip_routing_separator: bool
+        """
+        Always render a '!' before the '(no) ip routing' command section.
+        Without this the '!' is missing
+        when only configuring routing for VRFs.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, new_ip_radius_cli_order: bool | UndefinedType = Undefined, new_ip_tacacs_cli_order: bool | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                new_ip_radius_cli_order: bool | UndefinedType = Undefined,
+                new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
+                always_render_ip_routing_separator: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
                 EosConfigFuture.
 
@@ -6324,6 +6342,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        When `false`
                        (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
                        interface name.
+                    always_render_ip_routing_separator:
+                       Always render a '!' before the '(no) ip routing' command section.
+                       Without this the '!' is missing
+                       when only configuring routing for VRFs.
 
                 """
 
@@ -23666,6 +23688,609 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class ManagementSecurity(AvdModel):
         """Subclass of AvdModel."""
 
+        class AutoCertificate(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ProfilesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                Digest: TypeAlias = Literal["sha256", "sha384", "sha512"]
+
+                class Parameters(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class DistinguishedName(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "common_name": {"type": str},
+                            "country": {"type": str},
+                            "email": {"type": str},
+                            "locality": {"type": str},
+                            "organization": {"type": str},
+                            "organization_unit": {"type": str},
+                            "serial_number": {"type": str},
+                            "state": {"type": str},
+                        }
+                        common_name: str | None
+                        country: str | None
+                        """
+                        ISO 3166-1 alpha-2 two-letter country code.
+                        Example:
+                        "US" for United States,
+                        "DE" for Germany,
+                        "IN"
+                        for India.
+                        """
+                        email: str | None
+                        locality: str | None
+                        organization: str | None
+                        organization_unit: str | None
+                        serial_number: str | None
+                        """
+                        Serial Number for use in subject.
+                        system: Use the device's serial number in subject.
+                        """
+                        state: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                common_name: str | None | UndefinedType = Undefined,
+                                country: str | None | UndefinedType = Undefined,
+                                email: str | None | UndefinedType = Undefined,
+                                locality: str | None | UndefinedType = Undefined,
+                                organization: str | None | UndefinedType = Undefined,
+                                organization_unit: str | None | UndefinedType = Undefined,
+                                serial_number: str | None | UndefinedType = Undefined,
+                                state: str | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                DistinguishedName.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    common_name: common_name
+                                    country:
+                                       ISO 3166-1 alpha-2 two-letter country code.
+                                       Example:  # fmt: skip
+                                       "US" for United States,
+                                       "DE" for Germany,
+                                       "IN"
+                                       for India.
+                                    email: email
+                                    locality: locality
+                                    organization: organization
+                                    organization_unit: organization_unit
+                                    serial_number:
+                                       Serial Number for use in subject.
+                                       system: Use the device's serial number in subject.
+                                    state: state
+
+                                """
+
+                    class SubjectAlternativeName(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Dns(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Dns._item_type = str
+
+                        class Email(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Email._item_type = str
+
+                        class Ip(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ip._item_type = str
+
+                        class Uri(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Uri._item_type = str
+
+                        _fields: ClassVar[dict] = {"dns": {"type": Dns}, "email": {"type": Email}, "ip": {"type": Ip}, "uri": {"type": Uri}}
+                        dns: Dns
+                        """Subclass of AvdList with `str` items."""
+                        email: Email
+                        """Subclass of AvdList with `str` items."""
+                        ip: Ip
+                        """
+                        IPv4/IPv6 addresses for use in subject-alternative-name.
+
+                        Subclass of AvdList with `str` items.
+                        """
+                        uri: Uri
+                        """Subclass of AvdList with `str` items."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                dns: Dns | UndefinedType = Undefined,
+                                email: Email | UndefinedType = Undefined,
+                                ip: Ip | UndefinedType = Undefined,
+                                uri: Uri | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                SubjectAlternativeName.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    dns: Subclass of AvdList with `str` items.
+                                    email: Subclass of AvdList with `str` items.
+                                    ip:
+                                       IPv4/IPv6 addresses for use in subject-alternative-name.
+
+                                       Subclass of AvdList with `str` items.
+                                    uri: Subclass of AvdList with `str` items.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"distinguished_name": {"type": DistinguishedName}, "subject_alternative_name": {"type": SubjectAlternativeName}}
+                    distinguished_name: DistinguishedName
+                    """Subclass of AvdModel."""
+                    subject_alternative_name: SubjectAlternativeName
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            distinguished_name: DistinguishedName | UndefinedType = Undefined,
+                            subject_alternative_name: SubjectAlternativeName | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Parameters.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                distinguished_name: Subclass of AvdModel.
+                                subject_alternative_name: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "digest": {"type": str},
+                    "key": {"type": str},
+                    "protocol_instance_name": {"type": str},
+                    "renewal": {"type": int},
+                    "parameters": {"type": Parameters},
+                }
+                name: str
+                """Name of the certificate profile."""
+                digest: Digest | None
+                """Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset."""
+                key: str | None
+                """Filename of the private key in the switch `sslkey:` directory."""
+                protocol_instance_name: str | None
+                """EST protocol profile name."""
+                renewal: int | None
+                """Renewal time in seconds. EOS default is 7200 seconds (2 hours)."""
+                parameters: Parameters
+                """
+                Parameters of the distinguished name and subject alternative name for the CSR.
+
+                Subclass of
+                AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        digest: Digest | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                        protocol_instance_name: str | None | UndefinedType = Undefined,
+                        renewal: int | None | UndefinedType = Undefined,
+                        parameters: Parameters | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ProfilesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Name of the certificate profile.
+                            digest: Digest algorithm used to sign the Certificate Signing Request. Defaults to sha256 on EOS if unset.
+                            key: Filename of the private key in the switch `sslkey:` directory.
+                            protocol_instance_name: EST protocol profile name.
+                            renewal: Renewal time in seconds. EOS default is 7200 seconds (2 hours).
+                            parameters:
+                               Parameters of the distinguished name and subject alternative name for the CSR.
+
+                               Subclass of
+                               AvdModel.
+
+                        """
+
+            class Profiles(AvdIndexedList[str, ProfilesItem]):
+                """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Profiles._item_type = ProfilesItem
+
+            class ProtocolsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                Protocol: TypeAlias = Literal["est"]
+
+                class ConnectionRetry(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"count": {"type": int}, "interval": {"type": int}, "exponential_backoff": {"type": bool}}
+                    count: int | None
+                    """Number of retries to attempt before giving up, if not configured the number of retries is infinite."""
+                    interval: int | None
+                    """Number of seconds between retries."""
+                    exponential_backoff: bool | None
+                    """Exponentially increase the interval between retries to a maximum of 24 hours."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            count: int | None | UndefinedType = Undefined,
+                            interval: int | None | UndefinedType = Undefined,
+                            exponential_backoff: bool | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            ConnectionRetry.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                count: Number of retries to attempt before giving up, if not configured the number of retries is infinite.
+                                interval: Number of seconds between retries.
+                                exponential_backoff: Exponentially increase the interval between retries to a maximum of 24 hours.
+
+                            """
+
+                class Credentials(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Enroll(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        TokenType: TypeAlias = Literal["0", "7", "8a"]
+                        SecretType: TypeAlias = Literal["0", "7", "8a"]
+                        _fields: ClassVar[dict] = {
+                            "token": {"type": str},
+                            "token_type": {"type": str, "default": "7"},
+                            "username": {"type": str},
+                            "secret": {"type": str},
+                            "secret_type": {"type": str, "default": "7"},
+                        }
+                        token: str | None
+                        """JSON Web Token for Bearer Authentication."""
+                        token_type: TokenType
+                        """
+                        Encoding type of the token:
+                        "0" = cleartext,
+                        "7" = obfuscated,
+                        "8a" = AES-256-GCM encrypted.
+
+                        Default value: `"7"`
+                        """
+                        username: str | None
+                        """Username for HTTP Basic Authentication."""
+                        secret: str | None
+                        """Password for HTTP Basic Authentication."""
+                        secret_type: SecretType
+                        """
+                        Encoding type of the token:
+                        "0" = cleartext,
+                        "7" = obfuscated,
+                        "8a" = AES-256-GCM encrypted.
+
+                        Default value: `"7"`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                token: str | None | UndefinedType = Undefined,
+                                token_type: TokenType | UndefinedType = Undefined,
+                                username: str | None | UndefinedType = Undefined,
+                                secret: str | None | UndefinedType = Undefined,
+                                secret_type: SecretType | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Enroll.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    token: JSON Web Token for Bearer Authentication.
+                                    token_type:
+                                       Encoding type of the token:
+                                       "0" = cleartext,
+                                       "7" = obfuscated,
+                                       "8a" = AES-256-GCM encrypted.
+                                    username: Username for HTTP Basic Authentication.
+                                    secret: Password for HTTP Basic Authentication.
+                                    secret_type:
+                                       Encoding type of the token:
+                                       "0" = cleartext,
+                                       "7" = obfuscated,
+                                       "8a" = AES-256-GCM encrypted.
+
+                                """
+
+                    class ReEnroll(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        TokenType: TypeAlias = Literal["0", "7", "8a"]
+                        SecretType: TypeAlias = Literal["0", "7", "8a"]
+                        _fields: ClassVar[dict] = {
+                            "token": {"type": str},
+                            "token_type": {"type": str, "default": "7"},
+                            "username": {"type": str},
+                            "secret": {"type": str},
+                            "secret_type": {"type": str, "default": "7"},
+                        }
+                        token: str | None
+                        """JSON Web Token for Bearer Authentication."""
+                        token_type: TokenType
+                        """
+                        Encoding type of the token:
+                        "0" = cleartext,
+                        "7" = obfuscated,
+                        "8a" = AES-256-GCM encrypted.
+
+                        Default value: `"7"`
+                        """
+                        username: str | None
+                        """Username for HTTP Basic Authentication."""
+                        secret: str | None
+                        """Password for HTTP Basic Authentication."""
+                        secret_type: SecretType
+                        """
+                        Encoding type of the token:
+                        "0" = cleartext,
+                        "7" = obfuscated,
+                        "8a" = AES-256-GCM encrypted.
+
+                        Default value: `"7"`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                token: str | None | UndefinedType = Undefined,
+                                token_type: TokenType | UndefinedType = Undefined,
+                                username: str | None | UndefinedType = Undefined,
+                                secret: str | None | UndefinedType = Undefined,
+                                secret_type: SecretType | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                ReEnroll.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    token: JSON Web Token for Bearer Authentication.
+                                    token_type:
+                                       Encoding type of the token:
+                                       "0" = cleartext,
+                                       "7" = obfuscated,
+                                       "8a" = AES-256-GCM encrypted.
+                                    username: Username for HTTP Basic Authentication.
+                                    secret: Password for HTTP Basic Authentication.
+                                    secret_type:
+                                       Encoding type of the token:
+                                       "0" = cleartext,
+                                       "7" = obfuscated,
+                                       "8a" = AES-256-GCM encrypted.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"enroll": {"type": Enroll}, "re_enroll": {"type": ReEnroll}}
+                    enroll: Enroll
+                    """
+                    Token or username/secret for initial certificate enrollment.
+                    If both token and username/secret are
+                    defined, token will take precedence.
+
+
+                    Subclass of AvdModel.
+                    """
+                    re_enroll: ReEnroll
+                    """
+                    Token or username/secret for certificate re-enrollment.
+                    If both token and username/secret are
+                    defined, token will take precedence.
+
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enroll: Enroll | UndefinedType = Undefined, re_enroll: ReEnroll | UndefinedType = Undefined) -> None:
+                            """
+                            Credentials.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enroll:
+                                   Token or username/secret for initial certificate enrollment.
+                                   If both token and username/secret are
+                                   defined, token will take precedence.
+
+
+                                   Subclass of AvdModel.
+                                re_enroll:
+                                   Token or username/secret for certificate re-enrollment.
+                                   If both token and username/secret are
+                                   defined, token will take precedence.
+
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                class Server(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"ssl_profile": {"type": str}, "url": {"type": str}, "vrf": {"type": str}}
+                    ssl_profile: str | None
+                    """SSL profile name."""
+                    url: str | None
+                    """
+                    EST server URL. Must begin with `https://`. Should not end with `/` (the well-known EST paths are
+                    appended automatically).
+                    """
+                    vrf: str | None
+                    """VRF used to reach the EST server. If unset, the default VRF is used on EOS."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            ssl_profile: str | None | UndefinedType = Undefined,
+                            url: str | None | UndefinedType = Undefined,
+                            vrf: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Server.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                ssl_profile: SSL profile name.
+                                url:
+                                   EST server URL. Must begin with `https://`. Should not end with `/` (the well-known EST paths are
+                                   appended automatically).
+                                vrf: VRF used to reach the EST server. If unset, the default VRF is used on EOS.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "protocol": {"type": str},
+                    "disabled": {"type": bool},
+                    "connection_retry": {"type": ConnectionRetry},
+                    "credentials": {"type": Credentials},
+                    "server": {"type": Server},
+                }
+                name: str
+                """Name of the EST profile."""
+                protocol: Protocol
+                """Protocol to use to communicate with endpoint; only EST is supported currently."""
+                disabled: bool | None
+                """Temporarily disable sending requests to the server."""
+                connection_retry: ConnectionRetry
+                """Subclass of AvdModel."""
+                credentials: Credentials
+                """Subclass of AvdModel."""
+                server: Server
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        protocol: Protocol | UndefinedType = Undefined,
+                        disabled: bool | None | UndefinedType = Undefined,
+                        connection_retry: ConnectionRetry | UndefinedType = Undefined,
+                        credentials: Credentials | UndefinedType = Undefined,
+                        server: Server | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ProtocolsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Name of the EST profile.
+                            protocol: Protocol to use to communicate with endpoint; only EST is supported currently.
+                            disabled: Temporarily disable sending requests to the server.
+                            connection_retry: Subclass of AvdModel.
+                            credentials: Subclass of AvdModel.
+                            server: Subclass of AvdModel.
+
+                        """
+
+            class Protocols(AvdIndexedList[str, ProtocolsItem]):
+                """Subclass of AvdIndexedList with `ProtocolsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Protocols._item_type = ProtocolsItem
+
+            _fields: ClassVar[dict] = {"profiles": {"type": Profiles}, "protocols": {"type": Protocols}}
+            profiles: Profiles
+            """
+            Profiles for automatic certificate enrollment and renewal.
+
+            Subclass of AvdIndexedList with
+            `ProfilesItem` items. Primary key is `name` (`str`).
+            """
+            protocols: Protocols
+            """
+            Protocols for automatic certificate enrollment and renewal.
+
+            Subclass of AvdIndexedList with
+            `ProtocolsItem` items. Primary key is `name` (`str`).
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, profiles: Profiles | UndefinedType = Undefined, protocols: Protocols | UndefinedType = Undefined) -> None:
+                    """
+                    AutoCertificate.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        profiles:
+                           Profiles for automatic certificate enrollment and renewal.
+
+                           Subclass of AvdIndexedList with
+                           `ProfilesItem` items. Primary key is `name` (`str`).
+                        protocols:
+                           Protocols for automatic certificate enrollment and renewal.
+
+                           Subclass of AvdIndexedList with
+                           `ProtocolsItem` items. Primary key is `name` (`str`).
+
+                    """
+
         class EntropySources(AvdModel):
             """Subclass of AvdModel."""
 
@@ -24414,12 +25039,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         SharedSecretProfiles._item_type = SharedSecretProfilesItem
 
         _fields: ClassVar[dict] = {
+            "auto_certificate": {"type": AutoCertificate},
             "entropy_sources": {"type": EntropySources},
             "signature_verification": {"type": SignatureVerification},
             "password": {"type": Password},
             "ssl_profiles": {"type": SslProfiles},
             "shared_secret_profiles": {"type": SharedSecretProfiles},
         }
+        auto_certificate: AutoCertificate
+        """Subclass of AvdModel."""
         entropy_sources: EntropySources
         """
         Source of entropy.
@@ -24444,6 +25072,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
+                auto_certificate: AutoCertificate | UndefinedType = Undefined,
                 entropy_sources: EntropySources | UndefinedType = Undefined,
                 signature_verification: SignatureVerification | UndefinedType = Undefined,
                 password: Password | UndefinedType = Undefined,
@@ -24457,6 +25086,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    auto_certificate: Subclass of AvdModel.
                     entropy_sources:
                        Source of entropy.
 
@@ -26480,6 +27110,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "serial_number": {"type": str},
             "validate_hardware": {"type": ValidateHardware},
             "cv_tags": {"type": CvTags},
+            "cv_use_static_config_manifest": {"type": bool},
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
             "validate_no_errors_period": {"type": int},
@@ -26518,6 +27149,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         cv_tags: CvTags
         """Subclass of AvdModel."""
+        cv_use_static_config_manifest: bool | None
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+
+        The device configuration is expected to be deployed via the
+        `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+        flat "AVD
+        Configurations" layout in the Static Configlet Studio.
+        The device will still be verified and
+        onboarded in the Inventory & Topology Studio.
+        """
         cv_pathfinder: CvPathfinder
         """
         Metadata used for CV Pathfinder visualization on CloudVision.
@@ -26562,6 +27205,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 serial_number: str | None | UndefinedType = Undefined,
                 validate_hardware: ValidateHardware | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
+                cv_use_static_config_manifest: bool | None | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validate_no_errors_period: int | None | UndefinedType = Undefined,
@@ -26601,6 +27245,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdModel.
                     cv_tags: Subclass of AvdModel.
+                    cv_use_static_config_manifest:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+
+                       The device configuration is expected to be deployed via the
+                       `static_config_manifest` / `cv_static_config_manifest` hierarchy instead of the
+                       flat "AVD
+                       Configurations" layout in the Static Configlet Studio.
+                       The device will still be verified and
+                       onboarded in the Inventory & Topology Studio.
                     cv_pathfinder:
                        Metadata used for CV Pathfinder visualization on CloudVision.
 
@@ -29330,6 +29984,316 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class LabelRanges(AvdModel):
+            """Subclass of AvdModel."""
+
+            class BgpSr(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        BgpSr.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class Dynamic(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        Dynamic.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class IsisSr(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        IsisSr.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class L2evpn(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        L2evpn.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class L2evpnEthernetSegment(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        L2evpnEthernetSegment.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class OspfSr(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        OspfSr.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class Srlb(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        Srlb.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            class Static(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"base": {"type": int}, "size": {"type": int}}
+                base: int
+                """First label of range."""
+                size: int
+                """Size of range."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, base: int | UndefinedType = Undefined, size: int | UndefinedType = Undefined) -> None:
+                        """
+                        Static.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            base: First label of range.
+                            size: Size of range.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "bgp_sr": {"type": BgpSr},
+                "dynamic": {"type": Dynamic},
+                "isis_sr": {"type": IsisSr},
+                "l2evpn": {"type": L2evpn},
+                "l2evpn_ethernet_segment": {"type": L2evpnEthernetSegment},
+                "ospf_sr": {"type": OspfSr},
+                "srlb": {"type": Srlb},
+                "static": {"type": Static},
+            }
+            bgp_sr: BgpSr
+            """
+            Label range for BGP SR global segment identifiers.
+
+            Subclass of AvdModel.
+            """
+            dynamic: Dynamic
+            """
+            Label range for dynamic assignment.
+
+            Subclass of AvdModel.
+            """
+            isis_sr: IsisSr
+            """
+            Label range for IS-IS SR global segment identifiers.
+
+            Subclass of AvdModel.
+            """
+            l2evpn: L2evpn
+            """
+            Label range for L2 EVPN routes.
+
+            Subclass of AvdModel.
+            """
+            l2evpn_ethernet_segment: L2evpnEthernetSegment
+            """
+            Labels reserved for L2 EVPN A-D per ES routes for split-horizon filtering.
+
+            Subclass of AvdModel.
+            """
+            ospf_sr: OspfSr
+            """
+            Label range for OSPF Segment Routing Global Block (SRGB).
+
+            Subclass of AvdModel.
+            """
+            srlb: Srlb
+            """
+            Label range for SR local segment identifiers.
+
+            Subclass of AvdModel.
+            """
+            static: Static
+            """
+            Label range for static MPLS routes.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    bgp_sr: BgpSr | UndefinedType = Undefined,
+                    dynamic: Dynamic | UndefinedType = Undefined,
+                    isis_sr: IsisSr | UndefinedType = Undefined,
+                    l2evpn: L2evpn | UndefinedType = Undefined,
+                    l2evpn_ethernet_segment: L2evpnEthernetSegment | UndefinedType = Undefined,
+                    ospf_sr: OspfSr | UndefinedType = Undefined,
+                    srlb: Srlb | UndefinedType = Undefined,
+                    static: Static | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    LabelRanges.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        bgp_sr:
+                           Label range for BGP SR global segment identifiers.
+
+                           Subclass of AvdModel.
+                        dynamic:
+                           Label range for dynamic assignment.
+
+                           Subclass of AvdModel.
+                        isis_sr:
+                           Label range for IS-IS SR global segment identifiers.
+
+                           Subclass of AvdModel.
+                        l2evpn:
+                           Label range for L2 EVPN routes.
+
+                           Subclass of AvdModel.
+                        l2evpn_ethernet_segment:
+                           Labels reserved for L2 EVPN A-D per ES routes for split-horizon filtering.
+
+                           Subclass of AvdModel.
+                        ospf_sr:
+                           Label range for OSPF Segment Routing Global Block (SRGB).
+
+                           Subclass of AvdModel.
+                        srlb:
+                           Label range for SR local segment identifiers.
+
+                           Subclass of AvdModel.
+                        static:
+                           Label range for static MPLS routes.
+
+                           Subclass of AvdModel.
+
+                    """
+
         class Tunnel(AvdModel):
             """Subclass of AvdModel."""
 
@@ -29443,7 +30407,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"ip": {"type": bool}, "ldp": {"type": Ldp}, "icmp": {"type": Icmp}, "rsvp": {"type": Rsvp}, "tunnel": {"type": Tunnel}}
+        _fields: ClassVar[dict] = {
+            "ip": {"type": bool},
+            "ldp": {"type": Ldp},
+            "icmp": {"type": Icmp},
+            "rsvp": {"type": Rsvp},
+            "label_ranges": {"type": LabelRanges},
+            "tunnel": {"type": Tunnel},
+        }
         ip: bool | None
         ldp: Ldp
         """Subclass of AvdModel."""
@@ -29456,6 +30427,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         rsvp: Rsvp
         """Subclass of AvdModel."""
+        label_ranges: LabelRanges
+        """
+        MPLS label ranges configuration.
+        Ranges cannot overlap except for `bgp_sr`, `ospf_sr` and `isis_sr`.
+        Requires EOS 4.31.1F or later.
+
+        Subclass of AvdModel.
+        """
         tunnel: Tunnel
         """
         Configure MPLS tunnel.
@@ -29472,6 +30451,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ldp: Ldp | UndefinedType = Undefined,
                 icmp: Icmp | UndefinedType = Undefined,
                 rsvp: Rsvp | UndefinedType = Undefined,
+                label_ranges: LabelRanges | UndefinedType = Undefined,
                 tunnel: Tunnel | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -29489,6 +30469,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass
                        of AvdModel.
                     rsvp: Subclass of AvdModel.
+                    label_ranges:
+                       MPLS label ranges configuration.
+                       Ranges cannot overlap except for `bgp_sr`, `ospf_sr` and `isis_sr`.
+                       Requires EOS 4.31.1F or later.
+
+                       Subclass of AvdModel.
                     tunnel:
                        Configure MPLS tunnel.
 

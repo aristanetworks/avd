@@ -23,7 +23,7 @@ keys:
         privilege:
           type: int
           convert_types:
-          - str
+            - str
           min: 0
           max: 15
           description: |
@@ -50,6 +50,6 @@ keys:
           description: |
             Specify shell for the user.
           valid_values:
-          - /bin/bash
-          - /bin/sh
-          - /sbin/nologin
+            - /bin/bash
+            - /bin/sh
+            - /sbin/nologin

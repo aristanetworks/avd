@@ -12,7 +12,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
-from pyavd._cv.workflows.models import CloudVision, CVDeployFuture, CVEosConfig, CVGRPCKeepalives, CVWorkspace
+from pyavd._cv.workflows.models import CloudVision, CVDeployFuture, CVDeviceDeployment, CVEosConfig, CVGRPCKeepalives, CVWorkspace
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
@@ -137,6 +137,7 @@ async def test_deploy_to_cv(
         temp_configlet_file.write("alias test test")
         temp_configlet_file.flush()
 
+        device = next(iter(mocked_cvdevices(hostnames=["avd-ci-leaf2"])))
         result = await deploy_to_cv(
             cloudvision=CloudVision(
                 servers="",
@@ -156,9 +157,10 @@ async def test_deploy_to_cv(
                 requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
                 force=workspace_force_submission,
             ),
-            configs=[
-                CVEosConfig(
-                    file=temp_configlet_file.name, device=next(iter(mocked_cvdevices(hostnames=["avd-ci-leaf2"]))), configlet_name="TEST_CONFIGLET_NAME"
+            device_deployments=[
+                CVDeviceDeployment(
+                    device=device,
+                    eos_config=CVEosConfig(file=temp_configlet_file.name, device=device, configlet_name="TEST_CONFIGLET_NAME"),
                 )
             ],
         )
