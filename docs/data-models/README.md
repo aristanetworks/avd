@@ -29,6 +29,6 @@ The **[Schema Explorer](../schema-explorer.md)** offers a browsable, searchable 
 !!! note "Four integration variants for team comparison"
 
     - **Option 1 — iframe wrapper:** [Schema Explorer (iframe)](../schema-explorer.md). A MkDocs page hosts the SPA in an iframe; AVD docs banner stays put. SPA's own chrome hidden inside the iframe.
-    - **Option 2 — banner-less SPA:** [Schema Explorer (no header)](../schema-explorer/index.html?style=none). Standalone SPA with no header at all — relies on whatever banner brought the user. Direct hits show no banner.
-    - **Option 3 — standalone with restyled chrome:** [Schema Explorer (restyled)](../schema-explorer/index.html). Standalone SPA, but its header is restyled with the AVD logo, color, and typography so the visual swap from docs → SPA is near-invisible.
+    - **Option 2 — banner-less SPA:** <a href="../schema-explorer/index.html?style=none">Schema Explorer (no header)</a>. Standalone SPA with no header at all — relies on whatever banner brought the user. Direct hits show no banner.
+    - **Option 3 — standalone with restyled chrome:** <a href="../schema-explorer/index.html">Schema Explorer (restyled)</a>. Standalone SPA, but its header is restyled with the AVD logo, color, and typography so the visual swap from docs → SPA is near-invisible.
     - **Option 4 — MkDocs template override:** [Schema Explorer (native)](../schema-explorer-native.md). The SPA renders inside Material's chrome natively via a Jinja template override — no iframe, full Material header / nav / footer wrapping the SPA content.
