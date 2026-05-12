@@ -1,0 +1,16 @@
+type: overlay-controller
+
+node_type_keys:
+  - key: overlay_controller
+    type: overlay-controller
+    underlay_router: false
+overlay_controller:
+  nodes:
+    - name: missing-id-for-ptp-priority2
+      mgmt_ip: 192.168.0.11/24
+      ptp:
+        clock_identity: "00:00:00:00:00:00"
+        enabled: true
+
+expected_error_message: >-
+  'id' must be set on 'missing-id-for-ptp-priority2' to set ptp priority2
