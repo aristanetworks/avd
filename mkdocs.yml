@@ -78,8 +78,9 @@ plugins:
         - .venv/*
         - venv/*
         - .tox/*
-        # Schema Explorer source (generator + SPA assets) lives outside docs/
-        # and is built into docs/schema-explorer/ by `make schema-explorer-build`.
+        # Schema Explorer source (generator + SPA assets) and build output
+        # both live under tools/. mkdocs_hook.py copies the built tree into
+        # site/schema-explorer/ on `mkdocs build`.
         - tools/*
         - README.md
         - contributing.md
@@ -183,6 +184,12 @@ markdown_extensions:
   - toc:
       separator: "-"
       permalink: true
+hooks:
+  # Copies tools/schema-explorer/build/ into <site_dir>/docs/schema-explorer/
+  # on build, so the generated SQLite + SPA assets never live under the
+  # source-controlled docs/ tree (only under the built site).
+  - tools/schema-explorer/mkdocs_hook.py
+
 # TOC
 docs_dir: .
 nav:

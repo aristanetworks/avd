@@ -19,14 +19,17 @@ Two responsibilities:
    up a self-contained Schema Explorer page.
 
 Source lives at ``tools/schema-explorer/``; build output goes to
-``docs/schema-explorer/`` (gitignored). The MkDocs wrapper page
-``docs/schema-explorer.md`` references the built path.
+``tools/schema-explorer/build/`` (gitignored). ``mkdocs_hook.py`` copies the
+built tree into ``<site_dir>/docs/schema-explorer/`` on every
+``mkdocs build``, so nothing generated lives under the source-controlled
+``docs/`` tree. The MkDocs wrapper page ``docs/schema-explorer.md``
+references the published path.
 
 Usage:
     python tools/schema-explorer/generate.py \\
         --avd-root <repo-root> \\
         --release <tag> \\
-        --site-dir docs/schema-explorer
+        --site-dir tools/schema-explorer/build
 """
 
 from __future__ import annotations

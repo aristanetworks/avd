@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+
+# Built explorer (assets + per-release SQLite) — copied into site/ by mkdocs_hook.py
+build/

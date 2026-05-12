@@ -7,22 +7,26 @@
 # AVD Schema Explorer — source
 
 Source for the static, sql.js-based browser of the AVD `eos_designs` and
-`eos_cli_config_gen` schemas. Built into `docs/schema-explorer/` for the
-MkDocs site (no application code lives under `docs/`).
+`eos_cli_config_gen` schemas. Source and build output both live under
+`tools/`; `mkdocs_hook.py` copies the built tree into
+`site/docs/schema-explorer/` on every `mkdocs build`, so no application code
+or generated data ever lives under the source-controlled `docs/` tree.
 
 Tracked in `aristanetworks/avd-internal#503`.
 
 ## Layout
 
-```
+```text
 tools/schema-explorer/
 ├── generate.py          # CLI: schemas → SQLite + copies static assets to --site-dir
 ├── categories.py        # Category mapping for the sidebar classifier
+├── mkdocs_hook.py       # MkDocs hook: copies build/ into site/schema-explorer/
 ├── README.md            # this file
-└── static/              # SPA source — copied verbatim into <site-dir>
-    ├── index.html       # SPA shell — sql.js loader + nav
-    ├── css/style.css    # Bootstrap overrides + dark-mode rules
-    └── js/app.js        # Hash router + landing/module/var-detail views
+├── static/              # SPA source — copied verbatim into --site-dir
+│   ├── index.html       # SPA shell — sql.js loader + nav
+│   ├── css/style.css    # Bootstrap overrides + dark-mode rules
+│   └── js/app.js        # Hash router + landing/module/var-detail views
+└── build/               # gitignored build output (see Build below)
 ```
 
 ## Build
@@ -33,20 +37,23 @@ From the repo root:
 make schema-explorer-build
 # or directly:
 python tools/schema-explorer/generate.py \
-    --avd-root . --release devel --site-dir docs/schema-explorer
+    --avd-root . --release devel --site-dir tools/schema-explorer/build
 ```
 
 Output:
 
-```
-docs/schema-explorer/                    # gitignored — built artifact
+```text
+tools/schema-explorer/build/             # gitignored — built artifact
 ├── index.html
 ├── css/style.css
 ├── js/app.js
 └── data/devel/schema.sqlite             # generated; ~7.5 MB
 ```
 
-The MkDocs wrapper page `docs/schema-explorer.md` references this built path.
+`mkdocs build` then runs `mkdocs_hook.py`, which copies that tree into
+`<site_dir>/docs/schema-explorer/`. The MkDocs wrapper page
+`docs/schema-explorer.md` references that path in the published site
+(matching the `docs/`-rooted URL space the rest of the site uses).
 
 `make docs-serve` runs the build before `mkdocs serve`. The webdoc container
 (`docker compose -f development/docker-compose.yml up`) does the same via
@@ -70,7 +77,9 @@ Required Python packages (already in the `doc` dependency group of
 automatically.
 
 Repeat per supported AVD release (5.7+); the publish pipeline drops each
-output under `docs/schema-explorer/data/<release>/schema.sqlite`.
+output under `tools/schema-explorer/build/data/<release>/schema.sqlite`,
+which `mkdocs_hook.py` then copies into
+`site/docs/schema-explorer/data/<release>/`.
 
 ## Architecture decisions
 
@@ -85,5 +94,6 @@ See aristanetworks/avd-internal#503 for the full thread. Short version:
   top-level subtrees like `<node_type_keys.key>` were missing) and the
   same-schema `$ref` hole, while keeping cross-schema refs as leaf
   annotations to bound the SQLite size.
-- **Source under `tools/`**, build artifacts under `docs/` — keeps `docs/`
-  to documentation only. (See PR thread for the four locations considered.)
+- **Source and build output both under `tools/`**, copied into `site/` by
+  `mkdocs_hook.py` — keeps `docs/` to documentation only (`.md`, images).
+  (See PR thread for the four locations considered for source.)
