@@ -45,6 +45,12 @@ doc = [
     "mkdocs-exclude",
     "mkdocs-include-dir-to-nav",
     "mkdocstrings[python]",
+    # Schema Explorer build-time deps (docs/schema-explorer/generate.py)
+    "pyyaml>=6.0.0",
+    "referencing>=0.37.0",
+    "deepmerge>=1.1.0",
+    "pydantic>=2.11.10",
+    "jsonschema-rs>=0.46.0",
 ]
 molecule = [
     "molecule>=26.4.0",

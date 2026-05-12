@@ -1,0 +1,260 @@
+"""Category mapping for AVD schema variables.
+
+Maps each (module, root_key) to a human-readable category like "Fabric Topology"
+or "Routing — BGP". Used by the Schema Explorer sidebar classifier and the
+generated SQLite's ``category`` column. Rules are checked in order; first match
+wins. Anything that doesn't match falls into "Other".
+"""
+
+_CATEGORY_RULES: list[tuple[str, list[str], str]] = [
+    # ── eos_designs ──────────────────────────────────────────────────────
+    ("eos_designs", [
+        "fabric_name", "dc_name", "pod_name", "design", "type",
+        "node_type_keys", "custom_node_type_keys", "default_node_types",
+        "default_interfaces", "fabric_numbering",
+    ], "Fabric Topology"),
+    ("eos_designs", [
+        "fabric_evpn_encapsulation", "fabric_ip_addressing",
+        "internal_vlan_order", "enable_trunk_groups", "trunk_groups",
+        "p2p_uplinks_mtu", "p2p_uplinks_qos_profile",
+        "default_interface_mtu", "load_interval", "redundancy",
+        "only_local_vlan_trunk_groups", "use_router_general_for_router_id",
+        "router_id_loopback_description", "default_underlay_p2p_ethernet_description",
+        "default_underlay_p2p_port_channel_description",
+        "default_vrf_diag_loopback_description",
+    ], "Fabric Settings"),
+    ("eos_designs", ["bgp_"], "BGP"),
+    ("eos_designs", [
+        "evpn_", "overlay_", "vtep_",
+        "shutdown_bgp_towards_undeployed_peers",
+        "shutdown_interfaces_towards_undeployed_peers",
+    ], "EVPN & Overlay"),
+    ("eos_designs", ["underlay_multicast", "underlay_filter_",
+                     "underlay_ipv6", "underlay_rfc5549",
+                     "underlay_routing_protocol", "underlay_l2_",
+                     "bfd_multihop"], "Underlay"),
+    ("eos_designs", ["isis_", "underlay_isis_"], "ISIS"),
+    ("eos_designs", ["underlay_ospf_"], "OSPF"),
+    ("eos_designs", ["mlag_"], "MLAG"),
+    ("eos_designs", [
+        "wan_", "cv_pathfinder_", "ipsec_settings", "zscaler_",
+    ], "WAN"),
+    ("eos_designs", [
+        "network_services_keys", "network_ports", "svi_profiles",
+        "l2vlan_profiles", "connected_endpoints", "custom_connected_endpoints_keys",
+        "port_profiles", "default_connected_", "default_network_",
+        "l3_edge", "l3_interface_profiles", "core_interfaces",
+        "ipv4_prefix_list_catalog",
+    ], "Network Services"),
+    ("eos_designs", [
+        "mgmt_", "management_", "dns_settings", "ntp_settings",
+        "logging_settings", "name_servers", "timezone", "source_interfaces",
+        "default_mgmt_method", "ssh_settings",
+    ], "Management"),
+    ("eos_designs", [
+        "snmp_settings", "sflow_settings", "flow_tracking_settings",
+        "fabric_flow_tracking", "fabric_sflow", "event_",
+        "queue_monitor_", "hardware_counters",
+    ], "Monitoring"),
+    ("eos_designs", [
+        "aaa_settings", "dot1x_settings", "address_locking_settings",
+        "ipv4_acls", "local_users",
+    ], "Security"),
+    ("eos_designs", [
+        "cv_", "cvp_", "generate_cv_tags", "terminattr_",
+        "use_cv_topology",
+    ], "CloudVision"),
+    ("eos_designs", ["ptp_", "uplink_ptp"], "PTP"),
+    ("eos_designs", [
+        "platform_settings", "platform_speed_groups",
+        "custom_platform_settings", "unsupported_transceiver",
+        "serial_number", "system_mac_address", "campus",
+    ], "Platform"),
+    ("eos_designs", [
+        "avd_", "eos_designs_", "custom_structured_configuration",
+        "is_deployed", "validation_profiles", "general_settings",
+        "digital_twin", "device_profile",
+        "application_classification", "inband_ztp_bootstrap_file",
+    ], "AVD Configuration"),
+    ("eos_designs", [
+        "default_igmp_snooping_enabled", "mac_address_table",
+    ], "Fabric Settings"),
+    ("eos_designs", [
+        "ipv6_mgmt_", "devices",
+    ], "Management"),
+
+    # ── eos_cli_config_gen ───────────────────────────────────────────────
+    ("eos_cli_config_gen", [
+        "hostname", "clock", "boot", "kernel", "system", "prompt",
+        "banners", "aliases", "terminal", "config_", "generate_",
+        "eos_cli", "avd_", "read_structured_config", "eos_config_future",
+    ], "System"),
+    ("eos_cli_config_gen", [
+        "aaa_", "local_users", "enable_password", "roles",
+        "radius_", "tacacs_", "management_security",
+        "management_accounts", "ip_security", "mac_security",
+        "dot1x", "address_locking",
+    ], "AAA & Security"),
+    ("eos_cli_config_gen", [
+        "ethernet_interfaces", "port_channel_interfaces",
+        "loopback_interfaces", "vlan_interfaces", "tunnel_interfaces",
+        "dps_interfaces", "management_interfaces", "interface_",
+        "switchport_", "port_channel", "link_tracking_groups",
+    ], "Interfaces"),
+    ("eos_cli_config_gen", [
+        "router_bgp", "bgp_groups", "service_routing_",
+        "peer_filters",
+    ], "Routing — BGP"),
+    ("eos_cli_config_gen", [
+        "router_ospf", "ipv6_router_ospf", "ip_ospf_",
+    ], "Routing — OSPF"),
+    ("eos_cli_config_gen", ["router_isis"], "Routing — ISIS"),
+    ("eos_cli_config_gen", [
+        "router_general", "router_multicast", "router_igmp",
+        "router_pim_", "router_rip", "router_msdp",
+        "router_bfd", "router_l2_vpn", "router_adaptive_",
+        "router_segment_", "router_service_",
+        "static_routes", "ipv6_static_routes",
+        "ip_routing", "ipv6_unicast_routing", "vrfs",
+        "virtual_source_nat_vrfs", "ip_virtual_router_",
+    ], "Routing — Other"),
+    ("eos_cli_config_gen", [
+        "vlans", "vlan_internal_order", "spanning_tree",
+        "vxlan_interface", "lacp", "l2_protocol", "errdisable",
+        "mlag_configuration", "poe", "ip_igmp_snooping",
+    ], "Switching"),
+    ("eos_cli_config_gen", [
+        "ip_access_lists", "ipv6_access_lists", "access_lists",
+        "standard_access_lists", "ipv6_standard_access_lists",
+        "mac_access_lists", "prefix_lists", "ipv6_prefix_lists",
+        "dynamic_prefix_lists", "ip_community_lists",
+        "ip_extcommunity_lists", "ip_large_community_lists",
+        "community_lists", "as_path", "match_list_input", "route_maps",
+    ], "ACLs & Filters"),
+    ("eos_cli_config_gen", [
+        "qos", "class_maps", "policy_maps",
+        "priority_flow_control", "queue_monitor_", "qos_profiles",
+        "load_balance",
+    ], "QoS"),
+    ("eos_cli_config_gen", [
+        "management_api_", "management_console", "management_cvx",
+        "management_defaults", "management_ssh", "management_tech_support",
+        "ntp", "dns_domain", "domain_list", "ip_name_server",
+        "ip_domain_lookup", "logging", "snmp_server", "sflow",
+        "lldp", "ip_hosts",
+    ], "Management"),
+    ("eos_cli_config_gen", [
+        "dhcp_", "ip_dhcp_", "ip_nat", "ipv6_dhcp_relay",
+        "arp", "ipv6_neighbor",
+    ], "DHCP & NAT"),
+    ("eos_cli_config_gen", [
+        "flow_tracking", "event_", "monitor_",
+        "trackers", "daemon", "agents", "hardware_counters",
+        "hardware", "tap_aggregation", "vmtracer_",
+    ], "Monitoring"),
+    ("eos_cli_config_gen", [
+        "mpls", "stun", "router_path_selection",
+        "router_traffic_engineering", "router_internet_exit",
+        "application_traffic_recognition", "traffic_policies",
+    ], "MPLS & WAN"),
+    ("eos_cli_config_gen", [
+        "ptp", "sync_e",
+    ], "PTP & Sync"),
+    ("eos_cli_config_gen", [
+        "platform", "transceiver", "tcam_profile", "redundancy",
+        "patch_panel", "maintenance", "load_interval", "mac_address_table",
+        "ip_hardware", "ipv6_hardware", "monitor_layer1",
+        "ip_icmp_redirect", "ipv6_icmp_redirect",
+        "service_unsupported_transceiver",
+    ], "Platform"),
+    ("eos_cli_config_gen", [
+        "cvx", "metadata", "custom_templates",
+        "mcs_client", "cfm",
+        "ip_ftp_", "ip_http_", "ip_ssh_", "ip_tacacs",
+        "ip_radius", "ip_telnet_", "ip_tftp_",
+        "monitor_telemetry_",
+    ], "Other"),
+]
+
+
+CATEGORY_INFO: dict[str, dict[str, str]] = {
+    # eos_designs
+    "Fabric Topology": {"icon": "bi-diagram-3",
+        "description": "Fabric name, DC/POD naming, node types, and topology hierarchy."},
+    "Fabric Settings": {"icon": "bi-sliders",
+        "description": "Global fabric defaults — MTU, VLAN ordering, trunk groups, descriptions, redundancy."},
+    "BGP": {"icon": "bi-arrow-left-right",
+        "description": "BGP AS, ECMP, peer groups, graceful restart, and update behavior."},
+    "EVPN & Overlay": {"icon": "bi-layers",
+        "description": "EVPN control plane, overlay routing, VXLAN VTEP, RT/RD, and multicast."},
+    "Underlay": {"icon": "bi-hdd-network",
+        "description": "Underlay protocol selection, IPv6/RFC5549, multicast RP, redistribution filters."},
+    "ISIS": {"icon": "bi-signpost-split",
+        "description": "IS-IS area, metric, circuit type, system ID, TI-LFA, authentication."},
+    "OSPF": {"icon": "bi-signpost",
+        "description": "OSPF area, authentication, BFD, graceful restart, max-LSA."},
+    "MLAG": {"icon": "bi-link-45deg",
+        "description": "MLAG peer links, iBGP peering VLANs, orphan port-channels."},
+    "WAN": {"icon": "bi-globe",
+        "description": "AutoVPN, CV Pathfinder, IPsec, STUN, path groups, virtual topologies, Zscaler."},
+    "Network Services": {"icon": "bi-ethernet",
+        "description": "VLANs, VRFs, SVIs, connected endpoints, port profiles, L3 edges, core interfaces."},
+    "Management": {"icon": "bi-gear",
+        "description": "Management interface, VRF, gateway, DNS, NTP, logging, SSH."},
+    "Monitoring": {"icon": "bi-activity",
+        "description": "SNMP, sFlow, flow tracking, event handlers, queue monitoring, hardware counters."},
+    "Security": {"icon": "bi-shield-lock",
+        "description": "AAA, 802.1X, address locking, IPv4 ACLs, local users."},
+    "CloudVision": {"icon": "bi-cloud",
+        "description": "CloudVision telemetry, provisioning, topology tags, CV Pathfinder server settings."},
+    "PTP": {"icon": "bi-clock",
+        "description": "Precision Time Protocol profiles and uplink PTP settings."},
+    "Platform": {"icon": "bi-cpu",
+        "description": "Platform settings, speed groups, transceivers, hardware serial/MAC."},
+    "AVD Configuration": {"icon": "bi-wrench",
+        "description": "AVD framework behavior — structured config, validation, docs, debug."},
+    # eos_cli_config_gen
+    "System": {"icon": "bi-terminal",
+        "description": "Hostname, clock, boot, kernel, banners, aliases, EOS CLI basics."},
+    "AAA & Security": {"icon": "bi-shield-check",
+        "description": "AAA, RADIUS, TACACS+, local users, management security."},
+    "Interfaces": {"icon": "bi-plug",
+        "description": "Ethernet, port-channel, loopback, VLAN, tunnel, DPS interfaces with profiles."},
+    "Routing — BGP": {"icon": "bi-arrow-left-right",
+        "description": "BGP router config, peer groups, address families, VRFs, service routing."},
+    "Routing — OSPF": {"icon": "bi-signpost",
+        "description": "OSPFv2 and OSPFv3 router instances, areas, interfaces, redistribution."},
+    "Routing — ISIS": {"icon": "bi-signpost-split",
+        "description": "IS-IS router instance, NET, interfaces, segment routing, authentication."},
+    "Routing — Other": {"icon": "bi-shuffle",
+        "description": "Static routes, RIP, PIM, MSDP, BFD, IGMP, general routing, VRFs."},
+    "Switching": {"icon": "bi-box",
+        "description": "VLANs, spanning tree, VXLAN, LACP, MLAG, L2 protocol, IGMP snooping, PoE."},
+    "ACLs & Filters": {"icon": "bi-funnel",
+        "description": "IP/IPv6/MAC ACLs, prefix lists, community lists, AS path filters, route maps."},
+    "QoS": {"icon": "bi-speedometer",
+        "description": "QoS profiles, class maps, policy maps, priority flow control, queue monitoring."},
+    "DHCP & NAT": {"icon": "bi-arrows-angle-expand",
+        "description": "DHCP relay/server/snooping, IP NAT, ARP, IPv6 neighbor settings."},
+    "MPLS & WAN": {"icon": "bi-signpost-2",
+        "description": "MPLS, STUN, path selection, traffic engineering, internet exit, traffic policies."},
+    "PTP & Sync": {"icon": "bi-clock",
+        "description": "Precision Time Protocol and Synchronous Ethernet (SyncE) configuration."},
+    "Other": {"icon": "bi-three-dots",
+        "description": "CVX, CFM, metadata, custom templates, miscellaneous client source interfaces."},
+}
+
+
+def get_category(module: str, key_path: str) -> str:
+    """Return the category for a schema variable based on its root key."""
+    root_key = key_path.split(".")[0].replace("[]", "")
+    for rule_module, prefixes, category in _CATEGORY_RULES:
+        if rule_module != module:
+            continue
+        for prefix in prefixes:
+            if prefix.endswith("_"):
+                if root_key.startswith(prefix) or root_key == prefix.rstrip("_"):
+                    return category
+            elif root_key == prefix or root_key.startswith(prefix):
+                return category
+    return "Other"

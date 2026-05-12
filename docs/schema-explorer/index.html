@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVD Schema Explorer</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<script>
+  // Header-suppression modes:
+  //   - in-iframe (option 1): hide because the MkDocs wrapper provides chrome
+  //   - style=none (option 2): hide unconditionally, simulate a banner-less
+  //     SPA loaded under whatever banner the user came from
+  //   - default (option 3): keep the AVD docs-style header
+  if (window.self !== window.top) {
+    document.documentElement.classList.add("in-iframe");
+  }
+  if (new URLSearchParams(window.location.search).get("style") === "none") {
+    document.documentElement.classList.add("style-none");
+  }
+</script>
+
+<!-- AVD-docs-style header. Visually mirrors the MkDocs Material banner used
+     by the docs site so navigating between docs and the standalone Schema
+     Explorer feels seamless. Hidden when this page is loaded inside the
+     iframe wrapper (see #schema-navbar CSS rule). -->
+<header id="schema-navbar" class="schema-docs-header">
+  <div class="schema-docs-header-inner">
+    <a class="schema-docs-brand" href="../../" title="Arista AVD docs">
+      <img src="../_media/arista-avd-logo-white.png" alt="ARISTA AVD" class="schema-docs-logo">
+    </a>
+    <div class="schema-docs-title">
+      <a href="#/">Schema Explorer</a>
+    </div>
+    <div class="schema-docs-actions">
+      <select id="release-select" class="form-select form-select-sm">
+        <option value="devel">devel</option>
+      </select>
+      <a class="schema-docs-action" href="../../" title="AVD Docs"><i class="bi bi-book"></i></a>
+      <a class="schema-docs-action" href="https://github.com/aristanetworks/avd" target="_blank" rel="noopener" title="GitHub"><i class="bi bi-github"></i></a>
+    </div>
+  </div>
+</header>
+
+<main id="app" class="container-fluid py-3">
+  <div class="text-center py-5 text-muted">
+    <span class="spinner-border spinner-border-sm" role="status"></span>
+    <span class="ms-2 small">Loading schema database…</span>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -131,3 +131,22 @@ bump-patch: ## Bump patch release. 6.2.4 -> 6.2.5-dev0
 .PHONY: config-diff
 config-diff: ## Run git diff comparing molecule configs with 'devel' using our special config diff ignoring reordering of config lines.
 	@GIT_EXTERNAL_DIFF=development/compare.py git diff devel --ext-diff -- **/configs/*.cfg
+
+#########################################
+# Documentation                         #
+#########################################
+
+SCHEMA_EXPLORER_OUT = docs/schema-explorer/data/devel/schema.sqlite
+
+.PHONY: schema-explorer-build
+schema-explorer-build: ## Build docs/schema-explorer/data/devel/schema.sqlite from local pyavd.
+	uv run --group doc python docs/schema-explorer/generate.py \
+		--avd-root . --release devel --out $(SCHEMA_EXPLORER_OUT)
+
+.PHONY: docs-serve
+docs-serve: schema-explorer-build ## Build the Schema Explorer SQLite then `mkdocs serve` on http://127.0.0.1:8000.
+	uv run --group doc mkdocs serve --dev-addr=127.0.0.1:8000 -f mkdocs.yml
+
+.PHONY: docs-serve-docker
+docs-serve-docker: ## Same as docs-serve, but inside the webdoc_avd container (no host deps required).
+	docker compose -f development/docker-compose.yml up
