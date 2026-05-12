@@ -26,10 +26,10 @@ keys:
                 description: Enforce CPU traffic-policy on management ports.
           enforcement_ip_ttl_expired:
             type: bool
-            description: Enforce CPU traffic-policy on IP TTL expired packets.
+            description: Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets.
           fragment_implicit_permit_disabled:
             type: bool
-            description: Disable implicit permit-fragment rules.
+            description: Disable rules to allow fragmented packets for Layer 4 rules.
       vrfs:
         type: list
         primary_key: name
