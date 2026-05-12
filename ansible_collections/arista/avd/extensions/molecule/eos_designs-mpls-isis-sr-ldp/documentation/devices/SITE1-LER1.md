@@ -214,8 +214,8 @@ vlan 2020
 
 | Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Ethernet1 | P2P_SITE1-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - | - | - | - |
-| Ethernet2 | P2P_SITE1-LER2_Ethernet2 | - | - | default | 9178 | False | - | - | - | - | - | - | - |
+| Ethernet1 | P2P_SITE1-LSR1_Ethernet1 | - | 2001:db8:0:fffe::/127 | default | 9178 | False | - | - | - | - | - | - | - |
+| Ethernet2 | P2P_SITE1-LER2_Ethernet2 | - | 2001:db8:0:fffe::4/127 | default | 9178 | False | - | - | - | - | - | - | - |
 
 ##### ISIS
 
@@ -252,6 +252,7 @@ interface Ethernet1
    no switchport
    ip address 100.64.48.0/31
    ipv6 enable
+   ipv6 address 2001:db8:0:fffe::/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -273,6 +274,7 @@ interface Ethernet2
    no switchport
    ip address 100.64.48.4/31
    ipv6 enable
+   ipv6 address 2001:db8:0:fffe::4/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -498,7 +500,7 @@ interface Port-Channel8.333
 
 | Interface | Description | VRF | IPv6 Addresses |
 | --------- | ----------- | --- | -------------- |
-| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::5/128 |
+| Loopback0 | ROUTER_ID | default | 2001:db8:200:ffff::5/128 |
 
 ##### ISIS
 
@@ -514,10 +516,10 @@ interface Loopback0
    description ROUTER_ID
    no shutdown
    ip address 100.70.0.5/32
-   ipv6 address 2000:1234:ffff:ffff::5/128
+   ipv6 address 2001:db8:200:ffff::5/128
    mpls ldp interface
    node-segment ipv4 index 205
-   node-segment ipv6 index 205
+   node-segment ipv6 index 1205
    isis enable CORE
    isis passive
 ```
@@ -686,7 +688,7 @@ router ospf 19 vrf TENANT_B_INTRA
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 205 | 205 |
+| Loopback0 | 205 | 1205 |
 
 #### ISIS IPv4 Address Family Summary
 
@@ -702,6 +704,7 @@ router ospf 19 vrf TENANT_B_INTRA
 | -------- | ----- |
 | IPv6 Address-family Enabled | True |
 | Maximum-paths | 4 |
+| Multi-topology Enabled | True |
 | TI-LFA Mode | link-protection |
 
 #### Router ISIS Device Configuration
@@ -723,6 +726,7 @@ router isis CORE
    !
    address-family ipv6 unicast
       maximum-paths 4
+      multi-topology
       fast-reroute ti-lfa mode link-protection
    !
    segment-routing mpls
