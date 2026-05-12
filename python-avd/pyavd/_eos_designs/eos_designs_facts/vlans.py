@@ -74,7 +74,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         for subinterface in adapter_settings.port_channel.subinterfaces:
             if subinterface.vlan_id:
                 vlans.add(subinterface.vlan_id)
-            elif subinterface.number:
+            else:
                 vlans.add(subinterface.number)
 
         return vlans, trunk_groups
