@@ -2460,6 +2460,44 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class AddressLocking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                ipv4: bool | None
+                """
+                Enable address locking for IPv4.
+                Key `ipv4` can only be set to false.
+                For EOS version 4.31 and
+                higher.
+                """
+                ipv6: bool | None
+                """
+                Enable address locking for IPv6.
+                For EOS version 4.31 and higher.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        AddressLocking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv4:
+                               Enable address locking for IPv4.
+                               Key `ipv4` can only be set to false.
+                               For EOS version 4.31 and
+                               higher.
+                            ipv6:
+                               Enable address locking for IPv6.
+                               For EOS version 4.31 and higher.
+
+                        """
+
             class StormControl(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -3474,6 +3512,7 @@ class EosDesigns(EosDesignsRootModel):
                 "flow_tracking": {"type": FlowTracking},
                 "link_tracking": {"type": LinkTracking},
                 "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                "address_locking": {"type": AddressLocking},
                 "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                 "storm_control": {"type": StormControl},
                 "monitor_sessions": {"type": MonitorSessions},
@@ -3663,6 +3702,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
             """802.1x"""
+            address_locking: AddressLocking
+            """
+            Address locking settings applied on the port.
+
+            Subclass of AvdModel.
+            """
             poe: EosCliConfigGen.EthernetInterfacesItem.Poe
             """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
             storm_control: StormControl
@@ -3764,6 +3809,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     link_tracking: LinkTracking | UndefinedType = Undefined,
                     dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                    address_locking: AddressLocking | UndefinedType = Undefined,
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                     storm_control: StormControl | UndefinedType = Undefined,
                     monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -3918,6 +3964,10 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         dot1x: 802.1x
+                        address_locking:
+                           Address locking settings applied on the port.
+
+                           Subclass of AvdModel.
                         poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                         storm_control:
                            Storm control settings applied on port toward the endpoint.
@@ -24939,6 +24989,44 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class AddressLocking(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+            ipv4: bool | None
+            """
+            Enable address locking for IPv4.
+            Key `ipv4` can only be set to false.
+            For EOS version 4.31 and
+            higher.
+            """
+            ipv6: bool | None
+            """
+            Enable address locking for IPv6.
+            For EOS version 4.31 and higher.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    AddressLocking.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4:
+                           Enable address locking for IPv4.
+                           Key `ipv4` can only be set to false.
+                           For EOS version 4.31 and
+                           higher.
+                        ipv6:
+                           Enable address locking for IPv6.
+                           For EOS version 4.31 and higher.
+
+                    """
+
         class StormControl(AvdModel):
             """Subclass of AvdModel."""
 
@@ -25952,6 +26040,7 @@ class EosDesigns(EosDesignsRootModel):
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
             "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "address_locking": {"type": AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
             "monitor_sessions": {"type": MonitorSessions},
@@ -26131,6 +26220,12 @@ class EosDesigns(EosDesignsRootModel):
         """
         dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
         """802.1x"""
+        address_locking: AddressLocking
+        """
+        Address locking settings applied on the port.
+
+        Subclass of AvdModel.
+        """
         poe: EosCliConfigGen.EthernetInterfacesItem.Poe
         """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
         storm_control: StormControl
@@ -26231,6 +26326,7 @@ class EosDesigns(EosDesignsRootModel):
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
                 dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                address_locking: AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
                 monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -26378,6 +26474,10 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     dot1x: 802.1x
+                    address_locking:
+                       Address locking settings applied on the port.
+
+                       Subclass of AvdModel.
                     poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                     storm_control:
                        Storm control settings applied on port toward the endpoint.
@@ -29868,6 +29968,44 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class AddressLocking(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+            ipv4: bool | None
+            """
+            Enable address locking for IPv4.
+            Key `ipv4` can only be set to false.
+            For EOS version 4.31 and
+            higher.
+            """
+            ipv6: bool | None
+            """
+            Enable address locking for IPv6.
+            For EOS version 4.31 and higher.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    AddressLocking.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4:
+                           Enable address locking for IPv4.
+                           Key `ipv4` can only be set to false.
+                           For EOS version 4.31 and
+                           higher.
+                        ipv6:
+                           Enable address locking for IPv6.
+                           For EOS version 4.31 and higher.
+
+                    """
+
         class StormControl(AvdModel):
             """Subclass of AvdModel."""
 
@@ -30878,6 +31016,7 @@ class EosDesigns(EosDesignsRootModel):
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
             "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "address_locking": {"type": AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
             "monitor_sessions": {"type": MonitorSessions},
@@ -31014,6 +31153,12 @@ class EosDesigns(EosDesignsRootModel):
         """
         dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
         """802.1x"""
+        address_locking: AddressLocking
+        """
+        Address locking settings applied on the port.
+
+        Subclass of AvdModel.
+        """
         poe: EosCliConfigGen.EthernetInterfacesItem.Poe
         """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
         storm_control: StormControl
@@ -31111,6 +31256,7 @@ class EosDesigns(EosDesignsRootModel):
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
                 dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                address_locking: AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
                 monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -31220,6 +31366,10 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     dot1x: 802.1x
+                    address_locking:
+                       Address locking settings applied on the port.
+
+                       Subclass of AvdModel.
                     poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                     storm_control:
                        Storm control settings applied on port toward the endpoint.
@@ -58725,6 +58875,44 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class AddressLocking(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                        ipv4: bool | None
+                        """
+                        Enable address locking for IPv4.
+                        Key `ipv4` can only be set to false.
+                        For EOS version 4.31 and
+                        higher.
+                        """
+                        ipv6: bool | None
+                        """
+                        Enable address locking for IPv6.
+                        For EOS version 4.31 and higher.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                                """
+                                AddressLocking.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    ipv4:
+                                       Enable address locking for IPv4.
+                                       Key `ipv4` can only be set to false.
+                                       For EOS version 4.31 and
+                                       higher.
+                                    ipv6:
+                                       Enable address locking for IPv6.
+                                       For EOS version 4.31 and higher.
+
+                                """
+
                     class StormControl(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -59748,6 +59936,7 @@ class EosDesigns(EosDesignsRootModel):
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
                         "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "address_locking": {"type": AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
                         "monitor_sessions": {"type": MonitorSessions},
@@ -59937,6 +60126,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
                     """802.1x"""
+                    address_locking: AddressLocking
+                    """
+                    Address locking settings applied on the port.
+
+                    Subclass of AvdModel.
+                    """
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe
                     """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
                     storm_control: StormControl
@@ -60038,6 +60233,7 @@ class EosDesigns(EosDesignsRootModel):
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
                             dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            address_locking: AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
                             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -60192,6 +60388,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 dot1x: 802.1x
+                                address_locking:
+                                   Address locking settings applied on the port.
+
+                                   Subclass of AvdModel.
                                 poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                                 storm_control:
                                    Storm control settings applied on port toward the endpoint.
@@ -60717,6 +60917,44 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class AddressLocking(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                        ipv4: bool | None
+                        """
+                        Enable address locking for IPv4.
+                        Key `ipv4` can only be set to false.
+                        For EOS version 4.31 and
+                        higher.
+                        """
+                        ipv6: bool | None
+                        """
+                        Enable address locking for IPv6.
+                        For EOS version 4.31 and higher.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                                """
+                                AddressLocking.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    ipv4:
+                                       Enable address locking for IPv4.
+                                       Key `ipv4` can only be set to false.
+                                       For EOS version 4.31 and
+                                       higher.
+                                    ipv6:
+                                       Enable address locking for IPv6.
+                                       For EOS version 4.31 and higher.
+
+                                """
+
                     class StormControl(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -61740,6 +61978,7 @@ class EosDesigns(EosDesignsRootModel):
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
                         "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "address_locking": {"type": AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
                         "monitor_sessions": {"type": MonitorSessions},
@@ -61929,6 +62168,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
                     """802.1x"""
+                    address_locking: AddressLocking
+                    """
+                    Address locking settings applied on the port.
+
+                    Subclass of AvdModel.
+                    """
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe
                     """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
                     storm_control: StormControl
@@ -62030,6 +62275,7 @@ class EosDesigns(EosDesignsRootModel):
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
                             dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            address_locking: AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
                             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -62184,6 +62430,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 dot1x: 802.1x
+                                address_locking:
+                                   Address locking settings applied on the port.
+
+                                   Subclass of AvdModel.
                                 poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                                 storm_control:
                                    Storm control settings applied on port toward the endpoint.
