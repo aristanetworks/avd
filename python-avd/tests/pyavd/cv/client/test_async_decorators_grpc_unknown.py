@@ -6,7 +6,7 @@ from contextlib import AbstractContextManager
 import pytest
 from test_async_decorators import CvClass
 
-from pyavd._cv.client.exceptions import CVClientException, CVGRPCError
+from pyavd._cv.client.exceptions import CVClientInvalidServerName, CVGRPCError
 from pyavd._cv.client.versioning import CVAAS_VERSION_STRING, CvVersion
 
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
@@ -31,7 +31,7 @@ GRPC_UNKNOWN_STATUS_TESTS = [
     pytest.param(
         "cv-prod-us-central1-a.arista.io",
         pytest.raises(
-            CVClientException,
+            CVClientInvalidServerName,
             match=(
                 r"CVaaS FQDN 'cv-prod-us-central1-a\.arista\.io' is missing the required 'www\.' prefix\. "
                 r"Please use 'www\.cv-prod-us-central1-a\.arista\.io' instead\."
@@ -42,7 +42,7 @@ GRPC_UNKNOWN_STATUS_TESTS = [
     pytest.param(
         "apiserver.cv-prod-us-4.arista.io",
         pytest.raises(
-            CVClientException,
+            CVClientInvalidServerName,
             match=(
                 r"CVaaS FQDN 'apiserver\.cv-prod-us-4\.arista\.io' is pointing to the streaming endpoint\. "
                 r"Please use API endpoint 'www\.cv-prod-us-4\.arista\.io' instead\."
@@ -53,7 +53,7 @@ GRPC_UNKNOWN_STATUS_TESTS = [
     pytest.param(
         "www.incorrect-cluster.arista.io",
         pytest.raises(
-            CVClientException,
+            CVClientInvalidServerName,
             match=r"Provided CVaaS FQDN 'www\.incorrect-cluster\.arista\.io' may be incorrect\.",
         ),
         id="UNKNOWN_STATUS_CVAAS_UNKNOWN_ARISTA_IO_FQDN",
@@ -62,7 +62,7 @@ GRPC_UNKNOWN_STATUS_TESTS = [
     pytest.param(
         ["arista.io", "www.cv-prod-us-central1-a.arista.io"],
         pytest.raises(
-            CVClientException,
+            CVClientInvalidServerName,
             match=r"CVaaS FQDN 'arista\.io' is missing the required 'www\.' prefix\.",
         ),
         id="UNKNOWN_STATUS_FIRST_SERVER_BASE_FQDN",

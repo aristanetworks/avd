@@ -16,8 +16,8 @@ from typing import TYPE_CHECKING, Any, ClassVar, ParamSpec, TypeVar, get_args, g
 from grpclib import Status
 from grpclib.exceptions import GRPCError, StreamTerminatedError
 
-from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVClientException, CVGRPCError, CVResourceNotFound, CVTimeoutError
-from pyavd._cv.constants import CV_REGION_TO_SERVER_MAP
+from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVClientException, CVClientInvalidServerName, CVGRPCError, CVResourceNotFound, CVTimeoutError
+from pyavd._cv.constants import CVAAS_API_ENDPOINTS, CVAAS_API_PREFIX, CVAAS_BASE_FQDNS, CVAAS_STREAMING_ENDPOINTS, CVAAS_STREAMING_PREFIX
 from pyavd._utils import batch
 
 from .constants import CVAAS_VERSION_STRING
@@ -271,35 +271,10 @@ class GRPCRequestHandler:
                                     raise new_exception
 
                             case Status.UNKNOWN:
-                                # Check if www is missing in CVaaS FQDN
-                                cv_servers = getattr(call_args[0], "_servers", []) if call_args else []
-                                first_cv_server = cv_servers[0] if cv_servers else ""
-                                if first_cv_server.endswith("arista.io"):
-                                    for cvaas_region in CV_REGION_TO_SERVER_MAP.values():
-                                        # Correctly configured API endpoint - fall through to CVGRPCError
-                                        if first_cv_server == f"{cvaas_region['api']}.{cvaas_region['base_fqdn']}":
-                                            break
-                                        # Target CVaaS is missing api prefix
-                                        if first_cv_server == cvaas_region["base_fqdn"]:
-                                            msg = (
-                                                f"CVaaS FQDN '{first_cv_server}' is missing the required '{cvaas_region['api']}.' prefix. "
-                                                f"Please use '{cvaas_region['api']}.{cvaas_region['base_fqdn']}' instead."
-                                            )
-                                            raise CVClientException(msg)
-                                        # Target CVaaS is pointing to the streaming endpoint
-                                        if first_cv_server == f"{cvaas_region['streaming']}.{cvaas_region['base_fqdn']}":
-                                            msg = (
-                                                f"CVaaS FQDN '{first_cv_server}' is pointing to the streaming endpoint. "
-                                                f"Please use API endpoint '{cvaas_region['api']}.{cvaas_region['base_fqdn']}' instead."
-                                            )
-                                            raise CVClientException(msg)
-                                    else:
-                                        # No region matched - generic catch for incorrect CVaaS FQDN
-                                        msg = (
-                                            f"Provided CVaaS FQDN '{first_cv_server}' may be incorrect. "
-                                            "Please check 'https://www.arista.io/help' for the full list of supported CVaaS clusters."
-                                        )
-                                        raise CVClientException(msg)
+                                invalid_cvaas_fqdn, hint_msg = self._invalid_cvaas_fqdn(getattr(call_args[0], "_servers", []) if call_args else [])
+                                if invalid_cvaas_fqdn:
+                                    raise CVClientInvalidServerName(hint_msg)
+
                                 # gRPC UNKNOWN received from non-CVaaS endpoint or correctly configured CVaaS
                                 raise CVGRPCError(*e.args, call_args, call_kwargs)
                             case _:
@@ -416,3 +391,33 @@ class GRPCRequestHandler:
 
         if found_errors:
             raise CVClientBulkAPIError(func_name, found_errors)
+
+    def _invalid_cvaas_fqdn(self, cv_servers: list[str]) -> tuple[bool, str]:
+        """
+        Check if targeted CVaaS FQDN is invalid.
+
+        Returns:
+            A tuple of <bool> and <str>, indicating if FQDN of the API endpoint is invalid and a hint explaining invalidity details and possible mitigation.
+        """
+        first_cv_server = cv_servers[0] if cv_servers else ""
+        if not first_cv_server.endswith("arista.io"):
+            return False, ""
+        # Correctly configured API endpoint
+        if first_cv_server in CVAAS_API_ENDPOINTS:
+            return False, ""
+        # Target CVaaS is missing api prefix
+        if first_cv_server in CVAAS_BASE_FQDNS:
+            return True, (
+                f"CVaaS FQDN '{first_cv_server}' is missing the required '{CVAAS_API_PREFIX}.' prefix. "
+                f"Please use '{CVAAS_API_PREFIX}.{first_cv_server}' instead."
+            )
+        # Target CVaaS is pointing to the streaming endpoint
+        if first_cv_server in CVAAS_STREAMING_ENDPOINTS:
+            base_fqdn = first_cv_server.removeprefix(f"{CVAAS_STREAMING_PREFIX}.")
+            return True, (
+                f"CVaaS FQDN '{first_cv_server}' is pointing to the streaming endpoint. Please use API endpoint '{CVAAS_API_PREFIX}.{base_fqdn}' instead."
+            )
+        # Unknown arista.io FQDN
+        return True, (
+            f"Provided CVaaS FQDN '{first_cv_server}' may be incorrect. Please check 'https://www.arista.io/help' for the full list of existing CVaaS clusters."
+        )

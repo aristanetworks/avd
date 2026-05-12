@@ -3,13 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import re
 from ipaddress import AddressValueError, IPv4Address, IPv4Network
 from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
 
-from pyavd._cv.constants import CV_REGION_TO_SERVER_MAP
+from pyavd._cv.constants import CV_REGION_TO_SERVER_MAP, CVAAS_API_PREFIX
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
@@ -72,7 +73,7 @@ class DhcpServersMixin(Protocol):
         """Return the first CVP server using either new or old data models."""
         if self.inputs.cv_settings.cvaas.enabled:
             region = next(iter(self.inputs.cv_settings.cvaas.clusters)).region
-            return f"{CV_REGION_TO_SERVER_MAP[region]['api']}.{CV_REGION_TO_SERVER_MAP[region]['base_fqdn']}"
+            return f"{CVAAS_API_PREFIX}.{CV_REGION_TO_SERVER_MAP[region]}"
 
         if self.inputs.cv_settings.onprem_clusters:
             return next(iter(next(iter(self.inputs.cv_settings.onprem_clusters)).servers)).name
@@ -86,6 +87,11 @@ class DhcpServersMixin(Protocol):
             return
         if not (cvp_server := self._get_cvp_server_for_dhcp()):
             return
+
+        if "arista.io" in cvp_server:
+            # Change apiserver.<...>arista.io to www.<...>arista.io
+            domain = re.sub(r"https:\/\/|www\.|apiserver\.", "", cvp_server)
+            cvp_server = f"www.{domain}"
 
         dhcp_server.tftp_server.file_ipv4 = f"https://{cvp_server}/ztp/bootstrap"
 

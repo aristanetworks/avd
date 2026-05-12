@@ -6,7 +6,7 @@ from __future__ import annotations
 import ipaddress
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._cv.constants import CV_REGION_TO_SERVER_MAP
+from pyavd._cv.constants import CV_REGION_TO_SERVER_MAP, CVAAS_STREAMING_PREFIX
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -99,7 +99,7 @@ class DaemonTerminattrMixin(Protocol):
     def get_cv_addrs(cluster: EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem) -> EosCliConfigGen.DaemonTerminattr.Cvaddrs:
         match cluster:
             case EosDesigns.CvSettings.Cvaas.ClustersItem():
-                fqdn = f"{CV_REGION_TO_SERVER_MAP[cluster.region]['streaming']}.{CV_REGION_TO_SERVER_MAP[cluster.region]['base_fqdn']}"
+                fqdn = f"{CVAAS_STREAMING_PREFIX}.{CV_REGION_TO_SERVER_MAP[cluster.region]}"
                 return EosCliConfigGen.DaemonTerminattr.Cvaddrs([f"{fqdn}:443"])
             case EosDesigns.CvSettings.OnpremClustersItem():
                 return EosCliConfigGen.DaemonTerminattr.Cvaddrs(f"{server.name}:{server.port}" for server in cluster.servers)
