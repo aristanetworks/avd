@@ -26,11 +26,14 @@ keys:
             name:
               type: str
             interfaces:
-              type: str
+              type: list
               required: true
-              description: |
-                Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
-                Multiple interface ranges can be specified separated by ",".
+              min_length: 1
+              items:
+                type: str
+                description: |-
+                  Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
+                  Multiple interface ranges can be specified by separate elements.
       local_interfaces:
         type: str
       address_only:
@@ -118,7 +121,14 @@ keys:
                   name:
                     type: str
                   interfaces:
-                    type: str
+                    type: list
+                    required: true
+                    min_length: 1
+                    items:
+                      type: str
+                      description: |-
+                        Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
+                        Multiple interface ranges can be specified by separate elements.
             local_interfaces:
               type: str
             address_only:

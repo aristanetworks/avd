@@ -15,7 +15,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
 )
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get_v2
-from pyavd.j2filters import natural_sort, range_expand, secure_hash
+from pyavd.j2filters import natural_sort, secure_hash
 
 from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
@@ -415,7 +415,7 @@ class AvdStructuredConfigBaseProtocol(
             name_server_group=self.inputs.monitor_connectivity.name_server_group,
         )
         for interface_set in self.inputs.monitor_connectivity.interface_sets:
-            monitor_connectivity.interface_sets.append_new(name=interface_set.name, interfaces=", ".join(range_expand(interface_set.interfaces)))
+            monitor_connectivity.interface_sets.append_new(name=interface_set.name, interfaces=", ".join(interface_set.interfaces))
         if (local_interfaces := self.inputs.monitor_connectivity.local_interfaces) is not None:
             if local_interfaces in self.inputs.monitor_connectivity.interface_sets:
                 monitor_connectivity.local_interfaces = local_interfaces
@@ -436,9 +436,7 @@ class AvdStructuredConfigBaseProtocol(
                 address_only=vrf.address_only,
             )
             for interface_set in vrf.interface_sets:
-                # Had to add the below condition to make type check happy, Remove it once TODO is resolved.
-                if interface_set.interfaces is not None:
-                    monitor_connectivity_vrf.interface_sets.append_new(name=interface_set.name, interfaces=", ".join(range_expand(interface_set.interfaces)))
+                monitor_connectivity_vrf.interface_sets.append_new(name=interface_set.name, interfaces=", ".join(interface_set.interfaces))
             if (vrf_local_interfaces := vrf.local_interfaces) is not None:
                 if vrf_local_interfaces in vrf.interface_sets:
                     monitor_connectivity_vrf.local_interfaces = vrf_local_interfaces

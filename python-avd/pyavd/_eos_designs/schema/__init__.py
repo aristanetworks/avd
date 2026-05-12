@@ -24129,18 +24129,19 @@ class EosDesigns(EosDesignsRootModel):
         class InterfaceSetsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+            class Interfaces(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Interfaces._item_type = str
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": Interfaces}}
             name: str
-            interfaces: str
-            """
-            Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
-            Multiple interface
-            ranges can be specified separated by ",".
-            """
+            interfaces: Interfaces
+            """Subclass of AvdList with `str` items."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: Interfaces | UndefinedType = Undefined) -> None:
                     """
                     InterfaceSetsItem.
 
@@ -24149,10 +24150,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: name
-                        interfaces:
-                           Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
-                           Multiple interface
-                           ranges can be specified separated by ",".
+                        interfaces: Subclass of AvdList with `str` items.
 
                     """
 
@@ -24264,13 +24262,19 @@ class EosDesigns(EosDesignsRootModel):
             class InterfaceSetsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+                class Interfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Interfaces._item_type = str
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": Interfaces}}
                 name: str
-                interfaces: str | None
+                interfaces: Interfaces
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: Interfaces | UndefinedType = Undefined) -> None:
                         """
                         InterfaceSetsItem.
 
@@ -24279,7 +24283,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             name: name
-                            interfaces: interfaces
+                            interfaces: Subclass of AvdList with `str` items.
 
                         """
 

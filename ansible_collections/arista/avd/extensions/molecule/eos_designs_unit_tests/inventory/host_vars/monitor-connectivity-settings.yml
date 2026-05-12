@@ -18,13 +18,13 @@ monitor_connectivity:
   interval: 5
   interface_sets:
     - name: SET_INTERNET
-      interfaces: Ethernet1-2
+      interfaces: [ Ethernet1, Ethernet2 ]
     - name: SET_INTERNET_1
-      interfaces: Ethernet3-4
+      interfaces: [ Ethernet3, Ethernet4 ]
     - name: SET_INTERNET_2
-      interfaces: Ethernet5-6
+      interfaces: [ Ethernet5, Ethernet6 ]
     - name: SET_LOOPBACK0
-      interfaces: Loopback0
+      interfaces: [ Loopback0 ]
   local_interfaces: SET_LOOPBACK0
   address_only: true
   hosts:
@@ -51,11 +51,11 @@ monitor_connectivity:
       # testing default vrf.address_only
       interface_sets:
         - name: SET_MGMT
-          interfaces: Management0
+          interfaces: [ Management0 ]
         - name: SET_MGMT_1
-          interfaces: Loopback100
+          interfaces: [ Loopback100 ]
         - name: SET_MGMT_2
-          interfaces: Loopback101-104
+          interfaces: [ Loopback101, Loopback102, Loopback103, Loopback104 ]
       hosts:
         - name: MGMT_SERVER
           description: Management server
@@ -79,13 +79,13 @@ monitor_connectivity:
       # testing vrf.address_only: true.
       interface_sets:
         - name: Vrf_Set_MGMT
-          interfaces: Management0
+          interfaces: [ Management0 ]
         - name: SET_MGMT_1
-          interfaces: Loopback200
+          interfaces: [ Loopback200 ]
         - name: SET_MGMT_2
-          interfaces: Loopback201
+          interfaces: [ Loopback201 ]
         - name: SET_MGMT_3
-          interfaces: Loopback202
+          interfaces: [ Loopback202 ]
       local_interfaces: Vrf_Set_MGMT
       address_only: true
       hosts:
