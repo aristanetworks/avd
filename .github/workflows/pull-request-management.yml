@@ -417,9 +417,11 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        ansible_version: [stable, devel]
+        ansible_version: [first_stable, latest_stable, devel]
         include:
-          - ansibe_version: stable
+          - ansibe_version: first_stable
+            pip_installation: "ansible-core<2.17.0"
+          - ansibe_version: latest_stable
             pip_installation: "ansible-core<2.21.0"
           - ansibe_version: devel
             pip_installation: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
