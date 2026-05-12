@@ -421,23 +421,29 @@ jobs:
         include:
           - ansible_version: first_stable
             pip_installation: "ansible-core<2.17.0"
+            python_version: |
+              3.10
+              3.11
+              3.12
           - ansible_version: latest_stable
             pip_installation: "ansible-core<2.21.0"
+            python_version: |
+              3.12
+              3.13
+              3.14
           - ansible_version: devel
             pip_installation: "ansible-core @ git+https://github.com/ansible/ansible.git@milestone"
             # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
             skip_test: "--skip-test ansible-doc"
+            python_version: |
+              3.14
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python 3
         uses: actions/setup-python@v6
         with:
           python-version: |
-            3.10
-            3.11
-            3.12
-            3.13
-            3.14
+            ${{ matrix.python_version }}
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v8
         with:
