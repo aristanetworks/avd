@@ -824,6 +824,56 @@ class TestDeployStaticConfigStudio:
             inputs=[new_root_id, manual_container_id],
         )
 
+    async def test_warns_when_avd_entities_cannot_be_cleaned_up(
+        self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult, caplog: pytest.LogCaptureFixture
+    ) -> None:
+        """
+        Test that a WARNING is logged when AVD-managed containers/configlets are preserved due to non-manifest references.
+
+        When an AVD entity is no longer in the current manifest but is still reachable through a non-manifest container
+        (or assigned to one), the workflow keeps it but warns the operator that manual cleanup may be needed in CloudVision.
+        """
+        manual_root_id = "manually-created-root-xyz"
+        legacy_avd_container_id = generate_id("LEGACY_AVD_CONTAINER")
+        legacy_avd_configlet_id = generate_id("LEGACY_AVD_CONFIGLET")
+
+        existing_containers = [
+            create_grpc_container(
+                container_id=manual_root_id,
+                name="MANUAL_ROOT",
+                description="",
+                query="device:*",
+                child_ids=[legacy_avd_container_id],
+            ),
+            create_grpc_container(
+                container_id=legacy_avd_container_id,
+                name="LEGACY_AVD_CONTAINER",
+                description="",
+                query="device:LEAF",
+                configlet_ids=[legacy_avd_configlet_id],
+            ),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=legacy_avd_configlet_id), display_name="LEGACY_AVD_CONFIGLET"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [manual_root_id]
+
+        new_root = AvdContainer(name="NEW_ROOT", tag_query="device:*")
+        manifest = AvdManifest(configlet_policy="managed", containers=(new_root,))
+
+        with caplog.at_level("WARNING", logger="pyavd._cv.workflows.static_configuration_studio.deploy"):
+            await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        warning_messages = [record.getMessage() for record in caplog.records if record.levelname == "WARNING"]
+        assert any("LEGACY_AVD_CONTAINER" in msg and "non-manifest" in msg for msg in warning_messages), (
+            f"Expected a WARNING about the preserved AVD container; got: {warning_messages}"
+        )
+        assert any("LEGACY_AVD_CONFIGLET" in msg and "non-manifest" in msg for msg in warning_messages), (
+            f"Expected a WARNING about the preserved AVD configlet; got: {warning_messages}"
+        )
+
     async def test_avd_configlet_assigned_only_to_orphan_avd_container_is_deleted(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """
         Test that an AVD-managed configlet is still deleted when its only assigner is an orphan AVD container (in 'managed' mode).

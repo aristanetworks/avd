@@ -137,6 +137,10 @@ class DeploymentPlan:
     """Mapping of container_id to display_name."""
     configlets_to_delete: dict[str, str] = field(default_factory=dict)
     """Mapping of configlet_id to display_name."""
+    preserved_avd_containers: dict[str, str] = field(default_factory=dict)
+    """Mapping of container_id to display_name for AVD-managed containers preserved because they are reachable through non-manifest containers."""
+    preserved_avd_configlets: dict[str, str] = field(default_factory=dict)
+    """Mapping of configlet_id to display_name for AVD-managed configlets preserved because they are still assigned to non-manifest containers."""
 
     @classmethod
     def build(cls, desired: DesiredState, existing: ExistingState, resolved: ResolvedState) -> DeploymentPlan:
@@ -162,20 +166,26 @@ class DeploymentPlan:
         if resolved.root_ids != existing.root_ids:
             plan.final_root_ids = resolved.root_ids
 
-        # Unreachable AVD-managed containers are deleted.
-        plan.containers_to_delete = {
-            container_id: cast("str", container.display_name)
-            for container_id, container in existing.containers_by_id.items()
-            if AvdId.is_managed(container_id) and container_id not in resolved.reachable_container_ids
-        }
+        # Classify each AVD-managed existing container as deletable (unreachable) or preserved (still reachable through non-manifest containers).
+        for container_id, container in existing.containers_by_id.items():
+            if not AvdId.is_managed(container_id):
+                continue
+            display_name = cast("str", container.display_name)
+            if container_id not in resolved.reachable_container_ids:
+                plan.containers_to_delete[container_id] = display_name
+            elif container_id not in desired.containers_by_id:
+                plan.preserved_avd_containers[container_id] = display_name
 
-        # In "managed" mode, delete AVD-managed configlets not declared in this manifest and not assigned to any container.
-        if desired.configlet_policy == "managed":
-            plan.configlets_to_delete = {
-                configlet_id: cast("str", configlet.display_name)
-                for configlet_id, configlet in existing.configlets_by_id.items()
-                if AvdId.is_managed(configlet_id) and configlet_id not in desired.configlets_by_id and configlet_id not in resolved.assigned_configlet_ids
-            }
+        # In "managed" mode, classify each AVD-managed existing configlet not in this manifest as deletable (unassigned) or preserved (still assigned).
         # In "additive" mode, don't delete any configlets.
+        if desired.configlet_policy == "managed":
+            for configlet_id, configlet in existing.configlets_by_id.items():
+                if not AvdId.is_managed(configlet_id) or configlet_id in desired.configlets_by_id:
+                    continue
+                display_name = cast("str", configlet.display_name)
+                if configlet_id in resolved.assigned_configlet_ids:
+                    plan.preserved_avd_configlets[configlet_id] = display_name
+                else:
+                    plan.configlets_to_delete[configlet_id] = display_name
 
         return plan
