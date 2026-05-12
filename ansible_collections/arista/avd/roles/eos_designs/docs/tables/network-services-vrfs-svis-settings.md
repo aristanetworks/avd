@@ -41,7 +41,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertise_ipv6_address_virtuals</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_nd.advertise_ipv6_address_virtuals") | Boolean |  |  |  | Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_nd.valid_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_nd.preferred_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra_dns_servers</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_nd.ra_dns_servers") | List, items: String |  |  |  | List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra_dns_servers</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_nd.ra_dns_servers") | List, items: String |  |  | Min Length: 1 | List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_nd.ra_dns_servers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_dhcp_relay") | Dictionary |  |  |  | IPv6 DHCP relay settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destinations</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ipv6_dhcp_relay.destinations") | List, items: Dictionary |  |  |  | List of IPv6 DHCP relay destinations. |
@@ -111,7 +111,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertise_ipv6_address_virtuals</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_nd.advertise_ipv6_address_virtuals") | Boolean |  |  |  | Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;valid_lifetime</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_nd.valid_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_nd.preferred_lifetime") | String |  |  |  | In seconds <0-4294967295> or infinite. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra_dns_servers</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_nd.ra_dns_servers") | List, items: String |  |  |  | List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra_dns_servers</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_nd.ra_dns_servers") | List, items: String |  |  | Min Length: 1 | List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_nd.ra_dns_servers.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_dhcp_relay") | Dictionary |  |  |  | IPv6 DHCP relay settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destinations</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ipv6_dhcp_relay.destinations") | List, items: Dictionary |  |  |  | List of IPv6 DHCP relay destinations. |
@@ -287,7 +287,7 @@
                       preferred_lifetime: <str>
 
                       # List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
-                      ra_dns_servers:
+                      ra_dns_servers: # >=1 items
                         - <str>
 
                     # IPv6 DHCP relay settings.
@@ -495,7 +495,7 @@
                   preferred_lifetime: <str>
 
                   # List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
-                  ra_dns_servers:
+                  ra_dns_servers: # >=1 items
                     - <str>
 
                 # IPv6 DHCP relay settings.
