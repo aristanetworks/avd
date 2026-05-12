@@ -1,0 +1,28 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.66.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    bgp_as: 666
+  nodes:
+    - name: missing-bgp-peer-filter
+      id: 42
+      mgmt_ip: 192.168.42.42/24
+
+tenants:
+  - name: Tenant_BGP
+    mac_vrf_vni_base: 10000
+    mac_vrf_id_base: 20000
+    redistribute_mlag_ibgp_peering_vrfs: true
+    bgp_peer_groups:
+      - name: peerfilter
+        remote_as: "666"
+        listen_ranges:
+          - prefix: 192.168.142.0/24
+            peer_filter: peerfilter
+        nodes: [missing-bgp-peer-filter]
+
+expected_error_message: >-
+  'self.inputs.bgp_peer_filters_catalog[name=peerfilter]' is required but was not found.
