@@ -621,6 +621,26 @@ ethernet_interfaces:
     peer_type: custom_server
     peer_key: servers
     port_profile: ADDRESS_LOCKING_PROFILE
+- name: Ethernet45
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
+  channel_group:
+    id: 45
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet46
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
+  channel_group:
+    id: 45
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
@@ -806,6 +826,13 @@ port_channel_interfaces:
   address_locking:
     address_family:
       ipv4: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 112
+- name: Port-Channel45
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
   switchport:
     enabled: true
     mode: access

@@ -270,6 +270,18 @@ servers:
         port_channel:
           mode: active
           channel_id: 43
+  - name: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+    adapters:
+      - switches: [connected-endpoints, connected-endpoints]
+        switch_ports: [Ethernet45, Ethernet46]
+        mode: access
+        vlans: 112
+        # setting ipv4: true to verify it is NOT rendered in port-channel configuration
+        address_locking:
+          ipv4: true
+        port_channel:
+          mode: active
+          channel_id: 45
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
