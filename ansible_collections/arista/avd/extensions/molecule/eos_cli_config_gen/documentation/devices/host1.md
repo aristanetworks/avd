@@ -194,6 +194,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
+  - [MPLS Label Ranges](#mpls-label-ranges)
   - [MPLS Interfaces](#mpls-interfaces)
   - [MPLS RSVP](#mpls-rsvp)
   - [MPLS Device Configuration](#mpls-device-configuration)
@@ -11098,6 +11099,19 @@ monitor loop-protection
 | Tunnel Termination Model | TTL: uniform, DSCP: uniform |
 | Tunnel Termination PHP Model | TTL: pipe, DSCP: pipe |
 
+### MPLS Label Ranges
+
+| Range | Base | Size |
+| ----- | ---- | ---- |
+| BGP-SR | 900000 | 65536 |
+| Dynamic | 16000 | 131072 |
+| IS-IS SR | 900000 | 65536 |
+| L2 EVPN | 1036288 | 12288 |
+| L2 EVPN Ethernet Segment | 1031072 | 1024 |
+| OSPF-SR | 900000 | 1000 |
+| SRLB | 965536 | 65536 |
+| Static | 16 | 1 |
+
 ### MPLS Interfaces
 
 | Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
@@ -11172,6 +11186,15 @@ mpls ldp
    no shutdown
 !
 mpls icmp fragmentation-needed tunneling
+!
+mpls label range bgp-sr 900000 65536
+mpls label range dynamic 16000 131072
+mpls label range isis-sr 900000 65536
+mpls label range l2evpn 1036288 12288
+mpls label range l2evpn ethernet-segment 1031072 1024
+mpls label range ospf-sr 900000 1000
+mpls label range srlb 965536 65536
+mpls label range static 16 1
 !
 mpls rsvp
    refresh interval 3
