@@ -137,9 +137,9 @@ class DeploymentPlan:
     """Mapping of container_id to display_name."""
     configlets_to_delete: dict[str, str] = field(default_factory=dict)
     """Mapping of configlet_id to display_name."""
-    preserved_avd_containers: dict[str, str] = field(default_factory=dict)
+    containers_preserved: dict[str, str] = field(default_factory=dict)
     """Mapping of container_id to display_name for AVD-managed containers preserved because they are reachable through non-manifest containers."""
-    preserved_avd_configlets: dict[str, str] = field(default_factory=dict)
+    configlets_preserved: dict[str, str] = field(default_factory=dict)
     """Mapping of configlet_id to display_name for AVD-managed configlets preserved because they are still assigned to non-manifest containers."""
 
     @classmethod
@@ -174,7 +174,7 @@ class DeploymentPlan:
             if container_id not in resolved.reachable_container_ids:
                 plan.containers_to_delete[container_id] = display_name
             elif container_id not in desired.containers_by_id:
-                plan.preserved_avd_containers[container_id] = display_name
+                plan.containers_preserved[container_id] = display_name
 
         # In "managed" mode, classify each AVD-managed existing configlet not in this manifest as deletable (unassigned) or preserved (still assigned).
         # In "additive" mode, don't delete any configlets.
@@ -184,7 +184,7 @@ class DeploymentPlan:
                     continue
                 display_name = cast("str", configlet.display_name)
                 if configlet_id in resolved.assigned_configlet_ids:
-                    plan.preserved_avd_configlets[configlet_id] = display_name
+                    plan.configlets_preserved[configlet_id] = display_name
                 else:
                     plan.configlets_to_delete[configlet_id] = display_name
 

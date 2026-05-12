@@ -85,18 +85,18 @@ async def execute_plan(plan: DeploymentPlan, workspace_id: str, deployment_resul
     else:
         LOGGER.debug("deploy_static_config_studio_manifest_to_cv: No configlet deletions are needed.")
 
-    if plan.preserved_avd_containers:
+    if plan.containers_preserved:
         LOGGER.warning(
             "deploy_static_config_studio_manifest_to_cv: %d manifest-managed containers cannot be deleted because they are still attached to "
             "non-manifest containers in CloudVision: %s",
-            len(plan.preserved_avd_containers),
-            ", ".join(sorted(plan.preserved_avd_containers.values())),
+            len(plan.containers_preserved),
+            ", ".join(sorted(plan.containers_preserved.values())),
         )
 
-    if plan.preserved_avd_configlets:
+    if plan.configlets_preserved:
         LOGGER.warning(
             "deploy_static_config_studio_manifest_to_cv: %d manifest-managed configlets cannot be deleted because they are still assigned to "
             "non-manifest containers in CloudVision: %s",
-            len(plan.preserved_avd_configlets),
-            ", ".join(sorted(plan.preserved_avd_configlets.values())),
+            len(plan.configlets_preserved),
+            ", ".join(sorted(plan.configlets_preserved.values())),
         )
