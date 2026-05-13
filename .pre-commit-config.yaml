@@ -181,7 +181,7 @@ repos:
         args: [--config, .codespellrc]
 
   - repo: https://github.com/pdm-project/pdm
-    rev: "2.26.8"
+    rev: "2.26.9"
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt

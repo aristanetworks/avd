@@ -135,8 +135,8 @@ class UtilsMixin(Protocol):
             p2p_link_index: int | None
         }
         """
-        if p2p_link.include_in_underlay_protocol and p2p_link.ipv6:
-            msg = f"{self.data_model}.p2p_links.[].include_in_underlay_protocol is currently not supported with IPv6 addresses."
+        if p2p_link.include_in_underlay_protocol and p2p_link.ipv6 and not (self.shared_utils.underlay_sr and self.shared_utils.underlay_ipv6):
+            msg = f"{self.data_model}.p2p_links.[].include_in_underlay_protocol is currently not supported with IPv6 addresses except for ISIS-SR."
             raise AristaAvdInvalidInputsError(msg)
 
         index = p2p_link.nodes.index(self.shared_utils.hostname)
