@@ -15,7 +15,6 @@ keys:
         type: str
         description: |-
           Interface description configured on the management interface.
-          Takes precedence over the global 'mgmt_interface_description' variable.
         default: OOB_MANAGEMENT
       vrf:
         type: str
@@ -23,19 +22,16 @@ keys:
           - int
         description: |-
           VRF name used for the management interface.
-          Takes precedence over the global 'mgmt_interface_vrf' variable.
         default: MGMT
       vrf_routing:
         type: bool
         description: |-
           Enable IP routing in the management VRF.
-          Takes precedence over the global 'mgmt_vrf_routing' variable.
         default: false
       interface:
         type: str
         description: |-
           Name of the management interface (e.g. Management0, Management1).
-          Takes precedence over the global 'mgmt_interface' variable.
         default: Management1
       lldp:
         type: dict

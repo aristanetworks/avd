@@ -17,10 +17,10 @@
     | [<samp>mgmt_interface</samp>](## "mgmt_interface") <span style="color:red">deprecated</span> | String |  | `Management1` |  | OOB Management interface.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>mgmt_interface_settings.interface</samp> instead.</span> |
     | [<samp>mgmt_interface_description</samp>](## "mgmt_interface_description") <span style="color:red">deprecated</span> | String |  | `OOB_MANAGEMENT` |  | Management interface description.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>mgmt_interface_settings.description</samp> instead.</span> |
     | [<samp>mgmt_interface_settings</samp>](## "mgmt_interface_settings") | Dictionary |  |  |  | Out-of-Band (OOB) management interface settings.<br>These settings override the corresponding global variables where applicable. |
-    | [<samp>&nbsp;&nbsp;description</samp>](## "mgmt_interface_settings.description") | String |  | `OOB_MANAGEMENT` |  | Interface description configured on the management interface.<br>Takes precedence over the global 'mgmt_interface_description' variable. |
-    | [<samp>&nbsp;&nbsp;vrf</samp>](## "mgmt_interface_settings.vrf") | String |  | `MGMT` |  | VRF name used for the management interface.<br>Takes precedence over the global 'mgmt_interface_vrf' variable. |
-    | [<samp>&nbsp;&nbsp;vrf_routing</samp>](## "mgmt_interface_settings.vrf_routing") | Boolean |  | `False` |  | Enable IP routing in the management VRF.<br>Takes precedence over the global 'mgmt_vrf_routing' variable. |
-    | [<samp>&nbsp;&nbsp;interface</samp>](## "mgmt_interface_settings.interface") | String |  | `Management1` |  | Name of the management interface (e.g. Management0, Management1).<br>Takes precedence over the global 'mgmt_interface' variable. |
+    | [<samp>&nbsp;&nbsp;description</samp>](## "mgmt_interface_settings.description") | String |  | `OOB_MANAGEMENT` |  | Interface description configured on the management interface. |
+    | [<samp>&nbsp;&nbsp;vrf</samp>](## "mgmt_interface_settings.vrf") | String |  | `MGMT` |  | VRF name used for the management interface. |
+    | [<samp>&nbsp;&nbsp;vrf_routing</samp>](## "mgmt_interface_settings.vrf_routing") | Boolean |  | `False` |  | Enable IP routing in the management VRF. |
+    | [<samp>&nbsp;&nbsp;interface</samp>](## "mgmt_interface_settings.interface") | String |  | `Management1` |  | Name of the management interface (e.g. Management0, Management1). |
     | [<samp>&nbsp;&nbsp;lldp</samp>](## "mgmt_interface_settings.lldp") | Dictionary |  |  |  | LLDP settings for the management interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transmit</samp>](## "mgmt_interface_settings.lldp.transmit") | Boolean |  |  |  | Enable LLDP transmission on the management interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "mgmt_interface_settings.lldp.receive") | Boolean |  |  |  | Enable LLDP reception on the management interface. |
@@ -88,19 +88,15 @@
     mgmt_interface_settings:
 
       # Interface description configured on the management interface.
-      # Takes precedence over the global 'mgmt_interface_description' variable.
       description: <str; default="OOB_MANAGEMENT">
 
       # VRF name used for the management interface.
-      # Takes precedence over the global 'mgmt_interface_vrf' variable.
       vrf: <str; default="MGMT">
 
       # Enable IP routing in the management VRF.
-      # Takes precedence over the global 'mgmt_vrf_routing' variable.
       vrf_routing: <bool; default=False>
 
       # Name of the management interface (e.g. Management0, Management1).
-      # Takes precedence over the global 'mgmt_interface' variable.
       interface: <str; default="Management1">
 
       # LLDP settings for the management interface.

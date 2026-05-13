@@ -112,6 +112,7 @@ class EthernetInterfacesMixin(Protocol):
         ethernet_interface._update(
             mtu=self.shared_utils.get_interface_mtu(ethernet_interface.name, adapter.mtu),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.Ptp),
+            address_locking=self._get_adapter_address_locking(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.AddressLocking),
             service_profile=adapter.qos_profile,
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.LinkTrackingGroups),
