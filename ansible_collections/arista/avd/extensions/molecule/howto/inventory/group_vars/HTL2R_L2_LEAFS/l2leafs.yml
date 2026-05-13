@@ -1,0 +1,44 @@
+---
+type: l2leaf
+
+# --8<-- [start:ring]
+l2leaf:
+  defaults:
+    platform: vEOS-lab
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+
+  node_groups:
+    - group: HTL2R_RING
+      mlag: false # (1)!
+      uplink_type: l2-ethernet # (2)!
+      nodes:
+        # --8<-- [start:l2leaf1]
+        - name: htl2r-l2leaf1
+          id: 11
+          mgmt_ip: 172.16.4.111/24
+          uplink_interfaces: [Ethernet1, Ethernet2] # (3)!
+          uplink_switches: [htl2r-leaf1a, htl2r-l2leaf2]
+          uplink_switch_interfaces: [Ethernet10, Ethernet1]
+        # --8<-- [end:l2leaf1]
+        # --8<-- [start:l2leaf2]
+        - name: htl2r-l2leaf2
+          id: 12
+          mgmt_ip: 172.16.4.112/24
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switches: [htl2r-l2leaf1, htl2r-l2leaf3] # (4)!
+          uplink_switch_interfaces: [Ethernet2, Ethernet1]
+          filter:
+            only_vlans_in_use: true # (5)!
+        # --8<-- [end:l2leaf2]
+        # --8<-- [start:l2leaf3]
+        - name: htl2r-l2leaf3
+          id: 13
+          mgmt_ip: 172.16.4.113/24
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switches: [htl2r-l2leaf2, htl2r-leaf1b]
+          uplink_switch_interfaces: [Ethernet2, Ethernet10]
+          inband_mgmt_vlan: 110 # (6)!
+          inband_mgmt_ip: 10.10.10.13/24
+        # --8<-- [end:l2leaf3]
+# --8<-- [end:ring]
