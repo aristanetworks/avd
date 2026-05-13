@@ -7562,6 +7562,22 @@ $defs:
       dot1x:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x
+      address_locking:
+        type: dict
+        description: Address locking settings applied on the port.
+        keys:
+          ipv4:
+            type: bool
+            description: 'Enable address locking for IPv4.
+
+              Key `ipv4` can only be set to false.
+
+              For EOS version 4.31 and higher.'
+          ipv6:
+            type: bool
+            description: 'Enable address locking for IPv6.
+
+              For EOS version 4.31 and higher.'
       poe:
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe
         type: dict
@@ -11296,12 +11312,46 @@ $defs:
           node_sid_base:
             documentation_options:
               table: node-type-isis-configuration
-            description: Node-SID base for isis-sr underlay variants. Combined with
-              node id to generate ISIS-SR node-SID.
+            description: IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined
+              with node ID to generate ISIS-SR Node-SID index.
             type: int
             convert_types:
             - str
             default: 0
+            deprecation:
+              warning: true
+              new_key: isis_sr.ipv4_node_sid_index_base
+              remove_in_version: 7.0.0
+          isis_sr:
+            type: dict
+            description: Device settings for ISIS-SR underlay variants.
+            documentation_options:
+              table: node-type-isis-configuration
+            keys:
+              ipv4_node_sid_index:
+                type: int
+                description: 'Optional static IPv4 Node-SID Index.
+
+                  Takes precedence over the default node ID + `ipv4_node_sid_index_base`'
+              ipv4_node_sid_index_base:
+                description: IPv4 Node-SID Index base. Combined with node ID to generate
+                  ISIS-SR Node-SID index.
+                type: int
+                convert_types:
+                - str
+                default: 0
+              ipv6_node_sid_index:
+                type: int
+                description: 'Optional static IPv6 Node-SID Index.
+
+                  Takes precedence over the default node ID + `ipv6_node_sid_index_base`'
+              ipv6_node_sid_index_base:
+                description: IPv6 Node-SID Index base. Combined with node ID to generate
+                  ISIS-SR Node-SID index.
+                type: int
+                convert_types:
+                - str
+                default: 1000
           loopback_ipv4_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
