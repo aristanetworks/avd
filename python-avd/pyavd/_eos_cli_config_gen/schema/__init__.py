@@ -6288,6 +6288,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "new_ip_radius_cli_order": {"type": bool, "default": False},
             "new_ip_tacacs_cli_order": {"type": bool, "default": False},
             "always_render_ip_routing_separator": {"type": bool, "default": False},
+            "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
         }
         new_ip_radius_cli_order: bool
         """
@@ -6315,6 +6316,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        only_render_mpls_rsvp_with_settings: bool
+        """
+        When `true`, only renders the `mpls rsvp` CLI block when at least one `mpls.rsvp.*` setting is
+        defined.
+        When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined, even if no
+        sub-settings are set.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6324,6 +6334,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 new_ip_radius_cli_order: bool | UndefinedType = Undefined,
                 new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
                 always_render_ip_routing_separator: bool | UndefinedType = Undefined,
+                only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6346,6 +6357,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Always render a '!' before the '(no) ip routing' command section.
                        Without this the '!' is missing
                        when only configuring routing for VRFs.
+                    only_render_mpls_rsvp_with_settings:
+                       When `true`, only renders the `mpls rsvp` CLI block when at least one `mpls.rsvp.*` setting is
+                       defined.
+                       When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined, even if no
+                       sub-settings are set.
 
                 """
 

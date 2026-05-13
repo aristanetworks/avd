@@ -159,6 +159,8 @@ router bgp 65001
 ### MPLS Device Configuration
 
 ```eos
+!
+mpls rsvp
 ```
 
 ## Multicast
