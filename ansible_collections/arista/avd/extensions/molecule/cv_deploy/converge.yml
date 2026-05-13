@@ -43,3 +43,6 @@
 
 - name: Test cv_deploy with manifest-only deployment (no regular AVD device configs)
   import_playbook: cv_deploy_manifest_only.yml
+
+- name: Test cv_deploy with cv_use_static_config_manifest on one device (hybrid)
+  import_playbook: cv_deploy_use_manifest_hybrid.yml
