@@ -9,7 +9,7 @@
 traffic-policies
 {%     if traffic_policies.cpu_traffic_policy.vrf_all is arista.avd.defined %}
    cpu traffic-policy {{ traffic_policies.cpu_traffic_policy.vrf_all.name }} vrf all
-{%         if traffic_policies.cpu_traffic_policy.vrf_all.enforcement_management is arista.avd.defined %}
+{%         if traffic_policies.cpu_traffic_policy.vrf_all.enforcement_management is arista.avd.defined(true) %}
       enforcement management
 {%         endif %}
 {%     endif %}

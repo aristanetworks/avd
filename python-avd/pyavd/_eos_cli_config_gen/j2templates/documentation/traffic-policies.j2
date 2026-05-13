@@ -13,7 +13,7 @@
 
 | Setting | Value |
 | ------- | ----- |
-{%         if traffic_policies.cpu_traffic_policy.vrf_all.name is arista.avd.defined %}
+{%         if traffic_policies.cpu_traffic_policy.vrf_all is arista.avd.defined %}
 | Traffic-policy for all VRFs | {{ traffic_policies.cpu_traffic_policy.vrf_all.name }} |
 {%         endif %}
 {%         if traffic_policies.cpu_traffic_policy.vrf_all.enforcement_management is arista.avd.defined %}
