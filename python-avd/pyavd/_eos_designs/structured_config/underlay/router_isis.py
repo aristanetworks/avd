@@ -24,7 +24,7 @@ class RouterIsisMixin(Protocol):
     @structured_config_contributor
     def router_isis(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set the structured config for router_isis."""
-        if self.shared_utils.underlay_isis is not True:
+        if not self.shared_utils.underlay_isis:
             return
 
         self.structured_config.router_isis._update(
@@ -36,7 +36,7 @@ class RouterIsisMixin(Protocol):
         )
         self.structured_config.router_isis.address_family_ipv4._update(enabled=True, maximum_paths=self.inputs.isis_maximum_paths)
 
-        if self.shared_utils.underlay_ldp is True:
+        if self.shared_utils.underlay_ldp:
             self.structured_config.router_isis.mpls_ldp_sync_default = True
 
         # TI-LFA
@@ -59,14 +59,18 @@ class RouterIsisMixin(Protocol):
             self.structured_config.router_isis.redistribute_routes.append_new(source_protocol="connected")
 
         # ISIS advertise passive-only - only set if true (default is false)
-        if self.inputs.isis_advertise_passive_only is True:
+        if self.inputs.isis_advertise_passive_only:
             self.structured_config.router_isis.advertise.passive_only = True
 
-        if self.shared_utils.underlay_sr is True:
+        if self.shared_utils.underlay_sr:
             # TODO: - enabling IPv6 only in SR cases as per existing behavior
             # but this could probably be taken out
-            if self.shared_utils.underlay_ipv6 is True:
-                self.structured_config.router_isis.address_family_ipv6._update(enabled=True, maximum_paths=self.inputs.isis_maximum_paths)
+            if self.shared_utils.underlay_ipv6:
+                self.structured_config.router_isis.address_family_ipv6._update(
+                    enabled=True,
+                    maximum_paths=self.inputs.isis_maximum_paths,
+                    multi_topology=True,
+                )
                 if ti_lfa_mode:
                     self.structured_config.router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode = ti_lfa_mode
             self.structured_config.router_isis.segment_routing_mpls._update(router_id=self.shared_utils.router_id, enabled=True)
