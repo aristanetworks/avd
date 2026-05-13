@@ -24021,7 +24021,11 @@ class EosDesigns(EosDesignsRootModel):
         """Access-list name."""
         counters_per_entry: bool | None
         entries: Entries
-        """Subclass of AvdList with `EntriesItem` items."""
+        """
+        For each entry action or remark must be set.
+
+        Subclass of AvdList with `EntriesItem` items.
+        """
 
         if TYPE_CHECKING:
 
@@ -24041,7 +24045,10 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     name: Access-list name.
                     counters_per_entry: counters_per_entry
-                    entries: Subclass of AvdList with `EntriesItem` items.
+                    entries:
+                       For each entry action or remark must be set.
+
+                       Subclass of AvdList with `EntriesItem` items.
 
                 """
 

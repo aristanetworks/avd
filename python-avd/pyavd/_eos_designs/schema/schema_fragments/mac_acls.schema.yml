@@ -26,6 +26,7 @@ keys:
         entries:
           type: list
           unique_keys: [sequence]
+          description: For each entry action or remark must be set.
           items:
             type: dict
             keys:
