@@ -38,6 +38,17 @@ l3spine:
           peer_ipv6_address: 2001:db8::2
           bgp:
             peer_as: 65044
+        - # Dual-stack BGP peering (both IPv4 and IPv6 neighbors generated from one interface)
+          name: Ethernet46
+          ip_address: 192.168.46.1/24
+          ipv6_addresses:
+            - 2001:db8:46::1/64
+          peer: PEER-DUAL-STACK
+          peer_interface: Ethernet1
+          peer_ip: 192.168.46.2
+          peer_ipv6_address: 2001:db8:46::2
+          bgp:
+            peer_as: 65046
       l3_port_channels:
         - # IPv6 BGP peering via Port-Channel
           name: Port-Channel47
