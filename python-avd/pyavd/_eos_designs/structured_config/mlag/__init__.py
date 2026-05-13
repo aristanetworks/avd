@@ -244,10 +244,10 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             reload_delay_mlag=str(default(self.shared_utils.platform_settings.reload_delay.mlag, "")) or None,
             reload_delay_non_mlag=str(default(self.shared_utils.platform_settings.reload_delay.non_mlag, "")) or None,
         )
-        if self.shared_utils.node_config.mlag_dual_primary_detection and self.shared_utils.mlag_peer_mgmt_ip and self.inputs.mgmt_interface_vrf:
+        if self.shared_utils.node_config.mlag_dual_primary_detection and self.shared_utils.mlag_peer_mgmt_ip and self.shared_utils.mgmt_interface_vrf:
             mlag_configuration.peer_address_heartbeat._update(
                 peer_ip=self.shared_utils.mlag_peer_mgmt_ip,
-                vrf=self.inputs.mgmt_interface_vrf,
+                vrf=self.shared_utils.mgmt_interface_vrf,
             )
             mlag_configuration.dual_primary_detection_delay = 5
         self.structured_config.mlag_configuration = mlag_configuration
