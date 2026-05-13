@@ -29,7 +29,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
 )
 
 from .async_decorators import GRPCRequestHandler, LimitCvVersion
-from .constants import CVAAS_VERSION_STRING, DEFAULT_API_TIMEOUT
+from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVResourceNotFound, CVWorkspaceFailed
 
 if TYPE_CHECKING:
@@ -183,8 +183,7 @@ class WorkspaceMixin(Protocol):
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
-    # TODO: Update min_ver once first on-prem release support this under Beta toggle
-    @LimitCvVersion(min_ver=CVAAS_VERSION_STRING)
+    @LimitCvVersion(min_ver="2026.2.0")
     @GRPCRequestHandler()
     async def rebase_workspace(
         self: CVClientProtocol,
