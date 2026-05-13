@@ -151,11 +151,6 @@ router bgp 65001
 
 ### MPLS RSVP
 
-#### MPLS RSVP Summary
-
-| Setting | Value |
-| ------- | ----- |
-
 ### MPLS Device Configuration
 
 ```eos

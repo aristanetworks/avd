@@ -401,11 +401,6 @@ router bgp 65101.0001
 
 ### MPLS RSVP
 
-#### MPLS RSVP Summary
-
-| Setting | Value |
-| ------- | ----- |
-
 ### MPLS Device Configuration
 
 ```eos
