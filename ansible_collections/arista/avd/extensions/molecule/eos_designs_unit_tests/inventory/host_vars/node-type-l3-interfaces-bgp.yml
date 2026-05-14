@@ -31,7 +31,7 @@ l3spine:
             peer_as: 65042
             ipv4_prefix_list_in: ALLOW-DEFAULT
         - # non-WAN BGP peer with ipv4_prefix_list_out defined.
-          # Verifies that the outbound route-map IS generated and attached when ipv4_prefix_list_out is configured.
+          # Verifies that the outbound route-map is generated and attached when ipv4_prefix_list_out is configured.
           name: Ethernet44
           description: PEER44_BGP
           enabled: false

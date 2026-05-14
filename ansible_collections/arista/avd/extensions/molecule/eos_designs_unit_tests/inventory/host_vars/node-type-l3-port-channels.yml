@@ -161,7 +161,7 @@ wan_router:
               peer_ip: 192.168.1.18
               wan_carrier: BlizzardFast
             - # Port-Channel with BGP peering and both inbound + outbound prefix-lists defined.
-              # Verifies that the outbound route-map IS generated and attached when ipv4_prefix_list_out is configured on a port-channel.
+              # Verifies that the outbound route-map is generated and attached when ipv4_prefix_list_out is configured on a port-channel.
               name: Port-Channel21
               ip_address: 192.168.21.21/31
               member_interfaces:
