@@ -22812,6 +22812,8 @@ keys:
                 prefix_segments:
                   type: list
                   primary_key: prefix
+                  unique_keys:
+                  - index
                   description: Prefix Segment Identifier (Prefix-SID) configuration.
                   items:
                     type: dict
