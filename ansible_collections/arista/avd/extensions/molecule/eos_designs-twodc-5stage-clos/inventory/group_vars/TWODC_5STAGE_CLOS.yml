@@ -8,7 +8,7 @@ evpn_overlay_bgp_rtc: true
 mgmt_ipv4:
   gateway: 192.168.1.254
   static_routes:
-    prefix: 0.0.0.0/0
+    - prefix: 0.0.0.0/0
 
 p2p_uplinks_qos_profile: QOS-PROFILE
 
