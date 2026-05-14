@@ -409,7 +409,7 @@ class FilteredTenantsMixin(Protocol):
         """
         filtered_l3_interfaces = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces()
         for l3_interface in vrf.l3_interfaces:
-            if not (self.hostname in l3_interface.nodes and l3_interface.ip_addresses and l3_interface.interfaces):
+            if not (self.hostname in l3_interface.nodes and (l3_interface.ip_addresses or l3_interface.ipv6_addresses) and l3_interface.interfaces):
                 continue
             if l3_interface.static_routes:
                 vrf.static_routes.extend(

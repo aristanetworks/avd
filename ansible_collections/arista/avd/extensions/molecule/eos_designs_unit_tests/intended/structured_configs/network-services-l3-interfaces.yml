@@ -4,12 +4,31 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet10
+  description: ipv6-only-default-vrf
+  shutdown: false
+  ipv6_addresses:
+  - 2001:db8:10::1/64
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 - name: Ethernet11
   description: dual-stack-default-vrf
   shutdown: false
   ip_address: 10.0.11.1/31
   ipv6_addresses:
   - 2001:db8:11::1/64
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet12
+  description: ipv6-only-non-default-vrf
+  shutdown: false
+  vrf: L3INTF_TEST
+  ipv6_addresses:
+  - 2001:db8:12::1/64
   metadata:
     peer_type: l3_interface
   switchport:
@@ -65,6 +84,22 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+  vrfs:
+  - name: L3INTF_TEST
+    rd: 192.168.200.1:2
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '2:2'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '2:2'
+    router_id: 192.168.200.1
+    redistribute:
+      connected:
+        enabled: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
@@ -75,6 +110,12 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: L3INTF_TEST
+  ip_routing: true
+  ipv6_routing: true
+  metadata:
+    tenants:
+    - L3INTF
 vxlan_interface:
   vxlan1:
     description: network-services-l3-interfaces_VTEP
@@ -84,3 +125,5 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+      - name: L3INTF_TEST
+        vni: 2
