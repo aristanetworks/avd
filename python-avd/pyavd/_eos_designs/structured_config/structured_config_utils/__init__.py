@@ -45,10 +45,10 @@ class StructuredConfigUtils(RunOnceMethodStateHelper, StructuredConfigUtilsProto
     ) -> None:
         """Initialize the StructuredConfigUtils with a ParentInterfacesTracker instance and structured config instance."""
         super().__init__()
-        """The shared structured config instance to write config into."""
         self.structured_config = structured_config
+        """The shared structured config instance to write config into."""
         self.inputs = inputs
         self.shared_utils = shared_utils
         self.custom_structured_configs = custom_structured_configs
-        """Tracker for parent interfaces that need to be created for subinterfaces."""
         self.parent_interfaces_tracker = ParentInterfacesTracker()
+        """Tracker for parent interfaces that need to be created for subinterfaces."""
