@@ -262,3 +262,159 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
         )
         for record in caplog.records
     )
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
+async def test_stage_devices_for_decommission_wait_for_mixed_terminal(caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
+    """
+    Test partially successful decommissioning where every device reaches a terminal status, but not all of them succeed.
+
+    Specific use case for empty `remaining_device_ids` and non-empty latest_per_device_nonsuccess_response leading to loop exiting via break.
+
+    Exact test steps:
+    -   description: Fetch Workspace status
+        request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'), time=None)'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/a996cf0f4bc694971e5d4069f481faaba80f68b2.json'
+
+    -   description: Create Workspace
+        request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+            display_name='MOCKED_WS_NAME', description='MOCKED_WS_DESCRIPTION'))'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/ce73310ec5154d57ac888fc8f93d69893962d804.json'
+
+    -   description: Await until Workspace reaches PENDING state
+        request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
+
+    -   description: Initiate decommissioning of two devices
+        request: 'DecommissionConfigSetSomeRequest(values=['
+            'DecommissionConfig(key=DeviceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', device_id='device_one_id_ok')), '
+            'DecommissionConfig(key=DeviceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', device_id='device_two_id_failure')), '
+        targeted_file: 'arista.studio_topology.v1.DecommissionConfigService/SetSome/www.cv-prod-us-central1-c.arista.io/'
+            '2ac3a7cdafdec8558d8560e3f7d76b9f6ea00d49.json'
+
+    -   description: Await to stage decommissioning of two devices
+        request: 'DecommissionStreamRequest(partial_eq_filter=['
+            'Decommission(key=DeviceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', device_id='device_one_id_ok')), '
+            'Decommission(key=DeviceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', device_id='device_two_id_failure')), '
+        targeted_file: 'arista.studio_topology.v1.DecommissionService/Subscribe/www.cv-prod-us-central1-c.arista.io/'
+            'f086a8e34b692a31f83fb9899081a798a4adcda6.json'
+    """
+    target_devices = ["device_one_id_ok", "device_two_id_failure"]
+    expected_exception_msg = (
+        "Non-success decommission staging response received for the following devices:.*"
+        "'device_two_id_failure':.*status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'.*"
+    )
+
+    # create new workspace
+    workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+    workspace = CVWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION")
+    await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
+
+    with caplog.at_level(DEBUG):
+        # Initiate decommissioning of two test devices. This triggers backend operations (checks, etc) on CloudVision
+        stage_devices_for_decommission_response = await cv_client.stage_devices_for_decommission(workspace_id=workspace.id, device_ids=target_devices)
+        # stage_devices_for_decommission method returns only failed responses
+        assert len(stage_devices_for_decommission_response) == 0
+
+        with pytest.raises(CVDeviceDecommissionFailed, match=expected_exception_msg):
+            # Subscribe for decommissining updates.
+            _ = await cv_client.wait_to_stage_devices_for_decommission(workspace_id=workspace.id, device_ids=target_devices)
+
+    # Assert that initial INITIAL_SYNC_COMPLETE is received and logged
+    assert any(
+        re.search(
+            re.compile(
+                r"wait_to_stage_devices_for_decommission: Got decommission staging update: Decommission\(key=DeviceKey\(device_id=None\), "
+                r"status=DecommissionStatus.UNSPECIFIED\)"
+            ),
+            str(record.message),
+        )
+        for record in caplog.records
+    )
+
+    # Assert that DecommissionStatus.SUCCESS is received and logged for the first device
+    assert any(
+        re.search(
+            re.compile("wait_to_stage_devices_for_decommission: Staging device device_one_id_ok for decommission succeeded"),
+            str(record.message),
+        )
+        for record in caplog.records
+    )
+
+    # Assert that DecommissionStatus.FAILURE is received and logged for the second device
+    assert any(
+        re.search(
+            re.compile(
+                "wait_to_stage_devices_for_decommission: Staging device device_two_id_failure for decommission reached non-success terminal status FAILURE.*"
+                "status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'"
+            ),
+            str(record.message),
+        )
+        for record in caplog.records
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
+async def test_stage_devices_for_decommission_wait_for_all_silent(caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
+    """
+    Test unsuccessful decommissioning where the stream closes after INITIAL_SYNC_COMPLETE without any per-device update.
+
+    Specific use case to test loop exiting naturally and raising with only the `no response` section in the error message.
+
+    Exact test steps:
+    -   description: Fetch Workspace status
+        request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'), time=None)'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/a996cf0f4bc694971e5d4069f481faaba80f68b2.json'
+
+    -   description: Create Workspace
+        request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+            display_name='MOCKED_WS_NAME', description='MOCKED_WS_DESCRIPTION'))'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/ce73310ec5154d57ac888fc8f93d69893962d804.json'
+
+    -   description: Await until Workspace reaches PENDING state
+        request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
+
+    -   description: Initiate decommissioning of one device
+        request: 'DecommissionConfigSetSomeRequest(values=['
+            'DecommissionConfig(key=DeviceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', device_id='device_four_id_silent'))])'
+        targeted_file: 'arista.studio_topology.v1.DecommissionConfigService/SetSome/www.cv-prod-us-central1-c.arista.io/'
+            '0ae5e9edd17647dee9d0dd0cc7312f4ace15b856.json'
+
+    -   description: Await to stage decommissioning of one device
+        request: 'DecommissionStreamRequest(partial_eq_filter=['
+            'Decommission(key=DeviceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', device_id='device_four_id_silent'))])'
+        targeted_file: 'arista.studio_topology.v1.DecommissionService/Subscribe/www.cv-prod-us-central1-c.arista.io/'
+            '83d945b70ef4fc507f316bfbdf25a7fc17c47ca6.json'
+    """
+    target_devices = ["device_four_id_silent"]
+    expected_exception_msg = "No decommission staging response received for the following devices: {'device_four_id_silent'}."
+
+    # create new workspace
+    workspace_id = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+    workspace = CVWorkspace(id=workspace_id, name="MOCKED_WS_NAME", description="MOCKED_WS_DESCRIPTION")
+    await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
+
+    with caplog.at_level(DEBUG):
+        # Initiate decommissioning of a test device. This triggers backend operations (checks, etc) on CloudVision
+        stage_devices_for_decommission_response = await cv_client.stage_devices_for_decommission(workspace_id=workspace.id, device_ids=target_devices)
+        # stage_devices_for_decommission method returns only failed responses
+        assert len(stage_devices_for_decommission_response) == 0
+
+        with pytest.raises(CVDeviceDecommissionFailed, match=expected_exception_msg):
+            # Subscribe for decommissining updates.
+            _ = await cv_client.wait_to_stage_devices_for_decommission(workspace_id=workspace.id, device_ids=target_devices)
+
+    # Assert that initial INITIAL_SYNC_COMPLETE is received and logged
+    assert any(
+        re.search(
+            re.compile(
+                r"wait_to_stage_devices_for_decommission: Got decommission staging update: Decommission\(key=DeviceKey\(device_id=None\), "
+                r"status=DecommissionStatus.UNSPECIFIED\)"
+            ),
+            str(record.message),
+        )
+        for record in caplog.records
+    )

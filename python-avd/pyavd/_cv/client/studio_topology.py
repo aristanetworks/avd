@@ -146,5 +146,5 @@ class StudioTopologyMixin(Protocol):
             if latest_per_device_nonsuccess_response:
                 msg_parts.append(f"Non-success decommission staging response received for the following devices: {latest_per_device_nonsuccess_response}.")
             raise CVDeviceDecommissionFailed(" ".join(msg_parts))
-        # make ruff's RET503 happy
-        return successful_responses
+        # Kept only to satisfy ruff's RET503.
+        return successful_responses  # pragma: no cover
