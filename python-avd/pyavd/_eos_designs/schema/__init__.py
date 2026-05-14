@@ -33192,9 +33192,17 @@ class EosDesigns(EosDesignsRootModel):
                     address: str
                     """DHCP server's IPv6 address."""
                     local_interface: str | None
-                    """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
+                    """
+                    Local interface to communicate with DHCP server.
+                    Mutually exclusive with `source_address` and takes
+                    precedence over it.
+                    """
                     source_address: str | None
-                    """Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface."""
+                    """
+                    Source IPv6 address to communicate with DHCP server.
+                    Mutually exclusive with `local_interface`,
+                    which takes precedence if both are set.
+                    """
                     link_address: str | None
                     """Override the default link address specified in the relayed DHCP packet."""
 
@@ -33216,8 +33224,14 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 address: DHCP server's IPv6 address.
-                                local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
-                                source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
+                                local_interface:
+                                   Local interface to communicate with DHCP server.
+                                   Mutually exclusive with `source_address` and takes
+                                   precedence over it.
+                                source_address:
+                                   Source IPv6 address to communicate with DHCP server.
+                                   Mutually exclusive with `local_interface`,
+                                   which takes precedence if both are set.
                                 link_address: Override the default link address specified in the relayed DHCP packet.
 
                             """
@@ -34431,9 +34445,17 @@ class EosDesigns(EosDesignsRootModel):
                 address: str
                 """DHCP server's IPv6 address."""
                 local_interface: str | None
-                """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
+                """
+                Local interface to communicate with DHCP server.
+                Mutually exclusive with `source_address` and takes
+                precedence over it.
+                """
                 source_address: str | None
-                """Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface."""
+                """
+                Source IPv6 address to communicate with DHCP server.
+                Mutually exclusive with `local_interface`,
+                which takes precedence if both are set.
+                """
                 link_address: str | None
                 """Override the default link address specified in the relayed DHCP packet."""
 
@@ -34455,8 +34477,14 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             address: DHCP server's IPv6 address.
-                            local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
-                            source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
+                            local_interface:
+                               Local interface to communicate with DHCP server.
+                               Mutually exclusive with `source_address` and takes
+                               precedence over it.
+                            source_address:
+                               Source IPv6 address to communicate with DHCP server.
+                               Mutually exclusive with `local_interface`,
+                               which takes precedence if both are set.
                             link_address: Override the default link address specified in the relayed DHCP packet.
 
                         """
@@ -64936,9 +64964,17 @@ class EosDesigns(EosDesignsRootModel):
                                     address: str
                                     """DHCP server's IPv6 address."""
                                     local_interface: str | None
-                                    """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
+                                    """
+                                    Local interface to communicate with DHCP server.
+                                    Mutually exclusive with `source_address` and takes
+                                    precedence over it.
+                                    """
                                     source_address: str | None
-                                    """Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface."""
+                                    """
+                                    Source IPv6 address to communicate with DHCP server.
+                                    Mutually exclusive with `local_interface`,
+                                    which takes precedence if both are set.
+                                    """
                                     link_address: str | None
                                     """Override the default link address specified in the relayed DHCP packet."""
 
@@ -64960,8 +64996,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                             Args:
                                                 address: DHCP server's IPv6 address.
-                                                local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
-                                                source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
+                                                local_interface:
+                                                   Local interface to communicate with DHCP server.
+                                                   Mutually exclusive with `source_address` and takes
+                                                   precedence over it.
+                                                source_address:
+                                                   Source IPv6 address to communicate with DHCP server.
+                                                   Mutually exclusive with `local_interface`,
+                                                   which takes precedence if both are set.
                                                 link_address: Override the default link address specified in the relayed DHCP packet.
 
                                             """
@@ -66204,9 +66246,17 @@ class EosDesigns(EosDesignsRootModel):
                                 address: str
                                 """DHCP server's IPv6 address."""
                                 local_interface: str | None
-                                """Local interface to communicate with DHCP server - mutually exclusive to source_address."""
+                                """
+                                Local interface to communicate with DHCP server.
+                                Mutually exclusive with `source_address` and takes
+                                precedence over it.
+                                """
                                 source_address: str | None
-                                """Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface."""
+                                """
+                                Source IPv6 address to communicate with DHCP server.
+                                Mutually exclusive with `local_interface`,
+                                which takes precedence if both are set.
+                                """
                                 link_address: str | None
                                 """Override the default link address specified in the relayed DHCP packet."""
 
@@ -66228,8 +66278,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             address: DHCP server's IPv6 address.
-                                            local_interface: Local interface to communicate with DHCP server - mutually exclusive to source_address.
-                                            source_address: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
+                                            local_interface:
+                                               Local interface to communicate with DHCP server.
+                                               Mutually exclusive with `source_address` and takes
+                                               precedence over it.
+                                            source_address:
+                                               Source IPv6 address to communicate with DHCP server.
+                                               Mutually exclusive with `local_interface`,
+                                               which takes precedence if both are set.
                                             link_address: Override the default link address specified in the relayed DHCP packet.
 
                                         """

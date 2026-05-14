@@ -88,10 +88,14 @@ $defs:
                   description: DHCP server's IPv6 address.
                 local_interface:
                   type: str
-                  description: Local interface to communicate with DHCP server - mutually exclusive to source_address.
+                  description: |-
+                    Local interface to communicate with DHCP server.
+                    Mutually exclusive with `source_address` and takes precedence over it.
                 source_address:
                   type: str
-                  description: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface.
+                  description: |-
+                    Source IPv6 address to communicate with DHCP server.
+                    Mutually exclusive with `local_interface`, which takes precedence if both are set.
                 link_address:
                   type: str
                   description: Override the default link address specified in the relayed DHCP packet.
