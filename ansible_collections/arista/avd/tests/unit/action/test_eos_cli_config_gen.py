@@ -39,11 +39,12 @@ def action_module() -> Callable[..., ActionModule]:
 
 
 @pytest.mark.parametrize(
-    ("generate_device_config", "generate_device_doc", "expected_messages"),
+    ("generate_device_config", "generate_device_doc", "with_custom_templates", "expected_messages"),
     [
         pytest.param(
             True,
             True,
+            False,
             [
                 "Validating task arguments...",
                 "Validating task arguments [done].",
@@ -59,6 +60,7 @@ def action_module() -> Callable[..., ActionModule]:
         pytest.param(
             True,
             False,
+            False,
             [
                 "Validating task arguments...",
                 "Validating task arguments [done].",
@@ -72,6 +74,7 @@ def action_module() -> Callable[..., ActionModule]:
         pytest.param(
             False,
             True,
+            False,
             [
                 "Validating task arguments...",
                 "Validating task arguments [done].",
@@ -82,6 +85,26 @@ def action_module() -> Callable[..., ActionModule]:
             ],
             id="doc_only",
         ),
+        pytest.param(
+            True,
+            True,
+            True,
+            [
+                "Validating task arguments...",
+                "Validating task arguments [done].",
+                "Loading structured config...",
+                "Loading structured config [done].",
+                "Rendering configuration...",
+                "Rendering config custom templates...",
+                "Rendering config custom templates [done].",
+                "Rendering configuration [done].",
+                "Rendering documentation...",
+                "Rendering documentation custom templates...",
+                "Rendering documentation custom templates [done].",
+                "Rendering documentation [done].",
+            ],
+            id="config_and_doc_with_custom_templates",
+        ),
     ],
 )
 def test_main_emits_expected_debug_logs(
@@ -89,6 +112,7 @@ def test_main_emits_expected_debug_logs(
     caplog: pytest.LogCaptureFixture,
     generate_device_config: bool,
     generate_device_doc: bool,
+    with_custom_templates: bool,
     expected_messages: list[str],
 ) -> None:
     """Verify that main emits the expected sequence of DEBUG log messages."""
@@ -101,27 +125,30 @@ def test_main_emits_expected_debug_logs(
         "documentation_filename": "/output/doc.md",
         "device_doc_toc": False,
     }
+    task_vars = {"custom_templates": ["some/template.j2"]} if with_custom_templates else {}
 
     with (
         patch.object(module, "validate_args", return_value=validated_args),
         patch.object(module, "load_structured_config", return_value={}),
         patch.object(module, "write_file", return_value=False),
+        patch.object(module, "render_template_with_ansible_templar", return_value="! custom\n"),
         patch(f"{MODULE_PATH}.get_device_config", return_value="! config\n", create=True),
         patch(f"{MODULE_PATH}.get_device_doc", return_value="# doc\n", create=True),
         caplog.at_level(logging.DEBUG, logger="ansible_collections.arista.avd"),
     ):
-        module.main("test-device", {}, {})
+        module.main("test-device", task_vars, {})
 
     assert caplog.messages == expected_messages
     assert all(r.levelno == logging.DEBUG for r in caplog.records)
 
 
 @pytest.mark.parametrize(
-    ("generate_device_config", "generate_device_doc", "expected_display_messages"),
+    ("generate_device_config", "generate_device_doc", "with_custom_templates", "expected_display_messages"),
     [
         pytest.param(
             True,
             True,
+            False,
             [
                 "<my-spine-1> Validating task arguments...",
                 "<my-spine-1> Validating task arguments [done].",
@@ -137,6 +164,7 @@ def test_main_emits_expected_debug_logs(
         pytest.param(
             True,
             False,
+            False,
             [
                 "<my-spine-1> Validating task arguments...",
                 "<my-spine-1> Validating task arguments [done].",
@@ -150,6 +178,7 @@ def test_main_emits_expected_debug_logs(
         pytest.param(
             False,
             True,
+            False,
             [
                 "<my-spine-1> Validating task arguments...",
                 "<my-spine-1> Validating task arguments [done].",
@@ -160,12 +189,33 @@ def test_main_emits_expected_debug_logs(
             ],
             id="doc_only",
         ),
+        pytest.param(
+            True,
+            True,
+            True,
+            [
+                "<my-spine-1> Validating task arguments...",
+                "<my-spine-1> Validating task arguments [done].",
+                "<my-spine-1> Loading structured config...",
+                "<my-spine-1> Loading structured config [done].",
+                "<my-spine-1> Rendering configuration...",
+                "<my-spine-1> Rendering config custom templates...",
+                "<my-spine-1> Rendering config custom templates [done].",
+                "<my-spine-1> Rendering configuration [done].",
+                "<my-spine-1> Rendering documentation...",
+                "<my-spine-1> Rendering documentation custom templates...",
+                "<my-spine-1> Rendering documentation custom templates [done].",
+                "<my-spine-1> Rendering documentation [done].",
+            ],
+            id="config_and_doc_with_custom_templates",
+        ),
     ],
 )
 def test_run_routes_debug_logs_to_display_with_hostname(
     action_module: Callable[..., ActionModule],
     generate_device_config: bool,
     generate_device_doc: bool,
+    with_custom_templates: bool,
     expected_display_messages: list[str],
 ) -> None:
     """Verify that debug log messages reach display.vvv prefixed with the device hostname."""
@@ -178,6 +228,9 @@ def test_run_routes_debug_logs_to_display_with_hostname(
         "documentation_filename": "/output/doc.md",
         "device_doc_toc": False,
     }
+    task_vars: dict = {"inventory_hostname": "my-spine-1"}
+    if with_custom_templates:
+        task_vars["custom_templates"] = ["some/template.j2"]
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
@@ -185,11 +238,12 @@ def test_run_routes_debug_logs_to_display_with_hostname(
         patch.object(module, "validate_args", return_value=validated_args),
         patch.object(module, "load_structured_config", return_value={}),
         patch.object(module, "write_file", return_value=False),
+        patch.object(module, "render_template_with_ansible_templar", return_value="! custom\n"),
         patch(f"{MODULE_PATH}.get_device_config", return_value="! config\n", create=True),
         patch(f"{MODULE_PATH}.get_device_doc", return_value="# doc\n", create=True),
         patch(f"{MODULE_PATH}.display") as mock_display,
     ):
-        module.run(task_vars={"inventory_hostname": "my-spine-1"})
+        module.run(task_vars=task_vars)
 
     actual = [call.args[0] for call in mock_display.vvv.call_args_list]
     assert actual == expected_display_messages
@@ -209,13 +263,20 @@ def test_load_structured_config_raises_when_file_missing(action_module: Callable
         patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(MagicMock(), mock_validated_path)),
         patch(f"{MODULE_PATH}.AVDVaultHandler"),
         patch(f"{MODULE_PATH}.AVDFileHandler"),
-        pytest.raises(AnsibleActionFail, match="Missing the validated structured config for host 'my-spine-device'"),
+        pytest.raises(
+            AnsibleActionFail,
+            match=(
+                r"Missing the validated structured config for host 'my-spine-device'. "
+                r"Ensure the 'arista.avd.validate_inputs' task ran successfully for this host "
+                r"and that no validation errors occurred."
+            ),
+        ),
     ):
         module.load_structured_config("my-spine-device")
 
 
 def test_main_wraps_exceptions_as_action_fail(action_module: Callable[..., ActionModule]) -> None:
-    """Test that any exception during execution is forwarded to raise_action_fail."""
+    """Test that any exception during execution is wrapped with the 'Error during plugin execution:' prefix and chained."""
     module = action_module()
     validated_args = {
         "tmp_dir": MOCK_TMP_DIR,
@@ -223,14 +284,17 @@ def test_main_wraps_exceptions_as_action_fail(action_module: Callable[..., Actio
         "generate_device_doc": False,
         "config_filename": "/output/config.cfg",
     }
+    original_error = RuntimeError("pyavd exploded")
 
     with (
         patch.object(module, "validate_args", return_value=validated_args),
         patch.object(module, "load_structured_config", return_value={}),
-        patch(f"{MODULE_PATH}.get_device_config", side_effect=RuntimeError("pyavd exploded"), create=True),
-        pytest.raises(AnsibleActionFail, match="pyavd exploded"),
+        patch(f"{MODULE_PATH}.get_device_config", side_effect=original_error, create=True),
+        pytest.raises(AnsibleActionFail, match=r"Error during plugin execution: pyavd exploded") as exc_info,
     ):
         module.main("test-device", {}, {})
+
+    assert exc_info.value.__cause__ is original_error
 
 
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:

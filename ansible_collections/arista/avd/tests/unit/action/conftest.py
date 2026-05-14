@@ -17,6 +17,8 @@ def reset_avd_logger() -> Generator[None, None, None]:
     logger = logging.getLogger("ansible_collections.arista.avd")
     original_propagate = logger.propagate
     original_handlers = logger.handlers[:]
+    original_level = logger.level
     yield
     logger.propagate = original_propagate
     logger.handlers = original_handlers
+    logger.setLevel(original_level)
