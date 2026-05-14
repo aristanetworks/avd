@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;interface_sets</samp>](## "monitor_connectivity.interface_sets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_connectivity.interface_sets.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "monitor_connectivity.interface_sets.[].interfaces") | List, items: String | Required |  | Min Length: 1 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "monitor_connectivity.interface_sets.[].interfaces.[]") | String |  |  |  | Multiple interfaces should be of same type, Ethernet, Loopback, Management etc.<br>Multiple interfaces can be specified by separate elements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "monitor_connectivity.interface_sets.[].interfaces.[]") | String |  |  |  | Interface name (e.g. Ethernet1, Loopback0, Management1).<br>All interfaces in this list must be of the same type. Range syntax (e.g. "Ethernet1-4") is not supported — specify each interface as a separate list item. |
     | [<samp>&nbsp;&nbsp;local_interfaces</samp>](## "monitor_connectivity.local_interfaces") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;address_only</samp>](## "monitor_connectivity.address_only") | Boolean |  | `False` |  | When address-only is configured, the source IP of the packet is set to the interface<br>IP but the packet may exit the device via a different interface.<br>When set to `false`, the probe uses the interface to exit the device. |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "monitor_connectivity.hosts") | List, items: Dictionary |  |  |  |  |
@@ -33,7 +33,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_sets</samp>](## "monitor_connectivity.vrfs.[].interface_sets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_connectivity.vrfs.[].interface_sets.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "monitor_connectivity.vrfs.[].interface_sets.[].interfaces") | List, items: String | Required |  | Min Length: 1 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "monitor_connectivity.vrfs.[].interface_sets.[].interfaces.[]") | String |  |  |  | Multiple interfaces should be of same type, Ethernet, Loopback, Management etc.<br>Multiple interfaces can be specified by separate elements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "monitor_connectivity.vrfs.[].interface_sets.[].interfaces.[]") | String |  |  |  | Interface name (e.g. Ethernet1, Loopback0, Management1).<br>All interfaces in this list must be of the same type. Range syntax (e.g. "Ethernet1-4") is not supported — specify each interface as a separate list item. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interfaces</samp>](## "monitor_connectivity.vrfs.[].local_interfaces") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_only</samp>](## "monitor_connectivity.vrfs.[].address_only") | Boolean |  | `False` |  | When address-only is configured, the source IP of the packet is set to the interface<br>IP but the packet may exit the device via a different interface.<br>When set to `false`, the probe uses the interface to exit the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hosts</samp>](## "monitor_connectivity.vrfs.[].hosts") | List, items: Dictionary |  |  |  |  |
@@ -56,8 +56,8 @@
         - name: <str; required; unique>
           interfaces: # >=1 items; required
 
-              # Multiple interfaces should be of same type, Ethernet, Loopback, Management etc.
-              # Multiple interfaces can be specified by separate elements.
+              # Interface name (e.g. Ethernet1, Loopback0, Management1).
+              # All interfaces in this list must be of the same type. Range syntax (e.g. "Ethernet1-4") is not supported — specify each interface as a separate list item.
             - <str>
       local_interfaces: <str>
 
@@ -113,8 +113,8 @@
             - name: <str; required; unique>
               interfaces: # >=1 items; required
 
-                  # Multiple interfaces should be of same type, Ethernet, Loopback, Management etc.
-                  # Multiple interfaces can be specified by separate elements.
+                  # Interface name (e.g. Ethernet1, Loopback0, Management1).
+                  # All interfaces in this list must be of the same type. Range syntax (e.g. "Ethernet1-4") is not supported — specify each interface as a separate list item.
                 - <str>
           local_interfaces: <str>
 
