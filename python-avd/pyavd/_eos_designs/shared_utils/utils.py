@@ -205,7 +205,8 @@ class UtilsMixin(Protocol):
         Helper function to interpret the VRF field for a management protocol.
 
         The value of `vrf` will be interpreted according to these rules:
-        - `use_mgmt_interface_vrf` will return `(<mgmt_interface_vrf>, <vrfs[].source_interface or mgmt_interface>)`.
+        - `use_mgmt_interface_vrf` will return `(<mgmt_interface_settings.vrf> or <mgmt_interface_vrf>,
+        <vrfs[].source_interface or mgmt_interface_settings.interface or mgmt_interface>)`.
           An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
         - `use_inband_mgmt_vrf` will return `(<inband_mgmt_vrf>, <vrfs[].source_interface or inband_mgmt_interface>)`.
           An error will be raised if inband management is not configured for the device.
@@ -292,7 +293,7 @@ class UtilsMixin(Protocol):
                     msg = f"'{context}' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
                     raise AristaAvdInvalidInputsError(msg)
 
-                return self.inputs.mgmt_interface_vrf
+                return self.mgmt_interface_vrf
             case "use_inband_mgmt_vrf":
                 if self.inband_mgmt_interface is None:
                     msg = f"'{context}' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management."

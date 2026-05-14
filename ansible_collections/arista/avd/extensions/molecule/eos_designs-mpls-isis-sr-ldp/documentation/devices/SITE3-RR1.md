@@ -138,7 +138,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | VRF | IPv6 Addresses |
 | --------- | ----------- | --- | -------------- |
-| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::c/128 |
+| Loopback0 | ROUTER_ID | default | 2001:db8:100:ffff::c/128 |
 
 ##### ISIS
 
@@ -154,10 +154,10 @@ interface Loopback0
    description ROUTER_ID
    no shutdown
    ip address 100.70.0.12/32
-   ipv6 address 2000:1234:ffff:ffff::c/128
+   ipv6 address 2001:db8:100:ffff::c/128
    mpls ldp interface
    node-segment ipv4 index 112
-   node-segment ipv6 index 112
+   node-segment ipv6 index 1112
    isis enable CORE
    isis passive
 ```
@@ -252,7 +252,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 112 | 112 |
+| Loopback0 | 112 | 1112 |
 
 #### ISIS IPv4 Address Family Summary
 
@@ -268,6 +268,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | -------- | ----- |
 | IPv6 Address-family Enabled | True |
 | Maximum-paths | 4 |
+| Multi-topology Enabled | True |
 | TI-LFA Mode | link-protection |
 
 #### Router ISIS Device Configuration
@@ -289,6 +290,7 @@ router isis CORE
    !
    address-family ipv6 unicast
       maximum-paths 4
+      multi-topology
       fast-reroute ti-lfa mode link-protection
    !
    segment-routing mpls
