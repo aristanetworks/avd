@@ -8,11 +8,11 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._utils import Undefined, UndefinedType
 
 if TYPE_CHECKING:
-    from . import StructuredConfigUtils
+    from . import StructuredConfigUtilsProtocol
 
 
 class UtilsMixin(Protocol):
-    def get_interface_validate_state(self: StructuredConfigUtils, user_input: bool | None = None, peer_in_fabric: bool = False) -> bool | UndefinedType:
+    def get_interface_validate_state(self: StructuredConfigUtilsProtocol, user_input: bool | None = None, peer_in_fabric: bool = False) -> bool | UndefinedType:
         """
         Checks if validate_state flag should be set or not.
 

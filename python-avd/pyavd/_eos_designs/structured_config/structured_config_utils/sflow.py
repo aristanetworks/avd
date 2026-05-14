@@ -10,12 +10,12 @@ from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
-    from . import StructuredConfigUtils
+    from . import StructuredConfigUtilsProtocol
 
 
 class SflowMixin(Protocol):
     @run_once_method
-    def set_once_sflow(self: StructuredConfigUtils) -> None:
+    def set_once_sflow(self: StructuredConfigUtilsProtocol) -> None:
         """Structured config for sFlow based on sflow_settings."""
         sflow_settings = self.inputs.sflow_settings
         destinations = sflow_settings.destinations._natural_sorted(sort_key="destination")
@@ -49,7 +49,7 @@ class SflowMixin(Protocol):
                 vrf_item.source_interface = source_interface
                 self.structured_config.sflow.vrfs.append(vrf_item)
 
-    def get_interface_sflow(self: StructuredConfigUtils, interface: str, configured_sflow: bool | None) -> bool | None:
+    def get_interface_sflow(self: StructuredConfigUtilsProtocol, interface: str, configured_sflow: bool | None) -> bool | None:
         """
         Get the configured sFlow state if the interface supports it based on platform settings.
 

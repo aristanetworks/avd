@@ -11,12 +11,12 @@ from pyavd._utils import as_path_list_match_from_bgp_asns
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
-    from . import StructuredConfigUtils
+    from . import StructuredConfigUtilsProtocol
 
 
 class UnderlayMixin(Protocol):
     @run_once_method
-    def set_once_peer_group_ipv4_underlay_peers(self: StructuredConfigUtils) -> None:
+    def set_once_peer_group_ipv4_underlay_peers(self: StructuredConfigUtilsProtocol) -> None:
         """
         Add IPv4 underlay peer group to structured_config.
 
@@ -65,7 +65,7 @@ class UnderlayMixin(Protocol):
                 name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
             )
 
-    def set_route_map_bgp_underlay_peers_in(self: StructuredConfigUtils) -> None:
+    def set_route_map_bgp_underlay_peers_in(self: StructuredConfigUtilsProtocol) -> None:
         """Set route-map RM-BGP-UNDERLAY-PEERS-IN."""
         # RM-BGP-UNDERLAY-PEERS-IN
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
@@ -96,7 +96,7 @@ class UnderlayMixin(Protocol):
 
         self.structured_config.route_maps.append_new(name="RM-BGP-UNDERLAY-PEERS-IN", sequence_numbers=sequence_numbers)
 
-    def set_route_map_bgp_underlay_peers_out(self: StructuredConfigUtils) -> None:
+    def set_route_map_bgp_underlay_peers_out(self: StructuredConfigUtilsProtocol) -> None:
         """Set route-map RM-BGP-UNDERLAY-PEERS-OUT."""
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
         sequence_numbers.append_new(
@@ -110,21 +110,21 @@ class UnderlayMixin(Protocol):
 
         self.structured_config.route_maps.append_new(name="RM-BGP-UNDERLAY-PEERS-OUT", sequence_numbers=sequence_numbers)
 
-    def set_prefix_list_wan_ha_peer_prefixes(self: StructuredConfigUtils) -> None:
+    def set_prefix_list_wan_ha_peer_prefixes(self: StructuredConfigUtilsProtocol) -> None:
         """Set prefix-list PL-WAN-HA-PEER-PREFIXES."""
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
         for index, ip_address in enumerate(self.shared_utils.wan_ha_peer_ip_addresses, start=1):
             sequence_numbers.append_new(sequence=10 * index, action=f"permit {ipaddress.ip_network(ip_address, strict=False)}")
         self.structured_config.prefix_lists.append_new(name="PL-WAN-HA-PEER-PREFIXES", sequence_numbers=sequence_numbers)
 
-    def set_as_path_acl_aspath_wan(self: StructuredConfigUtils) -> None:
+    def set_as_path_acl_aspath_wan(self: StructuredConfigUtilsProtocol) -> None:
         """Set as-path access-list ASPATH-WAN."""
         entries = EosCliConfigGen.AsPath.AccessListsItem.Entries()
         entries.append_new(type="permit", match=as_path_list_match_from_bgp_asns((self.shared_utils.bgp_as,)))  # pyright: ignore[reportArgumentType]
         self.structured_config.as_path.access_lists.append_new(name="ASPATH-WAN", entries=entries)
 
     @run_once_method
-    def set_once_ip_extcommunity_list_evpn_soo(self: StructuredConfigUtils) -> None:
+    def set_once_ip_extcommunity_list_evpn_soo(self: StructuredConfigUtilsProtocol) -> None:
         """Set ip extcommunity-list ECL-EVPN-SOO."""
         ip_extcommunity_list = EosCliConfigGen.IpExtcommunityListsItem(name="ECL-EVPN-SOO")
         ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
