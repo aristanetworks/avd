@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 import warnings
 from importlib import import_module
@@ -40,6 +41,7 @@ DISPLAY = Display()
 
 MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
 DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
+COLLECTION_VERSION_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.+_-]*$")
 
 
 # TODO: Consider moving the following helpers inside the plugin class as methods to use `self.logger`.
@@ -320,7 +322,12 @@ def _get_collection_version(collection_path: str) -> str:
         with manifest_file.open("rb") as fd:
             metadata = json.load(fd)["collection_info"]
 
-    return metadata["version"]
+    version = metadata["version"]
+    if not isinstance(version, str) or not COLLECTION_VERSION_PATTERN.fullmatch(version):
+        msg = f"Invalid collection version found in collection metadata: {version}"
+        raise ValueError(msg)
+
+    return version
 
 
 def _get_running_collection_version(running_collection_name: str, result: dict[str, Any]) -> None:
