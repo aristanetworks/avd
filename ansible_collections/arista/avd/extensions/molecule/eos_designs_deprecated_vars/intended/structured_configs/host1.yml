@@ -284,7 +284,7 @@ router_multicast:
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: default
-  prefix: 0.0.0.0/0
+  prefix: 10.0.0.0/24
   next_hop: 192.168.200.1
 tacacs_servers:
   hosts:

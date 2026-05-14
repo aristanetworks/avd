@@ -1,6 +1,9 @@
 type: l3leaf
 
+# Test for deprecated global mgmt keys
 mgmt_gateway: 192.168.200.1
+mgmt_destination_networks:
+  - 10.0.0.0/24
 
 underlay_multicast_pim_sm: true
 evpn_multicast: true
