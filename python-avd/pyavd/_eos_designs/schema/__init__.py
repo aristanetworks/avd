@@ -933,6 +933,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
+            "only_configure_outbound_route_map_when_prefix_list_out_defined": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -979,6 +980,14 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        only_configure_outbound_route_map_when_prefix_list_out_defined: bool
+        """
+        Only generate the BGP outbound route-map for L3 interface and L3 port-channel BGP peerings when
+        `bgp.ipv4_prefix_list_out` is defined. By default an empty `deny` route-map is always created and
+        attached to the neighbor, even when no outbound prefix list is configured.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -992,6 +1001,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
+                only_configure_outbound_route_map_when_prefix_list_out_defined: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1012,6 +1022,10 @@ class EosDesigns(EosDesignsRootModel):
                        this combination is not supported.
                     configure_inband_mgmt_ipv6_vrf: Configure `inband_mgmt_vrf` for IPv6 inband management.
                     only_configure_ipv6_inband_mgmt_prefix_list_when_used: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
+                    only_configure_outbound_route_map_when_prefix_list_out_defined:
+                       Only generate the BGP outbound route-map for L3 interface and L3 port-channel BGP peerings when
+                       `bgp.ipv4_prefix_list_out` is defined. By default an empty `deny` route-map is always created and
+                       attached to the neighbor, even when no outbound prefix list is configured.
 
                 """
 

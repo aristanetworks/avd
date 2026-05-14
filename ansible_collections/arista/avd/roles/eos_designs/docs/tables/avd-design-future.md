@@ -15,6 +15,7 @@
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Configure `inband_mgmt_vrf` for IPv6 inband management. |
     | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
+    | [<samp>&nbsp;&nbsp;only_configure_outbound_route_map_when_prefix_list_out_defined</samp>](## "avd_design_future.only_configure_outbound_route_map_when_prefix_list_out_defined") | Boolean |  | `False` |  | Only generate the BGP outbound route-map for L3 interface and L3 port-channel BGP peerings when<br>`bgp.ipv4_prefix_list_out` is defined. By default an empty `deny` route-map is always created and<br>attached to the neighbor, even when no outbound prefix list is configured. |
 
 === "YAML"
 
@@ -43,4 +44,9 @@
 
       # Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
       only_configure_ipv6_inband_mgmt_prefix_list_when_used: <bool; default=False>
+
+      # Only generate the BGP outbound route-map for L3 interface and L3 port-channel BGP peerings when
+      # `bgp.ipv4_prefix_list_out` is defined. By default an empty `deny` route-map is always created and
+      # attached to the neighbor, even when no outbound prefix list is configured.
+      only_configure_outbound_route_map_when_prefix_list_out_defined: <bool; default=False>
     ```

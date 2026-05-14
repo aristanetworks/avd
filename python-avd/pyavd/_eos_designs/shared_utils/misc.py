@@ -405,6 +405,10 @@ class MiscMixin(Protocol):
             rm_out_name = f"RM-BGP-{neighbor.ip_address}-OUT"
             neighbor.route_map_out = rm_out_name
             route_maps.append(self.get_l3_bgp_route_map_out(rm_out_name, interface.bgp.ipv4_prefix_list_out))
+        elif not self.inputs.avd_design_future.only_configure_outbound_route_map_when_prefix_list_out_defined:
+            rm_out_name = f"RM-BGP-{neighbor.ip_address}-OUT"
+            neighbor.route_map_out = rm_out_name
+            route_maps.append(self.get_l3_bgp_route_map_out(rm_out_name, interface.bgp.ipv4_prefix_list_out))
 
         neighbors.append(neighbor)
 

@@ -46,6 +46,10 @@ route_maps:
     - ip address prefix-list ALLOW-DEFAULT
     set:
     - community no-advertise additive
+- name: RM-BGP-192.168.42.1-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: deny
 - name: RM-BGP-192.168.44.1-OUT
   sequence_numbers:
   - sequence: 10
@@ -69,6 +73,7 @@ router_bgp:
     remote_as: '65042'
     description: INTERNET
     route_map_in: RM-BGP-192.168.42.1-IN
+    route_map_out: RM-BGP-192.168.42.1-OUT
   - ip_address: 192.168.44.1
     remote_as: '65044'
     description: PEER44_BGP

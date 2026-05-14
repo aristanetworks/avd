@@ -368,6 +368,16 @@ keys:
         description: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when
           it is needed.
         default: false
+      only_configure_outbound_route_map_when_prefix_list_out_defined:
+        type: bool
+        description: 'Only generate the BGP outbound route-map for L3 interface and
+          L3 port-channel BGP peerings when
+
+          `bgp.ipv4_prefix_list_out` is defined. By default an empty `deny` route-map
+          is always created and
+
+          attached to the neighbor, even when no outbound prefix list is configured.'
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings

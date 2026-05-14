@@ -5,6 +5,10 @@ wan_mode: cv-pathfinder
 # the default is "none" for WAN routers"
 underlay_routing_protocol: ebgp
 
+avd_design_future:
+  # Opt-in so an empty `RM-BGP-<peer>-OUT deny 10` is not generated when `bgp.ipv4_prefix_list_out` is unset.
+  only_configure_outbound_route_map_when_prefix_list_out_defined: true
+
 ipv4_prefix_list_catalog:
   - name: ALLOW-DEFAULT
     sequence_numbers:

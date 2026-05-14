@@ -21,7 +21,8 @@ l3spine:
       uplink_type: lan
       l3_interfaces:
         - # triggering bgp - WAN with only ipv4_prefix_list_in defined.
-          # Verifies that no outbound route-map is generated when ipv4_prefix_list_out is not configured.
+          # Verifies legacy behavior: an empty `RM-BGP-<peer>-OUT deny 10` is generated when
+          # `avd_design_future.only_configure_outbound_route_map_when_prefix_list_out_defined` is unset.
           name: Ethernet43
           enabled: false
           ip_address: 192.168.42.42/24
