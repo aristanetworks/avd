@@ -19,6 +19,12 @@ bgp_peer_groups:
       - 192.168.142.0/24
       - 192.168.143.0/24
 
+ipv4_prefix_list_catalog:
+  - name: ALLOW-DEFAULT
+    sequence_numbers:
+      - sequence: 10
+        action: permit 0.0.0.0/0
+
 wan_ipsec_profiles:
   control_plane:
     shared_key: ABCDEF1234567890
@@ -154,6 +160,21 @@ wan_router:
               peer_port_channel: Port-Channel20
               peer_ip: 192.168.1.18
               wan_carrier: BlizzardFast
+            - # Port-Channel with BGP peering and both inbound + outbound prefix-lists defined.
+              # Verifies that the outbound route-map IS generated and attached when ipv4_prefix_list_out is configured on a port-channel.
+              name: Port-Channel21
+              ip_address: 192.168.21.21/31
+              member_interfaces:
+                - name: Ethernet1/21
+                  peer_interface: Ethernet1/21
+              peer: peerDevice5
+              peer_port_channel: Port-Channel21
+              peer_ip: 192.168.21.20
+              wan_carrier: BlizzardFast
+              bgp:
+                peer_as: 65021
+                ipv4_prefix_list_in: ALLOW-DEFAULT
+                ipv4_prefix_list_out: ALLOW-DEFAULT
 wan_carriers:
   - name: Cybercast
     path_group: INET

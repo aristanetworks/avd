@@ -501,10 +501,6 @@ route_maps:
     - ip address prefix-list ALLOW-DEFAULT
     set:
     - community no-advertise additive
-- name: RM-BGP-172.16.9.4-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: deny
 - name: RM-BGP-172.16.5.4-IN
   sequence_numbers:
   - sequence: 10
@@ -706,7 +702,6 @@ router_bgp:
     remote_as: '64520'
     description: ATT_666_peer3_Ethernet42
     route_map_in: RM-BGP-172.16.9.4-IN
-    route_map_out: RM-BGP-172.16.9.4-OUT
   - ip_address: 172.16.5.4
     remote_as: '64520'
     description: Colt_10555

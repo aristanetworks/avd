@@ -20,7 +20,8 @@ l3spine:
       bgp_as: 65000
       uplink_type: lan
       l3_interfaces:
-        - # triggering bgp
+        - # triggering bgp - WAN with only ipv4_prefix_list_in defined.
+          # Verifies that no outbound route-map is generated when ipv4_prefix_list_out is not configured.
           name: Ethernet43
           enabled: false
           ip_address: 192.168.42.42/24
@@ -29,3 +30,13 @@ l3spine:
           bgp:
             peer_as: 65042
             ipv4_prefix_list_in: ALLOW-DEFAULT
+        - # non-WAN BGP peer with ipv4_prefix_list_out defined.
+          # Verifies that the outbound route-map IS generated and attached when ipv4_prefix_list_out is configured.
+          name: Ethernet44
+          description: PEER44_BGP
+          enabled: false
+          ip_address: 192.168.44.44/24
+          peer_ip: 192.168.44.1
+          bgp:
+            peer_as: 65044
+            ipv4_prefix_list_out: ALLOW-DEFAULT

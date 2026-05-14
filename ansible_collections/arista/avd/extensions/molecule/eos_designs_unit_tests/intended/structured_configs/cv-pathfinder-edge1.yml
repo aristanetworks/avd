@@ -786,10 +786,6 @@ route_maps:
     - ip address prefix-list PL2
     set:
     - community no-advertise additive
-- name: RM-BGP-172.31.0.10-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: deny
 - name: RM-CONN-2-BGP
   sequence_numbers:
   - sequence: 10
@@ -965,7 +961,6 @@ router_bgp:
     remote_as: '64520'
     description: Orange_peerDevice10_Port-Channel455
     route_map_in: RM-BGP-172.31.0.10-IN
-    route_map_out: RM-BGP-172.31.0.10-OUT
   - ip_address: 172.17.0.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65199'

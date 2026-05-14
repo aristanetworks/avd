@@ -105,6 +105,16 @@ ethernet_interfaces:
     peer: peerDevice4
     peer_interface: Ethernet1/20
     peer_type: l3_port_channel_member
+- name: Ethernet1/21
+  description: peerDevice5_Ethernet1/21
+  shutdown: false
+  channel_group:
+    id: 21
+    mode: active
+  metadata:
+    peer: peerDevice5
+    peer_interface: Ethernet1/21
+    peer_type: l3_port_channel_member
 flow_tracking:
   hardware:
     trackers:
@@ -236,6 +246,12 @@ metadata:
         value: wan
       - name: Carrier
         value: BlizzardFast
+    - interface: Port-Channel21
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: BlizzardFast
   cv_pathfinder:
     role: edge
     region: AVD_Land_East
@@ -260,6 +276,9 @@ metadata:
       carrier: BlizzardFast
       pathgroup: INET
     - name: Port-Channel19
+      carrier: BlizzardFast
+      pathgroup: INET
+    - name: Port-Channel21
       carrier: BlizzardFast
       pathgroup: INET
 port_channel_interfaces:
@@ -356,12 +375,42 @@ port_channel_interfaces:
     peer_type: l3_port_channel
   switchport:
     enabled: false
+- name: Port-Channel21
+  description: BlizzardFast_peerDevice5_Port-Channel21
+  shutdown: false
+  ip_address: 192.168.21.21/31
+  metadata:
+    peer: peerDevice5
+    peer_interface: Port-Channel21
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
 prefix_lists:
+- name: ALLOW-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 0.0.0.0/0
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.255.0/24 eq 32
 route_maps:
+- name: RM-BGP-192.168.21.20-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list ALLOW-DEFAULT
+    set:
+    - community no-advertise additive
+- name: RM-BGP-192.168.21.20-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list ALLOW-DEFAULT
+  - sequence: 20
+    type: deny
 - name: RM-CONN-2-BGP
   sequence_numbers:
   - sequence: 10
@@ -422,10 +471,20 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  neighbors:
+  - ip_address: 192.168.21.20
+    remote_as: '65021'
+    description: BlizzardFast_peerDevice5_Port-Channel21
+    route_map_in: RM-BGP-192.168.21.20-IN
+    route_map_out: RM-BGP-192.168.21.20-OUT
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+  address_family_ipv4:
+    neighbors:
+    - ip_address: 192.168.21.20
+      activate: true
   address_family_link_state:
     path_selection:
       roles:
@@ -459,6 +518,7 @@ router_path_selection:
     - name: Port-Channel5.100
     - name: Port-Channel8
     - name: Port-Channel19
+    - name: Port-Channel21
     dynamic_peers:
       enabled: true
   load_balance_policies:

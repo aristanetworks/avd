@@ -12,6 +12,14 @@ ethernet_interfaces:
     peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet44
+  description: PEER44_BGP
+  shutdown: true
+  ip_address: 192.168.44.44/24
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 hostname: node-type-l3-interfaces-bgp
 ip_igmp_snooping:
   globally_enabled: true
@@ -38,9 +46,13 @@ route_maps:
     - ip address prefix-list ALLOW-DEFAULT
     set:
     - community no-advertise additive
-- name: RM-BGP-192.168.42.1-OUT
+- name: RM-BGP-192.168.44.1-OUT
   sequence_numbers:
   - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list ALLOW-DEFAULT
+  - sequence: 20
     type: deny
 router_bgp:
   as: '65000'
@@ -57,13 +69,18 @@ router_bgp:
     remote_as: '65042'
     description: INTERNET
     route_map_in: RM-BGP-192.168.42.1-IN
-    route_map_out: RM-BGP-192.168.42.1-OUT
+  - ip_address: 192.168.44.1
+    remote_as: '65044'
+    description: PEER44_BGP
+    route_map_out: RM-BGP-192.168.44.1-OUT
   redistribute:
     connected:
       enabled: true
   address_family_ipv4:
     neighbors:
     - ip_address: 192.168.42.1
+      activate: true
+    - ip_address: 192.168.44.1
       activate: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
