@@ -27,6 +27,7 @@ if TYPE_CHECKING:
 
 
 class StructuredConfigUtilsProtocol(UtilsMixin, MlagMixin, UnderlayMixin, SflowMixin, Protocol):
+    """Protocol for the StructuredConfigUtils Class with commonly used methods to be shared between all the python modules loaded in eos_designs."""
     structured_config: EosCliConfigGen
     custom_structured_configs: StructCfgs
     shared_utils: SharedUtilsProtocol

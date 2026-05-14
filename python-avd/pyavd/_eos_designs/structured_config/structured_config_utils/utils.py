@@ -6,6 +6,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._utils import Undefined, UndefinedType
+from pyavd._utils.run_once import run_once_method
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
 if TYPE_CHECKING:
     from . import StructuredConfigUtilsProtocol
@@ -33,3 +35,11 @@ class UtilsMixin(Protocol):
             return False if user_input is False else Undefined
         # Non-Digital-Twin: follow the user input if set, otherwise leave unset.
         return Undefined if user_input is None else user_input
+
+
+    @run_once_method
+    def set_once_ip_extcommunity_list_evpn_soo(self: StructuredConfigUtilsProtocol) -> None:
+        """Set ip extcommunity-list ECL-EVPN-SOO."""
+        ip_extcommunity_list = EosCliConfigGen.IpExtcommunityListsItem(name="ECL-EVPN-SOO")
+        ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
+        self.structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)

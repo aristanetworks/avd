@@ -122,10 +122,3 @@ class UnderlayMixin(Protocol):
         entries = EosCliConfigGen.AsPath.AccessListsItem.Entries()
         entries.append_new(type="permit", match=as_path_list_match_from_bgp_asns((self.shared_utils.bgp_as,)))  # pyright: ignore[reportArgumentType]
         self.structured_config.as_path.access_lists.append_new(name="ASPATH-WAN", entries=entries)
-
-    @run_once_method
-    def set_once_ip_extcommunity_list_evpn_soo(self: StructuredConfigUtilsProtocol) -> None:
-        """Set ip extcommunity-list ECL-EVPN-SOO."""
-        ip_extcommunity_list = EosCliConfigGen.IpExtcommunityListsItem(name="ECL-EVPN-SOO")
-        ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
-        self.structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
