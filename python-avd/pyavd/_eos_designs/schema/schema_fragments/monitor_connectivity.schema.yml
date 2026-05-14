@@ -32,8 +32,8 @@ keys:
               items:
                 type: str
                 description: |-
-                  Multiple interfaces should be of same type, Ethernet, Loopback, Management etc.
-                  Multiple interfaces can be specified by separate elements.
+                  Interface name (e.g. Ethernet1, Loopback0, Management1).
+                  All interfaces in this list must be of the same type. Range syntax (e.g. "Ethernet1-4") is not supported — specify each interface as a separate list item.
       local_interfaces:
         type: str
       address_only:
