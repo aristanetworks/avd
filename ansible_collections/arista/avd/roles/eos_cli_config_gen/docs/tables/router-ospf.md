@@ -88,8 +88,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "router_ospf.process_ids.[].graceful_restart.grace_period") | Integer |  |  | Min: 1<br>Max: 1800 | Specify maximum time in seconds to wait for graceful-restart to complete. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_ospf.process_ids.[].graceful_restart_helper") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp_sync_default</samp>](## "router_ospf.process_ids.[].mpls_ldp_sync_default") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segment_routing_mpls</samp>](## "router_ospf.process_ids.[].segment_routing_mpls") | Dictionary |  |  |  | OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.<br>Do not configure segment routing in more than one process id. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospf.process_ids.[].segment_routing_mpls.enabled") | Boolean | Required |  |  | Enable Segment Routing MPLS. When true, renders 'segment-routing mpls'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segment_routing_mpls</samp>](## "router_ospf.process_ids.[].segment_routing_mpls") | Dictionary |  |  |  | OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_ospf.process_ids.[].segment_routing_mpls.enabled") | Boolean | Required |  |  | Enable the configuration mode.<br>This does not control the shutdown command. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "router_ospf.process_ids.[].segment_routing_mpls.shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_segments</samp>](## "router_ospf.process_ids.[].segment_routing_mpls.prefix_segments") | List, items: Dictionary |  |  |  | Prefix Segment Identifier (Prefix-SID) configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_ospf.process_ids.[].segment_routing_mpls.prefix_segments.[].prefix") | String | Required, Unique |  |  | IPv4 prefix (e.g. 192.0.2.1/32). |
@@ -232,10 +232,10 @@
           mpls_ldp_sync_default: <bool>
 
           # OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.
-          # Do not configure segment routing in more than one process id.
           segment_routing_mpls:
 
-            # Enable Segment Routing MPLS. When true, renders 'segment-routing mpls'.
+            # Enable the configuration mode.
+            # This does not control the shutdown command.
             enabled: <bool; required>
             shutdown: <bool>
 

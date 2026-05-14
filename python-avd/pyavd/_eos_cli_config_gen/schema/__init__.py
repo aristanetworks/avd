@@ -62420,7 +62420,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "adjacency_segment_allocation": {"type": str},
                 }
                 enabled: bool
-                """Enable Segment Routing MPLS. When true, renders 'segment-routing mpls'."""
+                """
+                Enable the configuration mode.
+                This does not control the shutdown command.
+                """
                 shutdown: bool | None
                 prefix_segments: PrefixSegments
                 """
@@ -62449,7 +62452,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            enabled: Enable Segment Routing MPLS. When true, renders 'segment-routing mpls'.
+                            enabled:
+                               Enable the configuration mode.
+                               This does not control the shutdown command.
                             shutdown: shutdown
                             prefix_segments:
                                Prefix Segment Identifier (Prefix-SID) configuration.
@@ -62528,8 +62533,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             segment_routing_mpls: SegmentRoutingMpls
             """
             OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.
-            Do not configure segment routing in
-            more than one process id.
 
             Subclass of AvdModel.
             """
@@ -62599,8 +62602,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         mpls_ldp_sync_default: mpls_ldp_sync_default
                         segment_routing_mpls:
                            OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.
-                           Do not configure segment routing in
-                           more than one process id.
 
                            Subclass of AvdModel.
                         eos_cli: Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration.

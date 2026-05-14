@@ -249,7 +249,6 @@
 {%                 set adj_alloc = process_id.segment_routing_mpls.adjacency_segment_allocation | arista.avd.default('-') %}
 {%                 set shutdown = process_id.segment_routing_mpls.shutdown | arista.avd.default('-') %}
 | {{ process_id.id }} | {{ process_id.segment_routing_mpls.enabled }} | {{ adj_alloc }} | {{ shutdown }} |
-{%                 break %}
 {%             endif %}
 {%         endfor %}
 {%         set has.found = false %}
