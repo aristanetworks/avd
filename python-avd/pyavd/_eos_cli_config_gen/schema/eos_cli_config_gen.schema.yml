@@ -24793,7 +24793,8 @@ keys:
             description: Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets.
           fragment_implicit_permit_disabled:
             type: bool
-            description: Disable rules to allow fragmented packets for Layer 4 rules.
+            description: Disable the addition of implicit rules that allow fragmented
+              packets for Layer 4 rules.
       vrfs:
         type: list
         primary_key: name

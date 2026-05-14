@@ -67466,7 +67466,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             enforcement_ip_ttl_expired: bool | None
             """Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets."""
             fragment_implicit_permit_disabled: bool | None
-            """Disable rules to allow fragmented packets for Layer 4 rules."""
+            """Disable the addition of implicit rules that allow fragmented packets for Layer 4 rules."""
 
             if TYPE_CHECKING:
 
@@ -67486,7 +67486,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         vrf_all: Subclass of AvdModel.
                         enforcement_ip_ttl_expired: Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets.
-                        fragment_implicit_permit_disabled: Disable rules to allow fragmented packets for Layer 4 rules.
+                        fragment_implicit_permit_disabled: Disable the addition of implicit rules that allow fragmented packets for Layer 4 rules.
 
                     """
 

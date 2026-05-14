@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "traffic_policies.cpu_traffic_policy.vrf_all.name") | String | Required |  |  | Traffic policy name for all VRFs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enforcement_management</samp>](## "traffic_policies.cpu_traffic_policy.vrf_all.enforcement_management") | Boolean |  |  |  | Enforce CPU traffic-policy on management ports. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enforcement_ip_ttl_expired</samp>](## "traffic_policies.cpu_traffic_policy.enforcement_ip_ttl_expired") | Boolean |  |  |  | Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fragment_implicit_permit_disabled</samp>](## "traffic_policies.cpu_traffic_policy.fragment_implicit_permit_disabled") | Boolean |  |  |  | Disable rules to allow fragmented packets for Layer 4 rules. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fragment_implicit_permit_disabled</samp>](## "traffic_policies.cpu_traffic_policy.fragment_implicit_permit_disabled") | Boolean |  |  |  | Disable the addition of implicit rules that allow fragmented packets for Layer 4 rules. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "traffic_policies.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "traffic_policies.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu</samp>](## "traffic_policies.vrfs.[].cpu") | Dictionary |  |  |  |  |
@@ -127,7 +127,7 @@
         # Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets.
         enforcement_ip_ttl_expired: <bool>
 
-        # Disable rules to allow fragmented packets for Layer 4 rules.
+        # Disable the addition of implicit rules that allow fragmented packets for Layer 4 rules.
         fragment_implicit_permit_disabled: <bool>
       vrfs:
 
