@@ -60,5 +60,5 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-- name: MGMT
-  ip_routing: false
+- name: deprecated_mgmt_interface_vrf
+  ip_routing: true
