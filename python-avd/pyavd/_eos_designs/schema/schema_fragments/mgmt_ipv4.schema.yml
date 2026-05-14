@@ -17,7 +17,7 @@ keys:
         type: bool
         description: |-
           Use DHCP for IP addressing on the management interface.
-          Per-device override: `mgmt_ip` (takes precedence).
+          Per-device override: 'mgmt_ip' (takes precedence).
       gateway:
         type: str
         description: |-

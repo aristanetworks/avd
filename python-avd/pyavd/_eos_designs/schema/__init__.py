@@ -24446,7 +24446,7 @@ class EosDesigns(EosDesignsRootModel):
         dhcp: bool | None
         """
         Use DHCP for IP addressing on the management interface.
-        Per-device override: `mgmt_ip` (takes
+        Per-device override: 'mgmt_ip' (takes
         precedence).
         """
         gateway: str | None
@@ -24494,7 +24494,7 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     dhcp:
                        Use DHCP for IP addressing on the management interface.
-                       Per-device override: `mgmt_ip` (takes
+                       Per-device override: 'mgmt_ip' (takes
                        precedence).
                     gateway:
                        OOB Management gateway in IPv4 format applied to all devices.

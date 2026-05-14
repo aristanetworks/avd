@@ -27,7 +27,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ztp_vlan</samp>](## "mgmt_interface_settings.lldp.ztp_vlan") | Integer |  |  |  | VLAN ID advertised via LLDP for Zero Touch Provisioning (ZTP). |
     | [<samp>mgmt_interface_vrf</samp>](## "mgmt_interface_vrf") <span style="color:red">deprecated</span> | String |  | `MGMT` |  | OOB Management VRF.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>mgmt_interface_settings.vrf</samp> instead.</span> |
     | [<samp>mgmt_ipv4</samp>](## "mgmt_ipv4") | Dictionary |  |  |  | IPv4 OOB Management settings. |
-    | [<samp>&nbsp;&nbsp;dhcp</samp>](## "mgmt_ipv4.dhcp") | Boolean |  |  |  | Use DHCP for IP addressing on the management interface.<br>Per-device override: `mgmt_ip` (takes precedence). |
+    | [<samp>&nbsp;&nbsp;dhcp</samp>](## "mgmt_ipv4.dhcp") | Boolean |  |  |  | Use DHCP for IP addressing on the management interface.<br>Per-device override: 'mgmt_ip' (takes precedence). |
     | [<samp>&nbsp;&nbsp;gateway</samp>](## "mgmt_ipv4.gateway") | String |  |  |  | OOB Management gateway in IPv4 format applied to all devices.<br>Used as next-hop for the default route or static routes defined under `mgmt_ipv4.static_routes`.<br>Per-device override: `mgmt_gateway` (takes precedence).<br>This setting is ignored when using DHCP for the management IP and<br>'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server<br>will provide the gateway. |
     | [<samp>&nbsp;&nbsp;static_routes</samp>](## "mgmt_ipv4.static_routes") | List, items: Dictionary |  |  |  | List of IPv4 prefixes to configure as static routes towards the OOB Management gateway.<br>When set, these specific prefixes replace the default route (0.0.0.0/0).<br>This setting is ignored when using DHCP for the management IP and<br>'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server<br>will provide the default route. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "mgmt_ipv4.static_routes.[].prefix") | String | Required |  |  | IPv4_address/Mask. |
@@ -132,7 +132,7 @@
     mgmt_ipv4:
 
       # Use DHCP for IP addressing on the management interface.
-      # Per-device override: `mgmt_ip` (takes precedence).
+      # Per-device override: 'mgmt_ip' (takes precedence).
       dhcp: <bool>
 
       # OOB Management gateway in IPv4 format applied to all devices.

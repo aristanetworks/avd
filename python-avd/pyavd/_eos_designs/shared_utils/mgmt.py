@@ -80,6 +80,10 @@ class MgmtMixin(Protocol):
         return self.inputs.mgmt_vrf_routing
 
     @cached_property
+    def mgmt_ip(self: SharedUtilsProtocol) -> str | None:
+        return default(self.node_config.mgmt_ip, "dhcp" if self.inputs.mgmt_ipv4.dhcp else None)
+
+    @cached_property
     def mgmt_gateway(self: SharedUtilsProtocol) -> str | None:
         return default(self.node_config.mgmt_gateway, self.inputs.mgmt_ipv4.gateway, self.inputs.mgmt_gateway)
 
@@ -96,7 +100,7 @@ class MgmtMixin(Protocol):
         """
         default_mgmt_method = self.inputs.default_mgmt_method
         if default_mgmt_method == "oob":
-            if self.node_config.mgmt_ip is None and self.node_config.ipv6_mgmt_ip is None:
+            if self.mgmt_ip is None and self.node_config.ipv6_mgmt_ip is None:
                 msg = "'default_mgmt_method: oob' requires either 'mgmt_ip' or 'ipv6_mgmt_ip' to be set."
                 raise AristaAvdInvalidInputsError(msg)
 
