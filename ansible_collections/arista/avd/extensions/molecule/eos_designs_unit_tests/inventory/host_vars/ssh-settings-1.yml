@@ -6,7 +6,8 @@ l2leaf:
       id: 43
       mgmt_ip: 10.10.10.43/26
 
-mgmt_interface_vrf: MGMT
+mgmt_interface_settings:
+  vrf: MGMT
 mgmt_gateway: 10.10.10.1
 
 ssh_settings:

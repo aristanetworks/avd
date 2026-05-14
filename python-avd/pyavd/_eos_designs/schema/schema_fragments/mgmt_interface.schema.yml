@@ -12,3 +12,8 @@ keys:
     type: str
     default: Management1
     description: OOB Management interface.
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.interface
+      remove_in_version: 7.0.0

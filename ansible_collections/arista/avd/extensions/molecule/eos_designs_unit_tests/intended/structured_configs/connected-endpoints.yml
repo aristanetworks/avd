@@ -583,6 +583,64 @@ ethernet_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: none
+- name: Ethernet42
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_SERVER
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+      ipv6: true
+  metadata:
+    peer: ADDRESS_LOCKING_SERVER
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: ADDRESS_LOCKING_PROFILE
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 111
+- name: Ethernet43
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_SERVER
+  shutdown: false
+  channel_group:
+    id: 43
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_SERVER
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: ADDRESS_LOCKING_PROFILE
+- name: Ethernet44
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_SERVER
+  shutdown: false
+  channel_group:
+    id: 43
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_SERVER
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: ADDRESS_LOCKING_PROFILE
+- name: Ethernet45
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
+  channel_group:
+    id: 45
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet46
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
+  channel_group:
+    id: 45
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
@@ -762,6 +820,23 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: none
+- name: Port-Channel43
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_SERVER
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 112
+- name: Port-Channel45
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 112
 radius_server:
   vrfs:
   - name: MGMT

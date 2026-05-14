@@ -2460,6 +2460,44 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class AddressLocking(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                ipv4: bool | None
+                """
+                Enable address locking for IPv4.
+                Key `ipv4` can only be set to false.
+                For EOS version 4.31 and
+                higher.
+                """
+                ipv6: bool | None
+                """
+                Enable address locking for IPv6.
+                For EOS version 4.31 and higher.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        AddressLocking.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv4:
+                               Enable address locking for IPv4.
+                               Key `ipv4` can only be set to false.
+                               For EOS version 4.31 and
+                               higher.
+                            ipv6:
+                               Enable address locking for IPv6.
+                               For EOS version 4.31 and higher.
+
+                        """
+
             class StormControl(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -3474,6 +3512,7 @@ class EosDesigns(EosDesignsRootModel):
                 "flow_tracking": {"type": FlowTracking},
                 "link_tracking": {"type": LinkTracking},
                 "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                "address_locking": {"type": AddressLocking},
                 "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                 "storm_control": {"type": StormControl},
                 "monitor_sessions": {"type": MonitorSessions},
@@ -3663,6 +3702,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
             """802.1x"""
+            address_locking: AddressLocking
+            """
+            Address locking settings applied on the port.
+
+            Subclass of AvdModel.
+            """
             poe: EosCliConfigGen.EthernetInterfacesItem.Poe
             """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
             storm_control: StormControl
@@ -3764,6 +3809,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     link_tracking: LinkTracking | UndefinedType = Undefined,
                     dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                    address_locking: AddressLocking | UndefinedType = Undefined,
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                     storm_control: StormControl | UndefinedType = Undefined,
                     monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -3918,6 +3964,10 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         dot1x: 802.1x
+                        address_locking:
+                           Address locking settings applied on the port.
+
+                           Subclass of AvdModel.
                         poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                         storm_control:
                            Storm control settings applied on port toward the endpoint.
@@ -7492,6 +7542,70 @@ class EosDesigns(EosDesignsRootModel):
 
         IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
 
+        class IsisSr(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "ipv4_node_sid_index": {"type": int},
+                "ipv4_node_sid_index_base": {"type": int, "default": 0},
+                "ipv6_node_sid_index": {"type": int},
+                "ipv6_node_sid_index_base": {"type": int, "default": 1000},
+            }
+            ipv4_node_sid_index: int | None
+            """
+            Optional static IPv4 Node-SID Index.
+            Takes precedence over the default node ID +
+            `ipv4_node_sid_index_base`
+            """
+            ipv4_node_sid_index_base: int
+            """
+            IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+            Default value: `0`
+            """
+            ipv6_node_sid_index: int | None
+            """
+            Optional static IPv6 Node-SID Index.
+            Takes precedence over the default node ID +
+            `ipv6_node_sid_index_base`
+            """
+            ipv6_node_sid_index_base: int
+            """
+            IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+            Default value: `1000`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv4_node_sid_index: int | None | UndefinedType = Undefined,
+                    ipv4_node_sid_index_base: int | UndefinedType = Undefined,
+                    ipv6_node_sid_index: int | None | UndefinedType = Undefined,
+                    ipv6_node_sid_index_base: int | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    IsisSr.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4_node_sid_index:
+                           Optional static IPv4 Node-SID Index.
+                           Takes precedence over the default node ID +
+                           `ipv4_node_sid_index_base`
+                        ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+                        ipv6_node_sid_index:
+                           Optional static IPv6 Node-SID Index.
+                           Takes precedence over the default node ID +
+                           `ipv6_node_sid_index_base`
+                        ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                    """
+
         class BgpDefaults(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
@@ -10377,6 +10491,7 @@ class EosDesigns(EosDesignsRootModel):
             "isis_maximum_paths": {"type": int},
             "is_type": {"type": str},
             "node_sid_base": {"type": int, "default": 0},
+            "isis_sr": {"type": IsisSr},
             "loopback_ipv4_pool": {"type": str},
             "loopback_ipv4_address": {"type": str},
             "vtep_loopback_ipv4_pool": {"type": str},
@@ -10755,9 +10870,16 @@ class EosDesigns(EosDesignsRootModel):
         """Overrides `isis_default_is_type`."""
         node_sid_base: int
         """
-        Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+        IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+        Node-SID index.
 
         Default value: `0`
+        """
+        isis_sr: IsisSr
+        """
+        Device settings for ISIS-SR underlay variants.
+
+        Subclass of AvdModel.
         """
         loopback_ipv4_pool: str | None
         """
@@ -11421,6 +11543,7 @@ class EosDesigns(EosDesignsRootModel):
                 isis_maximum_paths: int | None | UndefinedType = Undefined,
                 is_type: IsType | None | UndefinedType = Undefined,
                 node_sid_base: int | UndefinedType = Undefined,
+                isis_sr: IsisSr | UndefinedType = Undefined,
                 loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                 loopback_ipv4_address: str | None | UndefinedType = Undefined,
                 vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
@@ -11718,7 +11841,13 @@ class EosDesigns(EosDesignsRootModel):
                     isis_system_id_prefix: (4.4 hexadecimal).
                     isis_maximum_paths: Number of path to configure in ECMP for ISIS.
                     is_type: Overrides `isis_default_is_type`.
-                    node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                    node_sid_base:
+                       IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                       Node-SID index.
+                    isis_sr:
+                       Device settings for ISIS-SR underlay variants.
+
+                       Subclass of AvdModel.
                     loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
@@ -12639,6 +12768,70 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+        class IsisSr(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "ipv4_node_sid_index": {"type": int},
+                "ipv4_node_sid_index_base": {"type": int, "default": 0},
+                "ipv6_node_sid_index": {"type": int},
+                "ipv6_node_sid_index_base": {"type": int, "default": 1000},
+            }
+            ipv4_node_sid_index: int | None
+            """
+            Optional static IPv4 Node-SID Index.
+            Takes precedence over the default node ID +
+            `ipv4_node_sid_index_base`
+            """
+            ipv4_node_sid_index_base: int
+            """
+            IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+            Default value: `0`
+            """
+            ipv6_node_sid_index: int | None
+            """
+            Optional static IPv6 Node-SID Index.
+            Takes precedence over the default node ID +
+            `ipv6_node_sid_index_base`
+            """
+            ipv6_node_sid_index_base: int
+            """
+            IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+            Default value: `1000`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv4_node_sid_index: int | None | UndefinedType = Undefined,
+                    ipv4_node_sid_index_base: int | UndefinedType = Undefined,
+                    ipv6_node_sid_index: int | None | UndefinedType = Undefined,
+                    ipv6_node_sid_index_base: int | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    IsisSr.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4_node_sid_index:
+                           Optional static IPv4 Node-SID Index.
+                           Takes precedence over the default node ID +
+                           `ipv4_node_sid_index_base`
+                        ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+                        ipv6_node_sid_index:
+                           Optional static IPv6 Node-SID Index.
+                           Takes precedence over the default node ID +
+                           `ipv6_node_sid_index_base`
+                        ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                    """
 
         class BgpDefaults(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -15526,6 +15719,7 @@ class EosDesigns(EosDesignsRootModel):
             "isis_maximum_paths": {"type": int},
             "is_type": {"type": str},
             "node_sid_base": {"type": int, "default": 0},
+            "isis_sr": {"type": IsisSr},
             "loopback_ipv4_pool": {"type": str},
             "loopback_ipv4_address": {"type": str},
             "vtep_loopback_ipv4_pool": {"type": str},
@@ -15914,9 +16108,16 @@ class EosDesigns(EosDesignsRootModel):
         """Overrides `isis_default_is_type`."""
         node_sid_base: int
         """
-        Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+        IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+        Node-SID index.
 
         Default value: `0`
+        """
+        isis_sr: IsisSr
+        """
+        Device settings for ISIS-SR underlay variants.
+
+        Subclass of AvdModel.
         """
         loopback_ipv4_pool: str | None
         """
@@ -16581,6 +16782,7 @@ class EosDesigns(EosDesignsRootModel):
                 isis_maximum_paths: int | None | UndefinedType = Undefined,
                 is_type: IsType | None | UndefinedType = Undefined,
                 node_sid_base: int | UndefinedType = Undefined,
+                isis_sr: IsisSr | UndefinedType = Undefined,
                 loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                 loopback_ipv4_address: str | None | UndefinedType = Undefined,
                 vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
@@ -16886,7 +17088,13 @@ class EosDesigns(EosDesignsRootModel):
                     isis_system_id_prefix: (4.4 hexadecimal).
                     isis_maximum_paths: Number of path to configure in ECMP for ISIS.
                     is_type: Overrides `isis_default_is_type`.
-                    node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                    node_sid_base:
+                       IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                       Node-SID index.
+                    isis_sr:
+                       Device settings for ISIS-SR underlay variants.
+
+                       Subclass of AvdModel.
                     loopback_ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        The IPv4
@@ -24102,6 +24310,109 @@ class EosDesigns(EosDesignsRootModel):
 
     MgmtDestinationNetworks._item_type = str
 
+    class MgmtInterfaceSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Lldp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"transmit": {"type": bool}, "receive": {"type": bool}, "ztp_vlan": {"type": int}}
+            transmit: bool | None
+            """Enable LLDP transmission on the management interface."""
+            receive: bool | None
+            """Enable LLDP reception on the management interface."""
+            ztp_vlan: int | None
+            """VLAN ID advertised via LLDP for Zero Touch Provisioning (ZTP)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    transmit: bool | None | UndefinedType = Undefined,
+                    receive: bool | None | UndefinedType = Undefined,
+                    ztp_vlan: int | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Lldp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        transmit: Enable LLDP transmission on the management interface.
+                        receive: Enable LLDP reception on the management interface.
+                        ztp_vlan: VLAN ID advertised via LLDP for Zero Touch Provisioning (ZTP).
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "description": {"type": str, "default": "OOB_MANAGEMENT"},
+            "vrf": {"type": str, "default": "MGMT"},
+            "vrf_routing": {"type": bool, "default": False},
+            "interface": {"type": str, "default": "Management1"},
+            "lldp": {"type": Lldp},
+        }
+        description: str
+        """
+        Interface description configured on the management interface.
+
+        Default value: `"OOB_MANAGEMENT"`
+        """
+        vrf: str
+        """
+        VRF name used for the management interface.
+
+        Default value: `"MGMT"`
+        """
+        vrf_routing: bool
+        """
+        Enable IP routing in the management VRF.
+
+        Default value: `False`
+        """
+        interface: str
+        """
+        Name of the management interface (e.g. Management0, Management1).
+
+        Default value: `"Management1"`
+        """
+        lldp: Lldp
+        """
+        LLDP settings for the management interface.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                description: str | UndefinedType = Undefined,
+                vrf: str | UndefinedType = Undefined,
+                vrf_routing: bool | UndefinedType = Undefined,
+                interface: str | UndefinedType = Undefined,
+                lldp: Lldp | UndefinedType = Undefined,
+            ) -> None:
+                """
+                MgmtInterfaceSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    description: Interface description configured on the management interface.
+                    vrf: VRF name used for the management interface.
+                    vrf_routing: Enable IP routing in the management VRF.
+                    interface: Name of the management interface (e.g. Management0, Management1).
+                    lldp:
+                       LLDP settings for the management interface.
+
+                       Subclass of AvdModel.
+
+                """
+
     class MlagIbgpPeeringVrfs(AvdModel):
         """Subclass of AvdModel."""
 
@@ -24778,6 +25089,44 @@ class EosDesigns(EosDesignsRootModel):
                            `link_tracking.groups[0].name` with default value being "LT_GROUP1".
                            Optional if default
                            link_tracking settings are configured on the node.
+
+                    """
+
+        class AddressLocking(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+            ipv4: bool | None
+            """
+            Enable address locking for IPv4.
+            Key `ipv4` can only be set to false.
+            For EOS version 4.31 and
+            higher.
+            """
+            ipv6: bool | None
+            """
+            Enable address locking for IPv6.
+            For EOS version 4.31 and higher.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    AddressLocking.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4:
+                           Enable address locking for IPv4.
+                           Key `ipv4` can only be set to false.
+                           For EOS version 4.31 and
+                           higher.
+                        ipv6:
+                           Enable address locking for IPv6.
+                           For EOS version 4.31 and higher.
 
                     """
 
@@ -25794,6 +26143,7 @@ class EosDesigns(EosDesignsRootModel):
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
             "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "address_locking": {"type": AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
             "monitor_sessions": {"type": MonitorSessions},
@@ -25973,6 +26323,12 @@ class EosDesigns(EosDesignsRootModel):
         """
         dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
         """802.1x"""
+        address_locking: AddressLocking
+        """
+        Address locking settings applied on the port.
+
+        Subclass of AvdModel.
+        """
         poe: EosCliConfigGen.EthernetInterfacesItem.Poe
         """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
         storm_control: StormControl
@@ -26073,6 +26429,7 @@ class EosDesigns(EosDesignsRootModel):
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
                 dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                address_locking: AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
                 monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -26220,6 +26577,10 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     dot1x: 802.1x
+                    address_locking:
+                       Address locking settings applied on the port.
+
+                       Subclass of AvdModel.
                     poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                     storm_control:
                        Storm control settings applied on port toward the endpoint.
@@ -29710,6 +30071,44 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class AddressLocking(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+            ipv4: bool | None
+            """
+            Enable address locking for IPv4.
+            Key `ipv4` can only be set to false.
+            For EOS version 4.31 and
+            higher.
+            """
+            ipv6: bool | None
+            """
+            Enable address locking for IPv6.
+            For EOS version 4.31 and higher.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    AddressLocking.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv4:
+                           Enable address locking for IPv4.
+                           Key `ipv4` can only be set to false.
+                           For EOS version 4.31 and
+                           higher.
+                        ipv6:
+                           Enable address locking for IPv6.
+                           For EOS version 4.31 and higher.
+
+                    """
+
         class StormControl(AvdModel):
             """Subclass of AvdModel."""
 
@@ -30720,6 +31119,7 @@ class EosDesigns(EosDesignsRootModel):
             "flow_tracking": {"type": FlowTracking},
             "link_tracking": {"type": LinkTracking},
             "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+            "address_locking": {"type": AddressLocking},
             "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
             "storm_control": {"type": StormControl},
             "monitor_sessions": {"type": MonitorSessions},
@@ -30856,6 +31256,12 @@ class EosDesigns(EosDesignsRootModel):
         """
         dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
         """802.1x"""
+        address_locking: AddressLocking
+        """
+        Address locking settings applied on the port.
+
+        Subclass of AvdModel.
+        """
         poe: EosCliConfigGen.EthernetInterfacesItem.Poe
         """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
         storm_control: StormControl
@@ -30953,6 +31359,7 @@ class EosDesigns(EosDesignsRootModel):
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
                 dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                address_locking: AddressLocking | UndefinedType = Undefined,
                 poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                 storm_control: StormControl | UndefinedType = Undefined,
                 monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -31062,6 +31469,10 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     dot1x: 802.1x
+                    address_locking:
+                       Address locking settings applied on the port.
+
+                       Subclass of AvdModel.
                     poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                     storm_control:
                        Storm control settings applied on port toward the endpoint.
@@ -37996,6 +38407,70 @@ class EosDesigns(EosDesignsRootModel):
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
 
+                    class IsisSr(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "ipv4_node_sid_index": {"type": int},
+                            "ipv4_node_sid_index_base": {"type": int, "default": 0},
+                            "ipv6_node_sid_index": {"type": int},
+                            "ipv6_node_sid_index_base": {"type": int, "default": 1000},
+                        }
+                        ipv4_node_sid_index: int | None
+                        """
+                        Optional static IPv4 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv4_node_sid_index_base`
+                        """
+                        ipv4_node_sid_index_base: int
+                        """
+                        IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `0`
+                        """
+                        ipv6_node_sid_index: int | None
+                        """
+                        Optional static IPv6 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv6_node_sid_index_base`
+                        """
+                        ipv6_node_sid_index_base: int
+                        """
+                        IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `1000`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                ipv4_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv4_node_sid_index_base: int | UndefinedType = Undefined,
+                                ipv6_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv6_node_sid_index_base: int | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                IsisSr.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    ipv4_node_sid_index:
+                                       Optional static IPv4 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv4_node_sid_index_base`
+                                    ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+                                    ipv6_node_sid_index:
+                                       Optional static IPv6 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv6_node_sid_index_base`
+                                    ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                                """
+
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -40892,6 +41367,7 @@ class EosDesigns(EosDesignsRootModel):
                         "isis_maximum_paths": {"type": int},
                         "is_type": {"type": str},
                         "node_sid_base": {"type": int, "default": 0},
+                        "isis_sr": {"type": IsisSr},
                         "loopback_ipv4_pool": {"type": str},
                         "loopback_ipv4_address": {"type": str},
                         "vtep_loopback_ipv4_pool": {"type": str},
@@ -41249,9 +41725,16 @@ class EosDesigns(EosDesignsRootModel):
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
-                    Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                    IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                    Node-SID index.
 
                     Default value: `0`
+                    """
+                    isis_sr: IsisSr
+                    """
+                    Device settings for ISIS-SR underlay variants.
+
+                    Subclass of AvdModel.
                     """
                     loopback_ipv4_pool: str | None
                     """
@@ -41911,6 +42394,7 @@ class EosDesigns(EosDesignsRootModel):
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
                             is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
+                            isis_sr: IsisSr | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
                             vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
@@ -42195,7 +42679,13 @@ class EosDesigns(EosDesignsRootModel):
                                 isis_system_id_prefix: (4.4 hexadecimal).
                                 isis_maximum_paths: Number of path to configure in ECMP for ISIS.
                                 is_type: Overrides `isis_default_is_type`.
-                                node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                                node_sid_base:
+                                   IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                                   Node-SID index.
+                                isis_sr:
+                                   Device settings for ISIS-SR underlay variants.
+
+                                   Subclass of AvdModel.
                                 loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -43120,6 +43610,70 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                        class IsisSr(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "ipv4_node_sid_index": {"type": int},
+                                "ipv4_node_sid_index_base": {"type": int, "default": 0},
+                                "ipv6_node_sid_index": {"type": int},
+                                "ipv6_node_sid_index_base": {"type": int, "default": 1000},
+                            }
+                            ipv4_node_sid_index: int | None
+                            """
+                            Optional static IPv4 Node-SID Index.
+                            Takes precedence over the default node ID +
+                            `ipv4_node_sid_index_base`
+                            """
+                            ipv4_node_sid_index_base: int
+                            """
+                            IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                            Default value: `0`
+                            """
+                            ipv6_node_sid_index: int | None
+                            """
+                            Optional static IPv6 Node-SID Index.
+                            Takes precedence over the default node ID +
+                            `ipv6_node_sid_index_base`
+                            """
+                            ipv6_node_sid_index_base: int
+                            """
+                            IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                            Default value: `1000`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    ipv4_node_sid_index: int | None | UndefinedType = Undefined,
+                                    ipv4_node_sid_index_base: int | UndefinedType = Undefined,
+                                    ipv6_node_sid_index: int | None | UndefinedType = Undefined,
+                                    ipv6_node_sid_index_base: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    IsisSr.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        ipv4_node_sid_index:
+                                           Optional static IPv4 Node-SID Index.
+                                           Takes precedence over the default node ID +
+                                           `ipv4_node_sid_index_base`
+                                        ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+                                        ipv6_node_sid_index:
+                                           Optional static IPv6 Node-SID Index.
+                                           Takes precedence over the default node ID +
+                                           `ipv6_node_sid_index_base`
+                                        ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                                    """
 
                         class BgpDefaults(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -46036,6 +46590,7 @@ class EosDesigns(EosDesignsRootModel):
                             "isis_maximum_paths": {"type": int},
                             "is_type": {"type": str},
                             "node_sid_base": {"type": int, "default": 0},
+                            "isis_sr": {"type": IsisSr},
                             "loopback_ipv4_pool": {"type": str},
                             "loopback_ipv4_address": {"type": str},
                             "vtep_loopback_ipv4_pool": {"type": str},
@@ -46403,9 +46958,16 @@ class EosDesigns(EosDesignsRootModel):
                         """Overrides `isis_default_is_type`."""
                         node_sid_base: int
                         """
-                        Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                        IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                        Node-SID index.
 
                         Default value: `0`
+                        """
+                        isis_sr: IsisSr
+                        """
+                        Device settings for ISIS-SR underlay variants.
+
+                        Subclass of AvdModel.
                         """
                         loopback_ipv4_pool: str | None
                         """
@@ -47067,6 +47629,7 @@ class EosDesigns(EosDesignsRootModel):
                                 isis_maximum_paths: int | None | UndefinedType = Undefined,
                                 is_type: IsType | None | UndefinedType = Undefined,
                                 node_sid_base: int | UndefinedType = Undefined,
+                                isis_sr: IsisSr | UndefinedType = Undefined,
                                 loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                                 loopback_ipv4_address: str | None | UndefinedType = Undefined,
                                 vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
@@ -47358,7 +47921,13 @@ class EosDesigns(EosDesignsRootModel):
                                     isis_system_id_prefix: (4.4 hexadecimal).
                                     isis_maximum_paths: Number of path to configure in ECMP for ISIS.
                                     is_type: Overrides `isis_default_is_type`.
-                                    node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                                    node_sid_base:
+                                       IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                                       Node-SID index.
+                                    isis_sr:
+                                       Device settings for ISIS-SR underlay variants.
+
+                                       Subclass of AvdModel.
                                     loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
@@ -48208,6 +48777,70 @@ class EosDesigns(EosDesignsRootModel):
                                 """
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                    class IsisSr(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "ipv4_node_sid_index": {"type": int},
+                            "ipv4_node_sid_index_base": {"type": int, "default": 0},
+                            "ipv6_node_sid_index": {"type": int},
+                            "ipv6_node_sid_index_base": {"type": int, "default": 1000},
+                        }
+                        ipv4_node_sid_index: int | None
+                        """
+                        Optional static IPv4 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv4_node_sid_index_base`
+                        """
+                        ipv4_node_sid_index_base: int
+                        """
+                        IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `0`
+                        """
+                        ipv6_node_sid_index: int | None
+                        """
+                        Optional static IPv6 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv6_node_sid_index_base`
+                        """
+                        ipv6_node_sid_index_base: int
+                        """
+                        IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `1000`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                ipv4_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv4_node_sid_index_base: int | UndefinedType = Undefined,
+                                ipv6_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv6_node_sid_index_base: int | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                IsisSr.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    ipv4_node_sid_index:
+                                       Optional static IPv4 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv4_node_sid_index_base`
+                                    ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+                                    ipv6_node_sid_index:
+                                       Optional static IPv6 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv6_node_sid_index_base`
+                                    ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                                """
 
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -51107,6 +51740,7 @@ class EosDesigns(EosDesignsRootModel):
                         "isis_maximum_paths": {"type": int},
                         "is_type": {"type": str},
                         "node_sid_base": {"type": int, "default": 0},
+                        "isis_sr": {"type": IsisSr},
                         "loopback_ipv4_pool": {"type": str},
                         "loopback_ipv4_address": {"type": str},
                         "vtep_loopback_ipv4_pool": {"type": str},
@@ -51477,9 +52111,16 @@ class EosDesigns(EosDesignsRootModel):
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
-                    Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                    IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                    Node-SID index.
 
                     Default value: `0`
+                    """
+                    isis_sr: IsisSr
+                    """
+                    Device settings for ISIS-SR underlay variants.
+
+                    Subclass of AvdModel.
                     """
                     loopback_ipv4_pool: str | None
                     """
@@ -52141,6 +52782,7 @@ class EosDesigns(EosDesignsRootModel):
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
                             is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
+                            isis_sr: IsisSr | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
                             vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
@@ -52434,7 +53076,13 @@ class EosDesigns(EosDesignsRootModel):
                                 isis_system_id_prefix: (4.4 hexadecimal).
                                 isis_maximum_paths: Number of path to configure in ECMP for ISIS.
                                 is_type: Overrides `isis_default_is_type`.
-                                node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                                node_sid_base:
+                                   IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                                   Node-SID index.
+                                isis_sr:
+                                   Device settings for ISIS-SR underlay variants.
+
+                                   Subclass of AvdModel.
                                 loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -53359,6 +54007,70 @@ class EosDesigns(EosDesignsRootModel):
                                 """
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                    class IsisSr(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "ipv4_node_sid_index": {"type": int},
+                            "ipv4_node_sid_index_base": {"type": int, "default": 0},
+                            "ipv6_node_sid_index": {"type": int},
+                            "ipv6_node_sid_index_base": {"type": int, "default": 1000},
+                        }
+                        ipv4_node_sid_index: int | None
+                        """
+                        Optional static IPv4 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv4_node_sid_index_base`
+                        """
+                        ipv4_node_sid_index_base: int
+                        """
+                        IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `0`
+                        """
+                        ipv6_node_sid_index: int | None
+                        """
+                        Optional static IPv6 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv6_node_sid_index_base`
+                        """
+                        ipv6_node_sid_index_base: int
+                        """
+                        IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `1000`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                ipv4_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv4_node_sid_index_base: int | UndefinedType = Undefined,
+                                ipv6_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv6_node_sid_index_base: int | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                IsisSr.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    ipv4_node_sid_index:
+                                       Optional static IPv4 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv4_node_sid_index_base`
+                                    ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+                                    ipv6_node_sid_index:
+                                       Optional static IPv6 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv6_node_sid_index_base`
+                                    ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                                """
 
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -56258,6 +56970,7 @@ class EosDesigns(EosDesignsRootModel):
                         "isis_maximum_paths": {"type": int},
                         "is_type": {"type": str},
                         "node_sid_base": {"type": int, "default": 0},
+                        "isis_sr": {"type": IsisSr},
                         "loopback_ipv4_pool": {"type": str},
                         "loopback_ipv4_address": {"type": str},
                         "vtep_loopback_ipv4_pool": {"type": str},
@@ -56625,9 +57338,16 @@ class EosDesigns(EosDesignsRootModel):
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
-                    Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                    IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                    Node-SID index.
 
                     Default value: `0`
+                    """
+                    isis_sr: IsisSr
+                    """
+                    Device settings for ISIS-SR underlay variants.
+
+                    Subclass of AvdModel.
                     """
                     loopback_ipv4_pool: str | None
                     """
@@ -57289,6 +58009,7 @@ class EosDesigns(EosDesignsRootModel):
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
                             is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
+                            isis_sr: IsisSr | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
                             vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
@@ -57580,7 +58301,13 @@ class EosDesigns(EosDesignsRootModel):
                                 isis_system_id_prefix: (4.4 hexadecimal).
                                 isis_maximum_paths: Number of path to configure in ECMP for ISIS.
                                 is_type: Overrides `isis_default_is_type`.
-                                node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                                node_sid_base:
+                                   IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                                   Node-SID index.
+                                isis_sr:
+                                   Device settings for ISIS-SR underlay variants.
+
+                                   Subclass of AvdModel.
                                 loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -58475,6 +59202,44 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class AddressLocking(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                        ipv4: bool | None
+                        """
+                        Enable address locking for IPv4.
+                        Key `ipv4` can only be set to false.
+                        For EOS version 4.31 and
+                        higher.
+                        """
+                        ipv6: bool | None
+                        """
+                        Enable address locking for IPv6.
+                        For EOS version 4.31 and higher.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                                """
+                                AddressLocking.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    ipv4:
+                                       Enable address locking for IPv4.
+                                       Key `ipv4` can only be set to false.
+                                       For EOS version 4.31 and
+                                       higher.
+                                    ipv6:
+                                       Enable address locking for IPv6.
+                                       For EOS version 4.31 and higher.
+
+                                """
+
                     class StormControl(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -59498,6 +60263,7 @@ class EosDesigns(EosDesignsRootModel):
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
                         "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "address_locking": {"type": AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
                         "monitor_sessions": {"type": MonitorSessions},
@@ -59687,6 +60453,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
                     """802.1x"""
+                    address_locking: AddressLocking
+                    """
+                    Address locking settings applied on the port.
+
+                    Subclass of AvdModel.
+                    """
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe
                     """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
                     storm_control: StormControl
@@ -59788,6 +60560,7 @@ class EosDesigns(EosDesignsRootModel):
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
                             dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            address_locking: AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
                             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -59942,6 +60715,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 dot1x: 802.1x
+                                address_locking:
+                                   Address locking settings applied on the port.
+
+                                   Subclass of AvdModel.
                                 poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                                 storm_control:
                                    Storm control settings applied on port toward the endpoint.
@@ -60467,6 +61244,44 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class AddressLocking(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                        ipv4: bool | None
+                        """
+                        Enable address locking for IPv4.
+                        Key `ipv4` can only be set to false.
+                        For EOS version 4.31 and
+                        higher.
+                        """
+                        ipv6: bool | None
+                        """
+                        Enable address locking for IPv6.
+                        For EOS version 4.31 and higher.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                                """
+                                AddressLocking.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    ipv4:
+                                       Enable address locking for IPv4.
+                                       Key `ipv4` can only be set to false.
+                                       For EOS version 4.31 and
+                                       higher.
+                                    ipv6:
+                                       Enable address locking for IPv6.
+                                       For EOS version 4.31 and higher.
+
+                                """
+
                     class StormControl(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -61490,6 +62305,7 @@ class EosDesigns(EosDesignsRootModel):
                         "flow_tracking": {"type": FlowTracking},
                         "link_tracking": {"type": LinkTracking},
                         "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "address_locking": {"type": AddressLocking},
                         "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
                         "storm_control": {"type": StormControl},
                         "monitor_sessions": {"type": MonitorSessions},
@@ -61679,6 +62495,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
                     """802.1x"""
+                    address_locking: AddressLocking
+                    """
+                    Address locking settings applied on the port.
+
+                    Subclass of AvdModel.
+                    """
                     poe: EosCliConfigGen.EthernetInterfacesItem.Poe
                     """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
                     storm_control: StormControl
@@ -61780,6 +62602,7 @@ class EosDesigns(EosDesignsRootModel):
                             flow_tracking: FlowTracking | UndefinedType = Undefined,
                             link_tracking: LinkTracking | UndefinedType = Undefined,
                             dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            address_locking: AddressLocking | UndefinedType = Undefined,
                             poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
                             storm_control: StormControl | UndefinedType = Undefined,
                             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -61934,6 +62757,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 dot1x: 802.1x
+                                address_locking:
+                                   Address locking settings applied on the port.
+
+                                   Subclass of AvdModel.
                                 poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
                                 storm_control:
                                    Storm control settings applied on port toward the endpoint.
@@ -72142,6 +72969,70 @@ class EosDesigns(EosDesignsRootModel):
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
 
+                    class IsisSr(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "ipv4_node_sid_index": {"type": int},
+                            "ipv4_node_sid_index_base": {"type": int, "default": 0},
+                            "ipv6_node_sid_index": {"type": int},
+                            "ipv6_node_sid_index_base": {"type": int, "default": 1000},
+                        }
+                        ipv4_node_sid_index: int | None
+                        """
+                        Optional static IPv4 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv4_node_sid_index_base`
+                        """
+                        ipv4_node_sid_index_base: int
+                        """
+                        IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `0`
+                        """
+                        ipv6_node_sid_index: int | None
+                        """
+                        Optional static IPv6 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv6_node_sid_index_base`
+                        """
+                        ipv6_node_sid_index_base: int
+                        """
+                        IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `1000`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                ipv4_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv4_node_sid_index_base: int | UndefinedType = Undefined,
+                                ipv6_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv6_node_sid_index_base: int | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                IsisSr.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    ipv4_node_sid_index:
+                                       Optional static IPv4 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv4_node_sid_index_base`
+                                    ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+                                    ipv6_node_sid_index:
+                                       Optional static IPv6 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv6_node_sid_index_base`
+                                    ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                                """
+
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -75038,6 +75929,7 @@ class EosDesigns(EosDesignsRootModel):
                         "isis_maximum_paths": {"type": int},
                         "is_type": {"type": str},
                         "node_sid_base": {"type": int, "default": 0},
+                        "isis_sr": {"type": IsisSr},
                         "loopback_ipv4_pool": {"type": str},
                         "loopback_ipv4_address": {"type": str},
                         "vtep_loopback_ipv4_pool": {"type": str},
@@ -75395,9 +76287,16 @@ class EosDesigns(EosDesignsRootModel):
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
-                    Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                    IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                    Node-SID index.
 
                     Default value: `0`
+                    """
+                    isis_sr: IsisSr
+                    """
+                    Device settings for ISIS-SR underlay variants.
+
+                    Subclass of AvdModel.
                     """
                     loopback_ipv4_pool: str | None
                     """
@@ -76057,6 +76956,7 @@ class EosDesigns(EosDesignsRootModel):
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
                             is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
+                            isis_sr: IsisSr | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
                             vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
@@ -76341,7 +77241,13 @@ class EosDesigns(EosDesignsRootModel):
                                 isis_system_id_prefix: (4.4 hexadecimal).
                                 isis_maximum_paths: Number of path to configure in ECMP for ISIS.
                                 is_type: Overrides `isis_default_is_type`.
-                                node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                                node_sid_base:
+                                   IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                                   Node-SID index.
+                                isis_sr:
+                                   Device settings for ISIS-SR underlay variants.
+
+                                   Subclass of AvdModel.
                                 loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -77266,6 +78172,70 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                        class IsisSr(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "ipv4_node_sid_index": {"type": int},
+                                "ipv4_node_sid_index_base": {"type": int, "default": 0},
+                                "ipv6_node_sid_index": {"type": int},
+                                "ipv6_node_sid_index_base": {"type": int, "default": 1000},
+                            }
+                            ipv4_node_sid_index: int | None
+                            """
+                            Optional static IPv4 Node-SID Index.
+                            Takes precedence over the default node ID +
+                            `ipv4_node_sid_index_base`
+                            """
+                            ipv4_node_sid_index_base: int
+                            """
+                            IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                            Default value: `0`
+                            """
+                            ipv6_node_sid_index: int | None
+                            """
+                            Optional static IPv6 Node-SID Index.
+                            Takes precedence over the default node ID +
+                            `ipv6_node_sid_index_base`
+                            """
+                            ipv6_node_sid_index_base: int
+                            """
+                            IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                            Default value: `1000`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    ipv4_node_sid_index: int | None | UndefinedType = Undefined,
+                                    ipv4_node_sid_index_base: int | UndefinedType = Undefined,
+                                    ipv6_node_sid_index: int | None | UndefinedType = Undefined,
+                                    ipv6_node_sid_index_base: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    IsisSr.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        ipv4_node_sid_index:
+                                           Optional static IPv4 Node-SID Index.
+                                           Takes precedence over the default node ID +
+                                           `ipv4_node_sid_index_base`
+                                        ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+                                        ipv6_node_sid_index:
+                                           Optional static IPv6 Node-SID Index.
+                                           Takes precedence over the default node ID +
+                                           `ipv6_node_sid_index_base`
+                                        ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                                    """
 
                         class BgpDefaults(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -80182,6 +81152,7 @@ class EosDesigns(EosDesignsRootModel):
                             "isis_maximum_paths": {"type": int},
                             "is_type": {"type": str},
                             "node_sid_base": {"type": int, "default": 0},
+                            "isis_sr": {"type": IsisSr},
                             "loopback_ipv4_pool": {"type": str},
                             "loopback_ipv4_address": {"type": str},
                             "vtep_loopback_ipv4_pool": {"type": str},
@@ -80549,9 +81520,16 @@ class EosDesigns(EosDesignsRootModel):
                         """Overrides `isis_default_is_type`."""
                         node_sid_base: int
                         """
-                        Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                        IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                        Node-SID index.
 
                         Default value: `0`
+                        """
+                        isis_sr: IsisSr
+                        """
+                        Device settings for ISIS-SR underlay variants.
+
+                        Subclass of AvdModel.
                         """
                         loopback_ipv4_pool: str | None
                         """
@@ -81213,6 +82191,7 @@ class EosDesigns(EosDesignsRootModel):
                                 isis_maximum_paths: int | None | UndefinedType = Undefined,
                                 is_type: IsType | None | UndefinedType = Undefined,
                                 node_sid_base: int | UndefinedType = Undefined,
+                                isis_sr: IsisSr | UndefinedType = Undefined,
                                 loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                                 loopback_ipv4_address: str | None | UndefinedType = Undefined,
                                 vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
@@ -81504,7 +82483,13 @@ class EosDesigns(EosDesignsRootModel):
                                     isis_system_id_prefix: (4.4 hexadecimal).
                                     isis_maximum_paths: Number of path to configure in ECMP for ISIS.
                                     is_type: Overrides `isis_default_is_type`.
-                                    node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                                    node_sid_base:
+                                       IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                                       Node-SID index.
+                                    isis_sr:
+                                       Device settings for ISIS-SR underlay variants.
+
+                                       Subclass of AvdModel.
                                     loopback_ipv4_pool:
                                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                        The IPv4
@@ -82354,6 +83339,70 @@ class EosDesigns(EosDesignsRootModel):
                                 """
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                    class IsisSr(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "ipv4_node_sid_index": {"type": int},
+                            "ipv4_node_sid_index_base": {"type": int, "default": 0},
+                            "ipv6_node_sid_index": {"type": int},
+                            "ipv6_node_sid_index_base": {"type": int, "default": 1000},
+                        }
+                        ipv4_node_sid_index: int | None
+                        """
+                        Optional static IPv4 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv4_node_sid_index_base`
+                        """
+                        ipv4_node_sid_index_base: int
+                        """
+                        IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `0`
+                        """
+                        ipv6_node_sid_index: int | None
+                        """
+                        Optional static IPv6 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv6_node_sid_index_base`
+                        """
+                        ipv6_node_sid_index_base: int
+                        """
+                        IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `1000`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                ipv4_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv4_node_sid_index_base: int | UndefinedType = Undefined,
+                                ipv6_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv6_node_sid_index_base: int | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                IsisSr.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    ipv4_node_sid_index:
+                                       Optional static IPv4 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv4_node_sid_index_base`
+                                    ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+                                    ipv6_node_sid_index:
+                                       Optional static IPv6 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv6_node_sid_index_base`
+                                    ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                                """
 
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -85253,6 +86302,7 @@ class EosDesigns(EosDesignsRootModel):
                         "isis_maximum_paths": {"type": int},
                         "is_type": {"type": str},
                         "node_sid_base": {"type": int, "default": 0},
+                        "isis_sr": {"type": IsisSr},
                         "loopback_ipv4_pool": {"type": str},
                         "loopback_ipv4_address": {"type": str},
                         "vtep_loopback_ipv4_pool": {"type": str},
@@ -85623,9 +86673,16 @@ class EosDesigns(EosDesignsRootModel):
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
-                    Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                    IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                    Node-SID index.
 
                     Default value: `0`
+                    """
+                    isis_sr: IsisSr
+                    """
+                    Device settings for ISIS-SR underlay variants.
+
+                    Subclass of AvdModel.
                     """
                     loopback_ipv4_pool: str | None
                     """
@@ -86287,6 +87344,7 @@ class EosDesigns(EosDesignsRootModel):
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
                             is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
+                            isis_sr: IsisSr | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
                             vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
@@ -86580,7 +87638,13 @@ class EosDesigns(EosDesignsRootModel):
                                 isis_system_id_prefix: (4.4 hexadecimal).
                                 isis_maximum_paths: Number of path to configure in ECMP for ISIS.
                                 is_type: Overrides `isis_default_is_type`.
-                                node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                                node_sid_base:
+                                   IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                                   Node-SID index.
+                                isis_sr:
+                                   Device settings for ISIS-SR underlay variants.
+
+                                   Subclass of AvdModel.
                                 loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -87505,6 +88569,70 @@ class EosDesigns(EosDesignsRootModel):
                                 """
 
                     IsType: TypeAlias = Literal["level-1-2", "level-1", "level-2"]
+
+                    class IsisSr(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "ipv4_node_sid_index": {"type": int},
+                            "ipv4_node_sid_index_base": {"type": int, "default": 0},
+                            "ipv6_node_sid_index": {"type": int},
+                            "ipv6_node_sid_index_base": {"type": int, "default": 1000},
+                        }
+                        ipv4_node_sid_index: int | None
+                        """
+                        Optional static IPv4 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv4_node_sid_index_base`
+                        """
+                        ipv4_node_sid_index_base: int
+                        """
+                        IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `0`
+                        """
+                        ipv6_node_sid_index: int | None
+                        """
+                        Optional static IPv6 Node-SID Index.
+                        Takes precedence over the default node ID +
+                        `ipv6_node_sid_index_base`
+                        """
+                        ipv6_node_sid_index_base: int
+                        """
+                        IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                        Default value: `1000`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                ipv4_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv4_node_sid_index_base: int | UndefinedType = Undefined,
+                                ipv6_node_sid_index: int | None | UndefinedType = Undefined,
+                                ipv6_node_sid_index_base: int | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                IsisSr.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    ipv4_node_sid_index:
+                                       Optional static IPv4 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv4_node_sid_index_base`
+                                    ipv4_node_sid_index_base: IPv4 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+                                    ipv6_node_sid_index:
+                                       Optional static IPv6 Node-SID Index.
+                                       Takes precedence over the default node ID +
+                                       `ipv6_node_sid_index_base`
+                                    ipv6_node_sid_index_base: IPv6 Node-SID Index base. Combined with node ID to generate ISIS-SR Node-SID index.
+
+                                """
 
                     class BgpDefaults(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -90404,6 +91532,7 @@ class EosDesigns(EosDesignsRootModel):
                         "isis_maximum_paths": {"type": int},
                         "is_type": {"type": str},
                         "node_sid_base": {"type": int, "default": 0},
+                        "isis_sr": {"type": IsisSr},
                         "loopback_ipv4_pool": {"type": str},
                         "loopback_ipv4_address": {"type": str},
                         "vtep_loopback_ipv4_pool": {"type": str},
@@ -90771,9 +91900,16 @@ class EosDesigns(EosDesignsRootModel):
                     """Overrides `isis_default_is_type`."""
                     node_sid_base: int
                     """
-                    Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                    IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                    Node-SID index.
 
                     Default value: `0`
+                    """
+                    isis_sr: IsisSr
+                    """
+                    Device settings for ISIS-SR underlay variants.
+
+                    Subclass of AvdModel.
                     """
                     loopback_ipv4_pool: str | None
                     """
@@ -91435,6 +92571,7 @@ class EosDesigns(EosDesignsRootModel):
                             isis_maximum_paths: int | None | UndefinedType = Undefined,
                             is_type: IsType | None | UndefinedType = Undefined,
                             node_sid_base: int | UndefinedType = Undefined,
+                            isis_sr: IsisSr | UndefinedType = Undefined,
                             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
                             loopback_ipv4_address: str | None | UndefinedType = Undefined,
                             vtep_loopback_ipv4_pool: str | None | UndefinedType = Undefined,
@@ -91726,7 +92863,13 @@ class EosDesigns(EosDesignsRootModel):
                                 isis_system_id_prefix: (4.4 hexadecimal).
                                 isis_maximum_paths: Number of path to configure in ECMP for ISIS.
                                 is_type: Overrides `isis_default_is_type`.
-                                node_sid_base: Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+                                node_sid_base:
+                                   IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined with node ID to generate ISIS-SR
+                                   Node-SID index.
+                                isis_sr:
+                                   Device settings for ISIS-SR underlay variants.
+
+                                   Subclass of AvdModel.
                                 loopback_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The IPv4
@@ -92431,6 +93574,7 @@ class EosDesigns(EosDesignsRootModel):
         "mgmt_gateway": {"type": str},
         "mgmt_interface": {"type": str, "default": "Management1"},
         "mgmt_interface_description": {"type": str, "default": "OOB_MANAGEMENT"},
+        "mgmt_interface_settings": {"type": MgmtInterfaceSettings},
         "mgmt_interface_vrf": {"type": str, "default": "MGMT"},
         "mgmt_vrf_routing": {"type": bool, "default": False},
         "mlag_bgp_peer_description": {"type": str, "default": "{mlag_peer}_{peer_interface}"},
@@ -94113,6 +95257,14 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"OOB_MANAGEMENT"`
     """
+    mgmt_interface_settings: MgmtInterfaceSettings
+    """
+    Out-of-Band (OOB) management interface settings.
+    These settings override the corresponding global
+    variables where applicable.
+
+    Subclass of AvdModel.
+    """
     mgmt_interface_vrf: str
     """
     OOB Management VRF.
@@ -95202,6 +96354,7 @@ class EosDesigns(EosDesignsRootModel):
             mgmt_gateway: str | None | UndefinedType = Undefined,
             mgmt_interface: str | UndefinedType = Undefined,
             mgmt_interface_description: str | UndefinedType = Undefined,
+            mgmt_interface_settings: MgmtInterfaceSettings | UndefinedType = Undefined,
             mgmt_interface_vrf: str | UndefinedType = Undefined,
             mgmt_vrf_routing: bool | UndefinedType = Undefined,
             mlag_bgp_peer_description: str | UndefinedType = Undefined,
@@ -96096,6 +97249,12 @@ class EosDesigns(EosDesignsRootModel):
                    server will provide the gateway.
                 mgmt_interface: OOB Management interface.
                 mgmt_interface_description: Management interface description.
+                mgmt_interface_settings:
+                   Out-of-Band (OOB) management interface settings.
+                   These settings override the corresponding global
+                   variables where applicable.
+
+                   Subclass of AvdModel.
                 mgmt_interface_vrf: OOB Management VRF.
                 mgmt_vrf_routing: Configure IP routing for the OOB Management VRF.
                 mlag_bgp_peer_description:
