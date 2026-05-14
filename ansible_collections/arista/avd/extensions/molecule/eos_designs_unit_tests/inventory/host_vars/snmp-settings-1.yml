@@ -12,7 +12,8 @@ l2leaf:
 
 mgmt_interface_settings:
   vrf: MGMT
-mgmt_gateway: 10.10.10.1
+mgmt_ipv4:
+  gateway: 10.10.10.1
 
 snmp_settings:
   contact: example@example.com

@@ -1,7 +1,8 @@
 # Minimum config to only test the specific feature.
 mgmt_interface_settings:
   vrf: MGMT
-mgmt_gateway: 1.1.1.1
+mgmt_ipv4:
+  gateway: 1.1.1.1
 l2leaf:
   nodes:
     - name: mgmt-interface-platform

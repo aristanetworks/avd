@@ -81,7 +81,7 @@ class MgmtMixin(Protocol):
 
     @cached_property
     def mgmt_gateway(self: SharedUtilsProtocol) -> str | None:
-        return default(self.node_config.mgmt_gateway, self.inputs.mgmt_gateway)
+        return default(self.node_config.mgmt_gateway, self.inputs.mgmt_ipv4.gateway, self.inputs.mgmt_gateway)
 
     @cached_property
     def ipv6_mgmt_gateway(self: SharedUtilsProtocol) -> str | None:

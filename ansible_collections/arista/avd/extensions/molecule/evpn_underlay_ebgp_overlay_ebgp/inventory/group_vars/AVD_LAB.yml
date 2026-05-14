@@ -30,7 +30,8 @@ snmp_settings:
   location: true
 
 # OOB Management network default gateway.
-mgmt_gateway: 192.168.200.5
+mgmt_ipv4:
+  gateway: 192.168.200.5
 
 # dns servers.
 dns_settings:

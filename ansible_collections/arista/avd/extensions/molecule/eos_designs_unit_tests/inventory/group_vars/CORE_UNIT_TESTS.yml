@@ -9,7 +9,8 @@ node_type_keys:
     default_evpn_role: none
     mpls_lsr: true
 
-mgmt_gateway: 192.168.0.1
+mgmt_ipv4:
+  gateway: 192.168.0.1
 
 overlay_routing_protocol: ibgp
 bgp_as: 65000

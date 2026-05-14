@@ -84,7 +84,12 @@ class AvdStructuredConfigBaseProtocol(
         if self.shared_utils.mgmt_gateway is None:
             return
 
-        if self.inputs.mgmt_destination_networks:
+        if self.inputs.mgmt_ipv4.static_routes:
+            for mgmt_ipv4_static_route in self.inputs.mgmt_ipv4.static_routes:
+                self.structured_config.static_routes.append_new(
+                    vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_ipv4_static_route.prefix, next_hop=self.shared_utils.mgmt_gateway
+                )
+        elif self.inputs.mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.mgmt_destination_networks:
                 self.structured_config.static_routes.append_new(
                     vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.mgmt_gateway

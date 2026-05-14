@@ -1,0 +1,44 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  mgmt_ipv4:
+    documentation_options:
+      table: management-interface-settings
+    type: dict
+    description: |-
+      IPv4 OOB Management settings.
+    keys:
+      dhcp:
+        type: bool
+        description: |-
+          Use DHCP for IP addressing on the management interface.
+          Per-device override: `mgmt_ip` (takes precedence).
+      gateway:
+        type: str
+        description: |-
+          OOB Management gateway in IPv4 format applied to all devices.
+          Used as next-hop for the default route or static routes defined under `mgmt_ipv4.static_routes`.
+          Per-device override: `mgmt_gateway` (takes precedence).
+          This setting is ignored when using DHCP for the management IP and
+          'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server
+          will provide the gateway.
+      static_routes:
+        type: list
+        description: |-
+          List of IPv4 prefixes to configure as static routes towards the OOB Management gateway.
+          When set, these specific prefixes replace the default route (0.0.0.0/0).
+          This setting is ignored when using DHCP for the management IP and
+          'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server
+          will provide the default route.
+        items:
+          type: dict
+          keys:
+            prefix:
+              type: str
+              required: true
+              description: IPv4_address/Mask.

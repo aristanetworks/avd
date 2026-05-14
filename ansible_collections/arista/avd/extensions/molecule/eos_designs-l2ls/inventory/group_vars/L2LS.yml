@@ -9,4 +9,5 @@
 
 fabric_name: L2LS
 
-mgmt_gateway: 172.31.0.1
+mgmt_ipv4:
+  gateway: 172.31.0.1

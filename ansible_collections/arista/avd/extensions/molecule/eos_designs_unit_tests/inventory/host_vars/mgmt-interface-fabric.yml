@@ -2,7 +2,8 @@
 mgmt_interface_settings:
   interface: MY_INTERFACE_FABRIC
   vrf: MGMT
-mgmt_gateway: 1.1.1.1
+mgmt_ipv4:
+  gateway: 1.1.1.1
 l2leaf:
   nodes:
     - name: mgmt-interface-fabric

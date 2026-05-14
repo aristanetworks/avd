@@ -7,7 +7,8 @@ fabric_name: MPLS_CORE
 underlay_ipv6: true
 
 # OOB Management network default gateway.
-mgmt_gateway: 192.168.200.5
+mgmt_ipv4:
+  gateway: 192.168.200.5
 
 underlay_routing_protocol: isis-sr-ldp
 

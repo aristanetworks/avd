@@ -1,6 +1,7 @@
 ---
 
-mgmt_gateway: 192.168.200.1
+mgmt_ipv4:
+  gateway: 192.168.200.1
 
 node_type_keys:
   - key: spine

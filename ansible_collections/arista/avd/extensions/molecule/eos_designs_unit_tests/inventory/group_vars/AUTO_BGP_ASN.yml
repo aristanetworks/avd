@@ -1,5 +1,6 @@
 type: l3leaf
-mgmt_gateway: 192.168.202.1
+mgmt_ipv4:
+  gateway: 192.168.202.1
 
 l3leaf:
   defaults:

@@ -24413,6 +24413,114 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class MgmtIpv4(AvdModel):
+        """Subclass of AvdModel."""
+
+        class StaticRoutesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"prefix": {"type": str}}
+            prefix: str
+            """IPv4_address/Mask."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, prefix: str | UndefinedType = Undefined) -> None:
+                    """
+                    StaticRoutesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        prefix: IPv4_address/Mask.
+
+                    """
+
+        class StaticRoutes(AvdList[StaticRoutesItem]):
+            """Subclass of AvdList with `StaticRoutesItem` items."""
+
+        StaticRoutes._item_type = StaticRoutesItem
+
+        _fields: ClassVar[dict] = {"dhcp": {"type": bool}, "gateway": {"type": str}, "static_routes": {"type": StaticRoutes}}
+        dhcp: bool | None
+        """
+        Use DHCP for IP addressing on the management interface.
+        Per-device override: `mgmt_ip` (takes
+        precedence).
+        """
+        gateway: str | None
+        """
+        OOB Management gateway in IPv4 format applied to all devices.
+        Used as next-hop for the default route
+        or static routes defined under `mgmt_ipv4.static_routes`.
+        Per-device override: `mgmt_gateway` (takes
+        precedence).
+        This setting is ignored when using DHCP for the management IP and
+        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server
+        will
+        provide the gateway.
+        """
+        static_routes: StaticRoutes
+        """
+        List of IPv4 prefixes to configure as static routes towards the OOB Management gateway.
+        When set,
+        these specific prefixes replace the default route (0.0.0.0/0).
+        This setting is ignored when using
+        DHCP for the management IP and
+        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true',
+        since the DHCP server
+        will provide the default route.
+
+        Subclass of AvdList with `StaticRoutesItem`
+        items.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                dhcp: bool | None | UndefinedType = Undefined,
+                gateway: str | None | UndefinedType = Undefined,
+                static_routes: StaticRoutes | UndefinedType = Undefined,
+            ) -> None:
+                """
+                MgmtIpv4.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    dhcp:
+                       Use DHCP for IP addressing on the management interface.
+                       Per-device override: `mgmt_ip` (takes
+                       precedence).
+                    gateway:
+                       OOB Management gateway in IPv4 format applied to all devices.
+                       Used as next-hop for the default route
+                       or static routes defined under `mgmt_ipv4.static_routes`.
+                       Per-device override: `mgmt_gateway` (takes
+                       precedence).
+                       This setting is ignored when using DHCP for the management IP and
+                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server
+                       will
+                       provide the gateway.
+                    static_routes:
+                       List of IPv4 prefixes to configure as static routes towards the OOB Management gateway.
+                       When set,
+                       these specific prefixes replace the default route (0.0.0.0/0).
+                       This setting is ignored when using
+                       DHCP for the management IP and
+                       'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true',
+                       since the DHCP server
+                       will provide the default route.
+
+                       Subclass of AvdList with `StaticRoutesItem`
+                       items.
+
+                """
+
     class MlagIbgpPeeringVrfs(AvdModel):
         """Subclass of AvdModel."""
 
@@ -93132,6 +93240,7 @@ class EosDesigns(EosDesignsRootModel):
         "mgmt_interface_description": {"type": str, "default": "OOB_MANAGEMENT"},
         "mgmt_interface_settings": {"type": MgmtInterfaceSettings},
         "mgmt_interface_vrf": {"type": str, "default": "MGMT"},
+        "mgmt_ipv4": {"type": MgmtIpv4},
         "mgmt_vrf_routing": {"type": bool, "default": False},
         "mlag_bgp_peer_description": {"type": str, "default": "{mlag_peer}_{peer_interface}"},
         "mlag_bgp_peer_group_description": {"type": str, "default": "{mlag_peer}"},
@@ -94827,6 +94936,12 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"MGMT"`
     """
+    mgmt_ipv4: MgmtIpv4
+    """
+    IPv4 OOB Management settings.
+
+    Subclass of AvdModel.
+    """
     mgmt_vrf_routing: bool
     """
     Configure IP routing for the OOB Management VRF.
@@ -95912,6 +96027,7 @@ class EosDesigns(EosDesignsRootModel):
             mgmt_interface_description: str | UndefinedType = Undefined,
             mgmt_interface_settings: MgmtInterfaceSettings | UndefinedType = Undefined,
             mgmt_interface_vrf: str | UndefinedType = Undefined,
+            mgmt_ipv4: MgmtIpv4 | UndefinedType = Undefined,
             mgmt_vrf_routing: bool | UndefinedType = Undefined,
             mlag_bgp_peer_description: str | UndefinedType = Undefined,
             mlag_bgp_peer_group_description: str | UndefinedType = Undefined,
@@ -96812,6 +96928,10 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdModel.
                 mgmt_interface_vrf: OOB Management VRF.
+                mgmt_ipv4:
+                   IPv4 OOB Management settings.
+
+                   Subclass of AvdModel.
                 mgmt_vrf_routing: Configure IP routing for the OOB Management VRF.
                 mlag_bgp_peer_description:
                    Description or description template to be used on the MLAG BGP peers including those in VRFs.

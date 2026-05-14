@@ -3,7 +3,8 @@
 
 fabric_name: PTP_TESTS
 
-mgmt_gateway: 192.168.0.1
+mgmt_ipv4:
+  gateway: 192.168.0.1
 
 # P2P links between spine switches, connecting to the PTP Grandmaster.
 # Note that the config below will result in interfaces being configured as "no switchport", without an IP address.

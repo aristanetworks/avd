@@ -1,5 +1,6 @@
 type: l2leaf
-mgmt_gateway: 192.168.0.1
+mgmt_ipv4:
+  gateway: 192.168.0.1
 
 port_profiles:
   - profile: common

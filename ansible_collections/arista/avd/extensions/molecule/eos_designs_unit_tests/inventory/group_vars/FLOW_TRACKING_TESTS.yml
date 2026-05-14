@@ -30,7 +30,8 @@
 
 fabric_name: FLOW_TRACKING_TESTS
 
-mgmt_gateway: 192.168.0.1
+mgmt_ipv4:
+  gateway: 192.168.0.1
 
 default_mgmt_method: oob
 
