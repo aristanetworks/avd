@@ -96,7 +96,7 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
 
 
 async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
-    """Synchronize configlets. Create/update declared ones and optionally delete not declared AVD-managed ones."""
+    """Synchronize configlets. Create/update new ones and delete unused AVD-managed ones."""
     workspace_id = deployment_result.workspace.id
 
     # Create or update configlets.
@@ -108,12 +108,7 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No configlet creations or updates are needed.")
 
-    # In "additive" mode, don't delete any configlets.
-    if cv_manifest.configlet_policy == "additive":
-        LOGGER.debug("deploy_static_config_studio_manifest_to_cv: No configlet deletions when configlet_policy is set to additive.")
-        return
-
-    # In "managed" mode, delete manifest-managed configlets not declared in this manifest and not assigned to any container.
+    # Delete unused AVD-managed configlets.
     existing_configlets = await cv_client.get_configlets(workspace_id=workspace_id)
     desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
     configlets_to_delete = {
@@ -123,11 +118,7 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     }
 
     if configlets_to_delete:
-        LOGGER.info(
-            "deploy_static_config_studio_manifest_to_cv: Deleting %d manifest-managed "
-            "configlets not declared in this manifest and not assigned to any container.",
-            len(configlets_to_delete),
-        )
+        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d AVD-managed configlets which are no longer used.", len(configlets_to_delete))
         deployment_result.removed_static_config_configlets.extend(configlets_to_delete.values())
         await cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(configlets_to_delete.keys()))
     else:
