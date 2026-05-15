@@ -3886,6 +3886,11 @@ keys:
     type: str
     default: Management1
     description: OOB Management interface.
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.interface
+      remove_in_version: 7.0.0
   mgmt_interface_description:
     documentation_options:
       table: management-interface-settings
@@ -3894,6 +3899,52 @@ keys:
 
       '
     default: OOB_MANAGEMENT
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.description
+      remove_in_version: 7.0.0
+  mgmt_interface_settings:
+    documentation_options:
+      table: management-interface-settings
+    description: 'Out-of-Band (OOB) management interface settings.
+
+      These settings override the corresponding global variables where applicable.'
+    type: dict
+    keys:
+      description:
+        type: str
+        description: Interface description configured on the management interface.
+        default: OOB_MANAGEMENT
+      vrf:
+        type: str
+        convert_types:
+        - int
+        description: VRF name used for the management interface.
+        default: MGMT
+      vrf_routing:
+        type: bool
+        description: Enable IP routing in the management VRF.
+        default: false
+      interface:
+        type: str
+        description: Name of the management interface (e.g. Management0, Management1).
+        default: Management1
+      lldp:
+        type: dict
+        description: LLDP settings for the management interface.
+        keys:
+          transmit:
+            type: bool
+            description: Enable LLDP transmission on the management interface.
+          receive:
+            type: bool
+            description: Enable LLDP reception on the management interface.
+          ztp_vlan:
+            type: int
+            convert_types:
+            - str
+            description: VLAN ID advertised via LLDP for Zero Touch Provisioning (ZTP).
   mgmt_interface_vrf:
     documentation_options:
       table: management-interface-settings
@@ -3902,12 +3953,22 @@ keys:
     description: OOB Management VRF.
     convert_types:
     - int
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.vrf
+      remove_in_version: 7.0.0
   mgmt_vrf_routing:
     documentation_options:
       table: management-interface-settings
     type: bool
     default: false
     description: Configure IP routing for the OOB Management VRF.
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.vrf_routing
+      remove_in_version: 7.0.0
   mlag_bgp_peer_description:
     type: str
     documentation_options:
@@ -7563,6 +7624,22 @@ $defs:
       dot1x:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x
+      address_locking:
+        type: dict
+        description: Address locking settings applied on the port.
+        keys:
+          ipv4:
+            type: bool
+            description: 'Enable address locking for IPv4.
+
+              Key `ipv4` can only be set to false.
+
+              For EOS version 4.31 and higher.'
+          ipv6:
+            type: bool
+            description: 'Enable address locking for IPv6.
+
+              For EOS version 4.31 and higher.'
       poe:
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe
         type: dict
@@ -11263,12 +11340,46 @@ $defs:
           node_sid_base:
             documentation_options:
               table: node-type-isis-configuration
-            description: Node-SID base for isis-sr underlay variants. Combined with
-              node id to generate ISIS-SR node-SID.
+            description: IPv4 Node-SID Index base for ISIS-SR underlay variants. Combined
+              with node ID to generate ISIS-SR Node-SID index.
             type: int
             convert_types:
             - str
             default: 0
+            deprecation:
+              warning: true
+              new_key: isis_sr.ipv4_node_sid_index_base
+              remove_in_version: 7.0.0
+          isis_sr:
+            type: dict
+            description: Device settings for ISIS-SR underlay variants.
+            documentation_options:
+              table: node-type-isis-configuration
+            keys:
+              ipv4_node_sid_index:
+                type: int
+                description: 'Optional static IPv4 Node-SID Index.
+
+                  Takes precedence over the default node ID + `ipv4_node_sid_index_base`'
+              ipv4_node_sid_index_base:
+                description: IPv4 Node-SID Index base. Combined with node ID to generate
+                  ISIS-SR Node-SID index.
+                type: int
+                convert_types:
+                - str
+                default: 0
+              ipv6_node_sid_index:
+                type: int
+                description: 'Optional static IPv6 Node-SID Index.
+
+                  Takes precedence over the default node ID + `ipv6_node_sid_index_base`'
+              ipv6_node_sid_index_base:
+                description: IPv6 Node-SID Index base. Combined with node ID to generate
+                  ISIS-SR Node-SID index.
+                type: int
+                convert_types:
+                - str
+                default: 1000
           loopback_ipv4_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration

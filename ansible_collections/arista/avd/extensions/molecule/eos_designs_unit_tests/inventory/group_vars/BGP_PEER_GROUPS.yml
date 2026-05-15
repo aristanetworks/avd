@@ -142,7 +142,8 @@ pe:
     loopback_ipv4_offset: 8
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     is_type: level-1-2
-    node_sid_base: 100
+    isis_sr:
+      ipv4_node_sid_index_base: 100
     isis_system_id_prefix: '0000.0002'
   node_groups:
     - group: bgp-peer-groups-3

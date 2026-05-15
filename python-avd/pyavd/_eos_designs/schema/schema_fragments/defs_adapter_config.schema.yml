@@ -185,6 +185,21 @@ $defs:
       dot1x:
         type: dict
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/dot1x
+      address_locking:
+        type: dict
+        description: Address locking settings applied on the port.
+        keys:
+          ipv4:
+            type: bool
+            description: |-
+              Enable address locking for IPv4.
+              Key `ipv4` can only be set to false.
+              For EOS version 4.31 and higher.
+          ipv6:
+            type: bool
+            description: |-
+              Enable address locking for IPv6.
+              For EOS version 4.31 and higher.
       poe:
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe
         type: dict
