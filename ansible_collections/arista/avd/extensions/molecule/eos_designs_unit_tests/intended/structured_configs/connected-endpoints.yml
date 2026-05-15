@@ -846,7 +846,6 @@ port_channel_interfaces:
   address_locking:
     address_family:
       ipv4: false
-      ipv6: true
   switchport:
     enabled: true
     mode: access
@@ -854,10 +853,6 @@ port_channel_interfaces:
 - name: Port-Channel45
   description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
   shutdown: false
-  address_locking:
-    address_family:
-      ipv4: true
-      ipv6: true
   switchport:
     enabled: true
     mode: access

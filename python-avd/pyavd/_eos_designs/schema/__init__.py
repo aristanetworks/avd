@@ -2467,16 +2467,16 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4: bool | None
                 """
                 Enable address locking for IPv4.
-                Key `ipv4` can only be set to false.
-                For EOS version 4.31 and
-                higher.
+                Key `ipv4` can only be set to false for port-channel.
+                For EOS
+                version 4.31 and higher.
                 """
                 ipv6: bool | None
                 """
                 Enable address locking for IPv6.
-                Key `ipv6` can only be set to false.
-                For EOS version 4.31 and
-                higher.
+                Key `ipv6` can only be set to false for port-channel.
+                For EOS
+                version 4.31 and higher.
                 """
 
                 if TYPE_CHECKING:
@@ -2491,14 +2491,14 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             ipv4:
                                Enable address locking for IPv4.
-                               Key `ipv4` can only be set to false.
-                               For EOS version 4.31 and
-                               higher.
+                               Key `ipv4` can only be set to false for port-channel.
+                               For EOS
+                               version 4.31 and higher.
                             ipv6:
                                Enable address locking for IPv6.
-                               Key `ipv6` can only be set to false.
-                               For EOS version 4.31 and
-                               higher.
+                               Key `ipv6` can only be set to false for port-channel.
+                               For EOS
+                               version 4.31 and higher.
 
                         """
 
@@ -25103,16 +25103,16 @@ class EosDesigns(EosDesignsRootModel):
             ipv4: bool | None
             """
             Enable address locking for IPv4.
-            Key `ipv4` can only be set to false.
-            For EOS version 4.31 and
-            higher.
+            Key `ipv4` can only be set to false for port-channel.
+            For EOS
+            version 4.31 and higher.
             """
             ipv6: bool | None
             """
             Enable address locking for IPv6.
-            Key `ipv6` can only be set to false.
-            For EOS version 4.31 and
-            higher.
+            Key `ipv6` can only be set to false for port-channel.
+            For EOS
+            version 4.31 and higher.
             """
 
             if TYPE_CHECKING:
@@ -25127,14 +25127,14 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         ipv4:
                            Enable address locking for IPv4.
-                           Key `ipv4` can only be set to false.
-                           For EOS version 4.31 and
-                           higher.
+                           Key `ipv4` can only be set to false for port-channel.
+                           For EOS
+                           version 4.31 and higher.
                         ipv6:
                            Enable address locking for IPv6.
-                           Key `ipv6` can only be set to false.
-                           For EOS version 4.31 and
-                           higher.
+                           Key `ipv6` can only be set to false for port-channel.
+                           For EOS
+                           version 4.31 and higher.
 
                     """
 
@@ -30086,16 +30086,16 @@ class EosDesigns(EosDesignsRootModel):
             ipv4: bool | None
             """
             Enable address locking for IPv4.
-            Key `ipv4` can only be set to false.
-            For EOS version 4.31 and
-            higher.
+            Key `ipv4` can only be set to false for port-channel.
+            For EOS
+            version 4.31 and higher.
             """
             ipv6: bool | None
             """
             Enable address locking for IPv6.
-            Key `ipv6` can only be set to false.
-            For EOS version 4.31 and
-            higher.
+            Key `ipv6` can only be set to false for port-channel.
+            For EOS
+            version 4.31 and higher.
             """
 
             if TYPE_CHECKING:
@@ -30110,14 +30110,14 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         ipv4:
                            Enable address locking for IPv4.
-                           Key `ipv4` can only be set to false.
-                           For EOS version 4.31 and
-                           higher.
+                           Key `ipv4` can only be set to false for port-channel.
+                           For EOS
+                           version 4.31 and higher.
                         ipv6:
                            Enable address locking for IPv6.
-                           Key `ipv6` can only be set to false.
-                           For EOS version 4.31 and
-                           higher.
+                           Key `ipv6` can only be set to false for port-channel.
+                           For EOS
+                           version 4.31 and higher.
 
                     """
 
@@ -58997,16 +58997,16 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4: bool | None
                         """
                         Enable address locking for IPv4.
-                        Key `ipv4` can only be set to false.
-                        For EOS version 4.31 and
-                        higher.
+                        Key `ipv4` can only be set to false for port-channel.
+                        For EOS
+                        version 4.31 and higher.
                         """
                         ipv6: bool | None
                         """
                         Enable address locking for IPv6.
-                        Key `ipv6` can only be set to false.
-                        For EOS version 4.31 and
-                        higher.
+                        Key `ipv6` can only be set to false for port-channel.
+                        For EOS
+                        version 4.31 and higher.
                         """
 
                         if TYPE_CHECKING:
@@ -59021,14 +59021,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4:
                                        Enable address locking for IPv4.
-                                       Key `ipv4` can only be set to false.
-                                       For EOS version 4.31 and
-                                       higher.
+                                       Key `ipv4` can only be set to false for port-channel.
+                                       For EOS
+                                       version 4.31 and higher.
                                     ipv6:
                                        Enable address locking for IPv6.
-                                       Key `ipv6` can only be set to false.
-                                       For EOS version 4.31 and
-                                       higher.
+                                       Key `ipv6` can only be set to false for port-channel.
+                                       For EOS
+                                       version 4.31 and higher.
 
                                 """
 
@@ -61043,16 +61043,16 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4: bool | None
                         """
                         Enable address locking for IPv4.
-                        Key `ipv4` can only be set to false.
-                        For EOS version 4.31 and
-                        higher.
+                        Key `ipv4` can only be set to false for port-channel.
+                        For EOS
+                        version 4.31 and higher.
                         """
                         ipv6: bool | None
                         """
                         Enable address locking for IPv6.
-                        Key `ipv6` can only be set to false.
-                        For EOS version 4.31 and
-                        higher.
+                        Key `ipv6` can only be set to false for port-channel.
+                        For EOS
+                        version 4.31 and higher.
                         """
 
                         if TYPE_CHECKING:
@@ -61067,14 +61067,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     ipv4:
                                        Enable address locking for IPv4.
-                                       Key `ipv4` can only be set to false.
-                                       For EOS version 4.31 and
-                                       higher.
+                                       Key `ipv4` can only be set to false for port-channel.
+                                       For EOS
+                                       version 4.31 and higher.
                                     ipv6:
                                        Enable address locking for IPv6.
-                                       Key `ipv6` can only be set to false.
-                                       For EOS version 4.31 and
-                                       higher.
+                                       Key `ipv6` can only be set to false for port-channel.
+                                       For EOS
+                                       version 4.31 and higher.
 
                                 """
 
