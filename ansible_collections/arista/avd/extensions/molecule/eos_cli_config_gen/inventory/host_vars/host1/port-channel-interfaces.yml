@@ -145,6 +145,7 @@ port_channel_interfaces:
     qos:
       trust: cos
       cos: 2
+    cpu_traffic_policy_fallback_vrf: CPU_TRAFFIC_POLICY
     traffic_policy:
       input: BLUE-C1-POLICY
       output: BLUE-C2-POLICY

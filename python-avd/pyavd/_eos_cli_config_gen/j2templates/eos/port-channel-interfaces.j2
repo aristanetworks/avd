@@ -925,6 +925,9 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback is arista.avd.defined %}
    traffic-engineering min-delay dynamic twamp-light fallback {{ port_channel_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.number }} {{ port_channel_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.unit }}
 {%     endif %}
+{%     if port_channel_interface.cpu_traffic_policy_fallback_vrf is arista.avd.defined %}
+   cpu traffic-policy {{ port_channel_interface.cpu_traffic_policy_fallback_vrf }} fallback traffic-policy vrf
+{%     endif %}
 {%     for link_tracking_group in port_channel_interface.link_tracking_groups | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
 {%     endfor %}
