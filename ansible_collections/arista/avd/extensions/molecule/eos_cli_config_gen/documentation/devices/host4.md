@@ -11,7 +11,6 @@
   - [Router BGP](#router-bgp)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
-  - [MPLS RSVP](#mpls-rsvp)
   - [MPLS Device Configuration](#mpls-device-configuration)
 - [Multicast](#multicast)
   - [Router Multicast](#router-multicast)
@@ -148,8 +147,6 @@ router bgp 65001
 | LDP Router ID | - |
 | LDP Interface Disabled Default | - |
 | LDP Transport-Address Interface | - |
-
-### MPLS RSVP
 
 ### MPLS Device Configuration
 
