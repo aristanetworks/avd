@@ -7,14 +7,13 @@ import re
 from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol
 
-from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import Undefined, UndefinedType, get_v2, short_esi_to_route_target
 
 if TYPE_CHECKING:
     from typing import TypeVar
 
-    from pyavd._eos_designs.schema import EosDesigns
+    from pyavd._eos_designs.schema import EosCliConfigGen, EosDesigns
 
     from . import AvdStructuredConfigConnectedEndpointsProtocol
 
