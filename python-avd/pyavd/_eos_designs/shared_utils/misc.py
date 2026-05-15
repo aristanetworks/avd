@@ -399,13 +399,9 @@ class MiscMixin(Protocol):
             neighbor.route_map_in = rm_in_name
             route_maps.append(self.get_l3_bgp_route_map_in(rm_in_name, interface.bgp.ipv4_prefix_list_in, no_advertise=is_wan_interface))
 
-        if interface.bgp.ipv4_prefix_list_out:
-            if interface.bgp.ipv4_prefix_list_out not in prefix_lists:
-                prefix_lists.append(self.get_prefix_list(interface.bgp.ipv4_prefix_list_out))
-            rm_out_name = f"RM-BGP-{neighbor.ip_address}-OUT"
-            neighbor.route_map_out = rm_out_name
-            route_maps.append(self.get_l3_bgp_route_map_out(rm_out_name, interface.bgp.ipv4_prefix_list_out))
-        elif not self.inputs.avd_design_future.only_configure_outbound_route_map_when_prefix_list_out_defined:
+        if interface.bgp.ipv4_prefix_list_out and interface.bgp.ipv4_prefix_list_out not in prefix_lists:
+            prefix_lists.append(self.get_prefix_list(interface.bgp.ipv4_prefix_list_out))
+        if not self.inputs.avd_design_future.only_configure_outbound_route_map_when_prefix_list_out_defined or interface.bgp.ipv4_prefix_list_out:
             rm_out_name = f"RM-BGP-{neighbor.ip_address}-OUT"
             neighbor.route_map_out = rm_out_name
             route_maps.append(self.get_l3_bgp_route_map_out(rm_out_name, interface.bgp.ipv4_prefix_list_out))
