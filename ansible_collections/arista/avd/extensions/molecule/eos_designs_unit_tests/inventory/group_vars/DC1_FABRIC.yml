@@ -258,20 +258,6 @@ l3leaf:
     - group: DC1_BL2
       uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
       mlag: false
-      ipvpn_gateway:
-        enabled: true
-        evpn_domain_id: "65000:3"
-        ipvpn_domain_id: "65000:4"
-        maximum_routes: 50000
-        local_as: 65001
-        address_families: [vpn-ipv4, vpn-ipv6]
-        remote_peers:
-          - hostname: rr1
-            ip_address: 100.70.0.1
-            bgp_as: 64512
-          - hostname: rr2
-            ip_address: 100.70.0.2
-            bgp_as: 64512
       filter:
         tenants: [all]
         tags: [wan]
@@ -284,6 +270,20 @@ l3leaf:
           mgmt_ip: 192.168.200.117/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [Ethernet24, Ethernet24, Ethernet24, Ethernet24]
+          ipvpn_gateway:
+            enabled: true
+            evpn_domain_id: "65000:3"
+            ipvpn_domain_id: "65000:4"
+            maximum_routes: 50000
+            local_as: 65001
+            remote_peers:
+              - hostname: rr1
+                ip_address: 100.70.0.1
+                bgp_as: 64512
+              - hostname: rr2
+                ip_address: 100.70.0.2
+                bgp_as: 64512
+            address_families: [vpn-ipv4, vpn-ipv6]
         - name: dc1-bl2b
           platform: 7280R3
           id: 9
@@ -291,6 +291,21 @@ l3leaf:
           mgmt_ip: 192.168.200.118/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [Ethernet25, Ethernet25, Ethernet25, Ethernet25]
+          # Testing vpn-ipv6 alone
+          ipvpn_gateway:
+            enabled: true
+            evpn_domain_id: "65000:3"
+            ipvpn_domain_id: "65000:4"
+            maximum_routes: 50000
+            local_as: 65001
+            remote_peers:
+              - hostname: rr1
+                ip_address: 100.70.0.1
+                bgp_as: 64512
+              - hostname: rr2
+                ip_address: 100.70.0.2
+                bgp_as: 64512
+            address_families: [vpn-ipv6]
     - group: DC1_CL1
       mlag: true
       uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']

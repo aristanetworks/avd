@@ -14,3 +14,8 @@ keys:
     description: OOB Management VRF.
     convert_types:
       - int
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.vrf
+      remove_in_version: 7.0.0
