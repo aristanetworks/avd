@@ -4,9 +4,9 @@ mgmt_interface_settings:
   vrf: MGMT
   description: "Management Interface - DHCP"
 mgmt_ipv4:
-  gateway: 10.1.1.1 # Suppress the mgmt_ipv4.gateway as dhcp is set to true
+  gateway: 10.1.1.1 # mgmt_ipv4.gateway will be suppressed as dhcp is set to true
   static_routes:
-    - prefix: 10.1.1.1/24 # Suppress the mgmt_ipv4.static_routes as dhcp is set to true
+    - prefix: 10.1.1.1/24 # mgmt_ipv4.static_routes will be suppressed as dhcp is set to true
   dhcp: true
 l2leaf:
   defaults:
