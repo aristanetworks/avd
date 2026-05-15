@@ -2474,7 +2474,9 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6: bool | None
                 """
                 Enable address locking for IPv6.
-                For EOS version 4.31 and higher.
+                Key `ipv6` can only be set to false.
+                For EOS version 4.31 and
+                higher.
                 """
 
                 if TYPE_CHECKING:
@@ -2494,7 +2496,9 @@ class EosDesigns(EosDesignsRootModel):
                                higher.
                             ipv6:
                                Enable address locking for IPv6.
-                               For EOS version 4.31 and higher.
+                               Key `ipv6` can only be set to false.
+                               For EOS version 4.31 and
+                               higher.
 
                         """
 
@@ -25106,7 +25110,9 @@ class EosDesigns(EosDesignsRootModel):
             ipv6: bool | None
             """
             Enable address locking for IPv6.
-            For EOS version 4.31 and higher.
+            Key `ipv6` can only be set to false.
+            For EOS version 4.31 and
+            higher.
             """
 
             if TYPE_CHECKING:
@@ -25126,7 +25132,9 @@ class EosDesigns(EosDesignsRootModel):
                            higher.
                         ipv6:
                            Enable address locking for IPv6.
-                           For EOS version 4.31 and higher.
+                           Key `ipv6` can only be set to false.
+                           For EOS version 4.31 and
+                           higher.
 
                     """
 
@@ -30085,7 +30093,9 @@ class EosDesigns(EosDesignsRootModel):
             ipv6: bool | None
             """
             Enable address locking for IPv6.
-            For EOS version 4.31 and higher.
+            Key `ipv6` can only be set to false.
+            For EOS version 4.31 and
+            higher.
             """
 
             if TYPE_CHECKING:
@@ -30105,7 +30115,9 @@ class EosDesigns(EosDesignsRootModel):
                            higher.
                         ipv6:
                            Enable address locking for IPv6.
-                           For EOS version 4.31 and higher.
+                           Key `ipv6` can only be set to false.
+                           For EOS version 4.31 and
+                           higher.
 
                     """
 
@@ -58992,7 +59004,9 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6: bool | None
                         """
                         Enable address locking for IPv6.
-                        For EOS version 4.31 and higher.
+                        Key `ipv6` can only be set to false.
+                        For EOS version 4.31 and
+                        higher.
                         """
 
                         if TYPE_CHECKING:
@@ -59012,7 +59026,9 @@ class EosDesigns(EosDesignsRootModel):
                                        higher.
                                     ipv6:
                                        Enable address locking for IPv6.
-                                       For EOS version 4.31 and higher.
+                                       Key `ipv6` can only be set to false.
+                                       For EOS version 4.31 and
+                                       higher.
 
                                 """
 
@@ -61034,7 +61050,9 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6: bool | None
                         """
                         Enable address locking for IPv6.
-                        For EOS version 4.31 and higher.
+                        Key `ipv6` can only be set to false.
+                        For EOS version 4.31 and
+                        higher.
                         """
 
                         if TYPE_CHECKING:
@@ -61054,7 +61072,9 @@ class EosDesigns(EosDesignsRootModel):
                                        higher.
                                     ipv6:
                                        Enable address locking for IPv6.
-                                       For EOS version 4.31 and higher.
+                                       Key `ipv6` can only be set to false.
+                                       For EOS version 4.31 and
+                                       higher.
 
                                 """
 

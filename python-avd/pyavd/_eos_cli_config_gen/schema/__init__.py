@@ -32743,13 +32743,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class AddressFamily(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"ipv4": {"type": bool}}
+                _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
                 ipv4: bool | None
                 """Enable/disable address locking for IPv4."""
+                ipv6: bool | None
+                """Enable/disable address locking for IPv6."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
                         """
                         AddressFamily.
 
@@ -32758,6 +32760,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             ipv4: Enable/disable address locking for IPv4.
+                            ipv6: Enable/disable address locking for IPv6.
 
                         """
 

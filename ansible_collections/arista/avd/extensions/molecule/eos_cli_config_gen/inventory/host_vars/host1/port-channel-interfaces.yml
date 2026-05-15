@@ -81,6 +81,27 @@ port_channel_interfaces:
       address_family:
         ipv4: false
 
+  - name: Port-Channel6
+    description: TEST_ADDRESS_LOCKING_IPV6_DISABLED
+    switchport:
+      enabled: true
+      mode: access
+      access_vlan: 100
+    address_locking:
+      address_family:
+        ipv6: false
+
+  - name: Port-Channel7
+    description: TEST_ADDRESS_LOCKING_BOTH_DISABLED
+    switchport:
+      enabled: true
+      mode: access
+      access_vlan: 100
+    address_locking:
+      address_family:
+        ipv4: false
+        ipv6: false
+
   - name: Port-Channel15
     comment: |
       testing multi line comments with |
