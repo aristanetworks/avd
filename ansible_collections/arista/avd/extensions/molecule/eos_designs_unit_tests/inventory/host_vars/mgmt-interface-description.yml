@@ -1,7 +1,8 @@
 # Minimum config to only test the specific feature.
 type: l2leaf
-mgmt_interface_vrf: MGMT
-mgmt_interface_description: "Custom Management Interface Description"
+mgmt_interface_settings:
+  vrf: MGMT
+  description: "Custom Management Interface Description"
 mgmt_gateway: 1.1.1.1
 l2leaf:
   defaults:

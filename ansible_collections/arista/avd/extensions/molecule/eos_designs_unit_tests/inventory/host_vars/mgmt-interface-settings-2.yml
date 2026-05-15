@@ -1,0 +1,16 @@
+---
+# Test for mgmt_interface_settings without lldp (covers the empty-dict gate
+# in management_interface.py that skips the lldp block when not set) and
+# with ipv6_mgmt_ip on the node.
+type: l2leaf
+ipv6_mgmt_gateway: 2001:db8::1
+l2leaf:
+  nodes:
+    - name: mgmt-interface-settings-2
+      mgmt_ip: 192.168.0.3/24
+      ipv6_mgmt_ip: 2001:db8::3/64
+mgmt_interface_settings:
+  description: description from mgmt_interface_settings
+  vrf: vrf_from_mgmt_interface_settings
+  vrf_routing: true
+  interface: Management0
