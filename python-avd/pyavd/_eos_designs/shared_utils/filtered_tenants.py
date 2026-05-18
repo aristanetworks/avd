@@ -526,7 +526,13 @@ class FilteredTenantsMixin(Protocol):
             )
             self.update_ospf_authentication(config, svi, vrf, tenant)
 
-        if svi.ipv6_enable and svi.ipv6_ospf.enabled:
+        if svi.ipv6_ospf.enabled:
+            if not svi.ipv6_enable:
+                msg = (
+                    f"OSPFv3 is enabled on SVI '{svi.name}' but 'ipv6_enable' is not set under"
+                    f" 'tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={svi.id}]'."
+                )
+                raise AristaAvdError(msg)
             if not vrf.ipv6_ospf.enabled:
                 msg = f"OSPFv3 is enabled on SVI '{svi.name}' but not under 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
                 raise AristaAvdError(msg)

@@ -62,6 +62,8 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+    ospfv3:
+      enabled: true
   vlans:
   - id: 201
     metadata:

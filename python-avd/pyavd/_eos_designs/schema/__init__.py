@@ -64604,250 +64604,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class RedistributeIsis(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            IsisLevel: TypeAlias = Literal["level-1", "level-2", "level-1-2"]
-                            _fields: ClassVar[dict] = {
-                                "enabled": {"type": bool, "default": False},
-                                "isis_level": {"type": str},
-                                "route_map": {"type": str},
-                                "include_leaked": {"type": bool},
-                            }
-                            enabled: bool
-                            """Default value: `False`"""
-                            isis_level: IsisLevel | None
-                            """Redistribute IS-IS route level."""
-                            route_map: str | None
-                            include_leaked: bool | None
-                            """Include leaked routes while redistributing."""
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    enabled: bool | UndefinedType = Undefined,
-                                    isis_level: IsisLevel | None | UndefinedType = Undefined,
-                                    route_map: str | None | UndefinedType = Undefined,
-                                    include_leaked: bool | None | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    RedistributeIsis.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        enabled: enabled
-                                        isis_level: Redistribute IS-IS route level.
-                                        route_map: route_map
-                                        include_leaked: Include leaked routes while redistributing.
-
-                                    """
-
-                        class RedistributeOspfv3(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            class MatchExternal(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}, "include_leaked": {"type": bool}}
-                                enabled: bool
-                                route_map: str | None
-                                include_leaked: bool | None
-                                """Include leaked routes while redistributing"""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self,
-                                        *,
-                                        enabled: bool | UndefinedType = Undefined,
-                                        route_map: str | None | UndefinedType = Undefined,
-                                        include_leaked: bool | None | UndefinedType = Undefined,
-                                    ) -> None:
-                                        """
-                                        MatchExternal.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            enabled: enabled
-                                            route_map: route_map
-                                            include_leaked: Include leaked routes while redistributing
-
-                                        """
-
-                            class MatchInternal(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                                enabled: bool
-                                route_map: str | None
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                                        """
-                                        MatchInternal.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            enabled: enabled
-                                            route_map: route_map
-
-                                        """
-
-                            class MatchNssaExternal(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                                enabled: bool
-                                route_map: str | None
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                                        """
-                                        MatchNssaExternal.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            enabled: enabled
-                                            route_map: route_map
-
-                                        """
-
-                            _fields: ClassVar[dict] = {
-                                "enabled": {"type": bool},
-                                "match_external": {"type": MatchExternal},
-                                "match_internal": {"type": MatchInternal},
-                                "match_nssa_external": {"type": MatchNssaExternal},
-                                "route_map": {"type": str},
-                            }
-                            enabled: bool | None
-                            """Redistribute OSPFv3 routes."""
-                            match_external: MatchExternal
-                            """
-                            Redistribute OSPFv3 routes learned from external sources.
-
-                            Subclass of AvdModel.
-                            """
-                            match_internal: MatchInternal
-                            """
-                            Redistribute OSPFv3 routes learned from internal sources.
-
-                            Subclass of AvdModel.
-                            """
-                            match_nssa_external: MatchNssaExternal
-                            """
-                            Redistribute OSPFv3 routes learned from external NSSA sources.
-
-                            Subclass of AvdModel.
-                            """
-                            route_map: str | None
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    enabled: bool | None | UndefinedType = Undefined,
-                                    match_external: MatchExternal | UndefinedType = Undefined,
-                                    match_internal: MatchInternal | UndefinedType = Undefined,
-                                    match_nssa_external: MatchNssaExternal | UndefinedType = Undefined,
-                                    route_map: str | None | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    RedistributeOspfv3.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        enabled: Redistribute OSPFv3 routes.
-                                        match_external:
-                                           Redistribute OSPFv3 routes learned from external sources.
-
-                                           Subclass of AvdModel.
-                                        match_internal:
-                                           Redistribute OSPFv3 routes learned from internal sources.
-
-                                           Subclass of AvdModel.
-                                        match_nssa_external:
-                                           Redistribute OSPFv3 routes learned from external NSSA sources.
-
-                                           Subclass of AvdModel.
-                                        route_map: route_map
-
-                                    """
-
-                        class RedistributeDhcp(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
-                            enabled: bool
-                            """Default value: `False`"""
-                            route_map: str | None
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                                    """
-                                    RedistributeDhcp.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        enabled: enabled
-                                        route_map: route_map
-
-                                    """
-
-                        class RedistributeStatic(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            _fields: ClassVar[dict] = {
-                                "enabled": {"type": bool, "default": False},
-                                "route_map": {"type": str},
-                                "include_leaked": {"type": bool},
-                            }
-                            enabled: bool
-                            """Default value: `False`"""
-                            route_map: str | None
-                            """Route-map name."""
-                            include_leaked: bool | None
-                            """Include leaked routes while redistributing."""
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    enabled: bool | UndefinedType = Undefined,
-                                    route_map: str | None | UndefinedType = Undefined,
-                                    include_leaked: bool | None | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    RedistributeStatic.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        enabled: enabled
-                                        route_map: Route-map name.
-                                        include_leaked: Include leaked routes while redistributing.
-
-                                    """
-
                         class Nodes(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -64860,10 +64616,6 @@ class EosDesigns(EosDesignsRootModel):
                             "auto_cost_reference_bandwidth": {"type": int},
                             "redistribute_bgp": {"type": RedistributeBgp},
                             "redistribute_connected": {"type": RedistributeConnected},
-                            "redistribute_isis": {"type": RedistributeIsis},
-                            "redistribute_ospfv3": {"type": RedistributeOspfv3},
-                            "redistribute_dhcp": {"type": RedistributeDhcp},
-                            "redistribute_static": {"type": RedistributeStatic},
                             "nodes": {"type": Nodes},
                             "structured_config": {"type": EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem},
                         }
@@ -64881,14 +64633,6 @@ class EosDesigns(EosDesignsRootModel):
                         redistribute_bgp: RedistributeBgp
                         """Subclass of AvdModel."""
                         redistribute_connected: RedistributeConnected
-                        """Subclass of AvdModel."""
-                        redistribute_isis: RedistributeIsis
-                        """Subclass of AvdModel."""
-                        redistribute_ospfv3: RedistributeOspfv3
-                        """Subclass of AvdModel."""
-                        redistribute_dhcp: RedistributeDhcp
-                        """Subclass of AvdModel."""
-                        redistribute_static: RedistributeStatic
                         """Subclass of AvdModel."""
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
@@ -64909,10 +64653,6 @@ class EosDesigns(EosDesignsRootModel):
                                 auto_cost_reference_bandwidth: int | None | UndefinedType = Undefined,
                                 redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
                                 redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
-                                redistribute_isis: RedistributeIsis | UndefinedType = Undefined,
-                                redistribute_ospfv3: RedistributeOspfv3 | UndefinedType = Undefined,
-                                redistribute_dhcp: RedistributeDhcp | UndefinedType = Undefined,
-                                redistribute_static: RedistributeStatic | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem | UndefinedType = Undefined,
                             ) -> None:
@@ -64929,10 +64669,6 @@ class EosDesigns(EosDesignsRootModel):
                                     auto_cost_reference_bandwidth: Bandwidth in mbps.
                                     redistribute_bgp: Subclass of AvdModel.
                                     redistribute_connected: Subclass of AvdModel.
-                                    redistribute_isis: Subclass of AvdModel.
-                                    redistribute_ospfv3: Subclass of AvdModel.
-                                    redistribute_dhcp: Subclass of AvdModel.
-                                    redistribute_static: Subclass of AvdModel.
                                     nodes: Subclass of AvdList with `str` items.
                                     structured_config:
                                        Custom structured config added under ipv6_router_ospf.process_ids.[process_id=<process_id>] for the
@@ -70789,6 +70525,7 @@ class EosDesigns(EosDesignsRootModel):
                         "ospf": {"type": Ospf},
                         "ipv6_ospf": {"type": Ipv6Ospf},
                         "redistribute_ospf": {"type": bool, "default": True},
+                        "redistribute_ospfv3": {"type": bool, "default": True},
                         "evpn_l3_multicast": {"type": EvpnL3Multicast},
                         "pim_rp_addresses": {"type": PimRpAddresses},
                         "evpn_l2_multi_domain": {"type": bool},
@@ -70987,11 +70724,22 @@ class EosDesigns(EosDesignsRootModel):
                     This will create an OSPFv3 routing instance in the tenant VRF. If there
                     is no nodes definition, the OSPF instance will be
                     created on all leafs where the VRF is deployed.
+                    This will also cause automatic OSPFv3 redistribution into BGP unless
+                    explicitly turned off with
+                    "redistribute_ospfv3: false".
+
+
                     Subclass of AvdModel.
                     """
                     redistribute_ospf: bool
                     """
                     Non-selectively enabling or disabling redistribute ospf inside the VRF.
+
+                    Default value: `True`
+                    """
+                    redistribute_ospfv3: bool
+                    """
+                    Non-selectively enabling or disabling redistribute ospfv3 inside the VRF.
 
                     Default value: `True`
                     """
@@ -71162,6 +70910,7 @@ class EosDesigns(EosDesignsRootModel):
                             ospf: Ospf | UndefinedType = Undefined,
                             ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
                             redistribute_ospf: bool | UndefinedType = Undefined,
+                            redistribute_ospfv3: bool | UndefinedType = Undefined,
                             evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                             pim_rp_addresses: PimRpAddresses | UndefinedType = Undefined,
                             evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
@@ -71318,8 +71067,14 @@ class EosDesigns(EosDesignsRootModel):
                                    This will create an OSPFv3 routing instance in the tenant VRF. If there
                                    is no nodes definition, the OSPF instance will be
                                    created on all leafs where the VRF is deployed.
+                                   This will also cause automatic OSPFv3 redistribution into BGP unless
+                                   explicitly turned off with
+                                   "redistribute_ospfv3: false".
+
+
                                    Subclass of AvdModel.
                                 redistribute_ospf: Non-selectively enabling or disabling redistribute ospf inside the VRF.
+                                redistribute_ospfv3: Non-selectively enabling or disabling redistribute ospfv3 inside the VRF.
                                 evpn_l3_multicast:
                                    Explicitly enable or disable evpn_l3_multicast to override setting of
                                    `<network_services_key>.[].evpn_l3_multicast.enabled`.

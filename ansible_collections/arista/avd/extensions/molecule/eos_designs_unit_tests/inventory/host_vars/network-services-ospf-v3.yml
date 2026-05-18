@@ -32,14 +32,6 @@ tenants:
             enabled: true
           redistribute_connected:
             enabled: true
-          redistribute_isis:
-            enabled: true
-          redistribute_ospfv3:
-            enabled: true
-          redistribute_dhcp:
-            enabled: true
-          redistribute_static:
-            enabled: true
           nodes: [network-services-ospf-v3]
         svis:
           - id: 201
@@ -68,19 +60,6 @@ tenants:
             enabled: true
             route_map: ipv6_ospf_rm
           redistribute_connected:
-            enabled: true
-            route_map: ipv6_ospf_rm
-          redistribute_isis:
-            enabled: true
-            isis_level: level-1
-            route_map: ipv6_ospf_rm
-          redistribute_ospfv3:
-            enabled: true
-            route_map: ipv6_ospf_rm
-          redistribute_dhcp:
-            enabled: true
-            route_map: ipv6_ospf_rm
-          redistribute_static:
             enabled: true
             route_map: ipv6_ospf_rm
           nodes: [network-services-ospf-v3]
@@ -114,25 +93,6 @@ tenants:
             enabled: true
             route_map: ipv6_ospf_rm
             include_leaked: true
-          redistribute_isis:
-            enabled: true
-            isis_level: level-1
-            route_map: ipv6_ospf_rm
-            include_leaked: true
-          redistribute_ospfv3:
-            enabled: true
-            route_map: ipv6_ospf_rm
-            match_external:
-              enabled: true
-              route_map: ipv6_ospf_rm
-              include_leaked: true
-          redistribute_dhcp:
-            enabled: true
-            route_map: ipv6_ospf_rm
-          redistribute_static:
-            enabled: true
-            route_map: ipv6_ospf_rm
-            include_leaked: true
           nodes: [network-services-ospf-v3]
         svis:
           - id: 203
@@ -140,111 +100,6 @@ tenants:
             description: "Tenant_OSPFv3_Redistribute_Include_Leaked_203 description"
             enabled: true
             ipv6_address: cafe::ca/64
-            ipv6_enable: true
-            ipv6_ospf:
-              enabled: true
-              point_to_point: true
-  # Test OSPFv3 Redistribution OSPFv3
-  - name: Tenant_OSPFv3_Redistribute_Ospfv3
-    mac_vrf_vni_base: 10000
-    mac_vrf_id_base: 20000
-    redistribute_mlag_ibgp_peering_vrfs: true
-    vrfs:
-      - name: Tenant_OSPFv3_Redistribute_Ospfv3_VRF
-        vrf_vni: 103
-        vrf_id: 45
-        ipv6_ospf:
-          enabled: true
-          router_id: ipv6_ospf_router_ospfv3
-          redistribute_ospfv3:
-            enabled: true
-            route_map: ipv6_ospf_rm
-            match_external:
-              enabled: true
-            match_internal:
-              enabled: true
-            match_nssa_external:
-              enabled: true
-          nodes: [network-services-ospf-v3]
-        svis:
-          - id: 204
-            name: Tenant_OSPFv3_Redistribute_Ospfv3_204
-            description: "Tenant_OSPFv3_Redistribute_Ospfv3_204 description"
-            enabled: true
-            ipv6_address: ca::ca/64
-            ipv6_enable: true
-            ipv6_ospf:
-              enabled: true
-              point_to_point: true
-  # Test OSPFv3 Redistribution OSPFv3 with route map
-  - name: Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap
-    mac_vrf_vni_base: 10000
-    mac_vrf_id_base: 20000
-    redistribute_mlag_ibgp_peering_vrfs: true
-    vrfs:
-      - name: Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap_VRF
-        vrf_vni: 104
-        vrf_id: 46
-        ipv6_ospf:
-          enabled: true
-          router_id: ipv6_ospf_router_ospfv3_route_map
-          redistribute_ospfv3:
-            enabled: true
-            route_map: ipv6_ospf_rm
-            match_external:
-              enabled: true
-              route_map: ipv6_ospf_rm
-            match_internal:
-              enabled: true
-              route_map: ipv6_ospf_rm
-            match_nssa_external:
-              enabled: true
-              route_map: ipv6_ospf_rm
-          nodes: [network-services-ospf-v3]
-        svis:
-          - id: 205
-            name: Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap_205
-            description: "Tenant_OSPFv3_Redistribute_Ospfv3_RouteMap_205 description"
-            enabled: true
-            ipv6_address: ca::ca/64
-            ipv6_enable: true
-            ipv6_ospf:
-              enabled: true
-              point_to_point: true
-  # Test OSPFv3 Redistribution OSPFv3 with leaked routes and adding custom structured configurations to test
-  - name: Tenant_OSPFv3_Redistribute_Ospfv3_Include
-    mac_vrf_vni_base: 10000
-    mac_vrf_id_base: 20000
-    redistribute_mlag_ibgp_peering_vrfs: true
-    vrfs:
-      - name: Tenant_OSPFv3_Redistribute_Ospfv3_Include_VRF
-        vrf_vni: 105
-        vrf_id: 47
-        ipv6_ospf:
-          enabled: true
-          router_id: ipv6_ospf_router_ospfv3_include
-          redistribute_ospfv3:
-            enabled: true
-            route_map: ipv6_ospf_rm
-            match_external:
-              enabled: true
-              route_map: ipv6_ospf_rm
-              include_leaked: true
-            match_internal:
-              enabled: true
-              route_map: ipv6_ospf_rm
-            match_nssa_external:
-              enabled: true
-              route_map: ipv6_ospf_rm
-          structured_config:
-            auto_cost_reference_bandwidth: 10
-          nodes: [network-services-ospf-v3]
-        svis:
-          - id: 206
-            name: Tenant_OSPFv3_Redistribute_Ospfv3_Include_206
-            description: "Tenant_OSPFv3_Redistribute_Ospfv3_Include_206 description"
-            enabled: true
-            ipv6_address: ca::ca/64
             ipv6_enable: true
             ipv6_ospf:
               enabled: true
