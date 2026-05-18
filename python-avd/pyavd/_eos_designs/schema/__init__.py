@@ -9324,9 +9324,10 @@ class EosDesigns(EosDesignsRootModel):
             """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
-            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-            and IPv6
-            BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            IPv6 BGP
+            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -9495,9 +9496,10 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
-                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                           and IPv6
-                           BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                           IPv6 BGP
+                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -10016,9 +10018,10 @@ class EosDesigns(EosDesignsRootModel):
             """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
-            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-            and IPv6
-            BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            IPv6 BGP
+            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -10169,9 +10172,10 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
-                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                           and IPv6
-                           BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                           IPv6 BGP
+                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -14585,9 +14589,10 @@ class EosDesigns(EosDesignsRootModel):
             """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
-            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-            and IPv6
-            BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            IPv6 BGP
+            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -14756,9 +14761,10 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
-                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                           and IPv6
-                           BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                           IPv6 BGP
+                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -15277,9 +15283,10 @@ class EosDesigns(EosDesignsRootModel):
             """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
             bgp: Bgp
             """
-            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-            and IPv6
-            BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            IPv6 BGP
+            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
             Subclass of AvdModel.
             """
             ipv4_acl_in: str | None
@@ -15430,9 +15437,10 @@ class EosDesigns(EosDesignsRootModel):
                            and `ip` is an IP address.
                         peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                         bgp:
-                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                           and IPv6
-                           BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                           IPv6 BGP
+                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                            Subclass of AvdModel.
                         ipv4_acl_in:
                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -23752,9 +23760,10 @@ class EosDesigns(EosDesignsRootModel):
         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
         bgp: Bgp
         """
-        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-        and IPv6
-        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+        IPv6 BGP
+        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
         Subclass of AvdModel.
         """
         ipv4_acl_in: str | None
@@ -23925,9 +23934,10 @@ class EosDesigns(EosDesignsRootModel):
                        and `ip` is an IP address.
                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                     bgp:
-                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                       and IPv6
-                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                       IPv6 BGP
+                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                        Subclass of AvdModel.
                     ipv4_acl_in:
                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -39962,9 +39972,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -40133,9 +40144,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -40654,9 +40666,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -40807,9 +40820,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -45211,9 +45225,10 @@ class EosDesigns(EosDesignsRootModel):
                             """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
-                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                            and IPv6
-                            BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                            IPv6 BGP
+                            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -45382,9 +45397,10 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
-                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                           and IPv6
-                                           BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                           IPv6 BGP
+                                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -45909,9 +45925,10 @@ class EosDesigns(EosDesignsRootModel):
                             """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
-                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                            and IPv6
-                            BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                            IPv6 BGP
+                            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -46062,9 +46079,10 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
-                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                           and IPv6
-                                           BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                           IPv6 BGP
+                                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -50401,9 +50419,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -50572,9 +50591,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -51093,9 +51113,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -51246,9 +51267,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -55665,9 +55687,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -55836,9 +55859,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -56357,9 +56381,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -56510,9 +56535,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -74440,9 +74466,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -74611,9 +74638,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -75132,9 +75160,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -75285,9 +75314,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -79689,9 +79719,10 @@ class EosDesigns(EosDesignsRootModel):
                             """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
-                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                            and IPv6
-                            BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                            IPv6 BGP
+                            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -79860,9 +79891,10 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
-                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                           and IPv6
-                                           BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                           IPv6 BGP
+                                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -80387,9 +80419,10 @@ class EosDesigns(EosDesignsRootModel):
                             """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                             bgp: Bgp
                             """
-                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                            and IPv6
-                            BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                            IPv6 BGP
+                            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                             Subclass of AvdModel.
                             """
                             ipv4_acl_in: str | None
@@ -80540,9 +80573,10 @@ class EosDesigns(EosDesignsRootModel):
                                            and `ip` is an IP address.
                                         peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                         bgp:
-                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                           and IPv6
-                                           BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                           Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                           IPv6 BGP
+                                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
                                            Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -84879,9 +84913,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -85050,9 +85085,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -85571,9 +85607,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -85724,9 +85761,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -90143,9 +90181,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -90314,9 +90353,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.
@@ -90835,9 +90875,10 @@ class EosDesigns(EosDesignsRootModel):
                         """The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set."""
                         bgp: Bgp
                         """
-                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                        and IPv6
-                        BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                        IPv6 BGP
+                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                         Subclass of AvdModel.
                         """
                         ipv4_acl_in: str | None
@@ -90988,9 +91029,10 @@ class EosDesigns(EosDesignsRootModel):
                                        and `ip` is an IP address.
                                     peer_ipv6_address: The peer device IPv6 address (no mask). Used for creating IPv6 BGP peering if `bgp` is also set.
                                     bgp:
-                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-                                       and IPv6
-                                       BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+                                       Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+                                       IPv6 BGP
+                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
                                        Name of the IPv4 access-list to be assigned in the ingress direction.

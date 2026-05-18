@@ -140,8 +140,8 @@ $defs:
         bgp:
           type: dict
           description: |-
-            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set)
-            and IPv6 BGP peering (when `peer_ipv6_address` is set). IPv6 BGP is not supported for WAN interfaces.
+            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
+            IPv6 BGP peering on L3 interfaces and L3 Port-Channels is not yet supported.
           keys:
             peer_as:
               type: str
