@@ -23,7 +23,8 @@ aaa_settings:
 
 # OOB Management network default gateway.
 mgmt_gateway: 172.16.100.1
-mgmt_interface: Management0
+mgmt_interface_settings:
+  interface: Management0
 
 # dns servers.
 dns_settings:
