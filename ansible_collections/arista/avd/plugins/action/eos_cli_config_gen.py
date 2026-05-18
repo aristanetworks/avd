@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import logging
 from collections import ChainMap
+from contextlib import suppress
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -42,6 +43,10 @@ CUSTOM_TEMPLATES_CFG_TEMPLATE = "eos/custom-templates.j2"
 CUSTOM_TEMPLATES_DOC_TEMPLATE = "documentation/custom-templates.j2"
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
+with suppress(AttributeError):
+    # Avoid duplicate logs in debug files
+    # Suppressing AttribueError for ansible-lint
+    LOGGER.propagate = False
 
 ARGUMENT_SPEC = {
     "tmp_dir": {"type": "str", "required": True},
@@ -217,7 +222,5 @@ def setup_module_logging(hostname: str, result: dict) -> None:
     python_to_ansible_handler = PythonToAnsibleHandler(result, display)
     python_to_ansible_handler.addFilter(python_to_ansible_filter)
     LOGGER.addHandler(python_to_ansible_handler)
-    # Avoid duplicate logs now that a dedicated handler is attached
-    LOGGER.propagate = False
     # TODO: mechanism to manipulate the logger globally for pyavd
     LOGGER.setLevel(logging.DEBUG)

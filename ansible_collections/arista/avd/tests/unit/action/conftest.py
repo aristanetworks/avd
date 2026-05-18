@@ -18,6 +18,8 @@ def reset_avd_logger() -> Generator[None, None, None]:
     original_propagate = logger.propagate
     original_handlers = logger.handlers[:]
     original_level = logger.level
+    logger.propagate = True
+    logger.handlers = []
     yield
     logger.propagate = original_propagate
     logger.handlers = original_handlers

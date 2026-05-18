@@ -107,7 +107,7 @@ def action_module() -> Callable[..., ActionModule]:
         ),
     ],
 )
-def test_main_emits_expected_debug_logs(
+def test_run_emits_expected_debug_logs_and_routes_to_display(
     action_module: Callable[..., ActionModule],
     caplog: pytest.LogCaptureFixture,
     generate_device_config: bool,
@@ -115,7 +115,8 @@ def test_main_emits_expected_debug_logs(
     with_custom_templates: bool,
     expected_messages: list[str],
 ) -> None:
-    """Verify that main emits the expected sequence of DEBUG log messages."""
+    """Verify run emits the expected DEBUG logs and routes them to display.vvv prefixed with the hostname."""
+    hostname = "my-spine-1"
     module = action_module()
     validated_args = {
         "tmp_dir": MOCK_TMP_DIR,
@@ -125,110 +126,7 @@ def test_main_emits_expected_debug_logs(
         "documentation_filename": "/output/doc.md",
         "device_doc_toc": False,
     }
-    task_vars = {"custom_templates": ["some/template.j2"]} if with_custom_templates else {}
-
-    with (
-        patch.object(module, "validate_args", return_value=validated_args),
-        patch.object(module, "load_structured_config", return_value={}),
-        patch.object(module, "write_file", return_value=False),
-        patch.object(module, "render_template_with_ansible_templar", return_value="! custom\n"),
-        patch(f"{MODULE_PATH}.get_device_config", return_value="! config\n", create=True),
-        patch(f"{MODULE_PATH}.get_device_doc", return_value="# doc\n", create=True),
-        caplog.at_level(logging.DEBUG, logger="ansible_collections.arista.avd"),
-    ):
-        module.main("test-device", task_vars, {})
-
-    assert caplog.messages == expected_messages
-    assert all(r.levelno == logging.DEBUG for r in caplog.records)
-
-
-@pytest.mark.parametrize(
-    ("generate_device_config", "generate_device_doc", "with_custom_templates", "expected_display_messages"),
-    [
-        pytest.param(
-            True,
-            True,
-            False,
-            [
-                "<my-spine-1> Validating task arguments...",
-                "<my-spine-1> Validating task arguments [done].",
-                "<my-spine-1> Loading structured config...",
-                "<my-spine-1> Loading structured config [done].",
-                "<my-spine-1> Rendering configuration...",
-                "<my-spine-1> Rendering configuration [done].",
-                "<my-spine-1> Rendering documentation...",
-                "<my-spine-1> Rendering documentation [done].",
-            ],
-            id="config_and_doc",
-        ),
-        pytest.param(
-            True,
-            False,
-            False,
-            [
-                "<my-spine-1> Validating task arguments...",
-                "<my-spine-1> Validating task arguments [done].",
-                "<my-spine-1> Loading structured config...",
-                "<my-spine-1> Loading structured config [done].",
-                "<my-spine-1> Rendering configuration...",
-                "<my-spine-1> Rendering configuration [done].",
-            ],
-            id="config_only",
-        ),
-        pytest.param(
-            False,
-            True,
-            False,
-            [
-                "<my-spine-1> Validating task arguments...",
-                "<my-spine-1> Validating task arguments [done].",
-                "<my-spine-1> Loading structured config...",
-                "<my-spine-1> Loading structured config [done].",
-                "<my-spine-1> Rendering documentation...",
-                "<my-spine-1> Rendering documentation [done].",
-            ],
-            id="doc_only",
-        ),
-        pytest.param(
-            True,
-            True,
-            True,
-            [
-                "<my-spine-1> Validating task arguments...",
-                "<my-spine-1> Validating task arguments [done].",
-                "<my-spine-1> Loading structured config...",
-                "<my-spine-1> Loading structured config [done].",
-                "<my-spine-1> Rendering configuration...",
-                "<my-spine-1> Rendering config custom templates...",
-                "<my-spine-1> Rendering config custom templates [done].",
-                "<my-spine-1> Rendering configuration [done].",
-                "<my-spine-1> Rendering documentation...",
-                "<my-spine-1> Rendering documentation custom templates...",
-                "<my-spine-1> Rendering documentation custom templates [done].",
-                "<my-spine-1> Rendering documentation [done].",
-            ],
-            id="config_and_doc_with_custom_templates",
-        ),
-    ],
-)
-def test_run_routes_debug_logs_to_display_with_hostname(
-    action_module: Callable[..., ActionModule],
-    generate_device_config: bool,
-    generate_device_doc: bool,
-    with_custom_templates: bool,
-    expected_display_messages: list[str],
-) -> None:
-    """Verify that debug log messages reach display.vvv prefixed with the device hostname."""
-    module = action_module()
-    validated_args = {
-        "tmp_dir": MOCK_TMP_DIR,
-        "generate_device_config": generate_device_config,
-        "generate_device_doc": generate_device_doc,
-        "config_filename": "/output/config.cfg",
-        "documentation_filename": "/output/doc.md",
-        "device_doc_toc": False,
-    }
-    task_vars: dict = {"inventory_hostname": "my-spine-1"}
+    task_vars: dict = {"inventory_hostname": hostname}
     if with_custom_templates:
         task_vars["custom_templates"] = ["some/template.j2"]
 
@@ -242,11 +140,14 @@ def test_run_routes_debug_logs_to_display_with_hostname(
         patch(f"{MODULE_PATH}.get_device_config", return_value="! config\n", create=True),
         patch(f"{MODULE_PATH}.get_device_doc", return_value="# doc\n", create=True),
         patch(f"{MODULE_PATH}.display") as mock_display,
+        caplog.at_level(logging.DEBUG, logger="ansible_collections.arista.avd"),
     ):
         module.run(task_vars=task_vars)
 
-    actual = [call.args[0] for call in mock_display.vvv.call_args_list]
-    assert actual == expected_display_messages
+    assert caplog.messages == expected_messages
+    assert all(r.levelno == logging.DEBUG for r in caplog.records)
+    display_messages = [call.args[0] for call in mock_display.vvv.call_args_list]
+    assert display_messages == [f"<{hostname}> {msg}" for msg in expected_messages]
 
 
 def test_load_structured_config_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:
