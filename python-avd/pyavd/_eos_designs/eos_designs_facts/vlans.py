@@ -8,12 +8,11 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._utils import remove_cached_property_type
 from pyavd.j2filters import list_compress, natural_sort, range_expand
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
-
     from . import EosDesignsFactsGeneratorProtocol
 
 
@@ -71,11 +70,12 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         if adapter_settings.phone_vlan:
             vlans.add(adapter_settings.phone_vlan)
 
-        for subinterface in adapter_settings.port_channel.subinterfaces:
-            if subinterface.vlan_id:
-                vlans.add(subinterface.vlan_id)
-            else:
-                vlans.add(subinterface.number)
+        if isinstance(adapter_settings, EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem):
+            for subinterface in adapter_settings.port_channel.subinterfaces:
+                if subinterface.vlan_id:
+                    vlans.add(subinterface.vlan_id)
+                else:
+                    vlans.add(subinterface.number)
 
         return vlans, trunk_groups
 

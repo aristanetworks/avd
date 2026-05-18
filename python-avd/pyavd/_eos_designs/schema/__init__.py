@@ -2240,6 +2240,468 @@ class EosDesigns(EosDesignsRootModel):
 
             Subinterfaces._item_type = SubinterfacesItem
 
+            class PortChannel(AvdModel):
+                """Subclass of AvdModel."""
+
+                class SubinterfacesItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class EncapsulationVlan(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                        client_dot1q: int | None
+                        """
+                        Client VLAN ID encapsulation.
+                        Default is the subinterface number.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                                """
+                                EncapsulationVlan.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    client_dot1q:
+                                       Client VLAN ID encapsulation.
+                                       Default is the subinterface number.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "number": {"type": int},
+                        "description": {"type": str},
+                        "short_esi": {"type": str},
+                        "vlan_id": {"type": int},
+                        "encapsulation_vlan": {"type": EncapsulationVlan},
+                        "raw_eos_cli": {"type": str},
+                        "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                    }
+                    number: int
+                    """Subinterface number."""
+                    description: str | None
+                    """
+                    Description for subinterface.
+                    This can be a template using the AVD string formatter syntax:
+                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                    descriptions-names.html#avd-string-formatter-syntax.
+                    The available template fields are:
+                      -
+                    `subinterface` - The full subinterface name.
+                      - `subinterface_number` - The number for the
+                    subinterface.
+                      - `vlan_id` - The VLAN ID bridged to this subinterface.
+                      - `dot1q_client_vlan` -
+                    The Client VLAN ID encapsulation.
+                      - `endpoint_type` - The `type` of the connected endpoint either
+                    set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                      -
+                    `endpoint` - The name of the connected endpoint
+                    """
+                    short_esi: str | None
+                    """
+                    In format xxxx:xxxx:xxxx or "auto".
+                    Required for multihomed port-channels with subinterfaces.
+                    """
+                    vlan_id: int | None
+                    """
+                    VLAN ID to bridge.
+                    Default is the subinterface number.
+                    """
+                    encapsulation_vlan: EncapsulationVlan
+                    """Subclass of AvdModel."""
+                    raw_eos_cli: str | None
+                    """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                    structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                    Config schema.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            number: int | UndefinedType = Undefined,
+                            description: str | None | UndefinedType = Undefined,
+                            short_esi: str | None | UndefinedType = Undefined,
+                            vlan_id: int | None | UndefinedType = Undefined,
+                            encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                            raw_eos_cli: str | None | UndefinedType = Undefined,
+                            structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            SubinterfacesItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                number: Subinterface number.
+                                description:
+                                   Description for subinterface.
+                                   This can be a template using the AVD string formatter syntax:
+                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                   descriptions-names.html#avd-string-formatter-syntax.
+                                   The available template fields are:
+                                     -
+                                   `subinterface` - The full subinterface name.
+                                     - `subinterface_number` - The number for the
+                                   subinterface.
+                                     - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                     - `dot1q_client_vlan` -
+                                   The Client VLAN ID encapsulation.
+                                     - `endpoint_type` - The `type` of the connected endpoint either
+                                   set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                     -
+                                   `endpoint` - The name of the connected endpoint
+                                short_esi:
+                                   In format xxxx:xxxx:xxxx or "auto".
+                                   Required for multihomed port-channels with subinterfaces.
+                                vlan_id:
+                                   VLAN ID to bridge.
+                                   Default is the subinterface number.
+                                encapsulation_vlan: Subclass of AvdModel.
+                                raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                                structured_config:
+                                   Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                                   Config schema.
+
+                            """
+
+                class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                    """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                    _primary_key: ClassVar[str] = "number"
+
+                Subinterfaces._item_type = SubinterfacesItem
+
+                Mode: TypeAlias = Literal["active", "passive", "on"]
+
+                class LacpFallback(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Mode: TypeAlias = Literal["static", "individual"]
+
+                    class Individual(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+                        _fields: ClassVar[dict] = {"profile": {"type": str}, "vlans": {"type": str}, "native_vlan": {"type": int}, "mode": {"type": str}}
+                        profile: str | None
+                        """Port-profile name to inherit configuration."""
+                        vlans: str | None
+                        """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                        native_vlan: int | None
+                        """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                        mode: Mode | None
+                        """Interface mode on the port-channel member interfaces when in fallback individual."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                profile: str | None | UndefinedType = Undefined,
+                                vlans: str | None | UndefinedType = Undefined,
+                                native_vlan: int | None | UndefinedType = Undefined,
+                                mode: Mode | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Individual.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    profile: Port-profile name to inherit configuration.
+                                    vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                    native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                    mode: Interface mode on the port-channel member interfaces when in fallback individual.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
+                    mode: Mode | None
+                    """
+                    Either static or individual mode is supported.
+                    If the mode is set to "individual" either 'profile'
+                    or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                    """
+                    individual: Individual
+                    """
+                    Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                    "individual".
+
+                    Subclass of AvdModel.
+                    """
+                    timeout: int
+                    """
+                    Timeout in seconds.
+
+                    Default value: `90`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            mode: Mode | None | UndefinedType = Undefined,
+                            individual: Individual | UndefinedType = Undefined,
+                            timeout: int | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            LacpFallback.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mode:
+                                   Either static or individual mode is supported.
+                                   If the mode is set to "individual" either 'profile'
+                                   or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                                individual:
+                                   Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                                   "individual".
+
+                                   Subclass of AvdModel.
+                                timeout: Timeout in seconds.
+
+                            """
+
+                class LacpTimer(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Mode: TypeAlias = Literal["normal", "fast"]
+                    _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
+                    mode: Mode | None
+                    """LACP mode for interface members."""
+                    multiplier: int | None
+                    """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            LacpTimer.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mode: LACP mode for interface members.
+                                multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "subinterfaces": {"type": Subinterfaces},
+                    "mode": {"type": str},
+                    "channel_id": {"type": int},
+                    "description": {"type": str},
+                    "endpoint_port_channel": {"type": str},
+                    "enabled": {"type": bool, "default": True},
+                    "ptp_mpass": {"type": bool, "default": False},
+                    "lacp_fallback": {"type": LacpFallback},
+                    "lacp_timer": {"type": LacpTimer},
+                    "raw_eos_cli": {"type": str},
+                    "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                }
+                subinterfaces: Subinterfaces
+                """
+                Port-Channel L2 Subinterfaces.
+                Subinterfaces are only supported on routed port-channels, which means
+                they cannot be configured on MLAG port-channels.
+                Setting short_esi: auto generates the short_esi
+                automatically using a hash of configuration elements.
+                Please see the notes under "EVPN A/A ESI dual-
+                attached endpoint scenario" before setting short_esi: auto.
+
+
+                Subclass of AvdIndexedList with
+                `SubinterfacesItem` items. Primary key is `number` (`int`).
+                """
+                mode: Mode | None
+                """Port-Channel Mode."""
+                channel_id: int | None
+                """
+                Port-Channel ID.
+                If no channel_id is specified, an id is generated from the first switch port in the
+                port channel.
+                """
+                description: str | None
+                """
+                Description or description template to be used on the port-channel interface.
+                This can be a template
+                using the AVD string formatter syntax:
+                https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                descriptions-names.html#avd-string-formatter-syntax.
+                The available template fields are:
+                  -
+                `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                `connected_endpoints_keys.type` like `server`, `router` etc.
+                  - `endpoint` - The name of the
+                connected endpoint
+                  - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                  -
+                `port_channel_id` - The port-channel number for the switch.
+                  - `adapter_description` - The
+                adapter's description if set.
+                  - `adapter_description_or_endpoint` - Helper alias of the
+                adapter_description or endpoint.
+
+                The default description is set by
+                `default_connected_endpoints_port_channel_description`.
+                By default the description is templated from
+                the type, name and port_channel interface of the endpoint if set.
+                """
+                endpoint_port_channel: str | None
+                """
+                Name of the port-channel interface on the endpoint.
+                Used for the port-channel description template
+                with the field name `peer_interface`
+                """
+                enabled: bool
+                """
+                Port-Channel administrative state.
+                Setting to false will set port to 'shutdown' in intended
+                configuration.
+
+                Default value: `True`
+                """
+                ptp_mpass: bool
+                """
+                When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                logical device.
+                Arista PTP enabled devices always place PTP messages on the same physical link
+                within the port-channel.
+                Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                devices.
+
+                Default value: `False`
+                """
+                lacp_fallback: LacpFallback
+                """
+                LACP fallback configuration.
+
+                Subclass of AvdModel.
+                """
+                lacp_timer: LacpTimer
+                """
+                LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                Subclass of AvdModel.
+                """
+                raw_eos_cli: str | None
+                """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
+                structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                """
+                Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                schema.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        subinterfaces: Subinterfaces | UndefinedType = Undefined,
+                        mode: Mode | None | UndefinedType = Undefined,
+                        channel_id: int | None | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
+                        endpoint_port_channel: str | None | UndefinedType = Undefined,
+                        enabled: bool | UndefinedType = Undefined,
+                        ptp_mpass: bool | UndefinedType = Undefined,
+                        lacp_fallback: LacpFallback | UndefinedType = Undefined,
+                        lacp_timer: LacpTimer | UndefinedType = Undefined,
+                        raw_eos_cli: str | None | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PortChannel.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            subinterfaces:
+                               Port-Channel L2 Subinterfaces.
+                               Subinterfaces are only supported on routed port-channels, which means
+                               they cannot be configured on MLAG port-channels.
+                               Setting short_esi: auto generates the short_esi
+                               automatically using a hash of configuration elements.
+                               Please see the notes under "EVPN A/A ESI dual-
+                               attached endpoint scenario" before setting short_esi: auto.
+
+
+                               Subclass of AvdIndexedList with
+                               `SubinterfacesItem` items. Primary key is `number` (`int`).
+                            mode: Port-Channel Mode.
+                            channel_id:
+                               Port-Channel ID.
+                               If no channel_id is specified, an id is generated from the first switch port in the
+                               port channel.
+                            description:
+                               Description or description template to be used on the port-channel interface.
+                               This can be a template
+                               using the AVD string formatter syntax:
+                               https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                               descriptions-names.html#avd-string-formatter-syntax.
+                               The available template fields are:
+                                 -
+                               `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                               `connected_endpoints_keys.type` like `server`, `router` etc.
+                                 - `endpoint` - The name of the
+                               connected endpoint
+                                 - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                                 -
+                               `port_channel_id` - The port-channel number for the switch.
+                                 - `adapter_description` - The
+                               adapter's description if set.
+                                 - `adapter_description_or_endpoint` - Helper alias of the
+                               adapter_description or endpoint.
+
+                               The default description is set by
+                               `default_connected_endpoints_port_channel_description`.
+                               By default the description is templated from
+                               the type, name and port_channel interface of the endpoint if set.
+                            endpoint_port_channel:
+                               Name of the port-channel interface on the endpoint.
+                               Used for the port-channel description template
+                               with the field name `peer_interface`
+                            enabled:
+                               Port-Channel administrative state.
+                               Setting to false will set port to 'shutdown' in intended
+                               configuration.
+                            ptp_mpass:
+                               When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                               logical device.
+                               Arista PTP enabled devices always place PTP messages on the same physical link
+                               within the port-channel.
+                               Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                               devices.
+                            lacp_fallback:
+                               LACP fallback configuration.
+
+                               Subclass of AvdModel.
+                            lacp_timer:
+                               LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                               Subclass of AvdModel.
+                            raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
+                            structured_config:
+                               Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                               schema.
+
+                        """
+
             Speed: TypeAlias = Literal[
                 "100full",
                 "100g",
@@ -3014,468 +3476,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class PortChannel(AvdModel):
-                """Subclass of AvdModel."""
-
-                Mode: TypeAlias = Literal["active", "passive", "on"]
-
-                class LacpFallback(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    Mode: TypeAlias = Literal["static", "individual"]
-
-                    class Individual(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
-                        _fields: ClassVar[dict] = {"profile": {"type": str}, "vlans": {"type": str}, "native_vlan": {"type": int}, "mode": {"type": str}}
-                        profile: str | None
-                        """Port-profile name to inherit configuration."""
-                        vlans: str | None
-                        """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
-                        native_vlan: int | None
-                        """Native VLAN on the port-channel member interfaces when in fallback individual."""
-                        mode: Mode | None
-                        """Interface mode on the port-channel member interfaces when in fallback individual."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                profile: str | None | UndefinedType = Undefined,
-                                vlans: str | None | UndefinedType = Undefined,
-                                native_vlan: int | None | UndefinedType = Undefined,
-                                mode: Mode | None | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                Individual.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    profile: Port-profile name to inherit configuration.
-                                    vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
-                                    native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
-                                    mode: Interface mode on the port-channel member interfaces when in fallback individual.
-
-                                """
-
-                    _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
-                    mode: Mode | None
-                    """
-                    Either static or individual mode is supported.
-                    If the mode is set to "individual" either 'profile'
-                    or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
-                    """
-                    individual: Individual
-                    """
-                    Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
-                    "individual".
-
-                    Subclass of AvdModel.
-                    """
-                    timeout: int
-                    """
-                    Timeout in seconds.
-
-                    Default value: `90`
-                    """
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            mode: Mode | None | UndefinedType = Undefined,
-                            individual: Individual | UndefinedType = Undefined,
-                            timeout: int | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            LacpFallback.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                mode:
-                                   Either static or individual mode is supported.
-                                   If the mode is set to "individual" either 'profile'
-                                   or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
-                                individual:
-                                   Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
-                                   "individual".
-
-                                   Subclass of AvdModel.
-                                timeout: Timeout in seconds.
-
-                            """
-
-                class LacpTimer(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    Mode: TypeAlias = Literal["normal", "fast"]
-                    _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
-                    mode: Mode | None
-                    """LACP mode for interface members."""
-                    multiplier: int | None
-                    """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined) -> None:
-                            """
-                            LacpTimer.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                mode: LACP mode for interface members.
-                                multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
-
-                            """
-
-                class SubinterfacesItem(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    class EncapsulationVlan(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
-                        client_dot1q: int | None
-                        """
-                        Client VLAN ID encapsulation.
-                        Default is the subinterface number.
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
-                                """
-                                EncapsulationVlan.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    client_dot1q:
-                                       Client VLAN ID encapsulation.
-                                       Default is the subinterface number.
-
-                                """
-
-                    _fields: ClassVar[dict] = {
-                        "number": {"type": int},
-                        "description": {"type": str},
-                        "short_esi": {"type": str},
-                        "vlan_id": {"type": int},
-                        "encapsulation_vlan": {"type": EncapsulationVlan},
-                        "raw_eos_cli": {"type": str},
-                        "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                    }
-                    number: int
-                    """Subinterface number."""
-                    description: str | None
-                    """
-                    Description for subinterface.
-                    This can be a template using the AVD string formatter syntax:
-                    https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                    descriptions-names.html#avd-string-formatter-syntax.
-                    The available template fields are:
-                      -
-                    `subinterface` - The full subinterface name.
-                      - `subinterface_number` - The number for the
-                    subinterface.
-                      - `vlan_id` - The VLAN ID bridged to this subinterface.
-                      - `dot1q_client_vlan` -
-                    The Client VLAN ID encapsulation.
-                      - `endpoint_type` - The `type` of the connected endpoint either
-                    set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
-                      -
-                    `endpoint` - The name of the connected endpoint
-                    """
-                    short_esi: str | None
-                    """
-                    In format xxxx:xxxx:xxxx or "auto".
-                    Required for multihomed port-channels with subinterfaces.
-                    """
-                    vlan_id: int | None
-                    """
-                    VLAN ID to bridge.
-                    Default is the subinterface number.
-                    """
-                    encapsulation_vlan: EncapsulationVlan
-                    """Subclass of AvdModel."""
-                    raw_eos_cli: str | None
-                    """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
-                    structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
-                    Config schema.
-                    """
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            number: int | UndefinedType = Undefined,
-                            description: str | None | UndefinedType = Undefined,
-                            short_esi: str | None | UndefinedType = Undefined,
-                            vlan_id: int | None | UndefinedType = Undefined,
-                            encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
-                            raw_eos_cli: str | None | UndefinedType = Undefined,
-                            structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            SubinterfacesItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                number: Subinterface number.
-                                description:
-                                   Description for subinterface.
-                                   This can be a template using the AVD string formatter syntax:
-                                   https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                                   descriptions-names.html#avd-string-formatter-syntax.
-                                   The available template fields are:
-                                     -
-                                   `subinterface` - The full subinterface name.
-                                     - `subinterface_number` - The number for the
-                                   subinterface.
-                                     - `vlan_id` - The VLAN ID bridged to this subinterface.
-                                     - `dot1q_client_vlan` -
-                                   The Client VLAN ID encapsulation.
-                                     - `endpoint_type` - The `type` of the connected endpoint either
-                                   set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
-                                     -
-                                   `endpoint` - The name of the connected endpoint
-                                short_esi:
-                                   In format xxxx:xxxx:xxxx or "auto".
-                                   Required for multihomed port-channels with subinterfaces.
-                                vlan_id:
-                                   VLAN ID to bridge.
-                                   Default is the subinterface number.
-                                encapsulation_vlan: Subclass of AvdModel.
-                                raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
-                                structured_config:
-                                   Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
-                                   Config schema.
-
-                            """
-
-                class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
-                    """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
-
-                    _primary_key: ClassVar[str] = "number"
-
-                Subinterfaces._item_type = SubinterfacesItem
-
-                _fields: ClassVar[dict] = {
-                    "mode": {"type": str},
-                    "channel_id": {"type": int},
-                    "description": {"type": str},
-                    "endpoint_port_channel": {"type": str},
-                    "enabled": {"type": bool, "default": True},
-                    "ptp_mpass": {"type": bool, "default": False},
-                    "lacp_fallback": {"type": LacpFallback},
-                    "lacp_timer": {"type": LacpTimer},
-                    "subinterfaces": {"type": Subinterfaces},
-                    "raw_eos_cli": {"type": str},
-                    "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                }
-                mode: Mode | None
-                """Port-Channel Mode."""
-                channel_id: int | None
-                """
-                Port-Channel ID.
-                If no channel_id is specified, an id is generated from the first switch port in the
-                port channel.
-                """
-                description: str | None
-                """
-                Description or description template to be used on the port-channel interface.
-                This can be a template
-                using the AVD string formatter syntax:
-                https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                descriptions-names.html#avd-string-formatter-syntax.
-                The available template fields are:
-                  -
-                `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
-                `connected_endpoints_keys.type` like `server`, `router` etc.
-                  - `endpoint` - The name of the
-                connected endpoint
-                  - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
-                  -
-                `port_channel_id` - The port-channel number for the switch.
-                  - `adapter_description` - The
-                adapter's description if set.
-                  - `adapter_description_or_endpoint` - Helper alias of the
-                adapter_description or endpoint.
-
-                The default description is set by
-                `default_connected_endpoints_port_channel_description`.
-                By default the description is templated from
-                the type, name and port_channel interface of the endpoint if set.
-                """
-                endpoint_port_channel: str | None
-                """
-                Name of the port-channel interface on the endpoint.
-                Used for the port-channel description template
-                with the field name `peer_interface`
-                """
-                enabled: bool
-                """
-                Port-Channel administrative state.
-                Setting to false will set port to 'shutdown' in intended
-                configuration.
-
-                Default value: `True`
-                """
-                ptp_mpass: bool
-                """
-                When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
-                logical device.
-                Arista PTP enabled devices always place PTP messages on the same physical link
-                within the port-channel.
-                Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
-                devices.
-
-                Default value: `False`
-                """
-                lacp_fallback: LacpFallback
-                """
-                LACP fallback configuration.
-
-                Subclass of AvdModel.
-                """
-                lacp_timer: LacpTimer
-                """
-                LACP timer configuration. Applies only when Port-channel mode is not "on".
-
-                Subclass of AvdModel.
-                """
-                subinterfaces: Subinterfaces
-                """
-                Port-Channel L2 Subinterfaces.
-                Subinterfaces are only supported on routed port-channels, which means
-                they cannot be configured on MLAG port-channels.
-                Setting short_esi: auto generates the short_esi
-                automatically using a hash of configuration elements.
-                Please see the notes under "EVPN A/A ESI dual-
-                attached endpoint scenario" before setting short_esi: auto.
-
-
-                Subclass of AvdIndexedList with
-                `SubinterfacesItem` items. Primary key is `number` (`int`).
-                """
-                raw_eos_cli: str | None
-                """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
-                structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                """
-                Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
-                schema.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        mode: Mode | None | UndefinedType = Undefined,
-                        channel_id: int | None | UndefinedType = Undefined,
-                        description: str | None | UndefinedType = Undefined,
-                        endpoint_port_channel: str | None | UndefinedType = Undefined,
-                        enabled: bool | UndefinedType = Undefined,
-                        ptp_mpass: bool | UndefinedType = Undefined,
-                        lacp_fallback: LacpFallback | UndefinedType = Undefined,
-                        lacp_timer: LacpTimer | UndefinedType = Undefined,
-                        subinterfaces: Subinterfaces | UndefinedType = Undefined,
-                        raw_eos_cli: str | None | UndefinedType = Undefined,
-                        structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        PortChannel.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            mode: Port-Channel Mode.
-                            channel_id:
-                               Port-Channel ID.
-                               If no channel_id is specified, an id is generated from the first switch port in the
-                               port channel.
-                            description:
-                               Description or description template to be used on the port-channel interface.
-                               This can be a template
-                               using the AVD string formatter syntax:
-                               https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                               descriptions-names.html#avd-string-formatter-syntax.
-                               The available template fields are:
-                                 -
-                               `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
-                               `connected_endpoints_keys.type` like `server`, `router` etc.
-                                 - `endpoint` - The name of the
-                               connected endpoint
-                                 - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
-                                 -
-                               `port_channel_id` - The port-channel number for the switch.
-                                 - `adapter_description` - The
-                               adapter's description if set.
-                                 - `adapter_description_or_endpoint` - Helper alias of the
-                               adapter_description or endpoint.
-
-                               The default description is set by
-                               `default_connected_endpoints_port_channel_description`.
-                               By default the description is templated from
-                               the type, name and port_channel interface of the endpoint if set.
-                            endpoint_port_channel:
-                               Name of the port-channel interface on the endpoint.
-                               Used for the port-channel description template
-                               with the field name `peer_interface`
-                            enabled:
-                               Port-Channel administrative state.
-                               Setting to false will set port to 'shutdown' in intended
-                               configuration.
-                            ptp_mpass:
-                               When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
-                               logical device.
-                               Arista PTP enabled devices always place PTP messages on the same physical link
-                               within the port-channel.
-                               Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
-                               devices.
-                            lacp_fallback:
-                               LACP fallback configuration.
-
-                               Subclass of AvdModel.
-                            lacp_timer:
-                               LACP timer configuration. Applies only when Port-channel mode is not "on".
-
-                               Subclass of AvdModel.
-                            subinterfaces:
-                               Port-Channel L2 Subinterfaces.
-                               Subinterfaces are only supported on routed port-channels, which means
-                               they cannot be configured on MLAG port-channels.
-                               Setting short_esi: auto generates the short_esi
-                               automatically using a hash of configuration elements.
-                               Please see the notes under "EVPN A/A ESI dual-
-                               attached endpoint scenario" before setting short_esi: auto.
-
-
-                               Subclass of AvdIndexedList with
-                               `SubinterfacesItem` items. Primary key is `number` (`int`).
-                            raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
-                            structured_config:
-                               Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
-                               schema.
-
-                        """
-
             class CampusLinkType(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -3487,6 +3487,7 @@ class EosDesigns(EosDesignsRootModel):
                 "endpoint_ports": {"type": EndpointPorts},
                 "descriptions": {"type": Descriptions},
                 "subinterfaces": {"type": Subinterfaces},
+                "port_channel": {"type": PortChannel},
                 "speed": {"type": str},
                 "description": {"type": str},
                 "profile": {"type": str},
@@ -3517,7 +3518,6 @@ class EosDesigns(EosDesignsRootModel):
                 "storm_control": {"type": StormControl},
                 "monitor_sessions": {"type": MonitorSessions},
                 "ethernet_segment": {"type": EthernetSegment},
-                "port_channel": {"type": PortChannel},
                 "validate_state": {"type": bool},
                 "validate_lldp": {"type": bool},
                 "campus_link_type": {"type": CampusLinkType},
@@ -3582,6 +3582,12 @@ class EosDesigns(EosDesignsRootModel):
             Please
             see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
             Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
+            """
+            port_channel: PortChannel
+            """
+            Used for port-channel adapter.
+
+            Subclass of AvdModel.
             """
             speed: Speed | None
             """
@@ -3729,12 +3735,6 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            port_channel: PortChannel
-            """
-            Used for port-channel adapter.
-
-            Subclass of AvdModel.
-            """
             validate_state: bool | None
             """
             Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
@@ -3784,6 +3784,7 @@ class EosDesigns(EosDesignsRootModel):
                     endpoint_ports: EndpointPorts | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
                     subinterfaces: Subinterfaces | UndefinedType = Undefined,
+                    port_channel: PortChannel | UndefinedType = Undefined,
                     speed: Speed | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     profile: str | None | UndefinedType = Undefined,
@@ -3814,7 +3815,6 @@ class EosDesigns(EosDesignsRootModel):
                     storm_control: StormControl | UndefinedType = Undefined,
                     monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                     ethernet_segment: EthernetSegment | UndefinedType = Undefined,
-                    port_channel: PortChannel | UndefinedType = Undefined,
                     validate_state: bool | None | UndefinedType = Undefined,
                     validate_lldp: bool | None | UndefinedType = Undefined,
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
@@ -3877,6 +3877,10 @@ class EosDesigns(EosDesignsRootModel):
                            Please
                            see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
                            Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
+                        port_channel:
+                           Used for port-channel adapter.
+
+                           Subclass of AvdModel.
                         speed:
                            Set adapter speed.
                            If not specified speed will be auto.
@@ -3980,10 +3984,6 @@ class EosDesigns(EosDesignsRootModel):
                            with `MonitorSessionsItem` items.
                         ethernet_segment:
                            Settings for all or single-active EVPN multihoming.
-
-                           Subclass of AvdModel.
-                        port_channel:
-                           Used for port-channel adapter.
 
                            Subclass of AvdModel.
                         validate_state:
@@ -25769,144 +25769,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class SubinterfacesItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                class EncapsulationVlan(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
-                    client_dot1q: int | None
-                    """
-                    Client VLAN ID encapsulation.
-                    Default is the subinterface number.
-                    """
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
-                            """
-                            EncapsulationVlan.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                client_dot1q:
-                                   Client VLAN ID encapsulation.
-                                   Default is the subinterface number.
-
-                            """
-
-                _fields: ClassVar[dict] = {
-                    "number": {"type": int},
-                    "description": {"type": str},
-                    "short_esi": {"type": str},
-                    "vlan_id": {"type": int},
-                    "encapsulation_vlan": {"type": EncapsulationVlan},
-                    "raw_eos_cli": {"type": str},
-                    "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                }
-                number: int
-                """Subinterface number."""
-                description: str | None
-                """
-                Description for subinterface.
-                This can be a template using the AVD string formatter syntax:
-                https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                descriptions-names.html#avd-string-formatter-syntax.
-                The available template fields are:
-                  -
-                `subinterface` - The full subinterface name.
-                  - `subinterface_number` - The number for the
-                subinterface.
-                  - `vlan_id` - The VLAN ID bridged to this subinterface.
-                  - `dot1q_client_vlan` -
-                The Client VLAN ID encapsulation.
-                  - `endpoint_type` - The `type` of the connected endpoint either
-                set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
-                  -
-                `endpoint` - The name of the connected endpoint
-                """
-                short_esi: str | None
-                """
-                In format xxxx:xxxx:xxxx or "auto".
-                Required for multihomed port-channels with subinterfaces.
-                """
-                vlan_id: int | None
-                """
-                VLAN ID to bridge.
-                Default is the subinterface number.
-                """
-                encapsulation_vlan: EncapsulationVlan
-                """Subclass of AvdModel."""
-                raw_eos_cli: str | None
-                """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
-                structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                """
-                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
-                Config schema.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        number: int | UndefinedType = Undefined,
-                        description: str | None | UndefinedType = Undefined,
-                        short_esi: str | None | UndefinedType = Undefined,
-                        vlan_id: int | None | UndefinedType = Undefined,
-                        encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
-                        raw_eos_cli: str | None | UndefinedType = Undefined,
-                        structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        SubinterfacesItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            number: Subinterface number.
-                            description:
-                               Description for subinterface.
-                               This can be a template using the AVD string formatter syntax:
-                               https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                               descriptions-names.html#avd-string-formatter-syntax.
-                               The available template fields are:
-                                 -
-                               `subinterface` - The full subinterface name.
-                                 - `subinterface_number` - The number for the
-                               subinterface.
-                                 - `vlan_id` - The VLAN ID bridged to this subinterface.
-                                 - `dot1q_client_vlan` -
-                               The Client VLAN ID encapsulation.
-                                 - `endpoint_type` - The `type` of the connected endpoint either
-                               set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
-                                 -
-                               `endpoint` - The name of the connected endpoint
-                            short_esi:
-                               In format xxxx:xxxx:xxxx or "auto".
-                               Required for multihomed port-channels with subinterfaces.
-                            vlan_id:
-                               VLAN ID to bridge.
-                               Default is the subinterface number.
-                            encapsulation_vlan: Subclass of AvdModel.
-                            raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
-                            structured_config:
-                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
-                               Config schema.
-
-                        """
-
-            class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
-                """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
-
-                _primary_key: ClassVar[str] = "number"
-
-            Subinterfaces._item_type = SubinterfacesItem
-
             _fields: ClassVar[dict] = {
                 "mode": {"type": str},
                 "channel_id": {"type": int},
@@ -25916,7 +25778,6 @@ class EosDesigns(EosDesignsRootModel):
                 "ptp_mpass": {"type": bool, "default": False},
                 "lacp_fallback": {"type": LacpFallback},
                 "lacp_timer": {"type": LacpTimer},
-                "subinterfaces": {"type": Subinterfaces},
                 "raw_eos_cli": {"type": str},
                 "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -25991,20 +25852,6 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            subinterfaces: Subinterfaces
-            """
-            Port-Channel L2 Subinterfaces.
-            Subinterfaces are only supported on routed port-channels, which means
-            they cannot be configured on MLAG port-channels.
-            Setting short_esi: auto generates the short_esi
-            automatically using a hash of configuration elements.
-            Please see the notes under "EVPN A/A ESI dual-
-            attached endpoint scenario" before setting short_esi: auto.
-
-
-            Subclass of AvdIndexedList with
-            `SubinterfacesItem` items. Primary key is `number` (`int`).
-            """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
             structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -26026,7 +25873,6 @@ class EosDesigns(EosDesignsRootModel):
                     ptp_mpass: bool | UndefinedType = Undefined,
                     lacp_fallback: LacpFallback | UndefinedType = Undefined,
                     lacp_timer: LacpTimer | UndefinedType = Undefined,
-                    subinterfaces: Subinterfaces | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -26089,18 +25935,6 @@ class EosDesigns(EosDesignsRootModel):
                            LACP timer configuration. Applies only when Port-channel mode is not "on".
 
                            Subclass of AvdModel.
-                        subinterfaces:
-                           Port-Channel L2 Subinterfaces.
-                           Subinterfaces are only supported on routed port-channels, which means
-                           they cannot be configured on MLAG port-channels.
-                           Setting short_esi: auto generates the short_esi
-                           automatically using a hash of configuration elements.
-                           Please see the notes under "EVPN A/A ESI dual-
-                           attached endpoint scenario" before setting short_esi: auto.
-
-
-                           Subclass of AvdIndexedList with
-                           `SubinterfacesItem` items. Primary key is `number` (`int`).
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
                            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -30748,144 +30582,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class SubinterfacesItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                class EncapsulationVlan(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
-                    client_dot1q: int | None
-                    """
-                    Client VLAN ID encapsulation.
-                    Default is the subinterface number.
-                    """
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
-                            """
-                            EncapsulationVlan.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                client_dot1q:
-                                   Client VLAN ID encapsulation.
-                                   Default is the subinterface number.
-
-                            """
-
-                _fields: ClassVar[dict] = {
-                    "number": {"type": int},
-                    "description": {"type": str},
-                    "short_esi": {"type": str},
-                    "vlan_id": {"type": int},
-                    "encapsulation_vlan": {"type": EncapsulationVlan},
-                    "raw_eos_cli": {"type": str},
-                    "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                }
-                number: int
-                """Subinterface number."""
-                description: str | None
-                """
-                Description for subinterface.
-                This can be a template using the AVD string formatter syntax:
-                https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                descriptions-names.html#avd-string-formatter-syntax.
-                The available template fields are:
-                  -
-                `subinterface` - The full subinterface name.
-                  - `subinterface_number` - The number for the
-                subinterface.
-                  - `vlan_id` - The VLAN ID bridged to this subinterface.
-                  - `dot1q_client_vlan` -
-                The Client VLAN ID encapsulation.
-                  - `endpoint_type` - The `type` of the connected endpoint either
-                set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
-                  -
-                `endpoint` - The name of the connected endpoint
-                """
-                short_esi: str | None
-                """
-                In format xxxx:xxxx:xxxx or "auto".
-                Required for multihomed port-channels with subinterfaces.
-                """
-                vlan_id: int | None
-                """
-                VLAN ID to bridge.
-                Default is the subinterface number.
-                """
-                encapsulation_vlan: EncapsulationVlan
-                """Subclass of AvdModel."""
-                raw_eos_cli: str | None
-                """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
-                structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                """
-                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
-                Config schema.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        number: int | UndefinedType = Undefined,
-                        description: str | None | UndefinedType = Undefined,
-                        short_esi: str | None | UndefinedType = Undefined,
-                        vlan_id: int | None | UndefinedType = Undefined,
-                        encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
-                        raw_eos_cli: str | None | UndefinedType = Undefined,
-                        structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        SubinterfacesItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            number: Subinterface number.
-                            description:
-                               Description for subinterface.
-                               This can be a template using the AVD string formatter syntax:
-                               https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                               descriptions-names.html#avd-string-formatter-syntax.
-                               The available template fields are:
-                                 -
-                               `subinterface` - The full subinterface name.
-                                 - `subinterface_number` - The number for the
-                               subinterface.
-                                 - `vlan_id` - The VLAN ID bridged to this subinterface.
-                                 - `dot1q_client_vlan` -
-                               The Client VLAN ID encapsulation.
-                                 - `endpoint_type` - The `type` of the connected endpoint either
-                               set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
-                                 -
-                               `endpoint` - The name of the connected endpoint
-                            short_esi:
-                               In format xxxx:xxxx:xxxx or "auto".
-                               Required for multihomed port-channels with subinterfaces.
-                            vlan_id:
-                               VLAN ID to bridge.
-                               Default is the subinterface number.
-                            encapsulation_vlan: Subclass of AvdModel.
-                            raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
-                            structured_config:
-                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
-                               Config schema.
-
-                        """
-
-            class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
-                """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
-
-                _primary_key: ClassVar[str] = "number"
-
-            Subinterfaces._item_type = SubinterfacesItem
-
             _fields: ClassVar[dict] = {
                 "mode": {"type": str},
                 "channel_id": {"type": int},
@@ -30895,7 +30591,6 @@ class EosDesigns(EosDesignsRootModel):
                 "ptp_mpass": {"type": bool, "default": False},
                 "lacp_fallback": {"type": LacpFallback},
                 "lacp_timer": {"type": LacpTimer},
-                "subinterfaces": {"type": Subinterfaces},
                 "raw_eos_cli": {"type": str},
                 "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
@@ -30970,20 +30665,6 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            subinterfaces: Subinterfaces
-            """
-            Port-Channel L2 Subinterfaces.
-            Subinterfaces are only supported on routed port-channels, which means
-            they cannot be configured on MLAG port-channels.
-            Setting short_esi: auto generates the short_esi
-            automatically using a hash of configuration elements.
-            Please see the notes under "EVPN A/A ESI dual-
-            attached endpoint scenario" before setting short_esi: auto.
-
-
-            Subclass of AvdIndexedList with
-            `SubinterfacesItem` items. Primary key is `number` (`int`).
-            """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
             structured_config: EosCliConfigGen.PortChannelInterfacesItem
@@ -31005,7 +30686,6 @@ class EosDesigns(EosDesignsRootModel):
                     ptp_mpass: bool | UndefinedType = Undefined,
                     lacp_fallback: LacpFallback | UndefinedType = Undefined,
                     lacp_timer: LacpTimer | UndefinedType = Undefined,
-                    subinterfaces: Subinterfaces | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
@@ -31068,18 +30748,6 @@ class EosDesigns(EosDesignsRootModel):
                            LACP timer configuration. Applies only when Port-channel mode is not "on".
 
                            Subclass of AvdModel.
-                        subinterfaces:
-                           Port-Channel L2 Subinterfaces.
-                           Subinterfaces are only supported on routed port-channels, which means
-                           they cannot be configured on MLAG port-channels.
-                           Setting short_esi: auto generates the short_esi
-                           automatically using a hash of configuration elements.
-                           Please see the notes under "EVPN A/A ESI dual-
-                           attached endpoint scenario" before setting short_esi: auto.
-
-
-                           Subclass of AvdIndexedList with
-                           `SubinterfacesItem` items. Primary key is `number` (`int`).
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
                            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -58758,6 +58426,475 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subinterfaces._item_type = SubinterfacesItem
 
+                    class PortChannel(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class SubinterfacesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class EncapsulationVlan(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                                client_dot1q: int | None
+                                """
+                                Client VLAN ID encapsulation.
+                                Default is the subinterface number.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        EncapsulationVlan.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            client_dot1q:
+                                               Client VLAN ID encapsulation.
+                                               Default is the subinterface number.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "number": {"type": int},
+                                "description": {"type": str},
+                                "short_esi": {"type": str},
+                                "vlan_id": {"type": int},
+                                "encapsulation_vlan": {"type": EncapsulationVlan},
+                                "raw_eos_cli": {"type": str},
+                                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            }
+                            number: int
+                            """Subinterface number."""
+                            description: str | None
+                            """
+                            Description for subinterface.
+                            This can be a template using the AVD string formatter syntax:
+                            https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                            descriptions-names.html#avd-string-formatter-syntax.
+                            The available template fields are:
+                              -
+                            `subinterface` - The full subinterface name.
+                              - `subinterface_number` - The number for the
+                            subinterface.
+                              - `vlan_id` - The VLAN ID bridged to this subinterface.
+                              - `dot1q_client_vlan` -
+                            The Client VLAN ID encapsulation.
+                              - `endpoint_type` - The `type` of the connected endpoint either
+                            set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                              -
+                            `endpoint` - The name of the connected endpoint
+                            """
+                            short_esi: str | None
+                            """
+                            In format xxxx:xxxx:xxxx or "auto".
+                            Required for multihomed port-channels with subinterfaces.
+                            """
+                            vlan_id: int | None
+                            """
+                            VLAN ID to bridge.
+                            Default is the subinterface number.
+                            """
+                            encapsulation_vlan: EncapsulationVlan
+                            """Subclass of AvdModel."""
+                            raw_eos_cli: str | None
+                            """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                            """
+                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                            Config schema.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    number: int | UndefinedType = Undefined,
+                                    description: str | None | UndefinedType = Undefined,
+                                    short_esi: str | None | UndefinedType = Undefined,
+                                    vlan_id: int | None | UndefinedType = Undefined,
+                                    encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    SubinterfacesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        number: Subinterface number.
+                                        description:
+                                           Description for subinterface.
+                                           This can be a template using the AVD string formatter syntax:
+                                           https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                           descriptions-names.html#avd-string-formatter-syntax.
+                                           The available template fields are:
+                                             -
+                                           `subinterface` - The full subinterface name.
+                                             - `subinterface_number` - The number for the
+                                           subinterface.
+                                             - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                             - `dot1q_client_vlan` -
+                                           The Client VLAN ID encapsulation.
+                                             - `endpoint_type` - The `type` of the connected endpoint either
+                                           set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                             -
+                                           `endpoint` - The name of the connected endpoint
+                                        short_esi:
+                                           In format xxxx:xxxx:xxxx or "auto".
+                                           Required for multihomed port-channels with subinterfaces.
+                                        vlan_id:
+                                           VLAN ID to bridge.
+                                           Default is the subinterface number.
+                                        encapsulation_vlan: Subclass of AvdModel.
+                                        raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                                        structured_config:
+                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                                           Config schema.
+
+                                    """
+
+                        class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                            """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "number"
+
+                        Subinterfaces._item_type = SubinterfacesItem
+
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
+                        class LacpFallback(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["static", "individual"]
+
+                            class Individual(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+                                _fields: ClassVar[dict] = {
+                                    "profile": {"type": str},
+                                    "vlans": {"type": str},
+                                    "native_vlan": {"type": int},
+                                    "mode": {"type": str},
+                                }
+                                profile: str | None
+                                """Port-profile name to inherit configuration."""
+                                vlans: str | None
+                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                                native_vlan: int | None
+                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                                mode: Mode | None
+                                """Interface mode on the port-channel member interfaces when in fallback individual."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        profile: str | None | UndefinedType = Undefined,
+                                        vlans: str | None | UndefinedType = Undefined,
+                                        native_vlan: int | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Individual.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            profile: Port-profile name to inherit configuration.
+                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
+                            mode: Mode | None
+                            """
+                            Either static or individual mode is supported.
+                            If the mode is set to "individual" either 'profile'
+                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                            """
+                            individual: Individual
+                            """
+                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                            "individual".
+
+                            Subclass of AvdModel.
+                            """
+                            timeout: int
+                            """
+                            Timeout in seconds.
+
+                            Default value: `90`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    mode: Mode | None | UndefinedType = Undefined,
+                                    individual: Individual | UndefinedType = Undefined,
+                                    timeout: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    LacpFallback.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode:
+                                           Either static or individual mode is supported.
+                                           If the mode is set to "individual" either 'profile'
+                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                                        individual:
+                                           Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                                           "individual".
+
+                                           Subclass of AvdModel.
+                                        timeout: Timeout in seconds.
+
+                                    """
+
+                        class LacpTimer(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["normal", "fast"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
+                            mode: Mode | None
+                            """LACP mode for interface members."""
+                            multiplier: int | None
+                            """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    LacpTimer.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: LACP mode for interface members.
+                                        multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "subinterfaces": {"type": Subinterfaces},
+                            "mode": {"type": str},
+                            "channel_id": {"type": int},
+                            "description": {"type": str},
+                            "endpoint_port_channel": {"type": str},
+                            "enabled": {"type": bool, "default": True},
+                            "ptp_mpass": {"type": bool, "default": False},
+                            "lacp_fallback": {"type": LacpFallback},
+                            "lacp_timer": {"type": LacpTimer},
+                            "raw_eos_cli": {"type": str},
+                            "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        }
+                        subinterfaces: Subinterfaces
+                        """
+                        Port-Channel L2 Subinterfaces.
+                        Subinterfaces are only supported on routed port-channels, which means
+                        they cannot be configured on MLAG port-channels.
+                        Setting short_esi: auto generates the short_esi
+                        automatically using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-
+                        attached endpoint scenario" before setting short_esi: auto.
+
+
+                        Subclass of AvdIndexedList with
+                        `SubinterfacesItem` items. Primary key is `number` (`int`).
+                        """
+                        mode: Mode | None
+                        """Port-Channel Mode."""
+                        channel_id: int | None
+                        """
+                        Port-Channel ID.
+                        If no channel_id is specified, an id is generated from the first switch port in the
+                        port channel.
+                        """
+                        description: str | None
+                        """
+                        Description or description template to be used on the port-channel interface.
+                        This can be a template
+                        using the AVD string formatter syntax:
+                        https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                        descriptions-names.html#avd-string-formatter-syntax.
+                        The available template fields are:
+                          -
+                        `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                        `connected_endpoints_keys.type` like `server`, `router` etc.
+                          - `endpoint` - The name of the
+                        connected endpoint
+                          - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                          -
+                        `port_channel_id` - The port-channel number for the switch.
+                          - `adapter_description` - The
+                        adapter's description if set.
+                          - `adapter_description_or_endpoint` - Helper alias of the
+                        adapter_description or endpoint.
+
+                        The default description is set by
+                        `default_connected_endpoints_port_channel_description`.
+                        By default the description is templated from
+                        the type, name and port_channel interface of the endpoint if set.
+                        """
+                        endpoint_port_channel: str | None
+                        """
+                        Name of the port-channel interface on the endpoint.
+                        Used for the port-channel description template
+                        with the field name `peer_interface`
+                        """
+                        enabled: bool
+                        """
+                        Port-Channel administrative state.
+                        Setting to false will set port to 'shutdown' in intended
+                        configuration.
+
+                        Default value: `True`
+                        """
+                        ptp_mpass: bool
+                        """
+                        When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                        logical device.
+                        Arista PTP enabled devices always place PTP messages on the same physical link
+                        within the port-channel.
+                        Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                        devices.
+
+                        Default value: `False`
+                        """
+                        lacp_fallback: LacpFallback
+                        """
+                        LACP fallback configuration.
+
+                        Subclass of AvdModel.
+                        """
+                        lacp_timer: LacpTimer
+                        """
+                        LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                        Subclass of AvdModel.
+                        """
+                        raw_eos_cli: str | None
+                        """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                        schema.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                subinterfaces: Subinterfaces | UndefinedType = Undefined,
+                                mode: Mode | None | UndefinedType = Undefined,
+                                channel_id: int | None | UndefinedType = Undefined,
+                                description: str | None | UndefinedType = Undefined,
+                                endpoint_port_channel: str | None | UndefinedType = Undefined,
+                                enabled: bool | UndefinedType = Undefined,
+                                ptp_mpass: bool | UndefinedType = Undefined,
+                                lacp_fallback: LacpFallback | UndefinedType = Undefined,
+                                lacp_timer: LacpTimer | UndefinedType = Undefined,
+                                raw_eos_cli: str | None | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                PortChannel.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    subinterfaces:
+                                       Port-Channel L2 Subinterfaces.
+                                       Subinterfaces are only supported on routed port-channels, which means
+                                       they cannot be configured on MLAG port-channels.
+                                       Setting short_esi: auto generates the short_esi
+                                       automatically using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-
+                                       attached endpoint scenario" before setting short_esi: auto.
+
+
+                                       Subclass of AvdIndexedList with
+                                       `SubinterfacesItem` items. Primary key is `number` (`int`).
+                                    mode: Port-Channel Mode.
+                                    channel_id:
+                                       Port-Channel ID.
+                                       If no channel_id is specified, an id is generated from the first switch port in the
+                                       port channel.
+                                    description:
+                                       Description or description template to be used on the port-channel interface.
+                                       This can be a template
+                                       using the AVD string formatter syntax:
+                                       https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                       descriptions-names.html#avd-string-formatter-syntax.
+                                       The available template fields are:
+                                         -
+                                       `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                                       `connected_endpoints_keys.type` like `server`, `router` etc.
+                                         - `endpoint` - The name of the
+                                       connected endpoint
+                                         - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                                         -
+                                       `port_channel_id` - The port-channel number for the switch.
+                                         - `adapter_description` - The
+                                       adapter's description if set.
+                                         - `adapter_description_or_endpoint` - Helper alias of the
+                                       adapter_description or endpoint.
+
+                                       The default description is set by
+                                       `default_connected_endpoints_port_channel_description`.
+                                       By default the description is templated from
+                                       the type, name and port_channel interface of the endpoint if set.
+                                    endpoint_port_channel:
+                                       Name of the port-channel interface on the endpoint.
+                                       Used for the port-channel description template
+                                       with the field name `peer_interface`
+                                    enabled:
+                                       Port-Channel administrative state.
+                                       Setting to false will set port to 'shutdown' in intended
+                                       configuration.
+                                    ptp_mpass:
+                                       When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                                       logical device.
+                                       Arista PTP enabled devices always place PTP messages on the same physical link
+                                       within the port-channel.
+                                       Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                                       devices.
+                                    lacp_fallback:
+                                       LACP fallback configuration.
+
+                                       Subclass of AvdModel.
+                                    lacp_timer:
+                                       LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                                       Subclass of AvdModel.
+                                    raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
+                                    structured_config:
+                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                                       schema.
+
+                                """
+
                     Speed: TypeAlias = Literal[
                         "100full",
                         "100g",
@@ -59534,475 +59671,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    class PortChannel(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Mode: TypeAlias = Literal["active", "passive", "on"]
-
-                        class LacpFallback(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Mode: TypeAlias = Literal["static", "individual"]
-
-                            class Individual(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
-                                _fields: ClassVar[dict] = {
-                                    "profile": {"type": str},
-                                    "vlans": {"type": str},
-                                    "native_vlan": {"type": int},
-                                    "mode": {"type": str},
-                                }
-                                profile: str | None
-                                """Port-profile name to inherit configuration."""
-                                vlans: str | None
-                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
-                                native_vlan: int | None
-                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
-                                mode: Mode | None
-                                """Interface mode on the port-channel member interfaces when in fallback individual."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self,
-                                        *,
-                                        profile: str | None | UndefinedType = Undefined,
-                                        vlans: str | None | UndefinedType = Undefined,
-                                        native_vlan: int | None | UndefinedType = Undefined,
-                                        mode: Mode | None | UndefinedType = Undefined,
-                                    ) -> None:
-                                        """
-                                        Individual.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            profile: Port-profile name to inherit configuration.
-                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
-                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
-                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
-
-                                        """
-
-                            _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
-                            mode: Mode | None
-                            """
-                            Either static or individual mode is supported.
-                            If the mode is set to "individual" either 'profile'
-                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
-                            """
-                            individual: Individual
-                            """
-                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
-                            "individual".
-
-                            Subclass of AvdModel.
-                            """
-                            timeout: int
-                            """
-                            Timeout in seconds.
-
-                            Default value: `90`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    mode: Mode | None | UndefinedType = Undefined,
-                                    individual: Individual | UndefinedType = Undefined,
-                                    timeout: int | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    LacpFallback.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        mode:
-                                           Either static or individual mode is supported.
-                                           If the mode is set to "individual" either 'profile'
-                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
-                                        individual:
-                                           Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
-                                           "individual".
-
-                                           Subclass of AvdModel.
-                                        timeout: Timeout in seconds.
-
-                                    """
-
-                        class LacpTimer(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Mode: TypeAlias = Literal["normal", "fast"]
-                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
-                            mode: Mode | None
-                            """LACP mode for interface members."""
-                            multiplier: int | None
-                            """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
-                                ) -> None:
-                                    """
-                                    LacpTimer.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        mode: LACP mode for interface members.
-                                        multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
-
-                                    """
-
-                        class SubinterfacesItem(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            class EncapsulationVlan(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
-                                client_dot1q: int | None
-                                """
-                                Client VLAN ID encapsulation.
-                                Default is the subinterface number.
-                                """
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
-                                        """
-                                        EncapsulationVlan.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            client_dot1q:
-                                               Client VLAN ID encapsulation.
-                                               Default is the subinterface number.
-
-                                        """
-
-                            _fields: ClassVar[dict] = {
-                                "number": {"type": int},
-                                "description": {"type": str},
-                                "short_esi": {"type": str},
-                                "vlan_id": {"type": int},
-                                "encapsulation_vlan": {"type": EncapsulationVlan},
-                                "raw_eos_cli": {"type": str},
-                                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                            }
-                            number: int
-                            """Subinterface number."""
-                            description: str | None
-                            """
-                            Description for subinterface.
-                            This can be a template using the AVD string formatter syntax:
-                            https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                            descriptions-names.html#avd-string-formatter-syntax.
-                            The available template fields are:
-                              -
-                            `subinterface` - The full subinterface name.
-                              - `subinterface_number` - The number for the
-                            subinterface.
-                              - `vlan_id` - The VLAN ID bridged to this subinterface.
-                              - `dot1q_client_vlan` -
-                            The Client VLAN ID encapsulation.
-                              - `endpoint_type` - The `type` of the connected endpoint either
-                            set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
-                              -
-                            `endpoint` - The name of the connected endpoint
-                            """
-                            short_esi: str | None
-                            """
-                            In format xxxx:xxxx:xxxx or "auto".
-                            Required for multihomed port-channels with subinterfaces.
-                            """
-                            vlan_id: int | None
-                            """
-                            VLAN ID to bridge.
-                            Default is the subinterface number.
-                            """
-                            encapsulation_vlan: EncapsulationVlan
-                            """Subclass of AvdModel."""
-                            raw_eos_cli: str | None
-                            """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
-                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                            """
-                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
-                            Config schema.
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    number: int | UndefinedType = Undefined,
-                                    description: str | None | UndefinedType = Undefined,
-                                    short_esi: str | None | UndefinedType = Undefined,
-                                    vlan_id: int | None | UndefinedType = Undefined,
-                                    encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
-                                    raw_eos_cli: str | None | UndefinedType = Undefined,
-                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    SubinterfacesItem.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        number: Subinterface number.
-                                        description:
-                                           Description for subinterface.
-                                           This can be a template using the AVD string formatter syntax:
-                                           https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                                           descriptions-names.html#avd-string-formatter-syntax.
-                                           The available template fields are:
-                                             -
-                                           `subinterface` - The full subinterface name.
-                                             - `subinterface_number` - The number for the
-                                           subinterface.
-                                             - `vlan_id` - The VLAN ID bridged to this subinterface.
-                                             - `dot1q_client_vlan` -
-                                           The Client VLAN ID encapsulation.
-                                             - `endpoint_type` - The `type` of the connected endpoint either
-                                           set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
-                                             -
-                                           `endpoint` - The name of the connected endpoint
-                                        short_esi:
-                                           In format xxxx:xxxx:xxxx or "auto".
-                                           Required for multihomed port-channels with subinterfaces.
-                                        vlan_id:
-                                           VLAN ID to bridge.
-                                           Default is the subinterface number.
-                                        encapsulation_vlan: Subclass of AvdModel.
-                                        raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
-                                        structured_config:
-                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
-                                           Config schema.
-
-                                    """
-
-                        class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
-                            """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
-
-                            _primary_key: ClassVar[str] = "number"
-
-                        Subinterfaces._item_type = SubinterfacesItem
-
-                        _fields: ClassVar[dict] = {
-                            "mode": {"type": str},
-                            "channel_id": {"type": int},
-                            "description": {"type": str},
-                            "endpoint_port_channel": {"type": str},
-                            "enabled": {"type": bool, "default": True},
-                            "ptp_mpass": {"type": bool, "default": False},
-                            "lacp_fallback": {"type": LacpFallback},
-                            "lacp_timer": {"type": LacpTimer},
-                            "subinterfaces": {"type": Subinterfaces},
-                            "raw_eos_cli": {"type": str},
-                            "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                        }
-                        mode: Mode | None
-                        """Port-Channel Mode."""
-                        channel_id: int | None
-                        """
-                        Port-Channel ID.
-                        If no channel_id is specified, an id is generated from the first switch port in the
-                        port channel.
-                        """
-                        description: str | None
-                        """
-                        Description or description template to be used on the port-channel interface.
-                        This can be a template
-                        using the AVD string formatter syntax:
-                        https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                        descriptions-names.html#avd-string-formatter-syntax.
-                        The available template fields are:
-                          -
-                        `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
-                        `connected_endpoints_keys.type` like `server`, `router` etc.
-                          - `endpoint` - The name of the
-                        connected endpoint
-                          - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
-                          -
-                        `port_channel_id` - The port-channel number for the switch.
-                          - `adapter_description` - The
-                        adapter's description if set.
-                          - `adapter_description_or_endpoint` - Helper alias of the
-                        adapter_description or endpoint.
-
-                        The default description is set by
-                        `default_connected_endpoints_port_channel_description`.
-                        By default the description is templated from
-                        the type, name and port_channel interface of the endpoint if set.
-                        """
-                        endpoint_port_channel: str | None
-                        """
-                        Name of the port-channel interface on the endpoint.
-                        Used for the port-channel description template
-                        with the field name `peer_interface`
-                        """
-                        enabled: bool
-                        """
-                        Port-Channel administrative state.
-                        Setting to false will set port to 'shutdown' in intended
-                        configuration.
-
-                        Default value: `True`
-                        """
-                        ptp_mpass: bool
-                        """
-                        When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
-                        logical device.
-                        Arista PTP enabled devices always place PTP messages on the same physical link
-                        within the port-channel.
-                        Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
-                        devices.
-
-                        Default value: `False`
-                        """
-                        lacp_fallback: LacpFallback
-                        """
-                        LACP fallback configuration.
-
-                        Subclass of AvdModel.
-                        """
-                        lacp_timer: LacpTimer
-                        """
-                        LACP timer configuration. Applies only when Port-channel mode is not "on".
-
-                        Subclass of AvdModel.
-                        """
-                        subinterfaces: Subinterfaces
-                        """
-                        Port-Channel L2 Subinterfaces.
-                        Subinterfaces are only supported on routed port-channels, which means
-                        they cannot be configured on MLAG port-channels.
-                        Setting short_esi: auto generates the short_esi
-                        automatically using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-
-                        attached endpoint scenario" before setting short_esi: auto.
-
-
-                        Subclass of AvdIndexedList with
-                        `SubinterfacesItem` items. Primary key is `number` (`int`).
-                        """
-                        raw_eos_cli: str | None
-                        """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
-                        structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                        """
-                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
-                        schema.
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                mode: Mode | None | UndefinedType = Undefined,
-                                channel_id: int | None | UndefinedType = Undefined,
-                                description: str | None | UndefinedType = Undefined,
-                                endpoint_port_channel: str | None | UndefinedType = Undefined,
-                                enabled: bool | UndefinedType = Undefined,
-                                ptp_mpass: bool | UndefinedType = Undefined,
-                                lacp_fallback: LacpFallback | UndefinedType = Undefined,
-                                lacp_timer: LacpTimer | UndefinedType = Undefined,
-                                subinterfaces: Subinterfaces | UndefinedType = Undefined,
-                                raw_eos_cli: str | None | UndefinedType = Undefined,
-                                structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                PortChannel.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    mode: Port-Channel Mode.
-                                    channel_id:
-                                       Port-Channel ID.
-                                       If no channel_id is specified, an id is generated from the first switch port in the
-                                       port channel.
-                                    description:
-                                       Description or description template to be used on the port-channel interface.
-                                       This can be a template
-                                       using the AVD string formatter syntax:
-                                       https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                                       descriptions-names.html#avd-string-formatter-syntax.
-                                       The available template fields are:
-                                         -
-                                       `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
-                                       `connected_endpoints_keys.type` like `server`, `router` etc.
-                                         - `endpoint` - The name of the
-                                       connected endpoint
-                                         - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
-                                         -
-                                       `port_channel_id` - The port-channel number for the switch.
-                                         - `adapter_description` - The
-                                       adapter's description if set.
-                                         - `adapter_description_or_endpoint` - Helper alias of the
-                                       adapter_description or endpoint.
-
-                                       The default description is set by
-                                       `default_connected_endpoints_port_channel_description`.
-                                       By default the description is templated from
-                                       the type, name and port_channel interface of the endpoint if set.
-                                    endpoint_port_channel:
-                                       Name of the port-channel interface on the endpoint.
-                                       Used for the port-channel description template
-                                       with the field name `peer_interface`
-                                    enabled:
-                                       Port-Channel administrative state.
-                                       Setting to false will set port to 'shutdown' in intended
-                                       configuration.
-                                    ptp_mpass:
-                                       When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
-                                       logical device.
-                                       Arista PTP enabled devices always place PTP messages on the same physical link
-                                       within the port-channel.
-                                       Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
-                                       devices.
-                                    lacp_fallback:
-                                       LACP fallback configuration.
-
-                                       Subclass of AvdModel.
-                                    lacp_timer:
-                                       LACP timer configuration. Applies only when Port-channel mode is not "on".
-
-                                       Subclass of AvdModel.
-                                    subinterfaces:
-                                       Port-Channel L2 Subinterfaces.
-                                       Subinterfaces are only supported on routed port-channels, which means
-                                       they cannot be configured on MLAG port-channels.
-                                       Setting short_esi: auto generates the short_esi
-                                       automatically using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-
-                                       attached endpoint scenario" before setting short_esi: auto.
-
-
-                                       Subclass of AvdIndexedList with
-                                       `SubinterfacesItem` items. Primary key is `number` (`int`).
-                                    raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
-                                    structured_config:
-                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
-                                       schema.
-
-                                """
-
                     class CampusLinkType(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -60014,6 +59682,7 @@ class EosDesigns(EosDesignsRootModel):
                         "endpoint_ports": {"type": EndpointPorts},
                         "descriptions": {"type": Descriptions},
                         "subinterfaces": {"type": Subinterfaces},
+                        "port_channel": {"type": PortChannel},
                         "speed": {"type": str},
                         "description": {"type": str},
                         "profile": {"type": str},
@@ -60044,7 +59713,6 @@ class EosDesigns(EosDesignsRootModel):
                         "storm_control": {"type": StormControl},
                         "monitor_sessions": {"type": MonitorSessions},
                         "ethernet_segment": {"type": EthernetSegment},
-                        "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
                         "campus_link_type": {"type": CampusLinkType},
@@ -60109,6 +59777,12 @@ class EosDesigns(EosDesignsRootModel):
                     Please
                     see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
                     Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
+                    """
+                    port_channel: PortChannel
+                    """
+                    Used for port-channel adapter.
+
+                    Subclass of AvdModel.
                     """
                     speed: Speed | None
                     """
@@ -60256,12 +59930,6 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
-                    port_channel: PortChannel
-                    """
-                    Used for port-channel adapter.
-
-                    Subclass of AvdModel.
-                    """
                     validate_state: bool | None
                     """
                     Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
@@ -60311,6 +59979,7 @@ class EosDesigns(EosDesignsRootModel):
                             endpoint_ports: EndpointPorts | UndefinedType = Undefined,
                             descriptions: Descriptions | UndefinedType = Undefined,
                             subinterfaces: Subinterfaces | UndefinedType = Undefined,
+                            port_channel: PortChannel | UndefinedType = Undefined,
                             speed: Speed | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
                             profile: str | None | UndefinedType = Undefined,
@@ -60341,7 +60010,6 @@ class EosDesigns(EosDesignsRootModel):
                             storm_control: StormControl | UndefinedType = Undefined,
                             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                             ethernet_segment: EthernetSegment | UndefinedType = Undefined,
-                            port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
                             campus_link_type: CampusLinkType | UndefinedType = Undefined,
@@ -60404,6 +60072,10 @@ class EosDesigns(EosDesignsRootModel):
                                    Please
                                    see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
                                    Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
+                                port_channel:
+                                   Used for port-channel adapter.
+
+                                   Subclass of AvdModel.
                                 speed:
                                    Set adapter speed.
                                    If not specified speed will be auto.
@@ -60507,10 +60179,6 @@ class EosDesigns(EosDesignsRootModel):
                                    with `MonitorSessionsItem` items.
                                 ethernet_segment:
                                    Settings for all or single-active EVPN multihoming.
-
-                                   Subclass of AvdModel.
-                                port_channel:
-                                   Used for port-channel adapter.
 
                                    Subclass of AvdModel.
                                 validate_state:
@@ -60800,6 +60468,475 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subinterfaces._item_type = SubinterfacesItem
 
+                    class PortChannel(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class SubinterfacesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class EncapsulationVlan(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                                client_dot1q: int | None
+                                """
+                                Client VLAN ID encapsulation.
+                                Default is the subinterface number.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        EncapsulationVlan.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            client_dot1q:
+                                               Client VLAN ID encapsulation.
+                                               Default is the subinterface number.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "number": {"type": int},
+                                "description": {"type": str},
+                                "short_esi": {"type": str},
+                                "vlan_id": {"type": int},
+                                "encapsulation_vlan": {"type": EncapsulationVlan},
+                                "raw_eos_cli": {"type": str},
+                                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            }
+                            number: int
+                            """Subinterface number."""
+                            description: str | None
+                            """
+                            Description for subinterface.
+                            This can be a template using the AVD string formatter syntax:
+                            https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                            descriptions-names.html#avd-string-formatter-syntax.
+                            The available template fields are:
+                              -
+                            `subinterface` - The full subinterface name.
+                              - `subinterface_number` - The number for the
+                            subinterface.
+                              - `vlan_id` - The VLAN ID bridged to this subinterface.
+                              - `dot1q_client_vlan` -
+                            The Client VLAN ID encapsulation.
+                              - `endpoint_type` - The `type` of the connected endpoint either
+                            set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                              -
+                            `endpoint` - The name of the connected endpoint
+                            """
+                            short_esi: str | None
+                            """
+                            In format xxxx:xxxx:xxxx or "auto".
+                            Required for multihomed port-channels with subinterfaces.
+                            """
+                            vlan_id: int | None
+                            """
+                            VLAN ID to bridge.
+                            Default is the subinterface number.
+                            """
+                            encapsulation_vlan: EncapsulationVlan
+                            """Subclass of AvdModel."""
+                            raw_eos_cli: str | None
+                            """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                            """
+                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                            Config schema.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    number: int | UndefinedType = Undefined,
+                                    description: str | None | UndefinedType = Undefined,
+                                    short_esi: str | None | UndefinedType = Undefined,
+                                    vlan_id: int | None | UndefinedType = Undefined,
+                                    encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    SubinterfacesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        number: Subinterface number.
+                                        description:
+                                           Description for subinterface.
+                                           This can be a template using the AVD string formatter syntax:
+                                           https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                           descriptions-names.html#avd-string-formatter-syntax.
+                                           The available template fields are:
+                                             -
+                                           `subinterface` - The full subinterface name.
+                                             - `subinterface_number` - The number for the
+                                           subinterface.
+                                             - `vlan_id` - The VLAN ID bridged to this subinterface.
+                                             - `dot1q_client_vlan` -
+                                           The Client VLAN ID encapsulation.
+                                             - `endpoint_type` - The `type` of the connected endpoint either
+                                           set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
+                                             -
+                                           `endpoint` - The name of the connected endpoint
+                                        short_esi:
+                                           In format xxxx:xxxx:xxxx or "auto".
+                                           Required for multihomed port-channels with subinterfaces.
+                                        vlan_id:
+                                           VLAN ID to bridge.
+                                           Default is the subinterface number.
+                                        encapsulation_vlan: Subclass of AvdModel.
+                                        raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                                        structured_config:
+                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                                           Config schema.
+
+                                    """
+
+                        class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
+                            """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "number"
+
+                        Subinterfaces._item_type = SubinterfacesItem
+
+                        Mode: TypeAlias = Literal["active", "passive", "on"]
+
+                        class LacpFallback(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["static", "individual"]
+
+                            class Individual(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
+                                _fields: ClassVar[dict] = {
+                                    "profile": {"type": str},
+                                    "vlans": {"type": str},
+                                    "native_vlan": {"type": int},
+                                    "mode": {"type": str},
+                                }
+                                profile: str | None
+                                """Port-profile name to inherit configuration."""
+                                vlans: str | None
+                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                                native_vlan: int | None
+                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                                mode: Mode | None
+                                """Interface mode on the port-channel member interfaces when in fallback individual."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        profile: str | None | UndefinedType = Undefined,
+                                        vlans: str | None | UndefinedType = Undefined,
+                                        native_vlan: int | None | UndefinedType = Undefined,
+                                        mode: Mode | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Individual.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            profile: Port-profile name to inherit configuration.
+                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
+                            mode: Mode | None
+                            """
+                            Either static or individual mode is supported.
+                            If the mode is set to "individual" either 'profile'
+                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                            """
+                            individual: Individual
+                            """
+                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                            "individual".
+
+                            Subclass of AvdModel.
+                            """
+                            timeout: int
+                            """
+                            Timeout in seconds.
+
+                            Default value: `90`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    mode: Mode | None | UndefinedType = Undefined,
+                                    individual: Individual | UndefinedType = Undefined,
+                                    timeout: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    LacpFallback.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode:
+                                           Either static or individual mode is supported.
+                                           If the mode is set to "individual" either 'profile'
+                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
+                                        individual:
+                                           Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                                           "individual".
+
+                                           Subclass of AvdModel.
+                                        timeout: Timeout in seconds.
+
+                                    """
+
+                        class LacpTimer(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Mode: TypeAlias = Literal["normal", "fast"]
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
+                            mode: Mode | None
+                            """LACP mode for interface members."""
+                            multiplier: int | None
+                            """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    LacpTimer.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: LACP mode for interface members.
+                                        multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "subinterfaces": {"type": Subinterfaces},
+                            "mode": {"type": str},
+                            "channel_id": {"type": int},
+                            "description": {"type": str},
+                            "endpoint_port_channel": {"type": str},
+                            "enabled": {"type": bool, "default": True},
+                            "ptp_mpass": {"type": bool, "default": False},
+                            "lacp_fallback": {"type": LacpFallback},
+                            "lacp_timer": {"type": LacpTimer},
+                            "raw_eos_cli": {"type": str},
+                            "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        }
+                        subinterfaces: Subinterfaces
+                        """
+                        Port-Channel L2 Subinterfaces.
+                        Subinterfaces are only supported on routed port-channels, which means
+                        they cannot be configured on MLAG port-channels.
+                        Setting short_esi: auto generates the short_esi
+                        automatically using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-
+                        attached endpoint scenario" before setting short_esi: auto.
+
+
+                        Subclass of AvdIndexedList with
+                        `SubinterfacesItem` items. Primary key is `number` (`int`).
+                        """
+                        mode: Mode | None
+                        """Port-Channel Mode."""
+                        channel_id: int | None
+                        """
+                        Port-Channel ID.
+                        If no channel_id is specified, an id is generated from the first switch port in the
+                        port channel.
+                        """
+                        description: str | None
+                        """
+                        Description or description template to be used on the port-channel interface.
+                        This can be a template
+                        using the AVD string formatter syntax:
+                        https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                        descriptions-names.html#avd-string-formatter-syntax.
+                        The available template fields are:
+                          -
+                        `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                        `connected_endpoints_keys.type` like `server`, `router` etc.
+                          - `endpoint` - The name of the
+                        connected endpoint
+                          - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                          -
+                        `port_channel_id` - The port-channel number for the switch.
+                          - `adapter_description` - The
+                        adapter's description if set.
+                          - `adapter_description_or_endpoint` - Helper alias of the
+                        adapter_description or endpoint.
+
+                        The default description is set by
+                        `default_connected_endpoints_port_channel_description`.
+                        By default the description is templated from
+                        the type, name and port_channel interface of the endpoint if set.
+                        """
+                        endpoint_port_channel: str | None
+                        """
+                        Name of the port-channel interface on the endpoint.
+                        Used for the port-channel description template
+                        with the field name `peer_interface`
+                        """
+                        enabled: bool
+                        """
+                        Port-Channel administrative state.
+                        Setting to false will set port to 'shutdown' in intended
+                        configuration.
+
+                        Default value: `True`
+                        """
+                        ptp_mpass: bool
+                        """
+                        When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                        logical device.
+                        Arista PTP enabled devices always place PTP messages on the same physical link
+                        within the port-channel.
+                        Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                        devices.
+
+                        Default value: `False`
+                        """
+                        lacp_fallback: LacpFallback
+                        """
+                        LACP fallback configuration.
+
+                        Subclass of AvdModel.
+                        """
+                        lacp_timer: LacpTimer
+                        """
+                        LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                        Subclass of AvdModel.
+                        """
+                        raw_eos_cli: str | None
+                        """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                        schema.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                subinterfaces: Subinterfaces | UndefinedType = Undefined,
+                                mode: Mode | None | UndefinedType = Undefined,
+                                channel_id: int | None | UndefinedType = Undefined,
+                                description: str | None | UndefinedType = Undefined,
+                                endpoint_port_channel: str | None | UndefinedType = Undefined,
+                                enabled: bool | UndefinedType = Undefined,
+                                ptp_mpass: bool | UndefinedType = Undefined,
+                                lacp_fallback: LacpFallback | UndefinedType = Undefined,
+                                lacp_timer: LacpTimer | UndefinedType = Undefined,
+                                raw_eos_cli: str | None | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                PortChannel.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    subinterfaces:
+                                       Port-Channel L2 Subinterfaces.
+                                       Subinterfaces are only supported on routed port-channels, which means
+                                       they cannot be configured on MLAG port-channels.
+                                       Setting short_esi: auto generates the short_esi
+                                       automatically using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-
+                                       attached endpoint scenario" before setting short_esi: auto.
+
+
+                                       Subclass of AvdIndexedList with
+                                       `SubinterfacesItem` items. Primary key is `number` (`int`).
+                                    mode: Port-Channel Mode.
+                                    channel_id:
+                                       Port-Channel ID.
+                                       If no channel_id is specified, an id is generated from the first switch port in the
+                                       port channel.
+                                    description:
+                                       Description or description template to be used on the port-channel interface.
+                                       This can be a template
+                                       using the AVD string formatter syntax:
+                                       https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                                       descriptions-names.html#avd-string-formatter-syntax.
+                                       The available template fields are:
+                                         -
+                                       `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
+                                       `connected_endpoints_keys.type` like `server`, `router` etc.
+                                         - `endpoint` - The name of the
+                                       connected endpoint
+                                         - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+                                         -
+                                       `port_channel_id` - The port-channel number for the switch.
+                                         - `adapter_description` - The
+                                       adapter's description if set.
+                                         - `adapter_description_or_endpoint` - Helper alias of the
+                                       adapter_description or endpoint.
+
+                                       The default description is set by
+                                       `default_connected_endpoints_port_channel_description`.
+                                       By default the description is templated from
+                                       the type, name and port_channel interface of the endpoint if set.
+                                    endpoint_port_channel:
+                                       Name of the port-channel interface on the endpoint.
+                                       Used for the port-channel description template
+                                       with the field name `peer_interface`
+                                    enabled:
+                                       Port-Channel administrative state.
+                                       Setting to false will set port to 'shutdown' in intended
+                                       configuration.
+                                    ptp_mpass:
+                                       When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                                       logical device.
+                                       Arista PTP enabled devices always place PTP messages on the same physical link
+                                       within the port-channel.
+                                       Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                                       devices.
+                                    lacp_fallback:
+                                       LACP fallback configuration.
+
+                                       Subclass of AvdModel.
+                                    lacp_timer:
+                                       LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                                       Subclass of AvdModel.
+                                    raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
+                                    structured_config:
+                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                                       schema.
+
+                                """
+
                     Speed: TypeAlias = Literal[
                         "100full",
                         "100g",
@@ -61576,475 +61713,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    class PortChannel(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Mode: TypeAlias = Literal["active", "passive", "on"]
-
-                        class LacpFallback(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Mode: TypeAlias = Literal["static", "individual"]
-
-                            class Individual(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                Mode: TypeAlias = Literal["access", "dot1q-tunnel", "trunk", "trunk phone"]
-                                _fields: ClassVar[dict] = {
-                                    "profile": {"type": str},
-                                    "vlans": {"type": str},
-                                    "native_vlan": {"type": int},
-                                    "mode": {"type": str},
-                                }
-                                profile: str | None
-                                """Port-profile name to inherit configuration."""
-                                vlans: str | None
-                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
-                                native_vlan: int | None
-                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
-                                mode: Mode | None
-                                """Interface mode on the port-channel member interfaces when in fallback individual."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self,
-                                        *,
-                                        profile: str | None | UndefinedType = Undefined,
-                                        vlans: str | None | UndefinedType = Undefined,
-                                        native_vlan: int | None | UndefinedType = Undefined,
-                                        mode: Mode | None | UndefinedType = Undefined,
-                                    ) -> None:
-                                        """
-                                        Individual.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            profile: Port-profile name to inherit configuration.
-                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
-                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
-                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
-
-                                        """
-
-                            _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
-                            mode: Mode | None
-                            """
-                            Either static or individual mode is supported.
-                            If the mode is set to "individual" either 'profile'
-                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
-                            """
-                            individual: Individual
-                            """
-                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
-                            "individual".
-
-                            Subclass of AvdModel.
-                            """
-                            timeout: int
-                            """
-                            Timeout in seconds.
-
-                            Default value: `90`
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    mode: Mode | None | UndefinedType = Undefined,
-                                    individual: Individual | UndefinedType = Undefined,
-                                    timeout: int | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    LacpFallback.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        mode:
-                                           Either static or individual mode is supported.
-                                           If the mode is set to "individual" either 'profile'
-                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
-                                        individual:
-                                           Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
-                                           "individual".
-
-                                           Subclass of AvdModel.
-                                        timeout: Timeout in seconds.
-
-                                    """
-
-                        class LacpTimer(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            Mode: TypeAlias = Literal["normal", "fast"]
-                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
-                            mode: Mode | None
-                            """LACP mode for interface members."""
-                            multiplier: int | None
-                            """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self, *, mode: Mode | None | UndefinedType = Undefined, multiplier: int | None | UndefinedType = Undefined
-                                ) -> None:
-                                    """
-                                    LacpTimer.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        mode: LACP mode for interface members.
-                                        multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
-
-                                    """
-
-                        class SubinterfacesItem(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            class EncapsulationVlan(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
-                                client_dot1q: int | None
-                                """
-                                Client VLAN ID encapsulation.
-                                Default is the subinterface number.
-                                """
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
-                                        """
-                                        EncapsulationVlan.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            client_dot1q:
-                                               Client VLAN ID encapsulation.
-                                               Default is the subinterface number.
-
-                                        """
-
-                            _fields: ClassVar[dict] = {
-                                "number": {"type": int},
-                                "description": {"type": str},
-                                "short_esi": {"type": str},
-                                "vlan_id": {"type": int},
-                                "encapsulation_vlan": {"type": EncapsulationVlan},
-                                "raw_eos_cli": {"type": str},
-                                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                            }
-                            number: int
-                            """Subinterface number."""
-                            description: str | None
-                            """
-                            Description for subinterface.
-                            This can be a template using the AVD string formatter syntax:
-                            https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                            descriptions-names.html#avd-string-formatter-syntax.
-                            The available template fields are:
-                              -
-                            `subinterface` - The full subinterface name.
-                              - `subinterface_number` - The number for the
-                            subinterface.
-                              - `vlan_id` - The VLAN ID bridged to this subinterface.
-                              - `dot1q_client_vlan` -
-                            The Client VLAN ID encapsulation.
-                              - `endpoint_type` - The `type` of the connected endpoint either
-                            set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
-                              -
-                            `endpoint` - The name of the connected endpoint
-                            """
-                            short_esi: str | None
-                            """
-                            In format xxxx:xxxx:xxxx or "auto".
-                            Required for multihomed port-channels with subinterfaces.
-                            """
-                            vlan_id: int | None
-                            """
-                            VLAN ID to bridge.
-                            Default is the subinterface number.
-                            """
-                            encapsulation_vlan: EncapsulationVlan
-                            """Subclass of AvdModel."""
-                            raw_eos_cli: str | None
-                            """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
-                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                            """
-                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
-                            Config schema.
-                            """
-
-                            if TYPE_CHECKING:
-
-                                def __init__(
-                                    self,
-                                    *,
-                                    number: int | UndefinedType = Undefined,
-                                    description: str | None | UndefinedType = Undefined,
-                                    short_esi: str | None | UndefinedType = Undefined,
-                                    vlan_id: int | None | UndefinedType = Undefined,
-                                    encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
-                                    raw_eos_cli: str | None | UndefinedType = Undefined,
-                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                                ) -> None:
-                                    """
-                                    SubinterfacesItem.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        number: Subinterface number.
-                                        description:
-                                           Description for subinterface.
-                                           This can be a template using the AVD string formatter syntax:
-                                           https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                                           descriptions-names.html#avd-string-formatter-syntax.
-                                           The available template fields are:
-                                             -
-                                           `subinterface` - The full subinterface name.
-                                             - `subinterface_number` - The number for the
-                                           subinterface.
-                                             - `vlan_id` - The VLAN ID bridged to this subinterface.
-                                             - `dot1q_client_vlan` -
-                                           The Client VLAN ID encapsulation.
-                                             - `endpoint_type` - The `type` of the connected endpoint either
-                                           set on the endpoint or taken from `connected_endpoints_keys.type` like `server`, `router` etc.
-                                             -
-                                           `endpoint` - The name of the connected endpoint
-                                        short_esi:
-                                           In format xxxx:xxxx:xxxx or "auto".
-                                           Required for multihomed port-channels with subinterfaces.
-                                        vlan_id:
-                                           VLAN ID to bridge.
-                                           Default is the subinterface number.
-                                        encapsulation_vlan: Subclass of AvdModel.
-                                        raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
-                                        structured_config:
-                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
-                                           Config schema.
-
-                                    """
-
-                        class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
-                            """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`)."""
-
-                            _primary_key: ClassVar[str] = "number"
-
-                        Subinterfaces._item_type = SubinterfacesItem
-
-                        _fields: ClassVar[dict] = {
-                            "mode": {"type": str},
-                            "channel_id": {"type": int},
-                            "description": {"type": str},
-                            "endpoint_port_channel": {"type": str},
-                            "enabled": {"type": bool, "default": True},
-                            "ptp_mpass": {"type": bool, "default": False},
-                            "lacp_fallback": {"type": LacpFallback},
-                            "lacp_timer": {"type": LacpTimer},
-                            "subinterfaces": {"type": Subinterfaces},
-                            "raw_eos_cli": {"type": str},
-                            "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-                        }
-                        mode: Mode | None
-                        """Port-Channel Mode."""
-                        channel_id: int | None
-                        """
-                        Port-Channel ID.
-                        If no channel_id is specified, an id is generated from the first switch port in the
-                        port channel.
-                        """
-                        description: str | None
-                        """
-                        Description or description template to be used on the port-channel interface.
-                        This can be a template
-                        using the AVD string formatter syntax:
-                        https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                        descriptions-names.html#avd-string-formatter-syntax.
-                        The available template fields are:
-                          -
-                        `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
-                        `connected_endpoints_keys.type` like `server`, `router` etc.
-                          - `endpoint` - The name of the
-                        connected endpoint
-                          - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
-                          -
-                        `port_channel_id` - The port-channel number for the switch.
-                          - `adapter_description` - The
-                        adapter's description if set.
-                          - `adapter_description_or_endpoint` - Helper alias of the
-                        adapter_description or endpoint.
-
-                        The default description is set by
-                        `default_connected_endpoints_port_channel_description`.
-                        By default the description is templated from
-                        the type, name and port_channel interface of the endpoint if set.
-                        """
-                        endpoint_port_channel: str | None
-                        """
-                        Name of the port-channel interface on the endpoint.
-                        Used for the port-channel description template
-                        with the field name `peer_interface`
-                        """
-                        enabled: bool
-                        """
-                        Port-Channel administrative state.
-                        Setting to false will set port to 'shutdown' in intended
-                        configuration.
-
-                        Default value: `True`
-                        """
-                        ptp_mpass: bool
-                        """
-                        When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
-                        logical device.
-                        Arista PTP enabled devices always place PTP messages on the same physical link
-                        within the port-channel.
-                        Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
-                        devices.
-
-                        Default value: `False`
-                        """
-                        lacp_fallback: LacpFallback
-                        """
-                        LACP fallback configuration.
-
-                        Subclass of AvdModel.
-                        """
-                        lacp_timer: LacpTimer
-                        """
-                        LACP timer configuration. Applies only when Port-channel mode is not "on".
-
-                        Subclass of AvdModel.
-                        """
-                        subinterfaces: Subinterfaces
-                        """
-                        Port-Channel L2 Subinterfaces.
-                        Subinterfaces are only supported on routed port-channels, which means
-                        they cannot be configured on MLAG port-channels.
-                        Setting short_esi: auto generates the short_esi
-                        automatically using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-
-                        attached endpoint scenario" before setting short_esi: auto.
-
-
-                        Subclass of AvdIndexedList with
-                        `SubinterfacesItem` items. Primary key is `number` (`int`).
-                        """
-                        raw_eos_cli: str | None
-                        """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
-                        structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                        """
-                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
-                        schema.
-                        """
-
-                        if TYPE_CHECKING:
-
-                            def __init__(
-                                self,
-                                *,
-                                mode: Mode | None | UndefinedType = Undefined,
-                                channel_id: int | None | UndefinedType = Undefined,
-                                description: str | None | UndefinedType = Undefined,
-                                endpoint_port_channel: str | None | UndefinedType = Undefined,
-                                enabled: bool | UndefinedType = Undefined,
-                                ptp_mpass: bool | UndefinedType = Undefined,
-                                lacp_fallback: LacpFallback | UndefinedType = Undefined,
-                                lacp_timer: LacpTimer | UndefinedType = Undefined,
-                                subinterfaces: Subinterfaces | UndefinedType = Undefined,
-                                raw_eos_cli: str | None | UndefinedType = Undefined,
-                                structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                            ) -> None:
-                                """
-                                PortChannel.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    mode: Port-Channel Mode.
-                                    channel_id:
-                                       Port-Channel ID.
-                                       If no channel_id is specified, an id is generated from the first switch port in the
-                                       port channel.
-                                    description:
-                                       Description or description template to be used on the port-channel interface.
-                                       This can be a template
-                                       using the AVD string formatter syntax:
-                                       https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
-                                       descriptions-names.html#avd-string-formatter-syntax.
-                                       The available template fields are:
-                                         -
-                                       `endpoint_type` - the `type` of the connected endpoint either set on the endpoint or taken from
-                                       `connected_endpoints_keys.type` like `server`, `router` etc.
-                                         - `endpoint` - The name of the
-                                       connected endpoint
-                                         - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
-                                         -
-                                       `port_channel_id` - The port-channel number for the switch.
-                                         - `adapter_description` - The
-                                       adapter's description if set.
-                                         - `adapter_description_or_endpoint` - Helper alias of the
-                                       adapter_description or endpoint.
-
-                                       The default description is set by
-                                       `default_connected_endpoints_port_channel_description`.
-                                       By default the description is templated from
-                                       the type, name and port_channel interface of the endpoint if set.
-                                    endpoint_port_channel:
-                                       Name of the port-channel interface on the endpoint.
-                                       Used for the port-channel description template
-                                       with the field name `peer_interface`
-                                    enabled:
-                                       Port-Channel administrative state.
-                                       Setting to false will set port to 'shutdown' in intended
-                                       configuration.
-                                    ptp_mpass:
-                                       When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
-                                       logical device.
-                                       Arista PTP enabled devices always place PTP messages on the same physical link
-                                       within the port-channel.
-                                       Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
-                                       devices.
-                                    lacp_fallback:
-                                       LACP fallback configuration.
-
-                                       Subclass of AvdModel.
-                                    lacp_timer:
-                                       LACP timer configuration. Applies only when Port-channel mode is not "on".
-
-                                       Subclass of AvdModel.
-                                    subinterfaces:
-                                       Port-Channel L2 Subinterfaces.
-                                       Subinterfaces are only supported on routed port-channels, which means
-                                       they cannot be configured on MLAG port-channels.
-                                       Setting short_esi: auto generates the short_esi
-                                       automatically using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-
-                                       attached endpoint scenario" before setting short_esi: auto.
-
-
-                                       Subclass of AvdIndexedList with
-                                       `SubinterfacesItem` items. Primary key is `number` (`int`).
-                                    raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
-                                    structured_config:
-                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
-                                       schema.
-
-                                """
-
                     class CampusLinkType(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
 
@@ -62056,6 +61724,7 @@ class EosDesigns(EosDesignsRootModel):
                         "endpoint_ports": {"type": EndpointPorts},
                         "descriptions": {"type": Descriptions},
                         "subinterfaces": {"type": Subinterfaces},
+                        "port_channel": {"type": PortChannel},
                         "speed": {"type": str},
                         "description": {"type": str},
                         "profile": {"type": str},
@@ -62086,7 +61755,6 @@ class EosDesigns(EosDesignsRootModel):
                         "storm_control": {"type": StormControl},
                         "monitor_sessions": {"type": MonitorSessions},
                         "ethernet_segment": {"type": EthernetSegment},
-                        "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
                         "campus_link_type": {"type": CampusLinkType},
@@ -62151,6 +61819,12 @@ class EosDesigns(EosDesignsRootModel):
                     Please
                     see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
                     Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
+                    """
+                    port_channel: PortChannel
+                    """
+                    Used for port-channel adapter.
+
+                    Subclass of AvdModel.
                     """
                     speed: Speed | None
                     """
@@ -62298,12 +61972,6 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
-                    port_channel: PortChannel
-                    """
-                    Used for port-channel adapter.
-
-                    Subclass of AvdModel.
-                    """
                     validate_state: bool | None
                     """
                     Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
@@ -62353,6 +62021,7 @@ class EosDesigns(EosDesignsRootModel):
                             endpoint_ports: EndpointPorts | UndefinedType = Undefined,
                             descriptions: Descriptions | UndefinedType = Undefined,
                             subinterfaces: Subinterfaces | UndefinedType = Undefined,
+                            port_channel: PortChannel | UndefinedType = Undefined,
                             speed: Speed | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
                             profile: str | None | UndefinedType = Undefined,
@@ -62383,7 +62052,6 @@ class EosDesigns(EosDesignsRootModel):
                             storm_control: StormControl | UndefinedType = Undefined,
                             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                             ethernet_segment: EthernetSegment | UndefinedType = Undefined,
-                            port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
                             campus_link_type: CampusLinkType | UndefinedType = Undefined,
@@ -62446,6 +62114,10 @@ class EosDesigns(EosDesignsRootModel):
                                    Please
                                    see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
                                    Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `number` (`int`).
+                                port_channel:
+                                   Used for port-channel adapter.
+
+                                   Subclass of AvdModel.
                                 speed:
                                    Set adapter speed.
                                    If not specified speed will be auto.
@@ -62549,10 +62221,6 @@ class EosDesigns(EosDesignsRootModel):
                                    with `MonitorSessionsItem` items.
                                 ethernet_segment:
                                    Settings for all or single-active EVPN multihoming.
-
-                                   Subclass of AvdModel.
-                                port_channel:
-                                   Used for port-channel adapter.
 
                                    Subclass of AvdModel.
                                 validate_state:
