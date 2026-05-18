@@ -1,7 +1,8 @@
 # Minimum config to test mgmt_ip: dhcp feature.
 type: l2leaf
-mgmt_interface_vrf: MGMT
-mgmt_interface_description: "Management Interface - DHCP"
+mgmt_interface_settings:
+  vrf: MGMT
+  description: "Management Interface - DHCP"
 avd_design_future:
   accept_dhcp_default_route_for_mgmt_ip_dhcp: true
 l2leaf:
