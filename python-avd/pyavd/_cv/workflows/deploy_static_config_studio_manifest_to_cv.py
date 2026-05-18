@@ -118,7 +118,7 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     }
 
     if configlets_to_delete:
-        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d AVD-managed configlets which are no longer used.", len(configlets_to_delete))
+        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d manifest-managed configlets which are no longer used.", len(configlets_to_delete))
         deployment_result.removed_static_config_configlets.extend(configlets_to_delete.values())
         await cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(configlets_to_delete.keys()))
     else:
