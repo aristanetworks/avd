@@ -1854,6 +1854,11 @@ aaa accounting commands 3 default start-stop logging
 | 1.1.1.1 |
 | 4.4.4.4 |
 
+| Server Interface |
+| ---------------- |
+| Ethernet1 |
+| Ethernet2 |
+
 ### Leases
 
 | Lease IP Address | Lease MAC Address |
@@ -1878,6 +1883,8 @@ address locking
    local-interface Loopback0
    dhcp server ipv4 1.1.1.1
    dhcp server ipv4 4.4.4.4
+   dhcp server interface Ethernet1
+   dhcp server interface Ethernet2
    lease 2.2.2.2 mac dead.beef.cafe
    lease 3.3.3.3 mac de:af:be:ef:ca:fe
    locked-address expiration mac disabled

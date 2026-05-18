@@ -16,6 +16,9 @@ address locking
 {%     for ip in address_locking.dhcp_servers_ipv4 | arista.avd.natural_sort %}
    dhcp server ipv4 {{ ip }}
 {%     endfor %}
+{%     for interface in address_locking.dhcp_server_interfaces | arista.avd.natural_sort %}
+   dhcp server interface {{ interface }}
+{%     endfor %}
 {%     for lease in address_locking.leases | arista.avd.natural_sort('ip') %}
    lease {{ lease.ip }} mac {{ lease.mac }}
 {%     endfor %}
