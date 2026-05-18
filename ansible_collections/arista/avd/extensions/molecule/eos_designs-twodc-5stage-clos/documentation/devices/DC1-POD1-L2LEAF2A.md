@@ -377,14 +377,14 @@ no ip routing vrf MGMT
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | default | 0.0.0.0/0 | 172.21.110.1 | - | 1 | - | - | - |
-| MGMT | 0.0.0.0/0 | 192.168.1.254 | - | 1 | - | - | - |
+| MGMT | 10.0.0.0/8 | 192.168.1.254 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
 ip route 0.0.0.0/0 172.21.110.1
-ip route vrf MGMT 0.0.0.0/0 192.168.1.254
+ip route vrf MGMT 10.0.0.0/8 192.168.1.254
 ```
 
 ## Multicast

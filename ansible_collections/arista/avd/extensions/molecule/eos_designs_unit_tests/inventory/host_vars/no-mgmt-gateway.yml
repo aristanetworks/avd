@@ -1,6 +1,4 @@
 # Minimum config to only test the specific feature.
-mgmt_ipv4:
-  gateway: null
 
 type: l2leaf
 l2leaf:
