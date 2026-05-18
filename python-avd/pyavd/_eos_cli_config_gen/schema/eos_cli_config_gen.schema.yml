@@ -4008,6 +4008,12 @@ keys:
                   type: str
                   required: true
                   description: Quality of Service Policy-map name.
+        cpu_traffic_policy_fallback_vrf:
+          type: str
+          description: 'CPU traffic policy name.
+
+            Fallback to the CPU traffic policy applied to the VRF in which this interface
+            is configured.'
         mpls:
           type: dict
           keys:
@@ -13013,6 +13019,12 @@ keys:
                   type: str
                   required: true
                   description: Quality of Service Policy-map name.
+        cpu_traffic_policy_fallback_vrf:
+          type: str
+          description: 'CPU traffic policy name.
+
+            Fallback to the CPU traffic policy applied to the VRF in which this interface
+            is configured.'
         mpls:
           type: dict
           keys:
@@ -24889,6 +24901,28 @@ keys:
   traffic_policies:
     type: dict
     keys:
+      cpu_traffic_policy:
+        type: dict
+        keys:
+          vrf_all:
+            type: dict
+            keys:
+              name:
+                type: str
+                convert_types:
+                - int
+                required: true
+                description: Traffic policy name for all VRFs.
+              enforcement_management:
+                type: bool
+                description: Enforce CPU traffic-policy on management ports.
+          enforcement_ip_ttl_expired:
+            type: bool
+            description: Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets.
+          fragment_implicit_permit_disabled:
+            type: bool
+            description: Disable the addition of implicit rules that allow fragmented
+              packets for Layer 4 rules.
       vrfs:
         type: list
         primary_key: name
