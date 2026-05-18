@@ -552,6 +552,40 @@ l2leaf:
           filter:
             only_vlans_in_use: true
 
+    # Minimal topology for asymmetric parent VLAN availability across split port-channel parents.
+    # Parent A has VLANs 3901 and 3902, parent B has only VLAN 3902, and the child has both VLANs.
+    # In devel the split port-channel allowed VLANs were calculated per uplink parent, so the child and
+    # parent A rendered 3901-3902 while parent B rendered 3902. This PR filters VLANs against all parent
+    # paths, so all three devices render 3902.
+    - group: DC1_L2LEAF9
+      mlag: false
+      uplink_type: port-channel
+      nodes:
+        - name: dc1-l2-parent-a
+          mgmt_ip: 192.168.200.132/24
+          uplink_interfaces: []
+          uplink_switches: []
+          uplink_switch_interfaces: []
+          filter:
+            tenants: [Tenant_PARENT_A, Tenant_PARENT_B]
+            tags: [parent-a, parent-b]
+        - name: dc1-l2-parent-b
+          mgmt_ip: 192.168.200.133/24
+          uplink_interfaces: []
+          uplink_switches: []
+          uplink_switch_interfaces: []
+          filter:
+            tenants: [Tenant_PARENT_B]
+            tags: [parent-b]
+        - name: dc1-l2-child-asymmetric
+          mgmt_ip: 192.168.200.134/24
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switches: [dc1-l2-parent-a, dc1-l2-parent-b]
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+          filter:
+            tenants: [Tenant_PARENT_A, Tenant_PARENT_B]
+            tags: [parent-a, parent-b]
+
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500
 
