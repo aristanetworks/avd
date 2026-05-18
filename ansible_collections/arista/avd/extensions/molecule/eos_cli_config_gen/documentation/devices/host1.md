@@ -194,6 +194,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
+  - [MPLS Label Ranges](#mpls-label-ranges)
   - [MPLS Interfaces](#mpls-interfaces)
   - [MPLS RSVP](#mpls-rsvp)
   - [MPLS Device Configuration](#mpls-device-configuration)
@@ -5180,6 +5181,7 @@ interface Ethernet1
    switchport backup mac-move-burst-interval 30
    switchport backup initial-mac-move-delay 10
    switchport backup dest-macaddr 01:00:00:00:00:00
+   cpu traffic-policy CPU_TRAFFIC_POLICY fallback traffic-policy vrf
    link tracking group EVPN_MH_ES1 upstream
    link tracking group EVPN_MH_ES3 upstream
    link tracking group EVPN_MH_ES4 upstream
@@ -6630,6 +6632,7 @@ interface Port-Channel15
    isis authentication key 0 <removed>
    spanning-tree link-type point-to-point
    spanning-tree guard loop
+   cpu traffic-policy CPU_TRAFFIC_POLICY fallback traffic-policy vrf
    link tracking group EVPN_MH_ES2 upstream
 !
 interface Port-Channel16
@@ -11098,6 +11101,19 @@ monitor loop-protection
 | Tunnel Termination Model | TTL: uniform, DSCP: uniform |
 | Tunnel Termination PHP Model | TTL: pipe, DSCP: pipe |
 
+### MPLS Label Ranges
+
+| Range | Base | Size |
+| ----- | ---- | ---- |
+| BGP-SR | 900000 | 65536 |
+| Dynamic | 16000 | 131072 |
+| IS-IS SR | 900000 | 65536 |
+| L2 EVPN | 1036288 | 12288 |
+| L2 EVPN Ethernet Segment | 1031072 | 1024 |
+| OSPF-SR | 900000 | 1000 |
+| SRLB | 965536 | 65536 |
+| Static | 16 | 1 |
+
 ### MPLS Interfaces
 
 | Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
@@ -11172,6 +11188,15 @@ mpls ldp
    no shutdown
 !
 mpls icmp fragmentation-needed tunneling
+!
+mpls label range bgp-sr 900000 65536
+mpls label range dynamic 16000 131072
+mpls label range isis-sr 900000 65536
+mpls label range l2evpn 1036288 12288
+mpls label range l2evpn ethernet-segment 1031072 1024
+mpls label range ospf-sr 900000 1000
+mpls label range srlb 965536 65536
+mpls label range static 16 1
 !
 mpls rsvp
    refresh interval 3
@@ -13814,6 +13839,15 @@ mac security
 
 ### Traffic Policies information
 
+#### CPU Traffic Policy
+
+| Setting | Value |
+| ------- | ----- |
+| Traffic-policy for all VRFs | CPU_TP_ALL |
+| Enforcement on management ports | True |
+| Implicit permit-fragment rules disabled | True |
+| Enforcement on IP TTL expired packets | True |
+
 #### Traffic Policies VRF Interfaces
 
 | VRF | CPU Traffic Policy | Management Ports | Physical Interfaces Traffic Policy |
@@ -13893,17 +13927,21 @@ Counters: test
 
 ##### Traffic-Policy Interfaces
 
-| Interface | Input Traffic-Policy | Output Traffic-Policy |
-| --------- | -------------------- | --------------------- |
-| Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
-| Port-Channel15 | BLUE-C1-POLICY | BLUE-C2-POLICY |
-| Vlan2001 | Policy-01 | Policy-02 |
+| Interface | Input Traffic-Policy | Output Traffic-Policy | CPU Traffic-Policy Fallback VRF |
+| --------- | -------------------- | --------------------- | ------------------------------- |
+| Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY | CPU_TRAFFIC_POLICY |
+| Port-Channel15 | BLUE-C1-POLICY | BLUE-C2-POLICY | CPU_TRAFFIC_POLICY |
+| Vlan2001 | Policy-01 | Policy-02 | - |
 
 #### Traffic Policies Device Configuration
 
 ```eos
 !
 traffic-policies
+   cpu traffic-policy CPU_TP_ALL vrf all
+      enforcement management
+   cpu traffic-policy fragment implicit-permit disabled
+   cpu traffic-policy enforcement ip ttl expired
    vrf VRF1
       cpu traffic-policy TP1 fallback traffic-policy none
          enforcement management

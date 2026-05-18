@@ -113,18 +113,9 @@ servers:
           mode: active
           subinterfaces:
             - number: 100
-            - short_esi: auto
             - number: 200
               vlan_id: 200
-  - name: OLD_SW-1/12
-    adapters:
-      - switches: [connected-endpoints]
-        switch_ports: [Ethernet25]
-        endpoint_ports: [Endpoint_port6]
-        port_channel:
-          mode: active
-          subinterfaces:
-            - short_esi: auto
+              description: "{subinterface}-{subinterface_number}-{vlan_id}-{dot1q_client_vlan}-{endpoint_type}-{endpoint}"
   # port-channel with lacp fallback individual and profile for member interfaces
   - name: INDIVIDUAL_1
     adapters:
@@ -262,6 +253,35 @@ servers:
         switch_ports: [Ethernet41]
         mode: trunk
         vlans: none
+  - name: ADDRESS_LOCKING_SERVER
+    adapters:
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet42]
+        profile: ADDRESS_LOCKING_PROFILE
+        mode: access
+        vlans: 111
+  - name: ADDRESS_LOCKING_PC_SERVER
+    adapters:
+      - switches: [connected-endpoints, connected-endpoints]
+        switch_ports: [Ethernet43, Ethernet44]
+        profile: ADDRESS_LOCKING_PROFILE
+        mode: access
+        vlans: 112
+        port_channel:
+          mode: active
+          channel_id: 43
+  - name: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+    adapters:
+      - switches: [connected-endpoints, connected-endpoints]
+        switch_ports: [Ethernet45, Ethernet46]
+        mode: access
+        vlans: 112
+        # setting ipv4: true to verify it is NOT rendered in port-channel configuration
+        address_locking:
+          ipv4: true
+        port_channel:
+          mode: active
+          channel_id: 45
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
@@ -293,6 +313,12 @@ port_profiles:
       pae:
         mode: supplicant
         supplicant_profile: test_profile_port_profile
+
+  - profile: ADDRESS_LOCKING_PROFILE
+    address_locking:
+      # setting ipv4: false to show up in port-channel configuration
+      ipv4: false
+      ipv6: true
 
 monitor:
   - name: custom_connected_endpoint
