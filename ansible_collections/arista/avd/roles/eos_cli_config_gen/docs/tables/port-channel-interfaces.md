@@ -79,6 +79,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "port_channel_interfaces.[].service_policy.pbr.input") | String |  |  |  | Policy Based Routing Policy-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos</samp>](## "port_channel_interfaces.[].service_policy.qos") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "port_channel_interfaces.[].service_policy.qos.input") | String | Required |  |  | Quality of Service Policy-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cpu_traffic_policy_fallback_vrf</samp>](## "port_channel_interfaces.[].cpu_traffic_policy_fallback_vrf") | String |  |  |  | CPU traffic policy name.<br>Fallback to the CPU traffic policy applied to the VRF in which this interface is configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "port_channel_interfaces.[].mpls") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "port_channel_interfaces.[].mpls.ip") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ldp</samp>](## "port_channel_interfaces.[].mpls.ldp") | Dictionary |  |  |  |  |
@@ -653,6 +654,10 @@
 
             # Quality of Service Policy-map name.
             input: <str; required>
+
+        # CPU traffic policy name.
+        # Fallback to the CPU traffic policy applied to the VRF in which this interface is configured.
+        cpu_traffic_policy_fallback_vrf: <str>
         mpls:
           ip: <bool>
           ldp:

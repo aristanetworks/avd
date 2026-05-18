@@ -1107,6 +1107,9 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback is arista.avd.defined %}
    traffic-engineering min-delay dynamic twamp-light fallback {{ ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.number }} {{ ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.unit }}
 {%     endif %}
+{%     if ethernet_interface.cpu_traffic_policy_fallback_vrf is arista.avd.defined %}
+   cpu traffic-policy {{ ethernet_interface.cpu_traffic_policy_fallback_vrf }} fallback traffic-policy vrf
+{%     endif %}
 {%     for link_tracking_group in ethernet_interface.link_tracking_groups | arista.avd.default([]) %}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
 {%     endfor %}
