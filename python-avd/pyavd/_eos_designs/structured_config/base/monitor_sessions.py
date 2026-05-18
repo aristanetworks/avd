@@ -79,7 +79,7 @@ class MonitorSessionsMixin(Protocol):
     @staticmethod
     def _validate_monitor_session_on_subinterface(
         interface_name: str,
-        monitor_session: (EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.MonitorSessionsItem),
+        monitor_session: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.MonitorSessionsItem,
         context: str,
     ) -> None:
         """Raise on per-session sub-interface constraints."""
@@ -130,7 +130,6 @@ class MonitorSessionsMixin(Protocol):
                         continue
 
                     ethernet_interface_name = adapter.switch_ports[node_index]
-                    context = adapter._internal_data.context
                     for monitor_session in adapter.monitor_sessions:
                         per_interface_monitor_session = monitor_session._deepcopy()
                         per_interface_monitor_session._internal_data.interface = ethernet_interface_name
