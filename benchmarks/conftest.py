@@ -9,9 +9,12 @@ import logging
 import sys
 from itertools import chain
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
-from _pytest.terminal import TerminalReporter
+
+if TYPE_CHECKING:
+    from _pytest.terminal import TerminalReporter
 
 # Add python-avd to path so we can import from tests.models
 sys.path.insert(0, str(Path(__file__).parent.parent / "python-avd"))
