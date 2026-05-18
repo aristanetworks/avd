@@ -1156,3 +1156,19 @@
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - IPV6_BGP_NOT_SUPPORTED_ON_L3_INTERFACE
+  hosts: ipv6-bgp-not-supported-on-l3-interface
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message

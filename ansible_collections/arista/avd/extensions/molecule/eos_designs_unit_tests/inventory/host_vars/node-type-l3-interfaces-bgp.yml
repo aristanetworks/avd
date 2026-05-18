@@ -29,38 +29,3 @@ l3spine:
           bgp:
             peer_as: 65042
             ipv4_prefix_list_in: ALLOW-DEFAULT
-        - # IPv6 BGP peering
-          name: Ethernet44
-          ipv6_addresses:
-            - 2001:db8::1/64
-          peer: PEER-IPV6
-          peer_interface: Ethernet1
-          peer_ipv6_address: 2001:db8::2
-          bgp:
-            peer_as: 65044
-        - # Dual-stack BGP peering (both IPv4 and IPv6 neighbors generated from one interface)
-          name: Ethernet46
-          ip_address: 192.168.46.1/24
-          ipv6_addresses:
-            - 2001:db8:46::1/64
-          peer: PEER-DUAL-STACK
-          peer_interface: Ethernet1
-          peer_ip: 192.168.46.2
-          peer_ipv6_address: 2001:db8:46::2
-          bgp:
-            peer_as: 65046
-      l3_port_channels:
-        - # IPv6 BGP peering via Port-Channel
-          name: Port-Channel47
-          mode: active
-          member_interfaces:
-            - name: Ethernet45
-              peer: PEER-PC-BGP
-              peer_interface: Ethernet1
-          ipv6_addresses:
-            - 2001:db8:1::1/64
-          peer: PEER-PC-BGP
-          peer_port_channel: Port-Channel47
-          peer_ipv6_address: 2001:db8:1::2
-          bgp:
-            peer_as: 65047

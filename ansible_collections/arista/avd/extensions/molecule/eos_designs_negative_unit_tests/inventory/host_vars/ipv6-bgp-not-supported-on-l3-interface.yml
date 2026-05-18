@@ -1,0 +1,25 @@
+---
+fabric_name: IPV6_BGP_NOT_SUPPORTED_ON_L3_INTERFACE
+type: spine
+underlay_routing_protocol: none
+
+spine:
+  nodes:
+    - name: ipv6-bgp-not-supported-on-l3-interface
+      id: 1
+      bgp_as: 65000
+      evpn_role: none
+      loopback_ipv4_pool: 192.168.255.0/24
+      l3_interfaces:
+        - name: Ethernet1
+          ipv6_addresses:
+            - 2001:db8::1/64
+          peer: PEER-IPV6
+          peer_interface: Ethernet1
+          peer_ipv6_address: 2001:db8::2
+          bgp:
+            peer_as: 65001
+
+expected_error_message: >-
+  IPv6 BGP peering on L3 interfaces and L3 Port-Channels is not yet supported.
+  Found on 'l3_interfaces[Ethernet1]' for host 'ipv6-bgp-not-supported-on-l3-interface'.

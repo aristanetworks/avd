@@ -418,28 +418,23 @@ class MiscMixin(Protocol):
             EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
             | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
         ),
-        description: str | None,
+        description: str | None,  # noqa: ARG002
         context: str,
-        ipv6_neighbors: EosCliConfigGen.RouterBgp.Neighbors,
+        ipv6_neighbors: EosCliConfigGen.RouterBgp.Neighbors,  # noqa: ARG002
     ) -> None:
-        """Creates an IPv6 BGP neighbor entry for an L3 interface or L3 Port-Channel if peer_ipv6_address and bgp are configured."""
+        """
+        Raise if IPv6 BGP peering is configured.
+
+        IPv6 BGP peering on L3 interfaces / L3 Port-Channels is not supported yet because IPv6 outbound
+        prefix-list / route-map handling has not been implemented. IPv4 always installs a deny-all
+        ``route-map ... out`` by default; shipping IPv6 BGP without the same safe default would silently
+        leak the full BGP table, and adding the filter later would be a breaking change.
+        """
         if not (interface.peer_ipv6_address and interface.bgp):
             return
 
-        if bool(interface.wan_carrier):
-            msg = (
-                f"IPv6 BGP peering is not supported on WAN interfaces for "
-                f"'{self.node_type_key_data.key}.nodes[name={self.hostname}].{context}'. "
-                "WAN path-group integration only supports IPv4 BGP peering."
-            )
-            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
-
-        neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
-            ip_address=interface.peer_ipv6_address,
-            remote_as=interface.bgp.peer_as,
-            description=description,
-        )
-        ipv6_neighbors.append(neighbor)
+        msg = f"IPv6 BGP peering on L3 interfaces and L3 Port-Channels is not yet supported.Found on '{context}'"
+        raise AristaAvdInvalidInputsError(msg)
 
     @cached_property
     def l3_bgp_objects(
