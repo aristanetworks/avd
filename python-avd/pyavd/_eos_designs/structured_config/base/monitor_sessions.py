@@ -79,11 +79,7 @@ class MonitorSessionsMixin(Protocol):
     @staticmethod
     def _validate_monitor_session_on_subinterface(
         interface_name: str,
-        monitor_session: (
-            EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem
-            | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.MonitorSessionsItem
-            | EosDesigns.NetworkPortsItem.MonitorSessionsItem
-        ),
+        monitor_session: (EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.MonitorSessionsItem),
         context: str,
     ) -> None:
         """Raise on per-session sub-interface constraints."""
@@ -135,18 +131,7 @@ class MonitorSessionsMixin(Protocol):
 
                     ethernet_interface_name = adapter.switch_ports[node_index]
                     context = adapter._internal_data.context
-                    if (
-                        adapter.monitor_sessions
-                        and "." in ethernet_interface_name
-                        and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session
-                    ):
-                        msg = (
-                            "Monitor session on sub-interfaces is not supported on this platform. "
-                            f"Got monitor session on interface '{ethernet_interface_name}' under {context}."
-                        )
-                        raise AristaAvdInvalidInputsError(msg)
                     for monitor_session in adapter.monitor_sessions:
-                        self._validate_monitor_session_on_subinterface(ethernet_interface_name, monitor_session, context)
                         per_interface_monitor_session = monitor_session._deepcopy()
                         per_interface_monitor_session._internal_data.interface = ethernet_interface_name
                         per_interface_monitor_session._internal_data.context = adapter._internal_data.context
@@ -157,7 +142,6 @@ class MonitorSessionsMixin(Protocol):
                 continue
 
             for ethernet_interface_name in range_expand(network_port.switch_ports):
-                context = network_port._internal_data.context
                 # Monitor session on Port-channel interface
                 if network_port.port_channel and network_port.port_channel.mode is not None:
                     default_channel_group_id = int("".join(re.findall(r"\d", ethernet_interface_name)))
@@ -171,20 +155,8 @@ class MonitorSessionsMixin(Protocol):
                         monitor_session_configs.append(per_interface_monitor_session)
                     continue
 
-                # TODO: DO not raise the error for digital twin
                 # Monitor session on Ethernet interface
-                if (
-                    network_port.monitor_sessions
-                    and "." in ethernet_interface_name
-                    and not self.shared_utils.platform_settings.feature_support.subinterface_monitor_session
-                ):
-                    msg = (
-                        "Monitor session on sub-interfaces is not supported on this platform. "
-                        f"Got monitor session on interface '{ethernet_interface_name}' under {context}."
-                    )
-                    raise AristaAvdInvalidInputsError(msg)
                 for monitor_session in network_port.monitor_sessions:
-                    self._validate_monitor_session_on_subinterface(ethernet_interface_name, monitor_session, context)
                     per_interface_monitor_session = monitor_session._deepcopy()
                     per_interface_monitor_session._internal_data.interface = ethernet_interface_name
                     per_interface_monitor_session._internal_data.context = network_port._internal_data.context
@@ -198,6 +170,7 @@ class MonitorSessionsMixin(Protocol):
                             continue
                         interface_name = l3_interface.interfaces[node_index]
                         context = f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
+                        # TODO: DO not raise the error for digital twin
                         if (
                             l3_interface.monitor_sessions
                             and "." in interface_name
