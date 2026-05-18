@@ -507,6 +507,7 @@ keys:
           description: DHCP server IPv4 address.
       dhcp_server_interfaces:
         type: list
+        description: The list of interfaces connected to the DHCP server.
         items:
           type: str
           description: Interface name.

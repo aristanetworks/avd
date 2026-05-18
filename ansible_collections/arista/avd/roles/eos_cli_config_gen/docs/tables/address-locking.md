@@ -10,7 +10,7 @@
     | [<samp>address_locking</samp>](## "address_locking") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;dhcp_servers_ipv4</samp>](## "address_locking.dhcp_servers_ipv4") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "address_locking.dhcp_servers_ipv4.[]") | String |  |  |  | DHCP server IPv4 address. |
-    | [<samp>&nbsp;&nbsp;dhcp_server_interfaces</samp>](## "address_locking.dhcp_server_interfaces") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;dhcp_server_interfaces</samp>](## "address_locking.dhcp_server_interfaces") | List, items: String |  |  |  | The list of interfaces connected to the DHCP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "address_locking.dhcp_server_interfaces.[]") | String |  |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;disabled</samp>](## "address_locking.disabled") | Boolean |  |  |  | Disable IP locking on configured ports. |
     | [<samp>&nbsp;&nbsp;leases</samp>](## "address_locking.leases") | List, items: Dictionary |  |  |  |  |
@@ -30,6 +30,8 @@
 
           # DHCP server IPv4 address.
         - <str>
+
+      # The list of interfaces connected to the DHCP server.
       dhcp_server_interfaces:
 
           # Interface name.

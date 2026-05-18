@@ -887,7 +887,11 @@ class EosDesigns(EosDesignsRootModel):
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
         dhcp_server_interfaces: DhcpServerInterfaces
-        """Subclass of AvdList with `str` items."""
+        """
+        The list of interfaces connected to the DHCP server.
+
+        Subclass of AvdList with `str` items.
+        """
         disabled: bool | None
         """Disable IP locking on configured ports."""
         leases: Leases
@@ -925,7 +929,10 @@ class EosDesigns(EosDesignsRootModel):
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
-                    dhcp_server_interfaces: Subclass of AvdList with `str` items.
+                    dhcp_server_interfaces:
+                       The list of interfaces connected to the DHCP server.
+
+                       Subclass of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     locked_address: Subclass of AvdModel.
