@@ -27,8 +27,28 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+REPRESENTATIVE_BENCHMARK_HOSTS = (
+    # Baseline data center fabric roles.
+    "dc1-spine1",
+    "dc1-leaf1a",
+    "dc1-l2leaf1a",
+    # Network services and connected endpoints.
+    "bgp-from-network-services-1",
+    "connected-endpoints",
+    # Custom Python modules and rendering-heavy feature coverage.
+    "custom-python-modules-l3leaf1a",
+    "overlay-routing-protocol-her-l3leaf3a",
+    "ptp-tests-leaf1",
+    "trunk-group-tests-l3leaf1a",
+    "uplink-p2p-vrfs-tests-leaf1",
+    # WAN/CV Pathfinder coverage.
+    "cv-pathfinder-pathfinder1",
+    "cv-pathfinder-edge1",
+    "cv-pathfinder-transit1a",
+)
 
-@pytest.mark.molecule_scenarios("eos_designs_unit_tests")
+
+@pytest.mark.molecule_scenarios("eos_designs_unit_tests", hosts=REPRESENTATIVE_BENCHMARK_HOSTS)
 def test_molecule_scenario_full_workflow_benchmark(
     benchmark: BenchmarkFixture,
     # molecule_scenario: "MoleculeScenario",

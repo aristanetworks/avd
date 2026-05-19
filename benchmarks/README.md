@@ -33,11 +33,7 @@ The benchmark suite tests the performance of critical AVD operations:
 2. **Molecule Scenarios** (`test_molecule_scenarios.py`)
    - `test_molecule_scenario_full_workflow_benchmark` - Complete end-to-end workflow for real molecule scenarios
    - Tests the full workflow: validate → facts → structured_config → eos_config
-   - Covers 16 different molecule scenarios:
-     - **EOS Designs**: `eos_designs_unit_tests`, `eos_designs-l2ls`, `eos_designs-mpls-isis-sr-ldp`, `eos_designs-twodc-5stage-clos`
-     - **EVPN**: `evpn_underlay_ebgp_overlay_ebgp`, `evpn_underlay_isis_overlay_ibgp`, `evpn_underlay_ospf_overlay_ebgp`, `evpn_underlay_rfc5549_overlay_ebgp`
-     - **Examples**: `example-campus-fabric`, `example-cv-pathfinder`, `example-dual-dc-l3ls`, `example-isis-ldp-ipvpn`, `example-l2ls-fabric`, `example-single-dc-l3ls`, `example-single-dc-l3ls-ipv6`
-   - Excludes: `eos_designs_negative_unit_tests` (expected to fail), `eos_designs_deprecated_vars` (legacy)
+   - Covers representative hosts from the `eos_designs_unit_tests` molecule scenario, including baseline fabric roles, network services, custom Python modules, rendering-heavy features, and WAN/CV Pathfinder hosts.
 
 3. **Large Fabric Scaling** (`test_large_fabric_scaling.py`)
 
@@ -83,20 +79,20 @@ CodSpeed provides:
 
 **PR Benchmarks (runs on every PR):**
 
-- **1 benchmark:** Molecule eos_designs_unit_tests - Full workflow (~478 hosts)
+- **13 benchmarks:** Representative `eos_designs_unit_tests` molecule hosts - Full workflow
 - Runs automatically as part of "Collection code testing" workflow
 - No approval required
 
 **Weekly Scheduled Benchmarks (Sundays at 2 AM UTC):**
 
-- **4 benchmarks:** Scale test (15, 150, 1500 devices) + Molecule eos_designs_unit_tests
+- Scale test (15, 150, 1500 devices) + representative `eos_designs_unit_tests` molecule hosts
 - Multiple Python/Ansible version combinations
-- 4 shards per version (1 test per shard)
+- 4 shards per version
 - **Approval required:** Users with `admin` or `maintain` permissions auto-approved; others require manual approval from maintainers
 
 **Manual Workflow Trigger:**
 
-- Same as scheduled benchmarks (all 4 benchmarks)
+- Same as scheduled benchmarks
 - **Approval required:** Users with `admin` or `maintain` permissions auto-approved; others require manual approval from maintainers
 
 ### Local Benchmarks
