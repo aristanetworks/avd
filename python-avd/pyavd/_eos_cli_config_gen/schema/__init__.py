@@ -31717,7 +31717,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class MulticastReplication(AvdModel):
                 """Subclass of AvdModel."""
 
-                Default: TypeAlias = Literal["ingress", "egress"]
+                Default: TypeAlias = Literal["ingress", "fabric-egress", "ingress-egress"]
                 _fields: ClassVar[dict] = {"default": {"type": str}}
                 default: Default | None
 

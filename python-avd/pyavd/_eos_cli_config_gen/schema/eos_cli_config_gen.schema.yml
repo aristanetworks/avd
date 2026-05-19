@@ -12309,7 +12309,8 @@ keys:
                 type: str
                 valid_values:
                 - ingress
-                - egress
+                - fabric-egress
+                - ingress-egress
           mdb_profile:
             type: str
             description: 'Sand platforms MDB Profile configuration. Note: l3-xxxl
