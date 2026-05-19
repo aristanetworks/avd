@@ -41,6 +41,7 @@ class MgmtMixin(Protocol):
             # Notice that we actually have a default value for the next two, but the precedence order would break if we use it.
             # TODO: Evaluate if we should remove the default values from either or both.
             self.platform_settings._get("management_interface", None),
+            self.inputs.mgmt_interface_settings._get("interface", None),
             self.inputs._get("mgmt_interface", None),
             self.cv_topology_config.mgmt_interface,
             "Management1",
@@ -59,6 +60,24 @@ class MgmtMixin(Protocol):
             return act_mgmt_interface
 
         return mgmt_interface
+
+    @cached_property
+    def mgmt_interface_description(self: SharedUtilsProtocol) -> str:
+        if self.inputs.mgmt_interface_settings._get_defined_attr("description"):
+            return self.inputs.mgmt_interface_settings.description
+        return self.inputs.mgmt_interface_description
+
+    @cached_property
+    def mgmt_interface_vrf(self: SharedUtilsProtocol) -> str:
+        if self.inputs.mgmt_interface_settings._get_defined_attr("vrf"):
+            return self.inputs.mgmt_interface_settings.vrf
+        return self.inputs.mgmt_interface_vrf
+
+    @cached_property
+    def mgmt_vrf_routing(self: SharedUtilsProtocol) -> bool:
+        if self.inputs.mgmt_interface_settings._get_defined_attr("vrf_routing"):
+            return self.inputs.mgmt_interface_settings.vrf_routing
+        return self.inputs.mgmt_vrf_routing
 
     @cached_property
     def mgmt_gateway(self: SharedUtilsProtocol) -> str | None:
@@ -90,16 +109,6 @@ class MgmtMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             return default_mgmt_method
-
-        return None
-
-    @cached_property
-    def default_mgmt_protocol_vrf(self: SharedUtilsProtocol) -> str | None:
-        if self.default_mgmt_method == "oob":
-            return self.inputs.mgmt_interface_vrf
-        if self.default_mgmt_method == "inband":
-            # inband_mgmt_vrf returns None for vrf default.
-            return self.inband_mgmt_vrf or "default"
 
         return None
 
