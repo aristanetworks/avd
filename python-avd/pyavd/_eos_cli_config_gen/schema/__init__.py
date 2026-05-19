@@ -1366,8 +1366,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         dhcp_server_interfaces: DhcpServerInterfaces
         """
         The list of interfaces connected to the DHCP server.
+        Requires EOS version 4.36 or later.
 
-        Subclass of AvdList with `str` items.
+        Subclass
+        of AvdList with `str` items.
         """
         disabled: bool | None
         """Disable IP locking on configured ports."""
@@ -1399,8 +1401,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
                     dhcp_server_interfaces:
                        The list of interfaces connected to the DHCP server.
+                       Requires EOS version 4.36 or later.
 
-                       Subclass of AvdList with `str` items.
+                       Subclass
+                       of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     local_interface: local_interface

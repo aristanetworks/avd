@@ -5,8 +5,10 @@ address_locking:
     - 1.1.1.1
     - 4.4.4.4
   dhcp_server_interfaces:
+    - Port-Channel1
     - Ethernet1
     - Ethernet2
+    - Port-Channel3
   disabled: true
   leases:
     - ip: 2.2.2.2
