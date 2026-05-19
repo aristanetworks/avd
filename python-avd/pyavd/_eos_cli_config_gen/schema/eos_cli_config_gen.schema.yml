@@ -509,6 +509,14 @@ keys:
         items:
           type: str
           description: DHCP server IPv4 address.
+      dhcp_server_interfaces:
+        type: list
+        description: 'The list of interfaces connected to the DHCP server.
+
+          Requires EOS version 4.36 or later.'
+        items:
+          type: str
+          description: Interface name.
       disabled:
         type: bool
         description: Disable IP locking on configured ports.

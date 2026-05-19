@@ -813,6 +813,11 @@ class EosDesigns(EosDesignsRootModel):
 
         DhcpServersIpv4._item_type = str
 
+        class DhcpServerInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServerInterfaces._item_type = str
+
         class LeasesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -882,6 +887,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "locked_address": {"type": LockedAddress},
@@ -902,6 +908,14 @@ class EosDesigns(EosDesignsRootModel):
         """
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
+        dhcp_server_interfaces: DhcpServerInterfaces
+        """
+        The list of interfaces connected to the DHCP server.
+        Requires EOS version 4.36 or later.
+
+        Subclass
+        of AvdList with `str` items.
+        """
         disabled: bool | None
         """Disable IP locking on configured ports."""
         leases: Leases
@@ -916,6 +930,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 local_interface: str | UndefinedType = Undefined,
                 dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
                 disabled: bool | None | UndefinedType = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
@@ -938,6 +953,12 @@ class EosDesigns(EosDesignsRootModel):
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
+                    dhcp_server_interfaces:
+                       The list of interfaces connected to the DHCP server.
+                       Requires EOS version 4.36 or later.
+
+                       Subclass
+                       of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     locked_address: Subclass of AvdModel.
