@@ -54,7 +54,7 @@ keys:
                   min_length: 1
                   items:
                     type: str
-                    pattern: ^(?!radius$|tacacs\+$|ldap$).+$
+                    pattern: (?!radius$|tacacs\+$|ldap$).+
                   description: 'List of Tacacs group names.
 
                     The group names ''radius'', ''tacacs+'' and ''ldap'' are reserved
@@ -145,7 +145,7 @@ keys:
                   min_length: 1
                   items:
                     type: str
-                    pattern: ^(?!radius$|tacacs\+$|ldap$).+$
+                    pattern: (?!radius$|tacacs\+$|ldap$).+
                   description: 'List of Radius group names.
 
                     The group names ''radius'', ''tacacs+'' and ''ldap'' are reserved

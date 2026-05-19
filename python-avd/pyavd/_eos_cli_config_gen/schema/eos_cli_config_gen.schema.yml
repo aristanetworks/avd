@@ -414,7 +414,7 @@ keys:
             The group names ''radius'', ''tacacs+'' and ''ldap'' are reserved by EOS
             and must not be used.'
           type: str
-          pattern: ^(?!radius$|tacacs\+$|ldap$).+$
+          pattern: (?!radius$|tacacs\+$|ldap$).+
         type:
           type: str
           valid_values:
