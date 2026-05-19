@@ -100,7 +100,13 @@ class EosDesigns(EosDesignsRootModel):
                 Combination of `host` and `vrf` should be unique.
                 """
                 groups: Groups
-                """Subclass of AvdList with `str` items."""
+                """
+                List of Tacacs group names.
+                The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                must not be used.
+
+                Subclass of AvdList with `str` items.
+                """
                 vrf: str | None
                 """
                 VRF name.
@@ -160,7 +166,12 @@ class EosDesigns(EosDesignsRootModel):
                             host:
                                Host IP address or name.
                                Combination of `host` and `vrf` should be unique.
-                            groups: Subclass of AvdList with `str` items.
+                            groups:
+                               List of Tacacs group names.
+                               The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                               must not be used.
+
+                               Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
                                The value will be interpreted according to these rules:
@@ -317,7 +328,13 @@ class EosDesigns(EosDesignsRootModel):
                 TLS and no TLS.
                 """
                 groups: Groups
-                """Subclass of AvdList with `str` items."""
+                """
+                List of Radius group names.
+                The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                must not be used.
+
+                Subclass of AvdList with `str` items.
+                """
                 vrf: str | None
                 """
                 VRF name.
@@ -377,7 +394,12 @@ class EosDesigns(EosDesignsRootModel):
                                Host IP address or name.
                                Multiple servers with the same hostname/IP address can be configured for
                                TLS and no TLS.
-                            groups: Subclass of AvdList with `str` items.
+                            groups:
+                               List of Radius group names.
+                               The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                               must not be used.
+
+                               Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
                                The value will be interpreted according to these rules:
