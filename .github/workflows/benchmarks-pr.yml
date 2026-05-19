@@ -41,7 +41,7 @@ jobs:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
-            # Run only molecule scenario benchmark on PRs
+            # Run representative molecule host benchmarks on PRs.
             pytest --codspeed \
               benchmarks/test_molecule_scenarios.py \
               --test-group=${{ matrix.shard }} --test-group-count=4

@@ -126,9 +126,6 @@ jobs:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
-            # Run 4 benchmarks total:
-            # - Scale test (15, 150, 1500 devices): 3 tests
-            # - Molecule eos_designs_unit_tests: 1 test
-            # 4 shards = 1 test per shard
+            # Run scale tests and representative molecule host benchmarks.
             pytest --codspeed benchmarks \
               --test-group=${{ matrix.shard }} --test-group-count=4

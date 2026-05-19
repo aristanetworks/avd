@@ -84,7 +84,10 @@ def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:
     Reads/updates MOLECULE_SCENARIOS for caching.
     """
     molecule_scenarios: list[MoleculeScenario] = []
+    selected_hostnames: set[str] = set()
     for marker in metafunc.definition.iter_markers(name="molecule_scenarios"):
+        hosts = marker.kwargs.get("hosts", ())
+        selected_hostnames.update((hosts,) if isinstance(hosts, str) else hosts)
         for molecule_scenario_name in marker.args:
             if molecule_scenario_name not in MOLECULE_SCENARIOS:
                 # Using this method since setdefault triggers init of the class which is expensive.
@@ -92,6 +95,8 @@ def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:
             molecule_scenarios.append(MOLECULE_SCENARIOS[molecule_scenario_name])
 
     for marker in metafunc.definition.iter_markers(name="digital_twin_molecule_scenarios"):
+        hosts = marker.kwargs.get("hosts", ())
+        selected_hostnames.update((hosts,) if isinstance(hosts, str) else hosts)
         for molecule_scenario_name in marker.args:
             molecule_scenario_extended_name = f"{molecule_scenario_name}_digital_twin"
             if molecule_scenario_extended_name not in MOLECULE_SCENARIOS:
@@ -100,7 +105,14 @@ def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:
             molecule_scenarios.append(MOLECULE_SCENARIOS[molecule_scenario_extended_name])
 
     if "molecule_host" in metafunc.fixturenames:
-        metafunc.parametrize("molecule_host", chain.from_iterable(scenario.hosts for scenario in molecule_scenarios), ids=get_test_id)
+        molecule_hosts = list(chain.from_iterable(scenario.hosts for scenario in molecule_scenarios))
+        if selected_hostnames:
+            available_hostnames = {host.name for host in molecule_hosts}
+            if unknown_hostnames := selected_hostnames - available_hostnames:
+                msg = f"Unknown molecule benchmark hosts: {', '.join(sorted(unknown_hostnames))}"
+                raise ValueError(msg)
+            molecule_hosts = [host for host in molecule_hosts if host.name in selected_hostnames]
+        metafunc.parametrize("molecule_host", molecule_hosts, ids=get_test_id)
 
     if "molecule_scenario" in metafunc.fixturenames:
         metafunc.parametrize("molecule_scenario", molecule_scenarios, ids=get_test_id)
