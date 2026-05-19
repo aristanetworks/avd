@@ -46,8 +46,10 @@ p:
   defaults:
     platform: 7280SR
     loopback_ipv4_pool: 100.70.0.0/24
-    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
-    node_sid_base: 300
+    loopback_ipv6_pool: "2001:db8:300:ffff::/64"
+    isis_sr:
+      ipv4_node_sid_index_base: 300
+      ipv6_node_sid_index_base: 1300
     isis_system_id_prefix: '0000.0000'
     raw_eos_cli: |
       management security
@@ -65,6 +67,9 @@ p:
     - name: SITE2-LSR2
       id: 4
       mgmt_ip: 192.168.200.104/24
+      isis_sr:
+        ipv4_node_sid_index: 344
+        ipv6_node_sid_index: 1344
 
 # PE-routers
 pe:
@@ -72,9 +77,11 @@ pe:
     virtual_router_mac_address: 00:1c:73:00:dc:00
     platform: 7280SR3
     loopback_ipv4_pool: 100.70.0.0/24
-    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+    loopback_ipv6_pool: "2001:db8:200:ffff::/64"
     is_type: level-1-2
-    node_sid_base: 200
+    isis_sr:
+      ipv4_node_sid_index_base: 200
+      ipv6_node_sid_index_base: 1200
     isis_system_id_prefix: '0000.0001'
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
@@ -126,9 +133,11 @@ rr:
   defaults:
     platform: 7280SR3
     loopback_ipv4_pool: 100.70.0.0/24
-    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+    loopback_ipv6_pool: "2001:db8:100:ffff::/64"
     is_type: level-1-2
-    node_sid_base: 100
+    isis_sr:
+      ipv4_node_sid_index_base: 100
+      ipv6_node_sid_index_base: 1100
     isis_system_id_prefix: '0000.0002'
     overlay_address_families: [evpn, vpn-ipv4, vpn-ipv6]
     mpls_route_reflectors: [SITE1-RR1, SITE2-RR1]
@@ -158,6 +167,7 @@ core_interfaces:
   p2p_links_ip_pools:
     - name: underlay_pool
       ipv4_pool: 100.64.48.0/24
+      ipv6_pool: 2001:db8:0:fffe::/64
     - name: underlay_pool_custom_mask
       ipv4_pool: 100.64.49.0/24
       prefix_size: 30

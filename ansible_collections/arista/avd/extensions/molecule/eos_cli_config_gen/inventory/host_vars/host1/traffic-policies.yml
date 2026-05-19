@@ -1,5 +1,11 @@
 ---
 traffic_policies:
+  cpu_traffic_policy:
+    vrf_all:
+      name: CPU_TP_ALL
+      enforcement_management: true
+    fragment_implicit_permit_disabled: true
+    enforcement_ip_ttl_expired: true
   vrfs:
     - name: VRF1
       cpu:

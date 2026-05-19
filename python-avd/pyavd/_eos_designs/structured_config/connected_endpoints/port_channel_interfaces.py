@@ -169,6 +169,7 @@ class PortChannelInterfacesMixin(Protocol):
             service_profile=adapter.qos_profile,
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.LinkTrackingGroups),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.Ptp),
+            address_locking=self._get_adapter_address_locking(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.AddressLocking),
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
             eos_cli=adapter.port_channel.raw_eos_cli,
             metadata=EosCliConfigGen.PortChannelInterfacesItem.Metadata(
