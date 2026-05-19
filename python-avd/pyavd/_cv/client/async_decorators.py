@@ -17,7 +17,7 @@ from grpclib import Status
 from grpclib.exceptions import GRPCError, StreamTerminatedError
 
 from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVClientException, CVClientInvalidServerName, CVGRPCError, CVResourceNotFound, CVTimeoutError
-from pyavd._cv.constants import CVAAS_API_ENDPOINTS, CVAAS_API_PREFIX, CVAAS_BASE_FQDNS, CVAAS_STREAMING_ENDPOINTS, CVAAS_STREAMING_PREFIX
+from pyavd._cv.constants import CV_REGION_TO_SERVER_MAP, CVAAS_API_PREFIX, CVAAS_STREAMING_PREFIX
 from pyavd._utils import batch
 
 from .constants import CVAAS_VERSION_STRING
@@ -271,7 +271,11 @@ class GRPCRequestHandler:
                                     raise new_exception
 
                             case Status.UNKNOWN:
-                                invalid_cvaas_fqdn, hint_msg = self._invalid_cvaas_fqdn(getattr(call_args[0], "_servers", []) if call_args else [])
+                                caller = call_args[0]
+                                invalid_cvaas_fqdn, hint_msg = self._invalid_cvaas_fqdn(
+                                    getattr(caller, "_servers", []),
+                                    getattr(caller, "_cv_version", None) or CvVersion(CVAAS_VERSION_STRING),
+                                )
                                 if invalid_cvaas_fqdn:
                                     raise CVClientInvalidServerName(hint_msg)
 
@@ -392,9 +396,14 @@ class GRPCRequestHandler:
         if found_errors:
             raise CVClientBulkAPIError(func_name, found_errors)
 
-    def _invalid_cvaas_fqdn(self, cv_servers: list[str]) -> tuple[bool, str]:
+    def _invalid_cvaas_fqdn(self, cv_servers: list[str], cv_version: CvVersion) -> tuple[bool, str]:
         """
         Check if targeted CVaaS FQDN is invalid.
+
+        Args:
+            cv_servers: List of configured CloudVision server FQDNs. Only the first entry is inspected.
+            cv_version: Version negotiated with the connected CloudVision server. Used to suppress CVaaS-specific
+                hints when an arista.io FQDN actually resolves to an on-prem CVP (spoofed DNS zone).
 
         Returns:
             A tuple of <bool> and <str>, indicating if FQDN of the API endpoint is invalid and a hint explaining invalidity details and possible mitigation.
@@ -402,21 +411,31 @@ class GRPCRequestHandler:
         first_cv_server = cv_servers[0] if cv_servers else ""
         if not first_cv_server.endswith("arista.io"):
             return False, ""
-        # Correctly configured API endpoint
-        if first_cv_server in CVAAS_API_ENDPOINTS:
+
+        # Guard against locally-spoofed arista.io DNS zone pointing to an on-prem CVP
+        if cv_version.version != CVAAS_VERSION_STRING:
             return False, ""
+
+        base_fqdns = set(CV_REGION_TO_SERVER_MAP.values())
+        prefix, _, base = first_cv_server.partition(".")
+
+        if base in base_fqdns:
+            # Correctly configured API endpoint
+            if prefix == CVAAS_API_PREFIX:
+                return False, ""
+            # Target CVaaS is pointing to the streaming endpoint
+            if prefix == CVAAS_STREAMING_PREFIX:
+                return True, (
+                    f"CVaaS FQDN '{first_cv_server}' is pointing to the streaming endpoint. Please use API endpoint '{CVAAS_API_PREFIX}.{base}' instead."
+                )
+
         # Target CVaaS is missing api prefix
-        if first_cv_server in CVAAS_BASE_FQDNS:
+        if first_cv_server in base_fqdns:
             return True, (
                 f"CVaaS FQDN '{first_cv_server}' is missing the required '{CVAAS_API_PREFIX}.' prefix. "
                 f"Please use '{CVAAS_API_PREFIX}.{first_cv_server}' instead."
             )
-        # Target CVaaS is pointing to the streaming endpoint
-        if first_cv_server in CVAAS_STREAMING_ENDPOINTS:
-            base_fqdn = first_cv_server.removeprefix(f"{CVAAS_STREAMING_PREFIX}.")
-            return True, (
-                f"CVaaS FQDN '{first_cv_server}' is pointing to the streaming endpoint. Please use API endpoint '{CVAAS_API_PREFIX}.{base_fqdn}' instead."
-            )
+
         # Unknown arista.io FQDN
         return True, (
             f"Provided CVaaS FQDN '{first_cv_server}' may be incorrect. Please check 'https://www.arista.io/help' for the full list of existing CVaaS clusters."

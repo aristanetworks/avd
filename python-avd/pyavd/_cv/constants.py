@@ -21,7 +21,3 @@ CV_REGION_TO_SERVER_MAP = {
 }
 CVAAS_STREAMING_PREFIX = "apiserver"
 CVAAS_API_PREFIX = "www"
-
-CVAAS_BASE_FQDNS = frozenset(CV_REGION_TO_SERVER_MAP.values())
-CVAAS_API_ENDPOINTS = frozenset(f"{CVAAS_API_PREFIX}.{cvaas_base_fqdn}" for cvaas_base_fqdn in CVAAS_BASE_FQDNS)
-CVAAS_STREAMING_ENDPOINTS = frozenset(f"{CVAAS_STREAMING_PREFIX}.{cvaas_base_fqdn}" for cvaas_base_fqdn in CVAAS_BASE_FQDNS)
