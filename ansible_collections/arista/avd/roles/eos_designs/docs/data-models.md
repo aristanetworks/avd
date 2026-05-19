@@ -482,8 +482,8 @@ underlay_port_channel_interfaces:
 - `{{ peer }}`
 - `{{ peer_channel_group_id }}`
 - `{{ peer_node_group }}`
-- `{{ wan_circuit_id }} for `l3_port_channels` defined under the node config.
 - `{{ wan_carrier }}`
+- `{{ wan_circuit_id }}` for`l3_port_channels` defined under the node config.
 - `{{ main_interface_wan_carrier }}`
 - `{{ link.interface }}`
 - `{{ link.channel_description }}`
