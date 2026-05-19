@@ -1151,7 +1151,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "type": {"type": str}, "servers": {"type": Servers}}
         name: str
-        """Group name."""
+        """
+        Group name.
+        The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
+        """
         type: Type
         servers: Servers
         """Subclass of AvdList with `ServersItem` items."""
@@ -1168,7 +1171,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    name: Group name.
+                    name:
+                       Group name.
+                       The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
                     type: type
                     servers: Subclass of AvdList with `ServersItem` items.
 
