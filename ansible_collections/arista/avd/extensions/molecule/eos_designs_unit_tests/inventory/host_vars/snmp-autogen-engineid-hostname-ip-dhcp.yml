@@ -1,0 +1,18 @@
+---
+# Minimum config to only test the specific feature.
+# This tests the SNMP auto engine ID for the legacy 'hostname_and_ip' mode
+# when mgmt_ip is set to 'dhcp'. The literal string 'dhcp' is hashed together
+# with the hostname to produce the local engine ID.
+type: l2leaf
+mgmt_interface_settings:
+  vrf: MGMT
+
+l2leaf:
+  nodes:
+    - name: snmp-autogen-engineid-hostname-ip-dhcp
+      id: 43
+      mgmt_ip: dhcp
+
+snmp_settings:
+  compute_local_engineid: true
+  compute_local_engineid_source: hostname_and_ip
