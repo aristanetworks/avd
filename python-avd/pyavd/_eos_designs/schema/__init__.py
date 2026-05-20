@@ -64660,7 +64660,6 @@ class EosDesigns(EosDesignsRootModel):
                             "redistribute_bgp": {"type": RedistributeBgp},
                             "redistribute_connected": {"type": RedistributeConnected},
                             "nodes": {"type": Nodes},
-                            "structured_config": {"type": EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem},
                         }
                         enabled: bool | None
                         process_id: int | None
@@ -64668,6 +64667,14 @@ class EosDesigns(EosDesignsRootModel):
                         router_id: str
                         """
                         Router ID to use for OSPFv3 in this VRF.
+                        This can be an IPv4 address, "main_router_id", "none" or
+                        "diagnostic_loopback".
+                        - "main_router_id" will use the IP address of Loopback0 or the common `router
+                        general` Router ID if `use_router_general_for_router_id` is set."
+                        - "none" will not configure a OSPF
+                        Router ID for this VRF. EOS will use the main OSPF Router ID.
+                        - "diagnostic_loopback" will use the
+                        IP address of the VRF Diagnostic Loopback interface.
 
                         Default value: `"main_router_id"`
                         """
@@ -64679,11 +64686,6 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
-                        structured_config: EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem
-                        """
-                        Custom structured config added under ipv6_router_ospf.process_ids.[process_id=<process_id>] for the
-                        EOS Config schema.
-                        """
 
                         if TYPE_CHECKING:
 
@@ -64697,7 +64699,6 @@ class EosDesigns(EosDesignsRootModel):
                                 redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
                                 redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
-                                structured_config: EosCliConfigGen.Ipv6RouterOspf.ProcessIdsItem | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ipv6Ospf.
@@ -64708,14 +64709,20 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     enabled: enabled
                                     process_id: If not set, "vrf_id" will be used.
-                                    router_id: Router ID to use for OSPFv3 in this VRF.
+                                    router_id:
+                                       Router ID to use for OSPFv3 in this VRF.
+                                       This can be an IPv4 address, "main_router_id", "none" or
+                                       "diagnostic_loopback".
+                                       - "main_router_id" will use the IP address of Loopback0 or the common `router
+                                       general` Router ID if `use_router_general_for_router_id` is set."
+                                       - "none" will not configure a OSPF
+                                       Router ID for this VRF. EOS will use the main OSPF Router ID.
+                                       - "diagnostic_loopback" will use the
+                                       IP address of the VRF Diagnostic Loopback interface.
                                     auto_cost_reference_bandwidth: Bandwidth in mbps.
                                     redistribute_bgp: Subclass of AvdModel.
                                     redistribute_connected: Subclass of AvdModel.
                                     nodes: Subclass of AvdList with `str` items.
-                                    structured_config:
-                                       Custom structured config added under ipv6_router_ospf.process_ids.[process_id=<process_id>] for the
-                                       EOS Config schema.
 
                                 """
 

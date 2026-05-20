@@ -104,25 +104,25 @@ tenants:
             ipv6_ospf:
               enabled: true
               point_to_point: true
-  # Test OSPFv3 Redistribution OSPFv3 with custom structured configurations to test
-  - name: Tenant_OSPFv3_Redistribute_Ospfv3_Custom
+  # Test with no Redistribution
+  - name: Tenant_OSPFv3_No_Redistribution
     mac_vrf_vni_base: 10000
     mac_vrf_id_base: 20000
     redistribute_mlag_ibgp_peering_vrfs: true
     vrfs:
-      - name: Tenant_OSPFv3_Redistribute_Ospfv3_Custom_VRF
+      - name: Tenant_OSPFv3_No_Redistribution_VRF
         vrf_vni: 105
         vrf_id: 47
         ipv6_ospf:
           enabled: true
           router_id: ipv6_ospf_router_ospfv3_include
-          structured_config:
-            auto_cost_reference_bandwidth: 10
           nodes: [network-services-ospf-v3]
+          redistribute_bgp:
+            enabled: false
         svis:
           - id: 206
-            name: Tenant_OSPFv3_Redistribute_Ospfv3_Custom_206
-            description: "Tenant_OSPFv3_Redistribute_Ospfv3_Custom_206 description"
+            name: Tenant_OSPFv3_No_Redistribution_206
+            description: "Tenant_OSPFv3_No_Redistribution_206 description"
             enabled: true
             ipv6_address: ca::ca/64
             ipv6_enable: true

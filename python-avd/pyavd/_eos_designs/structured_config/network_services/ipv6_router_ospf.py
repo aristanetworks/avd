@@ -50,18 +50,11 @@ class Ipv6RouterOspfMixin(Protocol):
                     auto_cost_reference_bandwidth=vrf.ipv6_ospf.auto_cost_reference_bandwidth,
                 )
 
-                if vrf.ipv6_ospf.structured_config:
-                    self.custom_structured_configs.nested.ipv6_router_ospf.process_ids.obtain(process_id)._deepmerge(
-                        vrf.ipv6_ospf.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-                    )
-
                 if vrf.name != "default":
                     process.vrf = vrf.name
                 self._update_ipv6_ospf_redistribute(process, vrf)
 
-                # In theory only the underlay could have created an OSPF process before that.
-                maybe_existing_process = self.structured_config.ipv6_router_ospf.process_ids.obtain(process_id)
-                maybe_existing_process._combine(process)
+                self.structured_config.ipv6_router_ospf.process_ids.append(process)
 
     def _update_ipv6_ospf_redistribute(
         self: AvdStructuredConfigNetworkServicesProtocol,

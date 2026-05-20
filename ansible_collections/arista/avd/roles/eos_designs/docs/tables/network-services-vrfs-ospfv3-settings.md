@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf") | Dictionary |  |  |  | Router OSPFv3 configuration.<br>This will create an OSPFv3 routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be<br>created on all leafs where the VRF is deployed. This will also cause automatic OSPFv3 redistribution into BGP unless<br>explicitly turned off with "redistribute_ospfv3: false".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process_id</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf.process_id") | Integer |  |  |  | If not set, "vrf_id" will be used. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf.router_id") | String |  | `main_router_id` |  | Router ID to use for OSPFv3 in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf.auto_cost_reference_bandwidth") | Integer |  |  | Min: 1<br>Max: 4294967 | Bandwidth in mbps. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_bgp</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf.redistribute_bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf.redistribute_bgp.enabled") | Boolean |  | `True` |  |  |
@@ -26,7 +26,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf.redistribute_connected.include_leaked") | Boolean |  |  |  | Include leaked routes while redistributing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf.nodes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf.nodes.[]") | String |  |  |  | Hostname. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_ospf.structured_config") | Dictionary |  |  |  | Custom structured config added under ipv6_router_ospf.process_ids.[process_id=<process_id>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_ospfv3</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_ospfv3") | Boolean |  | `True` |  | Non-selectively enabling or disabling redistribute ospfv3 inside the VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svis</samp>](## "<network_services_keys.name>.[].vrfs.[].svis") | List, items: Dictionary |  |  |  | List of SVIs.<br>This will create both the L3 SVI and L2 VLAN based on filters applied to the node.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].id") | Integer | Required |  | Min: 1<br>Max: 4096 | SVI interface id and VLAN id. |
@@ -85,6 +84,10 @@
               process_id: <int>
 
               # Router ID to use for OSPFv3 in this VRF.
+              # This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".
+              # - "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."
+              # - "none" will not configure a OSPF Router ID for this VRF. EOS will use the main OSPF Router ID.
+              # - "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface.
               router_id: <str; default="main_router_id">
 
               # Bandwidth in mbps.
@@ -109,9 +112,6 @@
 
                   # Hostname.
                 - <str>
-
-              # Custom structured config added under ipv6_router_ospf.process_ids.[process_id=<process_id>] for the EOS Config schema.
-              structured_config: <dict>
 
             # Non-selectively enabling or disabling redistribute ospfv3 inside the VRF.
             redistribute_ospfv3: <bool; default=True>
