@@ -11,7 +11,6 @@
   - [IPv6 Routing](#ipv6-routing)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
-  - [MPLS Device Configuration](#mpls-device-configuration)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -115,11 +114,6 @@ ip routing ipv6 interfaces vrf TENANT_B
 | LDP Router ID | - |
 | LDP Interface Disabled Default | - |
 | LDP Transport-Address Interface | - |
-
-### MPLS Device Configuration
-
-```eos
-```
 
 ## VRF Instances
 

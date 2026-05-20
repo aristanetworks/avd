@@ -5,23 +5,7 @@
 #}
 {# eos - mpls rsvp #}
 {% if mpls.rsvp is arista.avd.defined %}
-{%     set mpls_rsvp_has_settings = (
-           mpls.rsvp.refresh is arista.avd.defined
-           or mpls.rsvp.hello is arista.avd.defined
-           or mpls.rsvp.authentication is arista.avd.defined
-           or mpls.rsvp.neighbors is arista.avd.defined
-           or mpls.rsvp.ip_access_group is arista.avd.defined
-           or mpls.rsvp.ipv6_access_group is arista.avd.defined
-           or mpls.rsvp.fast_reroute is arista.avd.defined
-           or mpls.rsvp.srlg is arista.avd.defined
-           or mpls.rsvp.label_local_termination is arista.avd.defined
-           or mpls.rsvp.preemption_method is arista.avd.defined
-           or mpls.rsvp.mtu_signaling is arista.avd.defined
-           or mpls.rsvp.hitless_restart is arista.avd.defined
-           or mpls.rsvp.graceful_restart is arista.avd.defined
-           or mpls.rsvp.p2mp is arista.avd.defined
-           or mpls.rsvp.shutdown is arista.avd.defined
-       ) %}
+{%     set mpls_rsvp_has_settings = mpls.rsvp.values() | select('arista.avd.defined') | list | length > 0 %}
 {%     if mpls_rsvp_has_settings or eos_config_future.only_render_mpls_rsvp_with_settings is not arista.avd.defined(true) %}
 !
 mpls rsvp
