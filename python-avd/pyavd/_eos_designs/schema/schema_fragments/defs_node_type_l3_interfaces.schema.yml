@@ -107,7 +107,7 @@ $defs:
           type: dict
           description: |-
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
-            IPv6 BGP peering on L3 interfaces and L3 Port-Channels is not yet supported.
+            IPv6 BGP peering on L3 interfaces is not yet supported.
           keys:
             peer_as:
               type: str
