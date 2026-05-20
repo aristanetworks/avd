@@ -409,8 +409,12 @@ keys:
       type: dict
       keys:
         name:
-          description: Group name.
+          description: 'Group name.
+
+            The group names ''radius'', ''tacacs+'' and ''ldap'' are reserved by EOS
+            and must not be used.'
           type: str
+          pattern: (?!radius$|tacacs\+$|ldap$).+
         type:
           type: str
           valid_values:
@@ -505,6 +509,14 @@ keys:
         items:
           type: str
           description: DHCP server IPv4 address.
+      dhcp_server_interfaces:
+        type: list
+        description: 'The list of interfaces connected to the DHCP server.
+
+          Requires EOS version 4.36 or later.'
+        items:
+          type: str
+          description: Interface name.
       disabled:
         type: bool
         description: Disable IP locking on configured ports.
@@ -4016,6 +4028,12 @@ keys:
                   type: str
                   required: true
                   description: Quality of Service Policy-map name.
+        cpu_traffic_policy_fallback_vrf:
+          type: str
+          description: 'CPU traffic policy name.
+
+            Fallback to the CPU traffic policy applied to the VRF in which this interface
+            is configured.'
         mpls:
           type: dict
           keys:
@@ -10035,6 +10053,21 @@ keys:
                       value:
                         type: str
                         required: true
+      cv_use_static_config_manifest:
+        type: bool
+        description: 'PREVIEW: This option is marked as "preview", meaning the data
+          models or generated configuration can change at any time.
+
+
+          The device configuration is expected to be deployed via the
+
+          `static_config_manifest` / `cv_static_config_manifest` hierarchy instead
+          of the
+
+          flat "AVD Configurations" layout in the Static Configlet Studio.
+
+          The device will still be verified and onboarded in the Inventory & Topology
+          Studio.'
       cv_pathfinder:
         type: dict
         description: Metadata used for CV Pathfinder visualization on CloudVision.
@@ -11572,6 +11605,79 @@ keys:
           shutdown:
             type: bool
             description: Make `shutdown` key false for `no shutdown` cli.
+      label_ranges:
+        description: 'MPLS label ranges configuration.
+
+          Ranges cannot overlap except for `bgp_sr`, `ospf_sr` and `isis_sr`.
+
+          Requires EOS 4.31.1F or later.'
+        type: dict
+        keys:
+          bgp_sr:
+            description: Label range for BGP SR global segment identifiers.
+            type: dict
+            keys:
+              base:
+                type: int
+                required: true
+                convert_types:
+                - str
+                description: First label of range.
+                min: 16
+                max: 1048575
+              size:
+                type: int
+                required: true
+                convert_types:
+                - str
+                description: Size of range.
+                min: 0
+                max: 1048560
+          dynamic:
+            description: Label range for dynamic assignment.
+            type: dict
+            keys:
+              base:
+                type: int
+                required: true
+                convert_types:
+                - str
+                description: First label of range.
+                min: 16
+                max: 1048575
+              size:
+                type: int
+                required: true
+                convert_types:
+                - str
+                description: Size of range.
+                min: 131072
+                max: 1048560
+          isis_sr:
+            description: Label range for IS-IS SR global segment identifiers.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          l2evpn:
+            description: Label range for L2 EVPN routes.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          l2evpn_ethernet_segment:
+            description: Labels reserved for L2 EVPN A-D per ES routes for split-horizon
+              filtering.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          ospf_sr:
+            description: Label range for OSPF Segment Routing Global Block (SRGB).
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          srlb:
+            description: Label range for SR local segment identifiers.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
+          static:
+            description: Label range for static MPLS routes.
+            type: dict
+            $ref: eos_cli_config_gen#/keys/mpls/keys/label_ranges/keys/bgp_sr
       tunnel:
         description: Configure MPLS tunnel.
         type: dict
@@ -12933,6 +13039,12 @@ keys:
                   type: str
                   required: true
                   description: Quality of Service Policy-map name.
+        cpu_traffic_policy_fallback_vrf:
+          type: str
+          description: 'CPU traffic policy name.
+
+            Fallback to the CPU traffic policy applied to the VRF in which this interface
+            is configured.'
         mpls:
           type: dict
           keys:
@@ -24769,6 +24881,28 @@ keys:
   traffic_policies:
     type: dict
     keys:
+      cpu_traffic_policy:
+        type: dict
+        keys:
+          vrf_all:
+            type: dict
+            keys:
+              name:
+                type: str
+                convert_types:
+                - int
+                required: true
+                description: Traffic policy name for all VRFs.
+              enforcement_management:
+                type: bool
+                description: Enforce CPU traffic-policy on management ports.
+          enforcement_ip_ttl_expired:
+            type: bool
+            description: Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets.
+          fragment_implicit_permit_disabled:
+            type: bool
+            description: Disable the addition of implicit rules that allow fragmented
+              packets for Layer 4 rules.
       vrfs:
         type: list
         primary_key: name
