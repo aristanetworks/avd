@@ -54,6 +54,11 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: (?!radius$|tacacs\+$|ldap$).+
+                  description: 'List of Tacacs group names.
+
+                    The group names ''radius'', ''tacacs+'' and ''ldap'' are reserved
+                    by EOS and must not be used.'
                 vrf:
                   type: str
                   description: "VRF name.\nThe value will be interpreted according
@@ -140,6 +145,11 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: (?!radius$|tacacs\+$|ldap$).+
+                  description: 'List of Radius group names.
+
+                    The group names ''radius'', ''tacacs+'' and ''ldap'' are reserved
+                    by EOS and must not be used.'
                 vrf:
                   type: str
                   description: "VRF name.\nThe value will be interpreted according
