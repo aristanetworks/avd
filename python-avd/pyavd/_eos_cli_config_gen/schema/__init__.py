@@ -1151,7 +1151,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "type": {"type": str}, "servers": {"type": Servers}}
         name: str
-        """Group name."""
+        """
+        Group name.
+        The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
+        """
         type: Type
         servers: Servers
         """Subclass of AvdList with `ServersItem` items."""
@@ -1168,7 +1171,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    name: Group name.
+                    name:
+                       Group name.
+                       The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
                     type: type
                     servers: Subclass of AvdList with `ServersItem` items.
 
@@ -1282,6 +1287,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         DhcpServersIpv4._item_type = str
 
+        class DhcpServerInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServerInterfaces._item_type = str
+
         class LeasesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -1350,6 +1360,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "local_interface": {"type": str},
@@ -1357,6 +1368,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
+        dhcp_server_interfaces: DhcpServerInterfaces
+        """
+        The list of interfaces connected to the DHCP server.
+        Requires EOS version 4.36 or later.
+
+        Subclass
+        of AvdList with `str` items.
+        """
         disabled: bool | None
         """Disable IP locking on configured ports."""
         leases: Leases
@@ -1371,6 +1390,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
                 disabled: bool | None | UndefinedType = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 local_interface: str | None | UndefinedType = Undefined,
@@ -1384,6 +1404,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
+                    dhcp_server_interfaces:
+                       The list of interfaces connected to the DHCP server.
+                       Requires EOS version 4.36 or later.
+
+                       Subclass
+                       of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     local_interface: local_interface
