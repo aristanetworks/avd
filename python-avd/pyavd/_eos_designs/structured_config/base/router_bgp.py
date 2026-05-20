@@ -64,8 +64,3 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.neighbors.extend(self.shared_utils.l3_bgp_neighbors)
         for neighbor in self.shared_utils.l3_bgp_neighbors:
             self.structured_config.router_bgp.address_family_ipv4.neighbors.append_new(ip_address=neighbor.ip_address, activate=True)
-
-        # Add IPv6 neighbors
-        self.structured_config.router_bgp.neighbors.extend(self.shared_utils.l3_bgp_ipv6_neighbors)
-        for neighbor in self.shared_utils.l3_bgp_ipv6_neighbors:
-            self.structured_config.router_bgp.address_family_ipv6.neighbors.append_new(ip_address=neighbor.ip_address, activate=True)
