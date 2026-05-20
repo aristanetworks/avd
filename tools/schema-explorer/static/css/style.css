@@ -126,35 +126,44 @@ a.card:hover {
 
 /* ── Feature detail page ─────────────────────────────────────────────────── */
 
-/* Code blocks */
-pre {
+/* Code blocks — scoped to the SPA / embed roots so they don't override
+   Material's <pre> styling on docs pages that load this stylesheet. */
+.schema-spa-host pre,
+.schema-embed pre {
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
 }
 
-pre code {
+.schema-spa-host pre code,
+.schema-embed pre code {
   background: transparent;
 }
 
-[data-bs-theme="dark"] pre {
+.schema-spa-host[data-bs-theme="dark"] pre,
+[data-bs-theme="dark"] .schema-spa-host pre,
+[data-bs-theme="dark"] .schema-embed pre {
   background-color: #1a1f26 !important;
   border-color: #495057 !important;
   color: #dee2e6;
 }
 
-[data-bs-theme="dark"] pre code {
+.schema-spa-host[data-bs-theme="dark"] pre code,
+[data-bs-theme="dark"] .schema-spa-host pre code,
+[data-bs-theme="dark"] .schema-embed pre code {
   color: #dee2e6;
   background: transparent;
 }
 
 /* Highlighted "new" lines in example config */
-pre code span.code-line-new {
-  background-color: rgba(170,208,55,.22);
+.schema-spa-host pre code span.code-line-new,
+.schema-embed pre code span.code-line-new {
+  background-color: rgba(170, 208, 55, .22);
   border-left: 3px solid #aad037;
 }
 
-[data-bs-theme="dark"] pre code span.code-line-new {
-  background-color: rgba(170,208,55,.15);
+[data-bs-theme="dark"] .schema-spa-host pre code span.code-line-new,
+[data-bs-theme="dark"] .schema-embed pre code span.code-line-new {
+  background-color: rgba(170, 208, 55, .15);
 }
 
 /* Tables inside cards */

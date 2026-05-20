@@ -93,8 +93,60 @@ const app = document.getElementById("app");
 //
 // Both modes can coexist — embeds work even when `#app` is also present.
 
+// CDN dependencies are lazy-loaded so docs pages that never host an embed
+// don't pay for Bootstrap's body-level rules leaking into Material's chrome
+// (link underlines, heading sizes, line-height resets, …).
+const CDN_DEPS = {
+  css: [
+    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css",
+    "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css",
+  ],
+  js: [
+    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
+    "https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js",
+  ],
+};
+
+function _hasTagWithUrl(selector, attr, url) {
+  for (const el of document.querySelectorAll(selector)) {
+    if (el.getAttribute(attr) === url) return true;
+  }
+  return false;
+}
+
+function _loadCss(href) {
+  if (_hasTagWithUrl("link[rel='stylesheet']", "href", href)) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = href;
+    link.onload = resolve;
+    link.onerror = () => reject(new Error(`Failed to load ${href}`));
+    document.head.appendChild(link);
+  });
+}
+
+function _loadScript(src) {
+  if (_hasTagWithUrl("script", "src", src)) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = () => reject(new Error(`Failed to load ${src}`));
+    document.head.appendChild(s);
+  });
+}
+
+async function ensureDeps() {
+  await Promise.all(CDN_DEPS.css.map(_loadCss));
+  // Scripts must load in order — Bootstrap before sql.js doesn't strictly
+  // matter, but doing them sequentially makes ordering predictable.
+  for (const src of CDN_DEPS.js) await _loadScript(src);
+}
+
 async function ensureSqlJs() {
   if (SQL) return SQL;
+  await ensureDeps();
   SQL = await initSqlJs({
     locateFile: f => `https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/${f}`,
   });

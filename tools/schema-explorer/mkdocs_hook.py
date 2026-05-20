@@ -13,10 +13,14 @@ Responsibilities:
    arbitrary docs pages via the ``<schema-explorer>`` custom HTML element,
    and the SPA assets are a shared site-wide resource.
 
-2. **Global asset injection.** Append the SPA's CSS and JS to ``extra_css`` /
-   ``extra_javascript`` so every docs page gets the loader. The loader
-   short-circuits on pages that do not contain a ``<schema-explorer>``
-   element, so the per-page cost is just the unfired script bytes.
+2. **Global asset injection.** Append only the SPA's own ``style.css`` and
+   ``app.js`` to ``extra_css`` / ``extra_javascript`` so every docs page
+   gets the embed loader. ``app.js`` early-returns on pages that do not
+   host a ``<schema-explorer>`` element or the standalone ``#app`` mount,
+   so the per-page cost is just the unfired script bytes. Bootstrap CSS/JS,
+   Bootstrap Icons, and sql.js are *not* injected globally — they are
+   lazy-loaded by ``app.js`` only when an embed is actually present,
+   so Material's chrome on plain docs pages is unaffected.
 
 3. **Standalone route.** The hook also copies the SPA ``index.html`` so the
    full-page experience stays reachable at ``/_assets/schema-explorer/index.html``.
@@ -42,21 +46,14 @@ GENERATE_SCRIPT = HERE / "generate.py"
 AVD_ROOT = HERE.parents[1]
 DEFAULT_RELEASE = "devel"
 ASSET_SUBPATH = "_assets/schema-explorer"
-# The SPA was built on Bootstrap 5 + Bootstrap Icons. Inject them globally
-# so embeds render with their existing markup on any docs page. Style scoping
-# (so Bootstrap's body-level rules don't bleed into Material's typography)
-# lives in tools/schema-explorer/static/css/style.css under .schema-embed
-# / .schema-spa-host scopes.
-CSS_FILES = (
-    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css",
-    "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css",
-    f"{ASSET_SUBPATH}/css/style.css",
-)
-JS_FILES = (
-    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
-    "https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js",
-    f"{ASSET_SUBPATH}/js/app.js",
-)
+# Only the SPA's own style.css + app.js are registered globally. Bootstrap
+# CSS/JS + Bootstrap Icons + sql.js are lazy-loaded by app.js at runtime
+# when (and only when) the page actually hosts a <schema-explorer> embed
+# or the standalone SPA — otherwise Bootstrap's body-level rules (link
+# underlines, heading sizes, line-height) would leak into Material's chrome
+# on every docs page even those without an embed.
+CSS_FILES = (f"{ASSET_SUBPATH}/css/style.css",)
+JS_FILES = (f"{ASSET_SUBPATH}/js/app.js",)
 
 
 def _ensure_build() -> None:
