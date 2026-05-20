@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import shutil
 from pathlib import Path
+from typing import Any
 
 BUILD_DIR = Path(__file__).resolve().parent / "build"
 ASSET_SUBPATH = "_assets/schema-explorer"
@@ -51,7 +52,7 @@ JS_FILES = (
 )
 
 
-def on_config(config, **kwargs):  # noqa: ARG001
+def on_config(config: dict[str, Any], **kwargs: Any) -> dict[str, Any]:  # noqa: ARG001
     """Register the SPA's CSS/JS so every page can host an embed."""
     extra_css = list(config.get("extra_css") or [])
     extra_js = list(config.get("extra_javascript") or [])
@@ -66,7 +67,7 @@ def on_config(config, **kwargs):  # noqa: ARG001
     return config
 
 
-def on_post_build(config, **kwargs):  # noqa: ARG001
+def on_post_build(config: dict[str, Any], **kwargs: Any) -> None:  # noqa: ARG001
     if not BUILD_DIR.is_dir():
         return
     dest = Path(config["site_dir"]) / ASSET_SUBPATH

@@ -119,6 +119,11 @@ convention = "google"
   "T201",   # Interactive scripts can have print
   "INP001", # implicit namespace package. Add an `__init__.py` - TODO: Evaluate or see if it is a false positive
 ]
+"tools/**/*.py" = [
+  "T201",    # tools/ holds CLI tooling — print() for progress is expected
+  "INP001",  # tools/ is a tooling directory, not a Python package
+  "PLC0415", # generate.py imports pyavd after sys.path manipulation — intentional
+]
 "python-avd/pyavd/_cv/client/*.py" = [
   "B904", # Within an `except` clause, raise exceptions with `raise - TODO: Improve code
 ]

@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""
+r"""
 Build the AVD Schema Explorer for the docs site.
 
 Two responsibilities:
@@ -115,7 +115,8 @@ def _load_resolved_store(avd_root: Path) -> dict[str, dict]:
     """
     python_avd = avd_root / "python-avd"
     if not python_avd.is_dir():
-        raise FileNotFoundError(f"python-avd/ not found under {avd_root}")
+        msg = f"python-avd/ not found under {avd_root}"
+        raise FileNotFoundError(msg)
     sys.path.insert(0, str(python_avd))
 
     from schema_tools.avdschemaresolver import AvdSchemaResolver
@@ -311,7 +312,8 @@ def build(avd_root: Path, release: str, out: Path) -> dict[str, int]:
 def _copy_static_assets(site_dir: Path) -> None:
     """Copy index.html / css/ / js/ from ``static/`` into ``site_dir``."""
     if not STATIC_DIR.is_dir():
-        raise FileNotFoundError(f"Static asset dir not found: {STATIC_DIR}")
+        msg = f"Static asset dir not found: {STATIC_DIR}"
+        raise FileNotFoundError(msg)
     site_dir.mkdir(parents=True, exist_ok=True)
     for entry in STATIC_DIR.iterdir():
         target = site_dir / entry.name
