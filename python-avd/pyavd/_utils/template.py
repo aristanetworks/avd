@@ -3,8 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 import warnings
+from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
     from collections import ChainMap
     from typing import Any
