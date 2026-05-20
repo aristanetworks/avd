@@ -7,6 +7,8 @@ from asyncio import gather
 from logging import getLogger
 from typing import TYPE_CHECKING, cast
 
+from pyavd._cv.client.exceptions import CVManifestError
+
 from .models import AVD_ENTITY_PREFIX, CVManifest
 
 if TYPE_CHECKING:
@@ -58,6 +60,44 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Fetching all existing configlet containers from CloudVision...")
     existing_containers = await cv_client.get_configlet_containers(workspace_id=workspace_id)
     existing_containers_by_id = {cast("str", container.key.configlet_assignment_id): container for container in existing_containers}
+    existing_parent_by_child_id = {cast("str", child_id): container for container in existing_containers for child_id in container.child_assignment_ids.values}
+
+    # AVD-managed containers to be deleted. Computed up front so the validation below can include them.
+    desired_containers_by_id = {container.id: container.name for container in cv_manifest.containers}
+    containers_to_delete = {
+        container_id: cast("str", container.display_name)
+        for container_id, container in existing_containers_by_id.items()
+        if container_id.startswith(AVD_ENTITY_PREFIX) and container_id not in desired_containers_by_id
+    }
+
+    # All AVD-managed containers this deploy will touch, keyed by ID with display names as values.
+    managed_container_names_by_id = desired_containers_by_id | containers_to_delete
+    violations: list[tuple[str, str, str, str]] = []
+    for child_id, child_name in managed_container_names_by_id.items():
+        parent = existing_parent_by_child_id.get(child_id)
+        if parent is None:
+            # No existing parent means it's in the Studio root list which _sync_studio_roots will reconcile,
+            # or it's an orphan which will get reassigned or deleted by this deploy.
+            continue
+        parent_id = cast("str", parent.key.configlet_assignment_id)
+        if parent_id in managed_container_names_by_id:
+            # Parent is managed, it will be handled by this deploy.
+            continue
+
+        # Parent is out of our control.
+        violations.append((cast("str", parent.display_name), parent_id, child_name, child_id))
+
+    if violations:
+        violations.sort()
+        violations_text = "; ".join(
+            f"'{child_name}' (id={child_id}) is currently a child of '{parent_name}' (id={parent_id})"
+            for parent_name, parent_id, child_name, child_id in violations
+        )
+        msg = (
+            "The following manifest-managed containers were manually reassigned to parents that this manifest doesn't control. "
+            f"Remove these parent assignments and re-run: {violations_text}"
+        )
+        raise CVManifestError(msg)
 
     containers_to_push: list[CVContainer] = []
     for desired_container in cv_manifest.containers:
@@ -77,14 +117,6 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
         await cv_client.set_configlet_containers(workspace_id=workspace_id, containers=container_tuples)
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No container creations or updates are needed.")
-
-    # Delete unused AVD-managed containers.
-    desired_container_ids = {container.id for container in cv_manifest.containers}
-    containers_to_delete = {
-        container_id: cast("str", container.display_name)
-        for container_id, container in existing_containers_by_id.items()
-        if container_id.startswith(AVD_ENTITY_PREFIX) and container_id not in desired_container_ids
-    }
 
     if containers_to_delete:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d AVD-managed containers which are no longer used.", len(containers_to_delete))
