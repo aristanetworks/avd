@@ -1,0 +1,20 @@
+---
+# Minimum config to only test the specific feature.
+# This tests the SNMP auto engine ID for the RFC3411 type5 mode
+# when mgmt_ip is set to 'dhcp' and local_engineid_ip is 'use_mgmt_interface'.
+# The literal string 'dhcp' is used as the IP input to the SHA1 digest,
+# then prefixed with the Arista enterprise ID + type 05 octet.
+type: l2leaf
+mgmt_interface_settings:
+  vrf: MGMT
+
+l2leaf:
+  nodes:
+    - name: snmp-autogen-engineid-rfc3411-hostname-dhcp
+      id: 43
+      mgmt_ip: dhcp
+
+snmp_settings:
+  compute_local_engineid: true
+  # compute_local_engineid_source defaults to rfc3411_type5
+  local_engineid_ip: use_mgmt_interface
