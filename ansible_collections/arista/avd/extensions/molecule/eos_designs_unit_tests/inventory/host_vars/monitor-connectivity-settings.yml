@@ -20,7 +20,7 @@ monitor_connectivity:
     - name: SET_INTERNET
       interfaces: [ Ethernet1, Ethernet2 ]
     - name: SET_INTERNET_1
-      interfaces: [ Ethernet3, Ethernet4 ]
+      interfaces: [ Ethernet4, Ethernet3 ]
     - name: SET_INTERNET_2
       interfaces: [ Ethernet5, Ethernet6 ]
     - name: SET_LOOPBACK0

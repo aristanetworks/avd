@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBaseProtocol
@@ -31,7 +32,7 @@ class MonitorConnectivityMixin(Protocol):
             name_server_group=self.inputs.monitor_connectivity.name_server_group,
         )
         for interface_set in self.inputs.monitor_connectivity.interface_sets:
-            monitor_connectivity.interface_sets.append_new(name=interface_set.name, interfaces=",".join(interface_set.interfaces))
+            monitor_connectivity.interface_sets.append_new(name=interface_set.name, interfaces=",".join(natural_sort(interface_set.interfaces)))
         if (local_interfaces := self.inputs.monitor_connectivity.local_interfaces) is not None:
             if local_interfaces in self.inputs.monitor_connectivity.interface_sets:
                 monitor_connectivity.local_interfaces = local_interfaces
@@ -52,7 +53,7 @@ class MonitorConnectivityMixin(Protocol):
                 address_only=vrf.address_only,
             )
             for interface_set in vrf.interface_sets:
-                monitor_connectivity_vrf.interface_sets.append_new(name=interface_set.name, interfaces=",".join(interface_set.interfaces))
+                monitor_connectivity_vrf.interface_sets.append_new(name=interface_set.name, interfaces=",".join(natural_sort(interface_set.interfaces)))
             if (vrf_local_interfaces := vrf.local_interfaces) is not None:
                 if vrf_local_interfaces in vrf.interface_sets:
                     monitor_connectivity_vrf.local_interfaces = vrf_local_interfaces
