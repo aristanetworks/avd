@@ -8,3 +8,4 @@ spanning_tree:
     bpdufilter_default: true
   bpduguard_rate_limit:
     default: false
+  loop_guard_default: true

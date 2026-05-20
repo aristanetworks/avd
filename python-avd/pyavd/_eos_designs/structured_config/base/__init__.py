@@ -285,20 +285,28 @@ class AvdStructuredConfigBaseProtocol(
             self.structured_config.spanning_tree.mode = "none"
             return
 
-        spanning_tree_mode = self.shared_utils.node_config.spanning_tree_mode
+        stp_settings = self.shared_utils.node_config.spanning_tree_settings
+        spanning_tree_mode = stp_settings._get("mode", self.shared_utils.node_config.spanning_tree_mode)
+        root_super = stp_settings._get("root_super", self.shared_utils.node_config.spanning_tree_root_super)
+        pvst_boundary = stp_settings._get("mst_pvst_boundary", self.shared_utils.node_config.spanning_tree_mst_pvst_boundary)
+        stp_po_range = stp_settings._get(
+            "port_id_allocation_port_channel_range", self.shared_utils.node_config.spanning_tree_port_id_allocation_port_channel_range
+        )
 
-        if self.shared_utils.node_config.spanning_tree_root_super is True:
+        if root_super is True:
             self.structured_config.spanning_tree.root_super = True
 
-        if self.shared_utils.node_config.spanning_tree_mst_pvst_boundary:
+        if pvst_boundary:
             self.structured_config.spanning_tree.mst.pvst_border = True
 
-        if stp_po_range := self.shared_utils.node_config.spanning_tree_port_id_allocation_port_channel_range:
+        if stp_po_range:
             self.structured_config.spanning_tree.port_id_allocation_port_channel_range = stp_po_range
 
         if spanning_tree_mode is not None:
             self.structured_config.spanning_tree.mode = spanning_tree_mode
-            priority = self.shared_utils.node_config.spanning_tree_priority
+            if stp_settings.loop_guard_default:
+                self.structured_config.spanning_tree.loop_guard_default = stp_settings.loop_guard_default
+            priority = stp_settings._get("priority", self.shared_utils.node_config.spanning_tree_priority)
             # "rapid-pvst" is not included below. Per vlan spanning-tree priorities are set under network-services.
             if spanning_tree_mode == "mstp":
                 self.structured_config.spanning_tree.mst_instances.append_new(id="0", priority=priority)

@@ -1,0 +1,33 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: spanning-tree-mode-mstp
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  root_super: true
+  mode: mstp
+  mst:
+    pvst_border: true
+  mst_instances:
+  - id: '0'
+    priority: 8192
+  port_id_allocation_port_channel_range:
+    minimum: 201
+    maximum: 2001
+  loop_guard_default: true
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

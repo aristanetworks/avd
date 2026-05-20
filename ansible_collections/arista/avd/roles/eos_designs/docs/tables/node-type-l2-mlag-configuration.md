@@ -28,14 +28,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.defaults.mlag_peer_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>The IPv6 address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the first MLAG switch.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.defaults.mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.defaults.mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.defaults.spanning_tree_mode") | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "<node_type_keys.key>.defaults.spanning_tree_priority") | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "<node_type_keys.key>.defaults.spanning_tree_root_super") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "<node_type_keys.key>.defaults.spanning_tree_mst_pvst_boundary") | Boolean |  |  |  | Enable MST PVST border ports. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "<node_type_keys.key>.defaults.spanning_tree_port_id_allocation_port_channel_range") | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "<node_type_keys.key>.defaults.virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.defaults.spanning_tree_mode") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mode</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "<node_type_keys.key>.defaults.spanning_tree_priority") <span style="color:red">deprecated</span> | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.priority</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "<node_type_keys.key>.defaults.spanning_tree_root_super") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.root_super</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "<node_type_keys.key>.defaults.spanning_tree_mst_pvst_boundary") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable MST PVST border ports.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mst_pvst_boundary</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "<node_type_keys.key>.defaults.spanning_tree_port_id_allocation_port_channel_range") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.port_id_allocation_port_channel_range</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimum</samp>](## "<node_type_keys.key>.defaults.spanning_tree_port_id_allocation_port_channel_range.minimum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify minimum value for reserved range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "<node_type_keys.key>.defaults.spanning_tree_port_id_allocation_port_channel_range.maximum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify maximum value for reserved range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "<node_type_keys.key>.defaults.virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
@@ -59,14 +59,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>The IPv6 address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the first MLAG switch.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_mode") | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_priority") | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_root_super") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_mst_pvst_boundary") | Boolean |  |  |  | Enable MST PVST border ports. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_port_id_allocation_port_channel_range") | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_mode") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mode</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_priority") <span style="color:red">deprecated</span> | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.priority</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_root_super") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.root_super</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_mst_pvst_boundary") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable MST PVST border ports.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mst_pvst_boundary</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_port_id_allocation_port_channel_range") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.port_id_allocation_port_channel_range</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimum</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_port_id_allocation_port_channel_range.minimum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify minimum value for reserved range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_port_id_allocation_port_channel_range.maximum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify maximum value for reserved range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
@@ -86,14 +86,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>The IPv6 address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the first MLAG switch.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_mode") | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_priority") | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_root_super") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_mst_pvst_boundary") | Boolean |  |  |  | Enable MST PVST border ports. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_port_id_allocation_port_channel_range") | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_mode") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mode</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_priority") <span style="color:red">deprecated</span> | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.priority</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_root_super") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.root_super</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_mst_pvst_boundary") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable MST PVST border ports.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mst_pvst_boundary</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_port_id_allocation_port_channel_range") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.port_id_allocation_port_channel_range</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimum</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_port_id_allocation_port_channel_range.minimum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify minimum value for reserved range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "<node_type_keys.key>.node_groups.[].spanning_tree_port_id_allocation_port_channel_range.maximum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify maximum value for reserved range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.nodes.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
@@ -115,14 +115,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>The IPv6 address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the first MLAG switch.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "<node_type_keys.key>.nodes.[].mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "<node_type_keys.key>.nodes.[].mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_mode") | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_priority") | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_root_super") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_mst_pvst_boundary") | Boolean |  |  |  | Enable MST PVST border ports. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_port_id_allocation_port_channel_range") | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "<node_type_keys.key>.nodes.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_mode") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mode</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_priority") <span style="color:red">deprecated</span> | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.priority</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_root_super") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.root_super</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_mst_pvst_boundary") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable MST PVST border ports.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mst_pvst_boundary</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_port_id_allocation_port_channel_range") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.port_id_allocation_port_channel_range</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimum</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_port_id_allocation_port_channel_range.minimum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify minimum value for reserved range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "<node_type_keys.key>.nodes.[].spanning_tree_port_id_allocation_port_channel_range.maximum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify maximum value for reserved range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "<node_type_keys.key>.nodes.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
     | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "device_profiles.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
@@ -144,14 +144,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "device_profiles.[].mlag_peer_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>The IPv6 address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the first MLAG switch.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "device_profiles.[].mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "device_profiles.[].mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "device_profiles.[].spanning_tree_mode") | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "device_profiles.[].spanning_tree_priority") | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "device_profiles.[].spanning_tree_root_super") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "device_profiles.[].spanning_tree_mst_pvst_boundary") | Boolean |  |  |  | Enable MST PVST border ports. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "device_profiles.[].spanning_tree_port_id_allocation_port_channel_range") | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "device_profiles.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "device_profiles.[].spanning_tree_mode") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mode</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "device_profiles.[].spanning_tree_priority") <span style="color:red">deprecated</span> | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.priority</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "device_profiles.[].spanning_tree_root_super") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.root_super</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "device_profiles.[].spanning_tree_mst_pvst_boundary") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable MST PVST border ports.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mst_pvst_boundary</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "device_profiles.[].spanning_tree_port_id_allocation_port_channel_range") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.port_id_allocation_port_channel_range</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimum</samp>](## "device_profiles.[].spanning_tree_port_id_allocation_port_channel_range.minimum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify minimum value for reserved range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "device_profiles.[].spanning_tree_port_id_allocation_port_channel_range.maximum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify maximum value for reserved range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "device_profiles.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
     | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "devices.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
@@ -173,14 +173,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_ipv6_pool</samp>](## "devices.[].mlag_peer_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>The IPv6 address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the first MLAG switch.<br>Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_id</samp>](## "devices.[].mlag_port_channel_id") | Integer |  |  |  | If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.<br>Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_domain_id</samp>](## "devices.[].mlag_domain_id") | String |  |  |  | MLAG Domain ID. If not set the node group name (Set with "group" key) will be used. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "devices.[].spanning_tree_mode") | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "devices.[].spanning_tree_priority") | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "devices.[].spanning_tree_root_super") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "devices.[].spanning_tree_mst_pvst_boundary") | Boolean |  |  |  | Enable MST PVST border ports. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "devices.[].spanning_tree_port_id_allocation_port_channel_range") | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "devices.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mode</samp>](## "devices.[].spanning_tree_mode") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mode</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_priority</samp>](## "devices.[].spanning_tree_priority") <span style="color:red">deprecated</span> | Integer |  | `32768` |  | Spanning-tree priority configured for the selected mode.<br>For `rapid-pvst` the priority can also be set per VLAN under network services.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.priority</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_root_super</samp>](## "devices.[].spanning_tree_root_super") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.root_super</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_mst_pvst_boundary</samp>](## "devices.[].spanning_tree_mst_pvst_boundary") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable MST PVST border ports.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.mst_pvst_boundary</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_port_id_allocation_port_channel_range</samp>](## "devices.[].spanning_tree_port_id_allocation_port_channel_range") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>spanning_tree_settings.port_id_allocation_port_channel_range</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimum</samp>](## "devices.[].spanning_tree_port_id_allocation_port_channel_range.minimum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify minimum value for reserved range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "devices.[].spanning_tree_port_id_allocation_port_channel_range.maximum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify maximum value for reserved range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "devices.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
 
 === "YAML"
 
@@ -266,17 +266,35 @@
 
         # MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
         mlag_domain_id: <str>
+
+        # Virtual router mac address for anycast gateway.
+        virtual_router_mac_address: <str>
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.mode` instead.
         spanning_tree_mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
 
         # Spanning-tree priority configured for the selected mode.
         # For `rapid-pvst` the priority can also be set per VLAN under network services.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.priority` instead.
         spanning_tree_priority: <int; default=32768>
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.root_super` instead.
         spanning_tree_root_super: <bool; default=False>
 
         # Enable MST PVST border ports.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.mst_pvst_boundary` instead.
         spanning_tree_mst_pvst_boundary: <bool>
 
         # Specify range of port-ids to reserve for port-channels.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.port_id_allocation_port_channel_range` instead.
         spanning_tree_port_id_allocation_port_channel_range:
 
           # Specify minimum value for reserved range.
@@ -284,9 +302,6 @@
 
           # Specify maximum value for reserved range.
           maximum: <int; 1-2048; required>
-
-        # Virtual router mac address for anycast gateway.
-        virtual_router_mac_address: <str>
 
       # Define variables related to all nodes part of this group.
       node_groups:
@@ -377,17 +392,35 @@
 
               # MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
               mlag_domain_id: <str>
+
+              # Virtual router mac address for anycast gateway.
+              virtual_router_mac_address: <str>
+              # This key is deprecated.
+              # Support will be removed in AVD version 7.0.0.
+              # Use `spanning_tree_settings.mode` instead.
               spanning_tree_mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
 
               # Spanning-tree priority configured for the selected mode.
               # For `rapid-pvst` the priority can also be set per VLAN under network services.
+              # This key is deprecated.
+              # Support will be removed in AVD version 7.0.0.
+              # Use `spanning_tree_settings.priority` instead.
               spanning_tree_priority: <int; default=32768>
+              # This key is deprecated.
+              # Support will be removed in AVD version 7.0.0.
+              # Use `spanning_tree_settings.root_super` instead.
               spanning_tree_root_super: <bool; default=False>
 
               # Enable MST PVST border ports.
+              # This key is deprecated.
+              # Support will be removed in AVD version 7.0.0.
+              # Use `spanning_tree_settings.mst_pvst_boundary` instead.
               spanning_tree_mst_pvst_boundary: <bool>
 
               # Specify range of port-ids to reserve for port-channels.
+              # This key is deprecated.
+              # Support will be removed in AVD version 7.0.0.
+              # Use `spanning_tree_settings.port_id_allocation_port_channel_range` instead.
               spanning_tree_port_id_allocation_port_channel_range:
 
                 # Specify minimum value for reserved range.
@@ -395,9 +428,6 @@
 
                 # Specify maximum value for reserved range.
                 maximum: <int; 1-2048; required>
-
-              # Virtual router mac address for anycast gateway.
-              virtual_router_mac_address: <str>
 
           # Custom structured config applied to MLAG peer link port-channel id.
           # Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
@@ -475,17 +505,35 @@
 
           # MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
           mlag_domain_id: <str>
+
+          # Virtual router mac address for anycast gateway.
+          virtual_router_mac_address: <str>
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `spanning_tree_settings.mode` instead.
           spanning_tree_mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
 
           # Spanning-tree priority configured for the selected mode.
           # For `rapid-pvst` the priority can also be set per VLAN under network services.
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `spanning_tree_settings.priority` instead.
           spanning_tree_priority: <int; default=32768>
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `spanning_tree_settings.root_super` instead.
           spanning_tree_root_super: <bool; default=False>
 
           # Enable MST PVST border ports.
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `spanning_tree_settings.mst_pvst_boundary` instead.
           spanning_tree_mst_pvst_boundary: <bool>
 
           # Specify range of port-ids to reserve for port-channels.
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `spanning_tree_settings.port_id_allocation_port_channel_range` instead.
           spanning_tree_port_id_allocation_port_channel_range:
 
             # Specify minimum value for reserved range.
@@ -493,9 +541,6 @@
 
             # Specify maximum value for reserved range.
             maximum: <int; 1-2048; required>
-
-          # Virtual router mac address for anycast gateway.
-          virtual_router_mac_address: <str>
 
       # Define variables per node.
       nodes:
@@ -579,17 +624,35 @@
 
           # MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
           mlag_domain_id: <str>
+
+          # Virtual router mac address for anycast gateway.
+          virtual_router_mac_address: <str>
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `spanning_tree_settings.mode` instead.
           spanning_tree_mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
 
           # Spanning-tree priority configured for the selected mode.
           # For `rapid-pvst` the priority can also be set per VLAN under network services.
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `spanning_tree_settings.priority` instead.
           spanning_tree_priority: <int; default=32768>
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `spanning_tree_settings.root_super` instead.
           spanning_tree_root_super: <bool; default=False>
 
           # Enable MST PVST border ports.
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `spanning_tree_settings.mst_pvst_boundary` instead.
           spanning_tree_mst_pvst_boundary: <bool>
 
           # Specify range of port-ids to reserve for port-channels.
+          # This key is deprecated.
+          # Support will be removed in AVD version 7.0.0.
+          # Use `spanning_tree_settings.port_id_allocation_port_channel_range` instead.
           spanning_tree_port_id_allocation_port_channel_range:
 
             # Specify minimum value for reserved range.
@@ -597,9 +660,6 @@
 
             # Specify maximum value for reserved range.
             maximum: <int; 1-2048; required>
-
-          # Virtual router mac address for anycast gateway.
-          virtual_router_mac_address: <str>
 
     # PREVIEW - This datamodel is still under development and may change or get removed at any time.
     device_profiles:
@@ -683,17 +743,35 @@
 
         # MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
         mlag_domain_id: <str>
+
+        # Virtual router mac address for anycast gateway.
+        virtual_router_mac_address: <str>
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.mode` instead.
         spanning_tree_mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
 
         # Spanning-tree priority configured for the selected mode.
         # For `rapid-pvst` the priority can also be set per VLAN under network services.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.priority` instead.
         spanning_tree_priority: <int; default=32768>
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.root_super` instead.
         spanning_tree_root_super: <bool; default=False>
 
         # Enable MST PVST border ports.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.mst_pvst_boundary` instead.
         spanning_tree_mst_pvst_boundary: <bool>
 
         # Specify range of port-ids to reserve for port-channels.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.port_id_allocation_port_channel_range` instead.
         spanning_tree_port_id_allocation_port_channel_range:
 
           # Specify minimum value for reserved range.
@@ -701,9 +779,6 @@
 
           # Specify maximum value for reserved range.
           maximum: <int; 1-2048; required>
-
-        # Virtual router mac address for anycast gateway.
-        virtual_router_mac_address: <str>
 
     # PREVIEW - This datamodel is still under development and may change or get removed at any time.
     devices:
@@ -787,17 +862,35 @@
 
         # MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
         mlag_domain_id: <str>
+
+        # Virtual router mac address for anycast gateway.
+        virtual_router_mac_address: <str>
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.mode` instead.
         spanning_tree_mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
 
         # Spanning-tree priority configured for the selected mode.
         # For `rapid-pvst` the priority can also be set per VLAN under network services.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.priority` instead.
         spanning_tree_priority: <int; default=32768>
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.root_super` instead.
         spanning_tree_root_super: <bool; default=False>
 
         # Enable MST PVST border ports.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.mst_pvst_boundary` instead.
         spanning_tree_mst_pvst_boundary: <bool>
 
         # Specify range of port-ids to reserve for port-channels.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `spanning_tree_settings.port_id_allocation_port_channel_range` instead.
         spanning_tree_port_id_allocation_port_channel_range:
 
           # Specify minimum value for reserved range.
@@ -805,7 +898,4 @@
 
           # Specify maximum value for reserved range.
           maximum: <int; 1-2048; required>
-
-        # Virtual router mac address for anycast gateway.
-        virtual_router_mac_address: <str>
     ```

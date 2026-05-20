@@ -834,6 +834,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/bfd-settings.md
 --8<--
 
+## STP settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/spanning-tree-settings.md
+--8<--
+
 ## BGP settings
 
 --8<--

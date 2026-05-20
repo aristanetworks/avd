@@ -25,11 +25,12 @@ class SpanningTreeMixin(Protocol):
         if not self.shared_utils.network_services_l2:
             return
 
-        spanning_tree_mode = self.shared_utils.node_config.spanning_tree_mode
+        stp_settings = self.shared_utils.node_config.spanning_tree_settings
+        spanning_tree_mode = stp_settings._get("mode", self.shared_utils.node_config.spanning_tree_mode)
         if spanning_tree_mode != "rapid-pvst":
             return
 
-        default_priority = self.shared_utils.node_config.spanning_tree_priority
+        default_priority = stp_settings._get("priority", self.shared_utils.node_config.spanning_tree_priority)
 
         vlan_stp_priorities = {}
         non_default_vlans = set()
