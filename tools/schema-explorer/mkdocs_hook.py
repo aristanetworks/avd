@@ -30,10 +30,17 @@ render an empty placeholder.
 from __future__ import annotations
 
 import shutil
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
-BUILD_DIR = Path(__file__).resolve().parent / "build"
+HERE = Path(__file__).resolve().parent
+BUILD_DIR = HERE / "build"
+GENERATE_SCRIPT = HERE / "generate.py"
+# Repo root is two levels up from tools/schema-explorer/.
+AVD_ROOT = HERE.parents[1]
+DEFAULT_RELEASE = "devel"
 ASSET_SUBPATH = "_assets/schema-explorer"
 # The SPA was built on Bootstrap 5 + Bootstrap Icons. Inject them globally
 # so embeds render with their existing markup on any docs page. Style scoping
@@ -52,8 +59,38 @@ JS_FILES = (
 )
 
 
+def _ensure_build() -> None:
+    """
+    Build the Schema Explorer if ``build/`` is missing.
+
+    Hosts that don't run ``make schema-explorer-build`` first — e.g. the
+    ReadTheDocs build pipeline, which only invokes ``mkdocs build`` — would
+    otherwise end up with the hook copying nothing into ``site/`` and every
+    ``_assets/schema-explorer/*`` URL returning 404. Running the generator
+    on demand from the hook makes the SPA self-publishing: any host that
+    can run ``mkdocs build`` gets the explorer for free.
+    """
+    sqlite_marker = BUILD_DIR / "data" / DEFAULT_RELEASE / "schema.sqlite"
+    if sqlite_marker.is_file():
+        return
+    print(f"[schema-explorer] build/ missing — running generate.py for release={DEFAULT_RELEASE}")
+    subprocess.check_call(  # noqa: S603
+        [
+            sys.executable,
+            str(GENERATE_SCRIPT),
+            "--avd-root",
+            str(AVD_ROOT),
+            "--release",
+            DEFAULT_RELEASE,
+            "--site-dir",
+            str(BUILD_DIR),
+        ],
+    )
+
+
 def on_config(config: dict[str, Any], **kwargs: Any) -> dict[str, Any]:  # noqa: ARG001
-    """Register the SPA's CSS/JS so every page can host an embed."""
+    """Build the SPA if needed, then register its CSS/JS globally."""
+    _ensure_build()
     extra_css = list(config.get("extra_css") or [])
     extra_js = list(config.get("extra_javascript") or [])
     for href in CSS_FILES:
