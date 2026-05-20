@@ -9326,7 +9326,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
             IPv6 BGP
-            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+            peering on L3 interfaces is not yet supported.
 
             Subclass of AvdModel.
             """
@@ -9498,7 +9498,7 @@ class EosDesigns(EosDesignsRootModel):
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
-                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                           peering on L3 interfaces is not yet supported.
 
                            Subclass of AvdModel.
                         ipv4_acl_in:
@@ -10020,7 +10020,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
             IPv6 BGP
-            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+            peering on L3 Port-Channels is not yet supported.
 
             Subclass of AvdModel.
             """
@@ -10174,7 +10174,7 @@ class EosDesigns(EosDesignsRootModel):
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
-                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                           peering on L3 Port-Channels is not yet supported.
 
                            Subclass of AvdModel.
                         ipv4_acl_in:
@@ -14591,7 +14591,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
             IPv6 BGP
-            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+            peering on L3 interfaces is not yet supported.
 
             Subclass of AvdModel.
             """
@@ -14763,7 +14763,7 @@ class EosDesigns(EosDesignsRootModel):
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
-                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                           peering on L3 interfaces is not yet supported.
 
                            Subclass of AvdModel.
                         ipv4_acl_in:
@@ -15285,7 +15285,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
             IPv6 BGP
-            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+            peering on L3 Port-Channels is not yet supported.
 
             Subclass of AvdModel.
             """
@@ -15439,7 +15439,7 @@ class EosDesigns(EosDesignsRootModel):
                         bgp:
                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                            IPv6 BGP
-                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                           peering on L3 Port-Channels is not yet supported.
 
                            Subclass of AvdModel.
                         ipv4_acl_in:
@@ -23762,7 +23762,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
         IPv6 BGP
-        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+        peering on L3 interfaces is not yet supported.
 
         Subclass of AvdModel.
         """
@@ -23936,7 +23936,7 @@ class EosDesigns(EosDesignsRootModel):
                     bgp:
                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                        IPv6 BGP
-                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                       peering on L3 interfaces is not yet supported.
 
                        Subclass of AvdModel.
                     ipv4_acl_in:
@@ -40077,7 +40077,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -40249,7 +40249,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -40771,7 +40771,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -40925,7 +40925,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -45330,7 +45330,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                             IPv6 BGP
-                            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                            peering on L3 interfaces is not yet supported.
 
                             Subclass of AvdModel.
                             """
@@ -45502,7 +45502,7 @@ class EosDesigns(EosDesignsRootModel):
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
-                                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                           peering on L3 interfaces is not yet supported.
 
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
@@ -46030,7 +46030,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                             IPv6 BGP
-                            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                            peering on L3 Port-Channels is not yet supported.
 
                             Subclass of AvdModel.
                             """
@@ -46184,7 +46184,7 @@ class EosDesigns(EosDesignsRootModel):
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
-                                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                           peering on L3 Port-Channels is not yet supported.
 
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
@@ -50524,7 +50524,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -50696,7 +50696,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -51218,7 +51218,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -51372,7 +51372,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -55792,7 +55792,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -55964,7 +55964,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -56486,7 +56486,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -56640,7 +56640,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -74571,7 +74571,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -74743,7 +74743,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -75265,7 +75265,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -75419,7 +75419,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -79824,7 +79824,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                             IPv6 BGP
-                            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                            peering on L3 interfaces is not yet supported.
 
                             Subclass of AvdModel.
                             """
@@ -79996,7 +79996,7 @@ class EosDesigns(EosDesignsRootModel):
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
-                                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                           peering on L3 interfaces is not yet supported.
 
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
@@ -80524,7 +80524,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                             IPv6 BGP
-                            peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                            peering on L3 Port-Channels is not yet supported.
 
                             Subclass of AvdModel.
                             """
@@ -80678,7 +80678,7 @@ class EosDesigns(EosDesignsRootModel):
                                         bgp:
                                            Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                            IPv6 BGP
-                                           peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                           peering on L3 Port-Channels is not yet supported.
 
                                            Subclass of AvdModel.
                                         ipv4_acl_in:
@@ -85018,7 +85018,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -85190,7 +85190,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -85712,7 +85712,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -85866,7 +85866,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -90286,7 +90286,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 interfaces is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -90458,7 +90458,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 interfaces is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:
@@ -90980,7 +90980,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                         IPv6 BGP
-                        peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                        peering on L3 Port-Channels is not yet supported.
 
                         Subclass of AvdModel.
                         """
@@ -91134,7 +91134,7 @@ class EosDesigns(EosDesignsRootModel):
                                     bgp:
                                        Configure BGP peering for the interface. Supports IPv4 BGP peering (when `peer_ip` is set).
                                        IPv6 BGP
-                                       peering on L3 interfaces and L3 Port-Channels is not yet supported.
+                                       peering on L3 Port-Channels is not yet supported.
 
                                        Subclass of AvdModel.
                                     ipv4_acl_in:

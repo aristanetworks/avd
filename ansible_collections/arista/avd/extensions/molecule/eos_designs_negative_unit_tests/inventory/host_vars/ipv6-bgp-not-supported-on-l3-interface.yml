@@ -21,5 +21,5 @@ spine:
             peer_as: 65001
 
 expected_error_message: >-
-  IPv6 BGP peering on L3 interfaces and L3 Port-Channels is not yet supported.Found on 'l3_interfaces[Ethernet1]'
-  for host 'ipv6-bgp-not-supported-on-l3-interface'.
+  IPv6 BGP peering on L3 interfaces and L3 Port-Channels is not yet supported.
+  Got 'peer_ipv6_address: 2001:db8::2' on 'l3_interfaces[Ethernet1]' for host 'ipv6-bgp-not-supported-on-l3-interface'.
