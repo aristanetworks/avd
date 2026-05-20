@@ -15,23 +15,23 @@ Tracked in `aristanetworks/avd-internal#503`.
 
 ## Two ways to consume it
 
-| Mode | URL | When to use |
-|---|---|---|
-| **Standalone SPA** | `/_assets/schema-explorer/index.html` | Full-screen browser experience: landing → module → variable detail, with the SPA's own chrome. Reached from the Data Models overview card. |
-| **Embedded view** | `<schema-explorer ...></schema-explorer>` in any docs page | Drop a focused, scoped tree (e.g. just `router_bgp`) inline next to the prose that explains it. Material's header, left nav, and right-rail TOC stay intact. |
+| Mode               | URL                                                          | When to use                                                                                                                                                  |
+| ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Standalone SPA** | `/_assets/schema-explorer/index.html`                        | Full-screen browser experience: landing → module → variable detail, with the SPA's own chrome. Reached from the Data Models overview card.                   |
+| **Embedded view**  | `<schema-explorer ...></schema-explorer>` in any docs page   | Drop a focused, scoped tree (e.g. just `router_bgp`) inline next to the prose that explains it. Material's header, left nav, and right-rail TOC stay intact. |
 
 Both modes share one set of static assets and one SQLite per release.
 
 ### `<schema-explorer>` embed attributes
 
-| Attribute | Default | Notes |
-|---|---|---|
-| `release` | `devel` | Schema release tag. |
-| `module` | `eos_designs` | `eos_designs` \| `eos_cli_config_gen` \| `all`. |
-| `root` | *(none)* | Optional key_path prefix; only render that subtree (e.g. `router_bgp`). |
-| `view` | `tree` | `tree` \| `flat`. |
-| `height` | `600px` | CSS max-height for the embed's scroll container. |
-| `chrome` | `compact` | `compact` shows the per-tree expand/collapse bar; `none` hides it. |
+| Attribute | Default       | Notes                                                                       |                        |        |
+| --------- | ------------- | --------------------------------------------------------------------------- | ---------------------- | ------ |
+| `release` | `devel`       | Schema release tag.                                                         |                        |        |
+| `module`  | `eos_designs` | `eos_designs` \                                                             | `eos_cli_config_gen` \ | `all`. |
+| `root`    | *(none)*      | Optional key_path prefix; only render that subtree (e.g. `router_bgp`).     |                        |        |
+| `view`    | `tree`        | `tree` \                                                                    | `flat`.                |        |
+| `height`  | `600px`       | CSS max-height for the embed's scroll container.                            |                        |        |
+| `chrome`  | `compact`     | `compact` shows the per-tree expand/collapse bar; `none` hides it.          |                        |        |
 
 Example:
 
@@ -41,19 +41,19 @@ Example:
 
 ## Components
 
-| Path | What it is |
-|---|---|
-| `tools/schema-explorer/generate.py` | CLI: loads both AVD schemas through pyavd's `schema_tools` resolver, flattens them, writes `schema.sqlite`, copies the SPA assets next to it. |
-| `tools/schema-explorer/categories.py` | Human-readable category mapping used by the SPA's sidebar classifier. |
-| `tools/schema-explorer/static/index.html` | Standalone SPA shell — sql.js loader, layout, navigation. |
-| `tools/schema-explorer/static/css/style.css` | Bootstrap overrides + dark-mode rules. Body-level styles are scoped to `.schema-spa-host` / `.schema-embed`. |
-| `tools/schema-explorer/static/js/app.js` | Hash router + views for standalone mode; embed mounter for any `<schema-explorer>` element on the page. |
-| `tools/schema-explorer/mkdocs_hook.py` | MkDocs `on_config` + `on_post_build` hook — registers Bootstrap + the SPA CSS/JS into `extra_css`/`extra_javascript`, and copies the prebuilt SPA into `<site_dir>/_assets/schema-explorer/`. |
-| `tools/schema-explorer/build/` | **Gitignored.** Output of `make schema-explorer-build`. |
-| `Makefile` (`schema-explorer-build`, `docs-serve`, `docs-serve-docker`) | Build + serve targets. |
-| `development/entrypoint.sh` | Webdoc container entrypoint — runs the build with an mtime guard before `mkdocs serve`. |
-| `mkdocs.yml` (`hooks:`, `exclude_docs:`) | Registers the hook; excludes `tools/*` from the docs build. |
-| `pyproject.toml` (`doc` group) | Build-time deps for the generator. |
+| Path                                                                    | What it is                                                                                                                                                                                    |
+| ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tools/schema-explorer/generate.py`                                     | CLI: loads both AVD schemas through pyavd's `schema_tools` resolver, flattens them, writes `schema.sqlite`, copies the SPA assets next to it.                                                 |
+| `tools/schema-explorer/categories.py`                                   | Human-readable category mapping used by the SPA's sidebar classifier.                                                                                                                         |
+| `tools/schema-explorer/static/index.html`                               | Standalone SPA shell — sql.js loader, layout, navigation.                                                                                                                                     |
+| `tools/schema-explorer/static/css/style.css`                            | Bootstrap overrides + dark-mode rules. Body-level styles are scoped to `.schema-spa-host` / `.schema-embed`.                                                                                  |
+| `tools/schema-explorer/static/js/app.js`                                | Hash router + views for standalone mode; embed mounter for any `<schema-explorer>` element on the page.                                                                                       |
+| `tools/schema-explorer/mkdocs_hook.py`                                  | MkDocs `on_config` + `on_post_build` hook — registers Bootstrap + the SPA CSS/JS into `extra_css`/`extra_javascript`, and copies the prebuilt SPA into `<site_dir>/_assets/schema-explorer/`. |
+| `tools/schema-explorer/build/`                                          | **Gitignored.** Output of `make schema-explorer-build`.                                                                                                                                       |
+| `Makefile` (`schema-explorer-build`, `docs-serve`, `docs-serve-docker`) | Build + serve targets.                                                                                                                                                                        |
+| `development/entrypoint.sh`                                             | Webdoc container entrypoint — runs the build with an mtime guard before `mkdocs serve`.                                                                                                       |
+| `mkdocs.yml` (`hooks:`, `exclude_docs:`)                                | Registers the hook; excludes `tools/*` from the docs build.                                                                                                                                   |
+| `pyproject.toml` (`doc` group)                                          | Build-time deps for the generator.                                                                                                                                                            |
 
 ## Build pipeline
 

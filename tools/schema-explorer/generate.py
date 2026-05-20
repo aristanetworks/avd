@@ -325,7 +325,7 @@ def _copy_static_assets(site_dir: Path) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__.strip().splitlines()[0])
+    parser = argparse.ArgumentParser(description=(__doc__ or "").strip().splitlines()[0])
     parser.add_argument("--avd-root", type=Path, required=True, help="Path to the avd repo root (the directory containing python-avd/)")
     parser.add_argument("--release", required=True, help="Release tag to embed (e.g. 'devel', '5.7', '5.8')")
     parser.add_argument(
