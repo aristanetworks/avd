@@ -1,4 +1,3 @@
 ---
 errdisable:
-  recovery:
-    interval: 300
+  recovery_interval: 300

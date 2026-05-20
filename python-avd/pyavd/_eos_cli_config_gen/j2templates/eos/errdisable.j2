@@ -6,8 +6,31 @@
 {# eos - errdisable #}
 {% if errdisable is arista.avd.defined %}
 !
+{%     for cause_key in errdisable.detect_cause | arista.avd.default({}) | arista.avd.natural_sort %}
+{%         set cause_value = errdisable.detect_cause[cause_key] %}
+{%         set cli_cause = cause_key | replace('_', '-') %}
+{%         if cause_value is arista.avd.defined(true) %}
+errdisable detect cause {{ cli_cause }}
+{%         elif cause_value is arista.avd.defined(false) %}
+no errdisable detect cause {{ cli_cause }}
+{%         endif %}
+{%     endfor %}
 {%     for cause in errdisable.detect.causes | arista.avd.natural_sort %}
 errdisable detect cause {{ cause }}
+{%     endfor %}
+{%     for cause_key in errdisable.recovery_cause | arista.avd.default({}) | arista.avd.natural_sort %}
+{%         set cause_value = errdisable.recovery_cause[cause_key] %}
+{%         set cli_cause = cause_key | replace('_', '-') %}
+{%         if cause_value.interval is not arista.avd.defined and cause_value.enabled is arista.avd.defined(true) %}
+errdisable recovery cause {{ cli_cause }}
+{%         endif %}
+{%     endfor %}
+{%     for cause_key in errdisable.recovery_cause | arista.avd.default({}) | arista.avd.natural_sort %}
+{%         set cause_value = errdisable.recovery_cause[cause_key] %}
+{%         set cli_cause = cause_key | replace('_', '-') %}
+{%         if cause_value.interval is arista.avd.defined and cause_value.enabled is arista.avd.defined(true) %}
+errdisable recovery cause {{ cli_cause }} interval {{ cause_value.interval }}
+{%         endif %}
 {%     endfor %}
 {%     for cause in errdisable.recovery.causes | arista.avd.default([]) | rejectattr("interval", "arista.avd.defined") | arista.avd.natural_sort(sort_key="name") %}
 {%         set cause_cli = "errdisable recovery cause " ~ cause.name %}
@@ -17,7 +40,9 @@ errdisable detect cause {{ cause }}
 {%         set cause_cli = "errdisable recovery cause " ~ cause.name ~ " interval " ~ cause.interval %}
 {{ cause_cli }}
 {%     endfor %}
-{%     if errdisable.recovery.interval is arista.avd.defined %}
+{%     if errdisable.recovery_interval is arista.avd.defined %}
+errdisable recovery interval {{ errdisable.recovery_interval }}
+{%     elif errdisable.recovery.interval is arista.avd.defined %}
 errdisable recovery interval {{ errdisable.recovery.interval }}
 {%     endif %}
 {% endif %}
