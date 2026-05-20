@@ -79,7 +79,9 @@ def test_main_logs_vault_status_at_info_level(
 ) -> None:
     """Verify main emits the Vault-status INFO log on the AVD logger."""
     module = action_module()
-    plugin_args = MagicMock(tmp_dir="/tmp/x", read_from_input_dir=True, input_dir="/inputs", input_suffix="json", schema_name="avd_design", batch_size=10, device_list=None)
+    plugin_args = MagicMock(
+        tmp_dir="/tmp/x", read_from_input_dir=True, input_dir="/inputs", input_suffix="json", schema_name="avd_design", batch_size=10, device_list=None
+    )
 
     vault_handler = MagicMock()
     vault_handler.has_vault_secrets = has_vault_secrets
@@ -106,7 +108,9 @@ def test_main_logs_starting_execution_summary(
 ) -> None:
     """Verify the 'Starting execution...' INFO log includes worker and batch counts."""
     module = action_module()
-    plugin_args = MagicMock(tmp_dir="/tmp/x", read_from_input_dir=True, input_dir="/inputs", input_suffix="json", schema_name="avd_design", batch_size=7, device_list=None)
+    plugin_args = MagicMock(
+        tmp_dir="/tmp/x", read_from_input_dir=True, input_dir="/inputs", input_suffix="json", schema_name="avd_design", batch_size=7, device_list=None
+    )
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
@@ -250,8 +254,12 @@ def test_run_templating_phase_logs_success_at_debug(
         caplog.at_level(logging.DEBUG, logger=AVD_LOGGER_NAME),
     ):
         module._run_templating_phase(
-            hostnames=["h1"], workers=1, batch_size=1,
-            output_path=Path("/tmp"), schema_name="avd_design", file_handler=MagicMock(),
+            hostnames=["h1"],
+            workers=1,
+            batch_size=1,
+            output_path=Path("/tmp"),
+            schema_name="avd_design",
+            file_handler=MagicMock(),
         )
 
     debug_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.DEBUG]
@@ -448,7 +456,9 @@ def test_get_hosts_to_process_raises_for_invalid_fabric_name(action_module: Call
 def test_main_raises_runtime_error_when_hosts_crashed(action_module: Callable[..., ActionModule]) -> None:
     """A non-empty crashed_hosts set at the end of main triggers a RuntimeError listing the hostnames."""
     module = action_module()
-    plugin_args = MagicMock(tmp_dir="/tmp/x", read_from_input_dir=True, input_dir="/inputs", input_suffix="json", schema_name="avd_design", batch_size=10, device_list=None)
+    plugin_args = MagicMock(
+        tmp_dir="/tmp/x", read_from_input_dir=True, input_dir="/inputs", input_suffix="json", schema_name="avd_design", batch_size=10, device_list=None
+    )
 
     def fake_validation(self_inner: ActionModule, **_kwargs: object) -> None:  # noqa: ARG001
         module.crashed_hosts.update({"h1", "h2"})
