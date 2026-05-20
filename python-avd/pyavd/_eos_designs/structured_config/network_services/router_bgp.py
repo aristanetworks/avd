@@ -835,6 +835,6 @@ class RouterBgpMixin(Protocol):
 
     def _set_bgp_peer_filter(self: AvdStructuredConfigNetworkServicesProtocol, peer_filter: str) -> None:
         if peer_filter not in self.inputs.bgp_peer_filters_catalog:
-            msg = f"self.inputs.bgp_peer_filters_catalog[name={peer_filter}]"
+            msg = f"bgp_peer_filters_catalog[name={peer_filter}]"
             raise AristaAvdMissingVariableError(msg)
         self.structured_config.peer_filters.append(self.inputs.bgp_peer_filters_catalog[peer_filter])

@@ -25,4 +25,4 @@ tenants:
         nodes: [missing-bgp-peer-filter]
 
 expected_error_message: >-
-  'self.inputs.bgp_peer_filters_catalog[name=peerfilter]' is required but was not found.
+  'bgp_peer_filters_catalog[name=peerfilter]' is required but was not found.

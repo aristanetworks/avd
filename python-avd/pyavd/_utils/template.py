@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-
+import warnings
 if TYPE_CHECKING:
     from collections import ChainMap
     from typing import Any
@@ -61,5 +61,6 @@ def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, A
 
         with templar.templar.set_temporary_context(available_variables=template_vars):
             output = templar.templar.template(j2template, convert_data=True, escape_backslashes=False)
-
+        if True:
+            warnings.warn("wanr")
     return output
