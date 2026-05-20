@@ -7,7 +7,12 @@
   --hover-bg: #f0f4fa;
 }
 
-body {
+/* Scope SPA-wide font-size to the SPA host / embed roots so Material's
+   page typography on docs pages that host an <schema-explorer> embed is
+   not affected. The standalone index.html sets class="schema-spa-host"
+   on <body>; mountEmbed() adds .schema-embed to each embed element. */
+.schema-spa-host,
+.schema-embed {
   font-size: 0.92rem;
 }
 
@@ -554,9 +559,14 @@ html.in-iframe body { padding-top: 0; }
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Apply Roboto throughout the SPA so it matches the docs site typography. */
-body { font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif; }
-code, pre, .font-monospace { font-family: "Roboto Mono", "Fira Mono", monospace; }
+/* Apply Roboto throughout the SPA / embeds — scoped so Material's body font
+   on the surrounding docs page stays Material's choice. */
+.schema-spa-host,
+.schema-embed { font-family: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif; }
+.schema-spa-host code, .schema-spa-host pre, .schema-spa-host .font-monospace,
+.schema-embed code, .schema-embed pre, .schema-embed .font-monospace {
+  font-family: "Roboto Mono", "Fira Mono", monospace;
+}
 
 /* Option 2 — banner-less SPA. Same hide rule as iframe mode but without the
    sub-page padding tweaks; the parent page (whatever it is) provides chrome. */

@@ -20,10 +20,11 @@ Two responsibilities:
 
 Source lives at ``tools/schema-explorer/``; build output goes to
 ``tools/schema-explorer/build/`` (gitignored). ``mkdocs_hook.py`` copies the
-built tree into ``<site_dir>/docs/schema-explorer/`` on every
+built tree into ``<site_dir>/_assets/schema-explorer/`` on every
 ``mkdocs build``, so nothing generated lives under the source-controlled
-``docs/`` tree. The MkDocs wrapper page ``docs/schema-explorer.md``
-references the published path.
+``docs/`` tree. The standalone SPA is reachable at
+``/_assets/schema-explorer/index.html``; embedded views are dropped into
+any docs page via the ``<schema-explorer>`` custom element.
 
 Usage:
     python tools/schema-explorer/generate.py \\

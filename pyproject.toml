@@ -45,7 +45,7 @@ doc = [
     "mkdocs-exclude",
     "mkdocs-include-dir-to-nav",
     "mkdocstrings[python]",
-    # Schema Explorer build-time deps (docs/schema-explorer/generate.py)
+    # Schema Explorer build-time deps (tools/schema-explorer/generate.py)
     "pyyaml>=6.0.0",
     "referencing>=0.37.0",
     "deepmerge>=1.1.0",

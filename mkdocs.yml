@@ -185,9 +185,11 @@ markdown_extensions:
       separator: "-"
       permalink: true
 hooks:
-  # Copies tools/schema-explorer/build/ into <site_dir>/docs/schema-explorer/
-  # on build, so the generated SQLite + SPA assets never live under the
-  # source-controlled docs/ tree (only under the built site).
+  # Schema Explorer integration:
+  #   * Copies the prebuilt SPA + SQLite from tools/schema-explorer/build/
+  #     into <site_dir>/_assets/schema-explorer/ on build.
+  #   * Registers Bootstrap + the SPA's CSS/JS into extra_css/extra_javascript
+  #     so any docs page can host a <schema-explorer> embed element.
   - tools/schema-explorer/mkdocs_hook.py
 
 # TOC

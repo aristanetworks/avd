@@ -37,11 +37,26 @@ function displayPath(keyPath) {
   return splitKeyPath(keyPath).map(stripPlaceholderBrackets).join(".");
 }
 
-// SCHEMA_BASE can be overridden by an outer page (e.g. when the SPA is
-// rendered inside an MkDocs template at a different URL depth and the
-// `data/` directory isn't directly under the page). The MkDocs template
-// override path (option 4) sets this on window before app.js runs.
-const SCHEMA_BASE = (typeof window !== "undefined" && window.SCHEMA_BASE_OVERRIDE) || "data";
+// Where the SPA fetches `schema.sqlite` from. Resolution order:
+//   1. `window.SCHEMA_BASE_OVERRIDE` — explicit opt-out for hosts that already
+//      know exactly where the data lives.
+//   2. The directory containing this script, with `/data` appended. Works for
+//      both the standalone `_assets/schema-explorer/index.html` page (script
+//      lives under `_assets/schema-explorer/js/app.js`) and arbitrary MkDocs
+//      pages that embed `<schema-explorer>` — fetches must be absolute since
+//      the page URL is unrelated to the asset location.
+//   3. Plain `data/` — last-resort relative path, kept for hand-rolled hosts.
+function inferSchemaBase() {
+  if (typeof window !== "undefined" && window.SCHEMA_BASE_OVERRIDE) return window.SCHEMA_BASE_OVERRIDE;
+  const scripts = document.getElementsByTagName("script");
+  for (const s of scripts) {
+    if (s.src && /\/schema-explorer\/js\/app\.js(\?|$)/.test(s.src)) {
+      return s.src.replace(/\/js\/app\.js.*$/, "/data");
+    }
+  }
+  return "data";
+}
+const SCHEMA_BASE = inferSchemaBase();
 const DEFAULT_RELEASE = "devel";
 
 // SCHEMA_MODULES keys are the canonical module IDs stored in SQLite and used
@@ -64,33 +79,72 @@ let SQL = null;
 const app = document.getElementById("app");
 
 // ── boot ─────────────────────────────────────────────────────────────────────
+//
+// Two mount modes share this script:
+//
+//   * **Standalone**: a page declares `<main id="app">` + `<select id="release-select">`
+//     (the SPA's own `index.html` at `/_assets/schema-explorer/index.html`).
+//     Uses the URL hash for routing — landing / module / var-detail views.
+//
+//   * **Embed**: any docs page drops one or more `<schema-explorer>` custom
+//     elements. Each embed is self-contained, scoped to a (release, module,
+//     root) tuple via data attributes, and never touches `location.hash`.
+//     Multiple embeds on the same page share `dbCache`.
+//
+// Both modes can coexist — embeds work even when `#app` is also present.
 
-(async function boot() {
+async function ensureSqlJs() {
+  if (SQL) return SQL;
   SQL = await initSqlJs({
     locateFile: f => `https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/${f}`,
   });
-  window.addEventListener("hashchange", route);
-  document.getElementById("release-select").addEventListener("change", e => {
-    const path = location.hash.slice(1) || "/";
-    location.hash = path + (path.includes("?") ? "&" : "?") + "release=" + encodeURIComponent(e.target.value);
-  });
-  // Delegated handler for tree-row chevron clicks. Lives at document level so
-  // it survives every renderResults innerHTML refresh.
-  document.addEventListener("click", e => {
-    const icon = e.target.closest(".tree-toggle-icon");
-    if (!icon) return;
-    e.preventDefault();
-    e.stopPropagation();
-    const row = icon.closest("tr.schema-tree-row");
-    if (!row) return;
-    const wasExpanded = row.dataset.expanded === "1";
-    row.dataset.expanded = wasExpanded ? "0" : "1";
-    icon.classList.toggle("bi-chevron-right", wasExpanded);
-    icon.classList.toggle("bi-chevron-down", !wasExpanded);
-    applyTreeVisibility(row.closest(".schema-group"));
-  });
-  await route();
-})().catch(err => fail("Failed to initialise: " + err.message));
+  return SQL;
+}
+
+// Delegated handler for tree-row chevron clicks. Lives at document level so
+// it survives every renderResults innerHTML refresh and works across multiple
+// embed roots on the same page.
+document.addEventListener("click", e => {
+  const icon = e.target.closest(".tree-toggle-icon");
+  if (!icon) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const row = icon.closest("tr.schema-tree-row");
+  if (!row) return;
+  const wasExpanded = row.dataset.expanded === "1";
+  row.dataset.expanded = wasExpanded ? "0" : "1";
+  icon.classList.toggle("bi-chevron-right", wasExpanded);
+  icon.classList.toggle("bi-chevron-down", !wasExpanded);
+  applyTreeVisibility(row.closest(".schema-group"));
+});
+
+(async function boot() {
+  const embeds = document.querySelectorAll("schema-explorer");
+  const hasStandalone = !!app;
+  if (!embeds.length && !hasStandalone) return;   // page doesn't host the explorer
+
+  await ensureSqlJs();
+
+  if (hasStandalone) {
+    window.addEventListener("hashchange", route);
+    const releaseSelect = document.getElementById("release-select");
+    if (releaseSelect) {
+      releaseSelect.addEventListener("change", e => {
+        const path = location.hash.slice(1) || "/";
+        location.hash = path + (path.includes("?") ? "&" : "?") + "release=" + encodeURIComponent(e.target.value);
+      });
+    }
+    await route();
+  }
+
+  for (const el of embeds) {
+    try { await mountEmbed(el); }
+    catch (err) { failEmbed(el, err.message); }
+  }
+})().catch(err => {
+  if (app) fail("Failed to initialise: " + err.message);
+  else console.error("Schema Explorer init failed:", err);
+});
 
 // Per-group tree visibility — a row is shown iff every ancestor along its
 // parent_path chain has data-expanded="1". Used by the chevron handler and
@@ -151,10 +205,12 @@ function fail(msg) {
 
 async function getDb(release) {
   if (dbCache.has(release)) return dbCache.get(release);
-  app.innerHTML = `<div class="text-center py-5 text-muted">
-    <span class="spinner-border spinner-border-sm"></span>
-    <span class="ms-2 small">Loading ${release} schema…</span>
-  </div>`;
+  if (app) {
+    app.innerHTML = `<div class="text-center py-5 text-muted">
+      <span class="spinner-border spinner-border-sm"></span>
+      <span class="ms-2 small">Loading ${release} schema…</span>
+    </div>`;
+  }
   const url = `${SCHEMA_BASE}/${release}/schema.sqlite`;
   // cache: "no-cache" forces a conditional GET so the browser revalidates
   // against the server's Last-Modified / ETag every page load. Keeps the
@@ -473,9 +529,14 @@ function renderResults(db, release, module, state) {
     </div>`;
 }
 
+let _treeRenderSeq = 0;
+
 function renderTreeResults(target, db, release, module, state, matches) {
   const isAll = module === "all";
   const filtered = isFilterActive(state);
+  // Per-render id prefix so multiple trees (e.g. several embeds on one page)
+  // don't collide on Bootstrap collapse `data-bs-target` lookups.
+  const idPrefix = `t${++_treeRenderSeq}`;
 
   // When a filter is active, walk parent chains via the parent_path column
   // and emit ancestor rows (tagged is_context) so the hierarchical structure
@@ -528,7 +589,7 @@ function renderTreeResults(target, db, release, module, state, matches) {
   const total = matches.length;
 
   const groupsHtml = sorted.map(([root, vars], idx) => {
-    const id = `group-${idx}`;
+    const id = `${idPrefix}-group-${idx}`;
     const cat = vars[0].category;
     // Pre-compute which paths have children inside this group, so we know
     // which rows should render a chevron and which are leaves.
@@ -614,8 +675,8 @@ function renderTreeResults(target, db, release, module, state, matches) {
     <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
       <span class="text-muted small">${total} variable${total === 1 ? "" : "s"} in ${sorted.length} group${sorted.length === 1 ? "" : "s"}</span>
       <div>
-        <button type="button" class="btn btn-sm btn-link text-muted p-0 me-2" id="schema-expand-all"><i class="bi bi-arrows-expand"></i> <span class="small">Expand all</span></button>
-        <button type="button" class="btn btn-sm btn-link text-muted p-0" id="schema-collapse-all"><i class="bi bi-arrows-collapse"></i> <span class="small">Collapse all</span></button>
+        <button type="button" class="btn btn-sm btn-link text-muted p-0 me-2" data-tree-action="expand-all"><i class="bi bi-arrows-expand"></i> <span class="small">Expand all</span></button>
+        <button type="button" class="btn btn-sm btn-link text-muted p-0" data-tree-action="collapse-all"><i class="bi bi-arrows-collapse"></i> <span class="small">Collapse all</span></button>
       </div>
     </div>
     ${groupsHtml}`;
@@ -634,12 +695,12 @@ function renderTreeResults(target, db, release, module, state, matches) {
     target.querySelectorAll(".schema-group").forEach(applyTreeVisibility);
   }
 
-  document.getElementById("schema-expand-all").addEventListener("click", () => {
+  target.querySelector("[data-tree-action='expand-all']")?.addEventListener("click", () => {
     target.querySelectorAll(".collapse").forEach(el => bootstrap.Collapse.getOrCreateInstance(el, { toggle: false }).show());
     target.querySelectorAll(".schema-group-header").forEach(el => el.setAttribute("aria-expanded", "true"));
     setAllTreeRows(true);
   });
-  document.getElementById("schema-collapse-all").addEventListener("click", () => {
+  target.querySelector("[data-tree-action='collapse-all']")?.addEventListener("click", () => {
     target.querySelectorAll(".collapse").forEach(el => bootstrap.Collapse.getOrCreateInstance(el, { toggle: false }).hide());
     target.querySelectorAll(".schema-group-header").forEach(el => el.setAttribute("aria-expanded", "false"));
     setAllTreeRows(false);
@@ -812,4 +873,105 @@ function highlight(text, q) {
 function debounce(fn, ms) {
   let t;
   return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+// ── embed mounting ──────────────────────────────────────────────────────────
+//
+// Renders a scoped tree view inside any <schema-explorer> element on the page.
+// The element is treated like a sealed component: docs author drops the tag,
+// the SPA fills it in.
+//
+// Supported data attributes:
+//   release  — schema release tag (default: "devel")
+//   module   — "eos_designs" | "eos_cli_config_gen" | "all" (default: "eos_designs")
+//   root     — key_path prefix; only show that subtree (e.g. "router_bgp"). Optional.
+//   view     — "tree" | "flat" (default: "tree")
+//   height   — CSS max-height for the scroll container (default: "600px")
+//   chrome   — "compact" | "none" (default: "compact"). "none" hides the
+//              "N variables in M groups" / expand-all bar.
+
+function _embedAttr(el, name, fallback) {
+  return el.getAttribute(`data-${name}`) || el.getAttribute(name) || fallback;
+}
+
+function failEmbed(el, msg) {
+  el.innerHTML = `<div class="alert alert-danger m-2 small"><i class="bi bi-exclamation-triangle me-1"></i>${escapeHtml(msg)}</div>`;
+}
+
+async function mountEmbed(el) {
+  const release = _embedAttr(el, "release", DEFAULT_RELEASE);
+  const module  = _embedAttr(el, "module", "eos_designs");
+  const root    = _embedAttr(el, "root", "");
+  const view    = _embedAttr(el, "view", "tree");
+  const height  = _embedAttr(el, "height", "600px");
+  const chrome  = _embedAttr(el, "chrome", "compact");
+
+  // <schema-explorer> is an unknown HTML element → defaults to inline. Force
+  // block + scroll container so the embed actually takes up space.
+  Object.assign(el.style, {
+    display: "block",
+    maxHeight: height,
+    overflow: "auto",
+    border: "1px solid var(--md-default-fg-color--lightest, #e1e4e8)",
+    borderRadius: "4px",
+    margin: "0.75rem 0",
+  });
+  el.classList.add("schema-embed");
+  el.innerHTML = `<div class="text-muted small p-3">
+    <span class="spinner-border spinner-border-sm" role="status"></span>
+    <span class="ms-2">Loading <code>${escapeHtml(module)}</code> schema…</span>
+  </div>`;
+
+  const db = await getDb(release);
+
+  // Build the row set: scope to (module, root subtree). renderTreeResults
+  // expects a list of matched vars; with no filter, that's just every row in
+  // scope. With a `root` set, include the root itself plus its descendants so
+  // the tree has a single rooted group.
+  const conds = ["release = ?"];
+  const ps = [release];
+  if (module !== "all") { conds.push("module = ?"); ps.push(module); }
+  if (root) {
+    conds.push("(key_path = ? OR key_path LIKE ? OR key_path LIKE ?)");
+    ps.push(root, `${root}.%`, `${root}[]%`);
+  }
+  const sql = `SELECT * FROM schema_vars WHERE ${conds.join(" AND ")} ORDER BY key_path LIMIT 20000`;
+  const results = rows(db, sql, ps);
+  if (!results.length) {
+    failEmbed(el, `No variables match: module=${module}${root ? `, root=${root}` : ""}`);
+    return;
+  }
+
+  const state = {
+    q: "", requiredOnly: false, showDeprecated: false, showRemoved: false,
+    category: "", docTable: "", view,
+  };
+  if (view === "tree") {
+    renderTreeResults(el, db, release, module, state, results);
+  } else {
+    // Flat view — reuse renderResults by injecting a sub-container.
+    const inner = document.createElement("div");
+    el.innerHTML = "";
+    el.appendChild(inner);
+    // renderResults reads `#results` via getElementById, so wrap in a stub
+    // that satisfies that contract just for this embed.
+    inner.id = `embed-results-${++_treeRenderSeq}`;
+    const origGet = document.getElementById.bind(document);
+    document.getElementById = (id) => id === "results" ? inner : origGet(id);
+    try { renderResults(el, db, release, module, state); }
+    finally { document.getElementById = origGet; }
+  }
+
+  if (chrome === "none") {
+    const header = el.querySelector(".border-bottom.d-flex, .border-bottom .text-muted")?.closest(".border-bottom");
+    if (header) header.style.display = "none";
+  }
+
+  // Auto-expand the first (and usually only) group so the embed shows data
+  // immediately instead of requiring a click.
+  const firstCollapse = el.querySelector(".collapse");
+  if (firstCollapse && typeof bootstrap !== "undefined") {
+    bootstrap.Collapse.getOrCreateInstance(firstCollapse, { toggle: false }).show();
+    el.querySelector(".schema-group-header")?.setAttribute("aria-expanded", "true");
+  }
 }
