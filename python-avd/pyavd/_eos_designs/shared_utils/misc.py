@@ -412,7 +412,7 @@ class MiscMixin(Protocol):
 
         neighbors.append(neighbor)
 
-    def _update_l3_generic_interface_ipv6_bgp(
+    def _block_l3_generic_interface_ipv6_bgp(
         self: SharedUtilsProtocol,
         interface: (
             EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
@@ -455,7 +455,7 @@ class MiscMixin(Protocol):
                 else None
             )
             self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_interfaces[{interface.name}]", neighbors, prefix_lists, route_maps)
-            self._update_l3_generic_interface_ipv6_bgp(interface, description, f"l3_interfaces[{interface.name}]", ipv6_neighbors)
+            self._block_l3_generic_interface_ipv6_bgp(interface, description, f"l3_interfaces[{interface.name}]", ipv6_neighbors)
 
         for interface in self.node_config.l3_port_channels:
             has_bgp = bool(interface.bgp and (interface.peer_ip or interface.peer_ipv6_address))
@@ -467,7 +467,7 @@ class MiscMixin(Protocol):
                 else None
             )
             self._update_l3_generic_interface_ipv4_bgp(interface, description, f"l3_port_channels[{interface.name}]", neighbors, prefix_lists, route_maps)
-            self._update_l3_generic_interface_ipv6_bgp(interface, description, f"l3_port_channels[{interface.name}]", ipv6_neighbors)
+            self._block_l3_generic_interface_ipv6_bgp(interface, description, f"l3_port_channels[{interface.name}]", ipv6_neighbors)
 
         return neighbors, prefix_lists, route_maps, ipv6_neighbors
 
@@ -482,10 +482,6 @@ class MiscMixin(Protocol):
     @property
     def l3_bgp_route_maps(self: SharedUtilsProtocol) -> EosCliConfigGen.RouteMaps:
         return self.l3_bgp_objects[2]
-
-    @property
-    def l3_bgp_ipv6_neighbors(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.Neighbors:
-        return self.l3_bgp_objects[3]
 
     @cached_property
     def is_sfe_interface_profile_supported(self: SharedUtilsProtocol) -> bool:
