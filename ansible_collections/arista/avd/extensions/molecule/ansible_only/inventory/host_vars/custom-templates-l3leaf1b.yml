@@ -1,3 +1,5 @@
+---
+# Adding to override underlay_ethernet_interfaces description template
 node_type_keys:
   - key: l3leaf
     type: l3leaf
