@@ -25,12 +25,7 @@ class Ipv6RouterOspfMixin(Protocol):
 
     @structured_config_contributor
     def ipv6_router_ospf(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
-        """
-        Set structured config for ipv6_router_ospf.
-
-        If we have static_routes in default VRF and not EPVN, and underlay is OSPF
-        Then add redistribute static to the underlay OSPFv3 process.
-        """
+        """Set structured config for ipv6_router_ospf."""
         if not self.shared_utils.network_services_l3:
             return
 
