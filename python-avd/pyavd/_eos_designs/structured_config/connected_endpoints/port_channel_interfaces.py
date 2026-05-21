@@ -10,7 +10,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, default, short_esi_to_route_target, strip_null_from_data
+from pyavd._utils import AvdStringFormatter, Undefined, default, short_esi_to_route_target, strip_null_from_data
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 
@@ -55,9 +55,6 @@ class PortChannelInterfacesMixin(Protocol):
                     )
 
                 for subinterface in adapter.port_channel.subinterfaces:
-                    if not subinterface.number:
-                        continue
-
                     port_channel_subinterface_name = f"Port-Channel{channel_group_id}.{subinterface.number}"
 
                     self.structured_config_utils.parent_interfaces_tracker.register_port_channel_subinterface(port_channel_subinterface_name)
@@ -66,6 +63,7 @@ class PortChannelInterfacesMixin(Protocol):
                         self._get_port_channel_subinterface_cfg(
                             subinterface,
                             adapter,
+                            connected_endpoint,
                             port_channel_subinterface_name,
                             channel_group_id,
                         )
@@ -171,6 +169,7 @@ class PortChannelInterfacesMixin(Protocol):
             service_profile=adapter.qos_profile,
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.LinkTrackingGroups),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.Ptp),
+            address_locking=self._get_adapter_address_locking(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.AddressLocking),
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
             eos_cli=adapter.port_channel.raw_eos_cli,
             metadata=EosCliConfigGen.PortChannelInterfacesItem.Metadata(
@@ -255,19 +254,42 @@ class PortChannelInterfacesMixin(Protocol):
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         subinterface: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.PortChannel.SubinterfacesItem,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+        connected_endpoint: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem,
         port_channel_subinterface_name: str,
         channel_group_id: int,
     ) -> EosCliConfigGen.PortChannelInterfacesItem:
         """Return structured_config for one port_channel_interface (subinterface)."""
+        if (vlan_id := subinterface.vlan_id or subinterface.number) > 4094:
+            msg = (
+                f"'vlan_id' must be set for '{adapter._internal_data.context}.port_channel.subinterfaces[number={subinterface.number}]'"
+                " since the subinterface number is above 4094."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+        if (dot1q_client_vlan := subinterface.encapsulation_vlan.client_dot1q or subinterface.number) > 4094:
+            msg = (
+                f"'encapsulation_vlan.client_dot1q' must be set for '{adapter._internal_data.context}.port_channel."
+                f"subinterfaces[number={subinterface.number}]' since the subinterface number is above 4094."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+
         # Common port_channel_interface settings
         port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
             name=port_channel_subinterface_name,
-            vlan_id=subinterface.vlan_id or subinterface.number,
+            description=AvdStringFormatter().format(
+                subinterface.description,
+                subinterface=port_channel_subinterface_name,
+                subinterface_number=subinterface.number,
+                vlan_id=vlan_id,
+                dot1q_client_vlan=dot1q_client_vlan,
+                endpoint_type=connected_endpoint.type,
+                endpoint=connected_endpoint.name,
+            )
+            if subinterface.description
+            else None,
+            vlan_id=vlan_id,
             eos_cli=subinterface.raw_eos_cli,
         )
-        port_channel_interface.encapsulation_vlan.client._update(
-            encapsulation="dot1q", vlan=subinterface.encapsulation_vlan.client_dot1q or subinterface.number
-        )
+        port_channel_interface.encapsulation_vlan.client._update(encapsulation="dot1q", vlan=dot1q_client_vlan)
         port_channel_interface.encapsulation_vlan.network.encapsulation = "client"
 
         # EVPN A/A

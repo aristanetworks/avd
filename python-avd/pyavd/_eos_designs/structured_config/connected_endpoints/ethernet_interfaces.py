@@ -112,6 +112,7 @@ class EthernetInterfacesMixin(Protocol):
         ethernet_interface._update(
             mtu=self.shared_utils.get_interface_mtu(ethernet_interface.name, adapter.mtu),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.Ptp),
+            address_locking=self._get_adapter_address_locking(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.AddressLocking),
             service_profile=adapter.qos_profile,
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.LinkTrackingGroups),
@@ -304,10 +305,16 @@ class EthernetInterfacesMixin(Protocol):
     ) -> EosCliConfigGen.EthernetInterfacesItem:
         """Return structured_config for one ethernet_interface (subinterface)."""
         if (vlan_id := subinterface.vlan_id or subinterface.number) > 4094:
-            msg = f"'vlan_id' must be set for subinterface '{ethernet_subinterface_name}' since the subinterface number is above 4094."
+            msg = (
+                f"'vlan_id' must be set for '{adapter._internal_data.context}.subinterfaces[number={subinterface.number}]'"
+                " since the subinterface number is above 4094."
+            )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         if (dot1q_client_vlan := subinterface.encapsulation_vlan.client_dot1q or subinterface.number) > 4094:
-            msg = f"'encapsulation_vlan.client_dot1q' must be set for subinterface '{ethernet_subinterface_name}' since the subinterface number is above 4094."
+            msg = (
+                f"'encapsulation_vlan.client_dot1q' must be set for '{adapter._internal_data.context}."
+                f"subinterfaces[number={subinterface.number}]' since the subinterface number is above 4094."
+            )
             raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         # Common ethernet_interface settings

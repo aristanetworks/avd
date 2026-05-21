@@ -155,17 +155,6 @@ ethernet_interfaces:
     peer: OLD_SW-1/9
     peer_type: custom_server
     peer_key: servers
-- name: Ethernet25
-  description: CUSTOM_SERVER_OLD_SW-1/12_Endpoint_port6
-  shutdown: false
-  channel_group:
-    id: 25
-    mode: active
-  metadata:
-    peer: OLD_SW-1/12
-    peer_interface: Endpoint_port6
-    peer_type: custom_server
-    peer_key: servers
 - name: Ethernet12
   description: CUSTOM_SERVER_INDIVIDUAL_1
   shutdown: false
@@ -601,6 +590,64 @@ ethernet_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: none
+- name: Ethernet42
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_SERVER
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+      ipv6: true
+  metadata:
+    peer: ADDRESS_LOCKING_SERVER
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: ADDRESS_LOCKING_PROFILE
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 111
+- name: Ethernet43
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_SERVER
+  shutdown: false
+  channel_group:
+    id: 43
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_SERVER
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: ADDRESS_LOCKING_PROFILE
+- name: Ethernet44
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_SERVER
+  shutdown: false
+  channel_group:
+    id: 43
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_SERVER
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: ADDRESS_LOCKING_PROFILE
+- name: Ethernet45
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
+  channel_group:
+    id: 45
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet46
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
+  channel_group:
+    id: 45
+    mode: active
+  metadata:
+    peer: ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+    peer_type: custom_server
+    peer_key: servers
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
@@ -702,6 +749,7 @@ port_channel_interfaces:
       encapsulation: client
   vlan_id: 100
 - name: Port-Channel20.200
+  description: Port-Channel20.200-200-200-200-custom_server-OLD_SW-1/9
   encapsulation_vlan:
     client:
       encapsulation: dot1q
@@ -709,11 +757,6 @@ port_channel_interfaces:
     network:
       encapsulation: client
   vlan_id: 200
-- name: Port-Channel25
-  description: CUSTOM_SERVER_OLD_SW-1/12
-  shutdown: false
-  switchport:
-    enabled: false
 - name: Port-Channel12
   description: CUSTOM_SERVER_INDIVIDUAL_1_INDIVIDUAL_1
   shutdown: false
@@ -805,6 +848,23 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: none
+- name: Port-Channel43
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_SERVER
+  shutdown: false
+  address_locking:
+    address_family:
+      ipv4: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 112
+- name: Port-Channel45
+  description: CUSTOM_SERVER_ADDRESS_LOCKING_PC_IPV4_TRUE_SERVER
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 112
 radius_server:
   vrfs:
   - name: MGMT

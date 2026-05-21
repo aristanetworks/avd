@@ -12,3 +12,8 @@ keys:
     type: bool
     default: false
     description: Configure IP routing for the OOB Management VRF.
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.vrf_routing
+      remove_in_version: 7.0.0
