@@ -81,7 +81,7 @@ port_channel_interfaces:
       groups:
       - MLAG
 - name: Port-Channel1
-  description: TEST_CUSTOM_PREFIX_Port-Channel1_CUSTOM-TEMPLATES-L3LEAF1A_Po1_To_Po5_
+  description: TEST_CUSTOM_PREFIX_Port-Channel1_CUSTOM-TEMPLATES-L3LEAF1A
   shutdown: false
   mlag: 1
   switchport:

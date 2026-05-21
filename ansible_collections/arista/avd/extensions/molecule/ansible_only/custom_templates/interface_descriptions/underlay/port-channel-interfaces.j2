@@ -1,4 +1,4 @@
-{% if wan_carrier is arista.avd.defined %}
+{% if link.wan_carrier is arista.avd.defined %}
 custom_template_description_{{ wan_carrier }}
 {% elif link.main_interface_wan_carrier is arista.avd.defined %}
 custom_template_description_{{ link.main_interface_wan_carrier }}
