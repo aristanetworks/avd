@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from asyncio import gather
-from collections import defaultdict
+from collections import defaultdict, deque
 from logging import getLogger
 from typing import TYPE_CHECKING, cast
 
@@ -48,13 +48,14 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
         return
 
     # Perform synchronization tasks.
-    existing_containers, existing_managed_containers_by_id = await _sync_containers(
+    existing_containers, existing_managed_containers_by_id, unmanaged_orphan_container_ids = await _sync_containers(
         cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client
     )
     await _sync_configlets(
         cv_manifest=cv_manifest,
         existing_containers=existing_containers,
         existing_managed_containers_by_id=existing_managed_containers_by_id,
+        unmanaged_orphan_container_ids=unmanaged_orphan_container_ids,
         deployment_result=deployment_result,
         cv_client=cv_client,
     )
@@ -66,8 +67,12 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
 
 async def _sync_containers(
     cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient
-) -> tuple[list[ConfigletAssignment], dict[str, str]]:
-    """Synchronize containers. Fetch existing ones and push any required creates or updates."""
+) -> tuple[list[ConfigletAssignment], dict[str, str], set[str]]:
+    """
+    Synchronize containers. Fetch existing ones and push any required creates or updates.
+
+    TODO: Split into multiple functions.
+    """
     workspace_id = deployment_result.workspace.id
 
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Fetching all existing configlet containers from CloudVision...")
@@ -75,15 +80,67 @@ async def _sync_containers(
 
     existing_containers_by_id: dict[str, ConfigletAssignment] = {}
     existing_parents_by_child_id: dict[str, ConfigletAssignment] = {}
+    existing_children_by_parent_id: dict[str, list[str]] = {}
     existing_managed_containers_by_id: dict[str, str] = {}
 
     for container in existing_containers:
         container_id = cast("str", container.key.configlet_assignment_id)
         existing_containers_by_id[container_id] = container
+        existing_children_by_parent_id[container_id] = list(container.child_assignment_ids.values)
         if container_id.startswith(AVD_ENTITY_PREFIX):
             existing_managed_containers_by_id[container_id] = cast("str", container.display_name)
         for child_id in container.child_assignment_ids.values:
             existing_parents_by_child_id[child_id] = container
+
+    containers_to_push: list[CVContainer] = []
+    containers_to_skip: list[CVContainer] = []
+    containers_to_delete: dict[str, str] = {}
+    unmanaged_orphan_container_ids: set[str] = set()
+
+    for desired_container in cv_manifest.containers:
+        existing_container = existing_containers_by_id.get(desired_container.id)
+
+        if not existing_container:
+            # Container is new.
+            containers_to_push.append(desired_container)
+            continue
+
+        if not desired_container.matches_configlet_assignment(existing_container):
+            # Container has changed.
+            containers_to_push.append(desired_container)
+        else:
+            # Container is unchanged.
+            containers_to_skip.append(desired_container)
+
+        # Existing unmanaged children unassigned by the manifest become orphans.
+        existing_children = set(existing_container.child_assignment_ids.values)
+        desired_children = set(desired_container.child_ids)
+        unmanaged_orphan_container_ids.update(child_id for child_id in (existing_children - desired_children) if not child_id.startswith(AVD_ENTITY_PREFIX))
+
+    # Managed containers no longer in the manifest are deleted. Their unmanaged children also become orphans and are deleted.
+    desired_container_ids = {container.id for container in cv_manifest.containers}
+    for container_id, container_name in existing_managed_containers_by_id.items():
+        if container_id in desired_container_ids:
+            continue
+        containers_to_delete[container_id] = container_name
+        unmanaged_orphan_container_ids.update(
+            child_id for child_id in existing_children_by_parent_id.get(container_id, []) if not child_id.startswith(AVD_ENTITY_PREFIX)
+        )
+
+    # Walk the unmanaged orphans to pull in their descendants.
+    # Managed descendants are skipped because they are either re-parented by the push or already in containers_to_delete.
+    queue = deque(unmanaged_orphan_container_ids)
+    while queue:
+        container_id = queue.popleft()
+        for child_id in existing_children_by_parent_id.get(container_id, []):
+            if child_id.startswith(AVD_ENTITY_PREFIX) or child_id in unmanaged_orphan_container_ids:
+                continue
+            unmanaged_orphan_container_ids.add(child_id)
+            queue.append(child_id)
+
+    # Merge unmanaged orphan IDs into containers_to_delete with their CV display names.
+    for orphan_id in unmanaged_orphan_container_ids:
+        containers_to_delete[orphan_id] = cast("str", existing_containers_by_id[orphan_id].display_name)
 
     # Validate that no managed container was manually reassigned to a parent this deploy will not touch.
     violations: list[tuple[str, str, str, str]] = []
@@ -94,8 +151,8 @@ async def _sync_containers(
             # or it's an orphan which will get reassigned or deleted by this deploy.
             continue
         parent_id = cast("str", parent.key.configlet_assignment_id)
-        if parent_id in existing_managed_containers_by_id:
-            # Parent is managed, it will be handled by this deploy.
+        if parent_id in existing_managed_containers_by_id or parent_id in unmanaged_orphan_container_ids:
+            # Parent is managed and will be handled by this deploy, or is unmanaged and scheduled for orphan deletion.
             continue
 
         # Parent is out of our control.
@@ -113,16 +170,7 @@ async def _sync_containers(
         )
         raise CVManifestError(msg)
 
-    containers_to_push: list[CVContainer] = []
-    for desired_container in cv_manifest.containers:
-        existing_container = existing_containers_by_id.get(desired_container.id)
-
-        # Container is new or has changed, so it needs to be pushed.
-        if not existing_container or not desired_container.matches_configlet_assignment(existing_container):
-            containers_to_push.append(desired_container)
-        else:
-            # Container is unchanged.
-            deployment_result.skipped_static_config_containers.append(desired_container.avd_container)
+    deployment_result.skipped_static_config_containers.extend(container.avd_container for container in containers_to_skip)
 
     if containers_to_push:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Applying changes for %d containers (create/update)...", len(containers_to_push))
@@ -132,25 +180,26 @@ async def _sync_containers(
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No container creations or updates are needed.")
 
-    # Delete unused AVD-managed containers.
-    desired_container_ids = {container.id for container in cv_manifest.containers}
-    containers_to_delete = {container_id: name for container_id, name in existing_managed_containers_by_id.items() if container_id not in desired_container_ids}
-
     if containers_to_delete:
-        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d AVD-managed containers which are no longer used.", len(containers_to_delete))
+        LOGGER.info(
+            "deploy_static_config_studio_manifest_to_cv: Removing %d manifest-managed and %d unmanaged orphan containers which are no longer used.",
+            len(containers_to_delete) - len(unmanaged_orphan_container_ids),
+            len(unmanaged_orphan_container_ids),
+        )
         deployment_result.removed_static_config_containers.extend(containers_to_delete.values())
         # TODO: Build a 'delete_configlet_containers' gRPC API
         await gather(*[cv_client.delete_configlet_container(workspace_id=workspace_id, assignment_id=container_id) for container_id in containers_to_delete])
     else:
-        LOGGER.info("deploy_static_config_studio_manifest_to_cv: No AVD-managed container deletions are needed.")
+        LOGGER.info("deploy_static_config_studio_manifest_to_cv: No container deletions are needed.")
 
-    return existing_containers, existing_managed_containers_by_id
+    return existing_containers, existing_managed_containers_by_id, unmanaged_orphan_container_ids
 
 
 async def _sync_configlets(
     cv_manifest: CVManifest,
     existing_containers: list[ConfigletAssignment],
     existing_managed_containers_by_id: dict[str, str],
+    unmanaged_orphan_container_ids: set[str],
     deployment_result: DeployToCvResult,
     cv_client: CVClient,
 ) -> None:
@@ -187,8 +236,8 @@ async def _sync_configlets(
         for configlet_id, configlet_name in configlets_to_delete.items():
             for holder in existing_holders_by_configlet_id.get(configlet_id, []):
                 holder_id = cast("str", holder.key.configlet_assignment_id)
-                if holder_id in existing_managed_containers_by_id:
-                    # Holder is managed, it will be handled by this deploy.
+                if holder_id in existing_managed_containers_by_id or holder_id in unmanaged_orphan_container_ids:
+                    # Holder is managed and will be handled by this deploy, or is unmanaged and scheduled for orphan deletion.
                     continue
 
                 # Holder is out of our control.
