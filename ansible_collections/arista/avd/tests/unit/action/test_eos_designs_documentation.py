@@ -29,25 +29,6 @@ FABRIC_NAME = "DC1_FABRIC"
 
 
 @pytest.fixture
-def action_module() -> Callable[..., ActionModule]:
-    def _factory(task_args: dict | None = None) -> ActionModule:
-        mock_task = MagicMock()
-        mock_task.args = task_args or {}
-        mock_task.async_val = False
-        mock_task.check_mode = False
-        return ActionModule(
-            task=mock_task,
-            connection=MagicMock(),
-            play_context=MagicMock(),
-            loader=MagicMock(),
-            templar=MagicMock(),
-            shared_loader_obj=MagicMock(),
-        )
-
-    return _factory
-
-
-@pytest.fixture
 def base_validated_args() -> dict:
     return {
         "tmp_dir": MOCK_TMP_DIR,
@@ -85,7 +66,7 @@ def _make_output(
 
 def test_run_strips_empty_args_and_invokes_main(action_module: Callable[..., ActionModule], base_validated_args: dict) -> None:
     """Empty values (None and "") are stripped before main() sees them, and tmp_dir is captured on the module."""
-    module = action_module()
+    module = action_module(ActionModule)
     raw_args = {**base_validated_args, "structured_config_suffix": None, "fabric_documentation_file": ""}
     expected_main_args = {k: v for k, v in raw_args.items() if k not in {"structured_config_suffix", "fabric_documentation_file"}}
 
@@ -174,7 +155,7 @@ def test_main_writes_only_outputs_returned_by_pyavd(
        stays ``True`` even if later writes return ``False`` (file already up-to-date). When the only write
        returns ``False`` the flag stays ``False``.
     """
-    module = action_module()
+    module = action_module(ActionModule)
     # Toggle on every requested output so the pyavd call kwargs reflect the test scenario.
     validated_args = {
         **base_validated_args,
@@ -204,7 +185,7 @@ def test_main_writes_only_outputs_returned_by_pyavd(
 
 def test_main_skips_writes_when_pyavd_returns_no_content(action_module: Callable[..., ActionModule], base_validated_args: dict) -> None:
     """No write calls are made when pyavd returns an output object with empty fields."""
-    module = action_module()
+    module = action_module(ActionModule)
 
     with (
         patch.object(module, "load_facts", return_value={"spine1": {}}),
@@ -221,7 +202,7 @@ def test_main_skips_writes_when_pyavd_returns_no_content(action_module: Callable
 
 def test_main_writes_digital_twin_with_dashed_keys_and_listified_tuples(action_module: Callable[..., ActionModule], base_validated_args: dict) -> None:
     """Digital-twin output is dumped as YAML after key dashing, tuple-to-list coercion, and empty stripping."""
-    module = action_module()
+    module = action_module(ActionModule)
     validated_args = {**base_validated_args, "fabric_documentation": False, "digital_twin": True}
     asdict_payload = {"nodes": ({"spine1": "settings"},), "links": (("a", "b"),), "extra_field": None}
 
@@ -246,7 +227,7 @@ def test_main_writes_digital_twin_with_dashed_keys_and_listified_tuples(action_m
 
 def test_main_raises_when_fabric_name_missing(action_module: Callable[..., ActionModule], base_validated_args: dict) -> None:
     """fabric_name is required from task_vars; pyavd.get raises when it is missing."""
-    module = action_module()
+    module = action_module(ActionModule)
 
     with (
         patch.object(module, "load_facts", return_value={}),
@@ -259,7 +240,7 @@ def test_main_raises_when_fabric_name_missing(action_module: Callable[..., Actio
 
 def test_load_facts_returns_parsed_json(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
     """load_facts reads the JSON facts file written by eos_designs_facts."""
-    module = action_module()
+    module = action_module(ActionModule)
     module.tmp_dir = str(tmp_path)
     facts = {"spine1": {"hostname": "spine1"}}
     facts_path = tmp_path / "eos_designs_facts.json"
@@ -271,7 +252,7 @@ def test_load_facts_returns_parsed_json(action_module: Callable[..., ActionModul
 
 def test_load_facts_raises_when_file_missing(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
     """A clear AnsibleActionFail is raised pointing the user at the upstream task."""
-    module = action_module()
+    module = action_module(ActionModule)
     module.tmp_dir = str(tmp_path)
     missing_path = tmp_path / "eos_designs_facts.json"
 
@@ -287,7 +268,7 @@ def test_load_facts_raises_when_file_missing(action_module: Callable[..., Action
 
 def test_read_structured_configs_collects_all_devices(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
     """All present device files are loaded into a single dict keyed by hostname."""
-    module = action_module()
+    module = action_module(ActionModule)
     (tmp_path / "spine1.yml").write_text("hostname: spine1\n", encoding="UTF-8")
     (tmp_path / "leaf1.yml").write_text("hostname: leaf1\n", encoding="UTF-8")
 
@@ -300,7 +281,7 @@ def test_read_structured_configs_warns_when_devices_missing(
     action_module: Callable[..., ActionModule], tmp_path: Path, caplog: pytest.LogCaptureFixture
 ) -> None:
     """A WARNING log lists every device whose structured config file is missing."""
-    module = action_module()
+    module = action_module(ActionModule)
     (tmp_path / "spine1.yml").write_text("hostname: spine1\n", encoding="UTF-8")
 
     with caplog.at_level(logging.WARNING, logger="ansible_collections.arista.avd"):
@@ -317,7 +298,7 @@ def test_read_structured_configs_warns_when_devices_missing(
 
 def test_read_structured_configs_silent_when_all_present(action_module: Callable[..., ActionModule], tmp_path: Path, caplog: pytest.LogCaptureFixture) -> None:
     """No warning is emitted when every device has a structured config."""
-    module = action_module()
+    module = action_module(ActionModule)
     (tmp_path / "spine1.yml").write_text("hostname: spine1\n", encoding="UTF-8")
 
     with caplog.at_level(logging.WARNING, logger="ansible_collections.arista.avd"):
@@ -329,7 +310,7 @@ def test_read_structured_configs_silent_when_all_present(action_module: Callable
 @pytest.mark.parametrize("suffix", ["yml", "yaml"])
 def test_read_one_structured_config_loads_yaml(action_module: Callable[..., ActionModule], tmp_path: Path, suffix: str) -> None:
     """YAML files are parsed for both .yml and .yaml suffixes."""
-    module = action_module()
+    module = action_module(ActionModule)
     (tmp_path / f"spine1.{suffix}").write_text("hostname: spine1\nrole: spine\n", encoding="UTF-8")
 
     assert module.read_one_structured_config("spine1", str(tmp_path), suffix) == {"hostname": "spine1", "role": "spine"}
@@ -337,7 +318,7 @@ def test_read_one_structured_config_loads_yaml(action_module: Callable[..., Acti
 
 def test_read_one_structured_config_loads_json(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
     """A non-yaml suffix falls through to JSON parsing."""
-    module = action_module()
+    module = action_module(ActionModule)
     (tmp_path / "spine1.json").write_text('{"hostname": "spine1"}', encoding="UTF-8")
 
     assert module.read_one_structured_config("spine1", str(tmp_path), "json") == {"hostname": "spine1"}
@@ -345,7 +326,7 @@ def test_read_one_structured_config_loads_json(action_module: Callable[..., Acti
 
 def test_read_one_structured_config_returns_empty_dict_when_missing(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
     """A missing file produces an empty dict (falsy) — used by the caller to detect missing devices."""
-    module = action_module()
+    module = action_module(ActionModule)
     assert module.read_one_structured_config("nope", str(tmp_path), "yml") == {}
 
 
@@ -392,7 +373,7 @@ def test_run_routes_missing_device_warning_through_handler_to_result_warnings(
     Runs ``module.run()`` with the real logger/handler chain attached and asserts on both the logger side
     (caplog) and the handler-bridge side (the Ansible result dict).
     """
-    module = action_module()
+    module = action_module(ActionModule)
     facts_path = tmp_path / "eos_designs_facts.json"
     facts_path.write_text(json.dumps({"spine1": {}, "leaf1": {}}), encoding="UTF-8")
     structured_dir = tmp_path / "structured_configs"
