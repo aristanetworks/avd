@@ -1854,6 +1854,13 @@ aaa accounting commands 3 default start-stop logging
 | 1.1.1.1 |
 | 4.4.4.4 |
 
+| Server Interface |
+| ---------------- |
+| Ethernet1 |
+| Ethernet2 |
+| Port-Channel1 |
+| Port-Channel3 |
+
 ### Leases
 
 | Lease IP Address | Lease MAC Address |
@@ -1878,6 +1885,10 @@ address locking
    local-interface Loopback0
    dhcp server ipv4 1.1.1.1
    dhcp server ipv4 4.4.4.4
+   dhcp server interface Ethernet1
+   dhcp server interface Ethernet2
+   dhcp server interface Port-Channel1
+   dhcp server interface Port-Channel3
    lease 2.2.2.2 mac dead.beef.cafe
    lease 3.3.3.3 mac de:af:be:ef:ca:fe
    locked-address expiration mac disabled
@@ -5181,6 +5192,7 @@ interface Ethernet1
    switchport backup mac-move-burst-interval 30
    switchport backup initial-mac-move-delay 10
    switchport backup dest-macaddr 01:00:00:00:00:00
+   cpu traffic-policy CPU_TRAFFIC_POLICY fallback traffic-policy vrf
    link tracking group EVPN_MH_ES1 upstream
    link tracking group EVPN_MH_ES3 upstream
    link tracking group EVPN_MH_ES4 upstream
@@ -6631,6 +6643,7 @@ interface Port-Channel15
    isis authentication key 0 <removed>
    spanning-tree link-type point-to-point
    spanning-tree guard loop
+   cpu traffic-policy CPU_TRAFFIC_POLICY fallback traffic-policy vrf
    link tracking group EVPN_MH_ES2 upstream
 !
 interface Port-Channel16
@@ -13839,6 +13852,15 @@ mac security
 
 ### Traffic Policies information
 
+#### CPU Traffic Policy
+
+| Setting | Value |
+| ------- | ----- |
+| Traffic-policy for all VRFs | CPU_TP_ALL |
+| Enforcement on management ports | True |
+| Implicit permit-fragment rules disabled | True |
+| Enforcement on IP TTL expired packets | True |
+
 #### Traffic Policies VRF Interfaces
 
 | VRF | CPU Traffic Policy | Management Ports | Physical Interfaces Traffic Policy |
@@ -13918,17 +13940,21 @@ Counters: test
 
 ##### Traffic-Policy Interfaces
 
-| Interface | Input Traffic-Policy | Output Traffic-Policy |
-| --------- | -------------------- | --------------------- |
-| Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
-| Port-Channel15 | BLUE-C1-POLICY | BLUE-C2-POLICY |
-| Vlan2001 | Policy-01 | Policy-02 |
+| Interface | Input Traffic-Policy | Output Traffic-Policy | CPU Traffic-Policy Fallback VRF |
+| --------- | -------------------- | --------------------- | ------------------------------- |
+| Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY | CPU_TRAFFIC_POLICY |
+| Port-Channel15 | BLUE-C1-POLICY | BLUE-C2-POLICY | CPU_TRAFFIC_POLICY |
+| Vlan2001 | Policy-01 | Policy-02 | - |
 
 #### Traffic Policies Device Configuration
 
 ```eos
 !
 traffic-policies
+   cpu traffic-policy CPU_TP_ALL vrf all
+      enforcement management
+   cpu traffic-policy fragment implicit-permit disabled
+   cpu traffic-policy enforcement ip ttl expired
    vrf VRF1
       cpu traffic-policy TP1 fallback traffic-policy none
          enforcement management
