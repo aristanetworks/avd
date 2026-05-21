@@ -8435,6 +8435,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
         MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
         class OverlayAddressFamilies(AvdList[str]):
@@ -10549,7 +10550,6 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "parent_profile": {"type": str},
@@ -10638,6 +10638,11 @@ class EosDesigns(EosDesignsRootModel):
             "mlag_port_channel_id": {"type": int},
             "mlag_domain_id": {"type": str},
             "spanning_tree_settings": {"type": SpanningTreeSettings},
+            "spanning_tree_mode": {"type": str},
+            "spanning_tree_priority": {"type": int, "default": 32768},
+            "spanning_tree_root_super": {"type": bool, "default": False},
+            "spanning_tree_mst_pvst_boundary": {"type": bool},
+            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
             "virtual_router_mac_address": {"type": str},
             "inband_mgmt_interface": {"type": str},
             "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -10677,11 +10682,6 @@ class EosDesigns(EosDesignsRootModel):
             "cv_tags_topology_type": {"type": str},
             "digital_twin": {"type": DigitalTwin},
             "validation_profile": {"type": str},
-            "spanning_tree_mode": {"type": str},
-            "spanning_tree_priority": {"type": int, "default": 32768},
-            "spanning_tree_root_super": {"type": bool, "default": False},
-            "spanning_tree_mst_pvst_boundary": {"type": bool},
-            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
         }
         name: str
         """Profile Name"""
@@ -11246,6 +11246,21 @@ class EosDesigns(EosDesignsRootModel):
         """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
         spanning_tree_settings: SpanningTreeSettings
         """Subclass of AvdModel."""
+        spanning_tree_mode: SpanningTreeMode | None
+        spanning_tree_priority: int
+        """
+        Spanning-tree priority configured for the selected mode.
+        For `rapid-pvst` the priority can also be
+        set per VLAN under network services.
+
+        Default value: `32768`
+        """
+        spanning_tree_root_super: bool
+        """Default value: `False`"""
+        spanning_tree_mst_pvst_boundary: bool | None
+        """Enable MST PVST border ports."""
+        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+        """Specify range of port-ids to reserve for port-channels."""
         virtual_router_mac_address: str | None
         """Virtual router mac address for anycast gateway."""
         inband_mgmt_interface: str | None
@@ -11585,21 +11600,6 @@ class EosDesigns(EosDesignsRootModel):
         Validation profiles define requirements (e.g., hardware and logging) used by
         the `anta_runner` role during post-deployment validation.
         """
-        spanning_tree_mode: SpanningTreeMode | None
-        spanning_tree_priority: int
-        """
-        Spanning-tree priority configured for the selected mode.
-        For `rapid-pvst` the priority can also be
-        set per VLAN under network services.
-
-        Default value: `32768`
-        """
-        spanning_tree_root_super: bool
-        """Default value: `False`"""
-        spanning_tree_mst_pvst_boundary: bool | None
-        """Enable MST PVST border ports."""
-        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-        """Specify range of port-ids to reserve for port-channels."""
 
         if TYPE_CHECKING:
 
@@ -11693,6 +11693,11 @@ class EosDesigns(EosDesignsRootModel):
                 mlag_port_channel_id: int | None | UndefinedType = Undefined,
                 mlag_domain_id: str | None | UndefinedType = Undefined,
                 spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
+                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                spanning_tree_priority: int | UndefinedType = Undefined,
+                spanning_tree_root_super: bool | UndefinedType = Undefined,
+                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
                 virtual_router_mac_address: str | None | UndefinedType = Undefined,
                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                 inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -11732,11 +11737,6 @@ class EosDesigns(EosDesignsRootModel):
                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validation_profile: str | None | UndefinedType = Undefined,
-                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
-                spanning_tree_priority: int | UndefinedType = Undefined,
-                spanning_tree_root_super: bool | UndefinedType = Undefined,
-                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
             ) -> None:
                 """
                 DeviceProfilesItem.
@@ -12128,6 +12128,14 @@ class EosDesigns(EosDesignsRootModel):
                        999999 > for EOS >= 4.25.0F.
                     mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                     spanning_tree_settings: Subclass of AvdModel.
+                    spanning_tree_mode: spanning_tree_mode
+                    spanning_tree_priority:
+                       Spanning-tree priority configured for the selected mode.
+                       For `rapid-pvst` the priority can also be
+                       set per VLAN under network services.
+                    spanning_tree_root_super: spanning_tree_root_super
+                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                     inband_mgmt_interface:
                        Pointer to interface used for inband management.
@@ -12372,14 +12380,6 @@ class EosDesigns(EosDesignsRootModel):
                        `validation_profiles`.
                        Validation profiles define requirements (e.g., hardware and logging) used by
                        the `anta_runner` role during post-deployment validation.
-                    spanning_tree_mode: spanning_tree_mode
-                    spanning_tree_priority:
-                       Spanning-tree priority configured for the selected mode.
-                       For `rapid-pvst` the priority can also be
-                       set per VLAN under network services.
-                    spanning_tree_root_super: spanning_tree_root_super
-                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
-                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
 
                 """
 
@@ -13733,6 +13733,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
         MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
         class OverlayAddressFamilies(AvdList[str]):
@@ -15847,7 +15848,6 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "profile": {"type": str},
@@ -15937,6 +15937,11 @@ class EosDesigns(EosDesignsRootModel):
             "mlag_port_channel_id": {"type": int},
             "mlag_domain_id": {"type": str},
             "spanning_tree_settings": {"type": SpanningTreeSettings},
+            "spanning_tree_mode": {"type": str},
+            "spanning_tree_priority": {"type": int, "default": 32768},
+            "spanning_tree_root_super": {"type": bool, "default": False},
+            "spanning_tree_mst_pvst_boundary": {"type": bool},
+            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
             "virtual_router_mac_address": {"type": str},
             "inband_mgmt_interface": {"type": str},
             "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -15976,11 +15981,6 @@ class EosDesigns(EosDesignsRootModel):
             "cv_tags_topology_type": {"type": str},
             "digital_twin": {"type": DigitalTwin},
             "validation_profile": {"type": str},
-            "spanning_tree_mode": {"type": str},
-            "spanning_tree_priority": {"type": int, "default": 32768},
-            "spanning_tree_root_super": {"type": bool, "default": False},
-            "spanning_tree_mst_pvst_boundary": {"type": bool},
-            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
         }
         name: str
         """The Node Name is used as "hostname"."""
@@ -16555,6 +16555,21 @@ class EosDesigns(EosDesignsRootModel):
         """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
         spanning_tree_settings: SpanningTreeSettings
         """Subclass of AvdModel."""
+        spanning_tree_mode: SpanningTreeMode | None
+        spanning_tree_priority: int
+        """
+        Spanning-tree priority configured for the selected mode.
+        For `rapid-pvst` the priority can also be
+        set per VLAN under network services.
+
+        Default value: `32768`
+        """
+        spanning_tree_root_super: bool
+        """Default value: `False`"""
+        spanning_tree_mst_pvst_boundary: bool | None
+        """Enable MST PVST border ports."""
+        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+        """Specify range of port-ids to reserve for port-channels."""
         virtual_router_mac_address: str | None
         """Virtual router mac address for anycast gateway."""
         inband_mgmt_interface: str | None
@@ -16894,21 +16909,6 @@ class EosDesigns(EosDesignsRootModel):
         Validation profiles define requirements (e.g., hardware and logging) used by
         the `anta_runner` role during post-deployment validation.
         """
-        spanning_tree_mode: SpanningTreeMode | None
-        spanning_tree_priority: int
-        """
-        Spanning-tree priority configured for the selected mode.
-        For `rapid-pvst` the priority can also be
-        set per VLAN under network services.
-
-        Default value: `32768`
-        """
-        spanning_tree_root_super: bool
-        """Default value: `False`"""
-        spanning_tree_mst_pvst_boundary: bool | None
-        """Enable MST PVST border ports."""
-        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-        """Specify range of port-ids to reserve for port-channels."""
 
         if TYPE_CHECKING:
 
@@ -17003,6 +17003,11 @@ class EosDesigns(EosDesignsRootModel):
                 mlag_port_channel_id: int | None | UndefinedType = Undefined,
                 mlag_domain_id: str | None | UndefinedType = Undefined,
                 spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
+                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                spanning_tree_priority: int | UndefinedType = Undefined,
+                spanning_tree_root_super: bool | UndefinedType = Undefined,
+                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
                 virtual_router_mac_address: str | None | UndefinedType = Undefined,
                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                 inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -17042,11 +17047,6 @@ class EosDesigns(EosDesignsRootModel):
                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                 validation_profile: str | None | UndefinedType = Undefined,
-                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
-                spanning_tree_priority: int | UndefinedType = Undefined,
-                spanning_tree_root_super: bool | UndefinedType = Undefined,
-                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange | UndefinedType = Undefined,
             ) -> None:
                 """
                 DevicesItem.
@@ -17446,6 +17446,14 @@ class EosDesigns(EosDesignsRootModel):
                        999999 > for EOS >= 4.25.0F.
                     mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                     spanning_tree_settings: Subclass of AvdModel.
+                    spanning_tree_mode: spanning_tree_mode
+                    spanning_tree_priority:
+                       Spanning-tree priority configured for the selected mode.
+                       For `rapid-pvst` the priority can also be
+                       set per VLAN under network services.
+                    spanning_tree_root_super: spanning_tree_root_super
+                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                     inband_mgmt_interface:
                        Pointer to interface used for inband management.
@@ -17690,14 +17698,6 @@ class EosDesigns(EosDesignsRootModel):
                        `validation_profiles`.
                        Validation profiles define requirements (e.g., hardware and logging) used by
                        the `anta_runner` role during post-deployment validation.
-                    spanning_tree_mode: spanning_tree_mode
-                    spanning_tree_priority:
-                       Spanning-tree priority configured for the selected mode.
-                       For `rapid-pvst` the priority can also be
-                       set per VLAN under network services.
-                    spanning_tree_root_super: spanning_tree_root_super
-                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
-                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
 
                 """
 
@@ -39227,6 +39227,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
                     class OverlayAddressFamilies(AvdList[str]):
@@ -41348,7 +41349,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "platform": {"type": str},
@@ -41433,6 +41433,11 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
                         "spanning_tree_settings": {"type": SpanningTreeSettings},
+                        "spanning_tree_mode": {"type": str},
+                        "spanning_tree_priority": {"type": int, "default": 32768},
+                        "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -41472,11 +41477,6 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "spanning_tree_mode": {"type": str},
-                        "spanning_tree_priority": {"type": int, "default": 32768},
-                        "spanning_tree_root_super": {"type": bool, "default": False},
-                        "spanning_tree_mst_pvst_boundary": {"type": bool},
-                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -42020,6 +42020,21 @@ class EosDesigns(EosDesignsRootModel):
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
                     spanning_tree_settings: SpanningTreeSettings
                     """Subclass of AvdModel."""
+                    spanning_tree_mode: SpanningTreeMode | None
+                    spanning_tree_priority: int
+                    """
+                    Spanning-tree priority configured for the selected mode.
+                    For `rapid-pvst` the priority can also be
+                    set per VLAN under network services.
+
+                    Default value: `32768`
+                    """
+                    spanning_tree_root_super: bool
+                    """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -42359,21 +42374,6 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    spanning_tree_mode: SpanningTreeMode | None
-                    spanning_tree_priority: int
-                    """
-                    Spanning-tree priority configured for the selected mode.
-                    For `rapid-pvst` the priority can also be
-                    set per VLAN under network services.
-
-                    Default value: `32768`
-                    """
-                    spanning_tree_root_super: bool
-                    """Default value: `False`"""
-                    spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
-                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                    """Specify range of port-ids to reserve for port-channels."""
 
                     if TYPE_CHECKING:
 
@@ -42463,6 +42463,12 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
                             spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                            spanning_tree_priority: int | UndefinedType = Undefined,
+                            spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -42502,12 +42508,6 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
-                            spanning_tree_priority: int | UndefinedType = Undefined,
-                            spanning_tree_root_super: bool | UndefinedType = Undefined,
-                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                            | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -42885,6 +42885,14 @@ class EosDesigns(EosDesignsRootModel):
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                                 spanning_tree_settings: Subclass of AvdModel.
+                                spanning_tree_mode: spanning_tree_mode
+                                spanning_tree_priority:
+                                   Spanning-tree priority configured for the selected mode.
+                                   For `rapid-pvst` the priority can also be
+                                   set per VLAN under network services.
+                                spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -43129,14 +43137,6 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                spanning_tree_mode: spanning_tree_mode
-                                spanning_tree_priority:
-                                   Spanning-tree priority configured for the selected mode.
-                                   For `rapid-pvst` the priority can also be
-                                   set per VLAN under network services.
-                                spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
-                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
 
                             """
 
@@ -44503,6 +44503,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                         MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
                         class OverlayAddressFamilies(AvdList[str]):
@@ -46641,7 +46642,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                         _fields: ClassVar[dict] = {
                             "name": {"type": str},
                             "downlink_pools": {"type": DownlinkPools},
@@ -46728,6 +46728,11 @@ class EosDesigns(EosDesignsRootModel):
                             "mlag_port_channel_id": {"type": int},
                             "mlag_domain_id": {"type": str},
                             "spanning_tree_settings": {"type": SpanningTreeSettings},
+                            "spanning_tree_mode": {"type": str},
+                            "spanning_tree_priority": {"type": int, "default": 32768},
+                            "spanning_tree_root_super": {"type": bool, "default": False},
+                            "spanning_tree_mst_pvst_boundary": {"type": bool},
+                            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                             "virtual_router_mac_address": {"type": str},
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -46767,11 +46772,6 @@ class EosDesigns(EosDesignsRootModel):
                             "cv_tags_topology_type": {"type": str},
                             "digital_twin": {"type": DigitalTwin},
                             "validation_profile": {"type": str},
-                            "spanning_tree_mode": {"type": str},
-                            "spanning_tree_priority": {"type": int, "default": 32768},
-                            "spanning_tree_root_super": {"type": bool, "default": False},
-                            "spanning_tree_mst_pvst_boundary": {"type": bool},
-                            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -47325,6 +47325,21 @@ class EosDesigns(EosDesignsRootModel):
                         """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
                         spanning_tree_settings: SpanningTreeSettings
                         """Subclass of AvdModel."""
+                        spanning_tree_mode: SpanningTreeMode | None
+                        spanning_tree_priority: int
+                        """
+                        Spanning-tree priority configured for the selected mode.
+                        For `rapid-pvst` the priority can also be
+                        set per VLAN under network services.
+
+                        Default value: `32768`
+                        """
+                        spanning_tree_root_super: bool
+                        """Default value: `False`"""
+                        spanning_tree_mst_pvst_boundary: bool | None
+                        """Enable MST PVST border ports."""
+                        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                        """Specify range of port-ids to reserve for port-channels."""
                         virtual_router_mac_address: str | None
                         """Virtual router mac address for anycast gateway."""
                         inband_mgmt_interface: str | None
@@ -47664,21 +47679,6 @@ class EosDesigns(EosDesignsRootModel):
                         Validation profiles define requirements (e.g., hardware and logging) used by
                         the `anta_runner` role during post-deployment validation.
                         """
-                        spanning_tree_mode: SpanningTreeMode | None
-                        spanning_tree_priority: int
-                        """
-                        Spanning-tree priority configured for the selected mode.
-                        For `rapid-pvst` the priority can also be
-                        set per VLAN under network services.
-
-                        Default value: `32768`
-                        """
-                        spanning_tree_root_super: bool
-                        """Default value: `False`"""
-                        spanning_tree_mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
-                        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                        """Specify range of port-ids to reserve for port-channels."""
 
                         if TYPE_CHECKING:
 
@@ -47770,6 +47770,12 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_port_channel_id: int | None | UndefinedType = Undefined,
                                 mlag_domain_id: str | None | UndefinedType = Undefined,
                                 spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
+                                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                                spanning_tree_priority: int | UndefinedType = Undefined,
+                                spanning_tree_root_super: bool | UndefinedType = Undefined,
+                                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                                | UndefinedType = Undefined,
                                 virtual_router_mac_address: str | None | UndefinedType = Undefined,
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -47809,12 +47815,6 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                                 validation_profile: str | None | UndefinedType = Undefined,
-                                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
-                                spanning_tree_priority: int | UndefinedType = Undefined,
-                                spanning_tree_root_super: bool | UndefinedType = Undefined,
-                                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                                | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -48199,6 +48199,14 @@ class EosDesigns(EosDesignsRootModel):
                                        999999 > for EOS >= 4.25.0F.
                                     mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                                     spanning_tree_settings: Subclass of AvdModel.
+                                    spanning_tree_mode: spanning_tree_mode
+                                    spanning_tree_priority:
+                                       Spanning-tree priority configured for the selected mode.
+                                       For `rapid-pvst` the priority can also be
+                                       set per VLAN under network services.
+                                    spanning_tree_root_super: spanning_tree_root_super
+                                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                     inband_mgmt_interface:
                                        Pointer to interface used for inband management.
@@ -48443,14 +48451,6 @@ class EosDesigns(EosDesignsRootModel):
                                        `validation_profiles`.
                                        Validation profiles define requirements (e.g., hardware and logging) used by
                                        the `anta_runner` role during post-deployment validation.
-                                    spanning_tree_mode: spanning_tree_mode
-                                    spanning_tree_priority:
-                                       Spanning-tree priority configured for the selected mode.
-                                       For `rapid-pvst` the priority can also be
-                                       set per VLAN under network services.
-                                    spanning_tree_root_super: spanning_tree_root_super
-                                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
-                                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
 
                                 """
 
@@ -49742,6 +49742,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
                     class OverlayAddressFamilies(AvdList[str]):
@@ -51863,7 +51864,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     _fields: ClassVar[dict] = {
                         "group": {"type": str},
                         "nodes": {"type": Nodes},
@@ -51950,6 +51950,11 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
                         "spanning_tree_settings": {"type": SpanningTreeSettings},
+                        "spanning_tree_mode": {"type": str},
+                        "spanning_tree_priority": {"type": int, "default": 32768},
+                        "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -51989,11 +51994,6 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "spanning_tree_mode": {"type": str},
-                        "spanning_tree_priority": {"type": int, "default": 32768},
-                        "spanning_tree_root_super": {"type": bool, "default": False},
-                        "spanning_tree_mst_pvst_boundary": {"type": bool},
-                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                     }
                     group: str
                     """
@@ -52550,6 +52550,21 @@ class EosDesigns(EosDesignsRootModel):
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
                     spanning_tree_settings: SpanningTreeSettings
                     """Subclass of AvdModel."""
+                    spanning_tree_mode: SpanningTreeMode | None
+                    spanning_tree_priority: int
+                    """
+                    Spanning-tree priority configured for the selected mode.
+                    For `rapid-pvst` the priority can also be
+                    set per VLAN under network services.
+
+                    Default value: `32768`
+                    """
+                    spanning_tree_root_super: bool
+                    """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -52889,21 +52904,6 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    spanning_tree_mode: SpanningTreeMode | None
-                    spanning_tree_priority: int
-                    """
-                    Spanning-tree priority configured for the selected mode.
-                    For `rapid-pvst` the priority can also be
-                    set per VLAN under network services.
-
-                    Default value: `32768`
-                    """
-                    spanning_tree_root_super: bool
-                    """Default value: `False`"""
-                    spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
-                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                    """Specify range of port-ids to reserve for port-channels."""
 
                     if TYPE_CHECKING:
 
@@ -52995,6 +52995,12 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
                             spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                            spanning_tree_priority: int | UndefinedType = Undefined,
+                            spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -53034,12 +53040,6 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
-                            spanning_tree_priority: int | UndefinedType = Undefined,
-                            spanning_tree_root_super: bool | UndefinedType = Undefined,
-                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                            | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -53426,6 +53426,14 @@ class EosDesigns(EosDesignsRootModel):
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                                 spanning_tree_settings: Subclass of AvdModel.
+                                spanning_tree_mode: spanning_tree_mode
+                                spanning_tree_priority:
+                                   Spanning-tree priority configured for the selected mode.
+                                   For `rapid-pvst` the priority can also be
+                                   set per VLAN under network services.
+                                spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -53670,14 +53678,6 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                spanning_tree_mode: spanning_tree_mode
-                                spanning_tree_priority:
-                                   Spanning-tree priority configured for the selected mode.
-                                   For `rapid-pvst` the priority can also be
-                                   set per VLAN under network services.
-                                spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
-                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
 
                             """
 
@@ -55044,6 +55044,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
                     class OverlayAddressFamilies(AvdList[str]):
@@ -57165,7 +57166,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
                         "downlink_pools": {"type": DownlinkPools},
@@ -57252,6 +57252,11 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
                         "spanning_tree_settings": {"type": SpanningTreeSettings},
+                        "spanning_tree_mode": {"type": str},
+                        "spanning_tree_priority": {"type": int, "default": 32768},
+                        "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -57291,11 +57296,6 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "spanning_tree_mode": {"type": str},
-                        "spanning_tree_priority": {"type": int, "default": 32768},
-                        "spanning_tree_root_super": {"type": bool, "default": False},
-                        "spanning_tree_mst_pvst_boundary": {"type": bool},
-                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -57849,6 +57849,21 @@ class EosDesigns(EosDesignsRootModel):
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
                     spanning_tree_settings: SpanningTreeSettings
                     """Subclass of AvdModel."""
+                    spanning_tree_mode: SpanningTreeMode | None
+                    spanning_tree_priority: int
+                    """
+                    Spanning-tree priority configured for the selected mode.
+                    For `rapid-pvst` the priority can also be
+                    set per VLAN under network services.
+
+                    Default value: `32768`
+                    """
+                    spanning_tree_root_super: bool
+                    """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -58188,21 +58203,6 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    spanning_tree_mode: SpanningTreeMode | None
-                    spanning_tree_priority: int
-                    """
-                    Spanning-tree priority configured for the selected mode.
-                    For `rapid-pvst` the priority can also be
-                    set per VLAN under network services.
-
-                    Default value: `32768`
-                    """
-                    spanning_tree_root_super: bool
-                    """Default value: `False`"""
-                    spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
-                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                    """Specify range of port-ids to reserve for port-channels."""
 
                     if TYPE_CHECKING:
 
@@ -58294,6 +58294,12 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
                             spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                            spanning_tree_priority: int | UndefinedType = Undefined,
+                            spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -58333,12 +58339,6 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
-                            spanning_tree_priority: int | UndefinedType = Undefined,
-                            spanning_tree_root_super: bool | UndefinedType = Undefined,
-                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                            | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -58723,6 +58723,14 @@ class EosDesigns(EosDesignsRootModel):
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                                 spanning_tree_settings: Subclass of AvdModel.
+                                spanning_tree_mode: spanning_tree_mode
+                                spanning_tree_priority:
+                                   Spanning-tree priority configured for the selected mode.
+                                   For `rapid-pvst` the priority can also be
+                                   set per VLAN under network services.
+                                spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -58967,14 +58975,6 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                spanning_tree_mode: spanning_tree_mode
-                                spanning_tree_priority:
-                                   Spanning-tree priority configured for the selected mode.
-                                   For `rapid-pvst` the priority can also be
-                                   set per VLAN under network services.
-                                spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
-                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
 
                             """
 
@@ -73857,6 +73857,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
                     class OverlayAddressFamilies(AvdList[str]):
@@ -75978,7 +75979,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "platform": {"type": str},
@@ -76063,6 +76063,11 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
                         "spanning_tree_settings": {"type": SpanningTreeSettings},
+                        "spanning_tree_mode": {"type": str},
+                        "spanning_tree_priority": {"type": int, "default": 32768},
+                        "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -76102,11 +76107,6 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "spanning_tree_mode": {"type": str},
-                        "spanning_tree_priority": {"type": int, "default": 32768},
-                        "spanning_tree_root_super": {"type": bool, "default": False},
-                        "spanning_tree_mst_pvst_boundary": {"type": bool},
-                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -76650,6 +76650,21 @@ class EosDesigns(EosDesignsRootModel):
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
                     spanning_tree_settings: SpanningTreeSettings
                     """Subclass of AvdModel."""
+                    spanning_tree_mode: SpanningTreeMode | None
+                    spanning_tree_priority: int
+                    """
+                    Spanning-tree priority configured for the selected mode.
+                    For `rapid-pvst` the priority can also be
+                    set per VLAN under network services.
+
+                    Default value: `32768`
+                    """
+                    spanning_tree_root_super: bool
+                    """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -76989,21 +77004,6 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    spanning_tree_mode: SpanningTreeMode | None
-                    spanning_tree_priority: int
-                    """
-                    Spanning-tree priority configured for the selected mode.
-                    For `rapid-pvst` the priority can also be
-                    set per VLAN under network services.
-
-                    Default value: `32768`
-                    """
-                    spanning_tree_root_super: bool
-                    """Default value: `False`"""
-                    spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
-                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                    """Specify range of port-ids to reserve for port-channels."""
 
                     if TYPE_CHECKING:
 
@@ -77093,6 +77093,12 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
                             spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                            spanning_tree_priority: int | UndefinedType = Undefined,
+                            spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -77132,12 +77138,6 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
-                            spanning_tree_priority: int | UndefinedType = Undefined,
-                            spanning_tree_root_super: bool | UndefinedType = Undefined,
-                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                            | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -77515,6 +77515,14 @@ class EosDesigns(EosDesignsRootModel):
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                                 spanning_tree_settings: Subclass of AvdModel.
+                                spanning_tree_mode: spanning_tree_mode
+                                spanning_tree_priority:
+                                   Spanning-tree priority configured for the selected mode.
+                                   For `rapid-pvst` the priority can also be
+                                   set per VLAN under network services.
+                                spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -77759,14 +77767,6 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                spanning_tree_mode: spanning_tree_mode
-                                spanning_tree_priority:
-                                   Spanning-tree priority configured for the selected mode.
-                                   For `rapid-pvst` the priority can also be
-                                   set per VLAN under network services.
-                                spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
-                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
 
                             """
 
@@ -79133,6 +79133,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                         MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
                         class OverlayAddressFamilies(AvdList[str]):
@@ -81271,7 +81272,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                         _fields: ClassVar[dict] = {
                             "name": {"type": str},
                             "downlink_pools": {"type": DownlinkPools},
@@ -81358,6 +81358,11 @@ class EosDesigns(EosDesignsRootModel):
                             "mlag_port_channel_id": {"type": int},
                             "mlag_domain_id": {"type": str},
                             "spanning_tree_settings": {"type": SpanningTreeSettings},
+                            "spanning_tree_mode": {"type": str},
+                            "spanning_tree_priority": {"type": int, "default": 32768},
+                            "spanning_tree_root_super": {"type": bool, "default": False},
+                            "spanning_tree_mst_pvst_boundary": {"type": bool},
+                            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                             "virtual_router_mac_address": {"type": str},
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -81397,11 +81402,6 @@ class EosDesigns(EosDesignsRootModel):
                             "cv_tags_topology_type": {"type": str},
                             "digital_twin": {"type": DigitalTwin},
                             "validation_profile": {"type": str},
-                            "spanning_tree_mode": {"type": str},
-                            "spanning_tree_priority": {"type": int, "default": 32768},
-                            "spanning_tree_root_super": {"type": bool, "default": False},
-                            "spanning_tree_mst_pvst_boundary": {"type": bool},
-                            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -81955,6 +81955,21 @@ class EosDesigns(EosDesignsRootModel):
                         """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
                         spanning_tree_settings: SpanningTreeSettings
                         """Subclass of AvdModel."""
+                        spanning_tree_mode: SpanningTreeMode | None
+                        spanning_tree_priority: int
+                        """
+                        Spanning-tree priority configured for the selected mode.
+                        For `rapid-pvst` the priority can also be
+                        set per VLAN under network services.
+
+                        Default value: `32768`
+                        """
+                        spanning_tree_root_super: bool
+                        """Default value: `False`"""
+                        spanning_tree_mst_pvst_boundary: bool | None
+                        """Enable MST PVST border ports."""
+                        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                        """Specify range of port-ids to reserve for port-channels."""
                         virtual_router_mac_address: str | None
                         """Virtual router mac address for anycast gateway."""
                         inband_mgmt_interface: str | None
@@ -82294,21 +82309,6 @@ class EosDesigns(EosDesignsRootModel):
                         Validation profiles define requirements (e.g., hardware and logging) used by
                         the `anta_runner` role during post-deployment validation.
                         """
-                        spanning_tree_mode: SpanningTreeMode | None
-                        spanning_tree_priority: int
-                        """
-                        Spanning-tree priority configured for the selected mode.
-                        For `rapid-pvst` the priority can also be
-                        set per VLAN under network services.
-
-                        Default value: `32768`
-                        """
-                        spanning_tree_root_super: bool
-                        """Default value: `False`"""
-                        spanning_tree_mst_pvst_boundary: bool | None
-                        """Enable MST PVST border ports."""
-                        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                        """Specify range of port-ids to reserve for port-channels."""
 
                         if TYPE_CHECKING:
 
@@ -82400,6 +82400,12 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_port_channel_id: int | None | UndefinedType = Undefined,
                                 mlag_domain_id: str | None | UndefinedType = Undefined,
                                 spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
+                                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                                spanning_tree_priority: int | UndefinedType = Undefined,
+                                spanning_tree_root_super: bool | UndefinedType = Undefined,
+                                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                                | UndefinedType = Undefined,
                                 virtual_router_mac_address: str | None | UndefinedType = Undefined,
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -82439,12 +82445,6 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
                                 validation_profile: str | None | UndefinedType = Undefined,
-                                spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
-                                spanning_tree_priority: int | UndefinedType = Undefined,
-                                spanning_tree_root_super: bool | UndefinedType = Undefined,
-                                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                                | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -82829,6 +82829,14 @@ class EosDesigns(EosDesignsRootModel):
                                        999999 > for EOS >= 4.25.0F.
                                     mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                                     spanning_tree_settings: Subclass of AvdModel.
+                                    spanning_tree_mode: spanning_tree_mode
+                                    spanning_tree_priority:
+                                       Spanning-tree priority configured for the selected mode.
+                                       For `rapid-pvst` the priority can also be
+                                       set per VLAN under network services.
+                                    spanning_tree_root_super: spanning_tree_root_super
+                                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                     inband_mgmt_interface:
                                        Pointer to interface used for inband management.
@@ -83073,14 +83081,6 @@ class EosDesigns(EosDesignsRootModel):
                                        `validation_profiles`.
                                        Validation profiles define requirements (e.g., hardware and logging) used by
                                        the `anta_runner` role during post-deployment validation.
-                                    spanning_tree_mode: spanning_tree_mode
-                                    spanning_tree_priority:
-                                       Spanning-tree priority configured for the selected mode.
-                                       For `rapid-pvst` the priority can also be
-                                       set per VLAN under network services.
-                                    spanning_tree_root_super: spanning_tree_root_super
-                                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
-                                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
 
                                 """
 
@@ -84372,6 +84372,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
                     class OverlayAddressFamilies(AvdList[str]):
@@ -86493,7 +86494,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     _fields: ClassVar[dict] = {
                         "group": {"type": str},
                         "nodes": {"type": Nodes},
@@ -86580,6 +86580,11 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
                         "spanning_tree_settings": {"type": SpanningTreeSettings},
+                        "spanning_tree_mode": {"type": str},
+                        "spanning_tree_priority": {"type": int, "default": 32768},
+                        "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -86619,11 +86624,6 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "spanning_tree_mode": {"type": str},
-                        "spanning_tree_priority": {"type": int, "default": 32768},
-                        "spanning_tree_root_super": {"type": bool, "default": False},
-                        "spanning_tree_mst_pvst_boundary": {"type": bool},
-                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                     }
                     group: str
                     """
@@ -87180,6 +87180,21 @@ class EosDesigns(EosDesignsRootModel):
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
                     spanning_tree_settings: SpanningTreeSettings
                     """Subclass of AvdModel."""
+                    spanning_tree_mode: SpanningTreeMode | None
+                    spanning_tree_priority: int
+                    """
+                    Spanning-tree priority configured for the selected mode.
+                    For `rapid-pvst` the priority can also be
+                    set per VLAN under network services.
+
+                    Default value: `32768`
+                    """
+                    spanning_tree_root_super: bool
+                    """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -87519,21 +87534,6 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    spanning_tree_mode: SpanningTreeMode | None
-                    spanning_tree_priority: int
-                    """
-                    Spanning-tree priority configured for the selected mode.
-                    For `rapid-pvst` the priority can also be
-                    set per VLAN under network services.
-
-                    Default value: `32768`
-                    """
-                    spanning_tree_root_super: bool
-                    """Default value: `False`"""
-                    spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
-                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                    """Specify range of port-ids to reserve for port-channels."""
 
                     if TYPE_CHECKING:
 
@@ -87625,6 +87625,12 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
                             spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                            spanning_tree_priority: int | UndefinedType = Undefined,
+                            spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -87664,12 +87670,6 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
-                            spanning_tree_priority: int | UndefinedType = Undefined,
-                            spanning_tree_root_super: bool | UndefinedType = Undefined,
-                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                            | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -88056,6 +88056,14 @@ class EosDesigns(EosDesignsRootModel):
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                                 spanning_tree_settings: Subclass of AvdModel.
+                                spanning_tree_mode: spanning_tree_mode
+                                spanning_tree_priority:
+                                   Spanning-tree priority configured for the selected mode.
+                                   For `rapid-pvst` the priority can also be
+                                   set per VLAN under network services.
+                                spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -88300,14 +88308,6 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                spanning_tree_mode: spanning_tree_mode
-                                spanning_tree_priority:
-                                   Spanning-tree priority configured for the selected mode.
-                                   For `rapid-pvst` the priority can also be
-                                   set per VLAN under network services.
-                                spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
-                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
 
                             """
 
@@ -89674,6 +89674,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     MplsOverlayRole: TypeAlias = Literal["client", "server", "none"]
 
                     class OverlayAddressFamilies(AvdList[str]):
@@ -91795,7 +91796,6 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    SpanningTreeMode: TypeAlias = Literal["mstp", "rstp", "rapid-pvst", "none"]
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
                         "downlink_pools": {"type": DownlinkPools},
@@ -91882,6 +91882,11 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_port_channel_id": {"type": int},
                         "mlag_domain_id": {"type": str},
                         "spanning_tree_settings": {"type": SpanningTreeSettings},
+                        "spanning_tree_mode": {"type": str},
+                        "spanning_tree_priority": {"type": int, "default": 32768},
+                        "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -91921,11 +91926,6 @@ class EosDesigns(EosDesignsRootModel):
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
                         "validation_profile": {"type": str},
-                        "spanning_tree_mode": {"type": str},
-                        "spanning_tree_priority": {"type": int, "default": 32768},
-                        "spanning_tree_root_super": {"type": bool, "default": False},
-                        "spanning_tree_mst_pvst_boundary": {"type": bool},
-                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -92479,6 +92479,21 @@ class EosDesigns(EosDesignsRootModel):
                     """MLAG Domain ID. If not set the node group name (Set with "group" key) will be used."""
                     spanning_tree_settings: SpanningTreeSettings
                     """Subclass of AvdModel."""
+                    spanning_tree_mode: SpanningTreeMode | None
+                    spanning_tree_priority: int
+                    """
+                    Spanning-tree priority configured for the selected mode.
+                    For `rapid-pvst` the priority can also be
+                    set per VLAN under network services.
+
+                    Default value: `32768`
+                    """
+                    spanning_tree_root_super: bool
+                    """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -92818,21 +92833,6 @@ class EosDesigns(EosDesignsRootModel):
                     Validation profiles define requirements (e.g., hardware and logging) used by
                     the `anta_runner` role during post-deployment validation.
                     """
-                    spanning_tree_mode: SpanningTreeMode | None
-                    spanning_tree_priority: int
-                    """
-                    Spanning-tree priority configured for the selected mode.
-                    For `rapid-pvst` the priority can also be
-                    set per VLAN under network services.
-
-                    Default value: `32768`
-                    """
-                    spanning_tree_root_super: bool
-                    """Default value: `False`"""
-                    spanning_tree_mst_pvst_boundary: bool | None
-                    """Enable MST PVST border ports."""
-                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                    """Specify range of port-ids to reserve for port-channels."""
 
                     if TYPE_CHECKING:
 
@@ -92924,6 +92924,12 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_port_channel_id: int | None | UndefinedType = Undefined,
                             mlag_domain_id: str | None | UndefinedType = Undefined,
                             spanning_tree_settings: SpanningTreeSettings | UndefinedType = Undefined,
+                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
+                            spanning_tree_priority: int | UndefinedType = Undefined,
+                            spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -92963,12 +92969,6 @@ class EosDesigns(EosDesignsRootModel):
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
                             validation_profile: str | None | UndefinedType = Undefined,
-                            spanning_tree_mode: SpanningTreeMode | None | UndefinedType = Undefined,
-                            spanning_tree_priority: int | UndefinedType = Undefined,
-                            spanning_tree_root_super: bool | UndefinedType = Undefined,
-                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
-                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
-                            | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -93353,6 +93353,14 @@ class EosDesigns(EosDesignsRootModel):
                                    999999 > for EOS >= 4.25.0F.
                                 mlag_domain_id: MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                                 spanning_tree_settings: Subclass of AvdModel.
+                                spanning_tree_mode: spanning_tree_mode
+                                spanning_tree_priority:
+                                   Spanning-tree priority configured for the selected mode.
+                                   For `rapid-pvst` the priority can also be
+                                   set per VLAN under network services.
+                                spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -93597,14 +93605,6 @@ class EosDesigns(EosDesignsRootModel):
                                    `validation_profiles`.
                                    Validation profiles define requirements (e.g., hardware and logging) used by
                                    the `anta_runner` role during post-deployment validation.
-                                spanning_tree_mode: spanning_tree_mode
-                                spanning_tree_priority:
-                                   Spanning-tree priority configured for the selected mode.
-                                   For `rapid-pvst` the priority can also be
-                                   set per VLAN under network services.
-                                spanning_tree_root_super: spanning_tree_root_super
-                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
-                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
 
                             """
 
