@@ -242,13 +242,13 @@
 
 #### Router OSPF Segment Routing
 
-| Process ID | SR Enabled | Adjacency Segment Allocation | Shutdown |
-| ---------- | ---------- | ---------------------------- | -------- |
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
 {%         for process_id in router_ospf.process_ids | arista.avd.natural_sort('id') %}
 {%             if process_id.segment_routing_mpls is arista.avd.defined %}
 {%                 set adj_alloc = process_id.segment_routing_mpls.adjacency_segment_allocation | arista.avd.default('-') %}
 {%                 set shutdown = process_id.segment_routing_mpls.shutdown | arista.avd.default('-') %}
-| {{ process_id.id }} | {{ process_id.segment_routing_mpls.enabled }} | {{ adj_alloc }} | {{ shutdown }} |
+| {{ process_id.id }} | {{ adj_alloc }} | {{ shutdown }} |
 {%             endif %}
 {%         endfor %}
 {%         set has.found = false %}

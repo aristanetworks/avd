@@ -8719,9 +8719,9 @@ router traffic-engineering
 
 #### Router OSPF Segment Routing
 
-| Process ID | SR Enabled | Adjacency Segment Allocation | Shutdown |
-| ---------- | ---------- | ---------------------------- | -------- |
-| 700 | True | all-interfaces | False |
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
+| 700 | all-interfaces | False |
 
 ##### OSPF Prefix Segments
 

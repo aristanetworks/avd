@@ -275,9 +275,9 @@ spanning-tree mst configuration
 
 #### Router OSPF Segment Routing
 
-| Process ID | SR Enabled | Adjacency Segment Allocation | Shutdown |
-| ---------- | ---------- | ---------------------------- | -------- |
-| 702 | True | none | - |
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
+| 702 | none | - |
 
 #### Router OSPF Device Configuration
 

@@ -1098,9 +1098,9 @@ router adaptive-virtual-topology
 
 #### Router OSPF Segment Routing
 
-| Process ID | SR Enabled | Adjacency Segment Allocation | Shutdown |
-| ---------- | ---------- | ---------------------------- | -------- |
-| 701 | True | sr-peers | True |
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
+| 701 | sr-peers | True |
 
 ##### OSPF Prefix Segments
 
