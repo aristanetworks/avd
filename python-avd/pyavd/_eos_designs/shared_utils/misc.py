@@ -434,7 +434,7 @@ class MiscMixin(Protocol):
             return
 
         peer_ipv6 = interface.peer_ipv6_address
-        msg = f"IPv6 BGP peering on L3 interfaces and L3 Port-Channels is not yet supported.Got 'peer_ipv6_address: {peer_ipv6}' on '{context}'"
+        msg = f"IPv6 BGP peering on L3 interfaces and L3 Port-Channels is not yet supported. Got 'peer_ipv6_address: {peer_ipv6}' on '{context}'"
         raise AristaAvdInvalidInputsError(msg)
 
     @cached_property
