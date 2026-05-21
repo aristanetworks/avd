@@ -31,6 +31,7 @@ class MacAccessListsMixin(Protocol):
         mac_acl = self.inputs.mac_acls[acl_name]
         acl.counters_per_entry = mac_acl.counters_per_entry
         for index, acl_entry in enumerate(mac_acl.entries):
+            # TODO: Raise when both remark and action are not defined.
             action = ""
             if acl_entry.remark:
                 action += f"remark {acl_entry.remark}"
