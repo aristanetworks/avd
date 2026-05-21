@@ -21,4 +21,3 @@ servers:
 
 expected_error_message: >-
   'mac_acls[name={acl_name}].entries[{index}].action or mac_acls[name={acl_name}].entries[{index}].remark' is required but was not found.
-
