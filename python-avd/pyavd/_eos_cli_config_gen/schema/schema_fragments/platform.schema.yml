@@ -302,7 +302,7 @@ keys:
             keys:
               default:
                 type: str
-                valid_values: ["ingress", "fabric-egress", "ingress-egress"]
+                valid_values: ["ingress", "fabric-egress"]
           mdb_profile:
             type: str
             description: "Sand platforms MDB Profile configuration. Note: l3-xxxl does not support MLAG."
