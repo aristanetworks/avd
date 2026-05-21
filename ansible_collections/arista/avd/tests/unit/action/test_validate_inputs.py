@@ -29,6 +29,11 @@ MODULE_PATH = "ansible_collections.arista.avd.plugins.action.validate_inputs"
 AVD_LOGGER_NAME = "ansible_collections.arista.avd"
 
 
+# ---------------------------------------------------------------------------
+# Fixtures and helpers
+# ---------------------------------------------------------------------------
+
+
 @pytest.fixture
 def action_module() -> Callable[..., ActionModule]:
     def _factory(task_args: dict | None = None) -> ActionModule:
@@ -58,6 +63,45 @@ def reset_worker_context() -> Generator[None, None, None]:
         vi_module._HOSTVARS_MANAGER = original
 
 
+def _make_pool_mock(results: list) -> MagicMock:
+    """Return a fake pool context manager whose ``.map(...)`` yields the given results."""
+    fake_pool_cm = MagicMock()
+    fake_pool_cm.__enter__.return_value.map.return_value = iter(results)
+    return fake_pool_cm
+
+
+def _make_plugin_args(**overrides: object) -> MagicMock:
+    """Build a MagicMock with the default plugin_args shape, overridable per test."""
+    defaults: dict = {
+        "tmp_dir": "/avd/tmp",
+        "read_from_input_dir": True,
+        "input_dir": "/inputs",
+        "input_suffix": "json",
+        "schema_name": "avd_design",
+        "batch_size": 10,
+        "device_list": None,
+    }
+    defaults.update(overrides)
+    return MagicMock(**defaults)
+
+
+def _run_validation_phase_kwargs(**overrides: object) -> dict:
+    """Default kwargs accepted by ``ActionModule._run_validation_phase``, overridable per test."""
+    kwargs: dict = {
+        "workers": 1,
+        "input_path": Path("/in"),
+        "input_suffix": "json",
+        "output_path": Path("/out"),
+        "schema_name": "avd_design",
+        "fail_on_missing_input_files": True,
+        "fail_on_validation_errors": False,
+        "configuration": None,
+        "file_handler": MagicMock(),
+    }
+    kwargs.update(overrides)
+    return kwargs
+
+
 # ---------------------------------------------------------------------------
 # Logging
 # ---------------------------------------------------------------------------
@@ -79,16 +123,12 @@ def test_main_logs_vault_status_at_info_level(
 ) -> None:
     """Verify main emits the Vault-status INFO log on the AVD logger."""
     module = action_module()
-    plugin_args = MagicMock(
-        tmp_dir="/avd/tmp", read_from_input_dir=True, input_dir="/inputs", input_suffix="json", schema_name="avd_design", batch_size=10, device_list=None
-    )
-
     vault_handler = MagicMock()
     vault_handler.has_vault_secrets = has_vault_secrets
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
-        patch.object(module, "_get_plugin_args", return_value=plugin_args),
+        patch.object(module, "_get_plugin_args", return_value=_make_plugin_args()),
         patch.object(module, "_get_hosts_to_process", return_value=[]),
         patch.object(module, "_run_validation_phase"),
         patch(f"{MODULE_PATH}.get_workers", return_value=(1, 1)),
@@ -108,13 +148,10 @@ def test_main_logs_starting_execution_summary(
 ) -> None:
     """Verify the 'Starting execution...' INFO log includes worker and batch counts."""
     module = action_module()
-    plugin_args = MagicMock(
-        tmp_dir="/avd/tmp", read_from_input_dir=True, input_dir="/inputs", input_suffix="json", schema_name="avd_design", batch_size=7, device_list=None
-    )
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
-        patch.object(module, "_get_plugin_args", return_value=plugin_args),
+        patch.object(module, "_get_plugin_args", return_value=_make_plugin_args(batch_size=7)),
         patch.object(module, "_get_hosts_to_process", return_value=["host1", "host2", "host3"]),
         patch.object(module, "_run_validation_phase"),
         patch(f"{MODULE_PATH}.get_workers", return_value=(4, 8)),
@@ -128,6 +165,7 @@ def test_main_logs_starting_execution_summary(
     assert "Starting execution with 4 multiprocessing workers and 8 threads for 3 hosts in batches of 7" in caplog.messages
 
 
+@pytest.mark.usefixtures("reset_worker_context")
 @pytest.mark.parametrize(
     ("read_from_input_dir", "expected_message"),
     [
@@ -138,26 +176,20 @@ def test_main_logs_starting_execution_summary(
 def test_main_logs_input_source(
     action_module: Callable[..., ActionModule],
     caplog: pytest.LogCaptureFixture,
-    reset_worker_context: None,  # noqa: ARG001
     *,
     read_from_input_dir: bool,
     expected_message: str,
 ) -> None:
     """Verify the INFO log identifying where inputs are sourced from."""
     module = action_module()
-    plugin_args = MagicMock(
-        tmp_dir="/avd/tmp",
-        read_from_input_dir=read_from_input_dir,
-        input_dir="/some/inputs",
-        input_suffix="json",
-        schema_name="avd_design",
-        batch_size=10,
-        device_list=None,
-    )
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
-        patch.object(module, "_get_plugin_args", return_value=plugin_args),
+        patch.object(
+            module,
+            "_get_plugin_args",
+            return_value=_make_plugin_args(read_from_input_dir=read_from_input_dir, input_dir="/some/inputs"),
+        ),
         patch.object(module, "_get_hosts_to_process", return_value=["host1"]),
         patch.object(module, "_run_templating_phase", return_value=["host1"]),
         patch.object(module, "_run_validation_phase"),
@@ -173,240 +205,79 @@ def test_main_logs_input_source(
     assert expected_message in caplog.messages
 
 
-def test_run_templating_phase_logs_start_and_completion_at_info(
+def test_run_templating_phase_logs_mixed_results(
     action_module: Callable[..., ActionModule],
     caplog: pytest.LogCaptureFixture,
 ) -> None:
-    """Verify _run_templating_phase emits the 'Templating hostvars...' INFO log on start and a 'completed in ...s' INFO log on finish."""
+    """Drive the templating loop with one failure and one success and assert every log line in one pass."""
     module = action_module()
     module.crashed_hosts = set()
 
-    fake_pool_cm = MagicMock()
-    fake_pool_cm.__enter__.return_value.map.return_value = iter([])
+    failure = WorkerFailure(hostname="host1", error="boom")
+    success = MagicMock(spec_set=["hostname", "output_file"])
+    success.hostname = "host2"
+    success.output_file = "/output/host2.json"
 
     with (
-        patch(f"{MODULE_PATH}.ProcessPoolExecutor", return_value=fake_pool_cm),
+        patch(f"{MODULE_PATH}.ProcessPoolExecutor", return_value=_make_pool_mock([failure, success])),
         patch(f"{MODULE_PATH}.get_context"),
         patch(f"{MODULE_PATH}.perf_counter", side_effect=[100.0, 101.23]),
-        caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
-    ):
-        module._run_templating_phase(
-            hostnames=[],
-            workers=1,
-            batch_size=1,
-            output_path=Path("/output"),
-            schema_name="avd_design",
-            file_handler=MagicMock(),
-        )
-
-    info_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.INFO]
-    assert "Templating hostvars..." in info_messages
-    assert "Templating of hostvars completed in 1.23s" in info_messages
-
-
-def test_run_templating_phase_logs_worker_failure_at_error(
-    action_module: Callable[..., ActionModule],
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    """Worker failures during templating must log at ERROR with '<hostname>: <error>' format."""
-    module = action_module()
-    module.crashed_hosts = set()
-
-    pool_results = [WorkerFailure(hostname="host1", error="boom"), MagicMock(hostname="host2", output_file="/x/host2.json")]
-    fake_pool_cm = MagicMock()
-    fake_pool_cm.__enter__.return_value.map.return_value = iter(pool_results)
-
-    with (
-        patch(f"{MODULE_PATH}.ProcessPoolExecutor", return_value=fake_pool_cm),
-        patch(f"{MODULE_PATH}.get_context"),
         caplog.at_level(logging.DEBUG, logger=AVD_LOGGER_NAME),
     ):
         module._run_templating_phase(
             hostnames=["host1", "host2"],
             workers=1,
             batch_size=1,
-            output_path=Path("/avd/templated"),
-            schema_name="avd_design",
-            file_handler=MagicMock(),
-        )
-
-    assert "host1" in module.crashed_hosts
-    error_records = [r for r in caplog.records if r.levelno == logging.ERROR]
-    assert any("host1: boom" in r.getMessage() for r in error_records)
-
-
-def test_run_templating_phase_logs_success_at_debug(
-    action_module: Callable[..., ActionModule],
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    """Successful templating must emit a DEBUG log with hostname and output file path."""
-    module = action_module()
-    module.crashed_hosts = set()
-
-    success = MagicMock(spec_set=["hostname", "output_file"])
-    success.hostname = "host1"
-    success.output_file = "/output/host1.json"
-    fake_pool_cm = MagicMock()
-    fake_pool_cm.__enter__.return_value.map.return_value = iter([success])
-
-    with (
-        patch(f"{MODULE_PATH}.ProcessPoolExecutor", return_value=fake_pool_cm),
-        patch(f"{MODULE_PATH}.get_context"),
-        caplog.at_level(logging.DEBUG, logger=AVD_LOGGER_NAME),
-    ):
-        module._run_templating_phase(
-            hostnames=["host1"],
-            workers=1,
-            batch_size=1,
             output_path=Path("/output"),
             schema_name="avd_design",
             file_handler=MagicMock(),
         )
 
-    debug_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.DEBUG]
-    assert any("Templated data for host host1 saved to /output/host1.json" in m for m in debug_messages)
-
-
-def _run_validation_phase_kwargs(file_handler: object | None = None) -> dict:
-    """Return the default kwargs accepted by ActionModule._run_validation_phase."""
-    return {
-        "workers": 1,
-        "input_path": Path("/in"),
-        "input_suffix": "json",
-        "output_path": Path("/out"),
-        "schema_name": "avd_design",
-        "fail_on_missing_input_files": True,
-        "fail_on_validation_errors": False,
-        "configuration": None,
-        "file_handler": file_handler or MagicMock(),
-    }
-
-
-def test_run_validation_phase_logs_start_and_completion_at_info(
-    action_module: Callable[..., ActionModule],
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    """Verify _run_validation_phase emits 'Validating inputs...' on start and 'Validation of inputs completed in ...s' on finish."""
-    module = action_module()
-    module.crashed_hosts = set()
-
-    fake_pool_cm = MagicMock()
-    fake_pool_cm.__enter__.return_value.map.return_value = iter([])
-
-    with (
-        patch(f"{MODULE_PATH}.ThreadPoolExecutor", return_value=fake_pool_cm),
-        patch(f"{MODULE_PATH}.init_store"),
-        patch(f"{MODULE_PATH}.build_result_message", return_value=""),
-        patch(f"{MODULE_PATH}.perf_counter", side_effect=[200.0, 204.56]),
-        caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
-    ):
-        module._run_validation_phase(hostnames=[], **_run_validation_phase_kwargs())
-
     info_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.INFO]
-    assert "Validating inputs..." in info_messages
-    assert "Validation of inputs completed in 4.56s" in info_messages
+    error_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.ERROR]
+    debug_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.DEBUG]
+
+    assert "Templating hostvars..." in info_messages
+    assert "Templating of hostvars completed in 1.23s" in info_messages
+    assert "host1: boom" in error_messages
+    assert "Templated data for host host2 saved to /output/host2.json" in debug_messages
+    assert module.crashed_hosts == {"host1"}
 
 
-def test_run_validation_phase_logs_skipped_worker_at_info(
+def test_run_validation_phase_logs_mixed_results(
     action_module: Callable[..., ActionModule],
     caplog: pytest.LogCaptureFixture,
 ) -> None:
-    """A ValidateWorkerSkipped result must emit an INFO log 'Validation skipped for host <host>: <reason>'."""
+    """Drive the validation loop with all four result types and assert every log line in one pass."""
     module = action_module()
     module.crashed_hosts = set()
 
     skipped = ValidateWorkerSkipped(hostname="host1", reason="No input file: /in/host1.json")
-    fake_pool_cm = MagicMock()
-    fake_pool_cm.__enter__.return_value.map.return_value = iter([skipped])
+    failure = WorkerFailure(hostname="host2", error="boom")
+    no_output = ValidateWorkerSuccess(hostname="host3", validation_result=MagicMock(), output_file=None)
+    success = ValidateWorkerSuccess(hostname="host4", validation_result=MagicMock(), output_file="/out/host4.json")
 
     with (
-        patch(f"{MODULE_PATH}.ThreadPoolExecutor", return_value=fake_pool_cm),
-        patch(f"{MODULE_PATH}.init_store"),
-        patch(f"{MODULE_PATH}.build_result_message", return_value=""),
-        caplog.at_level(logging.INFO, logger=AVD_LOGGER_NAME),
-    ):
-        module._run_validation_phase(hostnames=["host1"], **_run_validation_phase_kwargs())
-
-    info_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.INFO]
-    assert "Validation skipped for host host1: No input file: /in/host1.json" in info_messages
-    assert module.crashed_hosts == set()
-
-
-def test_run_validation_phase_logs_worker_failure_at_error(
-    action_module: Callable[..., ActionModule],
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    """A WorkerFailure result must emit an ERROR log '<host>: <error>' and add the host to crashed_hosts."""
-    module = action_module()
-    module.crashed_hosts = set()
-
-    failure = WorkerFailure(hostname="host1", error="boom")
-    fake_pool_cm = MagicMock()
-    fake_pool_cm.__enter__.return_value.map.return_value = iter([failure])
-
-    with (
-        patch(f"{MODULE_PATH}.ThreadPoolExecutor", return_value=fake_pool_cm),
-        patch(f"{MODULE_PATH}.init_store"),
-        patch(f"{MODULE_PATH}.build_result_message", return_value=""),
-        caplog.at_level(logging.ERROR, logger=AVD_LOGGER_NAME),
-    ):
-        module._run_validation_phase(hostnames=["host1"], **_run_validation_phase_kwargs())
-
-    error_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.ERROR]
-    assert "host1: boom" in error_messages
-    assert module.crashed_hosts == {"host1"}
-
-
-def test_run_validation_phase_logs_missing_output_file_at_error(
-    action_module: Callable[..., ActionModule],
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    """A ValidateWorkerSuccess with no output_file but no validation errors must log ERROR and crash the host."""
-    module = action_module()
-    module.crashed_hosts = set()
-
-    success = ValidateWorkerSuccess(hostname="host1", validation_result=MagicMock(), output_file=None)
-    fake_pool_cm = MagicMock()
-    fake_pool_cm.__enter__.return_value.map.return_value = iter([success])
-
-    with (
-        patch(f"{MODULE_PATH}.ThreadPoolExecutor", return_value=fake_pool_cm),
+        patch(f"{MODULE_PATH}.ThreadPoolExecutor", return_value=_make_pool_mock([skipped, failure, no_output, success])),
         patch(f"{MODULE_PATH}.init_store"),
         patch(f"{MODULE_PATH}.parse_validation_result", return_value=0),
         patch(f"{MODULE_PATH}.build_result_message", return_value=""),
-        caplog.at_level(logging.ERROR, logger=AVD_LOGGER_NAME),
-    ):
-        module._run_validation_phase(hostnames=["host1"], **_run_validation_phase_kwargs())
-
-    error_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.ERROR]
-    assert "Host host1 passed validation but no output file was generated." in error_messages
-    assert module.crashed_hosts == {"host1"}
-
-
-def test_run_validation_phase_logs_success_at_debug(
-    action_module: Callable[..., ActionModule],
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    """A successful ValidateWorkerSuccess with an output_file must emit a DEBUG log."""
-    module = action_module()
-    module.crashed_hosts = set()
-
-    success = ValidateWorkerSuccess(hostname="host1", validation_result=MagicMock(), output_file="/out/host1.json")
-    fake_pool_cm = MagicMock()
-    fake_pool_cm.__enter__.return_value.map.return_value = iter([success])
-
-    with (
-        patch(f"{MODULE_PATH}.ThreadPoolExecutor", return_value=fake_pool_cm),
-        patch(f"{MODULE_PATH}.init_store"),
-        patch(f"{MODULE_PATH}.parse_validation_result", return_value=0),
-        patch(f"{MODULE_PATH}.build_result_message", return_value=""),
+        patch(f"{MODULE_PATH}.perf_counter", side_effect=[200.0, 204.56]),
         caplog.at_level(logging.DEBUG, logger=AVD_LOGGER_NAME),
     ):
-        module._run_validation_phase(hostnames=["host1"], **_run_validation_phase_kwargs())
+        module._run_validation_phase(hostnames=["host1", "host2", "host3", "host4"], **_run_validation_phase_kwargs())
 
+    info_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.INFO]
+    error_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.ERROR]
     debug_messages = [r.getMessage() for r in caplog.records if r.levelno == logging.DEBUG]
-    assert "Validated data for host host1 saved to /out/host1.json" in debug_messages
-    assert module.crashed_hosts == set()
+
+    assert "Validating inputs..." in info_messages
+    assert "Validation of inputs completed in 4.56s" in info_messages
+    assert "Validation skipped for host host1: No input file: /in/host1.json" in info_messages
+    assert "host2: boom" in error_messages
+    assert "Host host3 passed validation but no output file was generated." in error_messages
+    assert "Validated data for host host4 saved to /out/host4.json" in debug_messages
+    assert module.crashed_hosts == {"host2", "host3"}
 
 
 # ---------------------------------------------------------------------------
@@ -414,7 +285,8 @@ def test_run_validation_phase_logs_success_at_debug(
 # ---------------------------------------------------------------------------
 
 
-def test_get_worker_hostvars_raises_when_context_not_initialized(reset_worker_context: None) -> None:  # noqa: ARG001
+@pytest.mark.usefixtures("reset_worker_context")
+def test_get_worker_hostvars_raises_when_context_not_initialized() -> None:
     """get_worker_hostvars raises RuntimeError if set_worker_context was not called before forking."""
     vi_module._HOSTVARS_MANAGER = None
     with pytest.raises(RuntimeError, match=r"Worker context not initialized\. 'set_worker_context' was not called before forking\."):
@@ -458,18 +330,15 @@ def test_get_hosts_to_process_raises_for_invalid_fabric_name(action_module: Call
 def test_main_raises_runtime_error_when_hosts_crashed(action_module: Callable[..., ActionModule]) -> None:
     """A non-empty crashed_hosts set at the end of main triggers a RuntimeError listing the hostnames."""
     module = action_module()
-    plugin_args = MagicMock(
-        tmp_dir="/avd/tmp", read_from_input_dir=True, input_dir="/inputs", input_suffix="json", schema_name="avd_design", batch_size=10, device_list=None
-    )
 
-    def fake_validation(self_inner: ActionModule, **_kwargs: object) -> None:  # noqa: ARG001
+    def fake_validation(**_kwargs: object) -> None:
         module.crashed_hosts.update({"host1", "host2"})
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
-        patch.object(module, "_get_plugin_args", return_value=plugin_args),
+        patch.object(module, "_get_plugin_args", return_value=_make_plugin_args()),
         patch.object(module, "_get_hosts_to_process", return_value=["host1", "host2"]),
-        patch.object(module, "_run_validation_phase", side_effect=lambda **kwargs: fake_validation(module, **kwargs)),
+        patch.object(module, "_run_validation_phase", side_effect=fake_validation),
         patch(f"{MODULE_PATH}.get_workers", return_value=(1, 1)),
         patch(f"{MODULE_PATH}.get_tmp_paths", return_value=(Path("/avd/templated"), Path("/avd/validated"))),
         patch(f"{MODULE_PATH}.AVDVaultHandler"),
@@ -479,7 +348,7 @@ def test_main_raises_runtime_error_when_hosts_crashed(action_module: Callable[..
         module.main(task_vars={"ansible_forks": 1, "ansible_play_hosts_all": []})
 
 
-def test_template_host_worker_wraps_exceptions_as_worker_failure(reset_worker_context: None) -> None:  # noqa: ARG001
+def test_template_host_worker_wraps_exceptions_as_worker_failure() -> None:
     """Any exception inside the templating worker is caught and returned as WorkerFailure."""
     with patch(f"{MODULE_PATH}.get_worker_hostvars", side_effect=RuntimeError("no context")):
         result = _template_host_worker("host1", output_path=Path("/x"), schema_name="avd_design", file_handler=MagicMock())
@@ -541,19 +410,14 @@ def test_run_validation_phase_sets_failed_when_validation_errors_and_fail_flag_t
     module.crashed_hosts = set()
 
     success = ValidateWorkerSuccess(hostname="host1", validation_result=MagicMock(), output_file="/out/host1.json")
-    fake_pool_cm = MagicMock()
-    fake_pool_cm.__enter__.return_value.map.return_value = iter([success])
-
-    kwargs = _run_validation_phase_kwargs()
-    kwargs["fail_on_validation_errors"] = True
 
     with (
-        patch(f"{MODULE_PATH}.ThreadPoolExecutor", return_value=fake_pool_cm),
+        patch(f"{MODULE_PATH}.ThreadPoolExecutor", return_value=_make_pool_mock([success])),
         patch(f"{MODULE_PATH}.init_store"),
         patch(f"{MODULE_PATH}.parse_validation_result", return_value=3),
         patch(f"{MODULE_PATH}.build_result_message", return_value=""),
     ):
-        module._run_validation_phase(hostnames=["host1"], **kwargs)
+        module._run_validation_phase(hostnames=["host1"], **_run_validation_phase_kwargs(fail_on_validation_errors=True))
 
     assert module.result.get("failed") is True
     assert module.crashed_hosts == set()
@@ -566,11 +430,8 @@ def test_run_validation_phase_sets_result_msg_when_build_result_message_returns_
     module = action_module()
     module.crashed_hosts = set()
 
-    fake_pool_cm = MagicMock()
-    fake_pool_cm.__enter__.return_value.map.return_value = iter([])
-
     with (
-        patch(f"{MODULE_PATH}.ThreadPoolExecutor", return_value=fake_pool_cm),
+        patch(f"{MODULE_PATH}.ThreadPoolExecutor", return_value=_make_pool_mock([])),
         patch(f"{MODULE_PATH}.init_store"),
         patch(f"{MODULE_PATH}.build_result_message", return_value="3 data validation errors found"),
     ):
