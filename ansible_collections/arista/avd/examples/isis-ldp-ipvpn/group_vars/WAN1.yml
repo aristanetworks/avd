@@ -51,7 +51,8 @@ pe:
     mpls_route_reflectors: [rr1, rr2]
     # ISIS NET system id prefix
     isis_system_id_prefix: '0000.0001'
-    spanning_tree_mode: none
+    spanning_tree_settings:
+      mode: none
 
   # If two nodes (and only two) are in the same node_group, they will automatically form an MLAG pair
   node_groups:
@@ -77,7 +78,8 @@ pe:
 rr:
   defaults:
     platform: cEOSLab
-    spanning_tree_mode: none
+    spanning_tree_settings:
+      mode: none
     loopback_ipv4_pool: 10.255.2.0/27
     mpls_route_reflectors: [rr1, rr2]
     # ISIS NET system id prefix

@@ -66,8 +66,9 @@ l3leaf:
     isis_maximum_paths: 4
     platform: vEOS-LAB
     mlag_interfaces: [Ethernet5, Ethernet6]
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 4096
+    spanning_tree_settings:
+      mode: mstp
+      priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
@@ -149,8 +150,9 @@ l2leaf:
     uplink_switches: ['DC1-SVC3A', 'DC1-SVC3B']
     uplink_interfaces: [Ethernet1, Ethernet2]
     mlag_interfaces: [Ethernet3, Ethernet4]
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 16384
+    spanning_tree_settings:
+      mode: mstp
+      priority: 16384
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:

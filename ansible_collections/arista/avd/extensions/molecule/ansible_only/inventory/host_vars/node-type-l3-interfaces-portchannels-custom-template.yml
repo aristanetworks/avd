@@ -15,7 +15,8 @@ type: l3spine
 l3spine:
   defaults:
     bgp_as: 65001
-    spanning_tree_mode: none
+    spanning_tree_settings:
+      mode: none
     loopback_ipv4_pool: 192.0.255.0/24
     uplink_ipv4_pool: 10.255.1.0/24
     mlag_interfaces: [Ethernet10]

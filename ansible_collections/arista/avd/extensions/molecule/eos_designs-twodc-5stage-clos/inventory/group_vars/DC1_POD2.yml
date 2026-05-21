@@ -49,7 +49,8 @@ l3leaf:
   node_groups:
     # Single switch evpn to spine->super-spine2->rs2.
     - group: RACK1_SINGLE
-      spanning_tree_mode: none
+      spanning_tree_settings:
+        mode: none
       platform: vEOS-LAB
       uplink_interfaces: ["Ethernet1", "Ethernet2"]
       uplink_switches: ["DC1-POD2-SPINE1", "DC1-POD2-SPINE2"]

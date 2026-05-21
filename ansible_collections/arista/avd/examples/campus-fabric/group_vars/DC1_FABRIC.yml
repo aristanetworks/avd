@@ -26,8 +26,9 @@ management_eapi:
 l3spine:
   defaults:
     platform: cEOSLab
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 4096
+    spanning_tree_settings:
+      mode: mstp
+      priority: 4096
     loopback_ipv4_pool: 172.16.1.0/24
     mlag_peer_ipv4_pool: 192.168.0.0/24
     mlag_peer_l3_ipv4_pool: 10.1.1.0/24
@@ -48,8 +49,9 @@ l2leaf:
   defaults:
     platform: cEOSLab
     mlag_peer_ipv4_pool: 192.168.0.0/24
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 16384
+    spanning_tree_settings:
+      mode: mstp
+      priority: 16384
     inband_mgmt_subnet: 10.10.10.0/24
     inband_mgmt_vlan: 10
   node_groups:

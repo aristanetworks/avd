@@ -4,7 +4,8 @@ type: l2leaf
 l2leaf:
   defaults:
     platform: vEOS-lab
-    spanning_tree_mode: mstp
+    spanning_tree_settings:
+      mode: mstp
     validation_profile: profile1
 
   node_groups:

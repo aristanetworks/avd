@@ -53,8 +53,9 @@ l3leaf:
     virtual_router_mac_address: 00:1c:73:00:dc:01
     bgp_defaults:
       - 'distance bgp 20 200 200'
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 16384
+    spanning_tree_settings:
+      mode: mstp
+      priority: 16384
   node_groups:
     DC1_LEAF1:
       bgp_as: 65101
@@ -88,8 +89,9 @@ l2leaf:
     mlag_peer_ipv4_pool: 10.255.252.0/24
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     virtual_router_mac_address: 00:1c:73:00:dc:01
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 16384
+    spanning_tree_settings:
+      mode: mstp
+      priority: 16384
     mlag: false
   node_groups:
     DC1_L2LEAF1:

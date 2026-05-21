@@ -6,7 +6,7 @@ l2leaf:
       spanning_tree_settings:
         mode: rapid-pvst
         priority: 8192
-        # Test for spanning_tree_port_id_allocation_port_channel_range
+        # Test for spanning_tree port_id_allocation_port_channel_range
         port_id_allocation_port_channel_range:
           minimum: 201
           maximum: 2001

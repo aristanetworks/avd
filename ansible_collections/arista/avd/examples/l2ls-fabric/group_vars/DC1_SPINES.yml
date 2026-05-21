@@ -7,8 +7,9 @@ type: l2spine     # Must be either l2spine|l3spine
 l2spine:
   defaults:
     platform: cEOSLab
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 4096
+    spanning_tree_settings:
+      mode: mstp
+      priority: 4096
     mlag_peer_ipv4_pool: 192.168.0.0/24
     mlag_interfaces: [Ethernet47, Ethernet48]
   node_groups:

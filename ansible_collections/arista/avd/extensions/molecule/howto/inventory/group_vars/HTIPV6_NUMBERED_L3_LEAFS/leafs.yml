@@ -21,8 +21,9 @@ l3leaf:
     # IPv6 pool for MLAG L3 iBGP peering
     mlag_peer_l3_ipv6_pool: 2001:db8:21::/48
     virtual_router_mac_address: 00:1c:73:00:00:99
-    spanning_tree_priority: 4096
-    spanning_tree_mode: mstp
+    spanning_tree_settings:
+      priority: 4096
+      mode: mstp
 
   node_groups:
     - group: HTIPV6_L3_LEAFS
