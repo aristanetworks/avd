@@ -14,8 +14,9 @@ l3leaf:
     mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 4096
+    spanning_tree_settings:
+      mode: mstp
+      priority: 4096
     bgp_as: 65101-65110
   node_groups:
     - group: AUTO_BGP_ASN_LEAF1_AA

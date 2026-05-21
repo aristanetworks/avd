@@ -905,7 +905,6 @@ spanning-tree edge-port bpduguard default
 spanning-tree edge-port bpdufilter default
 no spanning-tree bpduguard rate-limit default
 spanning-tree priority 8192
-spanning-tree guard loop default
 ```
 
 ## MAC Address Table

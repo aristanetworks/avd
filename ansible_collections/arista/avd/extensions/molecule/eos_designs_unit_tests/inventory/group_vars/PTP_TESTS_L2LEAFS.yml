@@ -8,7 +8,8 @@ l2leaf:
     uplink_switches: ['ptp-tests-leaf1', 'ptp-tests-leaf2']
     mlag_interfaces: ['Ethernet11', 'Ethernet12']
     mlag_peer_ipv4_pool: 10.254.1.64/27
-    spanning_tree_mode: mstp
+    spanning_tree_settings:
+      mode: mstp
     ptp:
       enabled: false
 

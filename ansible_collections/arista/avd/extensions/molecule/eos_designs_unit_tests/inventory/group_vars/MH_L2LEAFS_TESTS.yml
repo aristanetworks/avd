@@ -5,8 +5,9 @@ l2leaf:
     platform: vEOS-LAB
     uplink_switches: [mh-leaf2a]
     uplink_interfaces: [Ethernet1]
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 16384
+    spanning_tree_settings:
+      mode: mstp
+      priority: 16384
     link_tracking:
       enabled: true
       groups:

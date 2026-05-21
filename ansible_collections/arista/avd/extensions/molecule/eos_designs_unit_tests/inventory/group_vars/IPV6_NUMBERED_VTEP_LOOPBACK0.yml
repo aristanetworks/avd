@@ -50,8 +50,9 @@ l3leaf:
     mlag_peer_ipv6_pool: 2001:DB8:3::/48
     mlag_peer_l3_ipv6_pool: 2001:DB8:4::/48
     virtual_router_mac_address: 00:1c:73:00:00:99
-    spanning_tree_priority: 4096
-    spanning_tree_mode: mstp
+    spanning_tree_settings:
+      priority: 4096
+      mode: mstp
 
   node_groups:
     - group: DC1_L3_LEAF1
