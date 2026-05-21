@@ -61,7 +61,7 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
     existing_containers = await cv_client.get_configlet_containers(workspace_id=workspace_id)
 
     existing_containers_by_id: dict[str, ConfigletAssignment] = {}
-    existing_parent_by_child_id: dict[str, ConfigletAssignment] = {}
+    existing_parents_by_child_id: dict[str, ConfigletAssignment] = {}
     existing_managed_containers_by_id: dict[str, str] = {}
 
     for container in existing_containers:
@@ -70,12 +70,12 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
         if container_id.startswith(AVD_ENTITY_PREFIX):
             existing_managed_containers_by_id[container_id] = cast("str", container.display_name)
         for child_id in container.child_assignment_ids.values:
-            existing_parent_by_child_id[child_id] = container
+            existing_parents_by_child_id[child_id] = container
 
     # Validate that no managed container was manually reassigned to a parent this deploy will not touch.
     violations: list[tuple[str, str, str, str]] = []
     for child_id, child_name in existing_managed_containers_by_id.items():
-        parent = existing_parent_by_child_id.get(child_id)
+        parent = existing_parents_by_child_id.get(child_id)
         if parent is None:
             # No existing parent means it's in the Studio root list which _sync_studio_roots will reconcile,
             # or it's an orphan which will get reassigned or deleted by this deploy.
