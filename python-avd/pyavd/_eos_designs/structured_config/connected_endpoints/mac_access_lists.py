@@ -31,7 +31,6 @@ class MacAccessListsMixin(Protocol):
         mac_acl = self.inputs.mac_acls[acl_name]
         acl.counters_per_entry = mac_acl.counters_per_entry
         for index, acl_entry in enumerate(mac_acl.entries):
-            # TODO: Raise when both remark and action are not defined.
             action = ""
             if acl_entry.remark:
                 action += f"remark {acl_entry.remark}"
@@ -73,6 +72,9 @@ class MacAccessListsMixin(Protocol):
                 action = action + " " + acl_entry.destination
                 if acl_entry.destination_wildcard:
                     action = action + " " + acl_entry.destination_wildcard
+            else:
+                msg = "mac_acls[name={acl_name}].entries[{index}].action or mac_acls[name={acl_name}].entries[{index}].remark"
+                raise AristaAvdMissingVariableError(msg)
 
             entry = EosCliConfigGen.MacAccessListsItem.EntriesItem(sequence=acl_entry.sequence, action=action)
             acl.entries.append(entry)

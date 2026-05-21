@@ -1,0 +1,24 @@
+---
+mac_acls:
+  - name: acl1
+    entries:
+      - sequence: 10
+
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: missing-action-or-remark-mac-acl
+
+servers:
+  - name: server1
+    rack: RackB
+    adapters:
+      - endpoint_ports: [E0]
+        switch_ports: [Ethernet2]
+        switches: [missing-action-or-remark-mac-acl]
+        mac_acl_in: acl1
+
+expected_error_message: >-
+  'mac_acls[name={acl_name}].entries[{index}].action or mac_acls[name={acl_name}].entries[{index}].remark' is required but was not found.
+
