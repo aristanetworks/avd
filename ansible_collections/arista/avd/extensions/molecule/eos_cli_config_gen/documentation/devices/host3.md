@@ -265,6 +265,30 @@ spanning-tree mst configuration
 
 ## Routing
 
+### Router OSPF
+
+#### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
+| 702 | 10.255.0.3 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+
+#### Router OSPF Segment Routing
+
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
+| 702 | none | - |
+
+#### Router OSPF Device Configuration
+
+```eos
+!
+router ospf 702
+   router-id 10.255.0.3
+   segment-routing mpls
+      adjacency-segment allocation none
+```
+
 ### Router ISIS
 
 #### Router ISIS Summary
