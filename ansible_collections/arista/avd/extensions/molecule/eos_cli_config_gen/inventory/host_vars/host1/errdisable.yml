@@ -5,6 +5,7 @@ errdisable:
   detect_cause:
     arp_inspection: true
     dot1x: true
+    fabric_capacity_low: true
     link_change: true
     tapagg: true
     xcvr_misconfigured: true
@@ -22,6 +23,7 @@ errdisable:
     storm_control: true
     switchcard_unreachable: true
     transceiver_adapter: true
+    tpid: true
   recovery_cause:
     bpduguard:
       enabled: true
@@ -34,6 +36,8 @@ errdisable:
     lacp_rate_limit:
       enabled: true
     link_flap:
+      enabled: true
+    fabric_capacity_low:
       enabled: true
     no_internal_vlan:
       enabled: true
@@ -82,5 +86,7 @@ errdisable:
     internal_error:
       enabled: true
     interface_speed:
+      enabled: true
+    tpid:
       enabled: true
   recovery_interval: 300

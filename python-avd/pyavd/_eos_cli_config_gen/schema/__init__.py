@@ -6415,6 +6415,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "dot1x_phone_classification": {"type": bool},
                 "dot1x_session_replace": {"type": bool},
                 "error_correction_encoding": {"type": bool},
+                "fabric_capacity_low": {"type": bool},
                 "hardware_speed_group": {"type": bool},
                 "interface_speed": {"type": bool},
                 "internal_error": {"type": bool},
@@ -6423,6 +6424,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "storm_control": {"type": bool},
                 "switchcard_unreachable": {"type": bool},
                 "tapagg": {"type": bool},
+                "tpid": {"type": bool},
                 "transceiver_adapter": {"type": bool},
                 "xcvr_misconfigured": {"type": bool},
                 "xcvr_overheat": {"type": bool},
@@ -6442,6 +6444,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Enable/Disable detection for 802.1X session replace errors."""
             error_correction_encoding: bool | None
             """Enable/Disable detection for error correction encoding errors."""
+            fabric_capacity_low: bool | None
+            """Enable/Disable detection for fabric capacity low errors."""
             hardware_speed_group: bool | None
             """Enable/Disable detection for hardware speed group errors."""
             interface_speed: bool | None
@@ -6458,6 +6462,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Enable/Disable detection for switchcard unreachable errors."""
             tapagg: bool | None
             """Enable/Disable detection for tap aggregation errors."""
+            tpid: bool | None
+            """Enable/Disable detection for TPID errors."""
             transceiver_adapter: bool | None
             """Enable/Disable detection for transceiver adapter errors."""
             xcvr_misconfigured: bool | None
@@ -6479,6 +6485,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     dot1x_phone_classification: bool | None | UndefinedType = Undefined,
                     dot1x_session_replace: bool | None | UndefinedType = Undefined,
                     error_correction_encoding: bool | None | UndefinedType = Undefined,
+                    fabric_capacity_low: bool | None | UndefinedType = Undefined,
                     hardware_speed_group: bool | None | UndefinedType = Undefined,
                     interface_speed: bool | None | UndefinedType = Undefined,
                     internal_error: bool | None | UndefinedType = Undefined,
@@ -6487,6 +6494,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     storm_control: bool | None | UndefinedType = Undefined,
                     switchcard_unreachable: bool | None | UndefinedType = Undefined,
                     tapagg: bool | None | UndefinedType = Undefined,
+                    tpid: bool | None | UndefinedType = Undefined,
                     transceiver_adapter: bool | None | UndefinedType = Undefined,
                     xcvr_misconfigured: bool | None | UndefinedType = Undefined,
                     xcvr_overheat: bool | None | UndefinedType = Undefined,
@@ -6506,6 +6514,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         dot1x_phone_classification: Enable/Disable detection for 802.1X phone classification errors.
                         dot1x_session_replace: Enable/Disable detection for 802.1X session replace errors.
                         error_correction_encoding: Enable/Disable detection for error correction encoding errors.
+                        fabric_capacity_low: Enable/Disable detection for fabric capacity low errors.
                         hardware_speed_group: Enable/Disable detection for hardware speed group errors.
                         interface_speed: Enable/Disable detection for interface speed errors.
                         internal_error: Enable/Disable detection for internal errors.
@@ -6514,6 +6523,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         storm_control: Enable/Disable detection for storm control errors.
                         switchcard_unreachable: Enable/Disable detection for switchcard unreachable errors.
                         tapagg: Enable/Disable detection for tap aggregation errors.
+                        tpid: Enable/Disable detection for TPID errors.
                         transceiver_adapter: Enable/Disable detection for transceiver adapter errors.
                         xcvr_misconfigured: Enable/Disable detection for transceiver misconfiguration errors.
                         xcvr_overheat: Enable/Disable detection for transceiver overheat errors.
@@ -6807,6 +6817,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             enabled: Enable recovery for error correction encoding errors.
                             interval: Interval for error correction encoding recovery in seconds.
+
+                        """
+
+            class FabricCapacityLow(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for fabric capacity low errors."""
+                interval: int | None
+                """Interval for fabric capacity low recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        FabricCapacityLow.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for fabric capacity low errors.
+                            interval: Interval for fabric capacity low recovery in seconds.
 
                         """
 
@@ -7194,6 +7228,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class Tpid(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for TPID errors."""
+                interval: int | None
+                """Interval for TPID recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Tpid.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for TPID errors.
+                            interval: Interval for TPID recovery in seconds.
+
+                        """
+
             class TransceiverAdapter(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -7347,6 +7405,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "dot1x_phone_classification": {"type": Dot1xPhoneClassification},
                 "dot1x_session_replace": {"type": Dot1xSessionReplace},
                 "error_correction_encoding": {"type": ErrorCorrectionEncoding},
+                "fabric_capacity_low": {"type": FabricCapacityLow},
                 "hardware_speed_group": {"type": HardwareSpeedGroup},
                 "hitless_reload_down": {"type": HitlessReloadDown},
                 "interface_speed": {"type": InterfaceSpeed},
@@ -7363,6 +7422,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "switchcard_unreachable": {"type": SwitchcardUnreachable},
                 "tap_port_init": {"type": TapPortInit},
                 "tapagg": {"type": Tapagg},
+                "tpid": {"type": Tpid},
                 "transceiver_adapter": {"type": TransceiverAdapter},
                 "uplink_failure_detection": {"type": UplinkFailureDetection},
                 "xcvr_misconfigured": {"type": XcvrMisconfigured},
@@ -7415,6 +7475,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             error_correction_encoding: ErrorCorrectionEncoding
             """
             Recovery settings for error correction encoding errors.
+
+            Subclass of AvdModel.
+            """
+            fabric_capacity_low: FabricCapacityLow
+            """
+            Recovery settings for fabric capacity low errors.
 
             Subclass of AvdModel.
             """
@@ -7514,6 +7580,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
+            tpid: Tpid
+            """
+            Recovery settings for TPID errors.
+
+            Subclass of AvdModel.
+            """
             transceiver_adapter: TransceiverAdapter
             """
             Recovery settings for transceiver adapter errors.
@@ -7564,6 +7636,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     dot1x_phone_classification: Dot1xPhoneClassification | UndefinedType = Undefined,
                     dot1x_session_replace: Dot1xSessionReplace | UndefinedType = Undefined,
                     error_correction_encoding: ErrorCorrectionEncoding | UndefinedType = Undefined,
+                    fabric_capacity_low: FabricCapacityLow | UndefinedType = Undefined,
                     hardware_speed_group: HardwareSpeedGroup | UndefinedType = Undefined,
                     hitless_reload_down: HitlessReloadDown | UndefinedType = Undefined,
                     interface_speed: InterfaceSpeed | UndefinedType = Undefined,
@@ -7580,6 +7653,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     switchcard_unreachable: SwitchcardUnreachable | UndefinedType = Undefined,
                     tap_port_init: TapPortInit | UndefinedType = Undefined,
                     tapagg: Tapagg | UndefinedType = Undefined,
+                    tpid: Tpid | UndefinedType = Undefined,
                     transceiver_adapter: TransceiverAdapter | UndefinedType = Undefined,
                     uplink_failure_detection: UplinkFailureDetection | UndefinedType = Undefined,
                     xcvr_misconfigured: XcvrMisconfigured | UndefinedType = Undefined,
@@ -7624,6 +7698,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Subclass of AvdModel.
                         error_correction_encoding:
                            Recovery settings for error correction encoding errors.
+
+                           Subclass of AvdModel.
+                        fabric_capacity_low:
+                           Recovery settings for fabric capacity low errors.
 
                            Subclass of AvdModel.
                         hardware_speed_group:
@@ -7688,6 +7766,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Subclass of AvdModel.
                         tapagg:
                            Recovery settings for tap aggregation errors.
+
+                           Subclass of AvdModel.
+                        tpid:
+                           Recovery settings for TPID errors.
 
                            Subclass of AvdModel.
                         transceiver_adapter:

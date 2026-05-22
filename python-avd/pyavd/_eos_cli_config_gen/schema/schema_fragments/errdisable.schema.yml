@@ -71,6 +71,9 @@ keys:
           error_correction_encoding:
             type: bool
             description: Enable/Disable detection for error correction encoding errors.
+          fabric_capacity_low:
+            type: bool
+            description: Enable/Disable detection for fabric capacity low errors.
           hardware_speed_group:
             type: bool
             description: Enable/Disable detection for hardware speed group errors.
@@ -95,6 +98,9 @@ keys:
           tapagg:
             type: bool
             description: Enable/Disable detection for tap aggregation errors.
+          tpid:
+            type: bool
+            description: Enable/Disable detection for TPID errors.
           transceiver_adapter:
             type: bool
             description: Enable/Disable detection for transceiver adapter errors.
@@ -286,6 +292,20 @@ keys:
               interval:
                 type: int
                 description: Interval for error correction encoding recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                  - str
+          fabric_capacity_low:
+            type: dict
+            description: Recovery settings for fabric capacity low errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for fabric capacity low errors.
+              interval:
+                type: int
+                description: Interval for fabric capacity low recovery in seconds.
                 min: 30
                 max: 86400
                 convert_types:
@@ -510,6 +530,20 @@ keys:
               interval:
                 type: int
                 description: Interval for tap aggregation recovery in seconds.
+                min: 30
+                max: 86400
+                convert_types:
+                  - str
+          tpid:
+            type: dict
+            description: Recovery settings for TPID errors.
+            keys:
+              enabled:
+                type: bool
+                description: Enable recovery for TPID errors.
+              interval:
+                type: int
+                description: Interval for TPID recovery in seconds.
                 min: 30
                 max: 86400
                 convert_types:

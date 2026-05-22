@@ -19,6 +19,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x_phone_classification</samp>](## "errdisable.detect_cause.dot1x_phone_classification") | Boolean |  |  |  | Enable/Disable detection for 802.1X phone classification errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x_session_replace</samp>](## "errdisable.detect_cause.dot1x_session_replace") | Boolean |  |  |  | Enable/Disable detection for 802.1X session replace errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;error_correction_encoding</samp>](## "errdisable.detect_cause.error_correction_encoding") | Boolean |  |  |  | Enable/Disable detection for error correction encoding errors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fabric_capacity_low</samp>](## "errdisable.detect_cause.fabric_capacity_low") | Boolean |  |  |  | Enable/Disable detection for fabric capacity low errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "errdisable.detect_cause.hardware_speed_group") | Boolean |  |  |  | Enable/Disable detection for hardware speed group errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface_speed</samp>](## "errdisable.detect_cause.interface_speed") | Boolean |  |  |  | Enable/Disable detection for interface speed errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;internal_error</samp>](## "errdisable.detect_cause.internal_error") | Boolean |  |  |  | Enable/Disable detection for internal errors. |
@@ -27,6 +28,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;storm_control</samp>](## "errdisable.detect_cause.storm_control") | Boolean |  |  |  | Enable/Disable detection for storm control errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switchcard_unreachable</samp>](## "errdisable.detect_cause.switchcard_unreachable") | Boolean |  |  |  | Enable/Disable detection for switchcard unreachable errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "errdisable.detect_cause.tapagg") | Boolean |  |  |  | Enable/Disable detection for tap aggregation errors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tpid</samp>](## "errdisable.detect_cause.tpid") | Boolean |  |  |  | Enable/Disable detection for TPID errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_adapter</samp>](## "errdisable.detect_cause.transceiver_adapter") | Boolean |  |  |  | Enable/Disable detection for transceiver adapter errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;xcvr_misconfigured</samp>](## "errdisable.detect_cause.xcvr_misconfigured") | Boolean |  |  |  | Enable/Disable detection for transceiver misconfiguration errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;xcvr_overheat</samp>](## "errdisable.detect_cause.xcvr_overheat") | Boolean |  |  |  | Enable/Disable detection for transceiver overheat errors. |
@@ -61,6 +63,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;error_correction_encoding</samp>](## "errdisable.recovery_cause.error_correction_encoding") | Dictionary |  |  |  | Recovery settings for error correction encoding errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "errdisable.recovery_cause.error_correction_encoding.enabled") | Boolean |  |  |  | Enable recovery for error correction encoding errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "errdisable.recovery_cause.error_correction_encoding.interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for error correction encoding recovery in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fabric_capacity_low</samp>](## "errdisable.recovery_cause.fabric_capacity_low") | Dictionary |  |  |  | Recovery settings for fabric capacity low errors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "errdisable.recovery_cause.fabric_capacity_low.enabled") | Boolean |  |  |  | Enable recovery for fabric capacity low errors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "errdisable.recovery_cause.fabric_capacity_low.interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for fabric capacity low recovery in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "errdisable.recovery_cause.hardware_speed_group") | Dictionary |  |  |  | Recovery settings for hardware speed group errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "errdisable.recovery_cause.hardware_speed_group.enabled") | Boolean |  |  |  | Enable recovery for hardware speed group errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "errdisable.recovery_cause.hardware_speed_group.interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for hardware speed group recovery in seconds. |
@@ -109,6 +114,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "errdisable.recovery_cause.tapagg") | Dictionary |  |  |  | Recovery settings for tap aggregation errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "errdisable.recovery_cause.tapagg.enabled") | Boolean |  |  |  | Enable recovery for tap aggregation errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "errdisable.recovery_cause.tapagg.interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for tap aggregation recovery in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tpid</samp>](## "errdisable.recovery_cause.tpid") | Dictionary |  |  |  | Recovery settings for TPID errors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "errdisable.recovery_cause.tpid.enabled") | Boolean |  |  |  | Enable recovery for TPID errors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "errdisable.recovery_cause.tpid.interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for TPID recovery in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_adapter</samp>](## "errdisable.recovery_cause.transceiver_adapter") | Dictionary |  |  |  | Recovery settings for transceiver adapter errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "errdisable.recovery_cause.transceiver_adapter.enabled") | Boolean |  |  |  | Enable recovery for transceiver adapter errors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "errdisable.recovery_cause.transceiver_adapter.interval") | Integer |  |  | Min: 30<br>Max: 86400 | Interval for transceiver adapter recovery in seconds. |
@@ -168,6 +176,9 @@
         # Enable/Disable detection for error correction encoding errors.
         error_correction_encoding: <bool>
 
+        # Enable/Disable detection for fabric capacity low errors.
+        fabric_capacity_low: <bool>
+
         # Enable/Disable detection for hardware speed group errors.
         hardware_speed_group: <bool>
 
@@ -191,6 +202,9 @@
 
         # Enable/Disable detection for tap aggregation errors.
         tapagg: <bool>
+
+        # Enable/Disable detection for TPID errors.
+        tpid: <bool>
 
         # Enable/Disable detection for transceiver adapter errors.
         transceiver_adapter: <bool>
@@ -293,6 +307,15 @@
           enabled: <bool>
 
           # Interval for error correction encoding recovery in seconds.
+          interval: <int; 30-86400>
+
+        # Recovery settings for fabric capacity low errors.
+        fabric_capacity_low:
+
+          # Enable recovery for fabric capacity low errors.
+          enabled: <bool>
+
+          # Interval for fabric capacity low recovery in seconds.
           interval: <int; 30-86400>
 
         # Recovery settings for hardware speed group errors.
@@ -437,6 +460,15 @@
           enabled: <bool>
 
           # Interval for tap aggregation recovery in seconds.
+          interval: <int; 30-86400>
+
+        # Recovery settings for TPID errors.
+        tpid:
+
+          # Enable recovery for TPID errors.
+          enabled: <bool>
+
+          # Interval for TPID recovery in seconds.
           interval: <int; 30-86400>
 
         # Recovery settings for transceiver adapter errors.
