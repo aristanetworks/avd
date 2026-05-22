@@ -29,6 +29,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;username_format</samp>](## "dot1x_settings.mac_based_authentication.username_format") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delimiter</samp>](## "dot1x_settings.mac_based_authentication.username_format.delimiter") | String | Required |  | Valid Values:<br>- <code>colon</code><br>- <code>hyphen</code><br>- <code>none</code><br>- <code>period</code> | RADIUS User-Name attribute delimiter to use on the MAC address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;letter_case</samp>](## "dot1x_settings.mac_based_authentication.username_format.letter_case") | String | Required |  | Valid Values:<br>- <code>lowercase</code><br>- <code>uppercase</code> | RADIUS User-Name attribute letter case to use on the MAC address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "dot1x_settings.mac_based_authentication.delay") | Integer |  |  | Min: 0<br>Max: 300 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hold_period</samp>](## "dot1x_settings.mac_based_authentication.hold_period") | Integer |  |  | Min: 1<br>Max: 300 |  |
     | [<samp>&nbsp;&nbsp;radius_av_pairs</samp>](## "dot1x_settings.radius_av_pairs") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x_settings.radius_av_pairs.service_type") | Boolean |  | `False` |  | Send RADIUS Service-Type attribute in Access-Request and Accounting messages. |
     | [<samp>&nbsp;&nbsp;redistribute_in_evpn</samp>](## "dot1x_settings.redistribute_in_evpn") | Boolean |  | `True` |  | Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs. |
@@ -99,6 +101,8 @@
 
           # RADIUS User-Name attribute letter case to use on the MAC address.
           letter_case: <str; "lowercase" | "uppercase"; required>
+        delay: <int; 0-300>
+        hold_period: <int; 1-300>
       radius_av_pairs:
 
         # Send RADIUS Service-Type attribute in Access-Request and Accounting messages.

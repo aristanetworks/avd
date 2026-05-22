@@ -110,6 +110,18 @@ keys:
                 valid_values:
                   - lowercase
                   - uppercase
+          delay:
+            type: int
+            min: 0
+            max: 300
+            convert_types:
+              - str
+          hold_period:
+            type: int
+            min: 1
+            max: 300
+            convert_types:
+              - str
       radius_av_pairs:
         type: dict
         keys:

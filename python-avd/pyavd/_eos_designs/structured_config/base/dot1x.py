@@ -98,6 +98,9 @@ class Dot1xMixin(Protocol):
                 delimiter=dot1x_settings.mac_based_authentication.username_format.delimiter,
                 mac_string_case=dot1x_settings.mac_based_authentication.username_format.letter_case,
             )
+        self.structured_config.dot1x.mac_based_authentication._update(
+            delay=dot1x_settings.mac_based_authentication.delay, hold_period=dot1x_settings.mac_based_authentication.hold_period
+        )
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,

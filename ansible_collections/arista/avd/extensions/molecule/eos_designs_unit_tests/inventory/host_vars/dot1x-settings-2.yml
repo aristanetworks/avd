@@ -22,6 +22,8 @@ dot1x_settings:
     username_format:
       delimiter: colon
       letter_case: uppercase
+    delay: 200
+    hold_period: 100
   radius_av_pairs:
     service_type: true
 
