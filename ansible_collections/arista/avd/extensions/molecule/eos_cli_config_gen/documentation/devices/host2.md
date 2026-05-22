@@ -80,6 +80,7 @@
   - [IP Routing](#ip-routing)
   - [ARP](#arp)
   - [Router Adaptive Virtual Topology](#router-adaptive-virtual-topology)
+  - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [PBR Policy Maps](#pbr-policy-maps)
@@ -1085,6 +1086,38 @@ VXLAN gateway: Enabled
 !
 router adaptive-virtual-topology
    topology role edge gateway vxlan
+```
+
+### Router OSPF
+
+#### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
+| 701 | 10.255.0.2 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+
+#### Router OSPF Segment Routing
+
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
+| 701 | sr-peers | True |
+
+##### OSPF Prefix Segments
+
+| Process ID | Prefix | Index |
+| ---------- | ------ | ----- |
+| 701 | 192.0.2.0/24 | 300 |
+
+#### Router OSPF Device Configuration
+
+```eos
+!
+router ospf 701
+   router-id 10.255.0.2
+   segment-routing mpls
+      shutdown
+      prefix-segment 192.0.2.0/24 index 300
+      adjacency-segment allocation sr-peers
 ```
 
 ### Router ISIS

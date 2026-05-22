@@ -8679,6 +8679,7 @@ router traffic-engineering
 | 400 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 | 500 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 | 600 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+| 700 | 10.255.0.1 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Distance
 
@@ -8726,6 +8727,19 @@ router traffic-engineering
 | 101 | 20.0.0.0/8 | 10 | - | - |
 | 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
 | 101 | 40.0.0.0/8 | - | - | True |
+
+#### Router OSPF Segment Routing
+
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
+| 700 | all-interfaces | False |
+
+##### OSPF Prefix Segments
+
+| Process ID | Prefix | Index |
+| ---------- | ------ | ----- |
+| 700 | 10.255.0.1/32 | 100 |
+| 700 | 10.255.0.2/32 | 200 |
 
 #### Router OSPF Areas
 
@@ -8837,6 +8851,14 @@ router ospf 600
    area 0.0.20.25 nssa default-information-originate metric-type 1
    area 0.0.20.26 nssa no-summary
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+!
+router ospf 700
+   router-id 10.255.0.1
+   segment-routing mpls
+      no shutdown
+      prefix-segment 10.255.0.1/32 index 100
+      prefix-segment 10.255.0.2/32 index 200
+      adjacency-segment allocation all-interfaces
 !
 ip ospf router-id output-format hostnames
 ```
