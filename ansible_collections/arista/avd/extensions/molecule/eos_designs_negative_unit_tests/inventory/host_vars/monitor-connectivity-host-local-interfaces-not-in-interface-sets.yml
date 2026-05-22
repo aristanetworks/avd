@@ -14,7 +14,7 @@ monitor_connectivity:
   interval: 5
   interface_sets:
     - name: SET_INTERNET
-      interfaces: Ethernet1-2
+      interfaces: [ Ethernet1, Ethernet2 ]
   hosts:
     - name: DNS1
       ip: 8.8.8.8
