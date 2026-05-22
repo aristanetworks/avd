@@ -399,13 +399,6 @@ router bgp 65101.0001
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | - |
 
-### MPLS RSVP
-
-#### MPLS RSVP Summary
-
-| Setting | Value |
-| ------- | ----- |
-
 ### MPLS Device Configuration
 
 ```eos

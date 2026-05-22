@@ -1,0 +1,4 @@
+---
+# Test that mpls.rsvp defined with no sub-keys produces no mpls rsvp output
+mpls:
+  rsvp: {}
