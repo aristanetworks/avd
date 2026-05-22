@@ -117,6 +117,9 @@ daemon TerminAttr
 {%     if daemon_terminattr.cv_loss_timeout is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cv_loss_timeout=" ~ daemon_terminattr.cv_loss_timeout ~ "m" %}
 {%     endif %}
+{%     if daemon_terminattr.cvtargetconfigs is arista.avd.defined %}
+{%         set cvp_config.cli = cvp_config.cli ~ " -cvtargetconfigs=" ~ daemon_terminattr.cvtargetconfigs | join(',') %}
+{%     endif %}
    {{ cvp_config.cli }}
    no shutdown
 {% endif %}
