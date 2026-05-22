@@ -116,11 +116,6 @@ ARGUMENT_SPEC = {
     "static_config_manifest": {
         "type": "dict",
         "options": {
-            "configlet_policy": {
-                "type": "str",
-                "default": "managed",
-                "choices": ["managed", "additive"],
-            },
             "containers": {"type": "list", "elements": "dict", "required": False},
             "configlets": {"type": "list", "elements": "dict", "required": False},
         },
