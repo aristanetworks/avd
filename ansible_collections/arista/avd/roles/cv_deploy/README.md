@@ -454,7 +454,7 @@ For each opted-in device, you are responsible for ensuring the manifest defines 
     When initially deploying or adding new root containers, the role places its managed root containers to the top of the Studio container tree. Please be aware that this automated ordering **may displace any containers you have manually arranged**.
 
 !!! warning "Manual configlet assignments"
-    If a configlet managed by the manifest is manually assigned to a container that the manifest does **not** control, it must be manually unassigned before it is removed from the manifest.
+    Before you remove a configlet from the manifest, ensure it is not manually assigned to any non-manifest containers. If it is, you must manually remove it from those containers first.
 
 #### Example for AVD users
 
