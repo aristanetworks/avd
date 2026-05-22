@@ -4302,6 +4302,8 @@ no lacp rate-limit default
 
 STP mode: **rapid-pvst**
 
+STP Loop Guard: **True**
+
 #### Rapid-PVST Instance and Priority
 
 | Instance(s) | Priority |
