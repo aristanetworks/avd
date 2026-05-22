@@ -7684,15 +7684,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                class DnsServers(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                DnsServers._item_type = str
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
                 disabled: bool | None
                 """Disable Router Advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
+                dns_servers: DnsServers
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        disabled: bool | None | UndefinedType = Undefined,
+                        rx_accept: RxAccept | UndefinedType = Undefined,
+                        dns_servers: DnsServers | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Ra.
 
@@ -7702,6 +7715,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
+                            dns_servers: Subclass of AvdList with `str` items.
 
                         """
 
@@ -23202,15 +23216,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                class DnsServers(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                DnsServers._item_type = str
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
                 disabled: bool | None
                 """Disable Router Advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
+                dns_servers: DnsServers
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        disabled: bool | None | UndefinedType = Undefined,
+                        rx_accept: RxAccept | UndefinedType = Undefined,
+                        dns_servers: DnsServers | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Ra.
 
@@ -23220,6 +23247,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
+                            dns_servers: Subclass of AvdList with `str` items.
 
                         """
 
@@ -34902,15 +34930,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                class DnsServers(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                DnsServers._item_type = str
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
                 disabled: bool | None
                 """Disable Router Advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
+                dns_servers: DnsServers
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        disabled: bool | None | UndefinedType = Undefined,
+                        rx_accept: RxAccept | UndefinedType = Undefined,
+                        dns_servers: DnsServers | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Ra.
 
@@ -34920,6 +34961,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
+                            dns_servers: Subclass of AvdList with `str` items.
 
                         """
 
@@ -69149,15 +69191,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                class DnsServers(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                DnsServers._item_type = str
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
                 disabled: bool | None
                 """Disable Router Advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
+                dns_servers: DnsServers
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        disabled: bool | None | UndefinedType = Undefined,
+                        rx_accept: RxAccept | UndefinedType = Undefined,
+                        dns_servers: DnsServers | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Ra.
 
@@ -69167,6 +69222,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
+                            dns_servers: Subclass of AvdList with `str` items.
 
                         """
 
@@ -70406,15 +70462,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                class DnsServers(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                DnsServers._item_type = str
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
                 disabled: bool | None
                 """Disable Router Advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
+                dns_servers: DnsServers
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        disabled: bool | None | UndefinedType = Undefined,
+                        rx_accept: RxAccept | UndefinedType = Undefined,
+                        dns_servers: DnsServers | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Ra.
 
@@ -70424,6 +70493,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
+                            dns_servers: Subclass of AvdList with `str` items.
 
                         """
 

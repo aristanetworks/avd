@@ -84,6 +84,9 @@ interface {{ management_interface.name }}
 {%         endif %}
    {{ ipv6_nd_prefix_cli }}
 {%     endfor %}
+{%     for dns_server in management_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort %}
+   ipv6 nd ra dns-server {{ dns_server }}
+{%     endfor %}
 {%     if management_interface.lldp.transmit is arista.avd.defined(false) %}
    no lldp transmit
 {%     endif %}
