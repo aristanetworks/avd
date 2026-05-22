@@ -118,9 +118,9 @@ options:
           - **description** (`str`, optional): An optional description for the container.
           - **match_policy** (`str`, optional, default: "match_all"): The match policy to determine how devices with a matching tag inherit
               a child container configlets. Valid choices are `match_all` or `match_first`.
-          - **preserve_existing_sub_containers** (`bool`, optional, default: `false`): Preserve existing child containers under this container
+          - **preserve_existing_sub_containers** (`bool`, optional, default: `false`): Preserve existing manifest-managed child containers under this container
               when they are not declared in the current manifest. This enables partial manifests managing sibling branches under a shared parent.
-              Existing child container order is preserved, and newly declared child containers are appended.
+              Existing manifest-managed child container order is preserved, and newly declared child containers are appended.
           - **configlets** (`list` of `str`, optional): A list of configlet names to apply to this container. Must be defined in the `configlets` section.
           - **sub_containers** (`list` of `dict`, optional): A nested list of container dictionaries that follow this same data model,
               allowing for a full hierarchy.

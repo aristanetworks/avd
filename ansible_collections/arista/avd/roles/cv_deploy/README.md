@@ -457,8 +457,8 @@ For each opted-in device, you are responsible for ensuring the manifest defines 
 
 !!! note "Partial Manifest Deployments"
     By default, every container in the manifest owns its complete `sub_containers` list, so existing child containers not declared in the manifest are removed.
-    Set `preserve_existing_sub_containers: true` on a container to preserve existing child containers that are not declared in the current manifest. This enables workflows where separate manifests manage sibling branches under a shared parent container.
-    Existing child container order is preserved, and any newly declared child containers are appended.
+    Set `preserve_existing_sub_containers: true` on a container to preserve existing manifest-managed child containers that are not declared in the current manifest. This enables workflows where separate manifests manage sibling branches under a shared parent container.
+    Existing manifest-managed child container order is preserved, and any newly declared child containers are appended.
 
 !!! warning "Manual configlet assignments"
     Before you remove a configlet created by a cv_deploy manifest, ensure it is not manually assigned to any non-manifest containers. Otherwise you must manually unassign the configlet from such containers first.

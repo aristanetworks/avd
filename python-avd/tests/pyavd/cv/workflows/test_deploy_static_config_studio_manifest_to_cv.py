@@ -1674,8 +1674,8 @@ class TestDeployStaticConfigStudio:
         mock_cv_client.delete_configlet_container.assert_not_called()
         assert not deployment_result.removed_static_config_containers
 
-    async def test_preserve_existing_sub_containers_keeps_manual_sibling(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
-        """Test that a preserved manual sibling is not deleted or removed from the parent child list."""
+    async def test_preserve_existing_sub_containers_removes_manual_sibling(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that preserve_existing_sub_containers only preserves manifest-managed siblings."""
         sites_id = generate_id("SITES")
         site1_id = generate_id("SITES/SITE1")
         manual_site_id = "manual-site-2"
@@ -1695,9 +1695,14 @@ class TestDeployStaticConfigStudio:
 
         await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
 
-        mock_cv_client.set_configlet_containers.assert_not_called()
-        mock_cv_client.delete_configlet_container.assert_not_called()
-        assert not deployment_result.removed_static_config_containers
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        pushed_by_name = {container[1]: container for container in pushed}
+        assert set(pushed_by_name) == {"SITES"}
+        assert pushed_by_name["SITES"][5] == [site1_id]
+
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=manual_site_id)
+        assert deployment_result.removed_static_config_containers == ["SITE2"]
 
     async def test_preserve_existing_sub_containers_pushes_effective_child_list(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test that a parent update keeps preserved existing children in the pushed child list."""
