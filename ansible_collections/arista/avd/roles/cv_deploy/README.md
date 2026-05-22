@@ -453,6 +453,9 @@ For each opted-in device, you are responsible for ensuring the manifest defines 
 !!! note "Root Containers Order"
     When initially deploying or adding new root containers, the role places its managed root containers to the top of the Studio container tree. Please be aware that this automated ordering **may displace any containers you have manually arranged**.
 
+!!! warning "Manual configlet assignments"
+    If a configlet managed by the manifest is manually assigned to a container that the manifest does **not** control, it must be manually unassigned before it is removed from the manifest.
+
 #### Example for AVD users
 
 `eos_cli_config_gen` generates one configuration file per device in `eos_config_dir` (`intended/configs` by default). The example below puts those configurations into a custom hierarchy organized by fabric, DC, and POD.
