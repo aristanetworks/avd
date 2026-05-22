@@ -4302,6 +4302,8 @@ no lacp rate-limit default
 
 STP mode: **rapid-pvst**
 
+STP Loop Guard: **True**
+
 #### Rapid-PVST Instance and Priority
 
 | Instance(s) | Priority |
@@ -4331,6 +4333,7 @@ spanning-tree port-id allocation port-channel range 201 2001
 spanning-tree vlan-id 1,2,3,4,5,10-15 priority 4096
 spanning-tree vlan-id 3 priority 8192
 spanning-tree vlan-id 100-500 priority 16384
+spanning-tree guard loop default
 ```
 
 ### Synchronous Ethernet (SyncE) Settings

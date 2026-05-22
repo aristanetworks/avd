@@ -24391,6 +24391,9 @@ keys:
             required: true
             convert_types:
             - str
+      loop_guard_default:
+        description: Enable loopguard by default on all ports.
+        type: bool
   standard_access_lists:
     type: list
     primary_key: name

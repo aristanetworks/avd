@@ -66660,6 +66660,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "no_spanning_tree_vlan": {"type": str},
             "rapid_pvst_instances": {"type": RapidPvstInstances},
             "port_id_allocation_port_channel_range": {"type": PortIdAllocationPortChannelRange},
+            "loop_guard_default": {"type": bool},
         }
         root_super: bool | None
         edge_port: EdgePort
@@ -66685,6 +66686,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
+        loop_guard_default: bool | None
+        """Enable loopguard by default on all ports."""
 
         if TYPE_CHECKING:
 
@@ -66701,6 +66704,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 no_spanning_tree_vlan: str | None | UndefinedType = Undefined,
                 rapid_pvst_instances: RapidPvstInstances | UndefinedType = Undefined,
                 port_id_allocation_port_channel_range: PortIdAllocationPortChannelRange | UndefinedType = Undefined,
+                loop_guard_default: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 SpanningTree.
@@ -66724,6 +66728,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Specify range of port-ids to reserve for port-channels.
 
                        Subclass of AvdModel.
+                    loop_guard_default: Enable loopguard by default on all ports.
 
                 """
 
