@@ -3939,6 +3939,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Cvtargetconfigs(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Cvtargetconfigs._item_type = str
+
         _fields: ClassVar[dict] = {
             "cvaddrs": {"type": Cvaddrs},
             "clusters": {"type": Clusters},
@@ -3962,6 +3967,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "sflowaddr": {"type": str},
             "cvconfig": {"type": bool},
             "cv_loss_timeout": {"type": int},
+            "cvtargetconfigs": {"type": Cvtargetconfigs},
         }
         cvaddrs: Cvaddrs
         """
@@ -4069,6 +4075,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         CloudVision after a configuration change.
         The recommended timeout is five minutes.
         """
+        cvtargetconfigs: Cvtargetconfigs
+        """
+        Set the target configuration path(s) for dynamic device configuration from CloudVision.
+        Used for MSS
+        (Multi-Domain Segmentation Service) integrations.
+
+
+        Subclass of AvdList with `str` items.
+        """
 
         if TYPE_CHECKING:
 
@@ -4097,6 +4112,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 sflowaddr: str | None | UndefinedType = Undefined,
                 cvconfig: bool | None | UndefinedType = Undefined,
                 cv_loss_timeout: int | None | UndefinedType = Undefined,
+                cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4174,6 +4190,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to
                        CloudVision after a configuration change.
                        The recommended timeout is five minutes.
+                    cvtargetconfigs:
+                       Set the target configuration path(s) for dynamic device configuration from CloudVision.
+                       Used for MSS
+                       (Multi-Domain Segmentation Service) integrations.
+
+
+                       Subclass of AvdList with `str` items.
 
                 """
 
