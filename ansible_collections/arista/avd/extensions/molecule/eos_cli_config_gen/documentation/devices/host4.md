@@ -10,6 +10,9 @@
   - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
+- [MPLS](#mpls)
+  - [MPLS and LDP](#mpls-and-ldp)
+  - [MPLS Device Configuration](#mpls-device-configuration)
 - [Multicast](#multicast)
   - [Router Multicast](#router-multicast)
 
@@ -146,6 +149,27 @@ router bgp 65001
    !
    address-family ipv6
       bgp additional-paths send limit 20
+```
+
+## MPLS
+
+### MPLS and LDP
+
+#### MPLS and LDP Summary
+
+| Setting | Value |
+| -------- | ---- |
+| MPLS IP Enabled | - |
+| LDP Enabled | False |
+| LDP Router ID | - |
+| LDP Interface Disabled Default | - |
+| LDP Transport-Address Interface | - |
+
+### MPLS Device Configuration
+
+```eos
+!
+mpls rsvp
 ```
 
 ## Multicast

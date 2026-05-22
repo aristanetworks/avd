@@ -1651,6 +1651,12 @@ dot1x dynamic-authorization
 | -------- | ----- |
 | MMU Headroom-pool Limit | 557 bytes |
 
+#### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Default Multicast Replication | fabric-egress |
+
 #### Platform FAP Summary
 
 | Settings | Value |
@@ -1663,6 +1669,8 @@ dot1x dynamic-authorization
 ```eos
 !
 platform fap buffering egress profile balanced
+!
+platform sand multicast replication default fabric-egress
 !
 platform trident mmu headroom-pool limit 557
 ```
