@@ -333,32 +333,19 @@ def _validate_existing_container_state(existing_state: _ExistingContainerState, 
     violations: list[str] = []
     container_ids_to_delete = container_plan.container_ids_to_delete
 
-    for container_id in existing_state.manifest_managed_container_ids:
+    for container_id in existing_state.manifest_managed_container_ids - container_plan.preserved_container_ids:
         container = existing_state.containers_by_id[container_id]
         parent_ids = existing_state.parent_ids_by_child_id.get(container_id, [])
         parent_ids_set = set(parent_ids)
-        # Multiple parents include the Studio root list. Permit the case only if all parents are themselves
-        # scheduled for deletion, since the invalid relationship disappears with this plan.
-        if len(parent_ids_set) > 1 and not parent_ids_set <= container_ids_to_delete:
-            parent_text = ", ".join(existing_state.parent_display(parent_id) for parent_id in sorted(parent_ids_set))
-            violations.append(f"Container '{container.display_name}' (id={container_id}) has multiple parents: {parent_text}")
-
-        if container_id.startswith(AVD_ENTITY_PREFIX):
-            if container_id in container_plan.preserved_container_ids:
-                continue
-            manual_parent_ids = [
-                parent_id
-                for parent_id in parent_ids_set
-                if parent_id != STUDIO_ROOT_PARENT_ID and not parent_id.startswith(AVD_ENTITY_PREFIX) and parent_id not in container_ids_to_delete
-            ]
-            violations.extend(
-                f"Manifest-managed container '{container.display_name}' (id={container_id}) is currently a child of {existing_state.parent_display(parent_id)}"
-                for parent_id in manual_parent_ids
-            )
-            continue
-
-        if not parent_ids_set and container_id not in container_ids_to_delete:
-            violations.append(f"Manual container '{container.display_name}' (id={container_id}) is orphaned")
+        manual_parent_ids = [
+            parent_id
+            for parent_id in parent_ids_set
+            if parent_id != STUDIO_ROOT_PARENT_ID and not parent_id.startswith(AVD_ENTITY_PREFIX) and parent_id not in container_ids_to_delete
+        ]
+        violations.extend(
+            f"Manifest-managed container '{container.display_name}' (id={container_id}) is currently a child of {existing_state.parent_display(parent_id)}"
+            for parent_id in manual_parent_ids
+        )
 
     if violations:
         violations.sort()
