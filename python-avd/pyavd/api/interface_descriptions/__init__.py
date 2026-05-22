@@ -85,6 +85,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                         "main_interface_wan_carrier": data.main_interface_wan_carrier,
                     }
                 ),
+                # TODO: Add deprecation warning for link.* vars
                 link={
                     "type": data.link_type,
                     "interface": data.interface,
@@ -179,6 +180,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                         "main_interface_wan_carrier": data.main_interface_wan_carrier,
                     }
                 ),
+                # TODO: Add deprecation warning for link.* vars
                 link={
                     "interface": data.interface,
                     "peer": data.peer,
