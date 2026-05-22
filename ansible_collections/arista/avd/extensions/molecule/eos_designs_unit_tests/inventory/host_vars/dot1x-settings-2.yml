@@ -24,6 +24,14 @@ dot1x_settings:
       letter_case: uppercase
   radius_av_pairs:
     service_type: true
+    dhcp:
+      hostname:
+        enabled: true
+        auth_only: true
+      parameter_request_list:
+        enabled: true
+      vendor_class_id:
+        enabled: false
 
 aaa_settings:
   radius:
