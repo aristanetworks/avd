@@ -1,0 +1,30 @@
+type: l2leaf
+
+port_profiles:
+  - profile: common
+    mode: access
+    vlans: "999"
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+    port_channel:
+      subinterfaces:
+          - number: 101
+            short_esi: 0000:0000:0101
+
+network_ports:
+  - switches:
+      - invalid-port-profile-network-port
+    switch_ports:
+      - Ethernet1-2
+    profile: common
+    endpoint: PCs
+    spanning_tree_link_type: shared
+
+l2leaf:
+  nodes:
+    - name: invalid-port-profile-network-port
+      id: 1
+
+expected_error_message: >-
+  'port_profiles[name=common].port_channel.subinterfaces' is not supported
+  since this profile is referenced under a network_port.

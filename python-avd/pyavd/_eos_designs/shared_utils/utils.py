@@ -140,6 +140,12 @@ class UtilsMixin(Protocol):
 
         # Need this to assist the type checker.
         if isinstance(adapter_or_network_port_settings, EosDesigns.NetworkPortsItem):  # NOSONAR(S3923)
+            if adapter_profile.port_channel._get("subinterfaces"):
+                msg = (
+                    f"'port_profiles[name={profile_name}].port_channel.subinterfaces' is not supported since this profile "
+                    f"is referenced under a network_port."
+                )
+                raise AristaAvdInvalidInputsError(msg)
             profile_as_adapter_or_network_port_settings = adapter_profile._cast_as(type(adapter_or_network_port_settings))
             adapter_or_network_port_settings._deepinherit(profile_as_adapter_or_network_port_settings)
         else:
