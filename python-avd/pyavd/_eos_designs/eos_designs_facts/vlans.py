@@ -353,6 +353,9 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
                 # Not restricting further since this was a cyclic reference.
                 continue
             available_vlans.intersection_update(uplink_switch_available_vlans)
+            if self.shared_utils.uplink_type == "port-channel" and not self.inputs.avd_design_future.only_configure_vlans_available_on_all_uplink_switches:
+                # Only consider VLANs from the first uplink switch.
+                break
 
         if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
             # Preserve existing behavior where the inband management VLAN is allowed
