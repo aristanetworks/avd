@@ -1178,3 +1178,164 @@ class TestDeployStaticConfigStudio:
         )
 
         assert deployment_result.removed_static_config_containers == ["SOLO"]
+
+    async def test_fails_when_deleted_configlet_is_held_by_unmanaged_container(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that the deploy fails when a manifest configlet scheduled for deletion is still assigned to a container the manifest does not manage."""
+        manifest_root_id = generate_id("MANIFEST_ROOT")
+        stale_cfg_id = generate_id("STALE_CFG")
+        manual_holder_id = "manual-holder-001"
+
+        existing_containers = [
+            create_grpc_container(container_id=manifest_root_id, name="MANIFEST_ROOT", description="", query="device:*"),
+            create_grpc_container(container_id=manual_holder_id, name="MY_CUSTOM", description="", query="device:*", configlet_ids=[stale_cfg_id]),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=stale_cfg_id), display_name="STALE_CFG"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [manifest_root_id, manual_holder_id]
+
+        # Manifest declares only the root container, no configlets — STALE_CFG is scheduled for deletion.
+        manifest_root = AvdContainer(name="MANIFEST_ROOT", tag_query="device:*")
+        manifest = AvdManifest(containers=(manifest_root,))
+
+        with pytest.raises(CVManifestError) as exc_info:
+            await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Error message identifies both the offending holder and the configlet (name + id for each).
+        assert "MY_CUSTOM" in str(exc_info.value)
+        assert manual_holder_id in str(exc_info.value)
+        assert "STALE_CFG" in str(exc_info.value)
+        assert stale_cfg_id in str(exc_info.value)
+
+        # No updates on CV — workspace must be untouched.
+        mock_cv_client.set_configlets_from_files.assert_not_called()
+        mock_cv_client.set_configlet_containers.assert_not_called()
+        mock_cv_client.set_studio_inputs.assert_not_called()
+        mock_cv_client.delete_configlets.assert_not_called()
+        mock_cv_client.delete_configlet_container.assert_not_called()
+
+    async def test_passes_when_deleted_configlet_holder_is_also_scheduled_for_deletion(
+        self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult
+    ) -> None:
+        """Test that no violation is raised when both the deleted manifest configlet and its holder are scheduled for deletion by this deploy."""
+        manifest_root_id = generate_id("MANIFEST_ROOT")
+        stale_cfg_id = generate_id("STALE_CFG")
+        # Manifest-managed holder absent from this manifest is scheduled for deletion, so its reference to STALE_CFG disappears when the holder is deleted.
+        stale_holder_id = generate_id("STALE_HOLDER")
+
+        existing_containers = [
+            create_grpc_container(container_id=manifest_root_id, name="MANIFEST_ROOT", description="", query="device:*"),
+            create_grpc_container(container_id=stale_holder_id, name="STALE_HOLDER", description="", query="device:*", configlet_ids=[stale_cfg_id]),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=stale_cfg_id), display_name="STALE_CFG"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [manifest_root_id, stale_holder_id]
+
+        # Manifest declares only MANIFEST_ROOT — STALE_HOLDER and STALE_CFG are both scheduled for deletion.
+        manifest_root = AvdContainer(name="MANIFEST_ROOT", tag_query="device:*")
+        manifest = AvdManifest(containers=(manifest_root,))
+
+        # Must not raise — STALE_HOLDER is managed (being deleted), so its stale reference goes away with it.
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Both the configlet and the holder are deleted in the same deploy.
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[stale_cfg_id])
+        deleted_container_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert stale_holder_id in deleted_container_ids
+
+    async def test_passes_when_deleted_configlet_is_only_held_by_managed_containers(
+        self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult
+    ) -> None:
+        """Test that a deleted manifest configlet held only by managed containers does not raise (the holders are themselves being rewritten or deleted)."""
+        root_id = generate_id("ROOT")
+        stale_cfg_id = generate_id("STALE_CFG")
+
+        # ROOT currently references STALE_CFG. Manifest will drop STALE_CFG from ROOT's configlets and from the manifest.
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*", configlet_ids=[stale_cfg_id]),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=stale_cfg_id), display_name="STALE_CFG"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        # Manifest redeclares ROOT but without STALE_CFG, and drops STALE_CFG entirely.
+        root = AvdContainer(name="ROOT", tag_query="device:*", description="Root")
+        manifest = AvdManifest(containers=(root,))
+
+        # Must not raise — ROOT is being rewritten, so the stale reference disappears.
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # ROOT is re-pushed without STALE_CFG.
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        assert pushed[0][3] == []
+
+        # STALE_CFG is deleted.
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[stale_cfg_id])
+        assert deployment_result.removed_static_config_configlets == ["STALE_CFG"]
+
+    async def test_passes_when_deleted_configlet_has_no_holders(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that an orphan manifest configlet (not referenced by any container) is deleted cleanly without raising."""
+        root_id = generate_id("ROOT")
+        orphan_cfg_id = generate_id("ORPHAN_CFG")
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*"),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=orphan_cfg_id), display_name="ORPHAN_CFG"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        root = AvdContainer(name="ROOT", tag_query="device:*", description="Root")
+        manifest = AvdManifest(containers=(root,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Orphan configlet is deleted, no violation.
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[orphan_cfg_id])
+        assert deployment_result.removed_static_config_configlets == ["ORPHAN_CFG"]
+
+    async def test_fails_lists_multiple_holders_for_single_configlet(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that a single deleted manifest configlet referenced by multiple unmanaged holders produces one violation entry per holder."""
+        manifest_root_id = generate_id("MANIFEST_ROOT")
+        stale_cfg_id = generate_id("STALE_CFG")
+        holder_a_id = "manual-holder-a"
+        holder_b_id = "manual-holder-b"
+
+        existing_containers = [
+            create_grpc_container(container_id=manifest_root_id, name="MANIFEST_ROOT", description="", query="device:*"),
+            create_grpc_container(container_id=holder_a_id, name="HOLDER_A", description="", query="device:*", configlet_ids=[stale_cfg_id]),
+            create_grpc_container(container_id=holder_b_id, name="HOLDER_B", description="", query="device:*", configlet_ids=[stale_cfg_id]),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=stale_cfg_id), display_name="STALE_CFG"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [manifest_root_id, holder_a_id, holder_b_id]
+
+        manifest_root = AvdContainer(name="MANIFEST_ROOT", tag_query="device:*")
+        manifest = AvdManifest(containers=(manifest_root,))
+
+        with pytest.raises(CVManifestError) as exc_info:
+            await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Both holders appear in the message.
+        msg = str(exc_info.value)
+        assert "HOLDER_A" in msg
+        assert "HOLDER_B" in msg
+        assert holder_a_id in msg
+        assert holder_b_id in msg
+        # The configlet is named once per holder.
+        assert msg.count("STALE_CFG") == 2

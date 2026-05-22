@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from asyncio import gather
+from collections import defaultdict
 from logging import getLogger
 from typing import TYPE_CHECKING, cast
 
@@ -29,6 +30,8 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
 
     TODO: Implement strict mode to remove any containers/configlets not managed by AVD from the Studio.
     TODO: Implement configlet body diff - digest/checksum.
+    TODO: Replace the existing_containers / existing_managed_containers_by_id pair carried between sync functions with an
+          ExistingState dataclass holding pre-computed mappings (containers_by_id, parents_by_child_id, etc.).
     """
     workspace_id = deployment_result.workspace.id
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Starting manifest deployment for workspace '%s'.", workspace_id)
@@ -45,15 +48,25 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
         return
 
     # Perform synchronization tasks.
-    await _sync_configlets(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
-    await _sync_containers(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
+    existing_containers, existing_managed_containers_by_id = await _sync_containers(
+        cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client
+    )
+    await _sync_configlets(
+        cv_manifest=cv_manifest,
+        existing_containers=existing_containers,
+        existing_managed_containers_by_id=existing_managed_containers_by_id,
+        deployment_result=deployment_result,
+        cv_client=cv_client,
+    )
     await _sync_studio_roots(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
 
     # Done.
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Completed manifest deployment for workspace '%s'.", workspace_id)
 
 
-async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> dict[str, ConfigletAssignment]:
+async def _sync_containers(
+    cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient
+) -> tuple[list[ConfigletAssignment], dict[str, str]]:
     """Synchronize containers. Fetch existing ones and push any required creates or updates."""
     workspace_id = deployment_result.workspace.id
 
@@ -131,8 +144,16 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No AVD-managed container deletions are needed.")
 
+    return existing_containers, existing_managed_containers_by_id
 
-async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
+
+async def _sync_configlets(
+    cv_manifest: CVManifest,
+    existing_containers: list[ConfigletAssignment],
+    existing_managed_containers_by_id: dict[str, str],
+    deployment_result: DeployToCvResult,
+    cv_client: CVClient,
+) -> None:
     """Synchronize configlets. Create/update new ones and delete unused AVD-managed ones."""
     workspace_id = deployment_result.workspace.id
 
@@ -155,6 +176,37 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     }
 
     if configlets_to_delete:
+        # A configlet can be assigned to multiple containers (holders).
+        existing_holders_by_configlet_id: defaultdict[str, list[ConfigletAssignment]] = defaultdict(list)
+        for container in existing_containers:
+            for configlet_id in container.configlet_ids.values:
+                existing_holders_by_configlet_id[configlet_id].append(container)
+
+        # Validate that no managed configlet scheduled for deletion was assigned to containers this deploy will not touch.
+        violations: list[tuple[str, str, str, str]] = []
+        for configlet_id, configlet_name in configlets_to_delete.items():
+            for holder in existing_holders_by_configlet_id.get(configlet_id, []):
+                holder_id = cast("str", holder.key.configlet_assignment_id)
+                if holder_id in existing_managed_containers_by_id:
+                    # Holder is managed, it will be handled by this deploy.
+                    continue
+
+                # Holder is out of our control.
+                violations.append((cast("str", holder.display_name), holder_id, configlet_name, configlet_id))
+
+        if violations:
+            violations.sort()
+            violations_text = "; ".join(
+                f"'{configlet_name}' (id={configlet_id}) is still assigned to '{holder_name}' (id={holder_id})"
+                for holder_name, holder_id, configlet_name, configlet_id in violations
+            )
+            msg = (
+                "The following manifest-managed configlets are scheduled for deletion "
+                "but are still assigned to containers that this manifest does not control. "
+                f"Unassign the configlets manually (or keep them in the manifest) and re-run: {violations_text}"
+            )
+            raise CVManifestError(msg)
+
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d manifest-managed configlets which are no longer used.", len(configlets_to_delete))
         deployment_result.removed_static_config_configlets.extend(configlets_to_delete.values())
         await cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(configlets_to_delete.keys()))
