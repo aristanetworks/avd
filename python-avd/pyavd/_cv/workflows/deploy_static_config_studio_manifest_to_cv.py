@@ -7,8 +7,9 @@ from asyncio import gather
 from collections import defaultdict, deque
 from dataclasses import dataclass
 from logging import getLogger
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Any, cast
 
+from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
 from pyavd._cv.client.exceptions import CVManifestError
 
 from .models import AVD_ENTITY_PREFIX, CVManifest
@@ -56,6 +57,34 @@ class _ExistingContainerState:
 
 
 @dataclass
+class _PlannedContainer:
+    """
+    Desired container with the effective child list to push/compare.
+
+    For containers with preserve_existing_sub_containers enabled, child_ids preserves the existing CV child
+    order and appends newly declared manifest sub-containers.
+    """
+
+    container: CVContainer
+    child_ids: tuple[str, ...]
+
+    @property
+    def api_tuple(self) -> tuple[Any, ...]:
+        return (
+            self.container.id,
+            self.container.name,
+            self.container.description or "",
+            list(self.container.configlet_ids),
+            self.container.tag_query,
+            list(self.child_ids),
+            self.container.match_policy,
+        )
+
+    def matches_configlet_assignment(self, configlet_assignment: ConfigletAssignment) -> bool:
+        return self.api_tuple == _configlet_assignment_api_tuple(configlet_assignment)
+
+
+@dataclass
 class _ContainerPlan:
     """
     Planned container and root mutations.
@@ -64,9 +93,10 @@ class _ContainerPlan:
     that this deploy updates/deletes and would otherwise leave them orphaned in CV.
     """
 
-    containers_to_push: list[CVContainer]
-    containers_to_skip: list[CVContainer]
+    containers_to_push: list[_PlannedContainer]
+    containers_to_skip: list[_PlannedContainer]
     containers_to_delete: dict[str, str]
+    preserved_container_ids: set[str]
     new_root_ids: list[str]
     root_ids_changed: bool
 
@@ -76,7 +106,21 @@ class _ContainerPlan:
 
     @property
     def touched_container_ids(self) -> set[str]:
-        return {container.id for container in self.containers_to_push} | self.container_ids_to_delete
+        return {planned_container.container.id for planned_container in self.containers_to_push} | self.container_ids_to_delete
+
+
+def _configlet_assignment_api_tuple(configlet_assignment: ConfigletAssignment) -> tuple[Any, ...]:
+    """Return the comparable API tuple for an existing configlet assignment."""
+    reversed_match_policy_map = {enum_member.value: str_key for str_key, enum_member in ASSIGNMENT_MATCH_POLICY_MAP.items()}
+    return (
+        configlet_assignment.key.configlet_assignment_id,
+        configlet_assignment.display_name,
+        configlet_assignment.description,
+        configlet_assignment.configlet_ids.values,
+        configlet_assignment.query,
+        configlet_assignment.child_assignment_ids.values,
+        reversed_match_policy_map.get(configlet_assignment.match_policy.value),
+    )
 
 
 async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
@@ -178,17 +222,29 @@ def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingCont
     Manifest-managed containers are identified by their generated ID prefix. The rest of the workflow uses
     "manifest-managed" terminology since users may run this workflow outside the broader AVD fabric model.
     """
-    containers_to_push: list[CVContainer] = []
-    containers_to_skip: list[CVContainer] = []
+    containers_to_push: list[_PlannedContainer] = []
+    containers_to_skip: list[_PlannedContainer] = []
     containers_to_delete: dict[str, str] = {}
+    preserved_container_ids: set[str] = set()
+    manual_delete_roots: list[str] = []
     desired_container_ids = {container.id for container in cv_manifest.containers}
+
+    def add_preserved_container_subtree(container_id: str) -> None:
+        """Mark an existing child and its descendants as intentionally outside this manifest's ownership boundary."""
+        queue = deque([container_id])
+        while queue:
+            queued_container_id = queue.popleft()
+            if queued_container_id in desired_container_ids or queued_container_id in preserved_container_ids:
+                continue
+            preserved_container_ids.add(queued_container_id)
+            queue.extend(existing_state.children_by_parent_id.get(queued_container_id, []))
 
     def add_container_subtree_to_delete(container_id: str) -> None:
         """Add an existing non-desired container and its non-desired descendants to the deletion plan."""
         queue = deque([container_id])
         while queue:
             queued_container_id = queue.popleft()
-            if queued_container_id in desired_container_ids or queued_container_id in containers_to_delete:
+            if queued_container_id in desired_container_ids or queued_container_id in preserved_container_ids or queued_container_id in containers_to_delete:
                 continue
             container = existing_state.containers_by_id.get(queued_container_id)
             if container is None:
@@ -197,33 +253,47 @@ def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingCont
             containers_to_delete[queued_container_id] = cast("str", container.display_name)
             queue.extend(existing_state.children_by_parent_id.get(queued_container_id, []))
 
-    # Create or update desired containers. If a manifest-managed parent drops manual children,
-    # delete that branch since this deploy would otherwise orphan it.
+    # Create planned desired containers. Containers with preserve_existing_sub_containers keep any
+    # existing children not declared in this manifest, enabling partial sibling-branch deployments.
     for desired_container in cv_manifest.containers:
         existing_container = existing_state.containers_by_id.get(desired_container.id)
+        desired_child_ids = desired_container.child_ids
+        if existing_container and desired_container.avd_container.preserve_existing_sub_containers:
+            existing_child_ids = tuple(existing_container.child_assignment_ids.values)
+            existing_child_ids_set = set(existing_child_ids)
+            desired_child_ids_set = set(desired_child_ids)
+            preserved_child_ids = tuple(child_id for child_id in existing_child_ids if child_id not in desired_child_ids_set)
+            for child_id in preserved_child_ids:
+                add_preserved_container_subtree(child_id)
+            new_desired_child_ids = tuple(child_id for child_id in desired_child_ids if child_id not in existing_child_ids_set)
+            effective_child_ids = (*existing_child_ids, *new_desired_child_ids)
+        else:
+            effective_child_ids = desired_child_ids
+
+        planned_container = _PlannedContainer(container=desired_container, child_ids=effective_child_ids)
 
         if not existing_container:
             # Container is new.
-            containers_to_push.append(desired_container)
+            containers_to_push.append(planned_container)
             continue
 
-        if desired_container.matches_configlet_assignment(existing_container):
+        if not planned_container.matches_configlet_assignment(existing_container):
+            # Container has changed.
+            containers_to_push.append(planned_container)
+        else:
             # Container is unchanged.
-            containers_to_skip.append(desired_container)
-            continue
-
-        # Container has changed.
-        containers_to_push.append(desired_container)
+            containers_to_skip.append(planned_container)
 
         # Existing manual children unassigned by the manifest become orphans caused by this deploy.
         existing_children = set(existing_container.child_assignment_ids.values)
-        desired_children = set(desired_container.child_ids)
-        for child_id in existing_children - desired_children:
-            if not child_id.startswith(AVD_ENTITY_PREFIX):
-                add_container_subtree_to_delete(child_id)
+        desired_children = set(effective_child_ids)
+        manual_delete_roots.extend(child_id for child_id in existing_children - desired_children if not child_id.startswith(AVD_ENTITY_PREFIX))
+
+    for container_id in manual_delete_roots:
+        add_container_subtree_to_delete(container_id)
 
     # Manifest-managed containers no longer in the manifest are deleted together with their non-desired descendants.
-    for container_id in existing_state.manifest_managed_container_ids - desired_container_ids:
+    for container_id in existing_state.manifest_managed_container_ids - desired_container_ids - preserved_container_ids:
         add_container_subtree_to_delete(container_id)
 
     desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
@@ -246,6 +316,7 @@ def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingCont
         containers_to_push=containers_to_push,
         containers_to_skip=containers_to_skip,
         containers_to_delete=containers_to_delete,
+        preserved_container_ids=preserved_container_ids,
         new_root_ids=new_root_ids,
         root_ids_changed=new_root_ids != existing_state.root_ids,
     )
@@ -266,15 +337,28 @@ def _validate_existing_container_state(existing_state: _ExistingContainerState, 
         container = existing_state.containers_by_id[container_id]
         parent_ids = existing_state.parent_ids_by_child_id.get(container_id, [])
         parent_ids_set = set(parent_ids)
-        manual_parent_ids = [
-            parent_id
-            for parent_id in parent_ids_set
-            if parent_id != STUDIO_ROOT_PARENT_ID and not parent_id.startswith(AVD_ENTITY_PREFIX) and parent_id not in container_ids_to_delete
-        ]
-        violations.extend(
-            f"Manifest-managed container '{container.display_name}' (id={container_id}) is currently a child of {existing_state.parent_display(parent_id)}"
-            for parent_id in manual_parent_ids
-        )
+        # Multiple parents include the Studio root list. Permit the case only if all parents are themselves
+        # scheduled for deletion, since the invalid relationship disappears with this plan.
+        if len(parent_ids_set) > 1 and not parent_ids_set <= container_ids_to_delete:
+            parent_text = ", ".join(existing_state.parent_display(parent_id) for parent_id in sorted(parent_ids_set))
+            violations.append(f"Container '{container.display_name}' (id={container_id}) has multiple parents: {parent_text}")
+
+        if container_id.startswith(AVD_ENTITY_PREFIX):
+            if container_id in container_plan.preserved_container_ids:
+                continue
+            manual_parent_ids = [
+                parent_id
+                for parent_id in parent_ids_set
+                if parent_id != STUDIO_ROOT_PARENT_ID and not parent_id.startswith(AVD_ENTITY_PREFIX) and parent_id not in container_ids_to_delete
+            ]
+            violations.extend(
+                f"Manifest-managed container '{container.display_name}' (id={container_id}) is currently a child of {existing_state.parent_display(parent_id)}"
+                for parent_id in manual_parent_ids
+            )
+            continue
+
+        if not parent_ids_set and container_id not in container_ids_to_delete:
+            violations.append(f"Manual container '{container.display_name}' (id={container_id}) is orphaned")
 
     if violations:
         violations.sort()
@@ -287,12 +371,16 @@ async def _apply_container_plan(container_plan: _ContainerPlan, deployment_resul
     """Apply an already validated container/root plan to CloudVision."""
     workspace_id = deployment_result.workspace.id
 
-    deployment_result.skipped_static_config_containers.extend(container.avd_container for container in container_plan.containers_to_skip)
+    deployment_result.skipped_static_config_containers.extend(
+        planned_container.container.avd_container for planned_container in container_plan.containers_to_skip
+    )
 
     if container_plan.containers_to_push:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Applying changes for %d containers (create/update)...", len(container_plan.containers_to_push))
-        deployment_result.deployed_static_config_containers.extend(container.avd_container for container in container_plan.containers_to_push)
-        container_tuples = [container.api_tuple for container in container_plan.containers_to_push]
+        deployment_result.deployed_static_config_containers.extend(
+            planned_container.container.avd_container for planned_container in container_plan.containers_to_push
+        )
+        container_tuples = [planned_container.api_tuple for planned_container in container_plan.containers_to_push]
         await cv_client.set_configlet_containers(workspace_id=workspace_id, containers=container_tuples)
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No container creations or updates are needed.")

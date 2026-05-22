@@ -342,6 +342,7 @@ class TestAvdContainerFromDict:
         assert container.tag_query == "role:minimal"
         assert container.description is None
         assert container.match_policy == "match_all"
+        assert container.preserve_existing_sub_containers is False
         assert not container.configlets
         assert not container.sub_containers
 
@@ -352,11 +353,13 @@ class TestAvdContainerFromDict:
             "tag_query": "all",
             "description": "Root container",
             "match_policy": "match_first",
+            "preserve_existing_sub_containers": True,
             "configlets": [{"name": "cfg1"}, {"name": "cfg2"}],
             "sub_containers": [
                 {
                     "name": "Child1",
                     "tag_query": "rack:1",
+                    "preserve_existing_sub_containers": True,
                     "configlets": [{"name": "cfg_child"}],
                 }
             ],
@@ -365,6 +368,7 @@ class TestAvdContainerFromDict:
         assert container.name == "Root"
         assert container.description == "Root container"
         assert container.match_policy == "match_first"
+        assert container.preserve_existing_sub_containers is True
         assert container.configlets == ("cfg1", "cfg2")
         assert len(container.sub_containers) == 1
 
@@ -372,6 +376,7 @@ class TestAvdContainerFromDict:
         assert isinstance(child, AvdContainer)
         assert child.name == "Child1"
         assert child.tag_query == "rack:1"
+        assert child.preserve_existing_sub_containers is True
         assert child.configlets == ("cfg_child",)
 
     @pytest.mark.parametrize(
