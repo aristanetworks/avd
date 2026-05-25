@@ -10,32 +10,13 @@ from unittest.mock import MagicMock, patch
 import pytest
 from ansible.errors import AnsibleActionFail
 
-from ansible_collections.arista.avd.plugins.action.eos_cli_config_gen import ActionModule
-
 if TYPE_CHECKING:
     from collections.abc import Callable
 
+    from ansible_collections.arista.avd.plugins.action.eos_cli_config_gen import ActionModule
+
 MODULE_PATH = "ansible_collections.arista.avd.plugins.action.eos_cli_config_gen"
 MOCK_TMP_DIR = "/avd/mocked/tmp"
-
-
-@pytest.fixture
-def action_module() -> Callable[..., ActionModule]:
-    def _factory(task_args: dict | None = None) -> ActionModule:
-        mock_task = MagicMock()
-        mock_task.args = task_args or {}
-        mock_task.async_val = False
-        mock_task.check_mode = False
-        return ActionModule(
-            task=mock_task,
-            connection=MagicMock(),
-            play_context=MagicMock(),
-            loader=MagicMock(),
-            templar=MagicMock(),
-            shared_loader_obj=MagicMock(),
-        )
-
-    return _factory
 
 
 @pytest.mark.parametrize(

@@ -35,25 +35,6 @@ AVD_LOGGER_NAME = "ansible_collections.arista.avd"
 
 
 @pytest.fixture
-def action_module() -> Callable[..., ActionModule]:
-    def _factory(task_args: dict | None = None) -> ActionModule:
-        mock_task = MagicMock()
-        mock_task.args = task_args if task_args is not None else {}
-        mock_task.async_val = False
-        mock_task.check_mode = False
-        return ActionModule(
-            task=mock_task,
-            connection=MagicMock(),
-            play_context=MagicMock(),
-            loader=MagicMock(),
-            templar=MagicMock(),
-            shared_loader_obj=MagicMock(),
-        )
-
-    return _factory
-
-
-@pytest.fixture
 def reset_worker_context() -> Generator[None, None, None]:
     """Snapshot and restore the module-global ``_HOSTVARS_MANAGER``."""
     original = vi_module._HOSTVARS_MANAGER
