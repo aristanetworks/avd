@@ -1854,6 +1854,13 @@ aaa accounting commands 3 default start-stop logging
 | 1.1.1.1 |
 | 4.4.4.4 |
 
+| Server Interface |
+| ---------------- |
+| Ethernet1 |
+| Ethernet2 |
+| Port-Channel1 |
+| Port-Channel3 |
+
 ### Leases
 
 | Lease IP Address | Lease MAC Address |
@@ -1878,6 +1885,10 @@ address locking
    local-interface Loopback0
    dhcp server ipv4 1.1.1.1
    dhcp server ipv4 4.4.4.4
+   dhcp server interface Ethernet1
+   dhcp server interface Ethernet2
+   dhcp server interface Port-Channel1
+   dhcp server interface Port-Channel3
    lease 2.2.2.2 mac dead.beef.cafe
    lease 3.3.3.3 mac de:af:be:ef:ca:fe
    locked-address expiration mac disabled
@@ -2473,7 +2484,7 @@ kernel software forwarding ecmp
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m -cvtargetconfigs=mss,arista/traffic-policy
    no shutdown
 ```
 
@@ -4291,6 +4302,8 @@ no lacp rate-limit default
 
 STP mode: **rapid-pvst**
 
+STP Loop Guard: **True**
+
 #### Rapid-PVST Instance and Priority
 
 | Instance(s) | Priority |
@@ -4320,6 +4333,7 @@ spanning-tree port-id allocation port-channel range 201 2001
 spanning-tree vlan-id 1,2,3,4,5,10-15 priority 4096
 spanning-tree vlan-id 3 priority 8192
 spanning-tree vlan-id 100-500 priority 16384
+spanning-tree guard loop default
 ```
 
 ### Synchronous Ethernet (SyncE) Settings
@@ -8689,6 +8703,7 @@ router traffic-engineering
 | 400 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 | 500 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 | 600 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+| 700 | 10.255.0.1 | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Distance
 
@@ -8736,6 +8751,19 @@ router traffic-engineering
 | 101 | 20.0.0.0/8 | 10 | - | - |
 | 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
 | 101 | 40.0.0.0/8 | - | - | True |
+
+#### Router OSPF Segment Routing
+
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
+| 700 | all-interfaces | False |
+
+##### OSPF Prefix Segments
+
+| Process ID | Prefix | Index |
+| ---------- | ------ | ----- |
+| 700 | 10.255.0.1/32 | 100 |
+| 700 | 10.255.0.2/32 | 200 |
 
 #### Router OSPF Areas
 
@@ -8847,6 +8875,14 @@ router ospf 600
    area 0.0.20.25 nssa default-information-originate metric-type 1
    area 0.0.20.26 nssa no-summary
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+!
+router ospf 700
+   router-id 10.255.0.1
+   segment-routing mpls
+      no shutdown
+      prefix-segment 10.255.0.1/32 index 100
+      prefix-segment 10.255.0.2/32 index 200
+      adjacency-segment allocation all-interfaces
 !
 ip ospf router-id output-format hostnames
 ```

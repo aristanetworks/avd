@@ -100,7 +100,13 @@ class EosDesigns(EosDesignsRootModel):
                 Combination of `host` and `vrf` should be unique.
                 """
                 groups: Groups
-                """Subclass of AvdList with `str` items."""
+                """
+                List of Tacacs group names.
+                The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                must not be used.
+
+                Subclass of AvdList with `str` items.
+                """
                 vrf: str | None
                 """
                 VRF name.
@@ -160,7 +166,12 @@ class EosDesigns(EosDesignsRootModel):
                             host:
                                Host IP address or name.
                                Combination of `host` and `vrf` should be unique.
-                            groups: Subclass of AvdList with `str` items.
+                            groups:
+                               List of Tacacs group names.
+                               The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                               must not be used.
+
+                               Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
                                The value will be interpreted according to these rules:
@@ -317,7 +328,13 @@ class EosDesigns(EosDesignsRootModel):
                 TLS and no TLS.
                 """
                 groups: Groups
-                """Subclass of AvdList with `str` items."""
+                """
+                List of Radius group names.
+                The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                must not be used.
+
+                Subclass of AvdList with `str` items.
+                """
                 vrf: str | None
                 """
                 VRF name.
@@ -377,7 +394,12 @@ class EosDesigns(EosDesignsRootModel):
                                Host IP address or name.
                                Multiple servers with the same hostname/IP address can be configured for
                                TLS and no TLS.
-                            groups: Subclass of AvdList with `str` items.
+                            groups:
+                               List of Radius group names.
+                               The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                               must not be used.
+
+                               Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
                                The value will be interpreted according to these rules:
@@ -791,6 +813,11 @@ class EosDesigns(EosDesignsRootModel):
 
         DhcpServersIpv4._item_type = str
 
+        class DhcpServerInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServerInterfaces._item_type = str
+
         class LeasesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -860,6 +887,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "locked_address": {"type": LockedAddress},
@@ -880,6 +908,14 @@ class EosDesigns(EosDesignsRootModel):
         """
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
+        dhcp_server_interfaces: DhcpServerInterfaces
+        """
+        The list of interfaces connected to the DHCP server.
+        Requires EOS version 4.36 or later.
+
+        Subclass
+        of AvdList with `str` items.
+        """
         disabled: bool | None
         """Disable IP locking on configured ports."""
         leases: Leases
@@ -894,6 +930,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 local_interface: str | UndefinedType = Undefined,
                 dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
                 disabled: bool | None | UndefinedType = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
@@ -916,6 +953,12 @@ class EosDesigns(EosDesignsRootModel):
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
+                    dhcp_server_interfaces:
+                       The list of interfaces connected to the DHCP server.
+                       Requires EOS version 4.36 or later.
+
+                       Subclass
+                       of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     locked_address: Subclass of AvdModel.
@@ -24444,18 +24487,19 @@ class EosDesigns(EosDesignsRootModel):
         class InterfaceSetsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+            class Interfaces(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Interfaces._item_type = str
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": Interfaces}}
             name: str
-            interfaces: str
-            """
-            Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
-            Multiple interface
-            ranges can be specified separated by ",".
-            """
+            interfaces: Interfaces
+            """Subclass of AvdList with `str` items."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: Interfaces | UndefinedType = Undefined) -> None:
                     """
                     InterfaceSetsItem.
 
@@ -24464,10 +24508,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: name
-                        interfaces:
-                           Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
-                           Multiple interface
-                           ranges can be specified separated by ",".
+                        interfaces: Subclass of AvdList with `str` items.
 
                     """
 
@@ -24579,13 +24620,19 @@ class EosDesigns(EosDesignsRootModel):
             class InterfaceSetsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+                class Interfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Interfaces._item_type = str
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": Interfaces}}
                 name: str
-                interfaces: str | None
+                interfaces: Interfaces
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: Interfaces | UndefinedType = Undefined) -> None:
                         """
                         InterfaceSetsItem.
 
@@ -24594,7 +24641,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             name: name
-                            interfaces: interfaces
+                            interfaces: Subclass of AvdList with `str` items.
 
                         """
 

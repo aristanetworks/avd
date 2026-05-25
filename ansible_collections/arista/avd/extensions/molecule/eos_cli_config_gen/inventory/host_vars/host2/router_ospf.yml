@@ -1,0 +1,11 @@
+router_ospf:
+  process_ids:
+    - id: 701
+      router_id: 10.255.0.2
+      segment_routing_mpls:
+        enabled: true
+        shutdown: true
+        prefix_segments:
+          - prefix: 192.0.2.0/24
+            index: 300
+        adjacency_segment_allocation: sr-peers
