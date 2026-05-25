@@ -22,6 +22,7 @@ class MacAccessListsMixin(Protocol):
     def _set_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl_name: str) -> None:
         """
         Returns structured_config for mac_acl when mac_acl is referenced.
+
         The complexity of the logic building is due to imperfect EOS config model for mac_access_lists.
         This logic will be simplified when EOS config model is improved.
         """
