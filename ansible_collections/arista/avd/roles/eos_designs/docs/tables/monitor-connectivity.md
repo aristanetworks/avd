@@ -12,7 +12,8 @@
     | [<samp>&nbsp;&nbsp;interval</samp>](## "monitor_connectivity.interval") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;interface_sets</samp>](## "monitor_connectivity.interface_sets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_connectivity.interface_sets.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "monitor_connectivity.interface_sets.[].interfaces") | String | Required |  |  | Interface range(s) should be of same type, Ethernet, Loopback, Management etc.<br>Multiple interface ranges can be specified separated by ",".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "monitor_connectivity.interface_sets.[].interfaces") | List, items: String | Required |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "monitor_connectivity.interface_sets.[].interfaces.[]") | String |  |  |  | Interface name (e.g. Ethernet1, Loopback0, Management1).<br>All interfaces in this list must be of the same type. Range syntax (e.g. "Ethernet1-4") is not supported — specify each interface as a separate list item. |
     | [<samp>&nbsp;&nbsp;local_interfaces</samp>](## "monitor_connectivity.local_interfaces") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;address_only</samp>](## "monitor_connectivity.address_only") | Boolean |  | `False` |  | When address-only is configured, the source IP of the packet is set to the interface<br>IP but the packet may exit the device via a different interface.<br>When set to `false`, the probe uses the interface to exit the device. |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "monitor_connectivity.hosts") | List, items: Dictionary |  |  |  |  |
@@ -31,7 +32,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;single_line_description</samp>](## "monitor_connectivity.vrfs.[].single_line_description") | String |  |  |  | Description in the form of `description <description>`.<br>Supported in EOS versions 4.32.2F and above. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_sets</samp>](## "monitor_connectivity.vrfs.[].interface_sets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_connectivity.vrfs.[].interface_sets.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "monitor_connectivity.vrfs.[].interface_sets.[].interfaces") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "monitor_connectivity.vrfs.[].interface_sets.[].interfaces") | List, items: String | Required |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "monitor_connectivity.vrfs.[].interface_sets.[].interfaces.[]") | String |  |  |  | Interface name (e.g. Ethernet1, Loopback0, Management1).<br>All interfaces in this list must be of the same type. Range syntax (e.g. "Ethernet1-4") is not supported — specify each interface as a separate list item. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interfaces</samp>](## "monitor_connectivity.vrfs.[].local_interfaces") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_only</samp>](## "monitor_connectivity.vrfs.[].address_only") | Boolean |  | `False` |  | When address-only is configured, the source IP of the packet is set to the interface<br>IP but the packet may exit the device via a different interface.<br>When set to `false`, the probe uses the interface to exit the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hosts</samp>](## "monitor_connectivity.vrfs.[].hosts") | List, items: Dictionary |  |  |  |  |
@@ -52,10 +54,11 @@
       interval: <int>
       interface_sets:
         - name: <str; required; unique>
+          interfaces: # >=1 items; required
 
-          # Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
-          # Multiple interface ranges can be specified separated by ",".
-          interfaces: <str; required>
+              # Interface name (e.g. Ethernet1, Loopback0, Management1).
+              # All interfaces in this list must be of the same type. Range syntax (e.g. "Ethernet1-4") is not supported — specify each interface as a separate list item.
+            - <str>
       local_interfaces: <str>
 
       # When address-only is configured, the source IP of the packet is set to the interface
@@ -108,7 +111,11 @@
           single_line_description: <str>
           interface_sets:
             - name: <str; required; unique>
-              interfaces: <str>
+              interfaces: # >=1 items; required
+
+                  # Interface name (e.g. Ethernet1, Loopback0, Management1).
+                  # All interfaces in this list must be of the same type. Range syntax (e.g. "Ethernet1-4") is not supported — specify each interface as a separate list item.
+                - <str>
           local_interfaces: <str>
 
           # When address-only is configured, the source IP of the packet is set to the interface
