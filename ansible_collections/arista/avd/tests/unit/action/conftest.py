@@ -13,6 +13,8 @@ import pytest
 if TYPE_CHECKING:
     from collections.abc import Callable, Generator
 
+    from ansible.plugins.action import ActionBase
+
 
 @pytest.fixture(autouse=True)
 def reset_avd_logger() -> Generator[None, None, None]:
@@ -29,7 +31,7 @@ def reset_avd_logger() -> Generator[None, None, None]:
 
 
 @pytest.fixture
-def action_module(request: pytest.FixtureRequest) -> Callable[..., Any]:
+def action_module(request: pytest.FixtureRequest) -> Callable[..., ActionBase]:
     """
     Factory fixture that builds the test module's ``ActionModule`` with mocked Ansible deps.
 
@@ -44,7 +46,7 @@ def action_module(request: pytest.FixtureRequest) -> Callable[..., Any]:
     avd_logger.propagate = True
     avd_logger.handlers = []
 
-    def _factory(task_args: dict | None = None) -> Any:
+    def _factory(task_args: dict | None = None) -> ActionBase:
         mock_task = MagicMock()
         mock_task.args = task_args if task_args is not None else {}
         mock_task.async_val = False
