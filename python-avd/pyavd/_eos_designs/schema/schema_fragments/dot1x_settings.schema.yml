@@ -117,6 +117,9 @@ keys:
             type: bool
             default: false
             description: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
+          lldp:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/lldp
       redistribute_in_evpn:
         type: bool
         default: true

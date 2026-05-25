@@ -31,6 +31,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;letter_case</samp>](## "dot1x_settings.mac_based_authentication.username_format.letter_case") | String | Required |  | Valid Values:<br>- <code>lowercase</code><br>- <code>uppercase</code> | RADIUS User-Name attribute letter case to use on the MAC address. |
     | [<samp>&nbsp;&nbsp;radius_av_pairs</samp>](## "dot1x_settings.radius_av_pairs") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x_settings.radius_av_pairs.service_type") | Boolean |  | `False` |  | Send RADIUS Service-Type attribute in Access-Request and Accounting messages. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lldp</samp>](## "dot1x_settings.radius_av_pairs.lldp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_name</samp>](## "dot1x_settings.radius_av_pairs.lldp.system_name") | Dictionary |  |  |  | LLDP system name (LLDP TLV 5) av-pair. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.radius_av_pairs.lldp.system_name.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.radius_av_pairs.lldp.system_name.auth_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_description</samp>](## "dot1x_settings.radius_av_pairs.lldp.system_description") | Dictionary |  |  |  | LLDP system description (LLDP TLV 6) av-pair. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.radius_av_pairs.lldp.system_description.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.radius_av_pairs.lldp.system_description.auth_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;redistribute_in_evpn</samp>](## "dot1x_settings.redistribute_in_evpn") | Boolean |  | `True` |  | Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs. |
 
 === "YAML"
@@ -103,6 +110,17 @@
 
         # Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
         service_type: <bool; default=False>
+        lldp:
+
+          # LLDP system name (LLDP TLV 5) av-pair.
+          system_name:
+            enabled: <bool; required>
+            auth_only: <bool>
+
+          # LLDP system description (LLDP TLV 6) av-pair.
+          system_description:
+            enabled: <bool; required>
+            auth_only: <bool>
 
       # Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.
       redistribute_in_evpn: <bool; default=True>

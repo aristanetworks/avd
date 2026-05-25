@@ -46,6 +46,12 @@ dot1x:
     mac_string_case: uppercase
   radius_av_pair:
     service_type: true
+    lldp:
+      system_name:
+        enabled: true
+        auth_only: true
+      system_description:
+        enabled: true
 enable_password:
   disabled: true
 hostname: dot1x-settings-2
