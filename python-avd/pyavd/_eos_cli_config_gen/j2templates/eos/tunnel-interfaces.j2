@@ -75,8 +75,8 @@ interface {{ tunnel_interface.name }}
 {%         endif %}
    {{ ipv6_nd_prefix_cli }}
 {%     endfor %}
-{%     for dns_server in tunnel_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort %}
-   ipv6 nd ra dns-server {{ dns_server }}
+{%     for dns_server in tunnel_interface.ipv6_nd.ra.dns_servers.servers | arista.avd.natural_sort(sort_key="address") %}
+   ipv6 nd ra dns-server {{ dns_server.address }}
 {%     endfor %}
 {%     if tunnel_interface.tcp_mss_ceiling is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}

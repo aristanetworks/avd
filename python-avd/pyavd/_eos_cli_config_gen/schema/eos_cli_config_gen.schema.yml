@@ -27196,11 +27196,17 @@ $defs:
                 type: bool
                 description: Accept route preference from received Router Advertisements.
           dns_servers:
-            type: list
-            min_length: 1
-            items:
-              type: str
-              description: IPv6 address of DNS server.
+            type: dict
+            keys:
+              servers:
+                type: list
+                min_length: 1
+                items:
+                  type: dict
+                  keys:
+                    address:
+                      type: str
+                      description: IPv6 address of DNS server.
       managed_config_flag:
         type: bool
         description: Set the "Managed Address Configuration" (M) flag in Router Advertisements.

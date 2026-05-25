@@ -364,7 +364,10 @@ port_channel_interfaces:
         rx_accept:
           default_route: true
           route_preference: true
-        dns_servers: [cafe::cafe:64, ca::ca:64]
+        dns_servers: 
+          servers:
+            - address: cafe::cafe:64
+            - address: ca::ca:64
       managed_config_flag: true
     encapsulation_dot1q:
       vlan: 101

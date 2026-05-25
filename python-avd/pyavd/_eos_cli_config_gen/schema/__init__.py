@@ -7707,10 +7707,52 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class DnsServers(AvdList[str]):
-                    """Subclass of AvdList with `str` items."""
+                class DnsServers(AvdModel):
+                    """Subclass of AvdModel."""
 
-                DnsServers._item_type = str
+                    class ServersItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"address": {"type": str}}
+                        address: str | None
+                        """IPv6 address of DNS server."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, address: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                ServersItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    address: IPv6 address of DNS server.
+
+                                """
+
+                    class Servers(AvdList[ServersItem]):
+                        """Subclass of AvdList with `ServersItem` items."""
+
+                    Servers._item_type = ServersItem
+
+                    _fields: ClassVar[dict] = {"servers": {"type": Servers}}
+                    servers: Servers
+                    """Subclass of AvdList with `ServersItem` items."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, servers: Servers | UndefinedType = Undefined) -> None:
+                            """
+                            DnsServers.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                servers: Subclass of AvdList with `ServersItem` items.
+
+                            """
 
                 _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
                 disabled: bool | None
@@ -7718,7 +7760,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
                 dns_servers: DnsServers
-                """Subclass of AvdList with `str` items."""
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -7738,7 +7780,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
-                            dns_servers: Subclass of AvdList with `str` items.
+                            dns_servers: Subclass of AvdModel.
 
                         """
 
@@ -23239,10 +23281,52 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class DnsServers(AvdList[str]):
-                    """Subclass of AvdList with `str` items."""
+                class DnsServers(AvdModel):
+                    """Subclass of AvdModel."""
 
-                DnsServers._item_type = str
+                    class ServersItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"address": {"type": str}}
+                        address: str | None
+                        """IPv6 address of DNS server."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, address: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                ServersItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    address: IPv6 address of DNS server.
+
+                                """
+
+                    class Servers(AvdList[ServersItem]):
+                        """Subclass of AvdList with `ServersItem` items."""
+
+                    Servers._item_type = ServersItem
+
+                    _fields: ClassVar[dict] = {"servers": {"type": Servers}}
+                    servers: Servers
+                    """Subclass of AvdList with `ServersItem` items."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, servers: Servers | UndefinedType = Undefined) -> None:
+                            """
+                            DnsServers.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                servers: Subclass of AvdList with `ServersItem` items.
+
+                            """
 
                 _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
                 disabled: bool | None
@@ -23250,7 +23334,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
                 dns_servers: DnsServers
-                """Subclass of AvdList with `str` items."""
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -23270,7 +23354,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
-                            dns_servers: Subclass of AvdList with `str` items.
+                            dns_servers: Subclass of AvdModel.
 
                         """
 
@@ -34953,10 +35037,52 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class DnsServers(AvdList[str]):
-                    """Subclass of AvdList with `str` items."""
+                class DnsServers(AvdModel):
+                    """Subclass of AvdModel."""
 
-                DnsServers._item_type = str
+                    class ServersItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"address": {"type": str}}
+                        address: str | None
+                        """IPv6 address of DNS server."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, address: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                ServersItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    address: IPv6 address of DNS server.
+
+                                """
+
+                    class Servers(AvdList[ServersItem]):
+                        """Subclass of AvdList with `ServersItem` items."""
+
+                    Servers._item_type = ServersItem
+
+                    _fields: ClassVar[dict] = {"servers": {"type": Servers}}
+                    servers: Servers
+                    """Subclass of AvdList with `ServersItem` items."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, servers: Servers | UndefinedType = Undefined) -> None:
+                            """
+                            DnsServers.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                servers: Subclass of AvdList with `ServersItem` items.
+
+                            """
 
                 _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
                 disabled: bool | None
@@ -34964,7 +35090,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
                 dns_servers: DnsServers
-                """Subclass of AvdList with `str` items."""
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -34984,7 +35110,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
-                            dns_servers: Subclass of AvdList with `str` items.
+                            dns_servers: Subclass of AvdModel.
 
                         """
 
@@ -69219,10 +69345,52 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class DnsServers(AvdList[str]):
-                    """Subclass of AvdList with `str` items."""
+                class DnsServers(AvdModel):
+                    """Subclass of AvdModel."""
 
-                DnsServers._item_type = str
+                    class ServersItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"address": {"type": str}}
+                        address: str | None
+                        """IPv6 address of DNS server."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, address: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                ServersItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    address: IPv6 address of DNS server.
+
+                                """
+
+                    class Servers(AvdList[ServersItem]):
+                        """Subclass of AvdList with `ServersItem` items."""
+
+                    Servers._item_type = ServersItem
+
+                    _fields: ClassVar[dict] = {"servers": {"type": Servers}}
+                    servers: Servers
+                    """Subclass of AvdList with `ServersItem` items."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, servers: Servers | UndefinedType = Undefined) -> None:
+                            """
+                            DnsServers.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                servers: Subclass of AvdList with `ServersItem` items.
+
+                            """
 
                 _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
                 disabled: bool | None
@@ -69230,7 +69398,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
                 dns_servers: DnsServers
-                """Subclass of AvdList with `str` items."""
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -69250,7 +69418,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
-                            dns_servers: Subclass of AvdList with `str` items.
+                            dns_servers: Subclass of AvdModel.
 
                         """
 
@@ -70490,10 +70658,52 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class DnsServers(AvdList[str]):
-                    """Subclass of AvdList with `str` items."""
+                class DnsServers(AvdModel):
+                    """Subclass of AvdModel."""
 
-                DnsServers._item_type = str
+                    class ServersItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"address": {"type": str}}
+                        address: str | None
+                        """IPv6 address of DNS server."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, address: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                ServersItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    address: IPv6 address of DNS server.
+
+                                """
+
+                    class Servers(AvdList[ServersItem]):
+                        """Subclass of AvdList with `ServersItem` items."""
+
+                    Servers._item_type = ServersItem
+
+                    _fields: ClassVar[dict] = {"servers": {"type": Servers}}
+                    servers: Servers
+                    """Subclass of AvdList with `ServersItem` items."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, servers: Servers | UndefinedType = Undefined) -> None:
+                            """
+                            DnsServers.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                servers: Subclass of AvdList with `ServersItem` items.
+
+                            """
 
                 _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
                 disabled: bool | None
@@ -70501,7 +70711,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
                 dns_servers: DnsServers
-                """Subclass of AvdList with `str` items."""
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -70521,7 +70731,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
-                            dns_servers: Subclass of AvdList with `str` items.
+                            dns_servers: Subclass of AvdModel.
 
                         """
 

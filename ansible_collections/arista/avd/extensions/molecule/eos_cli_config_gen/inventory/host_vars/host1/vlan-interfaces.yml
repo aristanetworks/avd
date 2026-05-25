@@ -441,7 +441,10 @@ vlan_interfaces:
           preferred_lifetime: infinite
           no_autoconfig_flag: true
       ra:
-        dns_servers: [cafe::cafe:64, ca::ca:64]
+        dns_servers: 
+          servers:
+            - address: cafe::cafe:64
+            - address: ca::ca:64
 
   - name: Vlan24
     description: SVI Description
