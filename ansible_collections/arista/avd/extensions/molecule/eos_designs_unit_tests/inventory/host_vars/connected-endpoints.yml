@@ -1,7 +1,7 @@
 loopback_ipv4_pool: 192.168.0.0/24
 
 mac_acls:
-  - name: acl1
+  - name: acl-on-port-profile
     counters_per_entry: true
     entries:
       - sequence: 10
@@ -14,7 +14,7 @@ mac_acls:
         source: any
         destination: 01:00:0c:cc:cc:cd
         destination_wildcard: 00:00:00:00:00:00
-  - name: acl2
+  - name: acl-on-endpoints
     entries:
       - sequence: 5
         action: permit
@@ -107,8 +107,8 @@ servers:
       - switches: [connected-endpoints]
         switch_ports: [Ethernet4]
         description: "PHYSICAL_PORT_DESCRIPTION"
-        mac_acl_in: acl1
-        mac_acl_out: acl2
+        mac_acl_in: acl-on-endpoints
+        mac_acl_out: acl-on-endpoints
   # port-channel provide port-channel description
   - name: OLD_SW-1/5
     adapters:
@@ -159,7 +159,7 @@ servers:
     adapters:
       - switches: [connected-endpoints, connected-endpoints]
         switch_ports: [Ethernet12, Ethernet13]
-        mac_acl_in: acl1
+        mac_acl_in: acl-on-port-profile
         mac_acl_out: no-entries
         port_channel:
           mode: "active"
@@ -354,8 +354,8 @@ port_profiles:
       pae:
         mode: supplicant
         supplicant_profile: test_profile_port_profile
-    mac_acl_in: acl1
-    mac_acl_out: acl2
+    mac_acl_in: acl-on-port-profile
+    mac_acl_out: acl-on-port-profile
 
   - profile: ADDRESS_LOCKING_PROFILE
     address_locking:
