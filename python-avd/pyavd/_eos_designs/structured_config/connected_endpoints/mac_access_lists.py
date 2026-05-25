@@ -25,7 +25,6 @@ class MacAccessListsMixin(Protocol):
         The complexity of the logic building is due to imperfect EOS config model for mac_access_lists.
         This logic will be simplified when EOS config model is improved.
         """
-
         if acl_name not in self.inputs.mac_acls:
             msg = f"mac_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)

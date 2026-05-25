@@ -3711,7 +3711,7 @@ class EosDesigns(EosDesignsRootModel):
             for access ports.
             """
             mac_acl_in: str | None
-            """MAC access-list to apply in the ingress direction. The ACL should be present in `mac_acls`."""
+            """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
             mac_acl_out: str | None
             """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
             spanning_tree_portfast: SpanningTreePortfast | None
@@ -3987,7 +3987,7 @@ class EosDesigns(EosDesignsRootModel):
                            If not set,
                            the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                            for access ports.
-                        mac_acl_in: MAC access-list to apply in the ingress direction. The ACL should be present in `mac_acls`.
+                        mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
                         mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                         spanning_tree_portfast: spanning_tree_portfast
                         spanning_tree_bpdufilter: spanning_tree_bpdufilter
@@ -26482,7 +26482,7 @@ class EosDesigns(EosDesignsRootModel):
         for access ports.
         """
         mac_acl_in: str | None
-        """MAC access-list to apply in the ingress direction. The ACL should be present in `mac_acls`."""
+        """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
         mac_acl_out: str | None
         """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
         spanning_tree_portfast: SpanningTreePortfast | None
@@ -26750,7 +26750,7 @@ class EosDesigns(EosDesignsRootModel):
                        If not set,
                        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                        for access ports.
-                    mac_acl_in: MAC access-list to apply in the ingress direction. The ACL should be present in `mac_acls`.
+                    mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
                     mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
@@ -31425,7 +31425,7 @@ class EosDesigns(EosDesignsRootModel):
         for access ports.
         """
         mac_acl_in: str | None
-        """MAC access-list to apply in the ingress direction. The ACL should be present in `mac_acls`."""
+        """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
         mac_acl_out: str | None
         """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
         spanning_tree_portfast: SpanningTreePortfast | None
@@ -31652,7 +31652,7 @@ class EosDesigns(EosDesignsRootModel):
                        If not set,
                        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                        for access ports.
-                    mac_acl_in: MAC access-list to apply in the ingress direction. The ACL should be present in `mac_acls`.
+                    mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
                     mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
@@ -60408,7 +60408,7 @@ class EosDesigns(EosDesignsRootModel):
                     for access ports.
                     """
                     mac_acl_in: str | None
-                    """MAC access-list to apply in the ingress direction. The ACL should be present in `mac_acls`."""
+                    """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
                     mac_acl_out: str | None
                     """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
                     spanning_tree_portfast: SpanningTreePortfast | None
@@ -60684,7 +60684,7 @@ class EosDesigns(EosDesignsRootModel):
                                    If not set,
                                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                                    for access ports.
-                                mac_acl_in: MAC access-list to apply in the ingress direction. The ACL should be present in `mac_acls`.
+                                mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
                                 mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
@@ -62460,7 +62460,7 @@ class EosDesigns(EosDesignsRootModel):
                     for access ports.
                     """
                     mac_acl_in: str | None
-                    """MAC access-list to apply in the ingress direction. The ACL should be present in `mac_acls`."""
+                    """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
                     mac_acl_out: str | None
                     """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
                     spanning_tree_portfast: SpanningTreePortfast | None
@@ -62736,7 +62736,7 @@ class EosDesigns(EosDesignsRootModel):
                                    If not set,
                                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                                    for access ports.
-                                mac_acl_in: MAC access-list to apply in the ingress direction. The ACL should be present in `mac_acls`.
+                                mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
                                 mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
