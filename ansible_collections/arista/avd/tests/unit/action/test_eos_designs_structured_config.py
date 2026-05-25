@@ -22,25 +22,6 @@ MOCK_TMP_DIR = "/avd/mocked/tmp"
 MOCK_HOSTNAME = "my-spine-1"
 
 
-@pytest.fixture
-def action_module() -> Callable[..., ActionModule]:
-    def _factory(task_args: dict | None = None) -> ActionModule:
-        mock_task = MagicMock()
-        mock_task.args = task_args or {}
-        mock_task.async_val = False
-        mock_task.check_mode = False
-        return ActionModule(
-            task=mock_task,
-            connection=MagicMock(),
-            play_context=MagicMock(),
-            loader=MagicMock(),
-            templar=MagicMock(),
-            shared_loader_obj=MagicMock(),
-        )
-
-    return _factory
-
-
 def _structured_config_stub(data: dict | None = None) -> MagicMock:
     """Build a stub matching the structured_config return shape (has `_as_dict()`)."""
     stub = MagicMock()
@@ -90,7 +71,7 @@ def test_run_emits_no_logs_baseline(
     task_args: dict,
 ) -> None:
     """Baseline assertion that a successful run() emits no log records (DEBUG or higher)."""
-    module = action_module()
+    module = action_module(ActionModule)
 
     with caplog.at_level(logging.DEBUG):
         _run_full_happy_path(module, task_args)
@@ -118,7 +99,7 @@ def test_run_emits_no_logs_baseline(
 )
 def test_run_emits_no_warnings_baseline(action_module: Callable[..., ActionModule], task_args: dict) -> None:
     """Baseline assertion that a successful run() emits no Python warnings (including DeprecationWarning)."""
-    module = action_module()
+    module = action_module(ActionModule)
 
     with warnings.catch_warnings(record=True) as recorded:
         warnings.simplefilter("always")
@@ -135,7 +116,7 @@ def test_run_emits_no_warnings_baseline(action_module: Callable[..., ActionModul
 
 def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule]) -> None:
     """AnsibleActionFail is raised with the documented message when pyavd is missing."""
-    module = action_module()
+    module = action_module(ActionModule)
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=False),
@@ -153,7 +134,7 @@ def test_run_wraps_get_structured_config_exception_with_no_logs(
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """When get_structured_config raises, run() chains the original via __cause__ and emits no logs."""
-    module = action_module({"tmp_dir": MOCK_TMP_DIR})
+    module = action_module(ActionModule, {"tmp_dir": MOCK_TMP_DIR})
     original_error = RuntimeError("pyavd exploded")
 
     with (
@@ -175,7 +156,7 @@ def test_run_wraps_get_structured_config_exception_with_no_logs(
 
 def test_run_wraps_get_structured_config_exception_with_no_warnings(action_module: Callable[..., ActionModule]) -> None:
     """When get_structured_config raises, run() must not emit any Python warnings."""
-    module = action_module({"tmp_dir": MOCK_TMP_DIR})
+    module = action_module(ActionModule, {"tmp_dir": MOCK_TMP_DIR})
 
     with warnings.catch_warnings(record=True) as recorded:
         warnings.simplefilter("always")
@@ -197,6 +178,7 @@ def test_run_wraps_get_structured_config_exception_with_no_warnings(action_modul
 def test_run_wraps_custom_template_merge_exception(action_module: Callable[..., ActionModule]) -> None:
     """A failure inside merge() during custom-template processing surfaces as AnsibleActionFail with the original chained."""
     module = action_module(
+        ActionModule,
         {
             "tmp_dir": MOCK_TMP_DIR,
             "eos_designs_custom_templates": [{"template": "bad.j2"}],
@@ -224,7 +206,7 @@ def test_run_wraps_custom_template_merge_exception(action_module: Callable[..., 
 
 def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:
     """load_validated_inputs raises AnsibleActionFail with the documented message when the file is missing."""
-    module = action_module()
+    module = action_module(ActionModule)
     module.tmp_dir = MOCK_TMP_DIR
 
     mock_file_path = MagicMock()
@@ -239,18 +221,18 @@ def test_load_validated_inputs_raises_when_file_missing(action_module: Callable[
         pytest.raises(
             AnsibleActionFail,
             match=(
-                r"Missing validated inputs for host 'my-spine-device'. "
+                r"Missing validated inputs for host 'my-spine-1'. "
                 r"Ensure the 'arista.avd.validate_inputs' task ran successfully for this host "
                 r"and that no validation errors occurred."
             ),
         ),
     ):
-        module.load_validated_inputs("my-spine-device")
+        module.load_validated_inputs(MOCK_HOSTNAME)
 
 
 def test_load_facts_raises_when_file_missing(action_module: Callable[..., ActionModule]) -> None:
     """load_facts raises AnsibleActionFail naming both the host and the missing file path."""
-    module = action_module()
+    module = action_module(ActionModule)
     module.tmp_dir = MOCK_TMP_DIR
 
     facts_path_str = "/avd/mocked/tmp/eos_designs_facts.json"
@@ -267,10 +249,10 @@ def test_load_facts_raises_when_file_missing(action_module: Callable[..., Action
         pytest.raises(
             AnsibleActionFail,
             match=(
-                r"Missing AVD eos_designs facts for host 'my-spine-device' "
+                r"Missing AVD eos_designs facts for host 'my-spine-1' "
                 rf"\({facts_path_str}\). "
                 r"Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
             ),
         ),
     ):
-        module.load_facts("my-spine-device")
+        module.load_facts(MOCK_HOSTNAME)
