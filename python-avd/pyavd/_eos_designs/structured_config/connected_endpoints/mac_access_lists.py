@@ -20,6 +20,12 @@ class MacAccessListsMixin(Protocol):
     """
 
     def _set_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl_name: str) -> None:
+        """
+        Returns structured_config for mac_acl when mac_acl is referenced.
+        The complexity of the logic building is due to imperfect EOS config model for mac_access_lists.
+        This logic will be simplified when EOS config model is improved.
+        """
+
         if acl_name not in self.inputs.mac_acls:
             msg = f"mac_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
@@ -65,7 +71,7 @@ class MacAccessListsMixin(Protocol):
                     raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                 action += acl_entry.action
-                action = action + " " + acl_entry.source  # pyright: ignore[reportOperatorIssue]
+                action = action + " " + acl_entry.source
                 if acl_entry.source_wildcard:
                     action = action + " " + acl_entry.source_wildcard
 
