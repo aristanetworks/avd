@@ -13,7 +13,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import get_v2
+from pyavd._utils import default, get_v2
 from pyavd.j2filters import natural_sort
 
 from .aaa_settings import AaaSettingsMixin
@@ -286,7 +286,7 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         stp_settings = self.shared_utils.node_config.spanning_tree_settings
-        spanning_tree_mode = stp_settings._get("mode", self.shared_utils.node_config.spanning_tree_mode)
+        spanning_tree_mode: EosCliConfigGen.SpanningTree.Mode | None = default(stp_settings.mode, self.shared_utils.node_config.spanning_tree_mode)
         root_super = stp_settings._get("root_super", self.shared_utils.node_config.spanning_tree_root_super)
         pvst_boundary = stp_settings._get("mst_pvst_boundary", self.shared_utils.node_config.spanning_tree_mst_pvst_boundary)
         stp_po_range = stp_settings._get(
@@ -302,10 +302,11 @@ class AvdStructuredConfigBaseProtocol(
         if stp_po_range:
             self.structured_config.spanning_tree.port_id_allocation_port_channel_range = stp_po_range
 
+        if stp_settings.loop_guard_default:
+            self.structured_config.spanning_tree.loop_guard_default = stp_settings.loop_guard_default
+
         if spanning_tree_mode is not None:
             self.structured_config.spanning_tree.mode = spanning_tree_mode
-            if stp_settings.loop_guard_default:
-                self.structured_config.spanning_tree.loop_guard_default = stp_settings.loop_guard_default
             priority = stp_settings._get("priority", self.shared_utils.node_config.spanning_tree_priority)
             # "rapid-pvst" is not included below. Per vlan spanning-tree priorities are set under network-services.
             if spanning_tree_mode == "mstp":

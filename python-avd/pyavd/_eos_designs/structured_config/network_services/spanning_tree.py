@@ -6,6 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._utils import default
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -26,7 +27,7 @@ class SpanningTreeMixin(Protocol):
             return
 
         stp_settings = self.shared_utils.node_config.spanning_tree_settings
-        spanning_tree_mode = stp_settings._get("mode", self.shared_utils.node_config.spanning_tree_mode)
+        spanning_tree_mode = default(stp_settings.mode, self.shared_utils.node_config.spanning_tree_mode)
         if spanning_tree_mode != "rapid-pvst":
             return
 
