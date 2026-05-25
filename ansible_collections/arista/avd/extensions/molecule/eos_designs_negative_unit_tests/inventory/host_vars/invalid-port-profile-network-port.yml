@@ -8,8 +8,8 @@ port_profiles:
     spanning_tree_bpdufilter: enabled
     port_channel:
       subinterfaces:
-          - number: 101
-            short_esi: 0000:0000:0101
+        - number: 101
+          short_esi: 0000:0000:0101
 
 network_ports:
   - switches:
