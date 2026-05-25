@@ -1719,6 +1719,17 @@ keys:
           The recommended timeout is five minutes.'
         convert_types:
         - str
+      cvtargetconfigs:
+        type: list
+        min_length: 1
+        description: 'Set the target configuration path(s) for dynamic device configuration
+          from CloudVision.
+
+          Used for MSS (Multi-Domain Segmentation Service) integrations.
+
+          '
+        items:
+          type: str
   daemons:
     type: list
     primary_key: name
@@ -24380,6 +24391,9 @@ keys:
             required: true
             convert_types:
             - str
+      loop_guard_default:
+        description: Enable loopguard by default on all ports.
+        type: bool
   standard_access_lists:
     type: list
     primary_key: name
