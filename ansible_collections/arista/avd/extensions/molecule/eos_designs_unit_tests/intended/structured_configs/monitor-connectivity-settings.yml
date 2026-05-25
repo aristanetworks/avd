@@ -32,11 +32,11 @@ monitor_connectivity:
   interval: 5
   interface_sets:
   - name: SET_INTERNET
-    interfaces: Ethernet1-2
+    interfaces: Ethernet1,Ethernet2
   - name: SET_INTERNET_1
-    interfaces: Ethernet3-4
+    interfaces: Ethernet3,Ethernet4
   - name: SET_INTERNET_2
-    interfaces: Ethernet5-6
+    interfaces: Ethernet5,Ethernet6
   - name: SET_LOOPBACK0
     interfaces: Loopback0
   local_interfaces: SET_LOOPBACK0
@@ -69,7 +69,7 @@ monitor_connectivity:
     - name: SET_MGMT_1
       interfaces: Loopback100
     - name: SET_MGMT_2
-      interfaces: Loopback101
+      interfaces: Loopback101,Loopback102,Loopback103,Loopback104
     address_only: false
     hosts:
     - name: MGMT_SERVER
