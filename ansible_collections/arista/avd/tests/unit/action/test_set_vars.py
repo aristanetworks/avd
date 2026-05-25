@@ -13,7 +13,7 @@ from ansible_collections.arista.avd.plugins.action.set_vars import ActionModule
 def _action_module(args: dict) -> ActionModule:
     task = MagicMock()
     task.args = args
-    action = ActionModule(
+    return ActionModule(
         task=task,
         connection=MagicMock(),
         play_context=MagicMock(),
@@ -21,7 +21,6 @@ def _action_module(args: dict) -> ActionModule:
         templar=MagicMock(),
         shared_loader_obj=MagicMock(),
     )
-    return action
 
 
 @pytest.mark.parametrize(
