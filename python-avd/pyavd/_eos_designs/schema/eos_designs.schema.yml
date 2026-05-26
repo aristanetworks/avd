@@ -1235,11 +1235,11 @@ keys:
                       Subinterfaces are only supported on routed port-channels, which
                       means they cannot be configured on MLAG port-channels.
 
-                      Setting short_esi: auto generates the short_esi automatically
+                      Setting `short_esi: auto` generates the short_esi automatically
                       using a hash of configuration elements.
 
                       Please see the notes under "EVPN A/A ESI dual-attached endpoint
-                      scenario" before setting short_esi: auto.
+                      scenario" before setting `short_esi: auto`.
 
                       '
                     items:
@@ -5624,11 +5624,11 @@ keys:
                 Subinterfaces are only supported on routed port-channels, which means
                 they cannot be configured on MLAG port-channels.
 
-                Setting short_esi: auto generates the short_esi automatically using
+                Setting `short_esi: auto` generates the short_esi automatically using
                 a hash of configuration elements.
 
                 Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario"
-                before setting short_esi: auto.
+                before setting `short_esi: auto`.
 
                 '
               items:
