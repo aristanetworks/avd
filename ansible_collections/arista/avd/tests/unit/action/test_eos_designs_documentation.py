@@ -260,7 +260,7 @@ def test_load_facts_raises_when_file_missing(action_module: Callable[..., Action
         patch(f"{MODULE_PATH}.get_eos_designs_facts_path", return_value=missing_path),
         pytest.raises(
             AnsibleActionFail,
-            match=r"Missing AVD eos_designs facts to generate documentation .*Ensure the 'arista\.avd\.eos_designs_facts' task ran successfully\.",
+            match=r"Missing AVD eos_designs facts to generate documentation .*Ensure the 'arista.avd.eos_designs_facts' task ran successfully.",
         ),
     ):
         module.load_facts()
