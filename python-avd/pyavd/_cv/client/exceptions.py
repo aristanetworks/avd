@@ -91,5 +91,9 @@ class CVGRPCError(CVClientException):
     """GRPC call failed."""
 
 
+class CVClientInvalidServerName(CVClientException):
+    """CloudVision server FQDN is invalid."""
+
+
 class CVDeviceDecommissionFailed(CVClientException):
     """Device Decommission failed."""
