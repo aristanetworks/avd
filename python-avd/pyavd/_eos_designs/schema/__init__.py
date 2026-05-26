@@ -18140,17 +18140,18 @@ class EosDesigns(EosDesignsRootModel):
         class RadiusAvPairs(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}}
+            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}, "framed_mtu": {"type": int}}
             service_type: bool
             """
             Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
 
             Default value: `False`
             """
+            framed_mtu: int | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, service_type: bool | UndefinedType = Undefined) -> None:
+                def __init__(self, *, service_type: bool | UndefinedType = Undefined, framed_mtu: int | None | UndefinedType = Undefined) -> None:
                     """
                     RadiusAvPairs.
 
@@ -18159,6 +18160,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         service_type: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
+                        framed_mtu: framed_mtu
 
                     """
 
