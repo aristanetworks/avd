@@ -69,7 +69,7 @@
 {%         else %}
 {%             set nd_cache = "-" %}
 {%         endif %}
-{%         set row_ra_dns_servers = management_interface.ipv6_nd.ra.dns_servers.servers | arista.avd.default([]) | arista.avd.natural_sort(sort_key="address") | map(attribute="address") | join(", ") or '-' %}
+{%         set row_ra_dns_servers = management_interface.ipv6_nd.ra.dns_servers.servers | arista.avd.natural_sort(sort_key="address") | map(attribute="address") | join(", ") or '-' %}
 | {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6_address }} | {{ ipv6_gateway }} | {{ nd_ra_disabled }} | {{ nd_ra_rx_accept | join(", ") }} | {{ managed_config_flag }} | {{ other_config_flag }} | {{ nd_cache }} | {{ row_ra_dns_servers }} |
 {%     endfor %}
 {%     if management_interfaces | arista.avd.default([]) | selectattr('redundancy','arista.avd.defined') | list %}
