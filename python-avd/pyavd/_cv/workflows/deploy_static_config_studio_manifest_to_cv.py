@@ -105,12 +105,13 @@ async def _sync_containers(
             containers_to_push.append(desired_container)
             continue
 
-        if not desired_container.matches_configlet_assignment(existing_container):
-            # Container has changed.
-            containers_to_push.append(desired_container)
-        else:
+        if desired_container.matches_configlet_assignment(existing_container):
             # Container is unchanged.
             containers_to_skip.append(desired_container)
+            continue
+
+        # Container has changed.
+        containers_to_push.append(desired_container)
 
         # Existing unmanaged children unassigned by the manifest become orphans.
         existing_children = set(existing_container.child_assignment_ids.values)
