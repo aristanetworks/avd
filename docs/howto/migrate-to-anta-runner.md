@@ -354,6 +354,7 @@ In `anta_runner`, this setting has moved to `eos_designs` and is configured thro
             - Arista Networks
             - Arastra, Inc.
             - Third Party Vendor
+            - Not Present  # Required to avoid errors on ports with no transceivers connected
 
     # Apply to node types
     spine:
@@ -365,6 +366,9 @@ In `anta_runner`, this setting has moved to `eos_designs` and is configured thro
     ```
 
 </div>
+
+!!! warning
+    Include `"Not Present"` in the `transceiver_manufacturers` list. Otherwise validation will error out on all ports with no transceivers connected.
 
 For more details, see [Validation Profiles](../../ansible_collections/arista/avd/roles/anta_runner/README.md#validation-profiles).
 
