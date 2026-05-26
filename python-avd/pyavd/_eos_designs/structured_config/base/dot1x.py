@@ -98,6 +98,8 @@ class Dot1xMixin(Protocol):
                 delimiter=dot1x_settings.mac_based_authentication.username_format.delimiter,
                 mac_string_case=dot1x_settings.mac_based_authentication.username_format.letter_case,
             )
+        if dot1x_settings.captive_portal:
+            self.structured_config.dot1x.captive_portal = dot1x_settings.captive_portal
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,

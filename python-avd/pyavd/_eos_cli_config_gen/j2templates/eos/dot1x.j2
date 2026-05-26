@@ -107,6 +107,7 @@ dot1x
 {%         endif %}
 {%         if dot1x.captive_portal.enabled is arista.avd.defined(true) %}
 {%             set captive_portal_cli = "captive-portal" %}
+{#             TODO: AVD 7.0.0 captive_portal.url and captive_portal.ssl_profile are mutually exclusive in EOS CLI #}
 {%             if dot1x.captive_portal.url is arista.avd.defined %}
 {%                 set captive_portal_cli = captive_portal_cli ~ " url " ~ dot1x.captive_portal.url %}
 {%             endif %}

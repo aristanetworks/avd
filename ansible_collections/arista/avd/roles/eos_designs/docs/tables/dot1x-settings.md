@@ -32,6 +32,12 @@
     | [<samp>&nbsp;&nbsp;radius_av_pairs</samp>](## "dot1x_settings.radius_av_pairs") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x_settings.radius_av_pairs.service_type") | Boolean |  | `False` |  | Send RADIUS Service-Type attribute in Access-Request and Accounting messages. |
     | [<samp>&nbsp;&nbsp;redistribute_in_evpn</samp>](## "dot1x_settings.redistribute_in_evpn") | Boolean |  | `True` |  | Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs. |
+    | [<samp>&nbsp;&nbsp;captive_portal</samp>](## "dot1x_settings.captive_portal") | Dictionary |  |  |  | Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.captive_portal.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "dot1x_settings.captive_portal.url") | String |  |  |  | Supported URL type:<br>  - http: http://<hostname>[:<port>]<br>  - https: https://<hostname>[:<port>] |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x_settings.captive_portal.ssl_profile") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;start_limit_infinite</samp>](## "dot1x_settings.captive_portal.start_limit_infinite") | Boolean |  |  |  | Set captive-portal start limit to infinite. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv4</samp>](## "dot1x_settings.captive_portal.access_list_ipv4") | String |  |  |  | Standard access-list name. |
 
 === "YAML"
 
@@ -106,4 +112,20 @@
 
       # Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.
       redistribute_in_evpn: <bool; default=True>
+
+      # Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.
+      captive_portal:
+        enabled: <bool; required>
+
+        # Supported URL type:
+        #   - http: http://<hostname>[:<port>]
+        #   - https: https://<hostname>[:<port>]
+        url: <str>
+        ssl_profile: <str>
+
+        # Set captive-portal start limit to infinite.
+        start_limit_infinite: <bool>
+
+        # Standard access-list name.
+        access_list_ipv4: <str>
     ```

@@ -122,3 +122,6 @@ keys:
         default: true
         description: |-
           Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.
+      captive_portal:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/captive_portal

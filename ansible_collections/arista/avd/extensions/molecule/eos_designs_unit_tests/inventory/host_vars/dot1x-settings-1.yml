@@ -9,6 +9,11 @@ l2leaf:
 
 dot1x_settings:
   enabled: true
+  captive_portal:
+    enabled: true
+    url: https://captive.arista.com
+    start_limit_infinite: true
+    access_list_ipv4: CAPTIVE-PORTAL-ACL
 
 aaa_settings:
   radius:

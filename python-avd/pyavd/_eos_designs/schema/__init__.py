@@ -18158,6 +18158,7 @@ class EosDesigns(EosDesignsRootModel):
             "mac_based_authentication": {"type": MacBasedAuthentication},
             "radius_av_pairs": {"type": RadiusAvPairs},
             "redistribute_in_evpn": {"type": bool, "default": True},
+            "captive_portal": {"type": EosCliConfigGen.Dot1x.CaptivePortal},
         }
         enabled: bool
         """
@@ -18196,6 +18197,11 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
+        captive_portal: EosCliConfigGen.Dot1x.CaptivePortal
+        """
+        Web authentication feature authenticates a supplicant through a web page, referred to as a captive
+        portal.
+        """
 
         if TYPE_CHECKING:
 
@@ -18211,6 +18217,7 @@ class EosDesigns(EosDesignsRootModel):
                 mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
                 radius_av_pairs: RadiusAvPairs | UndefinedType = Undefined,
                 redistribute_in_evpn: bool | UndefinedType = Undefined,
+                captive_portal: EosCliConfigGen.Dot1x.CaptivePortal | UndefinedType = Undefined,
             ) -> None:
                 """
                 Dot1xSettings.
@@ -18233,6 +18240,9 @@ class EosDesigns(EosDesignsRootModel):
                     redistribute_in_evpn:
                        Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
                        configured MAC-VRFs.
+                    captive_portal:
+                       Web authentication feature authenticates a supplicant through a web page, referred to as a captive
+                       portal.
 
                 """
 
