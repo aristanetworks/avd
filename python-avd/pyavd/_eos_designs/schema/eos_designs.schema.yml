@@ -54,6 +54,11 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: (?!radius$|tacacs\+$|ldap$).+
+                  description: 'List of Tacacs group names.
+
+                    The group names ''radius'', ''tacacs+'' and ''ldap'' are reserved
+                    by EOS and must not be used.'
                 vrf:
                   type: str
                   description: "VRF name.\nThe value will be interpreted according
@@ -140,6 +145,11 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: (?!radius$|tacacs\+$|ldap$).+
+                  description: 'List of Radius group names.
+
+                    The group names ''radius'', ''tacacs+'' and ''ldap'' are reserved
+                    by EOS and must not be used.'
                 vrf:
                   type: str
                   description: "VRF name.\nThe value will be interpreted according
@@ -4123,14 +4133,15 @@ keys:
             name:
               type: str
             interfaces:
-              type: str
+              type: list
               required: true
-              description: 'Interface range(s) should be of same type, Ethernet, Loopback,
-                Management etc.
-
-                Multiple interface ranges can be specified separated by ",".
-
-                '
+              min_length: 1
+              items:
+                type: str
+                description: "Interface name (e.g. Ethernet1, Loopback0, Management1).\nAll
+                  interfaces in this list must be of the same type. Range syntax (e.g.
+                  \"Ethernet1-4\") is not supported \u2014 specify each interface
+                  as a separate list item."
       local_interfaces:
         type: str
       address_only:
@@ -4228,7 +4239,15 @@ keys:
                   name:
                     type: str
                   interfaces:
-                    type: str
+                    type: list
+                    required: true
+                    min_length: 1
+                    items:
+                      type: str
+                      description: "Interface name (e.g. Ethernet1, Loopback0, Management1).\nAll
+                        interfaces in this list must be of the same type. Range syntax
+                        (e.g. \"Ethernet1-4\") is not supported \u2014 specify each
+                        interface as a separate list item."
             local_interfaces:
               type: str
             address_only:
