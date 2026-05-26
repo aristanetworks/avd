@@ -6,7 +6,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils import default
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -26,12 +25,16 @@ class SpanningTreeMixin(Protocol):
         if not self.shared_utils.network_services_l2:
             return
 
-        stp_settings = self.shared_utils.node_config.spanning_tree_settings
-        spanning_tree_mode = default(stp_settings.mode, self.shared_utils.node_config.spanning_tree_mode)
+        node_config = self.shared_utils.node_config
+        if stp_settings := node_config.spanning_tree_settings:
+            spanning_tree_mode = stp_settings.mode
+            default_priority = stp_settings.priority
+        else:
+            spanning_tree_mode = node_config.spanning_tree_mode
+            default_priority = node_config.spanning_tree_priority
+
         if spanning_tree_mode != "rapid-pvst":
             return
-
-        default_priority = stp_settings._get("priority", self.shared_utils.node_config.spanning_tree_priority)
 
         vlan_stp_priorities = {}
         non_default_vlans = set()
