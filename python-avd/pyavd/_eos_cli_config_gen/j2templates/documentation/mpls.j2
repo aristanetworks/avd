@@ -30,7 +30,13 @@
 {## MPLS Rsvp #}
 {%     include 'documentation/mpls-rsvp.j2' %}
 {% endif %}
-{% if mpls is arista.avd.defined or mpls.rsvp is arista.avd.defined %}
+{% if mpls.ip is arista.avd.defined(true)
+    or mpls.ldp is arista.avd.defined
+    or mpls.tunnel is arista.avd.defined
+    or mpls.icmp is arista.avd.defined
+    or (mpls.rsvp is arista.avd.defined
+        and (mpls.rsvp.values() | select('arista.avd.defined') | list | length > 0
+             or eos_config_future.only_render_mpls_rsvp_with_settings is not arista.avd.defined(true))) %}
 
 ### MPLS Device Configuration
 

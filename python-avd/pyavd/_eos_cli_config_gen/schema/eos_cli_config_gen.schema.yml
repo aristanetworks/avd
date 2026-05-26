@@ -1719,6 +1719,17 @@ keys:
           The recommended timeout is five minutes.'
         convert_types:
         - str
+      cvtargetconfigs:
+        type: list
+        min_length: 1
+        description: 'Set the target configuration path(s) for dynamic device configuration
+          from CloudVision.
+
+          Used for MSS (Multi-Domain Segmentation Service) integrations.
+
+          '
+        items:
+          type: str
   daemons:
     type: list
     primary_key: name
@@ -2523,6 +2534,14 @@ keys:
           section.
 
           Without this the ''!'' is missing when only configuring routing for VRFs.'
+      only_render_mpls_rsvp_with_settings:
+        type: bool
+        default: false
+        description: 'When `true`, only renders the `mpls rsvp` CLI block when at
+          least one `mpls.rsvp.*` setting is defined.
+
+          When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined,
+          even if no sub-settings are set.'
   errdisable:
     type: dict
     keys:
@@ -12309,7 +12328,7 @@ keys:
                 type: str
                 valid_values:
                 - ingress
-                - egress
+                - fabric-egress
           mdb_profile:
             type: str
             description: 'Sand platforms MDB Profile configuration. Note: l3-xxxl
@@ -22915,6 +22934,46 @@ keys:
               type: bool
             mpls_ldp_sync_default:
               type: bool
+            segment_routing_mpls:
+              type: dict
+              description: OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or
+                later.
+              keys:
+                enabled:
+                  type: bool
+                  required: true
+                  description: 'Enable the configuration mode.
+
+                    This does not control the shutdown command.'
+                shutdown:
+                  type: bool
+                prefix_segments:
+                  type: list
+                  primary_key: prefix
+                  unique_keys:
+                  - index
+                  description: Prefix Segment Identifier (Prefix-SID) configuration.
+                  items:
+                    type: dict
+                    keys:
+                      prefix:
+                        type: str
+                        description: IPv4 prefix (e.g. 192.0.2.1/32).
+                      index:
+                        type: int
+                        required: true
+                        convert_types:
+                        - str
+                        description: SID index value.
+                        min: 0
+                        max: 65535
+                adjacency_segment_allocation:
+                  type: str
+                  valid_values:
+                  - all-interfaces
+                  - none
+                  - sr-peers
+                  description: Adjacency segment allocation mode.
             eos_cli:
               type: str
               description: Multiline EOS CLI rendered directly on the Router OSPF
@@ -24332,6 +24391,9 @@ keys:
             required: true
             convert_types:
             - str
+      loop_guard_default:
+        description: Enable loopguard by default on all ports.
+        type: bool
   standard_access_lists:
     type: list
     primary_key: name

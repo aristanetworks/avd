@@ -18126,17 +18126,18 @@ class EosDesigns(EosDesignsRootModel):
         class RadiusAvPairs(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}}
+            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}, "framed_mtu": {"type": int}}
             service_type: bool
             """
             Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
 
             Default value: `False`
             """
+            framed_mtu: int | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, service_type: bool | UndefinedType = Undefined) -> None:
+                def __init__(self, *, service_type: bool | UndefinedType = Undefined, framed_mtu: int | None | UndefinedType = Undefined) -> None:
                     """
                     RadiusAvPairs.
 
@@ -18145,6 +18146,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         service_type: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
+                        framed_mtu: framed_mtu
 
                     """
 
@@ -24483,18 +24485,19 @@ class EosDesigns(EosDesignsRootModel):
         class InterfaceSetsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+            class Interfaces(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Interfaces._item_type = str
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": Interfaces}}
             name: str
-            interfaces: str
-            """
-            Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
-            Multiple interface
-            ranges can be specified separated by ",".
-            """
+            interfaces: Interfaces
+            """Subclass of AvdList with `str` items."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: Interfaces | UndefinedType = Undefined) -> None:
                     """
                     InterfaceSetsItem.
 
@@ -24503,10 +24506,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: name
-                        interfaces:
-                           Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
-                           Multiple interface
-                           ranges can be specified separated by ",".
+                        interfaces: Subclass of AvdList with `str` items.
 
                     """
 
@@ -24618,13 +24618,19 @@ class EosDesigns(EosDesignsRootModel):
             class InterfaceSetsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+                class Interfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Interfaces._item_type = str
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": Interfaces}}
                 name: str
-                interfaces: str | None
+                interfaces: Interfaces
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: Interfaces | UndefinedType = Undefined) -> None:
                         """
                         InterfaceSetsItem.
 
@@ -24633,7 +24639,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             name: name
-                            interfaces: interfaces
+                            interfaces: Subclass of AvdList with `str` items.
 
                         """
 

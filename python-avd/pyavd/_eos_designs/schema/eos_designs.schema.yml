@@ -2375,6 +2375,9 @@ keys:
             default: false
             description: Send RADIUS Service-Type attribute in Access-Request and
               Accounting messages.
+          framed_mtu:
+            type: int
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/framed_mtu
       redistribute_in_evpn:
         type: bool
         default: true
@@ -4133,14 +4136,15 @@ keys:
             name:
               type: str
             interfaces:
-              type: str
+              type: list
               required: true
-              description: 'Interface range(s) should be of same type, Ethernet, Loopback,
-                Management etc.
-
-                Multiple interface ranges can be specified separated by ",".
-
-                '
+              min_length: 1
+              items:
+                type: str
+                description: "Interface name (e.g. Ethernet1, Loopback0, Management1).\nAll
+                  interfaces in this list must be of the same type. Range syntax (e.g.
+                  \"Ethernet1-4\") is not supported \u2014 specify each interface
+                  as a separate list item."
       local_interfaces:
         type: str
       address_only:
@@ -4238,7 +4242,15 @@ keys:
                   name:
                     type: str
                   interfaces:
-                    type: str
+                    type: list
+                    required: true
+                    min_length: 1
+                    items:
+                      type: str
+                      description: "Interface name (e.g. Ethernet1, Loopback0, Management1).\nAll
+                        interfaces in this list must be of the same type. Range syntax
+                        (e.g. \"Ethernet1-4\") is not supported \u2014 specify each
+                        interface as a separate list item."
             local_interfaces:
               type: str
             address_only:
