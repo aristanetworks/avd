@@ -10,3 +10,6 @@ platform:
       profile: balanced
     voq:
       credit_rates_unified: false
+  sand:
+    multicast_replication:
+      default: fabric-egress
