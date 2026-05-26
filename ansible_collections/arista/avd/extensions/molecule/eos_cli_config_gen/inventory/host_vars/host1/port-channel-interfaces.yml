@@ -364,7 +364,7 @@ port_channel_interfaces:
         rx_accept:
           default_route: true
           route_preference: true
-        dns_servers: 
+        dns_servers:
           servers:
             - address: cafe::cafe:64
             - address: ca::ca:64
