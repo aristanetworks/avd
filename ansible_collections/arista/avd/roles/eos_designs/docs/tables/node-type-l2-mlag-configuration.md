@@ -12,6 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.defaults.mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.defaults.mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.defaults.mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multi_vtep_mlag</samp>](## "<node_type_keys.key>.defaults.multi_vtep_mlag") | Boolean |  | `False` |  | Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter<br>(restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface<br>multiple-vrf-disabled on the MLAG peer link members).<br>Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.defaults.mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "<node_type_keys.key>.defaults.mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "<node_type_keys.key>.defaults.mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -43,6 +44,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_vtep_mlag</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].multi_vtep_mlag") | Boolean |  | `False` |  | Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter<br>(restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface<br>multiple-vrf-disabled on the MLAG peer link members).<br>Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -70,6 +72,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_vtep_mlag</samp>](## "<node_type_keys.key>.node_groups.[].multi_vtep_mlag") | Boolean |  | `False` |  | Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter<br>(restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface<br>multiple-vrf-disabled on the MLAG peer link members).<br>Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.node_groups.[].mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "<node_type_keys.key>.node_groups.[].mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "<node_type_keys.key>.node_groups.[].mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -99,6 +102,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.nodes.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_vtep_mlag</samp>](## "<node_type_keys.key>.nodes.[].multi_vtep_mlag") | Boolean |  | `False` |  | Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter<br>(restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface<br>multiple-vrf-disabled on the MLAG peer link members).<br>Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.nodes.[].mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "<node_type_keys.key>.nodes.[].mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "<node_type_keys.key>.nodes.[].mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -128,6 +132,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "device_profiles.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "device_profiles.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "device_profiles.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multi_vtep_mlag</samp>](## "device_profiles.[].multi_vtep_mlag") | Boolean |  | `False` |  | Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter<br>(restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface<br>multiple-vrf-disabled on the MLAG peer link members).<br>Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "device_profiles.[].mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "device_profiles.[].mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "device_profiles.[].mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -157,6 +162,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "devices.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "devices.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "devices.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multi_vtep_mlag</samp>](## "devices.[].multi_vtep_mlag") | Boolean |  | `False` |  | Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter<br>(restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface<br>multiple-vrf-disabled on the MLAG peer link members).<br>Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "devices.[].mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "devices.[].mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "devices.[].mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -207,6 +213,12 @@
         # Overrides the settings on the vlan interface level.
         # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_peer_l3_vlan_structured_config: <dict>
+
+        # Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter
+        # (restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface
+        # multiple-vrf-disabled on the MLAG peer link members).
+        # Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+        multi_vtep_mlag: <bool; default=False>
 
         # Enable / Disable auto MLAG, when two nodes are defined in node group.
         mlag: <bool; default=True>
@@ -319,6 +331,12 @@
               # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
               mlag_peer_l3_vlan_structured_config: <dict>
 
+              # Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter
+              # (restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface
+              # multiple-vrf-disabled on the MLAG peer link members).
+              # Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+              multi_vtep_mlag: <bool; default=False>
+
               # Enable / Disable auto MLAG, when two nodes are defined in node group.
               mlag: <bool; default=True>
 
@@ -416,6 +434,12 @@
           # Overrides the settings on the vlan interface level.
           # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_l3_vlan_structured_config: <dict>
+
+          # Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter
+          # (restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface
+          # multiple-vrf-disabled on the MLAG peer link members).
+          # Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+          multi_vtep_mlag: <bool; default=False>
 
           # Enable / Disable auto MLAG, when two nodes are defined in node group.
           mlag: <bool; default=True>
@@ -521,6 +545,12 @@
           # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_l3_vlan_structured_config: <dict>
 
+          # Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter
+          # (restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface
+          # multiple-vrf-disabled on the MLAG peer link members).
+          # Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+          multi_vtep_mlag: <bool; default=False>
+
           # Enable / Disable auto MLAG, when two nodes are defined in node group.
           mlag: <bool; default=True>
 
@@ -625,6 +655,12 @@
         # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_peer_l3_vlan_structured_config: <dict>
 
+        # Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter
+        # (restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface
+        # multiple-vrf-disabled on the MLAG peer link members).
+        # Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+        multi_vtep_mlag: <bool; default=False>
+
         # Enable / Disable auto MLAG, when two nodes are defined in node group.
         mlag: <bool; default=True>
 
@@ -728,6 +764,12 @@
         # Overrides the settings on the vlan interface level.
         # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_peer_l3_vlan_structured_config: <dict>
+
+        # Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature and apply the SA055 VXLAN decapsulation filter
+        # (restricting decapsulation to the default VRF on supported platforms, otherwise via per-interface
+        # multiple-vrf-disabled on the MLAG peer link members).
+        # Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6 is enabled.
+        multi_vtep_mlag: <bool; default=False>
 
         # Enable / Disable auto MLAG, when two nodes are defined in node group.
         mlag: <bool; default=True>

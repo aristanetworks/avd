@@ -53,7 +53,7 @@ class VxlanInterfaceMixin(Protocol):
 
     @cached_property
     def _multi_vtep(self: AvdStructuredConfigNetworkServicesProtocol) -> bool:
-        if self.shared_utils.node_config.multi_vtep_mlag.enabled is True:
+        if self.shared_utils.node_config.multi_vtep_mlag is True:
             evpn_gw = self.shared_utils.node_config.evpn_gateway
             if evpn_gw.evpn_l2.enabled or evpn_gw.evpn_l3.enabled:
                 msg = (
@@ -64,16 +64,13 @@ class VxlanInterfaceMixin(Protocol):
             if self.shared_utils.underlay_ipv6:
                 msg = "'multi_vtep_mlag' is not supported with IPv6 underlay ('underlay_ipv6: true')."
                 raise AristaAvdInvalidInputsError(msg)
-        return self.shared_utils.mlag is True and (self.shared_utils.evpn_multicast is True or self.shared_utils.node_config.multi_vtep_mlag.enabled is True)
+        return self.shared_utils.mlag is True and (self.shared_utils.evpn_multicast is True or self.shared_utils.node_config.multi_vtep_mlag is True)
 
     def _set_vxlan_decap_filter(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """Set vxlan decapsulation filter for SA055 mitigation when multi_vtep_mlag is active."""
-        # Ideally the first part of the condition should check `_multi_vtep` instead of `multi_vtep_mlag.enabled`, but this is needed
-        # for backwards compatibility to avoid changing the behavior of existing users that have evpn multicast enabled
-        if not (
-            self.shared_utils.node_config.multi_vtep_mlag.enabled is True
-            and self.shared_utils.node_config.multi_vtep_mlag.vxlan_decap_on_default_vrf_only is True
-        ):
+        # Gated on multi_vtep_mlag (not _multi_vtep) to preserve behavior for users who get _multi_vtep
+        # implicitly via evpn_multicast and have not opted into the SA055 filter.
+        if self.shared_utils.node_config.multi_vtep_mlag is not True:
             return
         vxlan = self.structured_config.vxlan_interface.vxlan1.vxlan
         if self.shared_utils.platform_settings.feature_support.vxlan_decap_vrf_filter:

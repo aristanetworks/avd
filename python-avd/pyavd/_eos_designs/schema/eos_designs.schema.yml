@@ -10985,36 +10985,21 @@ $defs:
             pattern: Loopback[\d/]+
           multi_vtep_mlag:
             documentation_options:
-              table: node-type-loopback-vtep-configuration
-            description: 'Configuration for MLAG multi-VTEP feature and SA055 security
-              mitigation.
+              table: node-type-l2-mlag-configuration
+            description: 'Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature
+              and apply the SA055 VXLAN decapsulation filter
+
+              (restricting decapsulation to the default VRF on supported platforms,
+              otherwise via per-interface
+
+              multiple-vrf-disabled on the MLAG peer link members).
+
+              Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6
+              is enabled.
 
               '
-            type: dict
-            keys:
-              enabled:
-                type: bool
-                default: false
-                description: 'Enable MLAG VTEPs to utilize the multi-VTEP MLAG feature.
-
-                  Cannot be enabled when evpn_gateway.evpn_l2/evpn_l3 or underlay_ipv6
-                  is enabled.
-
-                  '
-              vxlan_decap_on_default_vrf_only:
-                type: bool
-                default: true
-                description: 'Restrict VXLAN decapsulation to the default VRF only,
-                  mitigating SA055.
-
-                  On supported platforms: sets ''vxlan decapsulation filter vrf non-default
-                  ipv4''.
-
-                  On unsupported platforms: sets ''vxlan decapsulation filter interface
-
-                  multiple-vrf disabled'' with the MLAG peer link member interfaces.
-
-                  '
+            type: bool
+            default: false
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration

@@ -7,8 +7,7 @@ l3leaf:
     loopback_ipv6_pool: 2001:DB8:91::/48
     vtep_loopback_ipv6_pool: 2001:DB8:92::/48
     router_id_pool: 192.168.93.0/24
-    multi_vtep_mlag:
-      enabled: true
+    multi_vtep_mlag: true
   node_groups:
     - group: multi-vtep-mlag-ipv6-underlay
       nodes:

@@ -7,8 +7,7 @@ l3leaf:
     mlag_peer_vlan: 4094
     mlag_peer_l3_vlan: 4094
     mlag_peer_ipv4_pool: 10.10.255.0/24
-    multi_vtep_mlag:
-      enabled: true
+    multi_vtep_mlag: true
     uplink_ipv4_pool: 10.10.101.0/24
     loopback_ipv4_pool: 192.168.255.0/24
     loopback_ipv4_offset: 32
@@ -40,9 +39,7 @@ l3leaf:
           mlag_interfaces: [Ethernet5, Ethernet6]
     - group: MULTI_VTEP_MLAG_L3LEAF3
       bgp_as: 65163
-      multi_vtep_mlag:
-        enabled: true
-        vxlan_decap_on_default_vrf_only: false
+      multi_vtep_mlag: true
       nodes:
         - name: multi-vtep-mlag-l3leaf3a
           id: 10

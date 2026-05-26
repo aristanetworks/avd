@@ -3,8 +3,7 @@ l3leaf:
   defaults:
     loopback_ipv4_pool: 192.168.92.0/24
     vtep_loopback_ipv4_pool: 192.168.192.0/24
-    multi_vtep_mlag:
-      enabled: true
+    multi_vtep_mlag: true
     evpn_gateway:
       evpn_l3:
         enabled: true
