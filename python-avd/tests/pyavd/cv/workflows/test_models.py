@@ -10,7 +10,7 @@ import pytest
 from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
 from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVManifestError
-from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVManifest
+from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVDeployFuture, CVManifest
 
 from .helpers import generate_id
 
@@ -448,3 +448,18 @@ class TestAvdManifestFromDict:
         """Tests that ValueError is raised for invalid AvdManifest data."""
         with pytest.raises(ValueError, match=match_str):
             AvdManifest.from_dict(invalid_data)
+
+
+# === CVDeployFuture Tests ===
+
+
+class TestCVDeployFuture:
+    def test_defaults(self) -> None:
+        """Tests that CVDeployFuture is created with expected default values."""
+        future = CVDeployFuture()
+        assert future.use_system_certs is False
+
+    def test_custom_values(self) -> None:
+        """Tests that CVDeployFuture accepts explicit values for all fields."""
+        future = CVDeployFuture(use_system_certs=True)
+        assert future.use_system_certs is True

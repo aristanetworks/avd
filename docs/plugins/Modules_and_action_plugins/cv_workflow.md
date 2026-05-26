@@ -37,6 +37,8 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>cv_username</samp> | str | False | None | - | Username to use if `cv_token` is missing. Not supported for CVaaS. |
 | <samp>cv_password</samp> | str | False | None | - | Password to use if `cv_token` is missing. Not supported for CVaaS. It is strongly recommended to use Vault for this. |
 | <samp>cv_verify_certs</samp> | bool | optional | True | - | Verifies CloudVison server certificates. |
+| <samp>cv_deploy_future</samp> | dict | optional | None | - | Opt-in to future `cv_deploy` behaviors which will become default behaviors in a future major version. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;use_system_certs</samp> | bool | optional | False | - | Use system certificate and honor overrides with `SSL_CERT_FILE` and `SSL_CERT_DIR`.<br>This removes support for the `certifi` Python package. |
 | <samp>proxy_host</samp> | str | False | None | - | FQDN/IP of the HTTP CONNECT proxy server. |
 | <samp>proxy_port</samp> | int | optional | 8080 | - | TCP port of the HTTP CONNECT proxy server. |
 | <samp>proxy_username</samp> | str | False | None | - | Authentication username for the HTTP CONNECT proxy server. |
@@ -101,6 +103,8 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
         cv_servers: ["www.arista.io"]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
+        # cv_deploy_future:
+        #   use_system_certs: false
         # proxy_host: "proxy.local.domain"
         # proxy_port: "8080"
         # proxy_username: "avd_user"

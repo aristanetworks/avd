@@ -21,6 +21,14 @@ if TYPE_CHECKING:
 
 
 @dataclass
+class CVDeployFuture:
+    """Opt-in to future cv_deploy behaviors which will become defaults in a future major version."""
+
+    use_system_certs: bool = False
+    """Use system certificate and honor overrides with SSL_CERT_FILE and SSL_CERT_DIR. Will become the default in AVD 7.0."""
+
+
+@dataclass
 class CloudVision:
     servers: str | list[str]
     token: str | None
@@ -31,6 +39,7 @@ class CloudVision:
     proxy_port: int | None
     proxy_username: str | None
     proxy_password: str | None
+    deploy_future: CVDeployFuture = field(default_factory=CVDeployFuture)
 
 
 @dataclass

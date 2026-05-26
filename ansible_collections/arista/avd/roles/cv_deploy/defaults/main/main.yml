@@ -26,6 +26,13 @@ cv_token: "{{ hostvars[cv_inventory_hostname].ansible_password | arista.avd.defa
 # Verify Certificate for CloudVision (Always use valid certificates for production)
 cv_verify_certs: true
 
+# Opt-in to future cv_deploy behaviors which will become default behaviors in a future major version.
+# cv_deploy_future:
+#   # Use system certificate and honor overrides with SSL_CERT_FILE and SSL_CERT_DIR.
+#   # This removes support for the 'certifi' Python package.
+#   use_system_certs: <bool, default=false>
+cv_deploy_future: {}
+
 # # Set FQDN/IP of the HTTP CONNECT proxy server.
 # proxy_host: <str>
 # # Set target TCP port of the HTTP CONNECT proxy server.
