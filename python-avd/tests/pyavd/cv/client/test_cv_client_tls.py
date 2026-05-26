@@ -27,7 +27,7 @@ ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 
 
 def _make_verify_paths(cafile: str | None = None, capath: str | None = None) -> ssl.DefaultVerifyPaths:
-    """Build a `ssl.DefaultVerifyPaths` for tests. Only `cafile` and `capath` are read by our code."""
+    """Build a `ssl.DefaultVerifyPaths` for tests (only cafile and capath attributes are used. All others are just placeholders)."""
     return ssl.DefaultVerifyPaths(
         cafile=cafile,
         capath=capath,
@@ -58,78 +58,57 @@ def onprem_cvp_self_signed_ca_pem(tmp_path: Path) -> str:
 
 # === _resolve_tls_settings Tests ===
 
+_OS_TRUST_STORE_BOTH = _make_verify_paths(cafile="/etc/ssl/certs/ca-certificates.crt", capath="/etc/ssl/certs")
+_OS_TRUST_STORE_CAFILE_ONLY = _make_verify_paths(cafile="/etc/ssl/certs/ca-certificates.crt", capath=None)
+_OS_TRUST_STORE_CAPATH_ONLY = _make_verify_paths(cafile=None, capath="/etc/ssl/certs")
+_OS_TRUST_STORE_EMPTY = _make_verify_paths(cafile=None, capath=None)
+
+
+@pytest.mark.parametrize("use_system_certs", [False, True], ids=["USE_SYSTEM_CERTS_FALSE", "USE_SYSTEM_CERTS_TRUE_IGNORED"])
+def test_cv_client_resolve_tls_settings_verify_disabled(use_system_certs: bool, caplog: pytest.LogCaptureFixture) -> None:
+    """Test that when `verify_certs=False`, both GRPC and REST get permissive settings and `use_system_certs` is ignored."""
+    with caplog.at_level(WARNING):
+        client = CVClient(servers="127.0.0.1", token="test-token", verify_certs=False, use_system_certs=use_system_certs)  # noqa: S106
+
+    tls = client._tls
+    assert isinstance(tls, CVTLSSettings)
+    assert tls.requests_verify is False
+    # gRPC side: permissive context (no hostname check, no peer verification)
+    assert isinstance(tls.grpc_ssl, ssl.SSLContext)
+    assert tls.grpc_ssl.check_hostname is False
+    assert tls.grpc_ssl.verify_mode == ssl.CERT_NONE
+    assert "no system trust store was found" not in caplog.text
+
 
 @pytest.mark.parametrize(
-    ("verify_certs", "use_system_certs", "mocked_verify_paths", "expected_requests_verify", "warning_expected"),
+    ("use_system_certs", "mocked_verify_paths", "expected_grpc_ssl", "expected_requests_verify", "warning_expected"),
     [
-        pytest.param(False, False, None, False, False, id="VERIFY_CERTS_FALSE"),
-        pytest.param(False, True, None, False, False, id="VERIFY_CERTS_FALSE_USE_SYSTEM_CERTS_IGNORED"),
-        pytest.param(True, False, None, True, False, id="VERIFY_CERTS_TRUE_USE_SYSTEM_CERTS_FALSE_CERTIFI_DEFAULT"),
-        pytest.param(
-            True,
-            True,
-            _make_verify_paths(cafile="/etc/ssl/certs/ca-certificates.crt", capath="/etc/ssl/certs"),
-            "/etc/ssl/certs/ca-certificates.crt",
-            False,
-            id="USE_SYSTEM_CERTS_OS_HAS_BOTH_PREFERS_CAFILE",
-        ),
-        pytest.param(
-            True,
-            True,
-            _make_verify_paths(cafile="/etc/ssl/certs/ca-certificates.crt", capath=None),
-            "/etc/ssl/certs/ca-certificates.crt",
-            False,
-            id="USE_SYSTEM_CERTS_OS_HAS_CAFILE_ONLY",
-        ),
-        pytest.param(
-            True,
-            True,
-            _make_verify_paths(cafile=None, capath="/etc/ssl/certs"),
-            "/etc/ssl/certs",
-            False,
-            id="USE_SYSTEM_CERTS_OS_HAS_CAPATH_ONLY",
-        ),
-        pytest.param(
-            True,
-            True,
-            _make_verify_paths(cafile=None, capath=None),
-            True,
-            True,
-            id="USE_SYSTEM_CERTS_NO_OS_TRUST_STORE_SOFT_FALLBACK_TO_CERTIFI",
-        ),
+        pytest.param(False, None, True, True, False, id="USE_SYSTEM_CERTS_FALSE_CERTIFI_DEFAULT"),
+        pytest.param(True, _OS_TRUST_STORE_BOTH, _OS_TRUST_STORE_BOTH, "/etc/ssl/certs/ca-certificates.crt", False, id="OS_HAS_BOTH_PREFERS_CAFILE"),
+        pytest.param(True, _OS_TRUST_STORE_CAFILE_ONLY, _OS_TRUST_STORE_CAFILE_ONLY, "/etc/ssl/certs/ca-certificates.crt", False, id="OS_HAS_CAFILE_ONLY"),
+        pytest.param(True, _OS_TRUST_STORE_CAPATH_ONLY, _OS_TRUST_STORE_CAPATH_ONLY, "/etc/ssl/certs", False, id="OS_HAS_CAPATH_ONLY"),
+        pytest.param(True, _OS_TRUST_STORE_EMPTY, True, True, True, id="NO_OS_TRUST_STORE_SOFT_FALLBACK_TO_CERTIFI"),
     ],
 )
-def test_cv_client_resolve_tls_settings(
-    verify_certs: bool,
+def test_cv_client_resolve_tls_settings_verify_enabled(
     use_system_certs: bool,
     mocked_verify_paths: ssl.DefaultVerifyPaths | None,
+    expected_grpc_ssl: ssl.DefaultVerifyPaths | bool,
     expected_requests_verify: bool | str,
     warning_expected: bool,
     caplog: pytest.LogCaptureFixture,
 ) -> None:
-    """Test `CVClient._resolve_tls_settings()`."""
+    """Test that when `verify_certs=True`, TLS settings depend on `use_system_certs` and OS trust store availability."""
     with (
         caplog.at_level(WARNING),
         patch("pyavd._cv.client.ssl.get_default_verify_paths", return_value=mocked_verify_paths),
     ):
-        client = CVClient(servers="127.0.0.1", token="test-token", verify_certs=verify_certs, use_system_certs=use_system_certs)  # noqa: S106
+        client = CVClient(servers="127.0.0.1", token="test-token", verify_certs=True, use_system_certs=use_system_certs)  # noqa: S106
 
     tls = client._tls
     assert isinstance(tls, CVTLSSettings)
+    assert tls.grpc_ssl is expected_grpc_ssl
     assert tls.requests_verify == expected_requests_verify
-
-    if not verify_certs:
-        # gRPC side: permissive context (no hostname check, no peer verification)
-        assert isinstance(tls.grpc_ssl, ssl.SSLContext)
-        assert tls.grpc_ssl.check_hostname is False
-        assert tls.grpc_ssl.verify_mode == ssl.CERT_NONE
-    elif use_system_certs and mocked_verify_paths is not None and (mocked_verify_paths.cafile or mocked_verify_paths.capath):
-        # OS trust store available. DefaultVerifyPaths passed to grpclib
-        assert tls.grpc_ssl is mocked_verify_paths
-    else:
-        # certifi (either use_system_certs=False, or soft fallback)
-        assert tls.grpc_ssl is True
-
     if warning_expected:
         assert "no system trust store was found" in caplog.text
     else:
@@ -177,9 +156,8 @@ async def test_cvclient_tls_cvaas(
     """
     Test ability to complete TLS handshake to CVaaS across all `verify_certs` / `use_system_certs` combinations.
 
-    CVaaS endpoints use publicly-trusted CAs present in both
-    `certifi` and any standard OS trust store, so every combination is expected to succeed on a
-    normal CI runner.
+    CVaaS endpoints use publicly-trusted CAs present in both `certifi` and any standard OS trust store.
+    Every combination is expected to succeed on a normal CI runner.
     """
     with does_not_raise():
         async with CVClient(

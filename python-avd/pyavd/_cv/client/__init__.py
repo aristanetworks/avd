@@ -295,8 +295,9 @@ class CVClient(CVClientProtocol):
             port: TCP port to use for the connection.
             verify_certs: Disables SSL certificate verification if set to False. Not recommended for production.
             use_system_certs: Use system certificate and honor overrides with `SSL_CERT_FILE` and
-                `SSL_CERT_DIR`. This removes support for the `certifi` Python package. Applied to
-                both the gRPC channel and the REST calls. Ignored when `verify_certs=False`.
+                `SSL_CERT_DIR`. Prefer the OS trust store over the bundled `certifi` Python package
+                (certifi is only used as a fallback when the OS provides no usable trust store).
+                Applied to both the gRPC channel and the REST calls. Ignored when `verify_certs=False`.
             proxy_host: HTTP proxy hostname.
             proxy_port: HTTP proxy port.
             proxy_username: Proxy authentication username.
