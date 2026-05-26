@@ -2815,6 +2815,8 @@ router bgp {{ router_bgp.as }}
       graceful-restart stalepath-time {{ vrf.graceful_restart.stalepath_time }}
 {%             endif %}
       graceful-restart
+{%         elif vrf.graceful_restart.enabled is arista.avd.defined(false) %}
+      no graceful-restart
 {%         endif %}
 {%         if vrf.maximum_paths.paths is arista.avd.defined %}
 {%             set paths_cli = "maximum-paths " ~ vrf.maximum_paths.paths %}
