@@ -438,5 +438,6 @@ class GRPCRequestHandler:
 
         # Unknown arista.io FQDN
         return True, (
-            f"Provided CVaaS FQDN '{first_cv_server}' may be incorrect. Please check 'https://www.arista.io/help' for the full list of existing CVaaS clusters."
+            f"Provided CVaaS FQDN '{first_cv_server}' may be incorrect. "
+            "Please check 'https://www.arista.io/help' for the full list of supported CVaaS clusters."
         )
