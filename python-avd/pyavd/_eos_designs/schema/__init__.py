@@ -95719,10 +95719,17 @@ class EosDesigns(EosDesignsRootModel):
     """
     validation_profiles: ValidationProfiles
     """
-    List of validation profiles defining hardware, logging, and fabric-related validation rules.
-    Validation profiles can be referenced from node definitions (for example under
-    `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`.
-    Subclass of AvdIndexedList with `ValidationProfilesItem` items. Primary key is `name` (`str`).
+    List of validation profiles that `eos_designs` emits into the structured configuration for each
+    device.
+    These profiles do not change device configuration; `anta_runner` reads them from the
+    structured config to tune the per-device ANTA test catalog — adjusting which hardware, logging, and
+    fabric-related tests are generated and the thresholds those tests assert against.
+    Profiles can be
+    referenced from node definitions (for example under `l3leaf.nodes[].validation_profile`) and support
+    single-level inheritance using `parent_profile`.
+
+    Subclass of AvdIndexedList with
+    `ValidationProfilesItem` items. Primary key is `name` (`str`).
     """
     vtep_loopback_description: str
     """
@@ -97471,10 +97478,17 @@ class EosDesigns(EosDesignsRootModel):
                    Requires both `cv_topology` and `cv_topology_levels` to be set.
                 use_router_general_for_router_id: Use `router general` to set router ID for all routing protocols and VRFs.
                 validation_profiles:
-                   List of validation profiles defining hardware, logging, and fabric-related validation rules.
-                   Validation profiles can be referenced from node definitions (for example under
-                   `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`.
-                   Subclass of AvdIndexedList with `ValidationProfilesItem` items. Primary key is `name` (`str`).
+                   List of validation profiles that `eos_designs` emits into the structured configuration for each
+                   device.
+                   These profiles do not change device configuration; `anta_runner` reads them from the
+                   structured config to tune the per-device ANTA test catalog — adjusting which hardware, logging, and
+                   fabric-related tests are generated and the thresholds those tests assert against.
+                   Profiles can be
+                   referenced from node definitions (for example under `l3leaf.nodes[].validation_profile`) and support
+                   single-level inheritance using `parent_profile`.
+
+                   Subclass of AvdIndexedList with
+                   `ValidationProfilesItem` items. Primary key is `name` (`str`).
                 vtep_loopback_description: Customize the description on the VTEP interface, typically Loopback1.
                 vtep_vvtep_ip:
                    IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.

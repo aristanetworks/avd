@@ -10,8 +10,9 @@ keys:
     type: list
     primary_key: name
     description: |-
-      List of validation profiles defining hardware, logging, and fabric-related validation rules.
-      Validation profiles can be referenced from node definitions (for example under `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`.
+      List of validation profiles that `eos_designs` emits into the structured configuration for each device.
+      These profiles do not change device configuration; `anta_runner` reads them from the structured config to tune the per-device ANTA test catalog — adjusting which hardware, logging, and fabric-related tests are generated and the thresholds those tests assert against.
+      Profiles can be referenced from node definitions (for example under `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`.
     items:
       type: dict
       keys:
