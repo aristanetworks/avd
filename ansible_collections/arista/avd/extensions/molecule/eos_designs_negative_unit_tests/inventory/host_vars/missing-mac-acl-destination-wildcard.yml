@@ -19,7 +19,7 @@ servers:
     adapters:
       - endpoint_ports: [E0]
         switch_ports: [Ethernet2]
-        switches: [missing-mac-acldestination-wildcard]
+        switches: [missing-mac-acl-destination-wildcard]
         mac_acl_in: acl1
 
 expected_error_message: >-
