@@ -70,7 +70,7 @@ When adding a top-level feature, add a new Jinja2 template following the naming 
 8. **Exclamation Marks:** Place exclamation marks `!` correctly as per the EOS running-config.
 9. Along with EOS config template, update the documentation template as well (if required).
 10. Implement only commands visible in `show running-config all` of the EOS device. We should not hide config if given by the user.
-11. **Empty Dictionary Should Not Generate Config:** The presence of an empty dictionary alone must not be enough to generate configuration. Always check for a meaningful child key (e.g., `enabled: true`) rather than relying on the existence of the parent dictionary. This avoids producing unintended config when a user defines a parent key without providing any actual values.
+11. **Empty Dictionary Should Not Generate Config:** The presence of an empty dictionary alone must not be enough to generate configuration. Always validate the presence of a meaningful child key (e.g., `enabled: true`) instead of relying solely on the existence of the parent dictionary. This prevents unintended configuration generation when a user defines a parent key without providing any actual values.
 
     For example, to render `neighbor some-neighbor default-originate`, the template should check for the explicit child key:
 
@@ -81,7 +81,7 @@ When adding a top-level feature, add a new Jinja2 template following the naming 
           enabled: true
     ```
 
-    An empty `default_originate:` block must not trigger config generation. The template should check `default_originate.enabled` rather than just the presence of `default_originate`.
+    An empty `default_originate:` block must not trigger configuration generation. The template should check `default_originate.enabled` rather than just the presence of `default_originate`.
 12. Validate the template using j2lint tool, run `pre-commit run j2lint --all`.
 
 ### Run pre-commit to build schemas and documentation
