@@ -52,6 +52,7 @@ dot1x:
         auth_only: true
       system_description:
         enabled: true
+        auth_only: false
 enable_password:
   disabled: true
 hostname: dot1x-settings-2

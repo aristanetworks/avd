@@ -30,6 +30,7 @@ dot1x_settings:
         auth_only: true
       system_description:
         enabled: true
+        auth_only: false
 
 aaa_settings:
   radius:
