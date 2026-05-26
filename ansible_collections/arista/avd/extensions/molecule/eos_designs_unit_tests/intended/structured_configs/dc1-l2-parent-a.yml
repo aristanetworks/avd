@@ -101,7 +101,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 3901-3902
+      allowed_vlan: '3902'
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com

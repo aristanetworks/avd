@@ -976,6 +976,7 @@ class EosDesigns(EosDesignsRootModel):
             "raise_for_underlay_router_with_uplink_type_port_channel": {"type": bool, "default": False},
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
+            "consistent_uplink_vlans": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1022,6 +1023,14 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        consistent_uplink_vlans: bool
+        """
+        Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
+        and on
+        all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -1035,6 +1044,7 @@ class EosDesigns(EosDesignsRootModel):
                 raise_for_underlay_router_with_uplink_type_port_channel: bool | UndefinedType = Undefined,
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
+                consistent_uplink_vlans: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1055,6 +1065,10 @@ class EosDesigns(EosDesignsRootModel):
                        this combination is not supported.
                     configure_inband_mgmt_ipv6_vrf: Configure `inband_mgmt_vrf` for IPv6 inband management.
                     only_configure_ipv6_inband_mgmt_prefix_list_when_used: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
+                    consistent_uplink_vlans:
+                       Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
+                       and on
+                       all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
 
                 """
 
