@@ -100,7 +100,13 @@ class EosDesigns(EosDesignsRootModel):
                 Combination of `host` and `vrf` should be unique.
                 """
                 groups: Groups
-                """Subclass of AvdList with `str` items."""
+                """
+                List of Tacacs group names.
+                The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                must not be used.
+
+                Subclass of AvdList with `str` items.
+                """
                 vrf: str | None
                 """
                 VRF name.
@@ -160,7 +166,12 @@ class EosDesigns(EosDesignsRootModel):
                             host:
                                Host IP address or name.
                                Combination of `host` and `vrf` should be unique.
-                            groups: Subclass of AvdList with `str` items.
+                            groups:
+                               List of Tacacs group names.
+                               The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                               must not be used.
+
+                               Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
                                The value will be interpreted according to these rules:
@@ -317,7 +328,13 @@ class EosDesigns(EosDesignsRootModel):
                 TLS and no TLS.
                 """
                 groups: Groups
-                """Subclass of AvdList with `str` items."""
+                """
+                List of Radius group names.
+                The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                must not be used.
+
+                Subclass of AvdList with `str` items.
+                """
                 vrf: str | None
                 """
                 VRF name.
@@ -377,7 +394,12 @@ class EosDesigns(EosDesignsRootModel):
                                Host IP address or name.
                                Multiple servers with the same hostname/IP address can be configured for
                                TLS and no TLS.
-                            groups: Subclass of AvdList with `str` items.
+                            groups:
+                               List of Radius group names.
+                               The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and
+                               must not be used.
+
+                               Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
                                The value will be interpreted according to these rules:
@@ -791,6 +813,11 @@ class EosDesigns(EosDesignsRootModel):
 
         DhcpServersIpv4._item_type = str
 
+        class DhcpServerInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServerInterfaces._item_type = str
+
         class LeasesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -860,6 +887,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "locked_address": {"type": LockedAddress},
@@ -880,6 +908,14 @@ class EosDesigns(EosDesignsRootModel):
         """
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
+        dhcp_server_interfaces: DhcpServerInterfaces
+        """
+        The list of interfaces connected to the DHCP server.
+        Requires EOS version 4.36 or later.
+
+        Subclass
+        of AvdList with `str` items.
+        """
         disabled: bool | None
         """Disable IP locking on configured ports."""
         leases: Leases
@@ -894,6 +930,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 local_interface: str | UndefinedType = Undefined,
                 dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
                 disabled: bool | None | UndefinedType = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
@@ -916,6 +953,12 @@ class EosDesigns(EosDesignsRootModel):
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
+                    dhcp_server_interfaces:
+                       The list of interfaces connected to the DHCP server.
+                       Requires EOS version 4.36 or later.
+
+                       Subclass
+                       of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     locked_address: Subclass of AvdModel.
@@ -18083,17 +18126,18 @@ class EosDesigns(EosDesignsRootModel):
         class RadiusAvPairs(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}}
+            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}, "framed_mtu": {"type": int}}
             service_type: bool
             """
             Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
 
             Default value: `False`
             """
+            framed_mtu: int | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, service_type: bool | UndefinedType = Undefined) -> None:
+                def __init__(self, *, service_type: bool | UndefinedType = Undefined, framed_mtu: int | None | UndefinedType = Undefined) -> None:
                     """
                     RadiusAvPairs.
 
@@ -18102,6 +18146,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         service_type: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
+                        framed_mtu: framed_mtu
 
                     """
 
@@ -24310,6 +24355,109 @@ class EosDesigns(EosDesignsRootModel):
 
     MgmtDestinationNetworks._item_type = str
 
+    class MgmtInterfaceSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Lldp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"transmit": {"type": bool}, "receive": {"type": bool}, "ztp_vlan": {"type": int}}
+            transmit: bool | None
+            """Enable LLDP transmission on the management interface."""
+            receive: bool | None
+            """Enable LLDP reception on the management interface."""
+            ztp_vlan: int | None
+            """VLAN ID advertised via LLDP for Zero Touch Provisioning (ZTP)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    transmit: bool | None | UndefinedType = Undefined,
+                    receive: bool | None | UndefinedType = Undefined,
+                    ztp_vlan: int | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Lldp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        transmit: Enable LLDP transmission on the management interface.
+                        receive: Enable LLDP reception on the management interface.
+                        ztp_vlan: VLAN ID advertised via LLDP for Zero Touch Provisioning (ZTP).
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "description": {"type": str, "default": "OOB_MANAGEMENT"},
+            "vrf": {"type": str, "default": "MGMT"},
+            "vrf_routing": {"type": bool, "default": False},
+            "interface": {"type": str, "default": "Management1"},
+            "lldp": {"type": Lldp},
+        }
+        description: str
+        """
+        Interface description configured on the management interface.
+
+        Default value: `"OOB_MANAGEMENT"`
+        """
+        vrf: str
+        """
+        VRF name used for the management interface.
+
+        Default value: `"MGMT"`
+        """
+        vrf_routing: bool
+        """
+        Enable IP routing in the management VRF.
+
+        Default value: `False`
+        """
+        interface: str
+        """
+        Name of the management interface (e.g. Management0, Management1).
+
+        Default value: `"Management1"`
+        """
+        lldp: Lldp
+        """
+        LLDP settings for the management interface.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                description: str | UndefinedType = Undefined,
+                vrf: str | UndefinedType = Undefined,
+                vrf_routing: bool | UndefinedType = Undefined,
+                interface: str | UndefinedType = Undefined,
+                lldp: Lldp | UndefinedType = Undefined,
+            ) -> None:
+                """
+                MgmtInterfaceSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    description: Interface description configured on the management interface.
+                    vrf: VRF name used for the management interface.
+                    vrf_routing: Enable IP routing in the management VRF.
+                    interface: Name of the management interface (e.g. Management0, Management1).
+                    lldp:
+                       LLDP settings for the management interface.
+
+                       Subclass of AvdModel.
+
+                """
+
     class MlagIbgpPeeringVrfs(AvdModel):
         """Subclass of AvdModel."""
 
@@ -24337,18 +24485,19 @@ class EosDesigns(EosDesignsRootModel):
         class InterfaceSetsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+            class Interfaces(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Interfaces._item_type = str
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": Interfaces}}
             name: str
-            interfaces: str
-            """
-            Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
-            Multiple interface
-            ranges can be specified separated by ",".
-            """
+            interfaces: Interfaces
+            """Subclass of AvdList with `str` items."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: Interfaces | UndefinedType = Undefined) -> None:
                     """
                     InterfaceSetsItem.
 
@@ -24357,10 +24506,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: name
-                        interfaces:
-                           Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
-                           Multiple interface
-                           ranges can be specified separated by ",".
+                        interfaces: Subclass of AvdList with `str` items.
 
                     """
 
@@ -24472,13 +24618,19 @@ class EosDesigns(EosDesignsRootModel):
             class InterfaceSetsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+                class Interfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Interfaces._item_type = str
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": Interfaces}}
                 name: str
-                interfaces: str | None
+                interfaces: Interfaces
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: Interfaces | UndefinedType = Undefined) -> None:
                         """
                         InterfaceSetsItem.
 
@@ -24487,7 +24639,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             name: name
-                            interfaces: interfaces
+                            interfaces: Subclass of AvdList with `str` items.
 
                         """
 
@@ -93027,6 +93179,7 @@ class EosDesigns(EosDesignsRootModel):
         "mgmt_gateway": {"type": str},
         "mgmt_interface": {"type": str, "default": "Management1"},
         "mgmt_interface_description": {"type": str, "default": "OOB_MANAGEMENT"},
+        "mgmt_interface_settings": {"type": MgmtInterfaceSettings},
         "mgmt_interface_vrf": {"type": str, "default": "MGMT"},
         "mgmt_vrf_routing": {"type": bool, "default": False},
         "mlag_bgp_peer_description": {"type": str, "default": "{mlag_peer}_{peer_interface}"},
@@ -94709,6 +94862,14 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"OOB_MANAGEMENT"`
     """
+    mgmt_interface_settings: MgmtInterfaceSettings
+    """
+    Out-of-Band (OOB) management interface settings.
+    These settings override the corresponding global
+    variables where applicable.
+
+    Subclass of AvdModel.
+    """
     mgmt_interface_vrf: str
     """
     OOB Management VRF.
@@ -95798,6 +95959,7 @@ class EosDesigns(EosDesignsRootModel):
             mgmt_gateway: str | None | UndefinedType = Undefined,
             mgmt_interface: str | UndefinedType = Undefined,
             mgmt_interface_description: str | UndefinedType = Undefined,
+            mgmt_interface_settings: MgmtInterfaceSettings | UndefinedType = Undefined,
             mgmt_interface_vrf: str | UndefinedType = Undefined,
             mgmt_vrf_routing: bool | UndefinedType = Undefined,
             mlag_bgp_peer_description: str | UndefinedType = Undefined,
@@ -96692,6 +96854,12 @@ class EosDesigns(EosDesignsRootModel):
                    server will provide the gateway.
                 mgmt_interface: OOB Management interface.
                 mgmt_interface_description: Management interface description.
+                mgmt_interface_settings:
+                   Out-of-Band (OOB) management interface settings.
+                   These settings override the corresponding global
+                   variables where applicable.
+
+                   Subclass of AvdModel.
                 mgmt_interface_vrf: OOB Management VRF.
                 mgmt_vrf_routing: Configure IP routing for the OOB Management VRF.
                 mlag_bgp_peer_description:

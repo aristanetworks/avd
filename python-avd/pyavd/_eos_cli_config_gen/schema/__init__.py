@@ -1151,7 +1151,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "type": {"type": str}, "servers": {"type": Servers}}
         name: str
-        """Group name."""
+        """
+        Group name.
+        The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
+        """
         type: Type
         servers: Servers
         """Subclass of AvdList with `ServersItem` items."""
@@ -1168,7 +1171,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    name: Group name.
+                    name:
+                       Group name.
+                       The group names 'radius', 'tacacs+' and 'ldap' are reserved by EOS and must not be used.
                     type: type
                     servers: Subclass of AvdList with `ServersItem` items.
 
@@ -1282,6 +1287,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         DhcpServersIpv4._item_type = str
 
+        class DhcpServerInterfaces(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServerInterfaces._item_type = str
+
         class LeasesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -1350,6 +1360,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "dhcp_server_interfaces": {"type": DhcpServerInterfaces},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "local_interface": {"type": str},
@@ -1357,6 +1368,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
+        dhcp_server_interfaces: DhcpServerInterfaces
+        """
+        The list of interfaces connected to the DHCP server.
+        Requires EOS version 4.36 or later.
+
+        Subclass
+        of AvdList with `str` items.
+        """
         disabled: bool | None
         """Disable IP locking on configured ports."""
         leases: Leases
@@ -1371,6 +1390,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                dhcp_server_interfaces: DhcpServerInterfaces | UndefinedType = Undefined,
                 disabled: bool | None | UndefinedType = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 local_interface: str | None | UndefinedType = Undefined,
@@ -1384,6 +1404,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     dhcp_servers_ipv4: Subclass of AvdList with `str` items.
+                    dhcp_server_interfaces:
+                       The list of interfaces connected to the DHCP server.
+                       Requires EOS version 4.36 or later.
+
+                       Subclass
+                       of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     local_interface: local_interface
@@ -3913,6 +3939,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Cvtargetconfigs(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Cvtargetconfigs._item_type = str
+
         _fields: ClassVar[dict] = {
             "cvaddrs": {"type": Cvaddrs},
             "clusters": {"type": Clusters},
@@ -3936,6 +3967,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "sflowaddr": {"type": str},
             "cvconfig": {"type": bool},
             "cv_loss_timeout": {"type": int},
+            "cvtargetconfigs": {"type": Cvtargetconfigs},
         }
         cvaddrs: Cvaddrs
         """
@@ -4043,6 +4075,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         CloudVision after a configuration change.
         The recommended timeout is five minutes.
         """
+        cvtargetconfigs: Cvtargetconfigs
+        """
+        Set the target configuration path(s) for dynamic device configuration from CloudVision.
+        Used for MSS
+        (Multi-Domain Segmentation Service) integrations.
+
+
+        Subclass of AvdList with `str` items.
+        """
 
         if TYPE_CHECKING:
 
@@ -4071,6 +4112,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 sflowaddr: str | None | UndefinedType = Undefined,
                 cvconfig: bool | None | UndefinedType = Undefined,
                 cv_loss_timeout: int | None | UndefinedType = Undefined,
+                cvtargetconfigs: Cvtargetconfigs | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4148,6 +4190,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to
                        CloudVision after a configuration change.
                        The recommended timeout is five minutes.
+                    cvtargetconfigs:
+                       Set the target configuration path(s) for dynamic device configuration from CloudVision.
+                       Used for MSS
+                       (Multi-Domain Segmentation Service) integrations.
+
+
+                       Subclass of AvdList with `str` items.
 
                 """
 
@@ -6288,6 +6337,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "new_ip_radius_cli_order": {"type": bool, "default": False},
             "new_ip_tacacs_cli_order": {"type": bool, "default": False},
             "always_render_ip_routing_separator": {"type": bool, "default": False},
+            "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
         }
         new_ip_radius_cli_order: bool
         """
@@ -6315,6 +6365,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        only_render_mpls_rsvp_with_settings: bool
+        """
+        When `true`, only renders the `mpls rsvp` CLI block when at least one `mpls.rsvp.*` setting is
+        defined.
+        When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined, even if no
+        sub-settings are set.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6324,6 +6383,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 new_ip_radius_cli_order: bool | UndefinedType = Undefined,
                 new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
                 always_render_ip_routing_separator: bool | UndefinedType = Undefined,
+                only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6346,6 +6406,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Always render a '!' before the '(no) ip routing' command section.
                        Without this the '!' is missing
                        when only configuring routing for VRFs.
+                    only_render_mpls_rsvp_with_settings:
+                       When `true`, only renders the `mpls rsvp` CLI block when at least one `mpls.rsvp.*` setting is
+                       defined.
+                       When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined, even if no
+                       sub-settings are set.
 
                 """
 
@@ -13091,6 +13156,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "priority_flow_control": {"type": PriorityFlowControl},
             "bfd": {"type": Bfd},
             "service_policy": {"type": ServicePolicy},
+            "cpu_traffic_policy_fallback_vrf": {"type": str},
             "mpls": {"type": Mpls},
             "lacp_timer": {"type": LacpTimer},
             "lacp_port_priority": {"type": int},
@@ -13303,6 +13369,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         service_policy: ServicePolicy
         """Subclass of AvdModel."""
+        cpu_traffic_policy_fallback_vrf: str | None
+        """
+        CPU traffic policy name.
+        Fallback to the CPU traffic policy applied to the VRF in which this
+        interface is configured.
+        """
         mpls: Mpls
         """Subclass of AvdModel."""
         lacp_timer: LacpTimer
@@ -13442,6 +13514,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
+                cpu_traffic_policy_fallback_vrf: str | None | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
                 lacp_timer: LacpTimer | UndefinedType = Undefined,
                 lacp_port_priority: int | None | UndefinedType = Undefined,
@@ -13584,6 +13657,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     priority_flow_control: Subclass of AvdModel.
                     bfd: Subclass of AvdModel.
                     service_policy: Subclass of AvdModel.
+                    cpu_traffic_policy_fallback_vrf:
+                       CPU traffic policy name.
+                       Fallback to the CPU traffic policy applied to the VRF in which this
+                       interface is configured.
                     mpls: Subclass of AvdModel.
                     lacp_timer: Subclass of AvdModel.
                     lacp_port_priority: lacp_port_priority
@@ -31679,7 +31756,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class MulticastReplication(AvdModel):
                 """Subclass of AvdModel."""
 
-                Default: TypeAlias = Literal["ingress", "egress"]
+                Default: TypeAlias = Literal["ingress", "fabric-egress"]
                 _fields: ClassVar[dict] = {"default": {"type": str}}
                 default: Default | None
 
@@ -37387,6 +37464,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "qos": {"type": Qos},
             "bfd": {"type": Bfd},
             "service_policy": {"type": ServicePolicy},
+            "cpu_traffic_policy_fallback_vrf": {"type": str},
             "mpls": {"type": Mpls},
             "ntp_serve": {"type": bool},
             "shape": {"type": Shape},
@@ -37505,6 +37583,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         service_policy: ServicePolicy
         """Subclass of AvdModel."""
+        cpu_traffic_policy_fallback_vrf: str | None
+        """
+        CPU traffic policy name.
+        Fallback to the CPU traffic policy applied to the VRF in which this
+        interface is configured.
+        """
         mpls: Mpls
         """Subclass of AvdModel."""
         ntp_serve: bool | None
@@ -37659,6 +37743,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 qos: Qos | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
                 service_policy: ServicePolicy | UndefinedType = Undefined,
+                cpu_traffic_policy_fallback_vrf: str | None | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
                 ntp_serve: bool | None | UndefinedType = Undefined,
                 shape: Shape | UndefinedType = Undefined,
@@ -37762,6 +37847,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     qos: Subclass of AvdModel.
                     bfd: Subclass of AvdModel.
                     service_policy: Subclass of AvdModel.
+                    cpu_traffic_policy_fallback_vrf:
+                       CPU traffic policy name.
+                       Fallback to the CPU traffic policy applied to the VRF in which this
+                       interface is configured.
                     mpls: Subclass of AvdModel.
                     ntp_serve: Enable/disable serving NTP to clients.
                     shape: Subclass of AvdModel.
@@ -62756,6 +62845,93 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class SegmentRoutingMpls(AvdModel):
+                """Subclass of AvdModel."""
+
+                class PrefixSegmentsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "index": {"type": int}}
+                    prefix: str
+                    """IPv4 prefix (e.g. 192.0.2.1/32)."""
+                    index: int
+                    """SID index value."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, prefix: str | UndefinedType = Undefined, index: int | UndefinedType = Undefined) -> None:
+                            """
+                            PrefixSegmentsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                prefix: IPv4 prefix (e.g. 192.0.2.1/32).
+                                index: SID index value.
+
+                            """
+
+                class PrefixSegments(AvdIndexedList[str, PrefixSegmentsItem]):
+                    """Subclass of AvdIndexedList with `PrefixSegmentsItem` items. Primary key is `prefix` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "prefix"
+
+                PrefixSegments._item_type = PrefixSegmentsItem
+
+                AdjacencySegmentAllocation: TypeAlias = Literal["all-interfaces", "none", "sr-peers"]
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "shutdown": {"type": bool},
+                    "prefix_segments": {"type": PrefixSegments},
+                    "adjacency_segment_allocation": {"type": str},
+                }
+                enabled: bool
+                """
+                Enable the configuration mode.
+                This does not control the shutdown command.
+                """
+                shutdown: bool | None
+                prefix_segments: PrefixSegments
+                """
+                Prefix Segment Identifier (Prefix-SID) configuration.
+
+                Subclass of AvdIndexedList with
+                `PrefixSegmentsItem` items. Primary key is `prefix` (`str`).
+                """
+                adjacency_segment_allocation: AdjacencySegmentAllocation | None
+                """Adjacency segment allocation mode."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
+                        prefix_segments: PrefixSegments | UndefinedType = Undefined,
+                        adjacency_segment_allocation: AdjacencySegmentAllocation | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        SegmentRoutingMpls.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled:
+                               Enable the configuration mode.
+                               This does not control the shutdown command.
+                            shutdown: shutdown
+                            prefix_segments:
+                               Prefix Segment Identifier (Prefix-SID) configuration.
+
+                               Subclass of AvdIndexedList with
+                               `PrefixSegmentsItem` items. Primary key is `prefix` (`str`).
+                            adjacency_segment_allocation: Adjacency segment allocation mode.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "id": {"type": int},
                 "vrf": {"type": str},
@@ -62780,6 +62956,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "graceful_restart": {"type": GracefulRestart},
                 "graceful_restart_helper": {"type": bool},
                 "mpls_ldp_sync_default": {"type": bool},
+                "segment_routing_mpls": {"type": SegmentRoutingMpls},
                 "eos_cli": {"type": str},
             }
             id: int
@@ -62820,6 +62997,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             graceful_restart_helper: bool | None
             mpls_ldp_sync_default: bool | None
+            segment_routing_mpls: SegmentRoutingMpls
+            """
+            OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.
+
+            Subclass of AvdModel.
+            """
             eos_cli: str | None
             """Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration."""
 
@@ -62851,6 +63034,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
                     graceful_restart_helper: bool | None | UndefinedType = Undefined,
                     mpls_ldp_sync_default: bool | None | UndefinedType = Undefined,
+                    segment_routing_mpls: SegmentRoutingMpls | UndefinedType = Undefined,
                     eos_cli: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -62883,6 +63067,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         graceful_restart: Subclass of AvdModel.
                         graceful_restart_helper: graceful_restart_helper
                         mpls_ldp_sync_default: mpls_ldp_sync_default
+                        segment_routing_mpls:
+                           OSPF Segment Routing (SR-MPLS). Requires EOS 4.31.1F or later.
+
+                           Subclass of AvdModel.
                         eos_cli: Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration.
 
                     """
@@ -66472,6 +66660,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "no_spanning_tree_vlan": {"type": str},
             "rapid_pvst_instances": {"type": RapidPvstInstances},
             "port_id_allocation_port_channel_range": {"type": PortIdAllocationPortChannelRange},
+            "loop_guard_default": {"type": bool},
         }
         root_super: bool | None
         edge_port: EdgePort
@@ -66497,6 +66686,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
+        loop_guard_default: bool | None
+        """Enable loopguard by default on all ports."""
 
         if TYPE_CHECKING:
 
@@ -66513,6 +66704,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 no_spanning_tree_vlan: str | None | UndefinedType = Undefined,
                 rapid_pvst_instances: RapidPvstInstances | UndefinedType = Undefined,
                 port_id_allocation_port_channel_range: PortIdAllocationPortChannelRange | UndefinedType = Undefined,
+                loop_guard_default: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 SpanningTree.
@@ -66536,6 +66728,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Specify range of port-ids to reserve for port-channels.
 
                        Subclass of AvdModel.
+                    loop_guard_default: Enable loopguard by default on all ports.
 
                 """
 
@@ -67761,6 +67954,67 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class TrafficPolicies(AvdModel):
         """Subclass of AvdModel."""
 
+        class CpuTrafficPolicy(AvdModel):
+            """Subclass of AvdModel."""
+
+            class VrfAll(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "enforcement_management": {"type": bool}}
+                name: str
+                """Traffic policy name for all VRFs."""
+                enforcement_management: bool | None
+                """Enforce CPU traffic-policy on management ports."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | UndefinedType = Undefined, enforcement_management: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        VrfAll.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Traffic policy name for all VRFs.
+                            enforcement_management: Enforce CPU traffic-policy on management ports.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "vrf_all": {"type": VrfAll},
+                "enforcement_ip_ttl_expired": {"type": bool},
+                "fragment_implicit_permit_disabled": {"type": bool},
+            }
+            vrf_all: VrfAll
+            """Subclass of AvdModel."""
+            enforcement_ip_ttl_expired: bool | None
+            """Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets."""
+            fragment_implicit_permit_disabled: bool | None
+            """Disable the addition of implicit rules that allow fragmented packets for Layer 4 rules."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    vrf_all: VrfAll | UndefinedType = Undefined,
+                    enforcement_ip_ttl_expired: bool | None | UndefinedType = Undefined,
+                    fragment_implicit_permit_disabled: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    CpuTrafficPolicy.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        vrf_all: Subclass of AvdModel.
+                        enforcement_ip_ttl_expired: Enforce CPU traffic-policy on TTL expired IPv4 and IPv6 packets.
+                        fragment_implicit_permit_disabled: Disable the addition of implicit rules that allow fragmented packets for Layer 4 rules.
+
+                    """
+
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -68772,7 +69026,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Policies._item_type = PoliciesItem
 
-        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}, "options": {"type": Options}, "field_sets": {"type": FieldSets}, "policies": {"type": Policies}}
+        _fields: ClassVar[dict] = {
+            "cpu_traffic_policy": {"type": CpuTrafficPolicy},
+            "vrfs": {"type": Vrfs},
+            "options": {"type": Options},
+            "field_sets": {"type": FieldSets},
+            "policies": {"type": Policies},
+        }
+        cpu_traffic_policy: CpuTrafficPolicy
+        """Subclass of AvdModel."""
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         options: Options
@@ -68787,6 +69049,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
+                cpu_traffic_policy: CpuTrafficPolicy | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 options: Options | UndefinedType = Undefined,
                 field_sets: FieldSets | UndefinedType = Undefined,
@@ -68799,6 +69062,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    cpu_traffic_policy: Subclass of AvdModel.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     options: Subclass of AvdModel.
                     field_sets: Subclass of AvdModel.

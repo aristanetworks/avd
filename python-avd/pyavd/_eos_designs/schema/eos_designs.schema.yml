@@ -54,6 +54,11 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: (?!radius$|tacacs\+$|ldap$).+
+                  description: 'List of Tacacs group names.
+
+                    The group names ''radius'', ''tacacs+'' and ''ldap'' are reserved
+                    by EOS and must not be used.'
                 vrf:
                   type: str
                   description: "VRF name.\nThe value will be interpreted according
@@ -140,6 +145,11 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: (?!radius$|tacacs\+$|ldap$).+
+                  description: 'List of Radius group names.
+
+                    The group names ''radius'', ''tacacs+'' and ''ldap'' are reserved
+                    by EOS and must not be used.'
                 vrf:
                   type: str
                   description: "VRF name.\nThe value will be interpreted according
@@ -2365,6 +2375,9 @@ keys:
             default: false
             description: Send RADIUS Service-Type attribute in Access-Request and
               Accounting messages.
+          framed_mtu:
+            type: int
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/framed_mtu
       redistribute_in_evpn:
         type: bool
         default: true
@@ -3876,6 +3889,11 @@ keys:
     type: str
     default: Management1
     description: OOB Management interface.
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.interface
+      remove_in_version: 7.0.0
   mgmt_interface_description:
     documentation_options:
       table: management-interface-settings
@@ -3884,6 +3902,52 @@ keys:
 
       '
     default: OOB_MANAGEMENT
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.description
+      remove_in_version: 7.0.0
+  mgmt_interface_settings:
+    documentation_options:
+      table: management-interface-settings
+    description: 'Out-of-Band (OOB) management interface settings.
+
+      These settings override the corresponding global variables where applicable.'
+    type: dict
+    keys:
+      description:
+        type: str
+        description: Interface description configured on the management interface.
+        default: OOB_MANAGEMENT
+      vrf:
+        type: str
+        convert_types:
+        - int
+        description: VRF name used for the management interface.
+        default: MGMT
+      vrf_routing:
+        type: bool
+        description: Enable IP routing in the management VRF.
+        default: false
+      interface:
+        type: str
+        description: Name of the management interface (e.g. Management0, Management1).
+        default: Management1
+      lldp:
+        type: dict
+        description: LLDP settings for the management interface.
+        keys:
+          transmit:
+            type: bool
+            description: Enable LLDP transmission on the management interface.
+          receive:
+            type: bool
+            description: Enable LLDP reception on the management interface.
+          ztp_vlan:
+            type: int
+            convert_types:
+            - str
+            description: VLAN ID advertised via LLDP for Zero Touch Provisioning (ZTP).
   mgmt_interface_vrf:
     documentation_options:
       table: management-interface-settings
@@ -3892,12 +3956,22 @@ keys:
     description: OOB Management VRF.
     convert_types:
     - int
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.vrf
+      remove_in_version: 7.0.0
   mgmt_vrf_routing:
     documentation_options:
       table: management-interface-settings
     type: bool
     default: false
     description: Configure IP routing for the OOB Management VRF.
+    deprecation:
+      warning: true
+      removed: false
+      new_key: mgmt_interface_settings.vrf_routing
+      remove_in_version: 7.0.0
   mlag_bgp_peer_description:
     type: str
     documentation_options:
@@ -4062,14 +4136,15 @@ keys:
             name:
               type: str
             interfaces:
-              type: str
+              type: list
               required: true
-              description: 'Interface range(s) should be of same type, Ethernet, Loopback,
-                Management etc.
-
-                Multiple interface ranges can be specified separated by ",".
-
-                '
+              min_length: 1
+              items:
+                type: str
+                description: "Interface name (e.g. Ethernet1, Loopback0, Management1).\nAll
+                  interfaces in this list must be of the same type. Range syntax (e.g.
+                  \"Ethernet1-4\") is not supported \u2014 specify each interface
+                  as a separate list item."
       local_interfaces:
         type: str
       address_only:
@@ -4167,7 +4242,15 @@ keys:
                   name:
                     type: str
                   interfaces:
-                    type: str
+                    type: list
+                    required: true
+                    min_length: 1
+                    items:
+                      type: str
+                      description: "Interface name (e.g. Ethernet1, Loopback0, Management1).\nAll
+                        interfaces in this list must be of the same type. Range syntax
+                        (e.g. \"Ethernet1-4\") is not supported \u2014 specify each
+                        interface as a separate list item."
             local_interfaces:
               type: str
             address_only:
