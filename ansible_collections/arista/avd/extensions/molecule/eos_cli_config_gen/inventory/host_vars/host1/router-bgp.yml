@@ -2375,6 +2375,8 @@ router_bgp:
       rd: "192.168.255.3:13"
       graceful_restart:
         enabled: false
+        restart_time: 455
+        stalepath_time: 566
       evpn_multicast: true
       evpn_multicast_address_family:
         ipv4:
