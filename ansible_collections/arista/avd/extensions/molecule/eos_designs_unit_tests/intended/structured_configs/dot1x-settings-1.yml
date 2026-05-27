@@ -17,6 +17,14 @@ dot1x:
   protocol_lldp_bypass: true
   protocol_bpdu_bypass: true
   dynamic_authorization: true
+  radius_av_pair:
+    dhcp:
+      hostname:
+        enabled: true
+      parameter_request_list:
+        enabled: true
+      vendor_class_id:
+        enabled: true
   captive_portal:
     enabled: true
     url: https://captive.arista.com

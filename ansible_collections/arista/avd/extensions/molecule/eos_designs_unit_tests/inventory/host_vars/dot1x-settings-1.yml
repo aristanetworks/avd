@@ -14,6 +14,14 @@ dot1x_settings:
     url: https://captive.arista.com
     start_limit_infinite: true
     access_list_ipv4: CAPTIVE-PORTAL-ACL
+  radius_av_pairs:
+    dhcp:
+      hostname:
+        enabled: true
+      parameter_request_list:
+        enabled: true
+      vendor_class_id:
+        enabled: true
 
 aaa_settings:
   radius:
