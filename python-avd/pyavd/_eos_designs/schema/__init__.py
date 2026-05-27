@@ -18126,18 +18126,30 @@ class EosDesigns(EosDesignsRootModel):
         class RadiusAvPairs(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}, "framed_mtu": {"type": int}}
+            _fields: ClassVar[dict] = {
+                "service_type": {"type": bool, "default": False},
+                "dhcp": {"type": EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp},
+                "framed_mtu": {"type": int},
+            }
             service_type: bool
             """
             Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
 
             Default value: `False`
             """
+            dhcp: EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp
+            """RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages."""
             framed_mtu: int | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, service_type: bool | UndefinedType = Undefined, framed_mtu: int | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    service_type: bool | UndefinedType = Undefined,
+                    dhcp: EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp | UndefinedType = Undefined,
+                    framed_mtu: int | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     RadiusAvPairs.
 
@@ -18146,6 +18158,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         service_type: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
+                        dhcp: RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages.
                         framed_mtu: framed_mtu
 
                     """
