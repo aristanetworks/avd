@@ -6,8 +6,6 @@ from __future__ import annotations
 from logging import getLogger
 from typing import TYPE_CHECKING
 
-from grpclib.config import Configuration
-
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
 
@@ -140,22 +138,6 @@ async def deploy_to_cv(
             "These devices will not have their configuration deployed to CloudVision."
         )
 
-    grpc_config: Configuration | None = None
-    if cloudvision.grpc_keepalives.enabled:
-        try:
-            grpc_config = Configuration(
-                _keepalive_time=cloudvision.grpc_keepalives.keepalive_time,
-                _keepalive_timeout=cloudvision.grpc_keepalives.keepalive_timeout,
-                _keepalive_permit_without_calls=cloudvision.grpc_keepalives.permit_without_calls,
-                # Disable the grpclib default cap of 2 pings without data so keepalives
-                # continue for the duration of the deployment.
-                _http2_max_pings_without_data=0,
-                # Override grpclib's 300s rate-limit so pings fire at the configured interval.
-                _http2_min_sent_ping_interval_without_data=cloudvision.grpc_keepalives.keepalive_time,
-            )
-        except TypeError:
-            LOGGER.warning("deploy_to_cv: grpclib Configuration does not support the expected keepalive fields. gRPC keepalives will not be enabled.")
-
     try:
         async with CVClient(
             servers=cloudvision.servers,
@@ -167,7 +149,7 @@ async def deploy_to_cv(
             proxy_port=cloudvision.proxy_port,
             proxy_username=cloudvision.proxy_username,
             proxy_password=cloudvision.proxy_password,
-            grpc_config=grpc_config,
+            grpc_config=cloudvision.grpc_keepalives.as_grpclib_configuration(),
         ) as cv_client:
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)

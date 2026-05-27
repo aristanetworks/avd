@@ -242,7 +242,7 @@ async def test_deploy_to_cv_grpc_keepalives_configuration_type_error(caplog: pyt
     with (
         caplog.at_level(DEBUG),
         patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client) as mocked_cv_client_cls,
-        patch("pyavd._cv.workflows.deploy_to_cv.Configuration", side_effect=TypeError("unexpected keyword argument")),
+        patch("pyavd._cv.workflows.models.Configuration", side_effect=TypeError("unexpected keyword argument")),
     ):
         await deploy_to_cv(
             cloudvision=CloudVision(

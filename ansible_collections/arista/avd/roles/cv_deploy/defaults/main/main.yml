@@ -26,12 +26,15 @@ cv_token: "{{ hostvars[cv_inventory_hostname].ansible_password | arista.avd.defa
 # Verify Certificate for CloudVision (Always use valid certificates for production)
 cv_verify_certs: true
 
-# gRPC keepalive settings for the CloudVision connection.
-# keepalive_time must be >= 30s.
+# Client-side gRPC keepalive settings for the CloudVision connection.
 cv_grpc_keepalives:
+  # Enable client-side gRPC keepalives. When false, the other settings have no effect.
   enabled: false
+  # Interval in seconds between keepalive pings. Must be >= 30s.
   keepalive_time: 60
+  # Time in seconds to wait for a keepalive ACK before considering the connection dead.
   keepalive_timeout: 20
+  # If true, keepalive pings are sent even when there are no active gRPC calls.
   permit_without_calls: false
 
 # # Set FQDN/IP of the HTTP CONNECT proxy server.

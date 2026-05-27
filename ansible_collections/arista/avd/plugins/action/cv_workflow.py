@@ -194,7 +194,7 @@ class ActionModule(ActionBase):
                 proxy_port=validated_args.get("proxy_port"),
                 proxy_username=validated_args.get("proxy_username"),
                 proxy_password=validated_args.get("proxy_password"),
-                grpc_keepalives=CVGRPCKeepalives(**get(validated_args, "grpc_keepalives", {})),
+                grpc_keepalives=CVGRPCKeepalives(**validated_args.get("grpc_keepalives", {})),
             )
 
             # If read_from_validated_inputs is enabled, we use the tmp_dir which contains validated inputs as JSON for structured_config_dir.
