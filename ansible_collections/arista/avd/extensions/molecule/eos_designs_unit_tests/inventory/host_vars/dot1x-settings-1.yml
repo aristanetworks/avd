@@ -9,6 +9,14 @@ l2leaf:
 
 dot1x_settings:
   enabled: true
+  radius_av_pairs:
+    dhcp:
+      hostname:
+        enabled: true
+      parameter_request_list:
+        enabled: true
+      vendor_class_id:
+        enabled: true
 
 aaa_settings:
   radius:
