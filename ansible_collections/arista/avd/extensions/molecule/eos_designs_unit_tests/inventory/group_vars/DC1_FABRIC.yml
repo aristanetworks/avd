@@ -477,7 +477,8 @@ l2leaf:
 
     # Minimal topology for asymmetric parent VLAN availability across split port-channel parents.
     # Parent A has VLANs 3901 and 3902, parent B has only VLAN 3902, and the child has both VLANs.
-    # This test verifies that only 3902 is configured on both uplinks.
+    # This test verifies that only 3902 is configured on both uplinks for `dc1-l2-child-asymmetric-2`
+    # and that `dc1-l2-child-asymmetric-1` keeps the non-breaking behavior.
     - group: DC1_L2LEAF9
       mlag: false
       uplink_type: port-channel
