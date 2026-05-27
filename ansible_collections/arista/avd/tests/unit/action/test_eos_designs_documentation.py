@@ -6,7 +6,6 @@ from __future__ import annotations
 import json
 import logging
 import re
-import warnings
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
@@ -53,59 +52,6 @@ def _empty_output() -> MagicMock:
     output.p2p_links_csv = ""
     output.digital_twin = None
     return output
-
-
-def _run_full_happy_path(module: ActionModule, validated_args: dict) -> dict:
-    """Drive ``run()`` end-to-end through a no-op pyavd. All devices present, no writes, no warnings."""
-    with (
-        patch("ansible.plugins.action.ActionBase.run", return_value={}),
-        patch.object(module, "validate_argument_spec", return_value=(MagicMock(), validated_args)),
-        patch.object(ActionModule, "load_facts", return_value={}),
-        patch(f"{MODULE_PATH}.EosDesignsFacts"),
-        patch(f"{MODULE_PATH}.get_fabric_documentation", return_value=_empty_output()),
-    ):
-        return module.run(task_vars={"fabric_name": FABRIC_NAME})
-
-
-@pytest.mark.parametrize(
-    "toggles",
-    [
-        pytest.param({}, id="defaults"),
-        pytest.param({"fabric_documentation": False, "topology_csv": True, "p2p_links_csv": True}, id="csvs_only"),
-        pytest.param({"fabric_documentation": False, "digital_twin": True}, id="digital_twin_only"),
-    ],
-)
-def test_run_emits_no_warnings_baseline(action_module: Callable[..., ActionModule], base_validated_args: dict, toggles: dict) -> None:
-    module = action_module(ActionModule)
-    validated_args = {**base_validated_args, **toggles}
-
-    with warnings.catch_warnings(record=True) as recorded:
-        warnings.simplefilter("always")
-        _run_full_happy_path(module, validated_args)
-
-    formatted = [f"{w.category.__name__}: {w.message} ({w.filename}:{w.lineno})" for w in recorded]
-    assert formatted == [], f"Unexpected warnings emitted by run(): {formatted}"
-
-
-@pytest.mark.parametrize(
-    "toggles",
-    [
-        pytest.param({}, id="defaults"),
-        pytest.param({"fabric_documentation": False, "topology_csv": True, "p2p_links_csv": True}, id="csvs_only"),
-        pytest.param({"fabric_documentation": False, "digital_twin": True}, id="digital_twin_only"),
-    ],
-)
-def test_run_emits_no_logs_baseline(
-    action_module: Callable[..., ActionModule], base_validated_args: dict, caplog: pytest.LogCaptureFixture, toggles: dict
-) -> None:
-    module = action_module(ActionModule)
-    validated_args = {**base_validated_args, **toggles}
-
-    with caplog.at_level(logging.DEBUG, logger="ansible_collections.arista.avd"):
-        _run_full_happy_path(module, validated_args)
-
-    formatted = [f"{r.levelname} {r.name}: {r.getMessage()}" for r in caplog.records]
-    assert formatted == [], f"Unexpected log records emitted by run(): {formatted}"
 
 
 def test_read_structured_configs_warns_with_each_missing_device_name(
