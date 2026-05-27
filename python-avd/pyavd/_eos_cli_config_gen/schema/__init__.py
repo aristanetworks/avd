@@ -7714,12 +7714,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"address": {"type": str}}
-                        address: str | None
+                        address: str
                         """IPv6 address of DNS server."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, address: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
                                 """
                                 ServersItem.
 
@@ -7731,14 +7731,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 """
 
-                    class Servers(AvdList[ServersItem]):
-                        """Subclass of AvdList with `ServersItem` items."""
+                    class Servers(AvdIndexedList[str, ServersItem]):
+                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "address"
 
                     Servers._item_type = ServersItem
 
                     _fields: ClassVar[dict] = {"servers": {"type": Servers}}
                     servers: Servers
-                    """Subclass of AvdList with `ServersItem` items."""
+                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
 
                     if TYPE_CHECKING:
 
@@ -7750,7 +7752,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                servers: Subclass of AvdList with `ServersItem` items.
+                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
 
                             """
 
@@ -23288,12 +23290,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"address": {"type": str}}
-                        address: str | None
+                        address: str
                         """IPv6 address of DNS server."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, address: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
                                 """
                                 ServersItem.
 
@@ -23305,14 +23307,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 """
 
-                    class Servers(AvdList[ServersItem]):
-                        """Subclass of AvdList with `ServersItem` items."""
+                    class Servers(AvdIndexedList[str, ServersItem]):
+                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "address"
 
                     Servers._item_type = ServersItem
 
                     _fields: ClassVar[dict] = {"servers": {"type": Servers}}
                     servers: Servers
-                    """Subclass of AvdList with `ServersItem` items."""
+                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
 
                     if TYPE_CHECKING:
 
@@ -23324,7 +23328,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                servers: Subclass of AvdList with `ServersItem` items.
+                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
 
                             """
 
@@ -35044,12 +35048,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"address": {"type": str}}
-                        address: str | None
+                        address: str
                         """IPv6 address of DNS server."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, address: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
                                 """
                                 ServersItem.
 
@@ -35061,14 +35065,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 """
 
-                    class Servers(AvdList[ServersItem]):
-                        """Subclass of AvdList with `ServersItem` items."""
+                    class Servers(AvdIndexedList[str, ServersItem]):
+                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "address"
 
                     Servers._item_type = ServersItem
 
                     _fields: ClassVar[dict] = {"servers": {"type": Servers}}
                     servers: Servers
-                    """Subclass of AvdList with `ServersItem` items."""
+                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
 
                     if TYPE_CHECKING:
 
@@ -35080,7 +35086,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                servers: Subclass of AvdList with `ServersItem` items.
+                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
 
                             """
 
@@ -69352,12 +69358,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"address": {"type": str}}
-                        address: str | None
+                        address: str
                         """IPv6 address of DNS server."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, address: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
                                 """
                                 ServersItem.
 
@@ -69369,14 +69375,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 """
 
-                    class Servers(AvdList[ServersItem]):
-                        """Subclass of AvdList with `ServersItem` items."""
+                    class Servers(AvdIndexedList[str, ServersItem]):
+                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "address"
 
                     Servers._item_type = ServersItem
 
                     _fields: ClassVar[dict] = {"servers": {"type": Servers}}
                     servers: Servers
-                    """Subclass of AvdList with `ServersItem` items."""
+                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
 
                     if TYPE_CHECKING:
 
@@ -69388,7 +69396,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                servers: Subclass of AvdList with `ServersItem` items.
+                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
 
                             """
 
@@ -70665,12 +70673,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"address": {"type": str}}
-                        address: str | None
+                        address: str
                         """IPv6 address of DNS server."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, address: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
                                 """
                                 ServersItem.
 
@@ -70682,14 +70690,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 """
 
-                    class Servers(AvdList[ServersItem]):
-                        """Subclass of AvdList with `ServersItem` items."""
+                    class Servers(AvdIndexedList[str, ServersItem]):
+                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "address"
 
                     Servers._item_type = ServersItem
 
                     _fields: ClassVar[dict] = {"servers": {"type": Servers}}
                     servers: Servers
-                    """Subclass of AvdList with `ServersItem` items."""
+                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
 
                     if TYPE_CHECKING:
 
@@ -70701,7 +70711,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                servers: Subclass of AvdList with `ServersItem` items.
+                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
 
                             """
 
