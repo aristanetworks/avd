@@ -33,6 +33,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hold_period</samp>](## "dot1x_settings.mac_based_authentication.hold_period") | Integer |  |  | Min: 1<br>Max: 300 |  |
     | [<samp>&nbsp;&nbsp;radius_av_pairs</samp>](## "dot1x_settings.radius_av_pairs") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x_settings.radius_av_pairs.service_type") | Boolean |  | `False` |  | Send RADIUS Service-Type attribute in Access-Request and Accounting messages. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x_settings.radius_av_pairs.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
     | [<samp>&nbsp;&nbsp;redistribute_in_evpn</samp>](## "dot1x_settings.redistribute_in_evpn") | Boolean |  | `True` |  | Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs. |
 
 === "YAML"
@@ -107,6 +108,7 @@
 
         # Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
         service_type: <bool; default=False>
+        framed_mtu: <int; 68-9236>
 
       # Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.
       redistribute_in_evpn: <bool; default=True>

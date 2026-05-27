@@ -49,6 +49,7 @@ dot1x:
     mac_string_case: uppercase
   radius_av_pair:
     service_type: true
+    framed_mtu: 1500
 enable_password:
   disabled: true
 hostname: dot1x-settings-2

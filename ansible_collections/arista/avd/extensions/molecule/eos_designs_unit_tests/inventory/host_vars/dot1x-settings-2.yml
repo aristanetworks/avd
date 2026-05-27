@@ -26,6 +26,7 @@ dot1x_settings:
     hold_period: 100
   radius_av_pairs:
     service_type: true
+    framed_mtu: 1500
 
 aaa_settings:
   radius:

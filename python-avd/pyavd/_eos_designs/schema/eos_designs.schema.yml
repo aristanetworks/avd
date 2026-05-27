@@ -2381,6 +2381,9 @@ keys:
             default: false
             description: Send RADIUS Service-Type attribute in Access-Request and
               Accounting messages.
+          framed_mtu:
+            type: int
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/framed_mtu
       redistribute_in_evpn:
         type: bool
         default: true
