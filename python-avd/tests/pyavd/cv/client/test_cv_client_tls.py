@@ -71,9 +71,15 @@ def onprem_cvp_self_signed_ca_pem(tmp_path: Path) -> str:
 
 @pytest.fixture
 def clean_ssl_cert_env(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Flush any pre-existing SSL_CERT_FILE / SSL_CERT_DIR env vars so that each test starts from a clear state."""
-    monkeypatch.delenv("SSL_CERT_FILE", raising=False)
-    monkeypatch.delenv("SSL_CERT_DIR", raising=False)
+    """
+    Flush any pre-existing TLS-related env vars so each test starts from a clear state.
+
+    Covers:
+        - `SSL_CERT_FILE` / `SSL_CERT_DIR`: used by Python's `ssl` module and CVClient's TLS resolver.
+        - `REQUESTS_CA_BUNDLE` / `CURL_CA_BUNDLE`: used by `requests.Session` when `verify is True`.
+    """
+    for var in ("SSL_CERT_FILE", "SSL_CERT_DIR", "REQUESTS_CA_BUNDLE", "CURL_CA_BUNDLE"):
+        monkeypatch.delenv(var, raising=False)
 
 
 # === _resolve_tls_settings Tests ===
@@ -181,6 +187,18 @@ def test_cv_client_resolve_tls_settings_user_both_env_vars_set_does_not_flip_pre
         client = CVClient(servers="127.0.0.1", token="test-token", verify_certs=True, use_system_certs=True)  # noqa: S106
 
     assert client._tls.requests_verify == "/user/file.pem"
+
+
+@pytest.mark.usefixtures("clean_ssl_cert_env")
+@pytest.mark.parametrize("env_var", ["REQUESTS_CA_BUNDLE", "CURL_CA_BUNDLE"])
+def test_cv_client_resolve_tls_settings_unaffected_by_requests_bundle_env_vars(env_var: str, monkeypatch: pytest.MonkeyPatch) -> None:
+    """The resolver must not read `REQUESTS_CA_BUNDLE` / `CURL_CA_BUNDLE`."""
+    monkeypatch.setenv(env_var, "/some/path.pem")
+
+    client = CVClient(servers="127.0.0.1", token="test-token", verify_certs=True, use_system_certs=False)  # noqa: S106
+
+    # Resolver returns True (certifi default). requests will substitute the env var later, in Session.merge_environment_settings.
+    assert client._tls.requests_verify is True
 
 
 # === Live TLS Tests against CVaaS ===

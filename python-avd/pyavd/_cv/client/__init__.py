@@ -4,12 +4,12 @@
 from __future__ import annotations
 
 import asyncio
-import os
 import platform
 import ssl
 import sys
 from importlib.metadata import PackageNotFoundError, version
 from logging import getLogger
+from os import environ
 from typing import TYPE_CHECKING, Protocol
 
 from grpclib.client import Channel
@@ -132,17 +132,27 @@ class CVClientProtocol(
 
     def _resolve_tls_settings(self) -> CVTLSSettings:
         """
-        Compute the TLS settings used by the gRPC channel and the REST calls.
+        Resolve TLS settings for grpclib and requests based on `verify_certs` and `use_system_certs`.
 
-        Controlled by `verify_certs` and `use_system_certs`:
-        - `verify_certs=False`: skip verification on both transports.
-        - `verify_certs=True`, `use_system_certs=True`: use the OS trust store via
-          `ssl.get_default_verify_paths()`, bypassing certifi. Soft-falls back to certifi
-          (with a warning) when the system has no usable trust store — neither `cafile` nor
-          `capath` resolves to a readable file or directory (e.g. distroless container).
-          User-set `SSL_CERT_FILE` / `SSL_CERT_DIR` env vars override OS defaults for requests (takes a single path only).
-          grpclib loads both `cafile` and `capath`, unioning OS defaults with any user-set env vars.
-        - `verify_certs=True`, `use_system_certs=False`: certifi.
+        `verify_certs=False`: No verification on either transport.
+            grpclib gets a permissive SSLContext (CERT_NONE, no hostname check).
+            requests gets `verify=False`.
+
+        `verify_certs=True`, `use_system_certs=False`: certifi.
+            grpclib gets `True` and resolves to certifi internally.
+            requests gets `verify=True`. If `REQUESTS_CA_BUNDLE` or `CURL_CA_BUNDLE` is set, requests uses that bundle instead of certifi (this override only
+                applies when `verify is True`, never when it is an explicit path).
+
+        `verify_certs=True`, `use_system_certs=True`: OS trust store via `ssl.get_default_verify_paths()`, which already reads
+            `SSL_CERT_FILE` / `SSL_CERT_DIR` and falls back to compiled-in defaults.
+
+            grpclib gets the full `DefaultVerifyPaths` and loads both `cafile` and `capath`. The result is additive (OS defaults plus any user env overrides).
+
+            requests takes a single path. Default rule: `cafile or capath`. Override: when user sets `SSL_CERT_DIR` -> return `capath` instead,
+                otherwise the OS-default cafile overrides it. This is the reason why resolver reads env vars even though `get_default_verify_paths()`
+                already does it behind the scene.
+
+            On systems with no usable trust store (distroless) -> warn and fall back to certifi for both transports.
         """
         if not self._verify_certs:
             # Accepting SonarLint issue: We are purposely implementing no verification of certs.
@@ -152,10 +162,9 @@ class CVClientProtocol(
             context.set_alpn_protocols(["h2"])
             return CVTLSSettings(grpc_ssl=context, requests_verify=False)
 
-        # TODO: Make this default in AVD 7.0.0
         if self._use_system_certs:
             verify_paths = ssl.get_default_verify_paths()
-            user_set_capath_only = "SSL_CERT_DIR" in os.environ and "SSL_CERT_FILE" not in os.environ
+            user_set_capath_only = "SSL_CERT_DIR" in environ and "SSL_CERT_FILE" not in environ
             if user_set_capath_only and verify_paths.capath:
                 return CVTLSSettings(grpc_ssl=verify_paths, requests_verify=verify_paths.capath)
             if path := (verify_paths.cafile or verify_paths.capath):
