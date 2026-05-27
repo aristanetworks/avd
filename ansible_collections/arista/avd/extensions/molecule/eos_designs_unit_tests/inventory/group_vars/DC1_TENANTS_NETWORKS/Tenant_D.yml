@@ -1,4 +1,4 @@
-tenant_d:
+network_services:
   - name: Tenant_D
     mac_vrf_vni_base: 40000
     vrfs:
