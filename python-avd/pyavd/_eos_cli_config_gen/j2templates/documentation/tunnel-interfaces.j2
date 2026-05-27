@@ -101,7 +101,7 @@
 {%             set row_tcp_mss_direction = tunnel_interface.tcp_mss_ceiling.direction | arista.avd.default("-") %}
 {%             set row_acl_in = tunnel_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%             set row_acl_out = tunnel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-{%             set row_ra_dns_servers = tunnel_interface.ipv6_nd.ra.dns_servers.servers | arista.avd.natural_sort(sort_key="address") | map(attribute="address") | join(", ") or '-' %}
+{%             set row_ra_dns_servers = tunnel_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort(sort_key="address") | map(attribute="address") | join(", ") or '-' %}
 | {{ tunnel_interface.name }} | {{ row_vrf }} | {{ row_ipv6_address }} | {{ row_tcp_mss }} | {{ row_tcp_mss_direction }} | {{ nd_ra_disabled }} | {{ nd_ra_rx_accept | join(", ") }} | {{ managed_config_flag }} | {{ other_config_flag }} | {{ nd_cache }} | {{ row_ra_dns_servers }} | {{ row_acl_in }} | {{ row_acl_out }} |
 {%         endfor %}
 {%     endif %}

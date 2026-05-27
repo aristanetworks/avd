@@ -442,9 +442,10 @@ vlan_interfaces:
           no_autoconfig_flag: true
       ra:
         dns_servers:
-          servers:
-            - address: cafe::cafe:64
-            - address: ca::ca:64
+          - address: cafe::cafe:64
+            lifetime: 100
+          - address: ca::ca:64
+        dns_servers_lifetime: 200
 
   - name: Vlan24
     description: SVI Description

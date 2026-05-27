@@ -480,7 +480,7 @@
 {%                     endif %}
 {%                     set ipv6_acl_in = port_channel_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                     set ipv6_acl_out = port_channel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-{%                     set ra_dns_servers = port_channel_interface.ipv6_nd.ra.dns_servers.servers | arista.avd.natural_sort(sort_key="address") | map(attribute="address") | join(", ") or '-' %}
+{%                     set ra_dns_servers = port_channel_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort(sort_key="address") | map(attribute="address") | join(", ") or '-' %}
 | {{ ethernet_interface.name }} | {{ description }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ nd_ra_disabled }} | *{{ nd_ra_rx_accept }} | *{{ managed_config_flag }} | *{{ other_config_flag }} | *{{ nd_cache }} | *{{ ra_dns_servers }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} |
 {%                 endif %}
 {%             else %}
@@ -529,7 +529,7 @@
 {%                     endif %}
 {%                     set ipv6_acl_in = ethernet_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                     set ipv6_acl_out = ethernet_interface.ipv6_access_group_out | arista.avd.default("-") %}
-{%                     set ra_dns_servers = ethernet_interface.ipv6_nd.ra.dns_servers.servers | arista.avd.natural_sort(sort_key="address") | map(attribute="address") | join(", ") or '-' %}
+{%                     set ra_dns_servers = ethernet_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort(sort_key="address") | map(attribute="address") | join(", ") or '-' %}
 | {{ ethernet_interface.name }} | {{ description }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ nd_ra_rx_accept | join(", ") }} | {{ managed_config_flag }} | {{ other_config_flag }} | {{ nd_cache }} | {{ ra_dns_servers }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%                 endif %}
 {%             endif %}

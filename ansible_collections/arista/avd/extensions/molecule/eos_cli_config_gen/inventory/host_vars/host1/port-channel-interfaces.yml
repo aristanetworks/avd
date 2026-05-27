@@ -365,9 +365,10 @@ port_channel_interfaces:
           default_route: true
           route_preference: true
         dns_servers:
-          servers:
-            - address: cafe::cafe:64
-            - address: ca::ca:64
+          - address: cafe::cafe:64
+            lifetime: 100
+          - address: ca::ca:64
+        dns_servers_lifetime: 200
       managed_config_flag: true
     encapsulation_dot1q:
       vlan: 101

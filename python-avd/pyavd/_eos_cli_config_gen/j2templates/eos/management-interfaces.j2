@@ -84,8 +84,15 @@ interface {{ management_interface.name }}
 {%         endif %}
    {{ ipv6_nd_prefix_cli }}
 {%     endfor %}
-{%     for dns_server in management_interface.ipv6_nd.ra.dns_servers.servers | arista.avd.natural_sort(sort_key="address") %}
-   ipv6 nd ra dns-server {{ dns_server.address }}
+{%     if management_interface.ipv6_nd.ra.dns_servers_lifetime is arista.avd.defined %}
+   ipv6 nd ra dns-servers lifetime {{ management_interface.ipv6_nd.ra.dns_servers_lifetime }}
+{%     endif %}
+{%     for dns_server in management_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort(sort_key="address") %}
+{%         set ra_dns_server = "ipv6 nd ra dns-server " ~ dns_server.address %}
+{%         if dns_server.lifetime is arista.avd.defined %}
+{%             set ra_dns_server = ra_dns_server ~ " lifetime " ~ dns_server.lifetime %}
+{%         endif %}
+   {{ ra_dns_server }}
 {%     endfor %}
 {%     if management_interface.lldp.transmit is arista.avd.defined(false) %}
    no lldp transmit

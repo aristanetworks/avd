@@ -27196,18 +27196,28 @@ $defs:
                 type: bool
                 description: Accept route preference from received Router Advertisements.
           dns_servers:
-            type: dict
-            keys:
-              servers:
-                type: list
-                primary_key: address
-                min_length: 1
-                items:
-                  type: dict
-                  keys:
-                    address:
-                      type: str
-                      description: IPv6 address of DNS server.
+            type: list
+            primary_key: address
+            min_length: 1
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  description: IPv6 address of DNS server.
+                lifetime:
+                  type: int
+                  description: 'Specifies the lifetime period for this server in seconds.
+
+                    This value overrides lifetime value set by `dns_servers_lifetime`
+                    for this server.'
+                  min: 0
+                  max: 4294967295
+          dns_servers_lifetime:
+            type: int
+            description: Router Advertisement DNS server lifetime value in seconds.
+            min: 0
+            max: 4294967295
       managed_config_flag:
         type: bool
         description: Set the "Managed Address Configuration" (M) flag in Router Advertisements.

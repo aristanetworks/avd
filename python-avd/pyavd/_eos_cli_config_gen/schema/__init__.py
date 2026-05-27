@@ -7707,62 +7707,58 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class DnsServers(AvdModel):
+                class DnsServersItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class ServersItem(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"address": {"type": str}}
-                        address: str
-                        """IPv6 address of DNS server."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
-                                """
-                                ServersItem.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    address: IPv6 address of DNS server.
-
-                                """
-
-                    class Servers(AvdIndexedList[str, ServersItem]):
-                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
-
-                        _primary_key: ClassVar[str] = "address"
-
-                    Servers._item_type = ServersItem
-
-                    _fields: ClassVar[dict] = {"servers": {"type": Servers}}
-                    servers: Servers
-                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "lifetime": {"type": int}}
+                    address: str
+                    """IPv6 address of DNS server."""
+                    lifetime: int | None
+                    """
+                    Specifies the lifetime period for this server in seconds.
+                    This value overrides lifetime value set by
+                    `dns_servers_lifetime` for this server.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, servers: Servers | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
                             """
-                            DnsServers.
+                            DnsServersItem.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
+                                address: IPv6 address of DNS server.
+                                lifetime:
+                                   Specifies the lifetime period for this server in seconds.
+                                   This value overrides lifetime value set by
+                                   `dns_servers_lifetime` for this server.
 
                             """
 
-                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
+                class DnsServers(AvdIndexedList[str, DnsServersItem]):
+                    """Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                DnsServers._item_type = DnsServersItem
+
+                _fields: ClassVar[dict] = {
+                    "disabled": {"type": bool},
+                    "rx_accept": {"type": RxAccept},
+                    "dns_servers": {"type": DnsServers},
+                    "dns_servers_lifetime": {"type": int},
+                }
                 disabled: bool | None
                 """Disable Router Advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
                 dns_servers: DnsServers
-                """Subclass of AvdModel."""
+                """Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`)."""
+                dns_servers_lifetime: int | None
+                """Router Advertisement DNS server lifetime value in seconds."""
 
                 if TYPE_CHECKING:
 
@@ -7772,6 +7768,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         disabled: bool | None | UndefinedType = Undefined,
                         rx_accept: RxAccept | UndefinedType = Undefined,
                         dns_servers: DnsServers | UndefinedType = Undefined,
+                        dns_servers_lifetime: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ra.
@@ -7782,7 +7779,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
-                            dns_servers: Subclass of AvdModel.
+                            dns_servers: Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`).
+                            dns_servers_lifetime: Router Advertisement DNS server lifetime value in seconds.
 
                         """
 
@@ -23283,62 +23281,58 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class DnsServers(AvdModel):
+                class DnsServersItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class ServersItem(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"address": {"type": str}}
-                        address: str
-                        """IPv6 address of DNS server."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
-                                """
-                                ServersItem.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    address: IPv6 address of DNS server.
-
-                                """
-
-                    class Servers(AvdIndexedList[str, ServersItem]):
-                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
-
-                        _primary_key: ClassVar[str] = "address"
-
-                    Servers._item_type = ServersItem
-
-                    _fields: ClassVar[dict] = {"servers": {"type": Servers}}
-                    servers: Servers
-                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "lifetime": {"type": int}}
+                    address: str
+                    """IPv6 address of DNS server."""
+                    lifetime: int | None
+                    """
+                    Specifies the lifetime period for this server in seconds.
+                    This value overrides lifetime value set by
+                    `dns_servers_lifetime` for this server.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, servers: Servers | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
                             """
-                            DnsServers.
+                            DnsServersItem.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
+                                address: IPv6 address of DNS server.
+                                lifetime:
+                                   Specifies the lifetime period for this server in seconds.
+                                   This value overrides lifetime value set by
+                                   `dns_servers_lifetime` for this server.
 
                             """
 
-                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
+                class DnsServers(AvdIndexedList[str, DnsServersItem]):
+                    """Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                DnsServers._item_type = DnsServersItem
+
+                _fields: ClassVar[dict] = {
+                    "disabled": {"type": bool},
+                    "rx_accept": {"type": RxAccept},
+                    "dns_servers": {"type": DnsServers},
+                    "dns_servers_lifetime": {"type": int},
+                }
                 disabled: bool | None
                 """Disable Router Advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
                 dns_servers: DnsServers
-                """Subclass of AvdModel."""
+                """Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`)."""
+                dns_servers_lifetime: int | None
+                """Router Advertisement DNS server lifetime value in seconds."""
 
                 if TYPE_CHECKING:
 
@@ -23348,6 +23342,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         disabled: bool | None | UndefinedType = Undefined,
                         rx_accept: RxAccept | UndefinedType = Undefined,
                         dns_servers: DnsServers | UndefinedType = Undefined,
+                        dns_servers_lifetime: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ra.
@@ -23358,7 +23353,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
-                            dns_servers: Subclass of AvdModel.
+                            dns_servers: Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`).
+                            dns_servers_lifetime: Router Advertisement DNS server lifetime value in seconds.
 
                         """
 
@@ -35041,62 +35037,58 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class DnsServers(AvdModel):
+                class DnsServersItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class ServersItem(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"address": {"type": str}}
-                        address: str
-                        """IPv6 address of DNS server."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
-                                """
-                                ServersItem.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    address: IPv6 address of DNS server.
-
-                                """
-
-                    class Servers(AvdIndexedList[str, ServersItem]):
-                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
-
-                        _primary_key: ClassVar[str] = "address"
-
-                    Servers._item_type = ServersItem
-
-                    _fields: ClassVar[dict] = {"servers": {"type": Servers}}
-                    servers: Servers
-                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "lifetime": {"type": int}}
+                    address: str
+                    """IPv6 address of DNS server."""
+                    lifetime: int | None
+                    """
+                    Specifies the lifetime period for this server in seconds.
+                    This value overrides lifetime value set by
+                    `dns_servers_lifetime` for this server.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, servers: Servers | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
                             """
-                            DnsServers.
+                            DnsServersItem.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
+                                address: IPv6 address of DNS server.
+                                lifetime:
+                                   Specifies the lifetime period for this server in seconds.
+                                   This value overrides lifetime value set by
+                                   `dns_servers_lifetime` for this server.
 
                             """
 
-                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
+                class DnsServers(AvdIndexedList[str, DnsServersItem]):
+                    """Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                DnsServers._item_type = DnsServersItem
+
+                _fields: ClassVar[dict] = {
+                    "disabled": {"type": bool},
+                    "rx_accept": {"type": RxAccept},
+                    "dns_servers": {"type": DnsServers},
+                    "dns_servers_lifetime": {"type": int},
+                }
                 disabled: bool | None
                 """Disable Router Advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
                 dns_servers: DnsServers
-                """Subclass of AvdModel."""
+                """Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`)."""
+                dns_servers_lifetime: int | None
+                """Router Advertisement DNS server lifetime value in seconds."""
 
                 if TYPE_CHECKING:
 
@@ -35106,6 +35098,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         disabled: bool | None | UndefinedType = Undefined,
                         rx_accept: RxAccept | UndefinedType = Undefined,
                         dns_servers: DnsServers | UndefinedType = Undefined,
+                        dns_servers_lifetime: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ra.
@@ -35116,7 +35109,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
-                            dns_servers: Subclass of AvdModel.
+                            dns_servers: Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`).
+                            dns_servers_lifetime: Router Advertisement DNS server lifetime value in seconds.
 
                         """
 
@@ -69351,62 +69345,58 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class DnsServers(AvdModel):
+                class DnsServersItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class ServersItem(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"address": {"type": str}}
-                        address: str
-                        """IPv6 address of DNS server."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
-                                """
-                                ServersItem.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    address: IPv6 address of DNS server.
-
-                                """
-
-                    class Servers(AvdIndexedList[str, ServersItem]):
-                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
-
-                        _primary_key: ClassVar[str] = "address"
-
-                    Servers._item_type = ServersItem
-
-                    _fields: ClassVar[dict] = {"servers": {"type": Servers}}
-                    servers: Servers
-                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "lifetime": {"type": int}}
+                    address: str
+                    """IPv6 address of DNS server."""
+                    lifetime: int | None
+                    """
+                    Specifies the lifetime period for this server in seconds.
+                    This value overrides lifetime value set by
+                    `dns_servers_lifetime` for this server.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, servers: Servers | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
                             """
-                            DnsServers.
+                            DnsServersItem.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
+                                address: IPv6 address of DNS server.
+                                lifetime:
+                                   Specifies the lifetime period for this server in seconds.
+                                   This value overrides lifetime value set by
+                                   `dns_servers_lifetime` for this server.
 
                             """
 
-                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
+                class DnsServers(AvdIndexedList[str, DnsServersItem]):
+                    """Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                DnsServers._item_type = DnsServersItem
+
+                _fields: ClassVar[dict] = {
+                    "disabled": {"type": bool},
+                    "rx_accept": {"type": RxAccept},
+                    "dns_servers": {"type": DnsServers},
+                    "dns_servers_lifetime": {"type": int},
+                }
                 disabled: bool | None
                 """Disable Router Advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
                 dns_servers: DnsServers
-                """Subclass of AvdModel."""
+                """Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`)."""
+                dns_servers_lifetime: int | None
+                """Router Advertisement DNS server lifetime value in seconds."""
 
                 if TYPE_CHECKING:
 
@@ -69416,6 +69406,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         disabled: bool | None | UndefinedType = Undefined,
                         rx_accept: RxAccept | UndefinedType = Undefined,
                         dns_servers: DnsServers | UndefinedType = Undefined,
+                        dns_servers_lifetime: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ra.
@@ -69426,7 +69417,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
-                            dns_servers: Subclass of AvdModel.
+                            dns_servers: Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`).
+                            dns_servers_lifetime: Router Advertisement DNS server lifetime value in seconds.
 
                         """
 
@@ -70666,62 +70658,58 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class DnsServers(AvdModel):
+                class DnsServersItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class ServersItem(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"address": {"type": str}}
-                        address: str
-                        """IPv6 address of DNS server."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
-                                """
-                                ServersItem.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    address: IPv6 address of DNS server.
-
-                                """
-
-                    class Servers(AvdIndexedList[str, ServersItem]):
-                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
-
-                        _primary_key: ClassVar[str] = "address"
-
-                    Servers._item_type = ServersItem
-
-                    _fields: ClassVar[dict] = {"servers": {"type": Servers}}
-                    servers: Servers
-                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "lifetime": {"type": int}}
+                    address: str
+                    """IPv6 address of DNS server."""
+                    lifetime: int | None
+                    """
+                    Specifies the lifetime period for this server in seconds.
+                    This value overrides lifetime value set by
+                    `dns_servers_lifetime` for this server.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, servers: Servers | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
                             """
-                            DnsServers.
+                            DnsServersItem.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
+                                address: IPv6 address of DNS server.
+                                lifetime:
+                                   Specifies the lifetime period for this server in seconds.
+                                   This value overrides lifetime value set by
+                                   `dns_servers_lifetime` for this server.
 
                             """
 
-                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}, "dns_servers": {"type": DnsServers}}
+                class DnsServers(AvdIndexedList[str, DnsServersItem]):
+                    """Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                DnsServers._item_type = DnsServersItem
+
+                _fields: ClassVar[dict] = {
+                    "disabled": {"type": bool},
+                    "rx_accept": {"type": RxAccept},
+                    "dns_servers": {"type": DnsServers},
+                    "dns_servers_lifetime": {"type": int},
+                }
                 disabled: bool | None
                 """Disable Router Advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """Subclass of AvdModel."""
                 dns_servers: DnsServers
-                """Subclass of AvdModel."""
+                """Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`)."""
+                dns_servers_lifetime: int | None
+                """Router Advertisement DNS server lifetime value in seconds."""
 
                 if TYPE_CHECKING:
 
@@ -70731,6 +70719,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         disabled: bool | None | UndefinedType = Undefined,
                         rx_accept: RxAccept | UndefinedType = Undefined,
                         dns_servers: DnsServers | UndefinedType = Undefined,
+                        dns_servers_lifetime: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ra.
@@ -70741,7 +70730,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             disabled: Disable Router Advertisement messages on the interface.
                             rx_accept: Subclass of AvdModel.
-                            dns_servers: Subclass of AvdModel.
+                            dns_servers: Subclass of AvdIndexedList with `DnsServersItem` items. Primary key is `address` (`str`).
+                            dns_servers_lifetime: Router Advertisement DNS server lifetime value in seconds.
 
                         """
 
