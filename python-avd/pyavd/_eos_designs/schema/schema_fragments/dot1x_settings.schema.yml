@@ -120,6 +120,13 @@ keys:
           lldp:
             type: dict
             $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/lldp
+          dhcp:
+            type: dict
+            description: RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages.
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/dhcp
+          framed_mtu:
+            type: int
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/framed_mtu
       redistribute_in_evpn:
         type: bool
         default: true

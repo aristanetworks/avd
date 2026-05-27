@@ -46,6 +46,7 @@ dot1x:
     mac_string_case: uppercase
   radius_av_pair:
     service_type: true
+    framed_mtu: 1500
     lldp:
       system_name:
         enabled: true
@@ -53,6 +54,14 @@ dot1x:
       system_description:
         enabled: true
         auth_only: false
+    dhcp:
+      hostname:
+        enabled: true
+        auth_only: true
+      parameter_request_list:
+        enabled: true
+      vendor_class_id:
+        enabled: false
 enable_password:
   disabled: true
 hostname: dot1x-settings-2

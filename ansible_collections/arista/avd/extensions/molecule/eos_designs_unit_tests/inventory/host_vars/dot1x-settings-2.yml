@@ -31,6 +31,15 @@ dot1x_settings:
       system_description:
         enabled: true
         auth_only: false
+    framed_mtu: 1500
+    dhcp:
+      hostname:
+        enabled: true
+        auth_only: true
+      parameter_request_list:
+        enabled: true
+      vendor_class_id:
+        enabled: false
 
 aaa_settings:
   radius:
