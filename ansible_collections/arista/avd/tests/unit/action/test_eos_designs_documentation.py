@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import warnings
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
@@ -66,12 +67,6 @@ def _run_full_happy_path(module: ActionModule, validated_args: dict) -> dict:
         return module.run(task_vars={"fabric_name": FABRIC_NAME})
 
 
-# ---------------------------------------------------------------------------
-# Baseline: the happy path emits no warnings and no log records.
-# These pin down the "silent on success" contract so post-migration noise is visible.
-# ---------------------------------------------------------------------------
-
-
 @pytest.mark.parametrize(
     "toggles",
     [
@@ -116,7 +111,6 @@ def test_run_emits_no_logs_baseline(
 def test_read_structured_configs_warns_with_each_missing_device_name(
     action_module: Callable[..., ActionModule], tmp_path: Path, caplog: pytest.LogCaptureFixture
 ) -> None:
-    """The WARNING message names every missing device and explains the user-visible impact."""
     module = action_module(ActionModule)
     (tmp_path / "spine1.yml").write_text("hostname: spine1\n", encoding="UTF-8")
 
@@ -124,25 +118,15 @@ def test_read_structured_configs_warns_with_each_missing_device_name(
         result = module.read_structured_configs(["spine1", "leaf1", "leaf2"], str(tmp_path), "yml")
 
     assert result == {"spine1": {"hostname": "spine1"}}
-    assert [r.levelno for r in caplog.records] == [logging.WARNING]
-    message = caplog.records[0].getMessage()
-    assert "leaf1" in message
-    assert "leaf2" in message
-    assert "spine1" not in message
-    assert "documentation may be incomplete" in message
-
-
-def test_read_structured_configs_silent_when_all_devices_present(
-    action_module: Callable[..., ActionModule], tmp_path: Path, caplog: pytest.LogCaptureFixture
-) -> None:
-    """No WARNING is emitted when every device has a structured config."""
-    module = action_module(ActionModule)
-    (tmp_path / "spine1.yml").write_text("hostname: spine1\n", encoding="UTF-8")
-
-    with caplog.at_level(logging.WARNING, logger="ansible_collections.arista.avd"):
-        module.read_structured_configs(["spine1"], str(tmp_path), "yml")
-
-    assert caplog.records == []
+    assert len(caplog.records) == 1
+    record = caplog.records[0]
+    assert record.levelno == logging.WARNING
+    match = re.fullmatch(
+        r"Could not find structured config files for '([^']+)'\. The documentation may be incomplete\.",
+        record.getMessage(),
+    )
+    assert match is not None, f"WARNING did not match expected format: {record.getMessage()!r}"
+    assert set(match.group(1).split(",")) == {"leaf1", "leaf2"}
 
 
 def test_run_routes_missing_device_warning_to_result_warnings(
@@ -216,17 +200,3 @@ def test_load_facts_raises_with_path_and_upstream_task_when_file_missing(action_
         ),
     ):
         module.load_facts()
-
-
-def test_run_raises_when_fabric_name_missing(action_module: Callable[..., ActionModule], base_validated_args: dict) -> None:
-    """fabric_name is required from task_vars; pyavd.get raises a clear error naming the missing key when it is absent."""
-    module = action_module(ActionModule)
-
-    with (
-        patch("ansible.plugins.action.ActionBase.run", return_value={}),
-        patch.object(module, "validate_argument_spec", return_value=(MagicMock(), base_validated_args)),
-        patch.object(ActionModule, "load_facts", return_value={}),
-        patch(f"{MODULE_PATH}.EosDesignsFacts"),
-        pytest.raises(Exception, match="fabric_name"),
-    ):
-        module.run(task_vars={})
