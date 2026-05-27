@@ -103,7 +103,7 @@ def test_main_logs_vault_status_at_info_level(
     expected_message: str,
 ) -> None:
     """Verify main emits the Vault-status INFO log on the AVD logger."""
-    module = action_module()
+    module = action_module(ActionModule)
     vault_handler = MagicMock()
     vault_handler.has_vault_secrets = has_vault_secrets
 
@@ -128,7 +128,7 @@ def test_main_logs_starting_execution_summary(
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Verify the 'Starting execution...' INFO log includes worker and batch counts."""
-    module = action_module()
+    module = action_module(ActionModule)
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
@@ -162,7 +162,7 @@ def test_main_logs_input_source(
     expected_message: str,
 ) -> None:
     """Verify the INFO log identifying where inputs are sourced from."""
-    module = action_module()
+    module = action_module(ActionModule)
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
@@ -191,7 +191,7 @@ def test_run_templating_phase_logs_mixed_results(
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Drive the templating loop with one failure and one success and assert every log line in one pass."""
-    module = action_module()
+    module = action_module(ActionModule)
     module.crashed_hosts = set()
 
     failure = WorkerFailure(hostname="host1", error="boom")
@@ -230,7 +230,7 @@ def test_run_validation_phase_logs_mixed_results(
     caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Drive the validation loop with all four result types and assert every log line in one pass."""
-    module = action_module()
+    module = action_module(ActionModule)
     module.crashed_hosts = set()
 
     skipped = ValidateWorkerSkipped(hostname="host1", reason="No input file: /in/host1.json")
@@ -276,7 +276,7 @@ def test_get_worker_hostvars_raises_when_context_not_initialized() -> None:
 
 def test_main_raises_import_error_when_pyavd_missing(action_module: Callable[..., ActionModule]) -> None:
     """When HAS_PYAVD is False, main raises ImportError naming the plugin."""
-    module = action_module()
+    module = action_module(ActionModule)
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=False),
         pytest.raises(ImportError, match=rf"The {PLUGIN_NAME} plugin requires the 'pyavd' Python library\. Got import error\."),
@@ -286,7 +286,7 @@ def test_main_raises_import_error_when_pyavd_missing(action_module: Callable[...
 
 def test_get_hosts_to_process_raises_for_invalid_fabric_name(action_module: Callable[..., ActionModule]) -> None:
     """_get_hosts_to_process raises ValueError when play hosts are not all in the fabric group."""
-    module = action_module()
+    module = action_module(ActionModule)
     module._templar = MagicMock()
     module._templar.template = lambda x: x
 
@@ -310,7 +310,7 @@ def test_get_hosts_to_process_raises_for_invalid_fabric_name(action_module: Call
 
 def test_main_raises_runtime_error_when_hosts_crashed(action_module: Callable[..., ActionModule]) -> None:
     """A non-empty crashed_hosts set at the end of main triggers a RuntimeError listing the hostnames."""
-    module = action_module()
+    module = action_module(ActionModule)
 
     def fake_validation(**_kwargs: object) -> None:
         module.crashed_hosts.update({"host1", "host2"})
@@ -387,7 +387,7 @@ def test_run_validation_phase_sets_failed_when_validation_errors_and_fail_flag_t
     action_module: Callable[..., ActionModule],
 ) -> None:
     """If fail_on_validation_errors=True and a host has validation errors, self.result['failed'] is set to True."""
-    module = action_module()
+    module = action_module(ActionModule)
     module.crashed_hosts = set()
 
     success = ValidateWorkerSuccess(hostname="host1", validation_result=MagicMock(), output_file="/out/host1.json")
@@ -408,7 +408,7 @@ def test_run_validation_phase_sets_result_msg_when_build_result_message_returns_
     action_module: Callable[..., ActionModule],
 ) -> None:
     """A non-empty build_result_message return value populates self.result['msg']."""
-    module = action_module()
+    module = action_module(ActionModule)
     module.crashed_hosts = set()
 
     with (

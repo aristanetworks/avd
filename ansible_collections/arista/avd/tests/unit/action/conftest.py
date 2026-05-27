@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import importlib
 import logging
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock
@@ -31,24 +30,17 @@ def reset_avd_logger() -> Generator[None, None, None]:
 
 
 @pytest.fixture
-def action_module(request: pytest.FixtureRequest) -> Callable[..., ActionBase]:
+def action_module() -> Callable[..., ActionBase]:
     """
-    Factory fixture that builds the test module's ``ActionModule`` with mocked Ansible deps.
+    Factory that builds an ActionModule instance with mocked Ansible plumbing.
 
-    Resolves the plugin's ``ActionModule`` class from the ``MODULE_PATH`` constant defined
-    in the calling test file, so the import can stay under ``TYPE_CHECKING``.
+    Each test passes the specific ``ActionModule`` class under test (e.g. the one from
+    ``plugins.action.eos_cli_config_gen`` or ``plugins.action.validate_inputs``).
     """
-    action_module_cls = importlib.import_module(request.module.MODULE_PATH).ActionModule
 
-    # Some plugin modules (e.g. eos_cli_config_gen) mutate the AVD logger at import time.
-    # Re-apply the clean state ``reset_avd_logger`` set up, in case the import undid it.
-    avd_logger = logging.getLogger("ansible_collections.arista.avd")
-    avd_logger.propagate = True
-    avd_logger.handlers = []
-
-    def _factory(task_args: dict | None = None) -> ActionBase:
+    def _factory(action_module_cls: type[ActionBase], task_args: dict | None = None) -> ActionBase:
         mock_task = MagicMock()
-        mock_task.args = task_args if task_args is not None else {}
+        mock_task.args = task_args or {}
         mock_task.async_val = False
         mock_task.check_mode = False
         return action_module_cls(
