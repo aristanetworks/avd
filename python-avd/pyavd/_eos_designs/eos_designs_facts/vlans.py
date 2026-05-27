@@ -251,7 +251,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
     @cached_property
     def _vlans(self: EosDesignsFactsGeneratorProtocol) -> frozenset[int]:
         """
-        Return list of VLANs after filtering network services.
+        Return frozenset of VLANs after filtering network services.
 
         The filter is based on filter.tenants, filter.tags and filter.only_vlans_in_use.
 
