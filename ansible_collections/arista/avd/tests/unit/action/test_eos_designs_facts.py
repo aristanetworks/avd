@@ -10,6 +10,7 @@ import pytest
 from ansible.errors import AnsibleActionFail
 
 from ansible_collections.arista.avd.plugins.action.eos_designs_facts import ActionModule
+from pyavd._errors import AristaAvdError
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -30,22 +31,33 @@ def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., Action
         module.run(task_vars={})
 
 
-def test_run_raises_when_play_hosts_not_in_fabric_group(action_module: Callable[..., ActionModule]) -> None:
-    """Test that AnsibleActionFail is raised when ansible_play_hosts_all is not a subset of the fabric group."""
+@pytest.mark.parametrize(
+    ("fabric_name", "ansible_play_hosts_all"),
+    [
+        pytest.param("FABRIC_A", ["spine-1", "outsider-1"], id="play_hosts_not_subset_of_fabric_group"),
+        pytest.param(None, ["spine-1"], id="fabric_name_is_none"),
+    ],
+)
+def test_run_raises_when_fabric_name_invalid(
+    action_module: Callable[..., ActionModule],
+    fabric_name: str | None,
+    ansible_play_hosts_all: list[str],
+) -> None:
+    """Test that AnsibleActionFail is raised when fabric_name is missing or play hosts are not in the fabric group."""
     module = action_module(ActionModule, {"tmp_dir": MOCK_TMP_DIR})
     module._templar.template.side_effect = lambda value: value
 
     task_vars = {
         "groups": {"FABRIC_A": ["spine-1", "spine-2"]},
-        "fabric_name": "FABRIC_A",
-        "ansible_play_hosts_all": ["spine-1", "outsider-1"],
+        "fabric_name": fabric_name,
+        "ansible_play_hosts_all": ansible_play_hosts_all,
     }
 
     with (
         patch(f"{MODULE_PATH}.HAS_PYAVD", new=True),
         patch("ansible.plugins.action.ActionBase.run", return_value={}),
         patch(f"{MODULE_PATH}.get_eos_designs_facts_path"),
-        patch(f"{MODULE_PATH}.natural_sort", side_effect=lambda value, *_, **__: sorted(value)),
+        patch(f"{MODULE_PATH}.natural_sort", side_effect=lambda value, *_, **__: sorted(value or [])),
         pytest.raises(AnsibleActionFail) as exc_info,
     ):
         module.run(task_vars=task_vars)
@@ -54,7 +66,7 @@ def test_run_raises_when_play_hosts_not_in_fabric_group(action_module: Callable[
         "Invalid/missing 'fabric_name' variable. "
         "All hosts in the play must have the same 'fabric_name' value "
         "which must point to an Ansible Group containing the hosts."
-        "play_hosts: ['spine-1', 'outsider-1']"
+        f"play_hosts: {ansible_play_hosts_all}"
     )
 
 
@@ -87,8 +99,6 @@ def test_render_facts_wraps_arista_avd_error_as_action_fail(action_module: Calla
     module = action_module(ActionModule)
     module._digital_twin = False
     module.template_output = False
-
-    from pyavd._errors import AristaAvdError
 
     original_error = AristaAvdError("pyavd blew up")
 
