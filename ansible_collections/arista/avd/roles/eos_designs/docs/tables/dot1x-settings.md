@@ -41,6 +41,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vendor_class_id</samp>](## "dot1x_settings.radius_av_pairs.dhcp.vendor_class_id") | Dictionary |  |  |  | Vendor class identifier (DHCP Option 60). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.radius_av_pairs.dhcp.vendor_class_id.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.radius_av_pairs.dhcp.vendor_class_id.auth_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x_settings.radius_av_pairs.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
     | [<samp>&nbsp;&nbsp;redistribute_in_evpn</samp>](## "dot1x_settings.redistribute_in_evpn") | Boolean |  | `True` |  | Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs. |
 
 === "YAML"
@@ -131,6 +132,7 @@
           vendor_class_id:
             enabled: <bool; required>
             auth_only: <bool>
+        framed_mtu: <int; 68-9236>
 
       # Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.
       redistribute_in_evpn: <bool; default=True>

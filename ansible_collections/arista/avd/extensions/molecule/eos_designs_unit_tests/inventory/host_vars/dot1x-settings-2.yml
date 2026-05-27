@@ -24,6 +24,7 @@ dot1x_settings:
       letter_case: uppercase
   radius_av_pairs:
     service_type: true
+    framed_mtu: 1500
     dhcp:
       hostname:
         enabled: true

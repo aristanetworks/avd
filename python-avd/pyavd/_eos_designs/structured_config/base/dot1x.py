@@ -95,6 +95,8 @@ class Dot1xMixin(Protocol):
             self.structured_config.dot1x.radius_av_pair.service_type = True
         if dot1x_settings.radius_av_pairs.dhcp:
             self.structured_config.dot1x.radius_av_pair.dhcp = dot1x_settings.radius_av_pairs.dhcp
+        if dot1x_settings.radius_av_pairs.framed_mtu:
+            self.structured_config.dot1x.radius_av_pair.framed_mtu = dot1x_settings.radius_av_pairs.framed_mtu
         if dot1x_settings.mac_based_authentication.username_format:
             self.structured_config.dot1x.radius_av_pair_username_format = EosCliConfigGen.Dot1x.RadiusAvPairUsernameFormat(
                 delimiter=dot1x_settings.mac_based_authentication.username_format.delimiter,
