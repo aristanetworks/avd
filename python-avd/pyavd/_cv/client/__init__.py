@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import platform
 import ssl
 import sys
@@ -139,6 +140,8 @@ class CVClientProtocol(
           `ssl.get_default_verify_paths()`, bypassing certifi. Soft-falls back to certifi
           (with a warning) when the system has no usable trust store — neither `cafile` nor
           `capath` resolves to a readable file or directory (e.g. distroless container).
+          User-set `SSL_CERT_FILE` / `SSL_CERT_DIR` env vars override OS defaults for requests (takes a single path only).
+          grpclib loads both `cafile` and `capath`, unioning OS defaults with any user-set env vars.
         - `verify_certs=True`, `use_system_certs=False`: certifi.
         """
         if not self._verify_certs:
@@ -152,6 +155,9 @@ class CVClientProtocol(
         # TODO: Make this default in AVD 7.0.0
         if self._use_system_certs:
             verify_paths = ssl.get_default_verify_paths()
+            user_set_capath_only = "SSL_CERT_DIR" in os.environ and "SSL_CERT_FILE" not in os.environ
+            if user_set_capath_only and verify_paths.capath:
+                return CVTLSSettings(grpc_ssl=verify_paths, requests_verify=verify_paths.capath)
             if path := (verify_paths.cafile or verify_paths.capath):
                 return CVTLSSettings(grpc_ssl=verify_paths, requests_verify=path)
             # No usable OS trust store — warn and fall through to the certifi default.
