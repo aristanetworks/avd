@@ -1025,8 +1025,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         only_configure_route_map_connected_to_bgp_vrfs_when_required: bool
         """
-        Remove the route map `RM-CONN-2-BGP-VRFS` when underlay_rfc5549 and
-        overlay_mlag_rfc5549 was set.
+        Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and
+        `overlay_mlag_rfc5549` are
+        set.
 
         Default value: `False`
         """
@@ -1065,8 +1066,9 @@ class EosDesigns(EosDesignsRootModel):
                     configure_inband_mgmt_ipv6_vrf: Configure `inband_mgmt_vrf` for IPv6 inband management.
                     only_configure_ipv6_inband_mgmt_prefix_list_when_used: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
                     only_configure_route_map_connected_to_bgp_vrfs_when_required:
-                       Remove the route map `RM-CONN-2-BGP-VRFS` when underlay_rfc5549 and
-                       overlay_mlag_rfc5549 was set.
+                       Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and
+                       `overlay_mlag_rfc5549` are
+                       set.
 
                 """
 

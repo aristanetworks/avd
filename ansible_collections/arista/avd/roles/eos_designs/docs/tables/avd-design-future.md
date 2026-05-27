@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Configure `inband_mgmt_vrf` for IPv6 inband management. |
     | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
-    | [<samp>&nbsp;&nbsp;only_configure_route_map_connected_to_bgp_vrfs_when_required</samp>](## "avd_design_future.only_configure_route_map_connected_to_bgp_vrfs_when_required") | Boolean |  | `False` |  | Remove the route map `RM-CONN-2-BGP-VRFS` when underlay_rfc5549 and<br>overlay_mlag_rfc5549 was set.<br> |
+    | [<samp>&nbsp;&nbsp;only_configure_route_map_connected_to_bgp_vrfs_when_required</samp>](## "avd_design_future.only_configure_route_map_connected_to_bgp_vrfs_when_required") | Boolean |  | `False` |  | Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and<br>`overlay_mlag_rfc5549` are set.<br> |
 
 === "YAML"
 
@@ -45,7 +45,7 @@
       # Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
       only_configure_ipv6_inband_mgmt_prefix_list_when_used: <bool; default=False>
 
-      # Remove the route map `RM-CONN-2-BGP-VRFS` when underlay_rfc5549 and
-      # overlay_mlag_rfc5549 was set.
+      # Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and
+      # `overlay_mlag_rfc5549` are set.
       only_configure_route_map_connected_to_bgp_vrfs_when_required: <bool; default=False>
     ```
