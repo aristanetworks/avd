@@ -261,6 +261,15 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
             return frozenset()
 
         vlans = set()
+        if self.inputs.network_services:
+            for tenant in self.inputs.network_services:
+                if not set(self.shared_utils.node_config.filter.tenants).intersection([tenant.name, "all"]):
+                    # Not matching tenant filters. Skipping this tenant.
+                    continue
+
+                vlans.update(svi.id for vrf in tenant.vrfs for svi in vrf.svis if self._is_accepted_vlan(svi))
+                vlans.update(l2vlan.id for l2vlan in tenant.l2vlans if self._is_accepted_vlan(l2vlan))
+
         for network_services_key in self.inputs._dynamic_keys.network_services:
             tenants = network_services_key.value
             for tenant in tenants:
@@ -276,7 +285,9 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
     def _is_accepted_vlan(
         self: EosDesignsFactsGeneratorProtocol,
         vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem
-        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
+        | EosDesigns.NetworkServicesItem.VrfsItem.SvisItem
+        | EosDesigns.NetworkServicesItem.L2vlansItem,
     ) -> bool:
         if "all" not in self.shared_utils.filter_tags and not set(vlan.tags).intersection(self.shared_utils.filter_tags):
             return False
