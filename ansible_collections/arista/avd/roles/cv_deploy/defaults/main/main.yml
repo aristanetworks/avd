@@ -32,7 +32,6 @@ cv_verify_certs: true
 #   # Prefers the OS trust store over the bundled 'certifi' Python package
 #   # (certifi is only used as a fallback when the OS provides no usable trust store).
 #   use_system_certs: <bool, default=false>
-cv_deploy_future: {}
 
 # # Set FQDN/IP of the HTTP CONNECT proxy server.
 # proxy_host: <str>
