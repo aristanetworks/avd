@@ -1,7 +1,0 @@
-{% if wan_carrier is arista.avd.defined %}
-custom_template_description_{{ wan_carrier }}
-{% elif main_interface_wan_carrier is arista.avd.defined %}
-custom_template_description_{{ main_interface_wan_carrier }}
-{% else %}
-{{ description_prefix }}_{{ interface }}_{{ peer | upper }}
-{% endif %}

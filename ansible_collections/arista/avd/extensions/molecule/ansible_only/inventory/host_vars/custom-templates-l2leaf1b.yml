@@ -11,5 +11,5 @@ node_type_keys:
     uplink_type: port-channel
     interface_descriptions:
       # Override interface description templates with our custom templates
-      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces-1.j2'
-      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces-1.j2'
+      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
