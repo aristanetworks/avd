@@ -361,10 +361,12 @@ class RouterBgpMixin(Protocol):
         vlan_id: int,
     ) -> None:
         """In-place update MLAG neighbor part of structured config for *one* VRF under router_bgp.vrfs."""
+        # TODO: AVD7.0 - Move this logic to else block of self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549.
         if self._exclude_mlag_ibgp_peering_from_redistribute(vrf, tenant):
-            bgp_vrf.redistribute.connected._update(enabled=True, route_map="RM-CONN-2-BGP-VRFS")
-            # Create route-map
-            self.set_once_route_map_connected_to_bgp_vrfs()
+            if not self.inputs.avd_design_future.only_configure_route_map_connected_to_bgp_vrfs_when_required:
+                bgp_vrf.redistribute.connected._update(enabled=True, route_map="RM-CONN-2-BGP-VRFS")
+                # Create route-map
+                self.set_once_route_map_connected_to_bgp_vrfs()
 
         interface_name = f"Vlan{vlan_id}"
 

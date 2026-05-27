@@ -378,6 +378,15 @@ keys:
         description: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when
           it is needed.
         default: false
+      only_configure_route_map_connected_to_bgp_vrfs_when_required:
+        type: bool
+        description: 'Remove the route map `RM-CONN-2-BGP-VRFS` when underlay_rfc5549
+          and
+
+          overlay_mlag_rfc5549 was set.
+
+          '
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
