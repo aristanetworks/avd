@@ -38,7 +38,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.
         This is to ensure that native vlan is not necessarily permitted on the uplink trunk.
         """
-        return list_compress(self._vlans)
+        return list_compress(list(self._vlans))
 
     def _parse_adapter_settings(
         self: EosDesignsFactsGeneratorProtocol,
@@ -249,26 +249,26 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         return EosDesignsFactsProtocol.EndpointTrunkGroups(natural_sort(self._endpoint_trunk_groups))
 
     @cached_property
-    def _vlans(self: EosDesignsFactsGeneratorProtocol) -> list[int]:
+    def _vlans(self: EosDesignsFactsGeneratorProtocol) -> frozenset[int]:
         """
-        Return list of vlans after filtering network services.
+        Return frozenset of VLANs after filtering network services.
 
         The filter is based on filter.tenants, filter.tags and filter.only_vlans_in_use.
 
         Ex. [1, 2, 3 ,4 ,201, 3021]
         """
         if not self.shared_utils.any_network_services:
-            return []
+            return frozenset()
 
-        vlans = []
+        vlans = set()
         if self.inputs.network_services:
             for tenant in self.inputs.network_services:
                 if not set(self.shared_utils.node_config.filter.tenants).intersection([tenant.name, "all"]):
                     # Not matching tenant filters. Skipping this tenant.
                     continue
 
-                vlans.extend(svi.id for vrf in tenant.vrfs for svi in vrf.svis if self._is_accepted_vlan(svi))
-                vlans.extend(l2vlan.id for l2vlan in tenant.l2vlans if self._is_accepted_vlan(l2vlan))
+                vlans.update(svi.id for vrf in tenant.vrfs for svi in vrf.svis if self._is_accepted_vlan(svi))
+                vlans.update(l2vlan.id for l2vlan in tenant.l2vlans if self._is_accepted_vlan(l2vlan))
 
         for network_services_key in self.inputs._dynamic_keys.network_services:
             tenants = network_services_key.value
@@ -277,10 +277,10 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
                     # Not matching tenant filters. Skipping this tenant.
                     continue
 
-                vlans.extend(svi.id for vrf in tenant.vrfs for svi in vrf.svis if self._is_accepted_vlan(svi))
-                vlans.extend(l2vlan.id for l2vlan in tenant.l2vlans if self._is_accepted_vlan(l2vlan))
+                vlans.update(svi.id for vrf in tenant.vrfs for svi in vrf.svis if self._is_accepted_vlan(svi))
+                vlans.update(l2vlan.id for l2vlan in tenant.l2vlans if self._is_accepted_vlan(l2vlan))
 
-        return vlans
+        return frozenset(vlans)
 
     def _is_accepted_vlan(
         self: EosDesignsFactsGeneratorProtocol,
