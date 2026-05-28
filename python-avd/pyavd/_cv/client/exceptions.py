@@ -89,3 +89,7 @@ class CVClientBulkAPIError(CVClientException):
 
 class CVGRPCError(CVClientException):
     """GRPC call failed."""
+
+
+class CVClientInvalidServerName(CVClientException):
+    """CloudVision server FQDN is invalid."""
