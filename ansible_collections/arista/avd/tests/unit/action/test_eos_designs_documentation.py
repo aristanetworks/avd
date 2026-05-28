@@ -68,7 +68,7 @@ def test_read_structured_configs_warns_with_each_missing_device_name(
     record = caplog.records[0]
     assert record.levelno == logging.WARNING
     match = re.fullmatch(
-        r"Could not find structured config files for '([^']+)'\. The documentation may be incomplete\.",
+        r"Could not find structured config files for '([^']+)'. The documentation may be incomplete.",
         record.getMessage(),
     )
     assert match is not None, f"WARNING did not match expected format: {record.getMessage()!r}"
