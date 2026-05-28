@@ -150,9 +150,12 @@ class MockedResponseWithError(NamedTuple):
 
 class CvClass:
     _cv_version: CvVersion
+    _servers: list[str]
 
-    def __init__(self, version: CvVersion) -> None:
+    def __init__(self, version: CvVersion, servers: str | list[str] | None = None) -> None:
         self._cv_version = version
+        if servers is not None:
+            self._servers = [servers] if isinstance(servers, str) else servers
         self._grpc_call_count = defaultdict(int)
         self._grpc_msgsize_unlimited_call_count = defaultdict(int)
         self._grpc_msgsize_limited_call_count = defaultdict(lambda: defaultdict(int))
@@ -192,6 +195,10 @@ class CvClass:
     async def msgsize_unlimited_grpc_method_exception(self, inner_exception: Exception) -> Exception:
         self._grpc_msgsize_unlimited_call_count[self.msgsize_unlimited_grpc_method_exception.__name__] += 1
         raise inner_exception
+
+    @GRPCRequestHandler()
+    async def grpc_unknown_status_method(self) -> str:
+        raise GRPCError(Status.UNKNOWN)
 
     @GRPCRequestHandler(retry_on_stream_reset=True)
     async def stream_reset_retry_method(self, failures: int = 0, error_code: int = 2, message: str | None = None) -> str:

@@ -185,3 +185,14 @@ router_ospf:
           default_information_originate:
             metric: 50
             metric_type: 1
+    - id: 700
+      router_id: 10.255.0.1
+      segment_routing_mpls:
+        enabled: true
+        shutdown: false
+        prefix_segments:
+          - prefix: 10.255.0.1/32
+            index: 100
+          - prefix: 10.255.0.2/32
+            index: 200
+        adjacency_segment_allocation: all-interfaces

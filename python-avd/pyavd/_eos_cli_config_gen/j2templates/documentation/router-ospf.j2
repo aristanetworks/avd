@@ -231,6 +231,45 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# OSPF Segment Routing #}
+{%     set has.found = false %}
+{%     for process_id in router_ospf.process_ids %}
+{%         if process_id.segment_routing_mpls.enabled is arista.avd.defined(true) %}
+{%             set has.found = true %}
+{%         endif %}
+{%     endfor %}
+{%     if has.found is arista.avd.defined(true) %}
+
+#### Router OSPF Segment Routing
+
+| Process ID | Adjacency Segment Allocation | Shutdown |
+| ---------- | ---------------------------- | -------- |
+{%         for process_id in router_ospf.process_ids | arista.avd.natural_sort('id') %}
+{%             if process_id.segment_routing_mpls is arista.avd.defined %}
+{%                 set adj_alloc = process_id.segment_routing_mpls.adjacency_segment_allocation | arista.avd.default('-') %}
+{%                 set shutdown = process_id.segment_routing_mpls.shutdown | arista.avd.default('-') %}
+| {{ process_id.id }} | {{ adj_alloc }} | {{ shutdown }} |
+{%             endif %}
+{%         endfor %}
+{%         set has.found = false %}
+{%         for process_id in router_ospf.process_ids %}
+{%             if process_id.segment_routing_mpls.prefix_segments is arista.avd.defined %}
+{%                 set has.found = true %}
+{%             endif %}
+{%         endfor %}
+{%         if has.found is arista.avd.defined(true) %}
+
+##### OSPF Prefix Segments
+
+| Process ID | Prefix | Index |
+| ---------- | ------ | ----- |
+{%             for process_id in router_ospf.process_ids | arista.avd.natural_sort('id') %}
+{%                 for prefix_segment in process_id.segment_routing_mpls.prefix_segments | arista.avd.natural_sort('prefix') %}
+| {{ process_id.id }} | {{ prefix_segment.prefix }} | {{ prefix_segment.index }} |
+{%                 endfor %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
 {# OSPF Areas #}
 {%     set has.found = false %}
 {%     for process_id in router_ospf.process_ids %}
