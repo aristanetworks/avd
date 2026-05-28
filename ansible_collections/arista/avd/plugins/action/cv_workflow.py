@@ -29,7 +29,11 @@ PLUGIN_NAME = "arista.avd.cv_workflow"
 try:
     from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
     from pyavd._cv.workflows.models import (
+        AvdChangeControl,
+        AvdDevice,
         AvdManifest,
+        AvdWorkspace,
+        AvdWorkspaceBuildWarningsConfig,
         CloudVision,
         CVChangeControl,
         CVDevice,
@@ -42,7 +46,6 @@ try:
         CVPathfinderMetadata,
         CVTimeOuts,
         CVWorkspace,
-        CVWorkspaceBuildWarningsConfig,
         DeployToCvResult,
     )
     from pyavd._cv.workflows.utils import extract_from_device_deployments
@@ -108,6 +111,7 @@ ARGUMENT_SPEC = {
                     "suppress_portfast": {"type": "bool", "required": False, "default": False},
                 },
             },
+            "max_sync_retries": {"type": "int", "required": False, "default": 5},
         },
     },
     "change_control": {
@@ -250,14 +254,14 @@ class ActionModule(ActionBase):
             )
 
             if work_to_do:
-                # Pre-process workspace args to convert build_warnings to CVWorkspaceBuildWarningsConfig object.
+                # Pre-process workspace args to convert build_warnings to AvdWorkspaceBuildWarningsConfig object.
                 workspace_args = get(validated_args, "workspace", default={})
                 if "build_warnings" in workspace_args:
-                    workspace_args["build_warnings"] = CVWorkspaceBuildWarningsConfig(**workspace_args["build_warnings"])
+                    workspace_args["build_warnings"] = AvdWorkspaceBuildWarningsConfig(**workspace_args["build_warnings"])
 
                 # Perform deployment of all objects, getting a DeployToCVResult object back.
                 result_object = await deploy_to_cv(
-                    change_control=CVChangeControl(**get(validated_args, "change_control", default={})),
+                    change_control=CVChangeControl(avd_change_control=AvdChangeControl(**get(validated_args, "change_control", default={}))),
                     cloudvision=cloudvision,
                     device_deployments=device_deployments,
                     static_config_manifest=static_config_manifest,
@@ -265,7 +269,7 @@ class ActionModule(ActionBase):
                     strict_system_mac_address=get(validated_args, "strict_system_mac_address"),
                     strict_tags=get(validated_args, "strict_tags"),
                     timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
-                    workspace=CVWorkspace(**workspace_args),
+                    workspace=CVWorkspace(avd_workspace=AvdWorkspace(**workspace_args)),
                 )
                 # Errors and warnings are converted to JSON compatible strings.
                 result_object.errors = [str(error) for error in result_object.errors]
@@ -387,7 +391,7 @@ class ActionModule(ActionBase):
         # Build device object to be used in other objects.
         serial_number = default(get(structured_config, "metadata.serial_number"), get(structured_config, "serial_number"))
         system_mac_address = default(get(structured_config, "metadata.system_mac_address"), get(structured_config, "system_mac_address"))
-        device_object = CVDevice(hostname=hostname, serial_number=serial_number, system_mac_address=system_mac_address)
+        device_object = CVDevice(avd_device=AvdDevice(hostname=hostname, serial_number=serial_number, system_mac_address=system_mac_address))
 
         # Check if the device should use the static config manifest instead of the flat layout.
         use_static_config_manifest = default(

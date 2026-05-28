@@ -48,14 +48,14 @@ def identify_duplicated_devices(devices: list[CVDevice]) -> DuplicatedDevices:
     """
     duplicated_devices = DuplicatedDevices()
 
-    # Group devices based on <CVDevice>.serial_number as long as it's not None
+    # Group devices based on <CVDevice>.intended_serial_number as long as it's not None
     devices_grouped_by_serial_number = groupby_obj(
-        list_of_objects=[device for device in devices if device.serial_number is not None], attr="serial_number", skip_singles=True
+        list_of_objects=[device for device in devices if device.intended_serial_number is not None], attr="intended_serial_number", skip_singles=True
     )
 
-    # Group devices based on <CVDevice>.system_mac_address as long as it's not None
+    # Group devices based on <CVDevice>.intended_system_mac_address as long as it's not None
     devices_grouped_by_system_mac_address = groupby_obj(
-        list_of_objects=[device for device in devices if device.system_mac_address is not None], attr="system_mac_address", skip_singles=True
+        list_of_objects=[device for device in devices if device.intended_system_mac_address is not None], attr="intended_system_mac_address", skip_singles=True
     )
 
     # Populate list of CVDevice with duplicated serial_number values
@@ -66,7 +66,7 @@ def identify_duplicated_devices(devices: list[CVDevice]) -> DuplicatedDevices:
     for current_system_mac_address, device_iterator_object in devices_grouped_by_system_mac_address:
         devices_with_current_system_mac_address = list(device_iterator_object)
         # Safe case where all devices with duplicated current_system_mac_address have a serial_number set
-        if all(device.serial_number for device in devices_with_current_system_mac_address):
+        if all(device.intended_serial_number for device in devices_with_current_system_mac_address):
             duplicated_devices.system_mac_address.set_serial_number[current_system_mac_address] = devices_with_current_system_mac_address
         # Unsafe case where at least one device among those with the same duplicated current_system_mac_address does not have a serial_number set
         else:

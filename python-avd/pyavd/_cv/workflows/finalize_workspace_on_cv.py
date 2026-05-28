@@ -9,7 +9,12 @@ from re import compile as re_compile
 from typing import TYPE_CHECKING
 
 from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus, WorkspaceBuildDetails, WorkspaceState
-from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
+from pyavd._cv.client.exceptions import (
+    CVWorkspaceBuildFailed,
+    CVWorkspaceSubmitFailed,
+    CVWorkspaceSubmitFailedInactiveDevices,
+    CVWorkspaceSyncAttemptsExhausted,
+)
 from pyavd._utils import get_v2
 
 from .constants import EOS_CLI_WARNINGS
@@ -52,6 +57,11 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
 
     workspace_config = await cv_client.build_workspace(workspace_id=workspace.id)
     build_result, cv_workspace = await cv_client.wait_for_workspace_response(workspace_id=workspace.id, request_id=workspace_config.request_params.request_id)
+    # Check if Workspace needs to be synchronized after build
+    if cv_workspace.needs_rebase:
+        # Return to initiate Workspace sync/rebase
+        workspace.synchronization_required = True
+        return
     workspace.build_id = cv_workspace.last_build_id
     workspace.device_build_results = await _process_workspace_build_details(workspace=workspace, cv_client=cv_client, devices=devices, warnings=warnings)
     if build_result.status != ResponseStatus.SUCCESS:
@@ -85,6 +95,13 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
             warnings.append(msg)
         if submit_result.status != ResponseStatus.SUCCESS:
             workspace.state = "submit failed"
+
+            # Workspace submission failed because it is out of sync with mainline - retry after sync.
+            if submit_result.code == ResponseCode.SYNCHRONIZATION_REQUIRED:
+                # Return to initiate Workspace sync/rebase
+                workspace.synchronization_required = True
+                return
+
             # Unforced Workspace submission failed due to inactive devices.
             if submit_result.code == ResponseCode.INACTIVE_DEVICES_EXIST:
                 # Use case where some of the devices that we targeted were known to be inactive prior to Workspace submission
@@ -128,6 +145,30 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
         return
 
     return
+
+
+async def workspace_was_synced_on_cv(workspace: CVWorkspace, cv_client: CVClient, workspace_sync_attempt: int) -> bool:
+    """
+    Synchronize (rebase) CloudVision Workspace if required.
+
+    Returns:
+        True: If Workspace has been synced/rebased and therefore replay of all changes is needed.
+        False: If Workspace has not been synced/rebased.
+    """
+    if workspace.synchronization_required:
+        if workspace_sync_attempt < workspace.max_sync_retries:
+            # TODO: Replace with actual synchronize_workspace_on_cv() call once available
+            await _synchronize_workspace_on_cv_placeholder(workspace_id=workspace.id, cv_client=cv_client)
+            # Reset synchronization requirement flag
+            workspace.synchronization_required = False
+            return True
+        raise CVWorkspaceSyncAttemptsExhausted(workspace.max_sync_retries, workspace.name)
+    return False
+
+
+async def _synchronize_workspace_on_cv_placeholder(workspace_id: str, cv_client: CVClient) -> None:
+    """Placeholder for the actual workspace synchronization call. Replace once the API is available."""
+    LOGGER.info("_synchronize_workspace_on_cv_placeholder: workspace_id=%s - synchronization not yet implemented", workspace_id)
 
 
 def _prepare_build_warnings_suppress_patterns(
