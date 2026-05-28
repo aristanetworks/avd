@@ -102,8 +102,24 @@ class Dot1xMixin(Protocol):
                 delimiter=dot1x_settings.mac_based_authentication.username_format.delimiter,
                 mac_string_case=dot1x_settings.mac_based_authentication.username_format.letter_case,
             )
-        if dot1x_settings.captive_portal:
-            self.structured_config.dot1x.captive_portal = dot1x_settings.captive_portal
+        self.set_dot1x_captive_portal(dot1x_settings.captive_portal)
+
+    def set_dot1x_captive_portal(self: AvdStructuredConfigBaseProtocol, captive_portal: EosDesigns.Dot1xSettings.CaptivePortal) -> None:
+        """Configure 802.1X captive portal settings."""
+        if not captive_portal:
+            return
+
+        self.structured_config.dot1x.captive_portal = EosCliConfigGen.Dot1x.CaptivePortal(
+            enabled=captive_portal.enabled,
+            start_limit_infinite=captive_portal.start_limit_infinite,
+            access_list_ipv4=captive_portal.ipv4_standard_acl,
+        )
+
+        # `url` and `ssl_profile` are mutually exclusive in EOS CLI. `ssl_profile` takes precedence when both are set.
+        if captive_portal.ssl_profile:
+            self.structured_config.dot1x.captive_portal.ssl_profile = captive_portal.ssl_profile
+        elif captive_portal.url:
+            self.structured_config.dot1x.captive_portal.url = captive_portal.url
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,

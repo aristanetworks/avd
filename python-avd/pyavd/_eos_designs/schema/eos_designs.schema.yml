@@ -2390,7 +2390,31 @@ keys:
           addresses into EVPN under all configured MAC-VRFs.
       captive_portal:
         type: dict
-        $ref: eos_cli_config_gen#/keys/dot1x/keys/captive_portal
+        description: Web authentication feature authenticates a supplicant through
+          a web page, referred to as a captive portal.
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: Enable the 802.1X captive portal feature.
+          url:
+            type: str
+            description: "Supported URL type:\n  - http: http://<hostname>[:<port>]\n
+              \ - https: https://<hostname>[:<port>]\nThis option is mutually exclusive
+              with `ssl_profile`. If both are set, `ssl_profile` takes precedence."
+          ssl_profile:
+            type: str
+            description: 'Name of the SSL profile used by the captive portal.
+
+              This option is mutually exclusive with `url`. If both are set, `ssl_profile`
+              takes precedence.'
+          start_limit_infinite:
+            type: bool
+            description: Set captive-portal start limit to infinite.
+          ipv4_standard_acl:
+            type: str
+            description: Name of the IPv4 standard access-list to apply to the captive
+              portal.
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings

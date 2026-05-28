@@ -18163,6 +18163,71 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class CaptivePortal(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool},
+                "url": {"type": str},
+                "ssl_profile": {"type": str},
+                "start_limit_infinite": {"type": bool},
+                "ipv4_standard_acl": {"type": str},
+            }
+            enabled: bool
+            """Enable the 802.1X captive portal feature."""
+            url: str | None
+            """
+            Supported URL type:
+              - http: http://<hostname>[:<port>]
+              - https: https://<hostname>[:<port>]
+            This
+            option is mutually exclusive with `ssl_profile`. If both are set, `ssl_profile` takes precedence.
+            """
+            ssl_profile: str | None
+            """
+            Name of the SSL profile used by the captive portal.
+            This option is mutually exclusive with `url`. If
+            both are set, `ssl_profile` takes precedence.
+            """
+            start_limit_infinite: bool | None
+            """Set captive-portal start limit to infinite."""
+            ipv4_standard_acl: str | None
+            """Name of the IPv4 standard access-list to apply to the captive portal."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    url: str | None | UndefinedType = Undefined,
+                    ssl_profile: str | None | UndefinedType = Undefined,
+                    start_limit_infinite: bool | None | UndefinedType = Undefined,
+                    ipv4_standard_acl: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    CaptivePortal.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable the 802.1X captive portal feature.
+                        url:
+                           Supported URL type:
+                             - http: http://<hostname>[:<port>]
+                             - https: https://<hostname>[:<port>]
+                           This
+                           option is mutually exclusive with `ssl_profile`. If both are set, `ssl_profile` takes precedence.
+                        ssl_profile:
+                           Name of the SSL profile used by the captive portal.
+                           This option is mutually exclusive with `url`. If
+                           both are set, `ssl_profile` takes precedence.
+                        start_limit_infinite: Set captive-portal start limit to infinite.
+                        ipv4_standard_acl: Name of the IPv4 standard access-list to apply to the captive portal.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "enabled": {"type": bool, "default": False},
             "authentication": {"type": Authentication},
@@ -18173,7 +18238,7 @@ class EosDesigns(EosDesignsRootModel):
             "mac_based_authentication": {"type": MacBasedAuthentication},
             "radius_av_pairs": {"type": RadiusAvPairs},
             "redistribute_in_evpn": {"type": bool, "default": True},
-            "captive_portal": {"type": EosCliConfigGen.Dot1x.CaptivePortal},
+            "captive_portal": {"type": CaptivePortal},
         }
         enabled: bool
         """
@@ -18212,10 +18277,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
-        captive_portal: EosCliConfigGen.Dot1x.CaptivePortal
+        captive_portal: CaptivePortal
         """
         Web authentication feature authenticates a supplicant through a web page, referred to as a captive
         portal.
+
+        Subclass of AvdModel.
         """
 
         if TYPE_CHECKING:
@@ -18232,7 +18299,7 @@ class EosDesigns(EosDesignsRootModel):
                 mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
                 radius_av_pairs: RadiusAvPairs | UndefinedType = Undefined,
                 redistribute_in_evpn: bool | UndefinedType = Undefined,
-                captive_portal: EosCliConfigGen.Dot1x.CaptivePortal | UndefinedType = Undefined,
+                captive_portal: CaptivePortal | UndefinedType = Undefined,
             ) -> None:
                 """
                 Dot1xSettings.
@@ -18258,6 +18325,8 @@ class EosDesigns(EosDesignsRootModel):
                     captive_portal:
                        Web authentication feature authenticates a supplicant through a web page, referred to as a captive
                        portal.
+
+                       Subclass of AvdModel.
 
                 """
 

@@ -44,11 +44,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x_settings.radius_av_pairs.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
     | [<samp>&nbsp;&nbsp;redistribute_in_evpn</samp>](## "dot1x_settings.redistribute_in_evpn") | Boolean |  | `True` |  | Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs. |
     | [<samp>&nbsp;&nbsp;captive_portal</samp>](## "dot1x_settings.captive_portal") | Dictionary |  |  |  | Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.captive_portal.enabled") | Boolean | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "dot1x_settings.captive_portal.url") | String |  |  |  | Supported URL type:<br>  - http: http://<hostname>[:<port>]<br>  - https: https://<hostname>[:<port>] |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x_settings.captive_portal.ssl_profile") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.captive_portal.enabled") | Boolean | Required |  |  | Enable the 802.1X captive portal feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "dot1x_settings.captive_portal.url") | String |  |  |  | Supported URL type:<br>  - http: http://<hostname>[:<port>]<br>  - https: https://<hostname>[:<port>]<br>This option is mutually exclusive with `ssl_profile`. If both are set, `ssl_profile` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x_settings.captive_portal.ssl_profile") | String |  |  |  | Name of the SSL profile used by the captive portal.<br>This option is mutually exclusive with `url`. If both are set, `ssl_profile` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;start_limit_infinite</samp>](## "dot1x_settings.captive_portal.start_limit_infinite") | Boolean |  |  |  | Set captive-portal start limit to infinite. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv4</samp>](## "dot1x_settings.captive_portal.access_list_ipv4") | String |  |  |  | Standard access-list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_standard_acl</samp>](## "dot1x_settings.captive_portal.ipv4_standard_acl") | String |  |  |  | Name of the IPv4 standard access-list to apply to the captive portal. |
 
 === "YAML"
 
@@ -145,17 +145,23 @@
 
       # Web authentication feature authenticates a supplicant through a web page, referred to as a captive portal.
       captive_portal:
+
+        # Enable the 802.1X captive portal feature.
         enabled: <bool; required>
 
         # Supported URL type:
         #   - http: http://<hostname>[:<port>]
         #   - https: https://<hostname>[:<port>]
+        # This option is mutually exclusive with `ssl_profile`. If both are set, `ssl_profile` takes precedence.
         url: <str>
+
+        # Name of the SSL profile used by the captive portal.
+        # This option is mutually exclusive with `url`. If both are set, `ssl_profile` takes precedence.
         ssl_profile: <str>
 
         # Set captive-portal start limit to infinite.
         start_limit_infinite: <bool>
 
-        # Standard access-list name.
-        access_list_ipv4: <str>
+        # Name of the IPv4 standard access-list to apply to the captive portal.
+        ipv4_standard_acl: <str>
     ```
