@@ -11,6 +11,7 @@ from importlib.metadata import PackageNotFoundError, version
 from typing import TYPE_CHECKING, Protocol
 
 from grpclib.client import Channel
+from grpclib.config import Configuration
 from requests import JSONDecodeError, get, post
 from requests.exceptions import HTTPError, RequestException
 
@@ -29,7 +30,6 @@ from .workspace import WorkspaceMixin
 if TYPE_CHECKING:
     from types import TracebackType
 
-    from grpclib.config import Configuration
     from grpclib.protocol import H2Protocol
     from typing_extensions import Self
 
@@ -87,7 +87,7 @@ class CVClientProtocol(
             if self._proxy_manager is not None:
                 self._channel = await self._create_proxy_channel(ssl_context)
             else:
-                self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context, config=self._grpc_channel_config())
+                self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context, config=self._grpclib_channel_config)
 
         self._metadata = {"authorization": "Bearer " + self._token}
 
@@ -102,7 +102,7 @@ class CVClientProtocol(
             Configured gRPC Channel instance.
         """
         # Create the channel first
-        channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context, config=self._grpc_channel_config())
+        channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context, config=self._grpclib_channel_config)
 
         # Create custom connector that uses proxy
         async def proxy_connection() -> H2Protocol:
@@ -130,14 +130,11 @@ class CVClientProtocol(
         channel._create_connection = proxy_connection
         return channel
 
-    def _grpc_channel_config(self) -> Configuration | None:
-        """
-        Build the grpclib Channel `config` from the optional gRPC channel configuration.
-
-        Returns None when no channel configuration was supplied, matching grpclib's default behavior.
-        """
+    @property
+    def _grpclib_channel_config(self) -> Configuration:
+        """Build the grpclib Channel `config` from the optional gRPC channel configuration."""
         if self._grpc_channel_configuration is None:
-            return None
+            return Configuration()
         return self._grpc_channel_configuration.as_grpclib_configuration()
 
     def _ssl_context(self) -> ssl.SSLContext | bool:

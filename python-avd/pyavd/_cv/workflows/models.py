@@ -45,9 +45,9 @@ class CVGRPCChannelConfiguration:
     grpc_keepalives: CVGRPCKeepalives = field(default_factory=CVGRPCKeepalives)
     """Keepalive settings of the gRPC channel."""
 
-    def as_grpclib_configuration(self) -> Configuration | None:
+    def as_grpclib_configuration(self) -> Configuration:
         if not self.grpc_keepalives.enabled:
-            return None
+            return Configuration()
         try:
             return Configuration(
                 _keepalive_time=self.grpc_keepalives.keepalive_time,
@@ -61,7 +61,7 @@ class CVGRPCChannelConfiguration:
             )
         except TypeError:
             LOGGER.warning("deploy_to_cv: grpclib Configuration does not support the expected keepalive fields. gRPC keepalives will not be enabled.")
-            return None
+            return Configuration()
 
 
 @dataclass

@@ -10,6 +10,7 @@ from typing import Any
 from unittest.mock import patch
 
 import pytest
+from grpclib.config import Configuration
 
 from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
 from pyavd._cv.api.fmp import RepeatedString
@@ -503,10 +504,13 @@ class TestCVGRPCKeepalives:
 
 
 class TestCVGRPCChannelConfiguration:
-    def test_as_grpclib_configuration_disabled_returns_none(self) -> None:
-        """Tests that as_grpclib_configuration returns None when keepalives are disabled."""
+    def test_as_grpclib_configuration_disabled_returns_default_configuration(self) -> None:
+        """Tests that as_grpclib_configuration returns a default Configuration when keepalives are disabled."""
         channel_config = CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=False))
-        assert channel_config.as_grpclib_configuration() is None
+        config = channel_config.as_grpclib_configuration()
+        assert isinstance(config, Configuration)
+        # _http2_max_pings_without_data is only set to 0 when keepalives are enabled
+        assert config._http2_max_pings_without_data != 0
 
     def test_as_grpclib_configuration_enabled_returns_configuration(self) -> None:
         """Tests that as_grpclib_configuration builds a grpclib Configuration from the keepalive fields."""
@@ -514,19 +518,24 @@ class TestCVGRPCChannelConfiguration:
             grpc_keepalives=CVGRPCKeepalives(enabled=True, keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
         )
         config = channel_config.as_grpclib_configuration()
-        assert config is not None
+        assert isinstance(config, Configuration)
         assert config._keepalive_time == 45
         assert config._keepalive_timeout == 15
         assert config._keepalive_permit_without_calls is True
         assert config._http2_max_pings_without_data == 0
         assert config._http2_min_sent_ping_interval_without_data == 45
 
-    def test_as_grpclib_configuration_type_error_falls_back_to_none(self, caplog: pytest.LogCaptureFixture) -> None:
-        """Tests that a TypeError from grpclib Configuration falls back to None and logs a warning."""
+    def test_as_grpclib_configuration_type_error_falls_back_to_default_configuration(self, caplog: pytest.LogCaptureFixture) -> None:
+        """Tests that a TypeError from grpclib Configuration falls back to a default Configuration and logs a warning."""
         channel_config = CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=True))
+        # Raise on first Configuration() call. Succeed on second
         with (
             caplog.at_level(DEBUG),
-            patch("pyavd._cv.workflows.models.Configuration", side_effect=TypeError("unexpected keyword argument")),
+            patch(
+                "pyavd._cv.workflows.models.Configuration",
+                side_effect=[TypeError("unexpected keyword argument"), Configuration()],
+            ),
         ):
-            assert channel_config.as_grpclib_configuration() is None
+            config = channel_config.as_grpclib_configuration()
+        assert isinstance(config, Configuration)
         assert "gRPC keepalives will not be enabled" in caplog.text
