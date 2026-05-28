@@ -33,6 +33,8 @@ if TYPE_CHECKING:
     from grpclib.protocol import H2Protocol
     from typing_extensions import Self
 
+    from pyavd._cv.workflows.models import CVGRPCChannelConfiguration
+
 
 class CVClientProtocol(
     ChangeControlMixin,
@@ -57,7 +59,7 @@ class CVClientProtocol(
     _password: str | None
     _cv_version: CvVersion | None = None
     _proxy_manager: HTTPProxyManager | None = None
-    _grpc_config: Configuration | None = None
+    _grpc_channel_configuration: CVGRPCChannelConfiguration | None = None
 
     async def __aenter__(self) -> Self:
         """Using asynchronous context manager since grpclib must be initialized inside an asyncio loop."""
@@ -85,7 +87,7 @@ class CVClientProtocol(
             if self._proxy_manager is not None:
                 self._channel = await self._create_proxy_channel(ssl_context)
             else:
-                self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context, config=self._grpc_config)
+                self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context, config=self._grpc_channel_config())
 
         self._metadata = {"authorization": "Bearer " + self._token}
 
@@ -100,7 +102,7 @@ class CVClientProtocol(
             Configured gRPC Channel instance.
         """
         # Create the channel first
-        channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context, config=self._grpc_config)
+        channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context, config=self._grpc_channel_config())
 
         # Create custom connector that uses proxy
         async def proxy_connection() -> H2Protocol:
@@ -127,6 +129,16 @@ class CVClientProtocol(
         # Override the standard method from grpclib with our proxy variant.
         channel._create_connection = proxy_connection
         return channel
+
+    def _grpc_channel_config(self) -> Configuration | None:
+        """
+        Build the grpclib Channel `config` from the optional gRPC channel configuration.
+
+        Returns None when no channel configuration was supplied, matching grpclib's default behavior.
+        """
+        if self._grpc_channel_configuration is None:
+            return None
+        return self._grpc_channel_configuration.as_grpclib_configuration()
 
     def _ssl_context(self) -> ssl.SSLContext | bool:
         """
@@ -256,7 +268,7 @@ class CVClient(CVClientProtocol):
         proxy_port: int = 8080,
         proxy_username: str | None = None,
         proxy_password: str | None = None,
-        grpc_config: Configuration | None = None,
+        grpc_channel_configuration: CVGRPCChannelConfiguration | None = None,
     ) -> None:
         """
         CVClient is a high-level API library for using CloudVision Resource APIs.
@@ -275,7 +287,7 @@ class CVClient(CVClientProtocol):
             proxy_port: HTTP proxy port.
             proxy_username: Proxy authentication username.
             proxy_password: Proxy authentication password.
-            grpc_config: Optional configuration for advanced channel settings such as gRPC keepalives.
+            grpc_channel_configuration: Optional gRPC channel configuration settings.
         """
         if isinstance(servers, list):
             self._servers = servers
@@ -287,7 +299,7 @@ class CVClient(CVClientProtocol):
         self._username = username
         self._password = password
         self._verify_certs = verify_certs
-        self._grpc_config = grpc_config
+        self._grpc_channel_configuration = grpc_channel_configuration
         self._proxy_manager = None
 
         # Initialize proxy manager if proxy is configured
