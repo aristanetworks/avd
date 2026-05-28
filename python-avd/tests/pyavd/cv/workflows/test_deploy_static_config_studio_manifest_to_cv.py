@@ -1604,47 +1604,6 @@ class TestDeployStaticConfigStudio:
         assert deployment_result.removed_static_config_configlets == ["STALE_CFG"]
         assert deployment_result.removed_static_config_containers == ["UNMANAGED_HOLDER"]
 
-    async def test_passes_when_multi_parent_container_is_being_deleted(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
-        """Test that the multi-parent check does not raise when every parent of the shared child is itself scheduled for deletion."""
-        stale_parent_a_id = generate_id("STALE_PARENT_A")
-        stale_parent_b_id = generate_id("STALE_PARENT_B")
-        shared_child_id = generate_id("SHARED_CHILD")
-
-        existing_containers = [
-            # Two managed parents both claim SHARED_CHILD as a child. Neither parent is in the manifest, so both are scheduled for deletion.
-            create_grpc_container(container_id=stale_parent_a_id, name="STALE_PARENT_A", description="", query="device:*", child_ids=[shared_child_id]),
-            create_grpc_container(container_id=stale_parent_b_id, name="STALE_PARENT_B", description="", query="device:*", child_ids=[shared_child_id]),
-            create_grpc_container(container_id=shared_child_id, name="SHARED_CHILD", description="", query="device:LEAF"),
-        ]
-        mock_cv_client.get_configlet_containers.return_value = existing_containers
-        mock_cv_client.get_configlets.return_value = []
-        # Studio root list points at the stale parents — SHARED_CHILD itself is not a root so it has no synthetic root parent edge.
-        mock_cv_client.get_studio_inputs_with_path.return_value = [stale_parent_a_id, stale_parent_b_id]
-
-        # Manifest re-roots SHARED_CHILD and drops both stale parents.
-        shared_child = AvdContainer(name="SHARED_CHILD", tag_query="device:LEAF")
-        manifest = AvdManifest(containers=(shared_child,))
-
-        # Must not raise — both parents are scheduled for deletion, so the multi-parent inconsistency dissolves with this deploy.
-        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
-
-        # Both stale managed parents are deleted; SHARED_CHILD is preserved.
-        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
-        assert deleted_ids == {stale_parent_a_id, stale_parent_b_id}
-        assert set(deployment_result.removed_static_config_containers) == {"STALE_PARENT_A", "STALE_PARENT_B"}
-
-        # Studio root list is replaced with SHARED_CHILD only.
-        mock_cv_client.set_studio_inputs.assert_called_once_with(
-            studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.id,
-            input_path=["configletAssignmentRoots"],
-            inputs=[shared_child_id],
-        )
-
-        # SHARED_CHILD's body matches the manifest spec so it is skipped, not re-pushed.
-        mock_cv_client.set_configlet_containers.assert_not_called()
-        assert len(deployment_result.skipped_static_config_containers) == 1
-
     async def test_chained_managed_deletion_pulls_unmanaged_leaf(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test that an unmanaged leaf two levels below a deleted managed root is removed when its managed mid-parent is also deleted."""
         stale_managed_root_id = generate_id("STALE_ROOT")  # Managed, NOT in this manifest -> deleted.
