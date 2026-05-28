@@ -22,11 +22,65 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].loopbacks.[].ospf.area") | String |  | `0.0.0.0` |  | OSPF area ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_forwarding</samp>](## "<network_services_keys.name>.[].vrfs.[].loopbacks.[].hardware_forwarding") | Boolean |  |  |  | Enable hardware forwarding for this loopback. This is required for correct forwarding in VRFs without physical interfaces.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].loopbacks.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Loopback interface in the final EOS configuration.<br> |
+    | [<samp>network_services</samp>](## "network_services") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].name") | String | Required, Unique |  |  | Specify a tenant name.<br>Tenant provide a construct to group L3 VRFs and L2 VLANs.<br>Networks services can be filtered by tenant name.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "network_services.[].vrfs") | List, items: Dictionary |  |  |  | VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces` or `l3_port_channels` apply to the node.<br><br>It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants<br>are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.<br><br>VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,<br>route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.<br>Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "network_services.[].vrfs.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopbacks</samp>](## "network_services.[].vrfs.[].loopbacks") | List, items: Dictionary |  |  |  | List of Loopback interfaces.<br>This will create Loopback interfaces inside the VRF.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "network_services.[].vrfs.[].loopbacks.[].node") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback</samp>](## "network_services.[].vrfs.[].loopbacks.[].loopback") | Integer | Required |  | Min: 0<br>Max: 8191 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "network_services.[].vrfs.[].loopbacks.[].ip_address") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "network_services.[].vrfs.[].loopbacks.[].description") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].loopbacks.[].enabled") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "network_services.[].vrfs.[].loopbacks.[].ospf") | Dictionary |  |  |  | OSPF interface configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_services.[].vrfs.[].loopbacks.[].ospf.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "network_services.[].vrfs.[].loopbacks.[].ospf.area") | String |  | `0.0.0.0` |  | OSPF area ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_forwarding</samp>](## "network_services.[].vrfs.[].loopbacks.[].hardware_forwarding") | Boolean |  |  |  | Enable hardware forwarding for this loopback. This is required for correct forwarding in VRFs without physical interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_services.[].vrfs.[].loopbacks.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Loopback interface in the final EOS configuration.<br> |
 
 === "YAML"
 
     ```yaml
     <network_services_keys.name>:
+
+        # Specify a tenant name.
+        # Tenant provide a construct to group L3 VRFs and L2 VLANs.
+        # Networks services can be filtered by tenant name.
+      - name: <str; required; unique>
+
+        # VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces` or `l3_port_channels` apply to the node.
+        #
+        # It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
+        # are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
+        #
+        # VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,
+        # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
+        # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
+        vrfs:
+          - name: <str; required; unique>
+
+            # List of Loopback interfaces.
+            # This will create Loopback interfaces inside the VRF.
+            loopbacks:
+              - node: <str; required>
+                loopback: <int; 0-8191; required>
+                ip_address: <str; required>
+                description: <str>
+                enabled: <bool; default=True>
+
+                # OSPF interface configuration.
+                ospf:
+                  enabled: <bool; default=False>
+
+                  # OSPF area ID.
+                  area: <str; default="0.0.0.0">
+
+                # Enable hardware forwarding for this loopback. This is required for correct forwarding in VRFs without physical interfaces.
+                hardware_forwarding: <bool>
+
+                # EOS CLI rendered directly on the Loopback interface in the final EOS configuration.
+                raw_eos_cli: <str>
+    network_services:
 
         # Specify a tenant name.
         # Tenant provide a construct to group L3 VRFs and L2 VLANs.
