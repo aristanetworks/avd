@@ -55,6 +55,11 @@ dot1x:
         enabled: true
       vendor_class_id:
         enabled: false
+  captive_portal:
+    enabled: true
+    ssl_profile: captive-portal-ssl-profile
+    start_limit_infinite: true
+    access_list_ipv4: CAPTIVE-PORTAL-ACL
 enable_password:
   disabled: true
 hostname: dot1x-settings-2

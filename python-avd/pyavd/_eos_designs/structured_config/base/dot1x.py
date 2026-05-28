@@ -102,9 +102,9 @@ class Dot1xMixin(Protocol):
                 delimiter=dot1x_settings.mac_based_authentication.username_format.delimiter,
                 mac_string_case=dot1x_settings.mac_based_authentication.username_format.letter_case,
             )
-        self.set_dot1x_captive_portal(dot1x_settings.captive_portal)
+        self._configure_dot1x_captive_portal(dot1x_settings.captive_portal)
 
-    def set_dot1x_captive_portal(self: AvdStructuredConfigBaseProtocol, captive_portal: EosDesigns.Dot1xSettings.CaptivePortal) -> None:
+    def _configure_dot1x_captive_portal(self: AvdStructuredConfigBaseProtocol, captive_portal: EosDesigns.Dot1xSettings.CaptivePortal) -> None:
         """Configure 802.1X captive portal settings."""
         if not captive_portal:
             return
