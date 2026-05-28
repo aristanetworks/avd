@@ -378,6 +378,14 @@ keys:
         description: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when
           it is needed.
         default: false
+      consistent_uplink_vlans:
+        type: bool
+        description: 'Always configure Port-Channel uplinks with consistent ''switchport
+          trunk allowed'' on both ends
+
+          and on all ''uplink_switches'' even when available VLANs differ between
+          the ''uplink_switches''.'
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
