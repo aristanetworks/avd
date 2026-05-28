@@ -56,3 +56,4 @@ keys:
         description: |
           Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and
           `overlay_mlag_rfc5549` are set.
+        default: False
