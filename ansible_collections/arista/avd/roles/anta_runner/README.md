@@ -465,7 +465,7 @@ spine:
 
 Hardware settings control `VerifyInventory` and `VerifyTransceiversManufacturers` tests. Set any `min_*` value to `0` to skip validation for that component.
 
-!!! note
+!!! tip
     Include "Not Present" in `transceiver_manufacturers` to allow ports with no transceiver to successfully pass validation.
 
 ```yaml
@@ -476,7 +476,7 @@ validation_profiles:
       min_supervisors: 2
       min_line_cards: 8
       min_fabric_cards: 6
-      transceiver_manufacturers: [ "Arista Networks", "Arastra, Inc." , "Not Present"]
+      transceiver_manufacturers: [ "Arista Networks", "Arastra, Inc.", "Not Present" ]
 ```
 
 #### Logging Validation
