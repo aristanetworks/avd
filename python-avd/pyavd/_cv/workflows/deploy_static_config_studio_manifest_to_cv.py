@@ -24,6 +24,7 @@ LOGGER = getLogger(__name__)
 
 STATIC_CONFIGURATION_STUDIO_ID = "studio-static-configlet"
 STUDIO_ROOT_PARENT_ID = "<Static Configuration Studio roots>"
+"""Synthetic parent ID representing the Static Configuration Studio root list."""
 
 
 @dataclass
@@ -84,8 +85,6 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
 
     TODO: Implement strict mode to remove any containers/configlets not managed by the manifest from the Studio.
     TODO: Implement configlet body diff - digest/checksum.
-    TODO: Replace the existing_containers / existing_managed_containers_by_id pair carried between sync functions with an
-          ExistingState dataclass holding pre-computed mappings (containers_by_id, parents_by_child_id, etc.).
     """
     workspace_id = deployment_result.workspace.id
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Starting manifest deployment for workspace '%s'.", workspace_id)
@@ -174,7 +173,7 @@ def _build_existing_container_state(existing_containers: list[ConfigletAssignmen
 
 def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingContainerState) -> _ContainerPlan:
     """
-    Build the desired container/root diff from a trusted existing state.
+    Build the desired container/root diff from the existing state.
 
     Manifest-managed containers are identified by their generated ID prefix. The rest of the workflow uses
     "manifest-managed" terminology since users may run this workflow outside the broader AVD fabric model.
@@ -254,50 +253,28 @@ def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingCont
 
 def _validate_existing_container_state(existing_state: _ExistingContainerState, container_plan: _ContainerPlan) -> None:
     """
-    Validate existing container graph consistency before applying the plan.
+    Validate manifest-managed container ownership before applying the plan.
 
-    Existing manifest-managed orphans are allowed so this workflow can recover its own stale state.
-    Manual orphans are rejected since deleting unrelated manual database inconsistencies is outside this workflow's mandate.
+    CloudVision can tolerate orphaned containers, so this validation intentionally does not reject unrelated
+    manual orphans or other manual-only graph inconsistencies. It only blocks manifest-managed containers
+    currently parented by manual containers this deploy will not update/delete.
     """
     violations: list[str] = []
     container_ids_to_delete = container_plan.container_ids_to_delete
 
-    violations.extend(
-        f"Static Configuration Studio root list references missing container id={root_id}"
-        for root_id in existing_state.root_ids
-        if root_id not in existing_state.containers_by_id
-    )
-
-    for parent_id, child_ids in existing_state.children_by_parent_id.items():
-        violations.extend(
-            f"{existing_state.parent_display(parent_id)} references missing child container id={child_id}"
-            for child_id in child_ids
-            if child_id not in existing_state.containers_by_id
-        )
-
-    for container_id, container in existing_state.containers_by_id.items():
+    for container_id in existing_state.manifest_managed_container_ids:
+        container = existing_state.containers_by_id[container_id]
         parent_ids = existing_state.parent_ids_by_child_id.get(container_id, [])
         parent_ids_set = set(parent_ids)
-        # Multiple parents include the Studio root list. Permit the case only if all parents are themselves
-        # scheduled for deletion, since the invalid relationship disappears with this plan.
-        if len(parent_ids_set) > 1 and not parent_ids_set <= container_ids_to_delete:
-            parent_text = ", ".join(existing_state.parent_display(parent_id) for parent_id in sorted(parent_ids_set))
-            violations.append(f"Container '{container.display_name}' (id={container_id}) has multiple parents: {parent_text}")
-
-        if container_id.startswith(AVD_ENTITY_PREFIX):
-            manual_parent_ids = [
-                parent_id
-                for parent_id in parent_ids_set
-                if parent_id != STUDIO_ROOT_PARENT_ID and not parent_id.startswith(AVD_ENTITY_PREFIX) and parent_id not in container_ids_to_delete
-            ]
-            violations.extend(
-                f"Manifest-managed container '{container.display_name}' (id={container_id}) is currently a child of {existing_state.parent_display(parent_id)}"
-                for parent_id in manual_parent_ids
-            )
-            continue
-
-        if not parent_ids_set and container_id not in container_ids_to_delete:
-            violations.append(f"Manual container '{container.display_name}' (id={container_id}) is orphaned")
+        manual_parent_ids = [
+            parent_id
+            for parent_id in parent_ids_set
+            if parent_id != STUDIO_ROOT_PARENT_ID and not parent_id.startswith(AVD_ENTITY_PREFIX) and parent_id not in container_ids_to_delete
+        ]
+        violations.extend(
+            f"Manifest-managed container '{container.display_name}' (id={container_id}) is currently a child of {existing_state.parent_display(parent_id)}"
+            for parent_id in manual_parent_ids
+        )
 
     if violations:
         violations.sort()
