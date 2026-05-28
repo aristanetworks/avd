@@ -329,18 +329,17 @@ async def _apply_container_plan(container_plan: _ContainerPlan, deployment_resul
 
 
 def _raise_configlet_holder_violations(violations: list[tuple[str, str, str, str]]) -> None:
-    if violations:
-        violations.sort()
-        violations_text = "; ".join(
-            f"'{configlet_name}' (id={configlet_id}) is still assigned to '{holder_name}' (id={holder_id})"
-            for holder_name, holder_id, configlet_name, configlet_id in violations
-        )
-        msg = (
-            "The following manifest-managed configlets are scheduled for deletion "
-            "but are still assigned to containers that this manifest does not control. "
-            f"Unassign the configlets manually (or keep them in the manifest) and re-run: {violations_text}"
-        )
-        raise CVManifestError(msg)
+    violations.sort()
+    violations_text = "; ".join(
+        f"'{configlet_name}' (id={configlet_id}) is still assigned to '{holder_name}' (id={holder_id})"
+        for holder_name, holder_id, configlet_name, configlet_id in violations
+    )
+    msg = (
+        "The following manifest-managed configlets are scheduled for deletion "
+        "but are still assigned to containers that this manifest does not control. "
+        f"Unassign the configlets manually (or keep them in the manifest) and re-run: {violations_text}"
+    )
+    raise CVManifestError(msg)
 
 
 async def _sync_configlets(
@@ -395,7 +394,8 @@ async def _sync_configlets(
                 # Holder is out of our control.
                 violations.append((cast("str", holder.display_name), holder_id, configlet_name, configlet_id))
 
-        _raise_configlet_holder_violations(violations)
+        if violations:
+            _raise_configlet_holder_violations(violations)
 
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d manifest-managed configlets which are no longer used.", len(configlets_to_delete))
         deployment_result.removed_static_config_configlets.extend(configlets_to_delete.values())
