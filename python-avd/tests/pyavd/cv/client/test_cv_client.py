@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from contextlib import AbstractContextManager
+from ssl import CERT_NONE, SSLContext
 from unittest.mock import Mock, patch
 
 import pytest
@@ -13,6 +14,19 @@ from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
 
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
+
+
+@pytest.mark.asyncio
+async def test_cv_client_no_verify_certs() -> None:
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(servers=servers, token=token, verify_certs=False) as cvclient:
+            ssl_context = cvclient._cv_connection_manager.get_ssl_context(cvclient._verify_certs)
+            assert isinstance(ssl_context, SSLContext)
+            assert ssl_context.check_hostname is False
+            assert ssl_context.verify_mode == CERT_NONE
 
 
 @pytest.mark.asyncio
@@ -64,4 +78,4 @@ async def test_cv_client_set_token_set_version_requests_error(
             username="avd_user",
             password="avd_password",  # noqa: S106
         ) as cvclient:
-            await cvclient.get_inventory_devices([("", "", "spine1")])
+            await cvclient.get_inventory_devices({("", "", "spine1")})

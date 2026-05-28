@@ -572,6 +572,34 @@ When `cv_devices` is empty, the role skips all device-specific operations (like 
 !!! tip
     This mode can be useful for pre-provisioning a manifest before any devices are onboarded on CloudVision.
 
+#### Proxy server support
+
+The `arista.avd.cv_deploy` role supports connecting to CloudVision through an **HTTP CONNECT** proxy server.
+
+!!! Warning
+
+    Authentication credentials (when used) are sent to the proxy server via ***HTTP Basic authentication*** over an unencrypted HTTP connection (credentials are only Base64-encoded, not encrypted). Proxy server credentials can be exposed by intercepting and analyzing raw TCP/IP traffic between AVD and the proxy server. Please always use additional filtering and identification mechanisms (such as HTTP filtering based on the client's SRC IP, requested destination domains, etc.) to mitigate security risks.
+
+    It is important to note that AVD uses plain HTTP only for the initial CONNECT request to establish a tunnel to CloudVision through the proxy server. After the TCP tunnel to CloudVision through the proxy server is active, all subsequent AVD communication — including both REST and gRPC calls — is protected within a secure TLS session(s) established between AVD and CloudVision ***inside*** the TCP proxy tunnel.
+
+Use the settings below to modify proxy behavior. The fields currently display the default values.
+
+```yaml
+# Set FQDN/IP of the HTTP CONNECT proxy server.
+# proxy_host: <str>
+
+# Set target TCP port of the HTTP CONNECT proxy server.
+proxy_port: 8080
+
+# Set authentication username for the HTTP CONNECT proxy server.
+# proxy_username: <str>
+
+# Set authentication password for the HTTP CONNECT proxy server.
+# proxy_password: <str>
+```
+
+`cv_deploy` role can also discover proxy server settings using environment variables. Please refer to the [Proxy Server Support in cv_deploy](../../../../../docs/howto/cv_deploy/proxy.md) how-to guide for additional details.
+
 ## Steps to create service accounts on CloudVision
 
 1. Go to Settings and Tools --> Access Control --> Service Accounts --> click `+ New Service Account`
@@ -592,49 +620,6 @@ Click "Save" to exit the dialogue box.
 !!! note
     The name of the service account must match a username configured to be authorized on
     EOS, otherwise device interactive API calls might fail due to authorization denial.
-
-## Proxy server support
-
-The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [HTTP CONNECT](https://en.wikipedia.org/wiki/HTTP_tunnel#HTTP_CONNECT_method) proxy server, with or without basic authentication.
-
-To enable the proxy, set `proxy_host` (port `TCP/8080` will be used by default). If this variable is not defined, a proxy will not be used (default mode).
-
-!!! Warning
-
-    Authentication credentials (when used) are sent to the proxy server using ***HTTP Basic authentication*** over non-encrypted HTTP transport (credentials are only `Base64` encoded, not encrypted). Credentials can be exposed by intercepting and analyzing raw TCP/IP traffic between AVD and Proxy server.
-
-    Please use AVD proxy authentication only when absolutely necessary. Always use other filtering and identification mechanisms (like HTTP filtering based on the client's SRC IP, requested destination domains, etc.) to limit the security risks.
-
-    It is important to note that plain HTTP is used by AVD only for the initial CONNECT request to establish the tunnel with the CloudVision through proxy server. Once the TCP tunnel to CloudVision through proxy server is active, all subsequent AVD communication — including both REST and gRPC calls — is protected within a secure TLS session(s) established between AVD and CloudVision ***inside*** the TCP proxy tunnel.
-
-Below settings allow modifying the default proxy-related behavior as needed. The values below are the default values.
-
-```yaml
-# Set FQDN/IP of the HTTP CONNECT proxy server.
-proxy_host: <str>
-# Set target TCP port of the HTTP CONNECT proxy server.
-proxy_port: 8080
-# Set authentication username for the HTTP CONNECT proxy server.
-proxy_username: <str>
-# Set authentication password for the HTTP CONNECT proxy server.
-proxy_password: <str>
-```
-
-Example of the configuration to use unauthenticated HTTP proxy using CONNECT method:
-
-```yaml
-proxy_host: proxy.local.domain
-proxy_port: 3128
-```
-
-Example of the configuration to use authenticated HTTP proxy using CONNECT method:
-
-```yaml
-proxy_host: proxy.local.domain
-proxy_port: 3128
-proxy_username: "avd_proxy_user"
-proxy_password: "avd_proxy_password"
-```
 
 ## License
 

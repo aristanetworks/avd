@@ -3,14 +3,11 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import asyncio
 import platform
-import ssl
 import sys
 from importlib.metadata import PackageNotFoundError, version
 from typing import TYPE_CHECKING, Protocol
 
-from grpclib.client import Channel
 from requests import JSONDecodeError, get, post
 from requests.exceptions import HTTPError, RequestException
 
@@ -18,7 +15,7 @@ from .change_control import ChangeControlMixin
 from .configlet import ConfigletMixin
 from .exceptions import CVClientException
 from .inventory import InventoryMixin
-from .proxy import HTTPProxyManager
+from .proxy import CVConnectionManager
 from .studio import StudioMixin
 from .swg import SwgMixin
 from .tag import TagMixin
@@ -29,7 +26,7 @@ from .workspace import WorkspaceMixin
 if TYPE_CHECKING:
     from types import TracebackType
 
-    from grpclib.protocol import H2Protocol
+    from grpclib.client import Channel
     from typing_extensions import Self
 
 
@@ -55,7 +52,7 @@ class CVClientProtocol(
     _username: str | None
     _password: str | None
     _cv_version: CvVersion | None = None
-    _proxy_manager: HTTPProxyManager | None = None
+    _cv_connection_manager: CVConnectionManager
 
     async def __aenter__(self) -> Self:
         """Using asynchronous context manager since grpclib must be initialized inside an asyncio loop."""
@@ -72,7 +69,7 @@ class CVClientProtocol(
         # TODO: Handle multinode clusters
 
         # Ensure that the default ssl context is initialized before doing any requests.
-        ssl_context = self._ssl_context()
+        ssl_context = self._cv_connection_manager.get_ssl_context(self._verify_certs)
 
         if not self._token:
             self._set_token()
@@ -80,69 +77,9 @@ class CVClientProtocol(
         self._set_version()
 
         if self._channel is None:
-            if self._proxy_manager is not None:
-                self._channel = await self._create_proxy_channel(ssl_context)
-            else:
-                self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
+            self._channel = self._cv_connection_manager.create_proxy_channel(ssl_context)
 
         self._metadata = {"authorization": "Bearer " + self._token}
-
-    async def _create_proxy_channel(self, ssl_context: ssl.SSLContext | bool) -> Channel:
-        """
-        Create a gRPC channel using the proxy manager.
-
-        Args:
-            ssl_context: SSL context for destination server connection.
-
-        Returns:
-            Configured gRPC Channel instance.
-        """
-        # Create the channel first
-        channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
-
-        # Create custom connector that uses proxy
-        async def proxy_connection() -> H2Protocol:
-            loop = asyncio.get_running_loop()
-
-            try:
-                # Create socket through proxy using python-socks
-                proxy_sock = await self._proxy_manager.create_socket_for_grpc()
-
-                # Create the gRPC protocol using the proxy socket
-                _, protocol = await loop.create_connection(
-                    channel._protocol_factory,
-                    sock=proxy_sock,
-                    ssl=channel._ssl,
-                    server_hostname=self._servers[0] if ssl_context else None,
-                )
-
-            except Exception as e:
-                msg = f"Failed to create proxy connection: {type(e).__name__}: {e}"
-                raise CVClientException(msg) from e
-
-            return protocol
-
-        # Override the standard method from grpclib with our proxy variant.
-        channel._create_connection = proxy_connection
-        return channel
-
-    def _ssl_context(self) -> ssl.SSLContext | bool:
-        """
-        Initialize the default SSL context with relaxed verification if needed.
-
-        Otherwise we just return True.
-        The return value (The default ssl context or True) will be passed to grpclib.
-        Requests will pick it up from ssl lib itself.
-        """
-        if not self._verify_certs:
-            # Accepting SonarLint issue: We are purposely implementing no verification of certs.
-            context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
-            context.check_hostname = False
-            context.verify_mode = ssl.CERT_NONE  # NOSONAR
-            context.set_alpn_protocols(["h2"])
-        else:
-            context = True
-        return context
 
     def _set_token(self) -> None:
         """
@@ -164,7 +101,7 @@ class CVClientProtocol(
                 "https://" + self._servers[0] + "/cvpservice/login/authenticate.do",
                 auth=(self._username, self._password),
                 verify=self._verify_certs,
-                proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
+                proxies=self._requests_proxies,
                 json={},
             )
             response.raise_for_status()
@@ -195,7 +132,7 @@ class CVClientProtocol(
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
                 headers={"Authorization": f"Bearer {self._token}", "User-Agent": self._get_user_agent()},
                 verify=self._verify_certs,
-                proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
+                proxies=self._requests_proxies,
                 json={},
             )
             response.raise_for_status()
@@ -240,6 +177,14 @@ class CVClientProtocol(
 
         return " ".join(user_agent_parts)
 
+    @property
+    def _use_proxy(self) -> bool:
+        return self._cv_connection_manager.use_proxy
+
+    @property
+    def _requests_proxies(self) -> dict[str, str]:
+        return self._cv_connection_manager.requests_proxies
+
 
 class CVClient(CVClientProtocol):
     def __init__(
@@ -250,6 +195,7 @@ class CVClient(CVClientProtocol):
         password: str | None = None,
         port: int = 443,
         verify_certs: bool = True,
+        proxy_scheme: str = "http",
         proxy_host: str | None = None,
         proxy_port: int = 8080,
         proxy_username: str | None = None,
@@ -268,10 +214,11 @@ class CVClient(CVClientProtocol):
             password: Password to use for authentication if token is not set.
             port: TCP port to use for the connection.
             verify_certs: Disables SSL certificate verification if set to False. Not recommended for production.
-            proxy_host: HTTP proxy hostname.
-            proxy_port: HTTP proxy port.
-            proxy_username: Proxy authentication username.
-            proxy_password: Proxy authentication password.
+            proxy_scheme: Proxy server scheme (http/https).
+            proxy_host: Proxy server hostname.
+            proxy_port: Proxy server port.
+            proxy_username: Proxy server authentication username.
+            proxy_password: Proxy server authentication password.
         """
         if isinstance(servers, list):
             self._servers = servers
@@ -283,15 +230,14 @@ class CVClient(CVClientProtocol):
         self._username = username
         self._password = password
         self._verify_certs = verify_certs
-        self._proxy_manager = None
 
-        # Initialize proxy manager if proxy is configured
-        if proxy_host is not None:
-            self._proxy_manager = HTTPProxyManager(
-                proxy_host=proxy_host,
-                proxy_port=proxy_port,
-                proxy_username=proxy_username,
-                proxy_password=proxy_password,
-                target_host=self._servers[0],
-                target_port=self._port,
-            )
+        # Initialize connection manager
+        self._cv_connection_manager = CVConnectionManager(
+            target_host=self._servers[0],
+            target_port=self._port,
+            proxy_scheme=proxy_scheme,
+            proxy_host=proxy_host,
+            proxy_port=proxy_port,
+            proxy_username=proxy_username,
+            proxy_password=proxy_password,
+        )
