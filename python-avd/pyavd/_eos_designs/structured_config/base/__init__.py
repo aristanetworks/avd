@@ -23,6 +23,7 @@ from .dns_settings import DnsSettingsMixin
 from .dot1x import Dot1xMixin
 from .errdisable import ErrDisableMixin
 from .logging import LoggingMixin
+from .management_interface import ManagementInterfaceMixin
 from .management_ssh import ManagementSshMixin
 from .monitor_connectivity import MonitorConnectivityMixin
 from .monitor_sessions import MonitorSessionsMixin
@@ -42,6 +43,7 @@ class AvdStructuredConfigBaseProtocol(
     DnsSettingsMixin,
     Dot1xMixin,
     ErrDisableMixin,
+    ManagementInterfaceMixin,
     LoggingMixin,
     ManagementSshMixin,
     MonitorConnectivityMixin,
@@ -87,10 +89,12 @@ class AvdStructuredConfigBaseProtocol(
         if self.inputs.mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.mgmt_destination_networks:
                 self.structured_config.static_routes.append_new(
-                    vrf=self.inputs.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.mgmt_gateway
+                    vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.mgmt_gateway
                 )
         else:
-            self.structured_config.static_routes.append_new(vrf=self.inputs.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.mgmt_gateway)
+            self.structured_config.static_routes.append_new(
+                vrf=self.shared_utils.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.mgmt_gateway
+            )
 
     @structured_config_contributor
     def ipv6_static_routes(self) -> None:
@@ -101,11 +105,13 @@ class AvdStructuredConfigBaseProtocol(
         if self.inputs.ipv6_mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.ipv6_mgmt_destination_networks:
                 self.structured_config.ipv6_static_routes.append_new(
-                    vrf=self.inputs.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.ipv6_mgmt_gateway
+                    vrf=self.shared_utils.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.ipv6_mgmt_gateway
                 )
             return
 
-        self.structured_config.ipv6_static_routes.append_new(vrf=self.inputs.mgmt_interface_vrf, prefix="::/0", next_hop=self.shared_utils.ipv6_mgmt_gateway)
+        self.structured_config.ipv6_static_routes.append_new(
+            vrf=self.shared_utils.mgmt_interface_vrf, prefix="::/0", next_hop=self.shared_utils.ipv6_mgmt_gateway
+        )
 
     @structured_config_contributor
     def service_routing_protocols_model(self) -> None:
@@ -315,45 +321,11 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def vrfs(self) -> None:
         """Vrfs set based on mgmt_interface_vrf variable."""
-        vrf_settings = EosCliConfigGen.VrfsItem(name=self.inputs.mgmt_interface_vrf, ip_routing=self.inputs.mgmt_vrf_routing)
+        vrf_settings = EosCliConfigGen.VrfsItem(name=self.shared_utils.mgmt_interface_vrf, ip_routing=self.shared_utils.mgmt_vrf_routing)
 
         if self.shared_utils.node_config.ipv6_mgmt_ip is not None:
-            vrf_settings.ipv6_routing = self.inputs.mgmt_vrf_routing
+            vrf_settings.ipv6_routing = self.shared_utils.mgmt_vrf_routing
         self.structured_config.vrfs.append(vrf_settings)
-
-    @structured_config_contributor
-    def management_interfaces(self) -> None:
-        """management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts, mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables."""
-        if self.shared_utils.node_config.mgmt_ip or self.shared_utils.node_config.ipv6_mgmt_ip:
-            # Check if mgmt_ip is set to "dhcp"
-            is_dhcp = self.shared_utils.node_config.mgmt_ip == "dhcp"
-
-            interface_settings = EosCliConfigGen.ManagementInterfacesItem(
-                name=self.shared_utils.mgmt_interface,
-                description=self.inputs.mgmt_interface_description,
-                shutdown=False,
-                vrf=self.inputs.mgmt_interface_vrf,
-                ip_address=self.shared_utils.node_config.mgmt_ip,
-                type="oob",
-            )
-
-            # For DHCP, automatically accept default route instead of using gateway
-            if is_dhcp and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
-                interface_settings.dhcp_client_accept_default_route = True
-            else:
-                # For static IP, set gateway (metadata field, actual routing done via static_routes)
-                interface_settings.gateway = self.shared_utils.mgmt_gateway
-
-            """
-            inserting ipv6 variables if ipv6_mgmt_ip is set
-            """
-            if self.shared_utils.node_config.ipv6_mgmt_ip:
-                interface_settings._update(
-                    ipv6_enable=True,
-                    ipv6_gateway=self.shared_utils.ipv6_mgmt_gateway,
-                )
-                interface_settings.ipv6_addresses.append(self.shared_utils.node_config.ipv6_mgmt_ip)
-            self.structured_config.management_interfaces.append(interface_settings)
 
     @structured_config_contributor
     def management_security(self) -> None:

@@ -258,20 +258,6 @@ l3leaf:
     - group: DC1_BL2
       uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
       mlag: false
-      ipvpn_gateway:
-        enabled: true
-        evpn_domain_id: "65000:3"
-        ipvpn_domain_id: "65000:4"
-        maximum_routes: 50000
-        local_as: 65001
-        address_families: [vpn-ipv4, vpn-ipv6]
-        remote_peers:
-          - hostname: rr1
-            ip_address: 100.70.0.1
-            bgp_as: 64512
-          - hostname: rr2
-            ip_address: 100.70.0.2
-            bgp_as: 64512
       filter:
         tenants: [all]
         tags: [wan]
@@ -284,6 +270,20 @@ l3leaf:
           mgmt_ip: 192.168.200.117/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [Ethernet24, Ethernet24, Ethernet24, Ethernet24]
+          ipvpn_gateway:
+            enabled: true
+            evpn_domain_id: "65000:3"
+            ipvpn_domain_id: "65000:4"
+            maximum_routes: 50000
+            local_as: 65001
+            remote_peers:
+              - hostname: rr1
+                ip_address: 100.70.0.1
+                bgp_as: 64512
+              - hostname: rr2
+                ip_address: 100.70.0.2
+                bgp_as: 64512
+            address_families: [vpn-ipv4, vpn-ipv6]
         - name: dc1-bl2b
           platform: 7280R3
           id: 9
@@ -291,6 +291,21 @@ l3leaf:
           mgmt_ip: 192.168.200.118/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [Ethernet25, Ethernet25, Ethernet25, Ethernet25]
+          # Testing vpn-ipv6 alone
+          ipvpn_gateway:
+            enabled: true
+            evpn_domain_id: "65000:3"
+            ipvpn_domain_id: "65000:4"
+            maximum_routes: 50000
+            local_as: 65001
+            remote_peers:
+              - hostname: rr1
+                ip_address: 100.70.0.1
+                bgp_as: 64512
+              - hostname: rr2
+                ip_address: 100.70.0.2
+                bgp_as: 64512
+            address_families: [vpn-ipv6]
     - group: DC1_CL1
       mlag: true
       uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
@@ -459,6 +474,47 @@ l2leaf:
           # Structured_config applied to member interfaces of uplink port-channel.
           uplink_switch_ethernet_structured_config:
             description: description through uplink_switch_ethernet_structured_config(dc1.l2leaf7a)
+
+    # Minimal topology for asymmetric parent VLAN availability across split port-channel parents.
+    # Parent A has VLANs 3901 and 3902, parent B has only VLAN 3902, and the child has both VLANs.
+    # This test verifies that only 3902 is configured on both uplinks for `dc1-l2-child-asymmetric-2`
+    # and that `dc1-l2-child-asymmetric-1` keeps the non-breaking behavior.
+    - group: DC1_L2LEAF9
+      mlag: false
+      uplink_type: port-channel
+      nodes:
+        - name: dc1-l2-parent-a
+          mgmt_ip: 192.168.200.132/24
+          uplink_interfaces: []
+          uplink_switches: []
+          uplink_switch_interfaces: []
+          filter:
+            tenants: [Tenant_PARENT_A, Tenant_PARENT_B]
+            tags: [parent-a, parent-b]
+        - name: dc1-l2-parent-b
+          mgmt_ip: 192.168.200.133/24
+          uplink_interfaces: []
+          uplink_switches: []
+          uplink_switch_interfaces: []
+          filter:
+            tenants: [Tenant_PARENT_B]
+            tags: [parent-b]
+        - name: dc1-l2-child-asymmetric-1
+          mgmt_ip: 192.168.200.134/24
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switches: [dc1-l2-parent-a, dc1-l2-parent-b]
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+          filter:
+            tenants: [Tenant_PARENT_A, Tenant_PARENT_B]
+            tags: [parent-a, parent-b]
+        - name: dc1-l2-child-asymmetric-2
+          mgmt_ip: 192.168.200.135/24
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switches: [dc1-l2-parent-a, dc1-l2-parent-b]
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+          filter:
+            tenants: [Tenant_PARENT_A, Tenant_PARENT_B]
+            tags: [parent-a, parent-b]
 
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500
