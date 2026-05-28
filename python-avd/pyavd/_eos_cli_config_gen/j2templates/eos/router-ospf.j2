@@ -215,6 +215,20 @@ router ospf {{ process_id.id }}
 {%     elif process_id.graceful_restart_helper is arista.avd.defined(false) %}
    no graceful-restart-helper
 {%     endif %}
+{%     if process_id.segment_routing_mpls.enabled is arista.avd.defined(true) %}
+   segment-routing mpls
+{%         if process_id.segment_routing_mpls.shutdown is arista.avd.defined(true) %}
+      shutdown
+{%         elif process_id.segment_routing_mpls.shutdown is arista.avd.defined(false) %}
+      no shutdown
+{%         endif %}
+{%         for prefix_segment in process_id.segment_routing_mpls.prefix_segments | arista.avd.natural_sort('prefix') %}
+      prefix-segment {{ prefix_segment.prefix }} index {{ prefix_segment.index }}
+{%         endfor %}
+{%         if process_id.segment_routing_mpls.adjacency_segment_allocation is arista.avd.defined %}
+      adjacency-segment allocation {{ process_id.segment_routing_mpls.adjacency_segment_allocation }}
+{%         endif %}
+{%     endif %}
 {%     if process_id.eos_cli is arista.avd.defined %}
    {{ process_id.eos_cli | indent(3, false) }}
 {%     endif %}
