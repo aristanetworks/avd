@@ -1,3 +1,5 @@
 ---
+# Test case for the `else` branch of `logging_transceiver.enabled`
+# in eos/monitor-layer1.j2 — exercises the `no logging transceiver` output.
 monitor_layer1:
   enabled: true

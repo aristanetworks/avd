@@ -811,6 +811,7 @@ monitor connectivity
 ```eos
 !
 monitor layer1
+   no logging transceiver
 ```
 
 ## Hardware TCAM Profile
