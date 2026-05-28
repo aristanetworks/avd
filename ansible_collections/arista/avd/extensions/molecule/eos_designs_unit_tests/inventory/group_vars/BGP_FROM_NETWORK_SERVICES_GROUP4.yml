@@ -3,4 +3,4 @@ underlay_rfc5549: true
 overlay_mlag_rfc5549: true
 
 avd_design_future:
-  only_configure_route_map_connected_to_bgp_vrfs_when_required: true
+  fixed_route_map_connected_to_bgp_vrfs: true

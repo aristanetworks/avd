@@ -977,7 +977,7 @@ class EosDesigns(EosDesignsRootModel):
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
-            "only_configure_route_map_connected_to_bgp_vrfs_when_required": {"type": bool, "default": False},
+            "fixed_route_map_connected_to_bgp_vrfs": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1032,7 +1032,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        only_configure_route_map_connected_to_bgp_vrfs_when_required: bool
+        fixed_route_map_connected_to_bgp_vrfs: bool
         """
         Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and
         `overlay_mlag_rfc5549` are
@@ -1054,7 +1054,7 @@ class EosDesigns(EosDesignsRootModel):
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
-                only_configure_route_map_connected_to_bgp_vrfs_when_required: bool | UndefinedType = Undefined,
+                fixed_route_map_connected_to_bgp_vrfs: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1079,7 +1079,7 @@ class EosDesigns(EosDesignsRootModel):
                        Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
                        and on
                        all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
-                    only_configure_route_map_connected_to_bgp_vrfs_when_required:
+                    fixed_route_map_connected_to_bgp_vrfs:
                        Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and
                        `overlay_mlag_rfc5549` are
                        set.
