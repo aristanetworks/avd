@@ -45201,6 +45201,8 @@ class EosDesigns(EosDesignsRootModel):
             transceiver_manufacturers: TransceiverManufacturers
             """
             List of approved transceiver manufacturers for the device.
+            Include "Not Present" to allow ports with
+            no transceiver to successfully pass validation.
 
             Subclass of AvdList with `str` items.
 
@@ -45233,6 +45235,8 @@ class EosDesigns(EosDesignsRootModel):
                         min_fabric_cards: Minimum number of fabric cards required for the device. Set to 0 to skip validation.
                         transceiver_manufacturers:
                            List of approved transceiver manufacturers for the device.
+                           Include "Not Present" to allow ports with
+                           no transceiver to successfully pass validation.
 
                            Subclass of AvdList with `str` items.
 
