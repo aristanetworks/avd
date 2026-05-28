@@ -42,6 +42,17 @@ class FilteredTenantsMixin(Protocol):
 
         filtered_tenants = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices()
         filter_tenants = self.node_config.filter.tenants
+
+        if self.inputs.network_services:
+            for original_tenant in self.inputs.network_services:
+                if original_tenant.name not in filter_tenants and "all" not in filter_tenants:
+                    continue
+                tenant = original_tenant._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem)
+                tenant._internal_data.context = "network_services"
+                tenant.l2vlans = self.filtered_l2vlans(tenant)
+                tenant.vrfs = self.filtered_vrfs(tenant)
+                filtered_tenants.append(tenant)
+
         for network_services_key in self.inputs._dynamic_keys.network_services:
             for original_tenant in network_services_key.value:
                 if original_tenant.name not in filter_tenants and "all" not in filter_tenants:
@@ -108,7 +119,8 @@ class FilteredTenantsMixin(Protocol):
         return filtered_l2vlans._natural_sorted(sort_key="id")
 
     def get_merged_l2vlan_config(
-        self: SharedUtilsProtocol, vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
+        self: SharedUtilsProtocol,
+        vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
     ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem:
         """
         Return structured config for one l2vlan after inheritance.

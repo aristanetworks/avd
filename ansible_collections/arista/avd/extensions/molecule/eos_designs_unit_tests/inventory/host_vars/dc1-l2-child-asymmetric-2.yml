@@ -1,0 +1,3 @@
+---
+avd_design_future:
+  consistent_uplink_vlans: true

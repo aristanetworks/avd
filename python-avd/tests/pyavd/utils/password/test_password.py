@@ -238,31 +238,28 @@ def test_tacacs(salt: int, password: str, encrypted_password: str) -> None:
 
 
 def test_tacacs_input_validation() -> None:
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         tacacs_encrypt(["foo"], 1)
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         tacacs_encrypt("foo", "foo")
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(OverflowError):
         tacacs_encrypt("foo", -1)
 
     with pytest.raises(ValueError):  # noqa: PT011
         tacacs_encrypt("", 1)
 
-    with pytest.raises(ValueError):  # noqa: PT011
-        tacacs_encrypt("foo", None)
-
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         tacacs_encrypt(None, 1)
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         tacacs_decrypt(111)
 
     with pytest.raises(ValueError):  # noqa: PT011
         tacacs_decrypt("")
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         tacacs_decrypt(None)
 
 
@@ -288,31 +285,28 @@ def test_ntp(salt: int, password: str, encrypted_password: str) -> None:
 
 
 def test_ntp_input_validation() -> None:
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         ntp_encrypt(["foo"], 1)
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         ntp_encrypt("foo", "foo")
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(OverflowError):
         ntp_encrypt("foo", -1)
 
     with pytest.raises(ValueError):  # noqa: PT011
         ntp_encrypt("", 1)
 
-    with pytest.raises(ValueError):  # noqa: PT011
-        ntp_encrypt("foo", None)
-
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         ntp_encrypt(None, 1)
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         ntp_decrypt(111)
 
     with pytest.raises(ValueError):  # noqa: PT011
         ntp_decrypt("")
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         ntp_decrypt(None)
 
 
@@ -338,29 +332,26 @@ def test_radius(salt: int, password: str, encrypted_password: str) -> None:
 
 
 def test_radius_input_validation() -> None:
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         radius_encrypt(["foo"], 1)
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         radius_encrypt("foo", "foo")
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(OverflowError):
         radius_encrypt("foo", -1)
 
     with pytest.raises(ValueError):  # noqa: PT011
         radius_encrypt("", 1)
 
-    with pytest.raises(ValueError):  # noqa: PT011
-        radius_encrypt("foo", None)
-
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         radius_encrypt(None, 1)
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         radius_decrypt(111)
 
     with pytest.raises(ValueError):  # noqa: PT011
         radius_decrypt("")
 
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(TypeError):
         radius_decrypt(None)

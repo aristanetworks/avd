@@ -263,12 +263,6 @@ cv_workspace_build_timeout: 300
 # See the "Static Configuration Studio" section below for more details.
 # cv_static_config_manifest:
 #
-#   # Policy for managing configlets in the Configlet Library.
-#   # - "managed" (default): Delete manifest-managed configlets not declared in this manifest and not assigned to any container.
-#   #   Configlets not managed by the manifest are preserved.
-#   # - "additive": Only create or update declared configlets. All existing configlets are preserved.
-#   configlet_policy: <str, default="managed", choices=["managed", "additive"]>
-#
 #   # A list of dictionaries defining configlets to be created in the Configlet Library.
 #   # Configlet names must be unique across all defined configlets.
 #   configlets:
@@ -458,6 +452,9 @@ For each opted-in device, you are responsible for ensuring the manifest defines 
 
 !!! note "Root Containers Order"
     When initially deploying or adding new root containers, the role places its managed root containers to the top of the Studio container tree. Please be aware that this automated ordering **may displace any containers you have manually arranged**.
+
+!!! warning "Manual configlet assignments"
+    Before you remove a configlet created by a cv_deploy manifest, ensure it is not manually assigned to any non-manifest containers. Otherwise you must manually unassign the configlet from such containers first.
 
 #### Example for AVD users
 

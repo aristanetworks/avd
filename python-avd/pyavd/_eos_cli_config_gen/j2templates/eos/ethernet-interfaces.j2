@@ -460,6 +460,16 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ ipv6_nd_prefix_cli }}
 {%     endfor %}
+{%     if ethernet_interface.ipv6_nd.ra.dns_servers_lifetime is arista.avd.defined %}
+   ipv6 nd ra dns-servers lifetime {{ ethernet_interface.ipv6_nd.ra.dns_servers_lifetime }}
+{%     endif %}
+{%     for dns_server in ethernet_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort(sort_key="address") %}
+{%         set ra_dns_server = "ipv6 nd ra dns-server " ~ dns_server.address %}
+{%         if dns_server.lifetime is arista.avd.defined %}
+{%             set ra_dns_server = ra_dns_server ~ " lifetime " ~ dns_server.lifetime %}
+{%         endif %}
+   {{ ra_dns_server }}
+{%     endfor %}
 {%     if ethernet_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
 {%         if ethernet_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined %}
@@ -1106,6 +1116,9 @@ interface {{ ethernet_interface.name }}
    traffic-engineering min-delay static {{ ethernet_interface.traffic_engineering.min_delay_static.number }} {{ ethernet_interface.traffic_engineering.min_delay_static.unit }}
 {%     elif ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback is arista.avd.defined %}
    traffic-engineering min-delay dynamic twamp-light fallback {{ ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.number }} {{ ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.unit }}
+{%     endif %}
+{%     if ethernet_interface.cpu_traffic_policy_fallback_vrf is arista.avd.defined %}
+   cpu traffic-policy {{ ethernet_interface.cpu_traffic_policy_fallback_vrf }} fallback traffic-policy vrf
 {%     endif %}
 {%     for link_tracking_group in ethernet_interface.link_tracking_groups | arista.avd.default([]) %}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}

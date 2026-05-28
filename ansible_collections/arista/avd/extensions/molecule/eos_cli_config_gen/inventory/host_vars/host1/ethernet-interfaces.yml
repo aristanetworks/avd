@@ -145,6 +145,7 @@ ethernet_interfaces:
     qos:
       trust: dscp
       dscp: 48
+    cpu_traffic_policy_fallback_vrf: CPU_TRAFFIC_POLICY
     traffic_policy:
       input: BLUE-C1-POLICY
       output: BLUE-C2-POLICY
@@ -319,6 +320,11 @@ ethernet_interfaces:
         rx_accept:
           default_route: true
           route_preference: true
+        dns_servers:
+          - address: cafe::cafe:64
+            lifetime: 100
+          - address: ca::ca:64
+        dns_servers_lifetime: 200
       managed_config_flag: true
     ipv6_access_group_in: IPv6_ACL_IN
     ipv6_access_group_out: IPv6_ACL_OUT
