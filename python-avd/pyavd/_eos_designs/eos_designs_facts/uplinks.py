@@ -303,12 +303,14 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             else:
                 uplink.peer_trunk_groups.append_unique(self.shared_utils.hostname)
 
-        uplink_vlans = set(self._vlans)
-        uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._vlans)
-
+        if self.inputs.avd_design_future.consistent_uplink_vlans:
+            uplink_vlans = self._uplink_vlans
+        else:
+            uplink_vlans = self._vlans
+            uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._vlans)
         if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
             # Always add inband_mgmt_vlan even if the uplink switch does not have this vlan defined
-            uplink_vlans.add(self.shared_utils.node_config.inband_mgmt_vlan)
+            uplink_vlans = uplink_vlans.union((self.shared_utils.node_config.inband_mgmt_vlan,))
 
         uplink.vlans = list_compress(list(uplink_vlans)) if uplink_vlans else "none"
 
@@ -484,3 +486,14 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 raise AristaAvdError(msg, host=uplink_switch)
 
         return uplink_switch_interfaces
+
+    @cached_property
+    def _uplink_vlans(self: EosDesignsFactsGeneratorProtocol) -> frozenset[int]:
+        """Return the intersection of local VLANs with VLANs across all uplink switches."""
+        uplink_vlans = self._vlans
+
+        for uplink_switch in self.uplink_peers:
+            uplink_switch_facts = self.get_peer_facts_generator(uplink_switch)
+            uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._vlans)
+
+        return uplink_vlans
