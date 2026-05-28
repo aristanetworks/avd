@@ -268,7 +268,6 @@ metadata:
     min_line_cards: 0
     transceiver_manufacturers:
     - Third-party vendor
-    - Not Present
   interfaces:
     errdisable:
       only_avd_interfaces: true

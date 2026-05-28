@@ -63,7 +63,7 @@ keys:
               type: list
               description: |-
                 List of approved transceiver manufacturers for the device.
-                Include "Not Present" in the transceiver_manufacturers list. Otherwise validation will error out on all ports with no transceivers connected.
+                Include "Not Present" to allow ports with no transceiver to successfully pass validation.
               items:
                 type: str
               default:
