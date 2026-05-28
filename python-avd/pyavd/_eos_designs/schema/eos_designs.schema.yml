@@ -9067,7 +9067,7 @@ keys:
 
       These profiles modify test behavior and do not affect device configuration.
 
-      They can be referenced from node definitions (e.g., `l3leaf.nodes[].validation_profile`)
+      Validation profiles can be referenced from node definitions (e.g., `l3leaf.nodes[].validation_profile`)
       and support single-level inheritance using `parent_profile`.'
     items:
       type: dict

@@ -105095,7 +105095,7 @@ class EosDesigns(EosDesignsRootModel):
     `anta_runner` role for a device.
     These profiles modify test behavior and do not affect device
     configuration.
-    They can be referenced from node definitions (e.g.,
+    Validation profiles can be referenced from node definitions (e.g.,
     `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`.
     Subclass of AvdIndexedList with `ValidationProfilesItem` items. Primary key is `name` (`str`).
     """
@@ -106852,7 +106852,7 @@ class EosDesigns(EosDesignsRootModel):
                    `anta_runner` role for a device.
                    These profiles modify test behavior and do not affect device
                    configuration.
-                   They can be referenced from node definitions (e.g.,
+                   Validation profiles can be referenced from node definitions (e.g.,
                    `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`.
                    Subclass of AvdIndexedList with `ValidationProfilesItem` items. Primary key is `name` (`str`).
                 vtep_loopback_description: Customize the description on the VTEP interface, typically Loopback1.
