@@ -5565,6 +5565,18 @@ keys:
                       items:
                         type: str
                         description: IPv4_address/Mask.
+                    ipv6_addresses:
+                      type: list
+                      description: 'IPv6 addresses with prefix length, e.g., ''2001:db8::1/64''.
+
+                        Can be used instead of or together with `ip_address`.
+
+                        For subinterfaces, at least one of `ip_address` or `ipv6_addresses`
+                        must be set.'
+                      items:
+                        type: str
+                        min_length: 1
+                        description: IPv6 address/Mask.
                     static_routes:
                       type: list
                       $ref: eos_designs#/$defs/static_routes

@@ -31019,6 +31019,11 @@ class EosDesigns(EosDesignsRootModel):
 
                 IpAddresses._item_type = str
 
+                class Ipv6Addresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Ipv6Addresses._item_type = str
+
                 class StaticRoutesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -31609,6 +31614,7 @@ class EosDesigns(EosDesignsRootModel):
                     "interfaces": {"type": Interfaces},
                     "encapsulation_dot1q_vlan": {"type": EncapsulationDot1qVlan},
                     "ip_addresses": {"type": IpAddresses},
+                    "ipv6_addresses": {"type": Ipv6Addresses},
                     "static_routes": {"type": StaticRoutes},
                     "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                     "nodes": {"type": Nodes},
@@ -31639,6 +31645,14 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 ip_addresses: IpAddresses
                 """Subclass of AvdList with `str` items."""
+                ipv6_addresses: Ipv6Addresses
+                """
+                IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                Can be used instead of or together with
+                `ip_address`.
+                For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                Subclass of AvdList with `str` items.
+                """
                 static_routes: StaticRoutes
                 """
                 Static routes to be configured on every device where this interface is configured.
@@ -31732,6 +31746,7 @@ class EosDesigns(EosDesignsRootModel):
                         interfaces: Interfaces | UndefinedType = Undefined,
                         encapsulation_dot1q_vlan: EncapsulationDot1qVlan | UndefinedType = Undefined,
                         ip_addresses: IpAddresses | UndefinedType = Undefined,
+                        ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                         static_routes: StaticRoutes | UndefinedType = Undefined,
                         ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                         nodes: Nodes | UndefinedType = Undefined,
@@ -31765,6 +31780,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of AvdList with `int` items.
                             ip_addresses: Subclass of AvdList with `str` items.
+                            ipv6_addresses:
+                               IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                               Can be used instead of or together with
+                               `ip_address`.
+                               For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                               Subclass of AvdList with `str` items.
                             static_routes:
                                Static routes to be configured on every device where this interface is configured.
 
@@ -76454,6 +76475,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         IpAddresses._item_type = str
 
+                        class Ipv6Addresses(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Ipv6Addresses._item_type = str
+
                         class StaticRoutesItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -77048,6 +77074,7 @@ class EosDesigns(EosDesignsRootModel):
                             "interfaces": {"type": Interfaces},
                             "encapsulation_dot1q_vlan": {"type": EncapsulationDot1qVlan},
                             "ip_addresses": {"type": IpAddresses},
+                            "ipv6_addresses": {"type": Ipv6Addresses},
                             "static_routes": {"type": StaticRoutes},
                             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "nodes": {"type": Nodes},
@@ -77078,6 +77105,14 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_addresses: IpAddresses
                         """Subclass of AvdList with `str` items."""
+                        ipv6_addresses: Ipv6Addresses
+                        """
+                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                        Can be used instead of or together with
+                        `ip_address`.
+                        For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                        Subclass of AvdList with `str` items.
+                        """
                         static_routes: StaticRoutes
                         """
                         Static routes to be configured on every device where this interface is configured.
@@ -77171,6 +77206,7 @@ class EosDesigns(EosDesignsRootModel):
                                 interfaces: Interfaces | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: EncapsulationDot1qVlan | UndefinedType = Undefined,
                                 ip_addresses: IpAddresses | UndefinedType = Undefined,
+                                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
@@ -77204,6 +77240,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `int` items.
                                     ip_addresses: Subclass of AvdList with `str` items.
+                                    ipv6_addresses:
+                                       IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
+                                       Can be used instead of or together with
+                                       `ip_address`.
+                                       For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                                       Subclass of AvdList with `str` items.
                                     static_routes:
                                        Static routes to be configured on every device where this interface is configured.
 
