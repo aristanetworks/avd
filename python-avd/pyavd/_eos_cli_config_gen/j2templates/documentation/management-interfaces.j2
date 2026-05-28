@@ -25,8 +25,8 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
 {%     for management_interface in management_interfaces | arista.avd.natural_sort('name') %}
 {%         set description = management_interface.description | arista.avd.default('-') %}
 {%         set vrf = management_interface.vrf | arista.avd.default('default') %}
@@ -69,7 +69,8 @@
 {%         else %}
 {%             set nd_cache = "-" %}
 {%         endif %}
-| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6_address }} | {{ ipv6_gateway }} | {{ nd_ra_disabled }} | {{ nd_ra_rx_accept | join(", ") }} | {{ managed_config_flag }} | {{ other_config_flag }} | {{ nd_cache }} |
+{%         set ra_dns_servers = management_interface.ipv6_nd.ra.dns_servers | arista.avd.natural_sort(sort_key="address") | map(attribute="address") | join(", ") or '-' %}
+| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6_address }} | {{ ipv6_gateway }} | {{ nd_ra_disabled }} | {{ nd_ra_rx_accept | join(", ") }} | {{ managed_config_flag }} | {{ other_config_flag }} | {{ nd_cache }} | {{ ra_dns_servers }} |
 {%     endfor %}
 {%     if management_interfaces | arista.avd.default([]) | selectattr('redundancy','arista.avd.defined') | list %}
 

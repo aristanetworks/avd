@@ -60,9 +60,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -221,13 +221,13 @@ vlan 2020
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Ethernet1 | P2P_SITE2-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - | - | - | - |
-| Ethernet11 | P2P_SITE2-LSR2_Ethernet12 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- |
-| Ethernet12 | P2P_SITE2-LSR2_Ethernet13 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- |
-| Ethernet13 | P2P_SITE2-LSR2_Ethernet14 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- |
-| Ethernet14 | P2P_SITE2-LSR2_Ethernet15 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Ethernet1 | P2P_SITE2-LSR1_Ethernet1 | - | 2001:db8:0:fffe::f/127 | default | 9178 | False | - | - | - | - | - | - | - | - |
+| Ethernet11 | P2P_SITE2-LSR2_Ethernet12 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- | *- |
+| Ethernet12 | P2P_SITE2-LSR2_Ethernet13 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- | *- |
+| Ethernet13 | P2P_SITE2-LSR2_Ethernet14 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- | *- |
+| Ethernet14 | P2P_SITE2-LSR2_Ethernet15 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -255,6 +255,7 @@ interface Ethernet1
    no switchport
    ip address 100.64.48.15/31
    ipv6 enable
+   ipv6 address 2001:db8:0:fffe::f/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -490,7 +491,7 @@ interface Port-Channel220
 
 | Interface | Description | VRF | IPv6 Addresses |
 | --------- | ----------- | --- | -------------- |
-| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::7/128 |
+| Loopback0 | ROUTER_ID | default | 2001:db8:200:ffff::7/128 |
 
 ##### ISIS
 
@@ -506,10 +507,10 @@ interface Loopback0
    description ROUTER_ID
    no shutdown
    ip address 100.70.0.7/32
-   ipv6 address 2000:1234:ffff:ffff::7/128
+   ipv6 address 2001:db8:200:ffff::7/128
    mpls ldp interface
    node-segment ipv4 index 207
-   node-segment ipv6 index 207
+   node-segment ipv6 index 1207
    isis enable CORE
    isis passive
 ```
@@ -682,7 +683,7 @@ router ospf 99 vrf TENANT_B_WAN
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 207 | 207 |
+| Loopback0 | 207 | 1207 |
 
 #### ISIS IPv4 Address Family Summary
 
@@ -698,6 +699,7 @@ router ospf 99 vrf TENANT_B_WAN
 | -------- | ----- |
 | IPv6 Address-family Enabled | True |
 | Maximum-paths | 4 |
+| Multi-topology Enabled | True |
 | TI-LFA Mode | link-protection |
 
 #### Router ISIS Device Configuration
@@ -719,6 +721,7 @@ router isis CORE
    !
    address-family ipv6 unicast
       maximum-paths 4
+      multi-topology
       fast-reroute ti-lfa mode link-protection
    !
    segment-routing mpls

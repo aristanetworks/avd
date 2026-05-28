@@ -111,7 +111,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.15.12
+    rev: v0.15.14
     hooks:
       # Run the linter.
       - id: ruff
@@ -130,11 +130,11 @@ repos:
         # use --group dev or some othergroup to avoid maintaining this here
         # as well.
         additional_dependencies:
-          - 'ansible-core>=2.16.0,<2.21.0'
+          - 'ansible-core>=2.16.0,<2.22.0'
           - 'anta==1.8.0'
           - 'deepmerge>=1.1.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.4'
+          - 'pyavd-utils==0.0.5'
           - 'pydantic>=2.3.0'
           - 'pytest>=8.2.0'
           - 'pyyaml>=6.0.0'
@@ -181,7 +181,7 @@ repos:
         args: [--config, .codespellrc]
 
   - repo: https://github.com/pdm-project/pdm
-    rev: "2.26.8"
+    rev: "2.27.0"
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
@@ -280,7 +280,7 @@ repos:
           ansible_only
           )
           /inventory/hosts.yml$
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.4', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.5', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -288,7 +288,7 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.4', 'deepmerge>=1.1.0']
+        additional_dependencies: ['Jinja2>=3.0.0', 'pyavd-utils==0.0.5', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.22.1
