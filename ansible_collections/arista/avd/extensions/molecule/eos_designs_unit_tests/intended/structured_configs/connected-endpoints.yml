@@ -762,7 +762,7 @@ port_channel_interfaces:
   shutdown: false
   lacp_fallback_timeout: 90
   lacp_fallback_mode: individual
-  mac_access_group_in: acl-on-port-profile
+  mac_access_group_in: acl-on-endpoints
   mac_access_group_out: no-entries
   switchport:
     enabled: true

@@ -757,8 +757,8 @@ ethernet_interfaces:
 - name: Ethernet5
   description: 'N: blah'
   shutdown: false
-  mac_access_group_in: acl1
-  mac_access_group_out: acl2
+  mac_access_group_in: acl-on-network-port
+  mac_access_group_out: acl-on-network-port
   metadata:
     peer: blah
     peer_type: network_port
@@ -768,8 +768,8 @@ ethernet_interfaces:
 - name: Ethernet6
   description: 'N: blah'
   shutdown: false
-  mac_access_group_in: acl1
-  mac_access_group_out: acl2
+  mac_access_group_in: acl-on-network-port
+  mac_access_group_out: acl-on-network-port
   metadata:
     peer: blah
     peer_type: network_port
@@ -963,13 +963,7 @@ hostname: network-ports-tests.1
 ip_igmp_snooping:
   globally_enabled: true
 mac_access_lists:
-- name: acl1
-  entries:
-  - sequence: 10
-    action: deny any 01:80:c2:00:00:00 00:00:00:00:00:00
-  - sequence: 5
-    action: permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00
-- name: acl2
+- name: acl-on-network-port
   entries:
   - sequence: 5
     action: permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00

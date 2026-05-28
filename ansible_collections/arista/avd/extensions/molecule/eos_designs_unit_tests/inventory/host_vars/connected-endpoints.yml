@@ -159,7 +159,7 @@ servers:
     adapters:
       - switches: [connected-endpoints, connected-endpoints]
         switch_ports: [Ethernet12, Ethernet13]
-        mac_acl_in: acl-on-port-profile
+        mac_acl_in: acl-on-endpoints
         mac_acl_out: no-entries
         port_channel:
           mode: "active"
