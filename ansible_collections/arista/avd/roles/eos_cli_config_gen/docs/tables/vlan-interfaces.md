@@ -118,17 +118,19 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_address</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_destinations.[].link_address") | String |  |  |  | Override the default link address specified in the relayed DHCP packet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay_all_subnets</samp>](## "vlan_interfaces.[].ipv6_dhcp_relay_all_subnets") | Boolean |  |  |  | Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd</samp>](## "vlan_interfaces.[].ipv6_nd") | Dictionary |  |  |  | IPv6 Neighbor Discovery protocol. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra</samp>](## "vlan_interfaces.[].ipv6_nd.ra") | Dictionary |  |  |  | Router Advertisement. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers</samp>](## "vlan_interfaces.[].ipv6_nd.ra.dns_servers") | List, items: String |  |  | Min Length: 1 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].ipv6_nd.ra.dns_servers.[]") | String |  |  |  | IPv6 address of DNS servers. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "vlan_interfaces.[].ipv6_nd.ra.disabled") | Boolean |  |  |  | Disable Router Advertisement messages on the interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_accept</samp>](## "vlan_interfaces.[].ipv6_nd.ra.rx_accept") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "vlan_interfaces.[].ipv6_nd.ra.rx_accept.default_route") | Boolean |  |  |  | Accept default route from received Router Advertisements. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_preference</samp>](## "vlan_interfaces.[].ipv6_nd.ra.rx_accept.route_preference") | Boolean |  |  |  | Accept route preference from received Router Advertisements. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cache</samp>](## "vlan_interfaces.[].ipv6_nd.cache") | Dictionary |  |  |  | Neighbor cache options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic_capacity</samp>](## "vlan_interfaces.[].ipv6_nd.cache.dynamic_capacity") | Integer |  |  | Min: 0<br>Max: 4294967295 | Capacity of dynamic cache entries. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expire</samp>](## "vlan_interfaces.[].ipv6_nd.cache.expire") | Integer |  |  | Min: 1<br>Max: 65535 | Cache entries expiry in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refresh_always</samp>](## "vlan_interfaces.[].ipv6_nd.cache.refresh_always") | Boolean |  |  |  | Force refresh on cache expiry. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra</samp>](## "vlan_interfaces.[].ipv6_nd.ra") | Dictionary |  |  |  | Router Advertisement. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "vlan_interfaces.[].ipv6_nd.ra.disabled") | Boolean |  |  |  | Disable Router Advertisement messages on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_accept</samp>](## "vlan_interfaces.[].ipv6_nd.ra.rx_accept") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "vlan_interfaces.[].ipv6_nd.ra.rx_accept.default_route") | Boolean |  |  |  | Accept default route from received Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_preference</samp>](## "vlan_interfaces.[].ipv6_nd.ra.rx_accept.route_preference") | Boolean |  |  |  | Accept route preference from received Router Advertisements. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers</samp>](## "vlan_interfaces.[].ipv6_nd.ra.dns_servers") | List, items: Dictionary |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "vlan_interfaces.[].ipv6_nd.ra.dns_servers.[].address") | String | Required, Unique |  |  | IPv6 address of DNS server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime</samp>](## "vlan_interfaces.[].ipv6_nd.ra.dns_servers.[].lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Specifies the lifetime period for this server in seconds.<br>This value overrides lifetime value set by `dns_servers_lifetime` for this server. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dns_servers_lifetime</samp>](## "vlan_interfaces.[].ipv6_nd.ra.dns_servers_lifetime") | Integer |  |  | Min: 0<br>Max: 4294967295 | Router Advertisement DNS server lifetime value in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;managed_config_flag</samp>](## "vlan_interfaces.[].ipv6_nd.managed_config_flag") | Boolean |  |  |  | Set the "Managed Address Configuration" (M) flag in Router Advertisements. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixes</samp>](## "vlan_interfaces.[].ipv6_nd.prefixes") | List, items: Dictionary |  |  |  | IPv6 prefixes to include in Router Advertisements. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv6_prefix</samp>](## "vlan_interfaces.[].ipv6_nd.prefixes.[].ipv6_prefix") | String | Required, Unique |  |  |  |
@@ -552,23 +554,6 @@
         # IPv6 Neighbor Discovery protocol.
         ipv6_nd:
 
-          # Router Advertisement.
-          ra:
-            dns_servers: # >=1 items
-
-                # IPv6 address of DNS servers.
-              - <str>
-
-            # Disable Router Advertisement messages on the interface.
-            disabled: <bool>
-            rx_accept:
-
-              # Accept default route from received Router Advertisements.
-              default_route: <bool>
-
-              # Accept route preference from received Router Advertisements.
-              route_preference: <bool>
-
           # Neighbor cache options.
           cache:
 
@@ -580,6 +565,30 @@
 
             # Force refresh on cache expiry.
             refresh_always: <bool>
+
+          # Router Advertisement.
+          ra:
+
+            # Disable Router Advertisement messages on the interface.
+            disabled: <bool>
+            rx_accept:
+
+              # Accept default route from received Router Advertisements.
+              default_route: <bool>
+
+              # Accept route preference from received Router Advertisements.
+              route_preference: <bool>
+            dns_servers: # >=1 items
+
+                # IPv6 address of DNS server.
+              - address: <str; required; unique>
+
+                # Specifies the lifetime period for this server in seconds.
+                # This value overrides lifetime value set by `dns_servers_lifetime` for this server.
+                lifetime: <int; 0-4294967295>
+
+            # Router Advertisement DNS server lifetime value in seconds.
+            dns_servers_lifetime: <int; 0-4294967295>
 
           # Set the "Managed Address Configuration" (M) flag in Router Advertisements.
           managed_config_flag: <bool>

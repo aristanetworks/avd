@@ -127,8 +127,8 @@ class VlanInterfacesMixin(Protocol):
             vlan_interface_config.ipv6_access_group_out = acl.name
             self._set_ipv6_acl(acl)
 
-        if svi.ipv6_nd.ra_dns_servers:
-            vlan_interface_config.ipv6_nd.ra.dns_servers = svi.ipv6_nd.ra_dns_servers._cast_as(EosCliConfigGen.VlanInterfacesItem.Ipv6Nd.Ra.DnsServers)
+        for dns_server in svi.ipv6_nd.ra_dns_servers:
+            vlan_interface_config.ipv6_nd.ra.dns_servers.append_new(address=dns_server)
 
         if settings := svi.ipv6_dhcp_relay:
             for destination in settings.destinations:

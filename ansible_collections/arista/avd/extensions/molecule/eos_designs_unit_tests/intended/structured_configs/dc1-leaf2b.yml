@@ -1230,8 +1230,8 @@ vlan_interfaces:
   ipv6_nd:
     ra:
       dns_servers:
-      - cafe::cafe:64
-      - ca::ca:64
+      - address: cafe::cafe:64
+      - address: ca::ca:64
     prefixes:
     - ipv6_prefix: 2001:db8:310::1/64
       valid_lifetime: '200'

@@ -66,9 +66,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -354,10 +354,10 @@ vlan 4094
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
-| Ethernet1 | P2P_dc1-spine1_Ethernet1 | - | 2001:db8:2::2/64 | default | 9214 | False | - | - | - | - | - | - | - |
-| Ethernet2 | P2P_dc1-spine2_Ethernet1 | - | 2001:db8:2:1::2/64 | default | 9214 | False | - | - | - | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
+| Ethernet1 | P2P_dc1-spine1_Ethernet1 | - | 2001:db8:2::2/64 | default | 9214 | False | - | - | - | - | - | - | - | - |
+| Ethernet2 | P2P_dc1-spine2_Ethernet1 | - | 2001:db8:2:1::2/64 | default | 9214 | False | - | - | - | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -533,7 +533,7 @@ interface Loopback12
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA Dns Servers | IPv6 ACL In | IPv6 ACL Out |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | ND RA DNS Servers | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------------- | ----------- | ------------ |
 | Vlan21 | VRF11 | - | 2001:DB8:21::1/48 | - | - | - | - | - | - | - | - | - |
 | Vlan31 | VRF12 | - | 2001:DB8:31::1/48 | - | - | - | - | - | - | - | - | - |
