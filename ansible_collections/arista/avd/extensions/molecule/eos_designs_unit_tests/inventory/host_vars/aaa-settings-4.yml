@@ -1,0 +1,50 @@
+---
+# Testing avd_design_future.include_tls_on_radius_server_group_members:
+# when true, TLS-enabled RADIUS servers referenced in an `aaa server group radius`
+# also get their TLS settings (enabled + port) emitted on the per-server entry inside the group.
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: aaa-settings-4
+      mgmt_ip: 192.168.0.2/24
+
+avd_design_future:
+  include_tls_on_radius_server_group_members: true
+
+aaa_settings:
+  radius:
+    servers:
+      # TLS-enabled server referenced in a group: TLS (enabled + port) should appear
+      # on the group's server entry because the flag is set.
+      - host: 11.10.10.5
+        vrf: MGMT
+        tls:
+          enabled: true
+          ssl_profile: HOST_SSL_PROFILE
+          port: 2080
+        groups:
+          - RADIUS_TLS
+
+      # Second TLS-enabled server in default VRF, also in a group, to cover the
+      # default-VRF code path for the group member entry.
+      - host: 11.10.10.6
+        vrf: default
+        tls:
+          enabled: true
+          ssl_profile: HOST_SSL_PROFILE
+          port: 2083
+        groups:
+          - RADIUS_TLS
+
+      # Non-TLS server in the same group: group entry must stay plain (no tls block),
+      # proving the flag only affects servers that actually have TLS enabled.
+      - host: 11.10.10.7
+        vrf: MGMT
+        key: 071B245F5A
+        groups:
+          - RADIUS_TLS
+
+    vrfs:
+      - name: MGMT
+        source_interface: Vlan125

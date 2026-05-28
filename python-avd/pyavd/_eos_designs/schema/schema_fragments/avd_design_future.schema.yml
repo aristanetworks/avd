@@ -51,3 +51,9 @@ keys:
           Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
           and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
         default: false
+      include_tls_on_radius_server_group_members:
+        type: bool
+        default: false
+        description: |-
+          When a RADIUS server has TLS enabled and is referenced in an `aaa server group radius`,
+          also emit the TLS settings (enabled state and port) on the server entry within the group.
