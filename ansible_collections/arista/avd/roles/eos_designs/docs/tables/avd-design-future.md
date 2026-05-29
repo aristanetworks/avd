@@ -16,7 +16,7 @@
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Configure `inband_mgmt_vrf` for IPv6 inband management. |
     | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
-    | [<samp>&nbsp;&nbsp;fixed_route_map_connected_to_bgp_vrfs</samp>](## "avd_design_future.fixed_route_map_connected_to_bgp_vrfs") | Boolean |  | `False` |  | Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and<br>`overlay_mlag_rfc5549` are set.<br> |
+    | [<samp>&nbsp;&nbsp;only_configure_route_map_connected_to_bgp_vrfs_when_used</samp>](## "avd_design_future.only_configure_route_map_connected_to_bgp_vrfs_when_used") | Boolean |  | `False` |  | Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and<br>`overlay_mlag_rfc5549` are set.<br> |
 
 === "YAML"
 
@@ -52,5 +52,5 @@
 
       # Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and
       # `overlay_mlag_rfc5549` are set.
-      fixed_route_map_connected_to_bgp_vrfs: <bool; default=False>
+      only_configure_route_map_connected_to_bgp_vrfs_when_used: <bool; default=False>
     ```
