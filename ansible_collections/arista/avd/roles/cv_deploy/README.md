@@ -636,6 +636,33 @@ proxy_username: "avd_proxy_user"
 proxy_password: "avd_proxy_password"
 ```
 
+## gRPC keepalives
+
+The `arista.avd.cv_deploy` role supports client-side gRPC keepalives on the CloudVision connection. When enabled, AVD periodically pings CloudVision over the gRPC connection so the connection is not silently terminated by intermediate firewalls or load balancers during long-running deployments.
+
+Keepalives are disabled by default. To enable them, set `cv_grpc_keepalives.enabled: true`. The other settings can be left at their defaults and only need to be adjusted to match a specific network environment.
+
+Below settings allow modifying the default keepalive behavior as needed. The values below are the default values.
+
+```yaml
+cv_grpc_keepalives:
+  # Enable client-side gRPC keepalives. When false, the other settings have no effect.
+  enabled: false
+  # Interval in seconds between keepalive pings. Must be >= 30s.
+  keepalive_time: 60
+  # Time in seconds to wait for a keepalive ACK before considering the connection dead.
+  keepalive_timeout: 20
+  # If true, keepalive pings are sent even when there are no active gRPC calls.
+  permit_without_calls: false
+```
+
+Example of enabling keepalives with the default settings:
+
+```yaml
+cv_grpc_keepalives:
+  enabled: true
+```
+
 ## License
 
 Project is published under [Apache 2.0 License](https://github.com/aristanetworks/avd/blob/devel/LICENSE)
