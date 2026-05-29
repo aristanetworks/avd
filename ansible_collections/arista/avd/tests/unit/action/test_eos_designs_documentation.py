@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import json
 import logging
-import re
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
@@ -67,12 +66,7 @@ def test_read_structured_configs_warns_with_each_missing_device_name(
     assert len(caplog.records) == 1
     record = caplog.records[0]
     assert record.levelno == logging.WARNING
-    match = re.fullmatch(
-        r"Could not find structured config files for '([^']+)'. The documentation may be incomplete.",
-        record.getMessage(),
-    )
-    assert match is not None, f"WARNING did not match expected format: {record.getMessage()!r}"
-    assert set(match.group(1).split(",")) == {"leaf1", "leaf2"}
+    assert record.getMessage() == "Could not find structured config files for 'leaf1,leaf2'. The documentation may be incomplete."
 
 
 def test_run_routes_missing_device_warning_to_result_warnings(
