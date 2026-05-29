@@ -5,9 +5,10 @@
 
 from __future__ import annotations
 
-from ansible.utils.display import Display
 from collections import ChainMap
 from typing import TYPE_CHECKING, Any
+
+from ansible.utils.display import Display
 
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._utils import AvdStringFormatter, strip_null_from_data
