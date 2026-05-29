@@ -706,7 +706,6 @@ jobs:
               --ignore=python-avd/tests/pyavd/molecule_scenarios/test_get_device_config.py
               --ignore=python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
               --ignore=python-avd/tests/schema_tools/metaschema/test_meta_schema_model.py
-            upload_compiled_templates: true
           - name: "Excluded-Tests (test_get_device_config and test_meta_schema_model)"
             id: Excluded-test_get_device_config-and-test_meta_schema_model
             pytest_args: >-
@@ -738,18 +737,6 @@ jobs:
         with:
           name: coverage-data-${{ matrix.suite.id }}
           path: coverage-${{ matrix.suite.id }}.dat
-      - name: Upload eos_designs compiled templates from pytest
-        if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
-        uses: actions/upload-artifact@v7
-        with:
-          name: pytest-eos-designs-compiled-templates
-          path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
-      - name: Upload eos_cli_config_gen compiled templates from pytest
-        if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
-        uses: actions/upload-artifact@v7
-        with:
-          name: pytest-eos-cli-config-gen-compiled-templates
-          path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
 
   generate_pyavd_coverage_report:
     name: Test pyavd python 3.11 coverage report
@@ -762,22 +749,12 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install coverage
-        run: pip install --group coverage
+        run: pip install --group coverage -e development/coverage_plugins
       - name: Download coverage artifacts
         uses: actions/download-artifact@v8
         with:
           pattern: coverage-data-*
           merge-multiple: true
-      - name: Download eos_designs compiled templates artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: pytest-eos-designs-compiled-templates
-          path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
-      - name: Download eos_cli_config_gen compiled templates artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: pytest-eos-cli-config-gen-compiled-templates
-          path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
       - name: Combine and report test coverage
         run: |
           set -ex
