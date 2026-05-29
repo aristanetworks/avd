@@ -5,9 +5,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
+from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 from uuid import NAMESPACE_DNS, uuid4, uuid5
+
+from grpclib.config import Configuration
 
 from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
 from pyavd._cv.client.exceptions import CVManifestError
@@ -18,6 +21,47 @@ AVD_ENTITY_PREFIX = "avd_"
 
 if TYPE_CHECKING:
     from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment
+
+LOGGER = getLogger(__name__)
+
+
+@dataclass
+class CVGRPCKeepalives:
+    enabled: bool = False
+    keepalive_time: int = 60
+    keepalive_timeout: int = 20
+    permit_without_calls: bool = False
+
+    def __post_init__(self) -> None:
+        if self.enabled and self.keepalive_time < 30:
+            msg = f"Invalid CVGRPCKeepalives settings. keepalive_time must be >= 30s, got {self.keepalive_time}."
+            raise ValueError(msg)
+
+
+@dataclass
+class CVGRPCChannelConfiguration:
+    """Advanced configuration settings of the gRPC channel."""
+
+    grpc_keepalives: CVGRPCKeepalives = field(default_factory=CVGRPCKeepalives)
+    """Keepalive settings of the gRPC channel."""
+
+    def as_grpclib_configuration(self) -> Configuration:
+        if not self.grpc_keepalives.enabled:
+            return Configuration()
+        try:
+            return Configuration(
+                _keepalive_time=self.grpc_keepalives.keepalive_time,
+                _keepalive_timeout=self.grpc_keepalives.keepalive_timeout,
+                _keepalive_permit_without_calls=self.grpc_keepalives.permit_without_calls,
+                # Disable the grpclib default cap of 2 pings without data so keepalives
+                # continue for the duration of the deployment.
+                _http2_max_pings_without_data=0,
+                # Override grpclib's 300s rate-limit so pings fire at the configured interval.
+                _http2_min_sent_ping_interval_without_data=self.grpc_keepalives.keepalive_time,
+            )
+        except TypeError:
+            LOGGER.warning("deploy_to_cv: grpclib Configuration does not support the expected keepalive fields. gRPC keepalives will not be enabled.")
+            return Configuration()
 
 
 @dataclass
@@ -31,6 +75,7 @@ class CloudVision:
     proxy_port: int | None
     proxy_username: str | None
     proxy_password: str | None
+    grpc_channel_configuration: CVGRPCChannelConfiguration = field(default_factory=CVGRPCChannelConfiguration)
 
 
 @dataclass
