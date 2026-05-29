@@ -2807,15 +2807,15 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.timers is arista.avd.defined %}
       timers bgp {{ vrf.timers }}
 {%         endif %}
-{%         if vrf.graceful_restart.restart_time is arista.avd.defined %}
-      graceful-restart restart-time {{ vrf.graceful_restart.restart_time }}
-{%         endif %}
-{%         if vrf.graceful_restart.stalepath_time is arista.avd.defined %}
-      graceful-restart stalepath-time {{ vrf.graceful_restart.stalepath_time }}
-{%         endif %}
 {%         if vrf.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             if vrf.graceful_restart.restart_time is arista.avd.defined %}
+      graceful-restart restart-time {{ vrf.graceful_restart.restart_time }}
+{%             endif %}
+{%             if vrf.graceful_restart.stalepath_time is arista.avd.defined %}
+      graceful-restart stalepath-time {{ vrf.graceful_restart.stalepath_time }}
+{%             endif %}
       graceful-restart
-{%         elif vrf.graceful_restart.enabled is arista.avd.defined(false) %}
+{%         elif vrf.no_graceful_restart is arista.avd.defined(true) %}
       no graceful-restart
 {%         endif %}
 {%         if vrf.maximum_paths.paths is arista.avd.defined %}

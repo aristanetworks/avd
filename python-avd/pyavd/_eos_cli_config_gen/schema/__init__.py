@@ -58810,6 +58810,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "router_id": {"type": str},
                 "timers": {"type": str},
                 "graceful_restart": {"type": GracefulRestart},
+                "no_graceful_restart": {"type": bool},
                 "networks": {"type": Networks},
                 "maximum_paths": {"type": MaximumPaths},
                 "updates": {"type": Updates},
@@ -58858,6 +58859,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"."""
             graceful_restart: GracefulRestart
             """Subclass of AvdModel."""
+            no_graceful_restart: bool | None
+            """
+            Disables graceful-restart for this VRF. Mutually exclusive with `graceful_restart`.
+            `graceful_restart` takes precedence.
+            """
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
             maximum_paths: MaximumPaths
@@ -58919,6 +58925,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     router_id: str | None | UndefinedType = Undefined,
                     timers: str | None | UndefinedType = Undefined,
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                    no_graceful_restart: bool | None | UndefinedType = Undefined,
                     networks: Networks | UndefinedType = Undefined,
                     maximum_paths: MaximumPaths | UndefinedType = Undefined,
                     updates: Updates | UndefinedType = Undefined,
@@ -58961,6 +58968,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         router_id: in IP address format A.B.C.D.
                         timers: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>".
                         graceful_restart: Subclass of AvdModel.
+                        no_graceful_restart:
+                           Disables graceful-restart for this VRF. Mutually exclusive with `graceful_restart`.
+                           `graceful_restart` takes precedence.
                         networks: Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`).
                         maximum_paths: Subclass of AvdModel.
                         updates: Subclass of AvdModel.

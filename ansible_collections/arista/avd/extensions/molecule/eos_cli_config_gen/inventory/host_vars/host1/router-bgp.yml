@@ -2373,10 +2373,7 @@ router_bgp:
     - name: TENANT_A_PROJECT03
       router_id: 192.168.255.3
       rd: "192.168.255.3:13"
-      graceful_restart:
-        enabled: false
-        restart_time: 455
-        stalepath_time: 566
+      no_graceful_restart: true
       evpn_multicast: true
       evpn_multicast_address_family:
         ipv4:
