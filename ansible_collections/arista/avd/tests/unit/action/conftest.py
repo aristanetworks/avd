@@ -35,7 +35,7 @@ def action_module() -> Callable[..., ActionBase]:
     Factory that builds an ActionModule instance with mocked Ansible plumbing.
 
     Each test passes the specific ``ActionModule`` class under test (e.g. the one from
-    ``plugins.action.eos_cli_config_gen`` or ``plugins.action.eos_designs_documentation``
+    ``plugins.action.eos_cli_config_gen``, ``plugins.action.eos_designs_facts``, ``plugins.action.eos_designs_documentation``
     or ``plugins.action.eos_designs_structured_config``).
     """
 
