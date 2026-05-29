@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+from ansible.utils.display import Display
 from collections import ChainMap
 from typing import TYPE_CHECKING, Any
 
@@ -33,6 +34,9 @@ class AvdInterfaceDescriptions(AvdFacts):
 
     def _template(self, template_path: str, **kwargs: Any) -> str:
         template_vars = ChainMap(kwargs, self._hostvars)
+        if "link" in dict(template_vars):
+            self.display = Display()
+            self.display.warning("Variables starting with 'link.' are deprecated and will be removed in AVD 7.0.0.")
         return self.shared_utils.template_var(template_path, template_vars)
 
     def underlay_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
