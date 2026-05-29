@@ -109,6 +109,9 @@ class Dot1xMixin(Protocol):
         if not captive_portal:
             return
 
+        # TODO: AVD 7.0.0 - `start_limit_infinite` and `access_list_ipv4` are currently dropped by the eos_cli_config_gen
+        # template when `enabled` is false, even though EOS allows them to coexist with `no captive-portal`.
+        # Tracked by issue #7041; once the template is fixed in 7.0.0 these values will be rendered regardless of `enabled`.
         self.structured_config.dot1x.captive_portal = EosCliConfigGen.Dot1x.CaptivePortal(
             enabled=captive_portal.enabled,
             start_limit_infinite=captive_portal.start_limit_infinite,
@@ -116,6 +119,7 @@ class Dot1xMixin(Protocol):
         )
 
         # `url` and `ssl_profile` are mutually exclusive in EOS CLI. `ssl_profile` takes precedence when both are set.
+        # issue #7041 is tracking to add this mutual exclusivity in eos_cli_config_gen.
         if captive_portal.ssl_profile:
             self.structured_config.dot1x.captive_portal.ssl_profile = captive_portal.ssl_profile
         elif captive_portal.url:
