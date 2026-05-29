@@ -1034,9 +1034,11 @@ class EosDesigns(EosDesignsRootModel):
         """
         only_configure_route_map_connected_to_bgp_vrfs_when_used: bool
         """
-        Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and
-        `overlay_mlag_rfc5549` are
-        set.
+        Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.
+        The route map is skipped when
+        both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,
+        since 'redistribute connected route-map'
+        is not required in that case.
 
         Default value: `False`
         """
@@ -1080,9 +1082,11 @@ class EosDesigns(EosDesignsRootModel):
                        and on
                        all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
                     only_configure_route_map_connected_to_bgp_vrfs_when_used:
-                       Remove the route map `RM-CONN-2-BGP-VRFS` when `underlay_rfc5549` and
-                       `overlay_mlag_rfc5549` are
-                       set.
+                       Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.
+                       The route map is skipped when
+                       both 'underlay_rfc5549' and 'overlay_mlag_rfc5549' are set,
+                       since 'redistribute connected route-map'
+                       is not required in that case.
 
                 """
 
