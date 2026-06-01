@@ -328,9 +328,9 @@ For more details, see [Validation Profiles](../../ansible_collections/arista/avd
 
 ## Transceiver Manufacturers
 
-In `eos_validate_state`, accepted transceiver manufacturers were configured using the `accepted_xcvr_manufacturers` variable.
+In `eos_validate_state`, accepted transceiver manufacturers were configured using the `accepted_xcvr_manufacturers` variable. By default, `"Not Present"` was automatically included to avoid failures for ports with no transceiver.
 
-In `anta_runner`, this setting has moved to `eos_designs` and is configured through `validation_profiles`:
+In `anta_runner`, this setting has moved to `eos_designs` and is configured through `validation_profiles`. `"Not Present"` must be added explicitly to match the `eos_validate_state` behavior if needed.
 
 <div class="grid" markdown>
 
@@ -354,6 +354,7 @@ In `anta_runner`, this setting has moved to `eos_designs` and is configured thro
             - Arista Networks
             - Arastra, Inc.
             - Third Party Vendor
+            - Not Present
 
     # Apply to node types
     spine:

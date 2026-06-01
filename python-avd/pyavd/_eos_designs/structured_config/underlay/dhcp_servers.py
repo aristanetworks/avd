@@ -10,8 +10,8 @@ from typing import TYPE_CHECKING, Protocol
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
 
+from pyavd._cv.constants import CV_REGION_TO_SERVER_MAP, CVAAS_API_PREFIX
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._eos_designs.structured_config.constants import CV_REGION_TO_SERVER_MAP
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
 
@@ -73,7 +73,7 @@ class DhcpServersMixin(Protocol):
         """Return the first CVP server using either new or old data models."""
         if self.inputs.cv_settings.cvaas.enabled:
             region = next(iter(self.inputs.cv_settings.cvaas.clusters)).region
-            return CV_REGION_TO_SERVER_MAP[region]
+            return f"{CVAAS_API_PREFIX}.{CV_REGION_TO_SERVER_MAP[region]}"
 
         if self.inputs.cv_settings.onprem_clusters:
             return next(iter(next(iter(self.inputs.cv_settings.onprem_clusters)).servers)).name

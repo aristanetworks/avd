@@ -2,15 +2,29 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+from contextlib import AbstractContextManager
+from contextlib import nullcontext as does_not_raise
+from logging import DEBUG
 from pathlib import Path
 from typing import Any
+from unittest.mock import patch
 
 import pytest
+from grpclib.config import Configuration
 
 from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
 from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVManifestError
-from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVManifest
+from pyavd._cv.workflows.models import (
+    AVD_ENTITY_PREFIX,
+    AvdConfiglet,
+    AvdContainer,
+    AvdManifest,
+    CVContainer,
+    CVGRPCChannelConfiguration,
+    CVGRPCKeepalives,
+    CVManifest,
+)
 
 from .helpers import generate_id
 
@@ -404,7 +418,6 @@ class TestAvdManifestFromDict:
         manifest = AvdManifest.from_dict(full_manifest_dict)
         assert len(manifest.configlets) == 2
         assert len(manifest.containers) == 1
-        assert manifest.configlet_policy == "managed"  # Default
         assert manifest.configlets[0].name == "global_cfg"
         assert manifest.containers[0].name == "ROOT"
         assert len(manifest.containers[0].sub_containers) == 1
@@ -436,26 +449,6 @@ class TestAvdManifestFromDict:
         assert not manifest_empty_lists.configlets
         assert not manifest_empty_lists.containers
 
-    def test_configlet_policy_defaults_to_managed(self) -> None:
-        """Tests that the manifest configlet_policy defaults to 'managed' when omitted."""
-        manifest = AvdManifest.from_dict({})
-        assert manifest.configlet_policy == "managed"
-
-    def test_configlet_policy_explicit_additive(self) -> None:
-        """Tests that the manifest configlet_policy can be set to 'additive'."""
-        manifest = AvdManifest.from_dict({"configlet_policy": "additive"})
-        assert manifest.configlet_policy == "additive"
-
-    def test_configlet_policy_propagates_to_cv_manifest(self) -> None:
-        """Tests that the configlet_policy propagates from AvdManifest to CVManifest."""
-        avd_manifest_managed = AvdManifest(configlet_policy="managed", configlets=(), containers=())
-        cv_manifest_managed = CVManifest.from_avd_manifest(avd_manifest_managed)
-        assert cv_manifest_managed.configlet_policy == "managed"
-
-        avd_manifest_additive = AvdManifest(configlet_policy="additive", configlets=(), containers=())
-        cv_manifest_additive = CVManifest.from_avd_manifest(avd_manifest_additive)
-        assert cv_manifest_additive.configlet_policy == "additive"
-
     @pytest.mark.parametrize(
         ("invalid_data", "match_str"),
         [
@@ -469,3 +462,80 @@ class TestAvdManifestFromDict:
         """Tests that ValueError is raised for invalid AvdManifest data."""
         with pytest.raises(ValueError, match=match_str):
             AvdManifest.from_dict(invalid_data)
+
+
+# === CVGRPCKeepalives Tests ===
+
+
+class TestCVGRPCKeepalives:
+    def test_defaults(self) -> None:
+        """Tests that CVGRPCKeepalives is created with expected default values."""
+        keepalives = CVGRPCKeepalives()
+        assert keepalives.enabled is False
+        assert keepalives.keepalive_time == 60
+        assert keepalives.keepalive_timeout == 20
+        assert keepalives.permit_without_calls is False
+
+    def test_custom_values(self) -> None:
+        """Tests that CVGRPCKeepalives accepts custom values including explicit enable."""
+        keepalives = CVGRPCKeepalives(enabled=True, keepalive_time=30, keepalive_timeout=10, permit_without_calls=True)
+        assert keepalives.enabled is True
+        assert keepalives.keepalive_time == 30
+        assert keepalives.keepalive_timeout == 10
+        assert keepalives.permit_without_calls is True
+
+    @pytest.mark.parametrize(
+        ("enabled", "keepalive_time", "expected_exception"),
+        [
+            pytest.param(True, 29, pytest.raises(ValueError, match="keepalive_time must be >= 30s, got 29"), id="ENABLED_TIME_29_BELOW_MIN"),
+            pytest.param(True, 1, pytest.raises(ValueError, match="keepalive_time must be >= 30s, got 1"), id="ENABLED_TIME_1_BELOW_MIN"),
+            pytest.param(True, 30, does_not_raise(), id="ENABLED_TIME_AT_MIN"),
+            pytest.param(True, 60, does_not_raise(), id="ENABLED_TIME_DEFAULT"),
+            pytest.param(False, 29, does_not_raise(), id="DISABLED_TIME_BELOW_MIN_OK"),
+        ],
+    )
+    def test_keepalive_time_validation(self, enabled: bool, keepalive_time: int, expected_exception: AbstractContextManager) -> None:
+        """Tests that keepalive_time >= 30 is enforced only when enabled=True."""
+        with expected_exception:
+            CVGRPCKeepalives(enabled=enabled, keepalive_time=keepalive_time)
+
+
+# === CVGRPCChannelConfiguration Tests ===
+
+
+class TestCVGRPCChannelConfiguration:
+    def test_as_grpclib_configuration_disabled_returns_default_configuration(self) -> None:
+        """Tests that as_grpclib_configuration returns a default Configuration when keepalives are disabled."""
+        channel_config = CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=False))
+        config = channel_config.as_grpclib_configuration()
+        assert isinstance(config, Configuration)
+        # _http2_max_pings_without_data is only set to 0 when keepalives are enabled
+        assert config._http2_max_pings_without_data != 0
+
+    def test_as_grpclib_configuration_enabled_returns_configuration(self) -> None:
+        """Tests that as_grpclib_configuration builds a grpclib Configuration from the keepalive fields."""
+        channel_config = CVGRPCChannelConfiguration(
+            grpc_keepalives=CVGRPCKeepalives(enabled=True, keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
+        )
+        config = channel_config.as_grpclib_configuration()
+        assert isinstance(config, Configuration)
+        assert config._keepalive_time == 45
+        assert config._keepalive_timeout == 15
+        assert config._keepalive_permit_without_calls is True
+        assert config._http2_max_pings_without_data == 0
+        assert config._http2_min_sent_ping_interval_without_data == 45
+
+    def test_as_grpclib_configuration_type_error_falls_back_to_default_configuration(self, caplog: pytest.LogCaptureFixture) -> None:
+        """Tests that a TypeError from grpclib Configuration falls back to a default Configuration and logs a warning."""
+        channel_config = CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=True))
+        # Raise on first Configuration() call. Succeed on second
+        with (
+            caplog.at_level(DEBUG),
+            patch(
+                "pyavd._cv.workflows.models.Configuration",
+                side_effect=[TypeError("unexpected keyword argument"), Configuration()],
+            ),
+        ):
+            config = channel_config.as_grpclib_configuration()
+        assert isinstance(config, Configuration)
+        assert "gRPC keepalives will not be enabled" in caplog.text

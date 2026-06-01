@@ -28,7 +28,7 @@ dependencies = [
     # we patch the connection code in grpclib to get proxy support, so we need to carefully monitor and test new versions
     "grpclib>=0.4.8",
     "jinja2>=3.0",
-    "pyavd-utils==0.0.4",
+    "pyavd-utils==0.0.5",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",
@@ -40,7 +40,7 @@ repository = "https://github.com/aristanetworks/avd"
 
 [project.optional-dependencies]
 ansible = [
-    "ansible-core>=2.16.0,<2.21.0",
+    "ansible-core>=2.16.0,<2.22.0",
     "pyavd[ansible-collection]",
 ]
 ansible-collection = [
@@ -54,11 +54,11 @@ requires = [
     "deepmerge>=1.1.0",
     "jinja2>=3.0",
     "jsonschema-rs>=0.24",
-    "pyavd-utils==0.0.4",
+    "pyavd-utils==0.0.5",
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
-    "ruff==0.15.12",
+    "ruff==0.15.14",
     "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"
