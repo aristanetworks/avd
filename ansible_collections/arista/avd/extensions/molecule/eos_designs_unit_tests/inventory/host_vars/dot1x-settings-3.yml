@@ -15,6 +15,14 @@ dot1x_settings:
   bypass_lldp: false
   dynamic_authorization:
     enabled: false
+  radius_av_pairs:
+    dhcp:
+      hostname:
+        enabled: false
+      parameter_request_list:
+        enabled: false
+      vendor_class_id:
+        enabled: true
 
 aaa_settings:
   radius:
