@@ -8,6 +8,9 @@ from __future__ import annotations
 from collections import ChainMap
 from typing import TYPE_CHECKING, Any
 
+from ansible.utils.display import Display
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.deprecated_dict import DeprecatedDict
+
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._utils import AvdStringFormatter, strip_null_from_data
 
@@ -74,7 +77,8 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.underlay_ethernet_interfaces:
             return self._template(
                 template_path,
-                link={
+                link= DeprecatedDict(
+                    {
                     "type": data.link_type,
                     "interface": data.interface,
                     "peer": data.peer,
@@ -83,6 +87,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "wan_circuit_id": data.wan_circuit_id,
                     "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 },
+                _message = "Variables starting with 'link.' in interface descriptions templates are deperecated",
+                _display = Display()
+                )
             )
 
         if data.description is not None:
@@ -155,17 +162,21 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.underlay_port_channel_interfaces:
             return self._template(
                 template_path,
-                link={
-                    "interface": data.interface,
-                    "peer": data.peer,
-                    "channel_group_id": data.port_channel_id,
-                    "peer_channel_group_id": data.peer_channel_group_id,
-                    "channel_description": data.port_channel_description,
-                    "peer_node_group": data.peer_node_group,
-                    "wan_carrier": data.wan_carrier,
-                    "wan_circuit_id": data.wan_circuit_id,
-                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
-                },
+                link= DeprecatedDict(
+                        {
+                        "interface": data.interface,
+                        "peer": data.peer,
+                        "channel_group_id": data.port_channel_id,
+                        "peer_channel_group_id": data.peer_channel_group_id,
+                        "channel_description": data.port_channel_description,
+                        "peer_node_group": data.peer_node_group,
+                        "wan_carrier": data.wan_carrier,
+                        "wan_circuit_id": data.wan_circuit_id,
+                        "main_interface_wan_carrier": data.main_interface_wan_carrier,
+                    },
+                    _message = "Variables starting with 'link.' in interface descriptions templates are deperecated",
+                    _display = Display()
+                )
             )
 
         if data.port_channel_description is not None:

@@ -8,6 +8,7 @@ from .avd_switch_facts_default_dict import AvdSwitchFactsDefaultDict
 from .avd_vault_handler import AVDVaultHandler
 from .compile_searchpath import compile_searchpath
 from .cprofile_decorator import cprofile
+from .deprecated_dict import DeprecatedDict
 from .get_templar import get_templar
 from .get_workers import get_workers
 from .parse_validation_result import build_result_message, parse_validation_result
@@ -25,6 +26,7 @@ __all__ = [
     "AntaWorkflowFilter",
     "AntaWorkflowHandler",
     "AvdSwitchFactsDefaultDict",
+    "DeprecatedDict",
     "NoAliasDumper",
     "PythonToAnsibleContextFilter",
     "PythonToAnsibleHandler",
