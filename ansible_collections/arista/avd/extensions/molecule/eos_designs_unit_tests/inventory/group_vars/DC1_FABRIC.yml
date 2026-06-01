@@ -498,7 +498,7 @@ l2leaf:
           uplink_interfaces: [Ethernet1, Ethernet2]
           uplink_switches: [dc1-leaf2a, dc1-l2leaf8b]
           uplink_switch_interfaces: [Ethernet33, Ethernet1]
-          # Structured_config applied to member interfaces of uplink ethernet interface.
+          # Structured_config applied to uplink switch's ethernet interface for uplink-type l2-ethernet.
           uplink_switch_ethernet_structured_config:
             description: description through uplink_switch_ethernet_structured_config(dc1-l2leaf8a)
         - name: dc1-l2leaf8b
