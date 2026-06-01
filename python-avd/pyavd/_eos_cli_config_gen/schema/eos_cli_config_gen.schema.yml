@@ -1482,6 +1482,8 @@ keys:
                       description: The name of the region. This must match what is
                         in use in the ML2 driver configuration.
                       type: str
+                      convert_types:
+                      - int
                     username:
                       type: str
                       description: '''admin'' or valid keystone user.'
