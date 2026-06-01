@@ -18152,13 +18152,21 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"username_format": {"type": UsernameFormat}}
+            _fields: ClassVar[dict] = {"username_format": {"type": UsernameFormat}, "delay": {"type": int}, "hold_period": {"type": int}}
             username_format: UsernameFormat
             """Subclass of AvdModel."""
+            delay: int | None
+            hold_period: int | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, username_format: UsernameFormat | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    username_format: UsernameFormat | UndefinedType = Undefined,
+                    delay: int | None | UndefinedType = Undefined,
+                    hold_period: int | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     MacBasedAuthentication.
 
@@ -18167,6 +18175,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         username_format: Subclass of AvdModel.
+                        delay: delay
+                        hold_period: hold_period
 
                     """
 

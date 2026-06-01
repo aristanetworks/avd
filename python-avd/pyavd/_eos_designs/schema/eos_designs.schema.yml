@@ -2394,6 +2394,12 @@ keys:
                 valid_values:
                 - lowercase
                 - uppercase
+          delay:
+            type: int
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/mac_based_authentication/keys/delay
+          hold_period:
+            type: int
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/mac_based_authentication/keys/hold_period
       radius_av_pairs:
         type: dict
         keys:
