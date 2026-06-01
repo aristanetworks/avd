@@ -79,7 +79,7 @@ class MacAccessListsMixin(Protocol):
                 if acl_entry.destination_wildcard:
                     action = action + " " + acl_entry.destination_wildcard
             else:
-                msg = "mac_acls[name={acl_name}].entries[{index}].action or mac_acls[name={acl_name}].entries[{index}].remark"
+                msg = f"mac_acls[name={acl_name}].entries[{index}].action or mac_acls[name={acl_name}].entries[{index}].remark"
                 raise AristaAvdMissingVariableError(msg)
 
             entry = EosCliConfigGen.MacAccessListsItem.EntriesItem(sequence=acl_entry.sequence, action=action)
