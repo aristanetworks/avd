@@ -39,7 +39,7 @@ CVX is enabled
 | MCS | {{ enabled }} | {{ settings | join("<br>") }} |
 {%             endif %}
 {%             if cvx.services.openstack is arista.avd.defined %}
-{%                 if cvx.services.openstack is arista.avd.defined %}
+{%                 if cvx.services.openstack.shutdown is arista.avd.defined %}
 {%                     set enabled = not cvx.services.openstack.shutdown %}
 {%                 else %}
 {%                     set enabled = '-' %}
