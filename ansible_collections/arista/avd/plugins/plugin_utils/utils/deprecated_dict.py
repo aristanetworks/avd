@@ -24,7 +24,7 @@ class DeprecatedDict(dict):
         if not self._done:
             self._ansible_display.deprecated(
                 msg=self._message,
-                version="6.0.0",
+                version="7.0.0",
                 collection_name="arista.avd",
                 removed=False,
             )
@@ -35,7 +35,7 @@ class DeprecatedDict(dict):
         if not self._done:
             self._ansible_display.deprecated(
                 msg=self._message,
-                version="6.0.0",
+                version="7.0.0",
                 collection_name="arista.avd",
                 removed=False,
             )
