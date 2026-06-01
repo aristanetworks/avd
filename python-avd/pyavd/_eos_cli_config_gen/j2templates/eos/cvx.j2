@@ -57,7 +57,7 @@ cvx
       !
       region {{ region.name }}
 {%             if region.username is arista.avd.defined and region.password is arista.avd.defined and region.password_type is arista.avd.defined and region.tenant is arista.avd.defined %}
-         username {{ region.username }} tenant {{ region.tenant }} password {{ region.password_type }} {{ region.password }}
+         username {{ region.username }} tenant {{ region.tenant }} password {{ region.password_type | arista.avd.default("7") }} {{ region.password }}
 {%             endif %}
 {%             if region.keystone.auth_url is arista.avd.defined %}
          keystone auth-url {{ region.keystone.auth_url }}
