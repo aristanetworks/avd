@@ -87,7 +87,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                         "wan_circuit_id": data.wan_circuit_id,
                         "main_interface_wan_carrier": data.main_interface_wan_carrier,
                     },
-                    _message="Variables starting with 'link.' in interface descriptions templates are deperecated",
+                    _message="Variables starting with 'link.' in interface descriptions templates are deprecated",
                     _display=Display(),
                 ),
             )
