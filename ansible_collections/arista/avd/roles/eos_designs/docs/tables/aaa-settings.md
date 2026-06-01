@@ -36,7 +36,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retransmit</samp>](## "aaa_settings.radius.servers.[].retransmit") | Integer |  |  | Min: 0<br>Max: 100 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "aaa_settings.radius.servers.[].key") | String |  |  |  | Encrypted type-7 key.<br>Takes precedence over `cleartext_key`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleartext_key</samp>](## "aaa_settings.radius.servers.[].cleartext_key") | String |  |  |  | Cleartext password.<br>Encrypted to Type 7 by AVD.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls</samp>](## "aaa_settings.radius.servers.[].tls") | Dictionary |  |  |  | When TLS is configured, `key` and `cleartext_key` are ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls</samp>](## "aaa_settings.radius.servers.[].tls") | Dictionary |  |  |  | When TLS is configured, `key` and `cleartext_key` are ignored.<br>For prober functionality to render TLS settings on the<br>server group member entry, set `avd_design_future.include_tls_on_radius_server_group_members: true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "aaa_settings.radius.servers.[].tls.enabled") | Boolean |  |  |  | Enable TLS for radius-server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "aaa_settings.radius.servers.[].tls.ssl_profile") | String |  |  |  | Name of TLS profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "aaa_settings.radius.servers.[].tls.port") | Integer |  |  | Min: 0<br>Max: 65535 | TCP Port used for TLS. EOS default is 2083. |
@@ -224,6 +224,8 @@
             cleartext_key: <str>
 
             # When TLS is configured, `key` and `cleartext_key` are ignored.
+            # For prober functionality to render TLS settings on the
+            # server group member entry, set `avd_design_future.include_tls_on_radius_server_group_members: true`.
             tls:
 
               # Enable TLS for radius-server.

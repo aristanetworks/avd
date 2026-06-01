@@ -166,7 +166,10 @@ keys:
                     - int
                 tls:
                   type: dict
-                  description: When TLS is configured, `key` and `cleartext_key` are ignored.
+                  description: |-
+                    When TLS is configured, `key` and `cleartext_key` are ignored.
+                    For prober functionality to render TLS settings on the
+                    server group member entry, set `avd_design_future.include_tls_on_radius_server_group_members: true`.
                   $ref: "eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/tls"
           vrfs:
             type: list

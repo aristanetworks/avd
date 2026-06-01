@@ -187,8 +187,13 @@ keys:
                   - int
                 tls:
                   type: dict
-                  description: When TLS is configured, `key` and `cleartext_key` are
-                    ignored.
+                  description: 'When TLS is configured, `key` and `cleartext_key`
+                    are ignored.
+
+                    For prober functionality to render TLS settings on the
+
+                    server group member entry, set `avd_design_future.include_tls_on_radius_server_group_members:
+                    true`.'
                   $ref: eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/tls
           vrfs:
             type: list
@@ -393,7 +398,13 @@ keys:
           `aaa server group radius`,
 
           also emit the TLS settings (enabled state and port) on the server entry
-          within the group.'
+          within the group.
+
+          This is required for prober functionality, where the `tls` configuration
+          on the
+
+          `aaa_settings.radius.servers` entry must also be present on the server group
+          member.'
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings

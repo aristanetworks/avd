@@ -367,7 +367,13 @@ class EosDesigns(EosDesignsRootModel):
                 recommended to make use of a vault or similar.
                 """
                 tls: EosCliConfigGen.RadiusServer.ServersItem.Tls
-                """When TLS is configured, `key` and `cleartext_key` are ignored."""
+                """
+                When TLS is configured, `key` and `cleartext_key` are ignored.
+                For prober functionality to render
+                TLS settings on the
+                server group member entry, set
+                `avd_design_future.include_tls_on_radius_server_group_members: true`.
+                """
 
                 if TYPE_CHECKING:
 
@@ -425,7 +431,12 @@ class EosDesigns(EosDesignsRootModel):
                                Encrypted to Type 7 by AVD.
                                To protect the password at rest it is strongly
                                recommended to make use of a vault or similar.
-                            tls: When TLS is configured, `key` and `cleartext_key` are ignored.
+                            tls:
+                               When TLS is configured, `key` and `cleartext_key` are ignored.
+                               For prober functionality to render
+                               TLS settings on the
+                               server group member entry, set
+                               `avd_design_future.include_tls_on_radius_server_group_members: true`.
 
                         """
 
@@ -1037,6 +1048,10 @@ class EosDesigns(EosDesignsRootModel):
         When a RADIUS server has TLS enabled and is referenced in an `aaa server group radius`,
         also emit
         the TLS settings (enabled state and port) on the server entry within the group.
+        This is required for
+        prober functionality, where the `tls` configuration on the
+        `aaa_settings.radius.servers` entry must
+        also be present on the server group member.
 
         Default value: `False`
         """
@@ -1083,6 +1098,10 @@ class EosDesigns(EosDesignsRootModel):
                        When a RADIUS server has TLS enabled and is referenced in an `aaa server group radius`,
                        also emit
                        the TLS settings (enabled state and port) on the server entry within the group.
+                       This is required for
+                       prober functionality, where the `tls` configuration on the
+                       `aaa_settings.radius.servers` entry must
+                       also be present on the server group member.
 
                 """
 
