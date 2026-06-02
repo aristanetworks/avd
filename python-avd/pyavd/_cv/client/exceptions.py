@@ -93,17 +93,3 @@ class CVGRPCError(CVClientException):
 
 class CVClientInvalidServerName(CVClientException):
     """CloudVision server FQDN is invalid."""
-
-
-class CVWorkspaceSyncAttemptsExhausted(CVClientException):
-    """Maximum number of Workspace synchronization attempts have been made but Workspace synchronization is still required."""
-
-    max_sync_retries: int
-    """Number of attempted Workspace synchronization attempts."""
-    workspace_name: str
-
-    def __init__(self, max_sync_retries: int, workspace_name: str) -> None:
-        self.max_sync_retries = max_sync_retries
-        self.workspace_name = workspace_name
-        msg = f"Maximum number of Workspace synchronization attempts ({self.max_sync_retries}) have been made for Workspace {self.workspace_name}."
-        super().__init__(msg)

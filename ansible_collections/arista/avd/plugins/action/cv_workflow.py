@@ -111,7 +111,6 @@ ARGUMENT_SPEC = {
                     "suppress_portfast": {"type": "bool", "required": False, "default": False},
                 },
             },
-            "max_sync_retries": {"type": "int", "required": False, "default": 5},
         },
     },
     "change_control": {
