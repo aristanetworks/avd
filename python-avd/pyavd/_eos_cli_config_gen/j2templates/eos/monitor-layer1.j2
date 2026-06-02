@@ -20,7 +20,7 @@ monitor layer1
    logging transceiver communication
 {%         set no_logging_transceiver = false %}
 {%     endif %}
-{%     if no_logging_transceiver is arista.avd.defined(true) %}
+{%     if no_logging_transceiver is arista.avd.defined(true) and eos_config_future.only_render_no_logging_transceiver is arista.avd.defined(true) %}
    no logging transceiver
 {%     endif %}
 {%     if monitor_layer1.logging_mac_fault is arista.avd.defined(true) %}

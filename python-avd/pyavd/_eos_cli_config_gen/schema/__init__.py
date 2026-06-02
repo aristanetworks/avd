@@ -6338,6 +6338,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "new_ip_tacacs_cli_order": {"type": bool, "default": False},
             "always_render_ip_routing_separator": {"type": bool, "default": False},
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
+            "only_render_no_logging_transceiver": {"type": bool, "default": False},
         }
         new_ip_radius_cli_order: bool
         """
@@ -6374,6 +6375,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
+        only_render_no_logging_transceiver: bool
+        """
+        When `true`, only renders the `no logging transceiver` when
+        `monitor_layer1.logging_transceiver.enabled` or `monitor_layer1.logging_transceiver.dom`
+         or
+        `monitor_layer1.logging_transceiver.communication` are set to `false`.
+        When `false` (default), no
+        config would appeare under `monitor layer1` if `monitor_layer1.logging_transceiver.enabled`
+         or
+        `monitor_layer1.logging_transceiver.dom` or `monitor_layer1.logging_transceiver.communication` are
+        set to `false`.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -6384,6 +6399,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
                 always_render_ip_routing_separator: bool | UndefinedType = Undefined,
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
+                only_render_no_logging_transceiver: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 EosConfigFuture.
@@ -6411,6 +6427,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        defined.
                        When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined, even if no
                        sub-settings are set.
+                    only_render_no_logging_transceiver:
+                       When `true`, only renders the `no logging transceiver` when
+                       `monitor_layer1.logging_transceiver.enabled` or `monitor_layer1.logging_transceiver.dom`
+                        or
+                       `monitor_layer1.logging_transceiver.communication` are set to `false`.
+                       When `false` (default), no
+                       config would appeare under `monitor layer1` if `monitor_layer1.logging_transceiver.enabled`
+                        or
+                       `monitor_layer1.logging_transceiver.dom` or `monitor_layer1.logging_transceiver.communication` are
+                       set to `false`.
 
                 """
 

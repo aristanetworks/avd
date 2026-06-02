@@ -2542,6 +2542,15 @@ keys:
 
           When `false` (default), renders `mpls rsvp` whenever `mpls.rsvp` is defined,
           even if no sub-settings are set.'
+      only_render_no_logging_transceiver:
+        type: bool
+        default: false
+        description: "When `true`, only renders the `no logging transceiver` when
+          `monitor_layer1.logging_transceiver.enabled` or `monitor_layer1.logging_transceiver.dom`\n
+          or `monitor_layer1.logging_transceiver.communication` are set to `false`.\nWhen
+          `false` (default), no config would appeare under `monitor layer1` if `monitor_layer1.logging_transceiver.enabled`\n
+          or `monitor_layer1.logging_transceiver.dom` or `monitor_layer1.logging_transceiver.communication`
+          are set to `false`."
   errdisable:
     type: dict
     keys:
