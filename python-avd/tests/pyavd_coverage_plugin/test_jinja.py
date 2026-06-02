@@ -113,6 +113,30 @@ def test_file_tracer_ignores_generated_scaffolding_between_mapped_lines(tmp_path
     assert tracer.line_number_range(SimpleNamespace(f_lineno=7)) == (2, 2)
 
 
+def test_file_tracer_reloads_compiled_template_when_file_changes(tmp_path: Path) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "simple.j2"
+    compiled_file = compiled_root / "simple.py"
+
+    template_root.mkdir()
+    compiled_root.mkdir()
+    source_file.write_text("{% if enabled %}\ncovered\n{% endif %}\n", encoding="utf-8")
+    compiled_file.write_text("name = 'simple.j2'\ndef root():\n    pass\ndebug_info = '1=5'\n", encoding="utf-8")
+
+    plugin = JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,))
+    tracer = plugin.file_tracer(str(compiled_file))
+    assert tracer is not None
+    assert tracer.line_number_range(SimpleNamespace(f_lineno=5)) == (1, 1)
+
+    compiled_file.write_text("name = 'simple.j2'\ndef root():\n    pass\n    pass\ndebug_info = '2=7'\n", encoding="utf-8")
+
+    tracer = plugin.file_tracer(str(compiled_file))
+    assert tracer is not None
+    assert tracer.line_number_range(SimpleNamespace(f_lineno=5)) == (-1, -1)
+    assert tracer.line_number_range(SimpleNamespace(f_lineno=7)) == (2, 2)
+
+
 def test_file_tracer_ignores_compiled_template_with_unresolved_source(tmp_path: Path) -> None:
     template_root = tmp_path / "j2templates"
     compiled_root = template_root / "compiled_templates"
@@ -132,6 +156,23 @@ def test_file_reporter_lines_returns_reportable_jinja_lines(tmp_path: Path) -> N
     )
 
     assert JinjaTemplateFileReporter(str(source_file)).lines() == {1, 2, 3, 4, 6}
+
+
+def test_file_reporter_does_not_expose_cached_mutable_sets(tmp_path: Path) -> None:
+    source_file = tmp_path / "template.j2"
+    source_file.write_text("{% if enabled %}\nhello\n{% endif %}\n", encoding="utf-8")
+    reporter = JinjaTemplateFileReporter(str(source_file))
+
+    lines = reporter.lines()
+    arcs = reporter.arcs()
+    no_branch_lines = reporter.no_branch_lines()
+    lines.clear()
+    arcs.clear()
+    no_branch_lines.clear()
+
+    assert reporter.lines() == {1, 2}
+    assert reporter.arcs() == {(1, 2)}
+    assert reporter.no_branch_lines() == {1}
 
 
 def test_coverage_records_compiled_execution_against_jinja_source(tmp_path: Path) -> None:
