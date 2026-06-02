@@ -41,7 +41,7 @@ compiled_template_roots = [
 ]
 ```
 
-`compiled_template_roots` is used during `coverage run` only. It tells the tracer where generated Jinja Python modules can be found. Reporting should work without those directories being present.
+`compiled_template_roots` is required and is used during `coverage run` only. It tells the tracer where generated Jinja Python modules can be found. Reporting should work without those directories being present.
 
 Do not omit compiled template paths in `[tool.coverage.run]`; coverage must be allowed to see those files so the tracer can claim them and remap execution to `.j2` files.
 

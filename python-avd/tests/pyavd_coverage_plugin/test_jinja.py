@@ -11,8 +11,10 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
 from coverage import Coverage, CoverageData
-from coverage_plugins.jinja import JinjaTemplateCoveragePlugin, JinjaTemplateFileReporter
+from coverage.exceptions import ConfigError
+from coverage_plugins.jinja import JinjaTemplateCoveragePlugin, JinjaTemplateFileReporter, coverage_init
 from jinja2 import Environment, FileSystemLoader, ModuleLoader
 
 
@@ -66,6 +68,19 @@ def test_file_tracer_resolves_source_filename_and_maps_generated_lines(tmp_path:
     assert tracer.line_number_range(SimpleNamespace(f_lineno=14)) == (-1, -1)
     assert tracer.line_number_range(SimpleNamespace(f_lineno=15)) == (2, 2)
     assert tracer.line_number_range(SimpleNamespace(f_lineno=99)) == (-1, -1)
+
+
+def test_file_tracer_without_compiled_template_roots_traces_no_files(tmp_path: Path) -> None:
+    compiled_file = tmp_path / "compiled_templates/template.py"
+    compiled_file.parent.mkdir()
+    compiled_file.write_text("name = 'template.j2'\ndebug_info = '1=10'\n", encoding="utf-8")
+
+    assert JinjaTemplateCoveragePlugin().file_tracer(str(compiled_file)) is None
+
+
+def test_coverage_init_requires_compiled_template_roots() -> None:
+    with pytest.raises(ConfigError, match="compiled_template_roots"):
+        coverage_init(None, {})
 
 
 def test_file_tracer_ignores_generated_scaffolding_between_mapped_lines(tmp_path: Path) -> None:

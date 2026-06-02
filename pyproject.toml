@@ -52,7 +52,6 @@ molecule = [
     "molecule-plugins[docker]>=25.8.12",
 ]
 pytest = [
-    {include-group = "coverage"},
     "ansible-core>=2.16.0,<2.22.0",
     "anta==1.8.0",
     "pytest>=9.0.3",
