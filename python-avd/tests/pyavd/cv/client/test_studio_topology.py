@@ -198,7 +198,7 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
     target_devices = ["device_one_id_ok", "device_two_id_failure", "device_three_id_unspecified", "device_four_id_silent"]
     expected_exception_msg = (
         "No decommission staging response received for the following devices: {'device_four_id_silent'}. "
-        "Non-success decommission staging response received for the following devices:.*"
+        "Decommission staging failed for the following devices:.*"
         "'device_two_id_failure':.*status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'.*"
         "'device_three_id_unspecified':.*status=DecommissionStatus.UNSPECIFIED, error=''.*"
     )
@@ -243,7 +243,7 @@ async def test_stage_devices_for_decommission_wait_for_failure(caplog: pytest.Lo
     assert any(
         re.search(
             re.compile(
-                "wait_to_stage_devices_for_decommission: Staging device device_two_id_failure for decommission reached non-success terminal status FAILURE.*"
+                "wait_to_stage_devices_for_decommission: Staging device device_two_id_failure for decommission failed.*"
                 "status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'"
             ),
             str(record.message),
@@ -270,7 +270,7 @@ async def test_stage_devices_for_decommission_wait_for_mixed_terminal(caplog: py
     """
     Test partially successful decommissioning where every device reaches a terminal status, but not all of them succeed.
 
-    Specific use case for empty `remaining_device_ids` and non-empty latest_per_device_nonsuccess_response leading to loop exiting via break.
+    Specific use case for empty `remaining_device_ids` and non-empty latest_per_device_failure_response leading to loop exiting via break.
 
     Exact test steps:
     -   description: Fetch Workspace status
@@ -302,7 +302,7 @@ async def test_stage_devices_for_decommission_wait_for_mixed_terminal(caplog: py
     """
     target_devices = ["device_one_id_ok", "device_two_id_failure"]
     expected_exception_msg = (
-        "Non-success decommission staging response received for the following devices:.*"
+        "Decommission staging failed for the following devices:.*"
         "'device_two_id_failure':.*status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'.*"
     )
 
@@ -346,7 +346,7 @@ async def test_stage_devices_for_decommission_wait_for_mixed_terminal(caplog: py
     assert any(
         re.search(
             re.compile(
-                "wait_to_stage_devices_for_decommission: Staging device device_two_id_failure for decommission reached non-success terminal status FAILURE.*"
+                "wait_to_stage_devices_for_decommission: Staging device device_two_id_failure for decommission failed.*"
                 "status=DecommissionStatus.FAILURE, error='error getting decommissioned device status'"
             ),
             str(record.message),

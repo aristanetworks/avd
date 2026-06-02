@@ -94,8 +94,8 @@ class StudioTopologyMixin(Protocol):
 
         # Set of device_ids for which we have not yet received a response in terminal status
         remaining_device_ids = set(device_ids)
-        # Tracks per-device latest non-success responses
-        latest_per_device_nonsuccess_response: dict[str, Decommission] = {}
+        # Tracks per-device latest failure responses
+        latest_per_device_failure_response: dict[str, Decommission] = {}
         successful_responses: list[Decommission] = []
 
         async for response in responses:
@@ -107,11 +107,11 @@ class StudioTopologyMixin(Protocol):
                 # Avoid tracking INITIAL_SYNC_COMPLETE update referencing no devices
                 # TODO: Figure out a way to test
                 if device_id:
-                    latest_per_device_nonsuccess_response[device_id] = response.value
+                    latest_per_device_failure_response[device_id] = response.value
             elif device_id:
                 if current_status == DecommissionStatus.SUCCESS:
                     remaining_device_ids.discard(device_id)
-                    latest_per_device_nonsuccess_response.pop(device_id, None)
+                    latest_per_device_failure_response.pop(device_id, None)
                     successful_responses.append(response.value)
                     LOGGER.debug(
                         "wait_to_stage_devices_for_decommission: Staging device %s for decommission succeeded: %s",
@@ -121,30 +121,29 @@ class StudioTopologyMixin(Protocol):
                 # Other terminal status
                 else:
                     remaining_device_ids.discard(device_id)
-                    latest_per_device_nonsuccess_response[device_id] = response.value
+                    latest_per_device_failure_response[device_id] = response.value
                     LOGGER.debug(
-                        "wait_to_stage_devices_for_decommission: Staging device %s for decommission reached non-success terminal status %s: %s",
+                        "wait_to_stage_devices_for_decommission: Staging device %s for decommission failed: %s",
                         device_id,
-                        current_status,
                         response.value,
                     )
 
             # Return as soon as all devices got SUCCESS responses
-            if not remaining_device_ids and not latest_per_device_nonsuccess_response:
+            if not remaining_device_ids and not latest_per_device_failure_response:
                 return successful_responses
 
             # Break async loop if we got terminal responses for all devices and some of them are just not successful.
             if not remaining_device_ids:
                 break
 
-        no_response_device_ids = remaining_device_ids - latest_per_device_nonsuccess_response.keys()
+        no_response_device_ids = remaining_device_ids - latest_per_device_failure_response.keys()
 
-        if no_response_device_ids or latest_per_device_nonsuccess_response:
+        if no_response_device_ids or latest_per_device_failure_response:
             msg_parts = []
             if no_response_device_ids:
                 msg_parts.append(f"No decommission staging response received for the following devices: {no_response_device_ids}.")
-            if latest_per_device_nonsuccess_response:
-                msg_parts.append(f"Non-success decommission staging response received for the following devices: {latest_per_device_nonsuccess_response}.")
+            if latest_per_device_failure_response:
+                msg_parts.append(f"Decommission staging failed for the following devices: {latest_per_device_failure_response}.")
             raise CVDeviceDecommissionFailed(" ".join(msg_parts))
         # Kept only to satisfy ruff's RET503.
         return successful_responses  # pragma: no cover
