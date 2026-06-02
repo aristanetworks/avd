@@ -21,7 +21,9 @@
     | [<samp>&nbsp;&nbsp;bgp_profiles</samp>](## "maintenance.bgp_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "maintenance.bgp_profiles.[].name") | String | Required, Unique |  |  | BGP Profile Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initiator</samp>](## "maintenance.bgp_profiles.[].initiator") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_inout</samp>](## "maintenance.bgp_profiles.[].initiator.route_map_inout") | String |  |  |  | Route Map. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_inout</samp>](## "maintenance.bgp_profiles.[].initiator.route_map_inout") | String |  |  |  | Route Map applied to both inbound and outbound directions. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "maintenance.bgp_profiles.[].initiator.route_map_in") | String |  |  |  | Inbound Route Map. Can be set alongside `route_map_out` to use different route maps per direction. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "maintenance.bgp_profiles.[].initiator.route_map_out") | String |  |  |  | Outbound Route Map. Can be set alongside `route_map_in` to use different route maps per direction. |
     | [<samp>&nbsp;&nbsp;unit_profiles</samp>](## "maintenance.unit_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "maintenance.unit_profiles.[].name") | String | Required, Unique |  |  | Unit Profile Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on_boot</samp>](## "maintenance.unit_profiles.[].on_boot") | Dictionary |  |  |  |  |
@@ -68,8 +70,14 @@
         - name: <str; required; unique>
           initiator:
 
-            # Route Map.
+            # Route Map applied to both inbound and outbound directions.
             route_map_inout: <str>
+
+            # Inbound Route Map. Can be set alongside `route_map_out` to use different route maps per direction.
+            route_map_in: <str>
+
+            # Outbound Route Map. Can be set alongside `route_map_in` to use different route maps per direction.
+            route_map_out: <str>
       unit_profiles:
 
           # Unit Profile Name.

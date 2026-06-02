@@ -15081,12 +15081,16 @@ Default maintenance unit profile: **UP1**
 
 #### Maintenance profiles
 
-| BGP profile | Initiator route-map |
-| ----------- | ------------------- |
-| bgp2 | SystemGenerated |
-| BP1 | RM-MAINTENANCE |
-| BP2 | RM-MAINTENANCE2 |
-| BP3 | RM-MAINTENANCE3 |
+| BGP profile | Initiator route-map inout | Initiator route-map in | Initiator route-map out |
+| ----------- | ------------------------- | ---------------------- | ----------------------- |
+| bgp2 | SystemGenerated | - | - |
+| BP1 | RM-MAINTENANCE | - | - |
+| BP2 | RM-MAINTENANCE2 | - | - |
+| BP3 | RM-MAINTENANCE3 | - | - |
+| BP4 | SystemGenerated | RM-MAINTENANCE-IN | - |
+| BP5 | SystemGenerated | - | RM-MAINTENANCE-OUT |
+| BP6 | SystemGenerated | RM-MAINTENANCE-IN | RM-MAINTENANCE-OUT |
+| BP7 | RM-MAINTENANCE-INOUT | RM-MAINTENANCE-IN | RM-MAINTENANCE-OUT |
 
 | Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) | Shutdown Max Delay |
 | ----------------- | --------------------------------- | --------------------------------------- | ------------------ |
@@ -15117,6 +15121,21 @@ maintenance
    !
    profile bgp BP3
       initiator route-map RM-MAINTENANCE3 inout
+   !
+   profile bgp BP4
+      initiator route-map RM-MAINTENANCE-IN in
+   !
+   profile bgp BP5
+      initiator route-map RM-MAINTENANCE-OUT out
+   !
+   profile bgp BP6
+      initiator route-map RM-MAINTENANCE-IN in
+      initiator route-map RM-MAINTENANCE-OUT out
+   !
+   profile bgp BP7
+      initiator route-map RM-MAINTENANCE-INOUT inout
+      initiator route-map RM-MAINTENANCE-IN in
+      initiator route-map RM-MAINTENANCE-OUT out
    !
    profile bgp bgp2
    profile bgp BP1 default

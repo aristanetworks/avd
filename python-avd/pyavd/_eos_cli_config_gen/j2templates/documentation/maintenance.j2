@@ -18,10 +18,10 @@ Default maintenance unit profile: **{{ maintenance.default_unit_profile | arista
 
 #### Maintenance profiles
 
-| BGP profile | Initiator route-map |
-| ----------- | ------------------- |
+| BGP profile | Initiator route-map inout | Initiator route-map in | Initiator route-map out |
+| ----------- | ------------------------- | ---------------------- | ----------------------- |
 {%     for bgp_profile in maintenance.bgp_profiles | arista.avd.natural_sort('name') %}
-| {{ bgp_profile.name }} | {{ bgp_profile.initiator.route_map_inout | arista.avd.default('SystemGenerated') }} |
+| {{ bgp_profile.name }} | {{ bgp_profile.initiator.route_map_inout | arista.avd.default('SystemGenerated') }} | {{ bgp_profile.initiator.route_map_in | arista.avd.default('-') }} | {{ bgp_profile.initiator.route_map_out | arista.avd.default('-') }} |
 {%     endfor %}
 
 | Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) | Shutdown Max Delay |

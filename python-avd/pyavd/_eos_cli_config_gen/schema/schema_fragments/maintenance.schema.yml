@@ -69,7 +69,13 @@ keys:
               keys:
                 route_map_inout:
                   type: str
-                  description: Route Map.
+                  description: Route Map applied to both inbound and outbound directions.
+                route_map_in:
+                  type: str
+                  description: Inbound Route Map. Can be set alongside `route_map_out` to use different route maps per direction.
+                route_map_out:
+                  type: str
+                  description: Outbound Route Map. Can be set alongside `route_map_in` to use different route maps per direction.
       unit_profiles:
         type: list
         primary_key: name
