@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from coverage import CoveragePlugin, FileReporter, FileTracer
+from coverage.exceptions import ConfigError
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -29,7 +30,7 @@ class CompiledTemplate:
 
 class JinjaTemplateCoveragePlugin(CoveragePlugin):
     def __init__(self, compiled_template_roots: Iterable[str | Path] | None = None) -> None:
-        self.compiled_template_roots = _configured_compiled_template_roots(compiled_template_roots) or _default_compiled_template_roots()
+        self.compiled_template_roots = _configured_compiled_template_roots(compiled_template_roots)
 
     def file_tracer(self, filename: str) -> JinjaTemplateFileTracer | None:
         compiled_filename = Path(filename).resolve()
@@ -109,28 +110,17 @@ class JinjaTemplateFileReporter(FileReporter):
 
 
 def coverage_init(reg, options) -> None:  # noqa: ANN001
-    reg.add_file_tracer(JinjaTemplateCoveragePlugin(compiled_template_roots=options.get("compiled_template_roots")))
+    configured_roots = options.get("compiled_template_roots")
+    if not configured_roots:
+        msg = "coverage_plugins.jinja requires the compiled_template_roots coverage plugin option."
+        raise ConfigError(msg)
+
+    reg.add_file_tracer(JinjaTemplateCoveragePlugin(compiled_template_roots=configured_roots))
 
 
-def _default_compiled_template_roots() -> tuple[Path, ...]:
-    repo_root = Path(__file__).resolve().parents[1]
-    candidate_python_avd_roots = (Path.cwd() / "python-avd", repo_root / "python-avd")
-    compiled_template_roots: list[Path] = []
-    for candidate_root in candidate_python_avd_roots:
-        for relative_template_root in (
-            Path("pyavd/_eos_cli_config_gen/j2templates/compiled_templates"),
-            Path("pyavd/_eos_designs/j2templates/compiled_templates"),
-        ):
-            compiled_template_root = (candidate_root / relative_template_root).resolve()
-            if compiled_template_root not in compiled_template_roots:
-                compiled_template_roots.append(compiled_template_root)
-
-    return tuple(compiled_template_roots)
-
-
-def _configured_compiled_template_roots(configured_roots: Iterable[str | Path] | str | Path | None) -> tuple[Path, ...] | None:
+def _configured_compiled_template_roots(configured_roots: Iterable[str | Path] | str | Path | None) -> tuple[Path, ...]:
     if configured_roots is None:
-        return None
+        return ()
 
     if isinstance(configured_roots, (str, Path)):
         configured_roots = (configured_roots,)
