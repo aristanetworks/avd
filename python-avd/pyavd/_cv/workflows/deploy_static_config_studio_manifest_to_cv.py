@@ -93,7 +93,16 @@ class _PlannedContainer:
         )
 
     def matches_configlet_assignment(self, configlet_assignment: ConfigletAssignment) -> bool:
-        return self.api_tuple == _configlet_assignment_api_tuple(configlet_assignment)
+        reversed_match_policy_map = {enum_member.value: str_key for str_key, enum_member in ASSIGNMENT_MATCH_POLICY_MAP.items()}
+        return self.api_tuple == (
+            configlet_assignment.key.configlet_assignment_id,
+            configlet_assignment.display_name,
+            configlet_assignment.description,
+            configlet_assignment.configlet_ids.values,
+            configlet_assignment.query,
+            configlet_assignment.child_assignment_ids.values,
+            reversed_match_policy_map.get(configlet_assignment.match_policy.value),
+        )
 
 
 @dataclass(frozen=True)
@@ -137,20 +146,6 @@ class _ContainerPlan:
         return {planned_container.container.id for planned_container in self.containers_to_push} | self.container_ids_to_delete
 
 
-def _configlet_assignment_api_tuple(configlet_assignment: ConfigletAssignment) -> tuple[Any, ...]:
-    """Return the comparable API tuple for an existing configlet assignment."""
-    reversed_match_policy_map = {enum_member.value: str_key for str_key, enum_member in ASSIGNMENT_MATCH_POLICY_MAP.items()}
-    return (
-        configlet_assignment.key.configlet_assignment_id,
-        configlet_assignment.display_name,
-        configlet_assignment.description,
-        configlet_assignment.configlet_ids.values,
-        configlet_assignment.query,
-        configlet_assignment.child_assignment_ids.values,
-        reversed_match_policy_map.get(configlet_assignment.match_policy.value),
-    )
-
-
 async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
     """
     Deploy a manifest (configlets/containers) to CloudVision using the "Static Configuration" Studio.
@@ -173,11 +168,14 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
         return
 
     # Perform synchronization tasks.
-    existing_containers, touched_container_ids = await _sync_containers(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
+    existing_containers, touched_container_ids, preserved_container_ids = await _sync_containers(
+        cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client
+    )
     await _sync_configlets(
         cv_manifest=cv_manifest,
         existing_containers=existing_containers,
         touched_container_ids=touched_container_ids,
+        preserved_container_ids=preserved_container_ids,
         deployment_result=deployment_result,
         cv_client=cv_client,
     )
@@ -186,7 +184,9 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Completed manifest deployment for workspace '%s'.", workspace_id)
 
 
-async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> tuple[list[ConfigletAssignment], set[str]]:
+async def _sync_containers(
+    cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient
+) -> tuple[list[ConfigletAssignment], set[str], set[str]]:
     """
     Synchronize containers and Static Configuration Studio roots.
 
@@ -211,7 +211,7 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
     _validate_existing_container_state(existing_state, container_plan)
     await _apply_container_plan(container_plan, deployment_result, cv_client)
 
-    return existing_state.containers, container_plan.touched_container_ids
+    return existing_state.containers, container_plan.touched_container_ids, container_plan.preserved_container_ids
 
 
 def _build_existing_container_state(existing_containers: list[ConfigletAssignment], existing_root_ids: list[str]) -> _ExistingContainerState:
@@ -300,12 +300,15 @@ def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingCont
             containers_to_push.append(planned_container)
             continue
 
-        if not planned_container.matches_configlet_assignment(existing_container):
-            # Container has changed.
-            containers_to_push.append(planned_container)
-        else:
-            # Container is unchanged.
+        if planned_container.matches_configlet_assignment(existing_container):
+            # Container is unchanged. This relies on matches_configlet_assignment()
+            # comparing child assignments, so skipped containers cannot have manual
+            # children that need orphan cleanup below.
             containers_to_skip.append(planned_container)
+            continue
+
+        # Container has changed.
+        containers_to_push.append(planned_container)
 
         # Existing manual children unassigned by the manifest become orphans caused by this deploy.
         existing_children = set(existing_container.child_assignment_ids.values)
@@ -315,7 +318,9 @@ def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingCont
     for container_id in manual_delete_roots:
         add_container_subtree_to_delete(container_id)
 
-    # Manifest-managed containers no longer in the manifest are deleted together with their non-desired descendants.
+    # Delete manifest-managed containers that are no longer declared, unless they belong
+    # to an existing sibling branch preserved by preserve_existing_sub_containers.
+    # Their non-desired descendants are deleted as part of the same stale subtree cleanup.
     for container_id in existing_state.manifest_managed_container_ids - desired_container_ids - preserved_container_ids:
         add_container_subtree_to_delete(container_id)
 
@@ -381,6 +386,9 @@ def _validate_existing_container_state(existing_state: _ExistingContainerState, 
     CloudVision can tolerate orphaned containers, so this validation intentionally does not reject unrelated
     manual orphans or other manual-only graph inconsistencies. It only blocks manifest-managed containers
     currently parented by manual containers this deploy will not update/delete.
+
+    Preserved containers are outside this manifest branch, so their parent ownership is not validated or
+    repaired here. Any inconsistency is left for the owning manifest to catch the next time it runs.
     """
     violations: list[str] = []
     container_ids_to_delete = container_plan.container_ids_to_delete
@@ -473,6 +481,7 @@ async def _sync_configlets(
     cv_manifest: CVManifest,
     existing_containers: list[ConfigletAssignment],
     touched_container_ids: set[str],
+    preserved_container_ids: set[str],
     deployment_result: DeployToCvResult,
     cv_client: CVClient,
 ) -> None:
@@ -481,6 +490,8 @@ async def _sync_configlets(
 
     touched_container_ids comes from the container plan and identifies holders whose stale configlet
     assignments will disappear because the holder is being rewritten or deleted by this deploy.
+    preserved_container_ids identifies holders outside this manifest branch. Configlets assigned to those
+    holders are preserved.
     """
     workspace_id = deployment_result.workspace.id
 
@@ -496,10 +507,18 @@ async def _sync_configlets(
     # Delete unused manifest-managed configlets.
     existing_configlets = await cv_client.get_configlets(workspace_id=workspace_id)
     desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
+    preserved_configlet_ids = {
+        configlet_id
+        for container in existing_containers
+        if cast("str", container.key.configlet_assignment_id) in preserved_container_ids
+        for configlet_id in container.configlet_ids.values
+    }
     configlets_to_delete = {
         configlet_id: cast("str", configlet.display_name)
         for configlet in existing_configlets
-        if _is_manifest_managed_id(configlet_id := cast("str", configlet.key.configlet_id)) and configlet_id not in desired_configlet_ids
+        if _is_manifest_managed_id(configlet_id := cast("str", configlet.key.configlet_id))
+        and configlet_id not in desired_configlet_ids
+        and configlet_id not in preserved_configlet_ids
     }
 
     if configlets_to_delete:

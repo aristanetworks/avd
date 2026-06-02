@@ -1731,8 +1731,8 @@ class TestDeployStaticConfigStudio:
         assert pushed_by_name["SITES"][5] == [site2_id, site1_id]
         mock_cv_client.delete_configlet_container.assert_not_called()
 
-    async def test_deleted_configlet_held_by_preserved_container_raises(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
-        """Test that preserved holders still block deletion of manifest-managed configlets."""
+    async def test_deleted_configlet_held_by_preserved_container_is_preserved(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that configlets held by preserved containers are preserved with the container."""
         sites_id = generate_id("SITES")
         site1_id = generate_id("SITES/SITE1")
         site2_id = generate_id("SITES/SITE2")
@@ -1754,12 +1754,8 @@ class TestDeployStaticConfigStudio:
         sites = AvdContainer(name="SITES", tag_query="device:*", sub_containers=(site1,), preserve_existing_sub_containers=True)
         manifest = AvdManifest(containers=(sites,))
 
-        with pytest.raises(CVManifestError) as exc_info:
-            await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
 
-        assert "SITE2" in str(exc_info.value)
-        assert site2_id in str(exc_info.value)
-        assert "STALE_CFG" in str(exc_info.value)
-        assert stale_cfg_id in str(exc_info.value)
         mock_cv_client.delete_configlets.assert_not_called()
         mock_cv_client.delete_configlet_container.assert_not_called()
+        assert deployment_result.removed_static_config_configlets == []
