@@ -9,7 +9,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from types import SimpleNamespace
+from typing import TYPE_CHECKING, cast
 
 import pytest
 from coverage import Coverage, CoverageData
@@ -17,8 +17,34 @@ from coverage.exceptions import ConfigError
 from coverage_plugins.jinja import JinjaTemplateCoveragePlugin, JinjaTemplateFileReporter, coverage_init
 from jinja2 import Environment, FileSystemLoader, ModuleLoader
 
+if TYPE_CHECKING:
+    from types import FrameType
 
-def _analyze_rendered_template(tmp_path: Path, source: str, context: dict[str, object]) -> object:
+    from coverage.results import Analysis
+
+
+class _FakeFrame:
+    def __init__(self, f_lineno: int) -> None:
+        self.f_lineno = f_lineno
+
+
+def _frame(line_number: int) -> FrameType:
+    return cast("FrameType", _FakeFrame(line_number))
+
+
+def _coverage_for_template(tmp_path: Path, template_root: Path, compiled_root: Path, *, branch: bool = False) -> Coverage:
+    coverage = Coverage(
+        config_file=False,
+        data_file=str(tmp_path / ".coverage"),
+        branch=branch,
+        source=[str(template_root), str(compiled_root)],
+        plugins=[lambda reg: reg.add_file_tracer(JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,)))],
+    )
+    coverage.config.core = "ctrace"
+    return coverage
+
+
+def _analyze_rendered_template(tmp_path: Path, source: str, context: dict[str, object]) -> Analysis:
     template_root = tmp_path / "j2templates"
     compiled_root = template_root / "compiled_templates"
     source_file = template_root / "template.j2"
@@ -29,20 +55,14 @@ def _analyze_rendered_template(tmp_path: Path, source: str, context: dict[str, o
 
     Environment(loader=FileSystemLoader(template_root)).compile_templates(compiled_root, zip=None, ignore_errors=False)  # noqa: S701
     environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
-    coverage = Coverage(
-        config_file=False,
-        data_file=str(tmp_path / ".coverage"),
-        branch=True,
-        source=[str(template_root), str(compiled_root)],
-        plugins=[lambda reg: reg.add_file_tracer(JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,)))],
-    )
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
     coverage.erase()
     coverage.start()
     environment.get_template("template.j2").render(**context)
     coverage.stop()
     coverage.save()
 
-    return coverage._analyze(str(source_file.resolve()))
+    return cast("Analysis", coverage._analyze(str(source_file.resolve())))
 
 
 def test_file_tracer_resolves_source_filename_and_maps_generated_lines(tmp_path: Path) -> None:
@@ -63,11 +83,11 @@ def test_file_tracer_resolves_source_filename_and_maps_generated_lines(tmp_path:
 
     assert tracer is not None
     assert tracer.source_filename() == str(source_file.resolve())
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=9)) == (-1, -1)
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=10)) == (1, 1)
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=14)) == (-1, -1)
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=15)) == (2, 2)
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=99)) == (-1, -1)
+    assert tracer.line_number_range(_frame(9)) == (-1, -1)
+    assert tracer.line_number_range(_frame(10)) == (1, 1)
+    assert tracer.line_number_range(_frame(14)) == (-1, -1)
+    assert tracer.line_number_range(_frame(15)) == (2, 2)
+    assert tracer.line_number_range(_frame(99)) == (-1, -1)
 
 
 def test_file_tracer_without_compiled_template_roots_traces_no_files(tmp_path: Path) -> None:
@@ -107,10 +127,10 @@ def test_file_tracer_ignores_generated_scaffolding_between_mapped_lines(tmp_path
     tracer = JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,)).file_tracer(str(compiled_file))
 
     assert tracer is not None
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=4)) == (-1, -1)
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=5)) == (1, 1)
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=6)) == (-1, -1)
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=7)) == (2, 2)
+    assert tracer.line_number_range(_frame(4)) == (-1, -1)
+    assert tracer.line_number_range(_frame(5)) == (1, 1)
+    assert tracer.line_number_range(_frame(6)) == (-1, -1)
+    assert tracer.line_number_range(_frame(7)) == (2, 2)
 
 
 def test_file_tracer_reloads_compiled_template_when_file_changes(tmp_path: Path) -> None:
@@ -127,14 +147,14 @@ def test_file_tracer_reloads_compiled_template_when_file_changes(tmp_path: Path)
     plugin = JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,))
     tracer = plugin.file_tracer(str(compiled_file))
     assert tracer is not None
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=5)) == (1, 1)
+    assert tracer.line_number_range(_frame(5)) == (1, 1)
 
     compiled_file.write_text("name = 'simple.j2'\ndef root():\n    pass\n    pass\ndebug_info = '2=7'\n", encoding="utf-8")
 
     tracer = plugin.file_tracer(str(compiled_file))
     assert tracer is not None
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=5)) == (-1, -1)
-    assert tracer.line_number_range(SimpleNamespace(f_lineno=7)) == (2, 2)
+    assert tracer.line_number_range(_frame(5)) == (-1, -1)
+    assert tracer.line_number_range(_frame(7)) == (2, 2)
 
 
 def test_file_tracer_ignores_compiled_template_with_unresolved_source(tmp_path: Path) -> None:
@@ -189,12 +209,7 @@ def test_coverage_records_compiled_execution_against_jinja_source(tmp_path: Path
         encoding="utf-8",
     )
 
-    coverage = Coverage(
-        config_file=False,
-        data_file=str(tmp_path / ".coverage"),
-        source=[str(template_root), str(compiled_root)],
-        plugins=[lambda reg: reg.add_file_tracer(JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,)))],
-    )
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root)
     coverage.erase()
     coverage.start()
     spec = importlib.util.spec_from_file_location("compiled_simple", compiled_file)
@@ -276,13 +291,7 @@ def test_nested_loop_cleanup_does_not_cover_loop_body_output(tmp_path: Path) -> 
     Environment(loader=FileSystemLoader(template_root)).compile_templates(compiled_root, zip=None, ignore_errors=False)  # noqa: S701
     environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
 
-    coverage = Coverage(
-        config_file=False,
-        data_file=str(tmp_path / ".coverage"),
-        branch=True,
-        source=[str(template_root), str(compiled_root)],
-        plugins=[lambda reg: reg.add_file_tracer(JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,)))],
-    )
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
     coverage.erase()
     coverage.start()
     environment.get_template("nested_loop.j2").render(parents=[{"name": "p1", "children": []}])
@@ -310,13 +319,7 @@ def test_coverage_records_static_text_lines_from_compiled_template_execution(tmp
     Environment(loader=FileSystemLoader(template_root)).compile_templates(compiled_root, zip=None, ignore_errors=False)  # noqa: S701
     environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
 
-    coverage = Coverage(
-        config_file=False,
-        data_file=str(tmp_path / ".coverage"),
-        branch=True,
-        source=[str(template_root), str(compiled_root)],
-        plugins=[lambda reg: reg.add_file_tracer(JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,)))],
-    )
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
     coverage.erase()
     coverage.start()
     environment.get_template("branch.j2").render(mode="a", items=[])
@@ -328,9 +331,11 @@ def test_coverage_records_static_text_lines_from_compiled_template_execution(tmp
 
     assert source_filename in data.measured_files()
     assert data.file_tracer(source_filename) == "None.JinjaTemplateCoveragePlugin"
-    assert set(data.lines(source_filename)) >= {1, 2, 6, 9}
-    assert 4 not in data.lines(source_filename)
-    assert 7 not in data.lines(source_filename)
+    source_lines = data.lines(source_filename)
+    assert source_lines is not None
+    assert set(source_lines) >= {1, 2, 6, 9}
+    assert 4 not in source_lines
+    assert 7 not in source_lines
     assert data.arcs(source_filename)
 
     shutil.rmtree(compiled_root)
@@ -352,13 +357,7 @@ def test_top_level_optional_guard_is_not_counted_as_missing_branch(tmp_path: Pat
     Environment(loader=FileSystemLoader(template_root)).compile_templates(compiled_root, zip=None, ignore_errors=False)  # noqa: S701
     environment = Environment(loader=ModuleLoader(compiled_root))  # noqa: S701
 
-    coverage = Coverage(
-        config_file=False,
-        data_file=str(tmp_path / ".coverage"),
-        branch=True,
-        source=[str(template_root), str(compiled_root)],
-        plugins=[lambda reg: reg.add_file_tracer(JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,)))],
-    )
+    coverage = _coverage_for_template(tmp_path, template_root, compiled_root, branch=True)
     coverage.erase()
     coverage.start()
     environment.get_template("optional.j2").render(enabled=True)
@@ -452,6 +451,7 @@ def test_report_does_not_require_compiled_templates(tmp_path: Path) -> None:
     coverage_config.write_text(
         "[tool.coverage.run]\n"
         "branch = true\n"
+        'core = "ctrace"\n'
         "parallel = true\n"
         'plugins = ["coverage_plugins.jinja"]\n'
         f'source_dirs = ["{template_root.as_posix()}"]\n'
