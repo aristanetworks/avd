@@ -1,5 +1,5 @@
 {# j2lint: disable=jinja-statements-delimiter #}
-{%- if link["main_interface_wan_carrier"] is arista.avd.defined -%}
+{%- if link.main_interface_wan_carrier is arista.avd.defined -%}
 {{ link.main_interface_wan_carrier }}
 {%- endif -%}
 {%- if link.type is arista.avd.defined('underlay_p2p') -%}
