@@ -139,17 +139,17 @@
 
 | POD | Node | Type | Node SID IPv4 Index | Node SID IPv6 Index |
 | --- | ---- | ---- | ------------------- | ------------------- |
-| MPLS_CORE | SITE1-LER1 | pe | 205 | 205 |
-| MPLS_CORE | SITE1-LER2 | pe | 206 | 206 |
-| MPLS_CORE | SITE1-LSR1 | p | 301 | 301 |
-| MPLS_CORE | SITE1-LSR2 | p | 302 | 302 |
-| MPLS_CORE | SITE1-RR1 | rr | 108 | 108 |
-| MPLS_CORE | SITE2-LER1 | pe | 207 | 207 |
-| MPLS_CORE | SITE2-LSR1 | p | 303 | 303 |
-| MPLS_CORE | SITE2-LSR2 | p | 304 | 304 |
-| MPLS_CORE | SITE2-RR1 | rr | 109 | 109 |
-| MPLS_CORE | SITE3-LER1 | pe | 210 | 210 |
-| MPLS_CORE | SITE3-RR1 | rr | 112 | 112 |
+| MPLS_CORE | SITE1-LER1 | pe | 205 | 1205 |
+| MPLS_CORE | SITE1-LER2 | pe | 206 | 1206 |
+| MPLS_CORE | SITE1-LSR1 | p | 301 | 1301 |
+| MPLS_CORE | SITE1-LSR2 | p | 302 | 1302 |
+| MPLS_CORE | SITE1-RR1 | rr | 108 | 1108 |
+| MPLS_CORE | SITE2-LER1 | pe | 207 | 1207 |
+| MPLS_CORE | SITE2-LSR1 | p | 303 | 1303 |
+| MPLS_CORE | SITE2-LSR2 | p | 344 | 1344 |
+| MPLS_CORE | SITE2-RR1 | rr | 109 | 1109 |
+| MPLS_CORE | SITE3-LER1 | pe | 210 | 1210 |
+| MPLS_CORE | SITE3-RR1 | rr | 112 | 1112 |
 
 ### BGP MPLS Overlay
 
