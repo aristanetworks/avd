@@ -142,7 +142,7 @@ jobs:
           python-version: "3.12"
       - name: Install pyavd and Ansible requirements
         run: |
-          pip install --group dev --upgrade
+          pip install --group dev --group coverage --upgrade
       - name: PyRight static type checker
         # Specific SHA as allowed by github org admins
         uses: jakebailey/pyright-action@8ec14b5cfe41f26e5f41686a31eb6012758217ef
@@ -329,7 +329,8 @@ jobs:
     name: Validate eos_designs with minimum requirements
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' ||
+    if:
+      needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' ||
       github.event_name == 'merge_group'
     steps:
       - uses: actions/checkout@v6
