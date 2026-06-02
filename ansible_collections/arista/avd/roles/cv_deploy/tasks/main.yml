@@ -71,6 +71,7 @@
         return_details: "{{ cv_register_detailed_results }}"
         preview_features:
           read_from_validated_inputs: true
+        grpc_keepalives: "{{ cv_grpc_keepalives }}"
         tmp_dir: "{{ cv_deploy_tmp_dir }}"
       register: cv_deploy_results
 
