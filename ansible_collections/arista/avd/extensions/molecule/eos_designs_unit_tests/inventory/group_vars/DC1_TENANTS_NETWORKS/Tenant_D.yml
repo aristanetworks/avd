@@ -20,10 +20,16 @@ network_services:
               advertise_ipv6_address_virtuals: true
               preferred_lifetime: 100
               valid_lifetime: 200
-              ra_dns_servers: [cafe::cafe:64, ca::ca:64]
+              ra_dns_servers:
+                servers:
+                  - address: cafe::cafe:64
+                  - address: ca::ca:64
+                    lifetime: 100
+                dns_servers_lifetime: 200
             ipv6_dhcp_relay:
               destinations:
                 - address: cafe::cafe:64
+                  vrf: default
                 - address: ca::ca:64
                   local_interface: Loopback44
                   link_address: cafe::cafe:64
@@ -144,6 +150,7 @@ network_services:
             ipv6_dhcp_relay:
               destinations:
                 - address: cafe::cafe:64
+                  vrf: TEST
                 - address: ca::ca:64
                   source_address: cafe::cafe:64
                   link_address: cafe::cafe:64

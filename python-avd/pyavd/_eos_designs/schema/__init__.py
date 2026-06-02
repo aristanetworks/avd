@@ -28662,10 +28662,69 @@ class EosDesigns(EosDesignsRootModel):
                     class Ipv6Nd(AvdModel):
                         """Subclass of AvdModel."""
 
-                        class RaDnsServers(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
+                        class RaDnsServers(AvdModel):
+                            """Subclass of AvdModel."""
 
-                        RaDnsServers._item_type = str
+                            class ServersItem(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"address": {"type": str}, "lifetime": {"type": int}}
+                                address: str
+                                """IPv6 address of DNS server."""
+                                lifetime: int | None
+                                """
+                                Specifies the lifetime period for this server in seconds.
+                                This value overrides lifetime value set by
+                                `dns_servers_lifetime` for this server.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        ServersItem.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            address: IPv6 address of DNS server.
+                                            lifetime:
+                                               Specifies the lifetime period for this server in seconds.
+                                               This value overrides lifetime value set by
+                                               `dns_servers_lifetime` for this server.
+
+                                        """
+
+                            class Servers(AvdIndexedList[str, ServersItem]):
+                                """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+
+                                _primary_key: ClassVar[str] = "address"
+
+                            Servers._item_type = ServersItem
+
+                            _fields: ClassVar[dict] = {"servers": {"type": Servers}, "dns_servers_lifetime": {"type": int}}
+                            servers: Servers
+                            """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+                            dns_servers_lifetime: int | None
+                            """Router Advertisement DNS server lifetime value in seconds."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, servers: Servers | UndefinedType = Undefined, dns_servers_lifetime: int | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    RaDnsServers.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
+                                        dns_servers_lifetime: Router Advertisement DNS server lifetime value in seconds.
+
+                                    """
 
                         _fields: ClassVar[dict] = {
                             "advertise_ipv6_address_virtuals": {"type": bool},
@@ -28684,7 +28743,7 @@ class EosDesigns(EosDesignsRootModel):
                         List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
                         Subclass of
-                        AvdList with `str` items.
+                        AvdModel.
                         """
 
                         if TYPE_CHECKING:
@@ -28711,7 +28770,7 @@ class EosDesigns(EosDesignsRootModel):
                                        List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
                                        Subclass of
-                                       AvdList with `str` items.
+                                       AvdModel.
 
                                 """
 
@@ -28723,12 +28782,20 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "address": {"type": str},
+                                "vrf": {"type": str},
                                 "local_interface": {"type": str},
                                 "source_address": {"type": str},
                                 "link_address": {"type": str},
                             }
                             address: str
                             """DHCP server's IPv6 address."""
+                            vrf: str | None
+                            """
+                            VRF used to reach the DHCP server.
+                            If not set, the VRF of the destination matches the VRF of this
+                            interface.
+                            Use the `default` to reach the DHCP server through the default VRF.
+                            """
                             local_interface: str | None
                             """
                             Local interface to communicate with DHCP server.
@@ -28750,6 +28817,7 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     address: str | UndefinedType = Undefined,
+                                    vrf: str | None | UndefinedType = Undefined,
                                     local_interface: str | None | UndefinedType = Undefined,
                                     source_address: str | None | UndefinedType = Undefined,
                                     link_address: str | None | UndefinedType = Undefined,
@@ -28762,6 +28830,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         address: DHCP server's IPv6 address.
+                                        vrf:
+                                           VRF used to reach the DHCP server.
+                                           If not set, the VRF of the destination matches the VRF of this
+                                           interface.
+                                           Use the `default` to reach the DHCP server through the default VRF.
                                         local_interface:
                                            Local interface to communicate with DHCP server.
                                            Mutually exclusive with `source_address` and takes
@@ -29938,10 +30011,69 @@ class EosDesigns(EosDesignsRootModel):
                 class Ipv6Nd(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class RaDnsServers(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
+                    class RaDnsServers(AvdModel):
+                        """Subclass of AvdModel."""
 
-                    RaDnsServers._item_type = str
+                        class ServersItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"address": {"type": str}, "lifetime": {"type": int}}
+                            address: str
+                            """IPv6 address of DNS server."""
+                            lifetime: int | None
+                            """
+                            Specifies the lifetime period for this server in seconds.
+                            This value overrides lifetime value set by
+                            `dns_servers_lifetime` for this server.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    ServersItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        address: IPv6 address of DNS server.
+                                        lifetime:
+                                           Specifies the lifetime period for this server in seconds.
+                                           This value overrides lifetime value set by
+                                           `dns_servers_lifetime` for this server.
+
+                                    """
+
+                        class Servers(AvdIndexedList[str, ServersItem]):
+                            """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "address"
+
+                        Servers._item_type = ServersItem
+
+                        _fields: ClassVar[dict] = {"servers": {"type": Servers}, "dns_servers_lifetime": {"type": int}}
+                        servers: Servers
+                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+                        dns_servers_lifetime: int | None
+                        """Router Advertisement DNS server lifetime value in seconds."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, servers: Servers | UndefinedType = Undefined, dns_servers_lifetime: int | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                RaDnsServers.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
+                                    dns_servers_lifetime: Router Advertisement DNS server lifetime value in seconds.
+
+                                """
 
                     _fields: ClassVar[dict] = {
                         "advertise_ipv6_address_virtuals": {"type": bool},
@@ -29960,7 +30092,7 @@ class EosDesigns(EosDesignsRootModel):
                     List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
                     Subclass of
-                    AvdList with `str` items.
+                    AvdModel.
                     """
 
                     if TYPE_CHECKING:
@@ -29987,7 +30119,7 @@ class EosDesigns(EosDesignsRootModel):
                                    List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
                                    Subclass of
-                                   AvdList with `str` items.
+                                   AvdModel.
 
                             """
 
@@ -29999,12 +30131,20 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "address": {"type": str},
+                            "vrf": {"type": str},
                             "local_interface": {"type": str},
                             "source_address": {"type": str},
                             "link_address": {"type": str},
                         }
                         address: str
                         """DHCP server's IPv6 address."""
+                        vrf: str | None
+                        """
+                        VRF used to reach the DHCP server.
+                        If not set, the VRF of the destination matches the VRF of this
+                        interface.
+                        Use the `default` to reach the DHCP server through the default VRF.
+                        """
                         local_interface: str | None
                         """
                         Local interface to communicate with DHCP server.
@@ -30026,6 +30166,7 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 address: str | UndefinedType = Undefined,
+                                vrf: str | None | UndefinedType = Undefined,
                                 local_interface: str | None | UndefinedType = Undefined,
                                 source_address: str | None | UndefinedType = Undefined,
                                 link_address: str | None | UndefinedType = Undefined,
@@ -30038,6 +30179,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     address: DHCP server's IPv6 address.
+                                    vrf:
+                                       VRF used to reach the DHCP server.
+                                       If not set, the VRF of the destination matches the VRF of this
+                                       interface.
+                                       Use the `default` to reach the DHCP server through the default VRF.
                                     local_interface:
                                        Local interface to communicate with DHCP server.
                                        Mutually exclusive with `source_address` and takes
@@ -42798,10 +42944,69 @@ class EosDesigns(EosDesignsRootModel):
             class Ipv6Nd(AvdModel):
                 """Subclass of AvdModel."""
 
-                class RaDnsServers(AvdList[str]):
-                    """Subclass of AvdList with `str` items."""
+                class RaDnsServers(AvdModel):
+                    """Subclass of AvdModel."""
 
-                RaDnsServers._item_type = str
+                    class ServersItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"address": {"type": str}, "lifetime": {"type": int}}
+                        address: str
+                        """IPv6 address of DNS server."""
+                        lifetime: int | None
+                        """
+                        Specifies the lifetime period for this server in seconds.
+                        This value overrides lifetime value set by
+                        `dns_servers_lifetime` for this server.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
+                                """
+                                ServersItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    address: IPv6 address of DNS server.
+                                    lifetime:
+                                       Specifies the lifetime period for this server in seconds.
+                                       This value overrides lifetime value set by
+                                       `dns_servers_lifetime` for this server.
+
+                                """
+
+                    class Servers(AvdIndexedList[str, ServersItem]):
+                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "address"
+
+                    Servers._item_type = ServersItem
+
+                    _fields: ClassVar[dict] = {"servers": {"type": Servers}, "dns_servers_lifetime": {"type": int}}
+                    servers: Servers
+                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+                    dns_servers_lifetime: int | None
+                    """Router Advertisement DNS server lifetime value in seconds."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, servers: Servers | UndefinedType = Undefined, dns_servers_lifetime: int | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RaDnsServers.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
+                                dns_servers_lifetime: Router Advertisement DNS server lifetime value in seconds.
+
+                            """
 
                 _fields: ClassVar[dict] = {
                     "advertise_ipv6_address_virtuals": {"type": bool},
@@ -42820,7 +43025,7 @@ class EosDesigns(EosDesignsRootModel):
                 List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
                 Subclass of
-                AvdList with `str` items.
+                AvdModel.
                 """
 
                 if TYPE_CHECKING:
@@ -42847,7 +43052,7 @@ class EosDesigns(EosDesignsRootModel):
                                List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
                                Subclass of
-                               AvdList with `str` items.
+                               AvdModel.
 
                         """
 
@@ -42859,12 +43064,20 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {
                         "address": {"type": str},
+                        "vrf": {"type": str},
                         "local_interface": {"type": str},
                         "source_address": {"type": str},
                         "link_address": {"type": str},
                     }
                     address: str
                     """DHCP server's IPv6 address."""
+                    vrf: str | None
+                    """
+                    VRF used to reach the DHCP server.
+                    If not set, the VRF of the destination matches the VRF of this
+                    interface.
+                    Use the `default` to reach the DHCP server through the default VRF.
+                    """
                     local_interface: str | None
                     """
                     Local interface to communicate with DHCP server.
@@ -42886,6 +43099,7 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             address: str | UndefinedType = Undefined,
+                            vrf: str | None | UndefinedType = Undefined,
                             local_interface: str | None | UndefinedType = Undefined,
                             source_address: str | None | UndefinedType = Undefined,
                             link_address: str | None | UndefinedType = Undefined,
@@ -42898,6 +43112,11 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 address: DHCP server's IPv6 address.
+                                vrf:
+                                   VRF used to reach the DHCP server.
+                                   If not set, the VRF of the destination matches the VRF of this
+                                   interface.
+                                   Use the `default` to reach the DHCP server through the default VRF.
                                 local_interface:
                                    Local interface to communicate with DHCP server.
                                    Mutually exclusive with `source_address` and takes
@@ -44051,10 +44270,67 @@ class EosDesigns(EosDesignsRootModel):
         class Ipv6Nd(AvdModel):
             """Subclass of AvdModel."""
 
-            class RaDnsServers(AvdList[str]):
-                """Subclass of AvdList with `str` items."""
+            class RaDnsServers(AvdModel):
+                """Subclass of AvdModel."""
 
-            RaDnsServers._item_type = str
+                class ServersItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "lifetime": {"type": int}}
+                    address: str
+                    """IPv6 address of DNS server."""
+                    lifetime: int | None
+                    """
+                    Specifies the lifetime period for this server in seconds.
+                    This value overrides lifetime value set by
+                    `dns_servers_lifetime` for this server.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            ServersItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                address: IPv6 address of DNS server.
+                                lifetime:
+                                   Specifies the lifetime period for this server in seconds.
+                                   This value overrides lifetime value set by
+                                   `dns_servers_lifetime` for this server.
+
+                            """
+
+                class Servers(AvdIndexedList[str, ServersItem]):
+                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                Servers._item_type = ServersItem
+
+                _fields: ClassVar[dict] = {"servers": {"type": Servers}, "dns_servers_lifetime": {"type": int}}
+                servers: Servers
+                """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+                dns_servers_lifetime: int | None
+                """Router Advertisement DNS server lifetime value in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, servers: Servers | UndefinedType = Undefined, dns_servers_lifetime: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        RaDnsServers.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
+                            dns_servers_lifetime: Router Advertisement DNS server lifetime value in seconds.
+
+                        """
 
             _fields: ClassVar[dict] = {
                 "advertise_ipv6_address_virtuals": {"type": bool},
@@ -44073,7 +44349,7 @@ class EosDesigns(EosDesignsRootModel):
             List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
             Subclass of
-            AvdList with `str` items.
+            AvdModel.
             """
 
             if TYPE_CHECKING:
@@ -44100,7 +44376,7 @@ class EosDesigns(EosDesignsRootModel):
                            List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
                            Subclass of
-                           AvdList with `str` items.
+                           AvdModel.
 
                     """
 
@@ -44112,12 +44388,20 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {
                     "address": {"type": str},
+                    "vrf": {"type": str},
                     "local_interface": {"type": str},
                     "source_address": {"type": str},
                     "link_address": {"type": str},
                 }
                 address: str
                 """DHCP server's IPv6 address."""
+                vrf: str | None
+                """
+                VRF used to reach the DHCP server.
+                If not set, the VRF of the destination matches the VRF of this
+                interface.
+                Use the `default` to reach the DHCP server through the default VRF.
+                """
                 local_interface: str | None
                 """
                 Local interface to communicate with DHCP server.
@@ -44139,6 +44423,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         address: str | UndefinedType = Undefined,
+                        vrf: str | None | UndefinedType = Undefined,
                         local_interface: str | None | UndefinedType = Undefined,
                         source_address: str | None | UndefinedType = Undefined,
                         link_address: str | None | UndefinedType = Undefined,
@@ -44151,6 +44436,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             address: DHCP server's IPv6 address.
+                            vrf:
+                               VRF used to reach the DHCP server.
+                               If not set, the VRF of the destination matches the VRF of this
+                               interface.
+                               Use the `default` to reach the DHCP server through the default VRF.
                             local_interface:
                                Local interface to communicate with DHCP server.
                                Mutually exclusive with `source_address` and takes
@@ -74574,10 +74864,71 @@ class EosDesigns(EosDesignsRootModel):
                             class Ipv6Nd(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                class RaDnsServers(AvdList[str]):
-                                    """Subclass of AvdList with `str` items."""
+                                class RaDnsServers(AvdModel):
+                                    """Subclass of AvdModel."""
 
-                                RaDnsServers._item_type = str
+                                    class ServersItem(AvdModel):
+                                        """Subclass of AvdModel."""
+
+                                        _fields: ClassVar[dict] = {"address": {"type": str}, "lifetime": {"type": int}}
+                                        address: str
+                                        """IPv6 address of DNS server."""
+                                        lifetime: int | None
+                                        """
+                                        Specifies the lifetime period for this server in seconds.
+                                        This value overrides lifetime value set by
+                                        `dns_servers_lifetime` for this server.
+                                        """
+
+                                        if TYPE_CHECKING:
+
+                                            def __init__(
+                                                self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined
+                                            ) -> None:
+                                                """
+                                                ServersItem.
+
+
+                                                Subclass of AvdModel.
+
+                                                Args:
+                                                    address: IPv6 address of DNS server.
+                                                    lifetime:
+                                                       Specifies the lifetime period for this server in seconds.
+                                                       This value overrides lifetime value set by
+                                                       `dns_servers_lifetime` for this server.
+
+                                                """
+
+                                    class Servers(AvdIndexedList[str, ServersItem]):
+                                        """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+
+                                        _primary_key: ClassVar[str] = "address"
+
+                                    Servers._item_type = ServersItem
+
+                                    _fields: ClassVar[dict] = {"servers": {"type": Servers}, "dns_servers_lifetime": {"type": int}}
+                                    servers: Servers
+                                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+                                    dns_servers_lifetime: int | None
+                                    """Router Advertisement DNS server lifetime value in seconds."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self, *, servers: Servers | UndefinedType = Undefined, dns_servers_lifetime: int | None | UndefinedType = Undefined
+                                        ) -> None:
+                                            """
+                                            RaDnsServers.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
+                                                dns_servers_lifetime: Router Advertisement DNS server lifetime value in seconds.
+
+                                            """
 
                                 _fields: ClassVar[dict] = {
                                     "advertise_ipv6_address_virtuals": {"type": bool},
@@ -74596,7 +74947,7 @@ class EosDesigns(EosDesignsRootModel):
                                 List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
                                 Subclass of
-                                AvdList with `str` items.
+                                AvdModel.
                                 """
 
                                 if TYPE_CHECKING:
@@ -74623,7 +74974,7 @@ class EosDesigns(EosDesignsRootModel):
                                                List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
                                                Subclass of
-                                               AvdList with `str` items.
+                                               AvdModel.
 
                                         """
 
@@ -74635,12 +74986,20 @@ class EosDesigns(EosDesignsRootModel):
 
                                     _fields: ClassVar[dict] = {
                                         "address": {"type": str},
+                                        "vrf": {"type": str},
                                         "local_interface": {"type": str},
                                         "source_address": {"type": str},
                                         "link_address": {"type": str},
                                     }
                                     address: str
                                     """DHCP server's IPv6 address."""
+                                    vrf: str | None
+                                    """
+                                    VRF used to reach the DHCP server.
+                                    If not set, the VRF of the destination matches the VRF of this
+                                    interface.
+                                    Use the `default` to reach the DHCP server through the default VRF.
+                                    """
                                     local_interface: str | None
                                     """
                                     Local interface to communicate with DHCP server.
@@ -74662,6 +75021,7 @@ class EosDesigns(EosDesignsRootModel):
                                             self,
                                             *,
                                             address: str | UndefinedType = Undefined,
+                                            vrf: str | None | UndefinedType = Undefined,
                                             local_interface: str | None | UndefinedType = Undefined,
                                             source_address: str | None | UndefinedType = Undefined,
                                             link_address: str | None | UndefinedType = Undefined,
@@ -74674,6 +75034,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                             Args:
                                                 address: DHCP server's IPv6 address.
+                                                vrf:
+                                                   VRF used to reach the DHCP server.
+                                                   If not set, the VRF of the destination matches the VRF of this
+                                                   interface.
+                                                   Use the `default` to reach the DHCP server through the default VRF.
                                                 local_interface:
                                                    Local interface to communicate with DHCP server.
                                                    Mutually exclusive with `source_address` and takes
@@ -75856,10 +76221,71 @@ class EosDesigns(EosDesignsRootModel):
                         class Ipv6Nd(AvdModel):
                             """Subclass of AvdModel."""
 
-                            class RaDnsServers(AvdList[str]):
-                                """Subclass of AvdList with `str` items."""
+                            class RaDnsServers(AvdModel):
+                                """Subclass of AvdModel."""
 
-                            RaDnsServers._item_type = str
+                                class ServersItem(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"address": {"type": str}, "lifetime": {"type": int}}
+                                    address: str
+                                    """IPv6 address of DNS server."""
+                                    lifetime: int | None
+                                    """
+                                    Specifies the lifetime period for this server in seconds.
+                                    This value overrides lifetime value set by
+                                    `dns_servers_lifetime` for this server.
+                                    """
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self, *, address: str | UndefinedType = Undefined, lifetime: int | None | UndefinedType = Undefined
+                                        ) -> None:
+                                            """
+                                            ServersItem.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                address: IPv6 address of DNS server.
+                                                lifetime:
+                                                   Specifies the lifetime period for this server in seconds.
+                                                   This value overrides lifetime value set by
+                                                   `dns_servers_lifetime` for this server.
+
+                                            """
+
+                                class Servers(AvdIndexedList[str, ServersItem]):
+                                    """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+
+                                    _primary_key: ClassVar[str] = "address"
+
+                                Servers._item_type = ServersItem
+
+                                _fields: ClassVar[dict] = {"servers": {"type": Servers}, "dns_servers_lifetime": {"type": int}}
+                                servers: Servers
+                                """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`)."""
+                                dns_servers_lifetime: int | None
+                                """Router Advertisement DNS server lifetime value in seconds."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, servers: Servers | UndefinedType = Undefined, dns_servers_lifetime: int | None | UndefinedType = Undefined
+                                    ) -> None:
+                                        """
+                                        RaDnsServers.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `address` (`str`).
+                                            dns_servers_lifetime: Router Advertisement DNS server lifetime value in seconds.
+
+                                        """
 
                             _fields: ClassVar[dict] = {
                                 "advertise_ipv6_address_virtuals": {"type": bool},
@@ -75878,7 +76304,7 @@ class EosDesigns(EosDesignsRootModel):
                             List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
                             Subclass of
-                            AvdList with `str` items.
+                            AvdModel.
                             """
 
                             if TYPE_CHECKING:
@@ -75905,7 +76331,7 @@ class EosDesigns(EosDesignsRootModel):
                                            List of IPv6 addresses of DNS servers to be advertised in Router Advertisements (RA).
 
                                            Subclass of
-                                           AvdList with `str` items.
+                                           AvdModel.
 
                                     """
 
@@ -75917,12 +76343,20 @@ class EosDesigns(EosDesignsRootModel):
 
                                 _fields: ClassVar[dict] = {
                                     "address": {"type": str},
+                                    "vrf": {"type": str},
                                     "local_interface": {"type": str},
                                     "source_address": {"type": str},
                                     "link_address": {"type": str},
                                 }
                                 address: str
                                 """DHCP server's IPv6 address."""
+                                vrf: str | None
+                                """
+                                VRF used to reach the DHCP server.
+                                If not set, the VRF of the destination matches the VRF of this
+                                interface.
+                                Use the `default` to reach the DHCP server through the default VRF.
+                                """
                                 local_interface: str | None
                                 """
                                 Local interface to communicate with DHCP server.
@@ -75944,6 +76378,7 @@ class EosDesigns(EosDesignsRootModel):
                                         self,
                                         *,
                                         address: str | UndefinedType = Undefined,
+                                        vrf: str | None | UndefinedType = Undefined,
                                         local_interface: str | None | UndefinedType = Undefined,
                                         source_address: str | None | UndefinedType = Undefined,
                                         link_address: str | None | UndefinedType = Undefined,
@@ -75956,6 +76391,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             address: DHCP server's IPv6 address.
+                                            vrf:
+                                               VRF used to reach the DHCP server.
+                                               If not set, the VRF of the destination matches the VRF of this
+                                               interface.
+                                               Use the `default` to reach the DHCP server through the default VRF.
                                             local_interface:
                                                Local interface to communicate with DHCP server.
                                                Mutually exclusive with `source_address` and takes

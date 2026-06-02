@@ -867,6 +867,7 @@ vlan_interfaces:
   - 10.0.0.3/24
   ipv6_dhcp_relay_destinations:
   - address: cafe::cafe:64
+    vrf: TEST
   - address: ca::ca:64
     source_address: cafe::cafe:64
     link_address: cafe::cafe:64
@@ -887,9 +888,8 @@ vlan_interfaces:
   - 2001:db8:312::1/64
   ipv6_dhcp_relay_destinations:
   - address: cafe::cafe:64
-    vrf: Tenant_D_OP_Zone
+    vrf: default
   - address: ca::ca:64
-    vrf: Tenant_D_OP_Zone
     local_interface: Loopback44
     link_address: cafe::cafe:64
   ipv6_nd:
@@ -897,6 +897,8 @@ vlan_interfaces:
       dns_servers:
       - address: cafe::cafe:64
       - address: ca::ca:64
+        lifetime: 100
+      dns_servers_lifetime: 200
     prefixes:
     - ipv6_prefix: 2001:db8:310::1/64
       valid_lifetime: '200'
