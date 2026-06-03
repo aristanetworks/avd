@@ -29,11 +29,19 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
     from types import FrameType
 
-    from .models import CompiledTemplate
+from .models import JINJA2_EXTENSIONS, SOURCE_EXIT, CompiledTemplate, FileStamp, SourceTemplate
 
-JINJA2_EXTENSIONS = ("jinja2.ext.loopcontrols", "jinja2.ext.do", "jinja2.ext.i18n")
-SOURCE_EXIT = -1
-FileStamp = tuple[int, int]
+__all__ = (
+    "JINJA2_EXTENSIONS",
+    "SOURCE_EXIT",
+    "CompiledTemplate",
+    "FileStamp",
+    "JinjaTemplateCoveragePlugin",
+    "JinjaTemplateFileReporter",
+    "JinjaTemplateFileTracer",
+    "SourceTemplate",
+    "coverage_init",
+)
 
 
 class JinjaTemplateCoveragePlugin(CoveragePlugin):
