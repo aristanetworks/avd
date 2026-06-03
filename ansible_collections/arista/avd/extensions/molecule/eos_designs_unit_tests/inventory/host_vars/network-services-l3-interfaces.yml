@@ -1,5 +1,23 @@
 ---
-# This yml file is being used to test ipv6_addresses support for l3_interfaces under network_services
+# This yml file is being used to test ipv6_addresses and ipv6_acl_in/out support for l3_interfaces under network_services
+ipv6_acls:
+  # Static ACL - no field substitution, name is used as-is.
+  - name: TEST-IPV6-ACL-STATIC-IN
+    entries:
+      - sequence: 10
+        action: deny
+        protocol: ipv6
+        source: any
+        destination: any
+  # ACL with interface_ip substitution - name will be suffixed with the interface name.
+  - name: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: interface_ip
+        destination: any
+
 type: l3leaf
 l3leaf:
   defaults:
@@ -26,19 +44,22 @@ tenants:
             ipv6_addresses: ["2001:db8:10::1/64"]
             enabled: true
             description: "ipv6-only-default-vrf"
-          # Dual-stack (IPv4 + IPv6) in default VRF
+          # Dual-stack (IPv4 + IPv6) in default VRF, with a static IPv6 ACL in the ingress direction.
           - interfaces: [Ethernet11]
             nodes: [network-services-l3-interfaces]
             ip_addresses: ["10.0.11.1/31"]
             ipv6_addresses: ["2001:db8:11::1/64"]
             enabled: true
             description: "dual-stack-default-vrf"
+            ipv6_acl_in: TEST-IPV6-ACL-STATIC-IN
       - name: L3INTF_TEST
         vrf_id: 2
         l3_interfaces:
-          # IPv6-only in non-default VRF: tests VRF-level ipv6_routing set and ipv6_unicast_routing global flag also set
+          # IPv6-only in non-default VRF: tests VRF-level ipv6_routing set and ipv6_unicast_routing global flag also set.
+          # Also exercises the ipv6_acl_out path with `interface_ip` substitution (name gets suffixed with the interface name).
           - interfaces: [Ethernet12]
             nodes: [network-services-l3-interfaces]
             ipv6_addresses: ["2001:db8:12::1/64"]
             enabled: true
             description: "ipv6-only-non-default-vrf"
+            ipv6_acl_out: TEST-IPV6-ACL-WITH-IP-FIELDS-OUT

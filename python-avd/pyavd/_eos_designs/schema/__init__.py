@@ -31625,6 +31625,8 @@ class EosDesigns(EosDesignsRootModel):
                     "mtu": {"type": int},
                     "ipv4_acl_in": {"type": str},
                     "ipv4_acl_out": {"type": str},
+                    "ipv6_acl_in": {"type": str},
+                    "ipv6_acl_out": {"type": str},
                     "ospf": {"type": Ospf},
                     "pim": {"type": Pim},
                     "flow_tracking": {"type": FlowTracking},
@@ -31684,6 +31686,18 @@ class EosDesigns(EosDesignsRootModel):
                 mtu: int | None
                 ipv4_acl_in: str | None
                 ipv4_acl_out: str | None
+                ipv6_acl_in: str | None
+                """
+                Name of the IPv6 access-list to be assigned in the ingress direction.
+                The access-list must be
+                defined under `ipv6_acls`.
+                """
+                ipv6_acl_out: str | None
+                """
+                Name of the IPv6 access-list to be assigned in the egress direction.
+                The access-list must be defined
+                under `ipv6_acls`.
+                """
                 ospf: Ospf
                 """
                 OSPF interface configuration.
@@ -31757,6 +31771,8 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | None | UndefinedType = Undefined,
                         ipv4_acl_in: str | None | UndefinedType = Undefined,
                         ipv4_acl_out: str | None | UndefinedType = Undefined,
+                        ipv6_acl_in: str | None | UndefinedType = Undefined,
+                        ipv6_acl_out: str | None | UndefinedType = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
                         pim: Pim | UndefinedType = Undefined,
                         flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -31808,6 +31824,14 @@ class EosDesigns(EosDesignsRootModel):
                             mtu: mtu
                             ipv4_acl_in: ipv4_acl_in
                             ipv4_acl_out: ipv4_acl_out
+                            ipv6_acl_in:
+                               Name of the IPv6 access-list to be assigned in the ingress direction.
+                               The access-list must be
+                               defined under `ipv6_acls`.
+                            ipv6_acl_out:
+                               Name of the IPv6 access-list to be assigned in the egress direction.
+                               The access-list must be defined
+                               under `ipv6_acls`.
                             ospf:
                                OSPF interface configuration.
 
@@ -32349,6 +32373,8 @@ class EosDesigns(EosDesignsRootModel):
                     "mtu": {"type": int},
                     "ipv4_acl_in": {"type": str},
                     "ipv4_acl_out": {"type": str},
+                    "ipv6_acl_in": {"type": str},
+                    "ipv6_acl_out": {"type": str},
                     "static_routes": {"type": StaticRoutes},
                     "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                     "ospf": {"type": Ospf},
@@ -32420,6 +32446,18 @@ class EosDesigns(EosDesignsRootModel):
                 """Name of the IPv4 access-list to be assigned in the ingress direction."""
                 ipv4_acl_out: str | None
                 """Name of the IPv4 Access-list to be assigned in the egress direction."""
+                ipv6_acl_in: str | None
+                """
+                Name of the IPv6 access-list to be assigned in the ingress direction.
+                The access-list must be
+                defined under `ipv6_acls`.
+                """
+                ipv6_acl_out: str | None
+                """
+                Name of the IPv6 access-list to be assigned in the egress direction.
+                The access-list must be defined
+                under `ipv6_acls`.
+                """
                 static_routes: StaticRoutes
                 """
                 Static routes to be configured on the device where this Port-channel interface is configured.
@@ -32472,6 +32510,8 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | None | UndefinedType = Undefined,
                         ipv4_acl_in: str | None | UndefinedType = Undefined,
                         ipv4_acl_out: str | None | UndefinedType = Undefined,
+                        ipv6_acl_in: str | None | UndefinedType = Undefined,
+                        ipv6_acl_out: str | None | UndefinedType = Undefined,
                         static_routes: StaticRoutes | UndefinedType = Undefined,
                         ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                         ospf: Ospf | UndefinedType = Undefined,
@@ -32522,6 +32562,14 @@ class EosDesigns(EosDesignsRootModel):
                             mtu: MTU can only be set on the parent Port-Channel.
                             ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                             ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
+                            ipv6_acl_in:
+                               Name of the IPv6 access-list to be assigned in the ingress direction.
+                               The access-list must be
+                               defined under `ipv6_acls`.
+                            ipv6_acl_out:
+                               Name of the IPv6 access-list to be assigned in the egress direction.
+                               The access-list must be defined
+                               under `ipv6_acls`.
                             static_routes:
                                Static routes to be configured on the device where this Port-channel interface is configured.
                                Subclass of AvdList with `StaticRoutesItem` items.
@@ -77085,6 +77133,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "ospf": {"type": Ospf},
                             "pim": {"type": Pim},
                             "flow_tracking": {"type": FlowTracking},
@@ -77144,6 +77194,18 @@ class EosDesigns(EosDesignsRootModel):
                         mtu: int | None
                         ipv4_acl_in: str | None
                         ipv4_acl_out: str | None
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls`.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls`.
+                        """
                         ospf: Ospf
                         """
                         OSPF interface configuration.
@@ -77217,6 +77279,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | None | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
                                 pim: Pim | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -77268,6 +77332,14 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: mtu
                                     ipv4_acl_in: ipv4_acl_in
                                     ipv4_acl_out: ipv4_acl_out
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls`.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls`.
                                     ospf:
                                        OSPF interface configuration.
 
@@ -77809,6 +77881,8 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "ipv6_acl_in": {"type": str},
+                            "ipv6_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
                             "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "ospf": {"type": Ospf},
@@ -77880,6 +77954,18 @@ class EosDesigns(EosDesignsRootModel):
                         """Name of the IPv4 access-list to be assigned in the ingress direction."""
                         ipv4_acl_out: str | None
                         """Name of the IPv4 Access-list to be assigned in the egress direction."""
+                        ipv6_acl_in: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                        The access-list must be
+                        defined under `ipv6_acls`.
+                        """
+                        ipv6_acl_out: str | None
+                        """
+                        Name of the IPv6 access-list to be assigned in the egress direction.
+                        The access-list must be defined
+                        under `ipv6_acls`.
+                        """
                         static_routes: StaticRoutes
                         """
                         Static routes to be configured on the device where this Port-channel interface is configured.
@@ -77932,6 +78018,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | None | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ipv6_acl_in: str | None | UndefinedType = Undefined,
+                                ipv6_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
@@ -77982,6 +78070,14 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: MTU can only be set on the parent Port-Channel.
                                     ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                                     ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
+                                    ipv6_acl_in:
+                                       Name of the IPv6 access-list to be assigned in the ingress direction.
+                                       The access-list must be
+                                       defined under `ipv6_acls`.
+                                    ipv6_acl_out:
+                                       Name of the IPv6 access-list to be assigned in the egress direction.
+                                       The access-list must be defined
+                                       under `ipv6_acls`.
                                     static_routes:
                                        Static routes to be configured on the device where this Port-channel interface is configured.
                                        Subclass of AvdList with `StaticRoutesItem` items.

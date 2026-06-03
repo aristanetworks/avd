@@ -130,7 +130,9 @@ class EthernetInterfacesMixin(Protocol):
                     ),
                 )
 
-                if l3_interface.ipv6_addresses and (ipv6_address := l3_interface.ipv6_addresses[node_index]):
+                ipv6_address = l3_interface.ipv6_addresses[node_index] if l3_interface.ipv6_addresses else None
+                ipv6_interface_ip = get_ip_from_ip_prefix(ipv6_address) if ipv6_address and "/" in ipv6_address else ipv6_address
+                if ipv6_address:
                     interface.ipv6_addresses.append(ipv6_address)
                     if vrf.name == "default":
                         self.structured_config.ipv6_unicast_routing = True
@@ -161,6 +163,24 @@ class EthernetInterfacesMixin(Protocol):
                     )
                     interface.access_group_out = acl.name
                     self._set_ipv4_acl(acl)
+
+                if l3_interface.ipv6_acl_in:
+                    acl = self.shared_utils.get_ipv6_acl(
+                        name=l3_interface.ipv6_acl_in,
+                        interface_name=interface_name,
+                        interface_ip=ipv6_interface_ip,
+                    )
+                    interface.ipv6_access_group_in = acl.name
+                    self._set_ipv6_acl(acl)
+
+                if l3_interface.ipv6_acl_out:
+                    acl = self.shared_utils.get_ipv6_acl(
+                        name=l3_interface.ipv6_acl_out,
+                        interface_name=interface_name,
+                        interface_ip=ipv6_interface_ip,
+                    )
+                    interface.ipv6_access_group_out = acl.name
+                    self._set_ipv6_acl(acl)
 
                 if "." in interface_name:
                     # This is a subinterface
