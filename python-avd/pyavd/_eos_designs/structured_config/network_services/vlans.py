@@ -128,7 +128,7 @@ class VlansMixin(Protocol):
                 trunk_groups = self._local_endpoint_trunk_groups.intersection(trunk_groups)
             if self.shared_utils.mlag:
                 trunk_groups.add(self.inputs.trunk_groups.mlag.name)
-            if self.shared_utils.uplink_type == "port-channel":
+            if self.shared_utils.uplink_type in ["port-channel", "l2-ethernet"]:
                 trunk_groups.add(self.inputs.trunk_groups.uplink.name)
             # Add trunk groups required for underlay
             if vlans_vlan.id in self.shared_utils.underlay_vlan_trunk_groups:

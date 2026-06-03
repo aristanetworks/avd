@@ -140,7 +140,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "uplink_peers.[]") | String |  |  |  |  |
     | [<samp>uplink_switch_vrfs</samp>](## "uplink_switch_vrfs") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "uplink_switch_vrfs.[]") | String |  |  |  |  |
-    | [<samp>vlans</samp>](## "vlans") | String | Required |  |  | Compressed list of vlans to be defined on this switch after filtering network services.<br>The filter is based on filter.tenants, filter.tags but not filter.only_vlans_in_use.<br><br>Ex. "1-100, 201-202"<br><br>This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.<br>This is to ensure that native vlan is not necessarily permitted on the uplink trunk. |
+    | [<samp>vlans</samp>](## "vlans") | String | Required |  |  | Compressed list of VLANs to be defined on this switch.<br>These are the available VLANs after local network-service filtering and VLAN availability filtering from uplink switches.<br><br>Ex. "1-100, 201-202"<br><br>This excludes the optional "uplink_native_vlan" if that vlan is not used for anything else.<br>This is to ensure that native vlan is not necessarily permitted on the uplink trunk. |
     | [<samp>endpoint_vlans</samp>](## "endpoint_vlans") | String |  |  |  | Compressed list of vlans in use by endpoints connected to this switch, downstream switches or MLAG peer and its downstream switches. |
     | [<samp>local_endpoint_trunk_groups</samp>](## "local_endpoint_trunk_groups") | List, items: String |  |  |  | List of trunk_groups in use by endpoints connected to this switch. |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "local_endpoint_trunk_groups.[]") | String |  |  |  |  |
@@ -377,8 +377,8 @@
     uplink_switch_vrfs:
       - <str>
 
-    # Compressed list of vlans to be defined on this switch after filtering network services.
-    # The filter is based on filter.tenants, filter.tags but not filter.only_vlans_in_use.
+    # Compressed list of VLANs to be defined on this switch.
+    # These are the available VLANs after local network-service filtering and VLAN availability filtering from uplink switches.
     #
     # Ex. "1-100, 201-202"
     #

@@ -483,16 +483,20 @@ class TestDeployStaticConfigStudio:
         assert not deployment_result.removed_static_config_configlets
 
     async def test_non_avd_containers_are_preserved(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
-        """Test that existing containers without the AVD prefix are never deleted."""
+        """Test that unrelated manual containers are preserved, even if they are orphaned."""
         avd_root_id = generate_id("AVD_ROOT")
         non_avd_container_id = "manually-created-container-abc"
+        manual_orphan_id = "manual-orphan-container"
 
         existing_containers = [
             create_grpc_container(container_id=avd_root_id, name="AVD_ROOT", description="Root", query="device:*"),
             create_grpc_container(container_id=non_avd_container_id, name="MANUAL_CONTAINER", description="Manual", query="device:*"),
+            create_grpc_container(container_id=manual_orphan_id, name="MANUAL_ORPHAN", description="", query="device:*"),
         ]
+        # All containers
         mock_cv_client.get_configlet_containers.return_value = existing_containers
         mock_cv_client.get_configlets.return_value = []
+        # Root containers - manual-orphan-container is intentionally not a root and has no parent.
         mock_cv_client.get_studio_inputs_with_path.return_value = [avd_root_id, non_avd_container_id]
 
         # Manifest matches the existing AVD root (so AVD_ROOT is unchanged).
@@ -503,6 +507,7 @@ class TestDeployStaticConfigStudio:
 
         # Non-AVD container must NOT be deleted.
         mock_cv_client.delete_configlet_container.assert_not_called()
+        mock_cv_client.set_configlet_containers.assert_not_called()
         assert not deployment_result.removed_static_config_containers
 
     async def test_container_update_on_tag_query_change(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
@@ -678,7 +683,7 @@ class TestDeployStaticConfigStudio:
         )
 
     async def test_avd_parent_unassigns_non_avd_sub_container(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
-        """Test that a non-AVD sub-container under an AVD parent is unassigned (not deleted) when the parent is re-pushed."""
+        """Test that a non-AVD sub-container under an AVD parent is unassigned and removed as an orphan when the parent is re-pushed."""
         avd_parent_id = generate_id("PARENT")
         avd_child_id = generate_id("PARENT/AVD_CHILD")
         non_avd_child_id = "manually-added-child-xyz"
@@ -714,9 +719,9 @@ class TestDeployStaticConfigStudio:
         assert parent_push[5] == [avd_child_id]
         assert non_avd_child_id not in parent_push[5]
 
-        # The non-AVD sub-container itself must NOT be deleted (no AVD prefix).
-        mock_cv_client.delete_configlet_container.assert_not_called()
-        assert not deployment_result.removed_static_config_containers
+        # The non-AVD sub-container is removed as an orphan since it no longer has a parent in the tree.
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=non_avd_child_id)
+        assert deployment_result.removed_static_config_containers == ["MANUAL_CHILD"]
 
     async def test_sub_containers_excluded_from_studio_roots(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test that only top-level (root) containers are added to the Studio root list, not nested sub-containers."""
@@ -994,6 +999,39 @@ class TestDeployStaticConfigStudio:
         assert deployment_result.skipped_static_config_containers == []
         assert deployment_result.deployed_static_config_containers == []
 
+        mock_cv_client.set_configlets_from_files.assert_not_called()
+        mock_cv_client.set_configlet_containers.assert_not_called()
+        mock_cv_client.set_studio_inputs.assert_not_called()
+        mock_cv_client.delete_configlets.assert_not_called()
+        mock_cv_client.delete_configlet_container.assert_not_called()
+
+    async def test_fails_when_root_container_has_unmanaged_parent(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that the deploy fails when a manifest top-level container has been manually placed under an unmanaged parent in CV."""
+        root_id = generate_id("ROOT")
+        custom_parent_id = "custom-parent-003"
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="", query="device:*"),
+            create_grpc_container(container_id=custom_parent_id, name="MY_CUSTOM", description="", query="device:*", child_ids=[root_id]),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        # ROOT is currently NOT in the Studio root list — it was reparented under MY_CUSTOM.
+        mock_cv_client.get_studio_inputs_with_path.return_value = [custom_parent_id]
+
+        root = AvdContainer(name="ROOT", tag_query="device:*")
+        manifest = AvdManifest(containers=(root,))
+
+        with pytest.raises(CVManifestError) as exc_info:
+            await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Error message identifies both the offending parent and the root container.
+        assert "MY_CUSTOM" in str(exc_info.value)
+        assert custom_parent_id in str(exc_info.value)
+        assert "ROOT" in str(exc_info.value)
+        assert root_id in str(exc_info.value)
+
+        # No updates on CV — workspace must be untouched.
         mock_cv_client.set_configlets_from_files.assert_not_called()
         mock_cv_client.set_configlet_containers.assert_not_called()
         mock_cv_client.set_studio_inputs.assert_not_called()
@@ -1339,3 +1377,272 @@ class TestDeployStaticConfigStudio:
         assert holder_b_id in msg
         # The configlet is named once per holder.
         assert msg.count("STALE_CFG") == 2
+
+    async def test_orphan_unmanaged_subtree_deleted_when_managed_parent_updates(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that a multi-level unmanaged sub-tree is fully removed when its managed parent drops the top of the chain."""
+        managed_parent_id = generate_id("PARENT")
+        unmanaged_mid_id = "manual-mid-123"
+        unmanaged_leaf_id = "manual-leaf-456"
+
+        existing_containers = [
+            # Managed parent currently owns an unmanaged sub-tree mid -> leaf.
+            create_grpc_container(container_id=managed_parent_id, name="PARENT", description="Parent", query="device:*", child_ids=[unmanaged_mid_id]),
+            create_grpc_container(container_id=unmanaged_mid_id, name="UNMANAGED_MID", description="", query="device:*", child_ids=[unmanaged_leaf_id]),
+            create_grpc_container(container_id=unmanaged_leaf_id, name="UNMANAGED_LEAF", description="", query="device:LEAF"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [managed_parent_id]
+
+        # Manifest declares the managed parent with no children.
+        managed_parent = AvdContainer(name="PARENT", tag_query="device:*", description="Parent")
+        manifest = AvdManifest(containers=(managed_parent,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Both unmanaged descendants are orphan-deleted.
+        assert mock_cv_client.delete_configlet_container.call_count == 2
+        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert deleted_ids == {unmanaged_mid_id, unmanaged_leaf_id}
+        assert set(deployment_result.removed_static_config_containers) == {"UNMANAGED_MID", "UNMANAGED_LEAF"}
+
+    async def test_managed_container_reparented_by_manifest_is_not_orphan_deleted(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that a managed container reachable through an orphan path is reparented by the manifest instead of being deleted."""
+        managed_parent_id = generate_id("PARENT")
+        unmanaged_mid_id = "manual-mid-789"
+        managed_grand_id = generate_id("PARENT/MANAGED_GRAND")  # In the manifest as a child of PARENT.
+
+        # Existing layout: PARENT -> UNMANAGED_MID -> MANAGED_GRAND. Manifest wants PARENT -> MANAGED_GRAND directly.
+        existing_containers = [
+            create_grpc_container(container_id=managed_parent_id, name="PARENT", description="Parent", query="device:*", child_ids=[unmanaged_mid_id]),
+            create_grpc_container(container_id=unmanaged_mid_id, name="UNMANAGED_MID", description="", query="device:*", child_ids=[managed_grand_id]),
+            create_grpc_container(container_id=managed_grand_id, name="MANAGED_GRAND", description="", query="device:LEAF"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [managed_parent_id]
+
+        managed_grand = AvdContainer(name="MANAGED_GRAND", tag_query="device:LEAF")
+        managed_parent = AvdContainer(name="PARENT", tag_query="device:*", description="Parent", sub_containers=(managed_grand,))
+        manifest = AvdManifest(containers=(managed_parent,))
+
+        # Must not raise even though MANAGED_GRAND currently has an unmanaged parent that is about to be orphan-deleted.
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Only UNMANAGED_MID is deleted. MANAGED_GRAND is reparented by the manifest, not deleted.
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=unmanaged_mid_id)
+        assert deployment_result.removed_static_config_containers == ["UNMANAGED_MID"]
+
+        # PARENT was updated to point directly at MANAGED_GRAND.
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        parent_push = next(c for c in pushed if c[1] == "PARENT")
+        assert parent_push[5] == [managed_grand_id]
+
+    async def test_subtree_under_deleted_managed_container_is_fully_removed(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that an entire unmanaged sub-tree hanging off a removed managed container is deleted together with the parent."""
+        stale_managed_root_id = generate_id("STALE_ROOT")  # Managed, NOT in this manifest -> deleted.
+        unmanaged_mid_id = "manual-mid-abc"
+        unmanaged_leaf_id = "manual-leaf-def"
+        new_root_id = generate_id("NEW_ROOT")
+
+        existing_containers = [
+            create_grpc_container(container_id=stale_managed_root_id, name="STALE_ROOT", description="", query="device:*", child_ids=[unmanaged_mid_id]),
+            create_grpc_container(container_id=unmanaged_mid_id, name="UNMANAGED_MID", description="", query="device:*", child_ids=[unmanaged_leaf_id]),
+            create_grpc_container(container_id=unmanaged_leaf_id, name="UNMANAGED_LEAF", description="", query="device:LEAF"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [stale_managed_root_id]
+
+        new_root = AvdContainer(name="NEW_ROOT", tag_query="device:*")
+        manifest = AvdManifest(containers=(new_root,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # All three (STALE_ROOT, UNMANAGED_MID, UNMANAGED_LEAF) are deleted in one go.
+        assert mock_cv_client.delete_configlet_container.call_count == 3
+        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert deleted_ids == {stale_managed_root_id, unmanaged_mid_id, unmanaged_leaf_id}
+        assert set(deployment_result.removed_static_config_containers) == {"STALE_ROOT", "UNMANAGED_MID", "UNMANAGED_LEAF"}
+
+        # The new root container is pushed.
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        assert {c[0] for c in pushed} == {new_root_id}
+
+    async def test_deep_unmanaged_chain_is_fully_removed(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that every container of a long unmanaged chain below a managed parent is removed when the parent drops it."""
+        managed_parent_id = generate_id("PARENT")
+        m2, m3, m4, m5 = "manual-2", "manual-3", "manual-4", "manual-5"
+
+        existing_containers = [
+            create_grpc_container(container_id=managed_parent_id, name="PARENT", description="Parent", query="device:*", child_ids=[m2]),
+            create_grpc_container(container_id=m2, name="M2", description="", query="device:*", child_ids=[m3]),
+            create_grpc_container(container_id=m3, name="M3", description="", query="device:*", child_ids=[m4]),
+            create_grpc_container(container_id=m4, name="M4", description="", query="device:*", child_ids=[m5]),
+            create_grpc_container(container_id=m5, name="M5", description="", query="device:*"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [managed_parent_id]
+
+        managed_parent = AvdContainer(name="PARENT", tag_query="device:*", description="Parent")
+        manifest = AvdManifest(containers=(managed_parent,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert deleted_ids == {m2, m3, m4, m5}
+        assert set(deployment_result.removed_static_config_containers) == {"M2", "M3", "M4", "M5"}
+
+    async def test_managed_parent_dropping_mixed_children_removes_both(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that when a managed parent drops both a managed and an unmanaged child at once, both are removed."""
+        managed_parent_id = generate_id("PARENT")
+        dropped_managed_child_id = generate_id("PARENT/DROPPED_CHILD")
+        dropped_unmanaged_child_id = "manual-dropped-child"
+
+        existing_containers = [
+            # Managed parent currently owns one managed child and one unmanaged child; the manifest drops both.
+            create_grpc_container(
+                container_id=managed_parent_id,
+                name="PARENT",
+                description="Parent",
+                query="device:*",
+                child_ids=[dropped_managed_child_id, dropped_unmanaged_child_id],
+            ),
+            create_grpc_container(container_id=dropped_managed_child_id, name="DROPPED_CHILD", description="", query="device:LEAF"),
+            create_grpc_container(container_id=dropped_unmanaged_child_id, name="UNMANAGED_DROPPED", description="", query="device:LEAF"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [managed_parent_id]
+
+        # Manifest declares only the parent with no children.
+        managed_parent = AvdContainer(name="PARENT", tag_query="device:*", description="Parent")
+        manifest = AvdManifest(containers=(managed_parent,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Both children are removed (each via its own removal path) and the parent is updated to have no children.
+        assert mock_cv_client.delete_configlet_container.call_count == 2
+        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert deleted_ids == {dropped_managed_child_id, dropped_unmanaged_child_id}
+        assert set(deployment_result.removed_static_config_containers) == {"DROPPED_CHILD", "UNMANAGED_DROPPED"}
+
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        parent_push = next(c for c in pushed if c[1] == "PARENT")
+        assert parent_push[5] == []
+
+    async def test_deleted_managed_container_with_mixed_children_is_fully_removed(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that a removed managed container together with its managed and unmanaged children are all deleted in one deploy."""
+        stale_managed_root_id = generate_id("STALE_ROOT")  # Managed, NOT in this manifest -> deleted.
+        stale_managed_child_id = generate_id("STALE_ROOT/MANAGED_CHILD")  # Managed and a child of the deleted root.
+        unmanaged_child_id = "manual-child-xyz"
+        new_root_id = generate_id("NEW_ROOT")
+
+        existing_containers = [
+            create_grpc_container(
+                container_id=stale_managed_root_id,
+                name="STALE_ROOT",
+                description="",
+                query="device:*",
+                child_ids=[stale_managed_child_id, unmanaged_child_id],
+            ),
+            create_grpc_container(container_id=stale_managed_child_id, name="MANAGED_CHILD", description="", query="device:LEAF"),
+            create_grpc_container(container_id=unmanaged_child_id, name="UNMANAGED_CHILD", description="", query="device:LEAF"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [stale_managed_root_id]
+
+        new_root = AvdContainer(name="NEW_ROOT", tag_query="device:*")
+        manifest = AvdManifest(containers=(new_root,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # The deleted root and both of its children are removed in one deploy.
+        assert mock_cv_client.delete_configlet_container.call_count == 3
+        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert deleted_ids == {stale_managed_root_id, stale_managed_child_id, unmanaged_child_id}
+        assert set(deployment_result.removed_static_config_containers) == {"STALE_ROOT", "MANAGED_CHILD", "UNMANAGED_CHILD"}
+
+        # The new root container is pushed.
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        assert {c[0] for c in pushed} == {new_root_id}
+
+    async def test_deleted_configlet_with_only_orphan_holder_does_not_raise(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that removing a configlet still referenced only by a container scheduled for orphan deletion succeeds without raising."""
+        managed_parent_id = generate_id("PARENT")
+        unmanaged_holder_id = "manual-holder-xyz"
+        stale_cfg_id = generate_id("STALE_CFG")
+
+        existing_containers = [
+            # Managed parent currently owns an unmanaged sub-container that holds the manifest configlet.
+            create_grpc_container(container_id=managed_parent_id, name="PARENT", description="Parent", query="device:*", child_ids=[unmanaged_holder_id]),
+            create_grpc_container(container_id=unmanaged_holder_id, name="UNMANAGED_HOLDER", description="", query="device:*", configlet_ids=[stale_cfg_id]),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=stale_cfg_id), display_name="STALE_CFG"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [managed_parent_id]
+
+        # Manifest drops the unmanaged holder (PARENT updated with no children) and the configlet.
+        managed_parent = AvdContainer(name="PARENT", tag_query="device:*", description="Parent")
+        manifest = AvdManifest(configlets=(), containers=(managed_parent,))
+
+        # Must not raise -- UNMANAGED_HOLDER is about to be orphan-deleted, taking its stale STALE_CFG reference with it.
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # The configlet and its orphan holder are both deleted.
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[stale_cfg_id])
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=unmanaged_holder_id)
+        assert deployment_result.removed_static_config_configlets == ["STALE_CFG"]
+        assert deployment_result.removed_static_config_containers == ["UNMANAGED_HOLDER"]
+
+    async def test_chained_managed_deletion_pulls_unmanaged_leaf(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that an unmanaged leaf two levels below a deleted managed root is removed when its managed mid-parent is also deleted."""
+        stale_managed_root_id = generate_id("STALE_ROOT")  # Managed, NOT in this manifest -> deleted.
+        stale_managed_mid_id = generate_id("STALE_MID")  # Managed, NOT in this manifest -> deleted as a child of STALE_ROOT.
+        unmanaged_leaf_id = "manual-leaf-xyz"
+        new_root_id = generate_id("NEW_ROOT")
+
+        existing_containers = [
+            # Chain: STALE_ROOT -> STALE_MID -> UNMANAGED_LEAF. The unmanaged leaf is only reachable by traversing through the managed mid-parent.
+            create_grpc_container(container_id=stale_managed_root_id, name="STALE_ROOT", description="", query="device:*", child_ids=[stale_managed_mid_id]),
+            create_grpc_container(container_id=stale_managed_mid_id, name="STALE_MID", description="", query="device:*", child_ids=[unmanaged_leaf_id]),
+            create_grpc_container(container_id=unmanaged_leaf_id, name="UNMANAGED_LEAF", description="", query="device:LEAF"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [stale_managed_root_id]
+
+        # Manifest replaces the entire chain with a brand-new root.
+        new_root = AvdContainer(name="NEW_ROOT", tag_query="device:*")
+        manifest = AvdManifest(containers=(new_root,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # All three (STALE_ROOT, STALE_MID, UNMANAGED_LEAF) are deleted in one go,
+        # the subtree walk traverses through the managed mid-parent to reach the unmanaged leaf.
+        assert mock_cv_client.delete_configlet_container.call_count == 3
+        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert deleted_ids == {stale_managed_root_id, stale_managed_mid_id, unmanaged_leaf_id}
+        assert set(deployment_result.removed_static_config_containers) == {"STALE_ROOT", "STALE_MID", "UNMANAGED_LEAF"}
+
+        # The new root container is pushed.
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        assert {c[0] for c in pushed} == {new_root_id}
+
+        # Studio root list is updated to replace the stale root with the new root.
+        mock_cv_client.set_studio_inputs.assert_called_once_with(
+            studio_id="studio-static-configlet",
+            workspace_id=deployment_result.workspace.id,
+            input_path=["configletAssignmentRoots"],
+            inputs=[new_root_id],
+        )
