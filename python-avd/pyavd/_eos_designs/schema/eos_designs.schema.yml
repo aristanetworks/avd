@@ -12138,7 +12138,7 @@ $defs:
             documentation_options:
               table: node-type-inband-management-configuration
             description: 'VLAN number used for inband management on L2 switches (switches
-              using port-channel trunks as uplinks).
+              using L2 trunks as uplinks).
 
               When using ''inband_mgmt_subnet'' the VLAN and SVIs will be created
               automatically on this switch as well as all ''uplink_switches''.
@@ -12154,7 +12154,7 @@ $defs:
             documentation_options:
               table: node-type-inband-management-configuration
             description: 'Optional IP subnet assigned to inband management SVIs on
-              L2 switches (switches using port-channels as uplinks).
+              L2 switches (switches using L2 trunks as uplinks).
 
               Parent l3leafs will have SVI with "ip virtual-router" and host-route
               injection based on ARP.
@@ -12180,8 +12180,8 @@ $defs:
               Setting is ignored if ''inband_mgmt_ip'' is set.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12215,8 +12215,8 @@ $defs:
               services data models.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12229,8 +12229,8 @@ $defs:
               if set.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12252,8 +12252,8 @@ $defs:
               services data models.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12288,8 +12288,8 @@ $defs:
               Setting is ignored if ''inband_mgmt_ipv6_address'' is set.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12305,8 +12305,8 @@ $defs:
               used as gateway).
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
