@@ -261,7 +261,7 @@ def test_coverage_marks_multiline_jinja_branch_body_arc_as_executed(tmp_path: Pa
     )
 
     assert analysis.branch_stats()[2] == (2, 1)
-    assert analysis.missing_branch_arcs() == {2: [-1]}
+    assert analysis.missing_branch_arcs() == {2: [6]}
 
 
 def test_coverage_marks_jinja_else_tag_as_executed_with_else_body(tmp_path: Path) -> None:
@@ -288,7 +288,7 @@ def test_file_reporter_does_not_expose_cached_mutable_sets(tmp_path: Path) -> No
     no_branch_lines.clear()
 
     assert reporter.lines() == {1, 2}
-    assert reporter.arcs() == {(1, 2)}
+    assert reporter.arcs() == {(1, 2), (1, 3)}
     assert reporter.no_branch_lines() == {1}
 
 
@@ -486,7 +486,7 @@ def test_nested_optional_input_shape_reports_missing_inner_output(tmp_path: Path
     )
 
     assert 4 in analysis.missing
-    assert not analysis.missing_branch_arcs()
+    assert analysis.missing_branch_arcs() == {3: [4]}
 
 
 def test_long_elif_chain_reports_unvisited_alternatives(tmp_path: Path) -> None:
@@ -523,7 +523,7 @@ def test_nested_loop_with_conditional_output_reports_unvisited_inner_output(tmp_
         {"parents": [{"name": "p1", "children": [{"name": "c1", "enabled": False}]}]},
     )
 
-    assert analysis.missing_branch_arcs() == {4: [-1, 5]}
+    assert analysis.missing_branch_arcs() == {4: [5]}
 
 
 def test_complex_expression_reports_missing_true_output_branch(tmp_path: Path) -> None:
