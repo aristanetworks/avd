@@ -58,9 +58,10 @@ class _ExistingContainerState:
 
     def container_name(self, container_id: str) -> str:
         container = self.containers_by_id.get(container_id)
-        if container is None:
+        if container is None or not container.display_name:
             return container_id
-        return cast("str", container.display_name)
+
+        return container.display_name
 
     def parent_display(self, parent_id: str) -> str:
         if parent_id == STUDIO_ROOT_PARENT_ID:
@@ -282,7 +283,7 @@ def _build_container_plan(cv_manifest: CVManifest, existing_state: _ExistingCont
             if container is None:
                 continue
 
-            containers_to_delete[queued_container_id] = cast("str", container.display_name)
+            containers_to_delete[queued_container_id] = existing_state.container_name(queued_container_id)
             queue.extend(existing_state.child_ids_by_parent_id.get(queued_container_id, []))
 
     # Create planned desired containers. Containers with preserve_existing_sub_containers keep existing
@@ -394,7 +395,6 @@ def _validate_existing_container_state(existing_state: _ExistingContainerState, 
     container_ids_to_delete = container_plan.container_ids_to_delete
 
     for container_id in existing_state.manifest_managed_container_ids - container_plan.preserved_container_ids:
-        container = existing_state.containers_by_id[container_id]
         parent_ids = existing_state.parent_ids_by_child_id.get(container_id, [])
         parent_ids_set = set(parent_ids)
         manual_parent_ids = [
@@ -403,7 +403,8 @@ def _validate_existing_container_state(existing_state: _ExistingContainerState, 
             if parent_id != STUDIO_ROOT_PARENT_ID and not _is_manifest_managed_id(parent_id) and parent_id not in container_ids_to_delete
         ]
         violations.extend(
-            f"Manifest-managed container '{container.display_name}' (id={container_id}) is currently a child of {existing_state.parent_display(parent_id)}"
+            f"Manifest-managed container '{existing_state.container_name(container_id)}' (id={container_id}) is currently a child of "
+            f"{existing_state.parent_display(parent_id)}"
             for parent_id in manual_parent_ids
         )
 
@@ -510,11 +511,11 @@ async def _sync_configlets(
     preserved_configlet_ids = {
         configlet_id
         for container in existing_containers
-        if cast("str", container.key.configlet_assignment_id) in preserved_container_ids
+        if container.key.configlet_assignment_id in preserved_container_ids
         for configlet_id in container.configlet_ids.values
     }
     configlets_to_delete = {
-        configlet_id: cast("str", configlet.display_name)
+        configlet_id: configlet.display_name or configlet_id
         for configlet in existing_configlets
         if _is_manifest_managed_id(configlet_id := cast("str", configlet.key.configlet_id))
         and configlet_id not in desired_configlet_ids
@@ -538,7 +539,7 @@ async def _sync_configlets(
                     continue
 
                 # Holder is out of our control.
-                violations.append((cast("str", holder.display_name), holder_id, configlet_name, configlet_id))
+                violations.append((holder.display_name or holder_id, holder_id, configlet_name, configlet_id))
 
         if violations:
             _raise_configlet_holder_violations(violations)

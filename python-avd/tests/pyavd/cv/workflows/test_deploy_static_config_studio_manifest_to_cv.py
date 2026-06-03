@@ -437,7 +437,7 @@ class TestDeployStaticConfigStudio:
             create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*"),
         ]
         existing_configlets = [
-            Configlet(key=ConfigletKey(configlet_id=stale_avd_configlet_id), display_name="STALE_CFG"),
+            Configlet(key=ConfigletKey(configlet_id=stale_avd_configlet_id), display_name=""),
         ]
         mock_cv_client.get_configlet_containers.return_value = existing_containers
         mock_cv_client.get_configlets.return_value = existing_configlets
@@ -455,7 +455,7 @@ class TestDeployStaticConfigStudio:
         # The stale AVD-managed configlet must be deleted.
         mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[stale_avd_configlet_id])
 
-        assert deployment_result.removed_static_config_configlets == ["STALE_CFG"]
+        assert deployment_result.removed_static_config_configlets == [stale_avd_configlet_id]
         assert not deployment_result.deployed_static_config_configlets
 
     async def test_non_avd_configlets_are_preserved(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
@@ -698,7 +698,7 @@ class TestDeployStaticConfigStudio:
                 child_ids=[avd_child_id, non_avd_child_id],
             ),
             create_grpc_container(container_id=avd_child_id, name="AVD_CHILD", description="", query="device:LEAF"),
-            create_grpc_container(container_id=non_avd_child_id, name="MANUAL_CHILD", description="", query="device:MANUAL"),
+            create_grpc_container(container_id=non_avd_child_id, name="", description="", query="device:MANUAL"),
         ]
         mock_cv_client.get_configlet_containers.return_value = existing_containers
         mock_cv_client.get_configlets.return_value = []
@@ -721,7 +721,7 @@ class TestDeployStaticConfigStudio:
 
         # The non-AVD sub-container is removed as an orphan since it no longer has a parent in the tree.
         mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=non_avd_child_id)
-        assert deployment_result.removed_static_config_containers == ["MANUAL_CHILD"]
+        assert deployment_result.removed_static_config_containers == [non_avd_child_id]
 
     async def test_sub_containers_excluded_from_studio_roots(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test that only top-level (root) containers are added to the Studio root list, not nested sub-containers."""
@@ -911,8 +911,8 @@ class TestDeployStaticConfigStudio:
 
         existing_containers = [
             create_grpc_container(container_id=global_id, name="GLOBAL", description="", query="device:*", child_ids=[]),
-            create_grpc_container(container_id=leafs_id, name="LEAFS", description="", query="device:LEAF"),
-            create_grpc_container(container_id=custom_parent_id, name="MY_CUSTOM", description="", query="device:*", child_ids=[leafs_id]),
+            create_grpc_container(container_id=leafs_id, name="", description="", query="device:LEAF"),
+            create_grpc_container(container_id=custom_parent_id, name="", description="", query="device:*", child_ids=[leafs_id]),
         ]
         mock_cv_client.get_configlet_containers.return_value = existing_containers
         mock_cv_client.get_configlets.return_value = []
@@ -926,9 +926,9 @@ class TestDeployStaticConfigStudio:
             await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
 
         # Error message identifies both the offending parent and the child (name + id for each).
-        assert "MY_CUSTOM" in str(exc_info.value)
+        assert "MY_CUSTOM" not in str(exc_info.value)
         assert custom_parent_id in str(exc_info.value)
-        assert "LEAFS" in str(exc_info.value)
+        assert f"Manifest-managed container '{leafs_id}' (id={leafs_id})" in str(exc_info.value)
         assert leafs_id in str(exc_info.value)
 
         # No updates on CV — workspace must be untouched.
@@ -1225,10 +1225,10 @@ class TestDeployStaticConfigStudio:
 
         existing_containers = [
             create_grpc_container(container_id=manifest_root_id, name="MANIFEST_ROOT", description="", query="device:*"),
-            create_grpc_container(container_id=manual_holder_id, name="MY_CUSTOM", description="", query="device:*", configlet_ids=[stale_cfg_id]),
+            create_grpc_container(container_id=manual_holder_id, name="", description="", query="device:*", configlet_ids=[stale_cfg_id]),
         ]
         existing_configlets = [
-            Configlet(key=ConfigletKey(configlet_id=stale_cfg_id), display_name="STALE_CFG"),
+            Configlet(key=ConfigletKey(configlet_id=stale_cfg_id), display_name=""),
         ]
         mock_cv_client.get_configlet_containers.return_value = existing_containers
         mock_cv_client.get_configlets.return_value = existing_configlets
@@ -1242,9 +1242,8 @@ class TestDeployStaticConfigStudio:
             await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
 
         # Error message identifies both the offending holder and the configlet (name + id for each).
-        assert "MY_CUSTOM" in str(exc_info.value)
+        assert "MY_CUSTOM" not in str(exc_info.value)
         assert manual_holder_id in str(exc_info.value)
-        assert "STALE_CFG" in str(exc_info.value)
         assert stale_cfg_id in str(exc_info.value)
 
         # No updates on CV — workspace must be untouched.
