@@ -104968,12 +104968,14 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     standard_acls: StandardAcls
     """
-    IPv4 standard access-lists, configured globally on the device.
-    These access-lists can be referenced
-    by features such as `dot1x_settings.captive_portal.ipv4_standard_acl`.
+    IPv4 standard access-lists catalog.
+    For now this is only supported for
+    `dot1x_settings.captive_portal.ipv4_standard_acl`;
+    support for other consumers will be added in
+    future releases.
 
-    Subclass of AvdIndexedList
-    with `StandardAclsItem` items. Primary key is `name` (`str`).
+    Subclass of AvdIndexedList with `StandardAclsItem` items. Primary key is `name`
+    (`str`).
     """
     svi_profiles: SviProfiles
     """
@@ -106820,12 +106822,14 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdModel.
                 ssh_settings: Subclass of AvdModel.
                 standard_acls:
-                   IPv4 standard access-lists, configured globally on the device.
-                   These access-lists can be referenced
-                   by features such as `dot1x_settings.captive_portal.ipv4_standard_acl`.
+                   IPv4 standard access-lists catalog.
+                   For now this is only supported for
+                   `dot1x_settings.captive_portal.ipv4_standard_acl`;
+                   support for other consumers will be added in
+                   future releases.
 
-                   Subclass of AvdIndexedList
-                   with `StandardAclsItem` items. Primary key is `name` (`str`).
+                   Subclass of AvdIndexedList with `StandardAclsItem` items. Primary key is `name`
+                   (`str`).
                 svi_profiles:
                    Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
                    Keys are the

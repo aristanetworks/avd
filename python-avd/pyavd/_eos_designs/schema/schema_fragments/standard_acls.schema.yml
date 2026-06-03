@@ -10,8 +10,9 @@ keys:
     type: list
     primary_key: name
     description: |-
-      IPv4 standard access-lists, configured globally on the device.
-      These access-lists can be referenced by features such as `dot1x_settings.captive_portal.ipv4_standard_acl`.
+      IPv4 standard access-lists catalog.
+      For now this is only supported for `dot1x_settings.captive_portal.ipv4_standard_acl`;
+      support for other consumers will be added in future releases.
     items:
       type: dict
       keys:

@@ -6,13 +6,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import Undefined, UndefinedType
 from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
-
     from . import StructuredConfigUtilsProtocol
 
 
@@ -45,18 +42,3 @@ class UtilsMixin(Protocol):
         ip_extcommunity_list = EosCliConfigGen.IpExtcommunityListsItem(name="ECL-EVPN-SOO")
         ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.shared_utils.evpn_soo}")
         self.structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
-
-    def get_standard_acl(self: StructuredConfigUtilsProtocol, name: str) -> EosDesigns.StandardAclsItem:
-        """Get one standard ACL from `standard_acls` by name."""
-        if name not in self.inputs.standard_acls:
-            msg = f"standard_acls[name={name}]"
-            raise AristaAvdMissingVariableError(msg)
-        return self.inputs.standard_acls[name]
-
-    def _set_standard_acl(self: StructuredConfigUtilsProtocol, standard_acl: EosDesigns.StandardAclsItem) -> None:
-        """
-        Set structured config for standard_access_lists.
-
-        Called for each feature that applies a standard_acl.
-        """
-        self.structured_config.standard_access_lists.append(standard_acl._cast_as(EosCliConfigGen.StandardAccessListsItem))
