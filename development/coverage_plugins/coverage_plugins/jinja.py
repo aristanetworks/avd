@@ -619,25 +619,27 @@ def _find_possible_jinja_arcs_cached(source_filename: Path, file_stamp: FileStam
         return frozenset()
 
     reportable_lines = _find_reportable_jinja_lines(source_filename)
+    tag_ranges = _tag_ranges_by_line(source)
     arcs: set[tuple[int, int]] = set()
     for node in parsed_template.find_all((nodes.If, nodes.For)):
         if isinstance(node, nodes.If):
-            _add_if_arcs(node, reportable_lines, arcs)
+            _add_if_arcs(node, reportable_lines, tag_ranges, arcs)
         elif isinstance(node, nodes.For):
-            _add_for_arcs(node, reportable_lines, arcs)
+            _add_for_arcs(node, reportable_lines, tag_ranges, arcs)
 
     return frozenset(arcs)
 
 
-def _add_if_arcs(node, reportable_lines: Collection[int], arcs: set[tuple[int, int]]) -> None:  # noqa: ANN001
+def _add_if_arcs(node, reportable_lines: Collection[int], tag_ranges: Mapping[int, tuple[int, int]], arcs: set[tuple[int, int]]) -> None:  # noqa: ANN001
     """Add possible arcs from a Jinja ``if`` node and any ``elif`` nodes."""
     after_line = _next_reportable_line(reportable_lines, _node_end_lineno(node))
     conditional_nodes = [node, *node.elif_]
     for index, conditional_node in enumerate(conditional_nodes):
+        conditional_end_line = _tag_end_line(conditional_node.lineno, tag_ranges)
         body_line = _first_reportable_line_in_nodes(
             reportable_lines,
             conditional_node.body,
-            after_line=conditional_node.lineno,
+            after_line=conditional_end_line,
         )
         false_line = _false_if_target(node, conditional_nodes, index, reportable_lines, after_line)
 
@@ -655,9 +657,9 @@ def _false_if_target(node, conditional_nodes: list, index: int, reportable_lines
     return after_line
 
 
-def _add_for_arcs(node, reportable_lines: Collection[int], arcs: set[tuple[int, int]]) -> None:  # noqa: ANN001
+def _add_for_arcs(node, reportable_lines: Collection[int], tag_ranges: Mapping[int, tuple[int, int]], arcs: set[tuple[int, int]]) -> None:  # noqa: ANN001
     """Add possible arcs from a Jinja ``for`` node to its body and explicit ``else`` block."""
-    body_line = _first_reportable_line_in_nodes(reportable_lines, node.body, after_line=node.lineno)
+    body_line = _first_reportable_line_in_nodes(reportable_lines, node.body, after_line=_tag_end_line(node.lineno, tag_ranges))
 
     _add_arc(arcs, node.lineno, body_line)
     if node.else_:
@@ -680,6 +682,11 @@ def _first_reportable_line_in_nodes(reportable_lines: Collection[int], nodes, af
 def _next_reportable_line(reportable_lines: Collection[int], line_number: int) -> int:
     """Return the next reportable line after ``line_number`` or the source-exit sentinel."""
     return next((line for line in sorted(reportable_lines) if line > line_number), SOURCE_EXIT)
+
+
+def _tag_end_line(line_number: int, tag_ranges: Mapping[int, tuple[int, int]]) -> int:
+    """Return the end line of the Jinja tag containing ``line_number``."""
+    return tag_ranges.get(line_number, (line_number, line_number))[1]
 
 
 def _node_end_lineno(node) -> int:  # noqa: ANN001
