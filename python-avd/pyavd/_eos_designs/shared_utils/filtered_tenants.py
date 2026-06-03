@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast, overload
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, unique
+from pyavd._utils import default
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt, ospf_simple_encrypt
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -208,25 +208,12 @@ class FilteredTenantsMixin(Protocol):
         """
         The 'vlans' switch fact is a string representing a vlan range (ex. "1-200").
 
-        For l2 switches return intersection of vlans from this switch and vlans from uplink switches.
-        For anything else return the expanded vlans from this switch.
+        Return the expanded vlans from this switch after facts have resolved local filtering and VLAN availability.
         """
         switch_vlans = self.switch_facts.vlans
         if not switch_vlans:
             return set()
-        switch_vlans_list = range_expand(switch_vlans)
-        accepted_vlans = {int(vlan) for vlan in switch_vlans_list}
-        if self.uplink_type != "port-channel":
-            return accepted_vlans
-
-        uplink_switches = unique(self.uplink_switches)
-        uplink_switches = [uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.all_fabric_devices]
-        for uplink_switch in uplink_switches:
-            uplink_switch_facts = self.get_peer_facts(uplink_switch, required=True)
-            uplink_switch_vlans_set = {int(vlan) for vlan in range_expand(uplink_switch_facts.vlans)}
-            accepted_vlans = accepted_vlans.intersection(uplink_switch_vlans_set)
-
-        return accepted_vlans
+        return {int(vlan) for vlan in range_expand(switch_vlans)}
 
     def is_accepted_vrf(self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem) -> bool:
         """
