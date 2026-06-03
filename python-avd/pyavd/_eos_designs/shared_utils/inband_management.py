@@ -23,11 +23,11 @@ class InbandManagementMixin(Protocol):
 
     @cached_property
     def configure_inband_mgmt(self: SharedUtilsProtocol) -> bool:
-        return bool(self.uplink_type == "port-channel" and self.inband_mgmt_ip)
+        return bool(self.uplink_type in ["port-channel", "l2-ethernet"] and self.inband_mgmt_ip)
 
     @cached_property
     def configure_inband_mgmt_ipv6(self: SharedUtilsProtocol) -> bool:
-        return bool(self.uplink_type == "port-channel" and self.inband_mgmt_ipv6_address)
+        return bool(self.uplink_type in ["port-channel", "l2-ethernet"] and self.inband_mgmt_ipv6_address)
 
     @cached_property
     def configure_parent_for_inband_mgmt(self: SharedUtilsProtocol) -> bool:
