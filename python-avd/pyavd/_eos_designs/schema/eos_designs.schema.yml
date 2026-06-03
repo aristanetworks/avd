@@ -187,8 +187,13 @@ keys:
                   - int
                 tls:
                   type: dict
-                  description: When TLS is configured, `key` and `cleartext_key` are
-                    ignored.
+                  description: 'When TLS is configured, `key` and `cleartext_key`
+                    are ignored.
+
+                    For proper functionality to render TLS settings on the
+
+                    server group member entry, set `avd_design_future.fix_radius_server_group_tls:
+                    true`.'
                   $ref: eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/tls
           vrfs:
             type: list
@@ -386,6 +391,11 @@ keys:
           and on all ''uplink_switches'' even when available VLANs differ between
           the ''uplink_switches''.'
         default: false
+      fix_radius_server_group_tls:
+        type: bool
+        default: false
+        description: Fix to configure TLS on RADIUS server group members to match
+          their global RADIUS server configurations.
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -8779,13 +8789,16 @@ keys:
     documentation_options:
       table: fabric-settings
     description: "This feature allows pure IPv6 underlay routing protocol with numbered
-      addresses.\nCurrently sets both underlay and overlay, including MLAG, to use
-      IPv6 addresses.\nCurrently BGP peer-groups are named with IPv4 by default. This
-      can be modified under `bgp_peer_groups`.\nRequires:\n  - \"underlay_ipv6: true\"\n
-      \ - \"loopback_ipv6_pool\"\n  - \"underlay_routing_protocol: ebgp\"\nSome settings
-      are not yet supported with IPv6 underlay:\n  - underlay_multicast_pim_sm\n  -
-      underlay_multicast_rp_interfaces\n  - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n
-      \ - inband_ztp\n"
+      addresses.\nSets the underlay and overlay (EVPN) to use IPv6 addresses.\nCurrently
+      BGP peer-groups are named with IPv4 by default. This can be modified under `bgp_peer_groups`.\nRequires
+      (fabric-level):\n  - \"underlay_ipv6: true\"\n  - \"loopback_ipv6_pool\"\n  -
+      \"underlay_routing_protocol: ebgp\"\nRequires (node-level):\n  - \"uplink_ipv6_pool\"
+      (or `downlink_pools`)\n  - \"vtep_loopback_ipv6_pool\"\n  - \"router_id_pool\"\nFor
+      MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG
+      nodes:\n  - \"mlag_peer_address_family: ipv6\"\n  - \"mlag_peer_ipv6_pool\"\n
+      \ - \"mlag_peer_l3_ipv6_pool\"\nSome settings are not yet supported with IPv6
+      underlay:\n  - underlay_multicast_pim_sm\n  - underlay_multicast_rp_interfaces\n
+      \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
     type: bool
     default: false
   underlay_isis_authentication_cleartext_key:
