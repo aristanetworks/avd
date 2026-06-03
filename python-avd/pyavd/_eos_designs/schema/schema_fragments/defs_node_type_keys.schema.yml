@@ -159,7 +159,7 @@ $defs:
             has the VLAN permitted by tag/tenant filtering.
 
             `port-channel` and `l2-ethernet` options configures L2 trunks carrying all active VLANs permitted by tag/tenant filtering.
-            VLAN propagation across L2 fabric links is calculated from uplink definitions only. 
+            VLAN propagation across L2 fabric links is calculated from uplink definitions only.
             For ring topologies, define each ring link as an uplink in both directions; downstream links are not considered.
             To propagate VLANs across a non-hierarchical L2 topology, such as a ring or lateral L2 link, configure the link as an uplink on both neighboring switches.
         vtep:
