@@ -6,12 +6,12 @@
 {# eos - errdisable #}
 {% if errdisable is arista.avd.defined %}
 !
-{%     for cause_key in errdisable.detect_cause | arista.avd.default({}) | arista.avd.natural_sort %}
+{%     for cause_key in errdisable.detect_cause | arista.avd.natural_sort %}
 {%         if errdisable.detect_cause[cause_key] is arista.avd.defined(false) %}
 no errdisable detect cause {{ cause_key | replace('_', '-') }}
 {%         endif %}
 {%     endfor %}
-{%     for cause_key in errdisable.detect_cause | arista.avd.default({}) | arista.avd.natural_sort %}
+{%     for cause_key in errdisable.detect_cause | arista.avd.natural_sort %}
 {%         if errdisable.detect_cause[cause_key] is arista.avd.defined(true) %}
 errdisable detect cause {{ cause_key | replace('_', '-') }}
 {%         endif %}
@@ -19,14 +19,14 @@ errdisable detect cause {{ cause_key | replace('_', '-') }}
 {%     for cause in errdisable.detect.causes | arista.avd.natural_sort %}
 errdisable detect cause {{ cause }}
 {%     endfor %}
-{%     for cause_key in errdisable.recovery_cause | arista.avd.default({}) | arista.avd.natural_sort %}
+{%     for cause_key in errdisable.recovery_cause | arista.avd.natural_sort %}
 {%         set cause_value = errdisable.recovery_cause[cause_key] %}
 {%         set cli_cause = cause_key | replace('_', '-') %}
 {%         if cause_value.interval is not arista.avd.defined and cause_value.enabled is arista.avd.defined(true) %}
 errdisable recovery cause {{ cli_cause }}
 {%         endif %}
 {%     endfor %}
-{%     for cause_key in errdisable.recovery_cause | arista.avd.default({}) | arista.avd.natural_sort %}
+{%     for cause_key in errdisable.recovery_cause | arista.avd.natural_sort %}
 {%         set cause_value = errdisable.recovery_cause[cause_key] %}
 {%         set cli_cause = cause_key | replace('_', '-') %}
 {%         if cause_value.interval is arista.avd.defined and cause_value.enabled is arista.avd.defined(true) %}
