@@ -11047,6 +11047,7 @@ $defs:
             - port-channel
             - p2p-vrfs
             - lan
+            - l2-ethernet
             description: 'Override the default `uplink_type` set at the `node_type_key`
               level.
 
@@ -12147,7 +12148,7 @@ $defs:
             documentation_options:
               table: node-type-inband-management-configuration
             description: 'VLAN number used for inband management on L2 switches (switches
-              using port-channel trunks as uplinks).
+              using L2 trunks as uplinks).
 
               When using ''inband_mgmt_subnet'' the VLAN and SVIs will be created
               automatically on this switch as well as all ''uplink_switches''.
@@ -12163,7 +12164,7 @@ $defs:
             documentation_options:
               table: node-type-inband-management-configuration
             description: 'Optional IP subnet assigned to inband management SVIs on
-              L2 switches (switches using port-channels as uplinks).
+              L2 switches (switches using L2 trunks as uplinks).
 
               Parent l3leafs will have SVI with "ip virtual-router" and host-route
               injection based on ARP.
@@ -12189,8 +12190,8 @@ $defs:
               Setting is ignored if ''inband_mgmt_ip'' is set.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12224,8 +12225,8 @@ $defs:
               services data models.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12238,8 +12239,8 @@ $defs:
               if set.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12261,8 +12262,8 @@ $defs:
               services data models.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12297,8 +12298,8 @@ $defs:
               Setting is ignored if ''inband_mgmt_ipv6_address'' is set.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12314,8 +12315,8 @@ $defs:
               used as gateway).
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -13196,6 +13197,7 @@ $defs:
           - port-channel
           - p2p-vrfs
           - lan
+          - l2-ethernet
           default: p2p
           description: '`uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep`
             or `underlay_router` is true.
@@ -13226,7 +13228,21 @@ $defs:
             subinterfaces for each SVI defined under the VRFs in `network_services`
             as long as the uplink switch also
 
-            has the VLAN permitted by tag/tenant filtering.'
+            has the VLAN permitted by tag/tenant filtering.
+
+
+            `port-channel` and `l2-ethernet` options configures L2 trunks carrying
+            all active VLANs permitted by tag/tenant filtering.
+
+            VLAN propagation across L2 fabric links is calculated from uplink definitions
+            only.
+
+            For ring topologies, define each ring link as an uplink in both directions;
+            downstream links are not considered.
+
+            To propagate VLANs across a non-hierarchical L2 topology, such as a ring
+            or lateral L2 link, configure the link as an uplink on both neighboring
+            switches.'
         vtep:
           type: bool
           default: false
