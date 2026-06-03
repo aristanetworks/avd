@@ -7,12 +7,13 @@
 {% if errdisable is arista.avd.defined %}
 !
 {%     for cause_key in errdisable.detect_cause | arista.avd.default({}) | arista.avd.natural_sort %}
-{%         set cause_value = errdisable.detect_cause[cause_key] %}
-{%         set cli_cause = cause_key | replace('_', '-') %}
-{%         if cause_value is arista.avd.defined(true) %}
-errdisable detect cause {{ cli_cause }}
-{%         elif cause_value is arista.avd.defined(false) %}
-no errdisable detect cause {{ cli_cause }}
+{%         if errdisable.detect_cause[cause_key] is arista.avd.defined(false) %}
+no errdisable detect cause {{ cause_key | replace('_', '-') }}
+{%         endif %}
+{%     endfor %}
+{%     for cause_key in errdisable.detect_cause | arista.avd.default({}) | arista.avd.natural_sort %}
+{%         if errdisable.detect_cause[cause_key] is arista.avd.defined(true) %}
+errdisable detect cause {{ cause_key | replace('_', '-') }}
 {%         endif %}
 {%     endfor %}
 {%     for cause in errdisable.detect.causes | arista.avd.natural_sort %}
