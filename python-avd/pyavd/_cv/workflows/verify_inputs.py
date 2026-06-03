@@ -114,7 +114,7 @@ def duplicated_devices_handler(
         raise exception
 
     LOGGER.warning(
-        "verify_inputs: Devices with duplicated system_mac_address and unique aserial_number discovered in inventory (structured config): %s",
+        "verify_inputs: Devices with duplicated system_mac_address and unique serial_number discovered in inventory (structured config): %s",
         duplicated_devices.system_mac_address.set_serial_number,
     )
     warnings.append(CVDuplicatedDevices("Duplicated devices found in inventory", duplicated_devices.system_mac_address.set_serial_number))
