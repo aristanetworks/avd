@@ -1,5 +1,5 @@
 ---
-# Testing avd_design_future.include_tls_on_radius_server_group_members:
+# Testing avd_design_future.fix_radius_server_group_tls:
 # when true, TLS-enabled RADIUS servers referenced in an `aaa server group radius`
 # also get their TLS settings (enabled + port) emitted on the per-server entry inside the group.
 type: l2leaf
@@ -10,7 +10,7 @@ l2leaf:
       mgmt_ip: 192.168.0.2/24
 
 avd_design_future:
-  include_tls_on_radius_server_group_members: true
+  fix_radius_server_group_tls: true
 
 aaa_settings:
   radius:

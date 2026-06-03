@@ -369,10 +369,10 @@ class EosDesigns(EosDesignsRootModel):
                 tls: EosCliConfigGen.RadiusServer.ServersItem.Tls
                 """
                 When TLS is configured, `key` and `cleartext_key` are ignored.
-                For prober functionality to render
+                For proper functionality to render
                 TLS settings on the
-                server group member entry, set
-                `avd_design_future.include_tls_on_radius_server_group_members: true`.
+                server group member entry, set `avd_design_future.fix_radius_server_group_tls:
+                true`.
                 """
 
                 if TYPE_CHECKING:
@@ -433,10 +433,10 @@ class EosDesigns(EosDesignsRootModel):
                                recommended to make use of a vault or similar.
                             tls:
                                When TLS is configured, `key` and `cleartext_key` are ignored.
-                               For prober functionality to render
+                               For proper functionality to render
                                TLS settings on the
-                               server group member entry, set
-                               `avd_design_future.include_tls_on_radius_server_group_members: true`.
+                               server group member entry, set `avd_design_future.fix_radius_server_group_tls:
+                               true`.
 
                         """
 
@@ -988,7 +988,7 @@ class EosDesigns(EosDesignsRootModel):
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
-            "include_tls_on_radius_server_group_members": {"type": bool, "default": False},
+            "fix_radius_server_group_tls": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1043,15 +1043,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        include_tls_on_radius_server_group_members: bool
+        fix_radius_server_group_tls: bool
         """
-        When a RADIUS server has TLS enabled and is referenced in an `aaa server group radius`,
-        also emit
-        the TLS settings (enabled state and port) on the server entry within the group.
-        This is required for
-        prober functionality, where the `tls` configuration on the
-        `aaa_settings.radius.servers` entry must
-        also be present on the server group member.
+        Fix to configure TLS on RADIUS server group members to match their global RADIUS server
+        configurations.
 
         Default value: `False`
         """
@@ -1069,7 +1064,7 @@ class EosDesigns(EosDesignsRootModel):
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
-                include_tls_on_radius_server_group_members: bool | UndefinedType = Undefined,
+                fix_radius_server_group_tls: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1094,14 +1089,9 @@ class EosDesigns(EosDesignsRootModel):
                        Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
                        and on
                        all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
-                    include_tls_on_radius_server_group_members:
-                       When a RADIUS server has TLS enabled and is referenced in an `aaa server group radius`,
-                       also emit
-                       the TLS settings (enabled state and port) on the server entry within the group.
-                       This is required for
-                       prober functionality, where the `tls` configuration on the
-                       `aaa_settings.radius.servers` entry must
-                       also be present on the server group member.
+                    fix_radius_server_group_tls:
+                       Fix to configure TLS on RADIUS server group members to match their global RADIUS server
+                       configurations.
 
                 """
 

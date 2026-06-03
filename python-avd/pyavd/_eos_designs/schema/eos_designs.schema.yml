@@ -190,9 +190,9 @@ keys:
                   description: 'When TLS is configured, `key` and `cleartext_key`
                     are ignored.
 
-                    For prober functionality to render TLS settings on the
+                    For proper functionality to render TLS settings on the
 
-                    server group member entry, set `avd_design_future.include_tls_on_radius_server_group_members:
+                    server group member entry, set `avd_design_future.fix_radius_server_group_tls:
                     true`.'
                   $ref: eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/tls
           vrfs:
@@ -391,20 +391,11 @@ keys:
           and on all ''uplink_switches'' even when available VLANs differ between
           the ''uplink_switches''.'
         default: false
-      include_tls_on_radius_server_group_members:
+      fix_radius_server_group_tls:
         type: bool
         default: false
-        description: 'When a RADIUS server has TLS enabled and is referenced in an
-          `aaa server group radius`,
-
-          also emit the TLS settings (enabled state and port) on the server entry
-          within the group.
-
-          This is required for prober functionality, where the `tls` configuration
-          on the
-
-          `aaa_settings.radius.servers` entry must also be present on the server group
-          member.'
+        description: Fix to configure TLS on RADIUS server group members to match
+          their global RADIUS server configurations.
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings

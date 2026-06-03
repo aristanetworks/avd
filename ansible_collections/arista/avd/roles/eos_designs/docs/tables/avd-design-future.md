@@ -16,7 +16,7 @@
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Configure `inband_mgmt_vrf` for IPv6 inband management. |
     | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
-    | [<samp>&nbsp;&nbsp;include_tls_on_radius_server_group_members</samp>](## "avd_design_future.include_tls_on_radius_server_group_members") | Boolean |  | `False` |  | When a RADIUS server has TLS enabled and is referenced in an `aaa server group radius`,<br>also emit the TLS settings (enabled state and port) on the server entry within the group.<br>This is required for prober functionality, where the `tls` configuration on the<br>`aaa_settings.radius.servers` entry must also be present on the server group member. |
+    | [<samp>&nbsp;&nbsp;fix_radius_server_group_tls</samp>](## "avd_design_future.fix_radius_server_group_tls") | Boolean |  | `False` |  | Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations. |
 
 === "YAML"
 
@@ -50,9 +50,6 @@
       # and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
       consistent_uplink_vlans: <bool; default=False>
 
-      # When a RADIUS server has TLS enabled and is referenced in an `aaa server group radius`,
-      # also emit the TLS settings (enabled state and port) on the server entry within the group.
-      # This is required for prober functionality, where the `tls` configuration on the
-      # `aaa_settings.radius.servers` entry must also be present on the server group member.
-      include_tls_on_radius_server_group_members: <bool; default=False>
+      # Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations.
+      fix_radius_server_group_tls: <bool; default=False>
     ```

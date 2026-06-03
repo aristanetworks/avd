@@ -124,7 +124,7 @@ class AaaSettingsMixin(Protocol):
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
                 radius_group.type = "radius"
                 group_server = EosCliConfigGen.AaaServerGroupsItem.ServersItem(server=server.host, vrf=server_vrf)
-                if self.inputs.avd_design_future.include_tls_on_radius_server_group_members and server.tls.enabled:
+                if self.inputs.avd_design_future.fix_radius_server_group_tls and server.tls.enabled:
                     group_server.tls._update(enabled=server.tls.enabled, port=server.tls.port)
                 radius_group.servers.append(group_server)
 
