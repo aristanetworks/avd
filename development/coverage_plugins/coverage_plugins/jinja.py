@@ -2,25 +2,11 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """
-Coverage.py plugin that reports generated Jinja module execution against source templates.
+Coverage.py plugin mapping generated Jinja module execution to source templates.
 
-AVD renders checked-in ``.j2`` templates through generated Python modules in
-``compiled_templates`` directories. Native coverage.py would report execution
-against those generated ``.py`` files, which are implementation artifacts. This
-plugin claims those generated files during ``coverage run`` and maps executed
-Python lines back to the source Jinja template file.
-
-The plugin has two distinct responsibilities:
-
-* Runtime tracing: parse a compiled Jinja module, resolve the source template,
-  and translate generated Python frame line numbers to source template lines.
-* Reporting: tell coverage.py which source template lines and branch arcs are
-  meaningful enough to report.
-
-The reporting model is intentionally source-level and heuristic. Jinja emits a
-lot of runtime scaffolding that does not correspond to template behavior. The
-plugin maps only lines and arcs it can associate with source template behavior
-instead of assigning generated scaffolding to the nearest template line.
+The reporting model is intentionally source-level and heuristic: it maps only
+lines and arcs it can associate with template behavior instead of assigning
+generated scaffolding to the nearest template line.
 """
 
 from __future__ import annotations
@@ -46,15 +32,7 @@ FileStamp = tuple[int, int]
 
 @dataclass(frozen=True)
 class CompiledTemplate:
-    """
-    Parsed mapping metadata for one compiled Jinja Python module.
-
-    ``debug_map`` comes from Jinja's generated ``debug_info`` constant and maps
-    generated Python lines to template lines. ``generated_line_ranges`` maps
-    generated Python lines to source ranges for multiline Jinja tags and static
-    output yielded by the generated module. Both mappings are immutable so
-    cached tracer results cannot be mutated by callers.
-    """
+    """Parsed mapping metadata for one compiled Jinja Python module."""
 
     source_filename: str
     debug_map: tuple[tuple[int, int], ...]
@@ -161,10 +139,10 @@ class JinjaTemplateFileReporter(FileReporter):
         possible_arcs = source_template.possible_arcs
         source_filename = Path(self.filename)
         translated_arcs.update(
-            _covered_multiline_tag_branch_arcs(recorded_arcs, possible_arcs, source_template.tag_ranges, source_template.arc_endpoint_lines),
+            _covered_multiline_tag_branch_arcs(recorded_arcs, possible_arcs, source_template.tag_ranges, source_template.reportable_lines),
         )
         translated_arcs.update(
-            _covered_else_branch_arcs(recorded_arcs, translated_arcs, possible_arcs, source_filename, source_template.arc_endpoint_lines),
+            _covered_else_branch_arcs(recorded_arcs, translated_arcs, possible_arcs, source_filename, source_template.reportable_lines),
         )
         return translated_arcs
 
@@ -265,6 +243,7 @@ def _generated_line_ranges(tree: ast.Module, source_filename: Path, debug_map: t
         generated_line: source_tag_ranges.get(template_line, (template_line, template_line)) for generated_line, template_line in debug_map
     }
     generated_line_ranges.update(_generated_static_line_ranges(tree, source_filename))
+    generated_line_ranges.update(_generated_endif_line_ranges(tree, source_filename, debug_map, generated_line_ranges))
     for generated_line, (start_line, end_line) in generated_line_ranges.items():
         if else_branch_range := else_branch_line_ranges.get(start_line):
             generated_line_ranges[generated_line] = (else_branch_range[0], end_line)
@@ -317,7 +296,8 @@ def _source_template_cached(filename: Path, file_stamp: FileStamp) -> SourceTemp
     ``file_stamp`` participates only in cache invalidation.
     """
     reportable_lines = _find_reportable_jinja_lines_cached(filename, file_stamp)
-    arc_endpoint_lines = _arc_endpoint_lines(reportable_lines)
+    structural_control_label_lines = _find_structural_control_label_lines_cached(filename, file_stamp)
+    arc_endpoint_lines = _arc_endpoint_lines(reportable_lines, structural_control_label_lines)
     return SourceTemplate(
         reportable_lines=reportable_lines,
         arc_endpoint_lines=arc_endpoint_lines,
@@ -327,15 +307,14 @@ def _source_template_cached(filename: Path, file_stamp: FileStamp) -> SourceTemp
     )
 
 
-def _arc_endpoint_lines(reportable_lines: Collection[int]) -> frozenset[int]:
+def _arc_endpoint_lines(reportable_lines: Collection[int], structural_control_label_lines: Collection[int] = ()) -> frozenset[int]:
     """
     Return source lines allowed as branch arc endpoints.
 
-    Today the plugin only reports arcs between executable source lines. Keeping
-    this as a named model boundary avoids generating structural arcs that are
-    silently discarded by recorded-arc translation.
+    Structural control labels are not executable lines, but they are useful
+    source-level join points for branch coverage.
     """
-    return frozenset(reportable_lines)
+    return frozenset(reportable_lines) | frozenset(structural_control_label_lines)
 
 
 def _translate_recorded_arc_endpoint(line: int, arc_endpoint_lines: Collection[int]) -> int | None:
@@ -360,6 +339,8 @@ def _covered_multiline_tag_branch_arcs(
     covered_branch_arcs: set[tuple[int, int]] = set()
     for from_line, to_line in possible_arcs:
         if from_line <= 0 or to_line <= 0:
+            continue
+        if to_line not in reportable_lines:
             continue
 
         tag_range = tag_ranges.get(from_line)
@@ -400,6 +381,41 @@ def _covered_else_branch_arcs(
             covered_else_arcs.add((from_line, to_line))
 
     return covered_else_arcs
+
+
+def _generated_endif_line_ranges(
+    tree: ast.Module,
+    source_filename: Path,
+    debug_map: tuple[tuple[int, int], ...],
+    existing_line_ranges: Mapping[int, tuple[int, int]],
+) -> dict[int, tuple[int, int]]:
+    """Map generated post-if statements to the matching source ``endif`` label."""
+    try:
+        source = source_filename.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return {}
+
+    endif_lines_by_conditional_line = _if_endif_lines(source)
+    if not endif_lines_by_conditional_line:
+        return {}
+
+    source_lines_by_generated_line = dict(debug_map)
+    endif_ranges: dict[int, tuple[int, int]] = {}
+
+    def visit_statements(statements: list[ast.stmt]) -> None:
+        for index, statement in enumerate(statements):
+            source_line = source_lines_by_generated_line.get(statement.lineno) if isinstance(statement, ast.If) else None
+            if source_line is not None and (endif_line := endif_lines_by_conditional_line.get(source_line)) is not None and index + 1 < len(statements):
+                next_generated_line = statements[index + 1].lineno
+                existing_start_line, existing_end_line = existing_line_ranges.get(next_generated_line, (endif_line, endif_line))
+                endif_ranges[next_generated_line] = (min(endif_line, existing_start_line), max(endif_line, existing_end_line))
+
+            for _field_name, value in ast.iter_fields(statement):
+                if isinstance(value, list) and value and all(isinstance(item, ast.stmt) for item in value):
+                    visit_statements(value)
+
+    visit_statements(tree.body)
+    return endif_ranges
 
 
 def _module_string_constants(tree: ast.Module) -> dict[str, str]:
@@ -498,6 +514,17 @@ def _find_reportable_jinja_lines_cached(filename: Path, file_stamp: FileStamp) -
     reportable_lines.update(line_number for line_number, _line_text in _static_template_lines(source))
     reportable_lines = _expand_tag_ranges(source, reportable_lines | _variable_statement_lines(source) | _control_statement_lines(source))
     return frozenset(reportable_lines)
+
+
+@lru_cache(maxsize=4096)
+def _find_structural_control_label_lines_cached(filename: Path, file_stamp: FileStamp) -> frozenset[int]:  # noqa: ARG001
+    """Return structural control labels used only as branch arc endpoints."""
+    try:
+        source = filename.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return frozenset()
+
+    return frozenset(_control_statement_lines(source, names={"endif"}))
 
 
 def _generated_static_line_ranges(tree: ast.Module, source_filename: Path) -> dict[int, tuple[int, int]]:
@@ -695,14 +722,35 @@ def _control_statement_lines(source: str, names: set[str] | None = None) -> set[
     to the ``{%`` line itself. Lexing preserves the block-start line, so this
     helper adds the source line for ``if``, ``elif``, and ``for`` statements.
     """
+    names = names or {"if", "elif", "else", "for"}
+    return {line_number for line_number, name in _block_statement_lines(source) if name in names}
+
+
+def _if_endif_lines(source: str) -> dict[int, int]:
+    """Return matching source ``endif`` lines for each ``if`` and ``elif`` line."""
+    endif_lines_by_conditional_line: dict[int, int] = {}
+    if_stack: list[list[int]] = []
+    for block_lineno, block_name in _block_statement_lines(source):
+        if block_name == "if":
+            if_stack.append([block_lineno])
+        elif block_name == "elif" and if_stack:
+            if_stack[-1].append(block_lineno)
+        elif block_name == "endif" and if_stack:
+            for conditional_line in if_stack.pop():
+                endif_lines_by_conditional_line[conditional_line] = block_lineno
+
+    return endif_lines_by_conditional_line
+
+
+def _block_statement_lines(source: str) -> tuple[tuple[int, str], ...]:
+    """Return the first statement name and source line for each Jinja block."""
     try:
         from jinja2 import Environment  # noqa: PLC0415
     except ImportError:
-        return set()
+        return ()
 
     environment = Environment(extensions=JINJA2_EXTENSIONS)  # noqa: S701
-    names = names or {"if", "elif", "else", "for"}
-    control_statement_lines: set[int] = set()
+    block_statements: list[tuple[int, str]] = []
     in_block = False
     block_lineno = 0
     try:
@@ -710,20 +758,15 @@ def _control_statement_lines(source: str, names: set[str] | None = None) -> set[
             if kind == "block_begin":
                 in_block = True
                 block_lineno = lineno
-                continue
-
-            if kind == "block_end":
+            elif in_block and kind == "name":
+                block_statements.append((block_lineno, value))
                 in_block = False
-                block_lineno = 0
-                continue
-
-            if in_block and kind == "name" and value in names:
-                control_statement_lines.add(block_lineno)
+            elif kind == "block_end":
                 in_block = False
     except Exception:
-        return set()
+        return ()
 
-    return control_statement_lines
+    return tuple(block_statements)
 
 
 def _numbered_non_whitespace_lines(start_lineno: int, value: str) -> list[tuple[int, str]]:
@@ -753,7 +796,13 @@ def _find_possible_jinja_arcs(source_filename: Path) -> frozenset[tuple[int, int
         return frozenset()
 
     reportable_lines = _find_reportable_jinja_lines(source_filename)
-    return _find_possible_jinja_arcs_cached(source_filename.resolve(), file_stamp, reportable_lines, _arc_endpoint_lines(reportable_lines))
+    structural_control_label_lines = _find_structural_control_label_lines_cached(source_filename.resolve(), file_stamp)
+    return _find_possible_jinja_arcs_cached(
+        source_filename.resolve(),
+        file_stamp,
+        reportable_lines,
+        _arc_endpoint_lines(reportable_lines, structural_control_label_lines),
+    )
 
 
 @lru_cache(maxsize=4096)
@@ -787,10 +836,14 @@ def _find_possible_jinja_arcs_cached(
         return frozenset()
 
     tag_ranges = _tag_ranges_by_line(source)
+    endif_lines_by_conditional_line = _if_endif_lines(source)
+    elif_node_ids = {id(elif_node) for if_node in parsed_template.find_all(nodes.If) for elif_node in if_node.elif_}
     arcs: set[tuple[int, int]] = set()
     for node in parsed_template.find_all((nodes.If, nodes.For)):
         if isinstance(node, nodes.If):
-            _add_if_arcs(node, reportable_lines, arc_endpoint_lines, tag_ranges, arcs)
+            if id(node) in elif_node_ids:
+                continue
+            _add_if_arcs(node, reportable_lines, arc_endpoint_lines, tag_ranges, endif_lines_by_conditional_line, arcs)
         elif isinstance(node, nodes.For):
             _add_for_arcs(node, reportable_lines, arc_endpoint_lines, tag_ranges, arcs)
 
@@ -802,6 +855,7 @@ def _add_if_arcs(
     reportable_lines: Collection[int],
     arc_endpoint_lines: Collection[int],
     tag_ranges: Mapping[int, tuple[int, int]],
+    endif_lines_by_conditional_line: Mapping[int, int],
     arcs: set[tuple[int, int]],
 ) -> None:
     """Add possible arcs from a Jinja ``if`` node and any ``elif`` nodes."""
@@ -814,20 +868,27 @@ def _add_if_arcs(
             conditional_node.body,
             after_line=conditional_end_line,
         )
-        false_line = _false_if_target(node, conditional_nodes, index, reportable_lines, after_line)
+        false_line = _false_if_target(node, conditional_nodes, index, reportable_lines, endif_lines_by_conditional_line, after_line)
 
         _add_arc(arcs, conditional_node.lineno, body_line, arc_endpoint_lines)
         _add_arc(arcs, conditional_node.lineno, false_line, arc_endpoint_lines)
 
 
-def _false_if_target(node, conditional_nodes: list, index: int, reportable_lines: Collection[int], after_line: int) -> int | None:  # noqa: ANN001
+def _false_if_target(
+    node: Any,
+    conditional_nodes: list[Any],
+    index: int,
+    reportable_lines: Collection[int],
+    endif_lines_by_conditional_line: Mapping[int, int],
+    after_line: int,
+) -> int | None:
     """Return the source line reached when one ``if`` or ``elif`` condition is false."""
     if index + 1 < len(conditional_nodes):
         return conditional_nodes[index + 1].lineno
     if node.else_:
         return _first_reportable_line_in_nodes(reportable_lines, node.else_)
 
-    return after_line
+    return endif_lines_by_conditional_line.get(conditional_nodes[index].lineno, after_line)
 
 
 def _add_for_arcs(
