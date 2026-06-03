@@ -459,7 +459,7 @@ l2leaf:
           uplink_interfaces: [Ethernet1]
           uplink_switches: [dc1-leaf2b]
           uplink_switch_interfaces: [Ethernet31]
-    # Node to test structured configs for underlay_l2 uplinks.
+      # Node to test structured configs for underlay_l2 uplinks.
     - group: DC1_L2LEAF7
       nodes:
         - name: dc1.l2leaf7a
@@ -554,9 +554,8 @@ l2leaf:
 
     # Minimal topology for asymmetric parent VLAN availability across split port-channel parents.
     # Parent A has VLANs 3901 and 3902, parent B has only VLAN 3902, and the child has both VLANs.
-    # In devel the split port-channel allowed VLANs were calculated per uplink parent, so the child and
-    # parent A rendered 3901-3902 while parent B rendered 3902. This PR filters VLANs against all parent
-    # paths, so all three devices render 3902.
+    # This test verifies that only 3902 is configured on both uplinks for `dc1-l2-child-asymmetric-2`
+    # and that `dc1-l2-child-asymmetric-1` keeps the non-breaking behavior.
     - group: DC1_L2LEAF9
       mlag: false
       uplink_type: port-channel
@@ -577,11 +576,19 @@ l2leaf:
           filter:
             tenants: [Tenant_PARENT_B]
             tags: [parent-b]
-        - name: dc1-l2-child-asymmetric
+        - name: dc1-l2-child-asymmetric-1
           mgmt_ip: 192.168.200.134/24
           uplink_interfaces: [Ethernet1, Ethernet2]
           uplink_switches: [dc1-l2-parent-a, dc1-l2-parent-b]
           uplink_switch_interfaces: [Ethernet1, Ethernet1]
+          filter:
+            tenants: [Tenant_PARENT_A, Tenant_PARENT_B]
+            tags: [parent-a, parent-b]
+        - name: dc1-l2-child-asymmetric-2
+          mgmt_ip: 192.168.200.135/24
+          uplink_interfaces: [Ethernet1, Ethernet2]
+          uplink_switches: [dc1-l2-parent-a, dc1-l2-parent-b]
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
           filter:
             tenants: [Tenant_PARENT_A, Tenant_PARENT_B]
             tags: [parent-a, parent-b]

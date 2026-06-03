@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import remove_cached_property_type
-from pyavd.j2filters import natural_sort, range_expand
+from pyavd.j2filters import list_compress, natural_sort, range_expand
 
 if TYPE_CHECKING:
     from . import EosDesignsFactsGeneratorProtocol
@@ -312,7 +312,16 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             else:
                 uplink.peer_trunk_groups.append_unique(self.shared_utils.hostname)
 
-        uplink.vlans = self.vlans or "none"
+        if self.inputs.avd_design_future.consistent_uplink_vlans or self.shared_utils.uplink_type == "l2-ethernet":
+            uplink_vlans = self._available_vlans
+        else:
+            uplink_vlans = self._candidate_vlans
+            uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._candidate_vlans)
+            if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
+                # Always add inband_mgmt_vlan even if the uplink switch does not have this vlan defined
+                uplink_vlans = uplink_vlans.union((self.shared_utils.node_config.inband_mgmt_vlan,))
+
+        uplink.vlans = list_compress(list(uplink_vlans)) if uplink_vlans else "none"
 
         if uplink_native_vlan := self.shared_utils.node_config.uplink_native_vlan:
             uplink.native_vlan = uplink_native_vlan
@@ -486,14 +495,3 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 raise AristaAvdError(msg, host=uplink_switch)
 
         return uplink_switch_interfaces
-
-    @cached_property
-    def _uplink_vlans(self: EosDesignsFactsGeneratorProtocol) -> frozenset[int]:
-        """Return the intersection of local VLANs with VLANs across all uplink switches."""
-        uplink_vlans = self._vlans
-
-        for uplink_switch in self.uplink_peers:
-            uplink_switch_facts = self.get_peer_facts_generator(uplink_switch)
-            uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._vlans)
-
-        return uplink_vlans

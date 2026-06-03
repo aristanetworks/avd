@@ -289,11 +289,14 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
             return frozenset()
 
         tenant_filter = set(self.shared_utils.node_config.filter.tenants)
-        accepted_tenants = (
-            tenant
-            for network_services_key in self.inputs._dynamic_keys.network_services
-            for tenant in network_services_key.value
-            if tenant_filter.intersection((tenant.name, "all"))
+        accepted_tenants = chain(
+            (
+                tenant
+                for network_services_key in self.inputs._dynamic_keys.network_services
+                for tenant in network_services_key.value
+                if tenant_filter.intersection((tenant.name, "all"))
+            ),
+            (tenant for tenant in self.inputs.network_services if tenant_filter.intersection((tenant.name, "all"))),
         )
 
         return frozenset(
@@ -353,9 +356,6 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
                 # Not restricting further since this was a cyclic reference.
                 continue
             available_vlans.intersection_update(uplink_switch_available_vlans)
-            if self.shared_utils.uplink_type == "port-channel" and not self.inputs.avd_design_future.only_configure_vlans_available_on_all_uplink_switches:
-                # Only consider VLANs from the first uplink switch.
-                break
 
         if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
             # Preserve existing behavior where the inband management VLAN is allowed
