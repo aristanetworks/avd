@@ -1767,6 +1767,7 @@ class TestDeployStaticConfigStudio:
         site2_region_id = generate_id("SITES/SITE2_REGION")
         site2_leaf_a_id = generate_id("SITES/SITE2_REGION/LEAF_A")
         site2_leaf_b_id = generate_id("SITES/SITE2_REGION/LEAF_B")
+        stale_cfg_id = generate_id("STALE_CFG")
 
         existing_containers = [
             # SITE2_REGION is a managed mid-node owned by another manifest, with its own managed descendants.
@@ -1776,10 +1777,13 @@ class TestDeployStaticConfigStudio:
                 container_id=site2_region_id, name="SITE2_REGION", description="", query="region:2", child_ids=[site2_leaf_a_id, site2_leaf_b_id]
             ),
             create_grpc_container(container_id=site2_leaf_a_id, name="LEAF_A", description="", query="leaf:a"),
-            create_grpc_container(container_id=site2_leaf_b_id, name="LEAF_B", description="", query="leaf:b"),
+            create_grpc_container(container_id=site2_leaf_b_id, name="LEAF_B", description="", query="leaf:b", configlet_ids=[stale_cfg_id]),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=stale_cfg_id), display_name="STALE_CFG"),
         ]
         mock_cv_client.get_configlet_containers.return_value = existing_containers
-        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_configlets.return_value = existing_configlets
         mock_cv_client.get_studio_inputs_with_path.return_value = [sites_id]
 
         # Manifest declares only SITE1 under SITES, with preserve enabled. SITE2_REGION and its descendants belong to another manifest.
@@ -1791,7 +1795,9 @@ class TestDeployStaticConfigStudio:
 
         # Nothing must be pushed or deleted — the preserved subtree (SITE2_REGION + LEAF_A + LEAF_B) is fully protected.
         mock_cv_client.set_configlet_containers.assert_not_called()
+        mock_cv_client.delete_configlets.assert_not_called()
         mock_cv_client.delete_configlet_container.assert_not_called()
+        assert deployment_result.removed_static_config_configlets == []
         assert not deployment_result.removed_static_config_containers
 
     async def test_configlet_held_by_preserved_and_manual_container_is_preserved(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
