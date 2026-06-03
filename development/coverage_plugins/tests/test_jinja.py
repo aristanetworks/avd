@@ -247,6 +247,23 @@ def test_coverage_marks_multiline_jinja_tags_as_executed_ranges(tmp_path: Path) 
     assert set(analysis.executed) >= {1, 2, 3, 4, 5}
 
 
+def test_coverage_marks_multiline_jinja_branch_body_arc_as_executed(tmp_path: Path) -> None:
+    analysis = _analyze_rendered_template(
+        tmp_path,
+        "{% if wrapper %}\n"
+        "{% if primary is defined or\n"
+        "      secondary is defined or\n"
+        "      fallback is defined %}\n"
+        "{% set value = 'covered' %}\n"
+        "{% endif %}\n"
+        "{% endif %}\n",
+        {"wrapper": True, "primary": True},
+    )
+
+    assert analysis.branch_stats()[2] == (2, 1)
+    assert analysis.missing_branch_arcs() == {2: [-1]}
+
+
 def test_file_reporter_does_not_expose_cached_mutable_sets(tmp_path: Path) -> None:
     source_file = tmp_path / "template.j2"
     source_file.write_text("{% if enabled %}\nhello\n{% endif %}\n", encoding="utf-8")
