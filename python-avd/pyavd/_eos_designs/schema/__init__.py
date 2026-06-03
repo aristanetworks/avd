@@ -3581,6 +3581,8 @@ class EosDesigns(EosDesignsRootModel):
                 "phone_trunk_mode": {"type": str},
                 "trunk_groups": {"type": TrunkGroups},
                 "vlans": {"type": str},
+                "mac_acl_in": {"type": str},
+                "mac_acl_out": {"type": str},
                 "spanning_tree_portfast": {"type": str},
                 "spanning_tree_bpdufilter": {"type": str},
                 "spanning_tree_bpduguard": {"type": str},
@@ -3745,6 +3747,10 @@ class EosDesigns(EosDesignsRootModel):
             the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
             for access ports.
             """
+            mac_acl_in: str | None
+            """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
+            mac_acl_out: str | None
+            """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
             spanning_tree_portfast: SpanningTreePortfast | None
             spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
             spanning_tree_bpduguard: SpanningTreeBpduguard | None
@@ -3878,6 +3884,8 @@ class EosDesigns(EosDesignsRootModel):
                     phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                     vlans: str | None | UndefinedType = Undefined,
+                    mac_acl_in: str | None | UndefinedType = Undefined,
+                    mac_acl_out: str | None | UndefinedType = Undefined,
                     spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                     spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
@@ -4016,6 +4024,8 @@ class EosDesigns(EosDesignsRootModel):
                            If not set,
                            the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                            for access ports.
+                        mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+                        mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                         spanning_tree_portfast: spanning_tree_portfast
                         spanning_tree_bpdufilter: spanning_tree_bpdufilter
                         spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -24264,6 +24274,142 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class MacAclsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Action: TypeAlias = Literal["permit", "deny"]
+            _fields: ClassVar[dict] = {
+                "sequence": {"type": int},
+                "action": {"type": str},
+                "remark": {"type": str},
+                "source": {"type": str},
+                "source_wildcard": {"type": str},
+                "destination": {"type": str},
+                "destination_wildcard": {"type": str},
+            }
+            sequence: int | None
+            action: Action | None
+            remark: str | None
+            """
+            Remark.
+            Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+            are ignored
+            when `remark` is set.
+            """
+            source: str | None
+            """
+            Source mac-address.
+            This can be `any` or a MAC address.
+            """
+            source_wildcard: str | None
+            """
+            Wildcard bits for source MAC address.
+            Required when `source` is not `any`.
+            """
+            destination: str | None
+            """
+            Destination MAC address.
+            This can be `any` or a MAC address.
+            """
+            destination_wildcard: str | None
+            """
+            Wildcard bits for destination MAC address.
+            Required when `destination` is not `any`.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    sequence: int | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    source_wildcard: str | None | UndefinedType = Undefined,
+                    destination: str | None | UndefinedType = Undefined,
+                    destination_wildcard: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sequence: sequence
+                        action: action
+                        remark:
+                           Remark.
+                           Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+                           are ignored
+                           when `remark` is set.
+                        source:
+                           Source mac-address.
+                           This can be `any` or a MAC address.
+                        source_wildcard:
+                           Wildcard bits for source MAC address.
+                           Required when `source` is not `any`.
+                        destination:
+                           Destination MAC address.
+                           This can be `any` or a MAC address.
+                        destination_wildcard:
+                           Wildcard bits for destination MAC address.
+                           Required when `destination` is not `any`.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
+        _fields: ClassVar[dict] = {"name": {"type": str}, "counters_per_entry": {"type": bool}, "entries": {"type": Entries}}
+        name: str
+        """Access-list name."""
+        counters_per_entry: bool | None
+        entries: Entries
+        """
+        For each entry action or remark must be set.
+
+        Subclass of AvdList with `EntriesItem` items.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
+                entries: Entries | UndefinedType = Undefined,
+            ) -> None:
+                """
+                MacAclsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: Access-list name.
+                    counters_per_entry: counters_per_entry
+                    entries:
+                       For each entry action or remark must be set.
+
+                       Subclass of AvdList with `EntriesItem` items.
+
+                """
+
+    class MacAcls(AvdIndexedList[str, MacAclsItem]):
+        """Subclass of AvdIndexedList with `MacAclsItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    MacAcls._item_type = MacAclsItem
+
     class ManagementEapi(AvdModel):
         """Subclass of AvdModel."""
 
@@ -26241,6 +26387,8 @@ class EosDesigns(EosDesignsRootModel):
             "phone_trunk_mode": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
             "vlans": {"type": str},
+            "mac_acl_in": {"type": str},
+            "mac_acl_out": {"type": str},
             "spanning_tree_portfast": {"type": str},
             "spanning_tree_bpdufilter": {"type": str},
             "spanning_tree_bpduguard": {"type": str},
@@ -26395,6 +26543,10 @@ class EosDesigns(EosDesignsRootModel):
         the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
         for access ports.
         """
+        mac_acl_in: str | None
+        """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
+        mac_acl_out: str | None
+        """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
         spanning_tree_portfast: SpanningTreePortfast | None
         spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
         spanning_tree_bpduguard: SpanningTreeBpduguard | None
@@ -26527,6 +26679,8 @@ class EosDesigns(EosDesignsRootModel):
                 phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 vlans: str | None | UndefinedType = Undefined,
+                mac_acl_in: str | None | UndefinedType = Undefined,
+                mac_acl_out: str | None | UndefinedType = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                 spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                 spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
@@ -26658,6 +26812,8 @@ class EosDesigns(EosDesignsRootModel):
                        If not set,
                        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                        for access ports.
+                    mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+                    mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
                     spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -40597,6 +40753,8 @@ class EosDesigns(EosDesignsRootModel):
             "phone_trunk_mode": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
             "vlans": {"type": str},
+            "mac_acl_in": {"type": str},
+            "mac_acl_out": {"type": str},
             "spanning_tree_portfast": {"type": str},
             "spanning_tree_bpdufilter": {"type": str},
             "spanning_tree_bpduguard": {"type": str},
@@ -40708,6 +40866,10 @@ class EosDesigns(EosDesignsRootModel):
         the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
         for access ports.
         """
+        mac_acl_in: str | None
+        """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
+        mac_acl_out: str | None
+        """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
         spanning_tree_portfast: SpanningTreePortfast | None
         spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
         spanning_tree_bpduguard: SpanningTreeBpduguard | None
@@ -40837,6 +40999,8 @@ class EosDesigns(EosDesignsRootModel):
                 phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 vlans: str | None | UndefinedType = Undefined,
+                mac_acl_in: str | None | UndefinedType = Undefined,
+                mac_acl_out: str | None | UndefinedType = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                 spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                 spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
@@ -40930,6 +41094,8 @@ class EosDesigns(EosDesignsRootModel):
                        If not set,
                        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                        for access ports.
+                    mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+                    mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
                     spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -69521,6 +69687,8 @@ class EosDesigns(EosDesignsRootModel):
                         "phone_trunk_mode": {"type": str},
                         "trunk_groups": {"type": TrunkGroups},
                         "vlans": {"type": str},
+                        "mac_acl_in": {"type": str},
+                        "mac_acl_out": {"type": str},
                         "spanning_tree_portfast": {"type": str},
                         "spanning_tree_bpdufilter": {"type": str},
                         "spanning_tree_bpduguard": {"type": str},
@@ -69685,6 +69853,10 @@ class EosDesigns(EosDesignsRootModel):
                     the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                     for access ports.
                     """
+                    mac_acl_in: str | None
+                    """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
+                    mac_acl_out: str | None
+                    """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
                     spanning_tree_portfast: SpanningTreePortfast | None
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
                     spanning_tree_bpduguard: SpanningTreeBpduguard | None
@@ -69818,6 +69990,8 @@ class EosDesigns(EosDesignsRootModel):
                             phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                             trunk_groups: TrunkGroups | UndefinedType = Undefined,
                             vlans: str | None | UndefinedType = Undefined,
+                            mac_acl_in: str | None | UndefinedType = Undefined,
+                            mac_acl_out: str | None | UndefinedType = Undefined,
                             spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                             spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                             spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
@@ -69956,6 +70130,8 @@ class EosDesigns(EosDesignsRootModel):
                                    If not set,
                                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                                    for access ports.
+                                mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+                                mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
                                 spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -71563,6 +71739,8 @@ class EosDesigns(EosDesignsRootModel):
                         "phone_trunk_mode": {"type": str},
                         "trunk_groups": {"type": TrunkGroups},
                         "vlans": {"type": str},
+                        "mac_acl_in": {"type": str},
+                        "mac_acl_out": {"type": str},
                         "spanning_tree_portfast": {"type": str},
                         "spanning_tree_bpdufilter": {"type": str},
                         "spanning_tree_bpduguard": {"type": str},
@@ -71727,6 +71905,10 @@ class EosDesigns(EosDesignsRootModel):
                     the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                     for access ports.
                     """
+                    mac_acl_in: str | None
+                    """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
+                    mac_acl_out: str | None
+                    """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
                     spanning_tree_portfast: SpanningTreePortfast | None
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
                     spanning_tree_bpduguard: SpanningTreeBpduguard | None
@@ -71860,6 +72042,8 @@ class EosDesigns(EosDesignsRootModel):
                             phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                             trunk_groups: TrunkGroups | UndefinedType = Undefined,
                             vlans: str | None | UndefinedType = Undefined,
+                            mac_acl_in: str | None | UndefinedType = Undefined,
+                            mac_acl_out: str | None | UndefinedType = Undefined,
                             spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                             spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                             spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
@@ -71998,6 +72182,8 @@ class EosDesigns(EosDesignsRootModel):
                                    If not set,
                                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                                    for access ports.
+                                mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+                                mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
                                 spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -102616,6 +102802,7 @@ class EosDesigns(EosDesignsRootModel):
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
         "logging_settings": {"type": LoggingSettings},
+        "mac_acls": {"type": MacAcls},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
         "management_settings": {"type": ManagementSettings},
@@ -104266,6 +104453,16 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    mac_acls: MacAcls
+    """
+    MAC access-lists.
+    These can be referenced under `network_ports/connected_endpoints`.
+    A MAC ACL is
+    only configured when it is referenced.
+
+    Subclass of AvdIndexedList with `MacAclsItem` items. Primary
+    key is `name` (`str`).
+    """
     mac_address_table: EosCliConfigGen.MacAddressTable
     management_eapi: ManagementEapi
     """
@@ -105413,6 +105610,7 @@ class EosDesigns(EosDesignsRootModel):
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
             logging_settings: LoggingSettings | UndefinedType = Undefined,
+            mac_acls: MacAcls | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
             management_settings: ManagementSettings | UndefinedType = Undefined,
@@ -106292,6 +106490,14 @@ class EosDesigns(EosDesignsRootModel):
                    Logging settings
 
                    Subclass of AvdModel.
+                mac_acls:
+                   MAC access-lists.
+                   These can be referenced under `network_ports/connected_endpoints`.
+                   A MAC ACL is
+                   only configured when it is referenced.
+
+                   Subclass of AvdIndexedList with `MacAclsItem` items. Primary
+                   key is `name` (`str`).
                 mac_address_table: mac_address_table
                 management_eapi:
                    Default is HTTPS management eAPI enabled.

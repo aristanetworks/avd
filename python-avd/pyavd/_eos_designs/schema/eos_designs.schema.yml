@@ -3817,6 +3817,68 @@ keys:
       monitor_layer1:
         type: dict
         $ref: eos_cli_config_gen#/keys/monitor_layer1
+  mac_acls:
+    type: list
+    primary_key: name
+    description: 'MAC access-lists.
+
+      These can be referenced under `network_ports/connected_endpoints`.
+
+      A MAC ACL is only configured when it is referenced.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Access-list name.
+          convert_types:
+          - int
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          unique_keys:
+          - sequence
+          description: For each entry action or remark must be set.
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                - str
+              action:
+                type: str
+                valid_values:
+                - permit
+                - deny
+              remark:
+                type: str
+                description: 'Remark.
+
+                  Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+
+                  are ignored when `remark` is set.'
+              source:
+                type: str
+                description: 'Source mac-address.
+
+                  This can be `any` or a MAC address.'
+              source_wildcard:
+                type: str
+                description: 'Wildcard bits for source MAC address.
+
+                  Required when `source` is not `any`.'
+              destination:
+                type: str
+                description: 'Destination MAC address.
+
+                  This can be `any` or a MAC address.'
+              destination_wildcard:
+                type: str
+                description: 'Wildcard bits for destination MAC address.
+
+                  Required when `destination` is not `any`.'
   mac_address_table:
     documentation_options:
       table: system-settings
@@ -9890,6 +9952,14 @@ $defs:
           '
         convert_types:
         - int
+      mac_acl_in:
+        type: str
+        description: MAC access-list to apply in the ingress direction. The ACL must
+          be defined in `mac_acls`.
+      mac_acl_out:
+        type: str
+        description: MAC access-list to apply in the egress direction. The ACL must
+          be defined in `mac_acls`.
       spanning_tree_portfast:
         type: str
         valid_values:
