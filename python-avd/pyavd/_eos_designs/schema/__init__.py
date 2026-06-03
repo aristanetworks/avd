@@ -7370,7 +7370,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
         class UplinkInterfaces(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -12597,7 +12597,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
         class UplinkInterfaces(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -36148,7 +36148,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
         class IpAddressing(AvdModel):
             """Subclass of AvdModel."""
@@ -36460,6 +36460,13 @@ class EosDesigns(EosDesignsRootModel):
         subinterfaces for each SVI defined under the VRFs in `network_services` as long as
         the uplink switch also
         has the VLAN permitted by tag/tenant filtering.
+
+        `port-channel` and
+        `l2-ethernet` options configures L2 trunks carrying all active VLANs permitted by tag/tenant
+        filtering.
+        Redundant L2 ring VLAN propagation is only calculated for links towards
+        `uplink_switches`.
+        For ring redundancy, define the ring links on both participating switches.
 
         Default value: `"p2p"`
         """
@@ -36590,6 +36597,13 @@ class EosDesigns(EosDesignsRootModel):
                        subinterfaces for each SVI defined under the VRFs in `network_services` as long as
                        the uplink switch also
                        has the VLAN permitted by tag/tenant filtering.
+
+                       `port-channel` and
+                       `l2-ethernet` options configures L2 trunks carrying all active VLANs permitted by tag/tenant
+                       filtering.
+                       Redundant L2 ring VLAN propagation is only calculated for links towards
+                       `uplink_switches`.
+                       For ring redundancy, define the ring links on both participating switches.
                     vtep: Is this switch an EVPN VTEP.
                     mpls_lsr: Is this switch an MPLS LSR.
                     ip_addressing:
@@ -36675,7 +36689,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
         class IpAddressing(AvdModel):
             """Subclass of AvdModel."""
@@ -36988,6 +37002,13 @@ class EosDesigns(EosDesignsRootModel):
         the uplink switch also
         has the VLAN permitted by tag/tenant filtering.
 
+        `port-channel` and
+        `l2-ethernet` options configures L2 trunks carrying all active VLANs permitted by tag/tenant
+        filtering.
+        Redundant L2 ring VLAN propagation is only calculated for links towards
+        `uplink_switches`.
+        For ring redundancy, define the ring links on both participating switches.
+
         Default value: `"p2p"`
         """
         vtep: bool
@@ -37117,6 +37138,13 @@ class EosDesigns(EosDesignsRootModel):
                        subinterfaces for each SVI defined under the VRFs in `network_services` as long as
                        the uplink switch also
                        has the VLAN permitted by tag/tenant filtering.
+
+                       `port-channel` and
+                       `l2-ethernet` options configures L2 trunks carrying all active VLANs permitted by tag/tenant
+                       filtering.
+                       Redundant L2 ring VLAN propagation is only calculated for links towards
+                       `uplink_switches`.
+                       For ring redundancy, define the ring links on both participating switches.
                     vtep: Is this switch an EVPN VTEP.
                     mpls_lsr: Is this switch an MPLS LSR.
                     ip_addressing:
@@ -47384,7 +47412,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -52588,7 +52616,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                         class UplinkInterfaces(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -57755,7 +57783,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -62985,7 +63013,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -81726,7 +81754,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -86930,7 +86958,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                         class UplinkInterfaces(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -92097,7 +92125,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -97327,7 +97355,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
