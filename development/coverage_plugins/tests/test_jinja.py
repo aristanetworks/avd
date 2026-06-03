@@ -188,6 +188,31 @@ def test_file_reporter_lines_expands_multiline_jinja_tags(tmp_path: Path) -> Non
     assert JinjaTemplateFileReporter(str(source_file)).lines() == {1, 2, 3, 4, 5}
 
 
+def test_multiline_jinja_control_flow_arcs_target_body_after_tag(tmp_path: Path) -> None:
+    source_file = tmp_path / "template.j2"
+    source_file.write_text(
+        "{% if primary is defined or\n"
+        "      secondary is defined or\n"
+        "      fallback is defined %}\n"
+        "{% set value = 'covered' %}\n"
+        "{% endif %}\n"
+        "{% for item in items\n"
+        "      if item.enabled %}\n"
+        "{{ item.name }}\n"
+        "{% else %}\n"
+        "empty\n"
+        "{% endfor %}\n",
+        encoding="utf-8",
+    )
+
+    arcs = JinjaTemplateFileReporter(str(source_file)).arcs()
+
+    assert (1, 4) in arcs
+    assert (1, 3) not in arcs
+    assert (6, 8) in arcs
+    assert (6, 7) not in arcs
+
+
 def test_file_tracer_maps_multiline_jinja_tags_to_full_source_range(tmp_path: Path) -> None:
     template_root = tmp_path / "j2templates"
     compiled_root = template_root / "compiled_templates"
