@@ -30,7 +30,7 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 from types import MappingProxyType
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from coverage import CoveragePlugin, FileReporter, FileTracer
 from coverage.exceptions import ConfigError
@@ -59,6 +59,17 @@ class CompiledTemplate:
     source_filename: str
     debug_map: tuple[tuple[int, int], ...]
     generated_line_ranges: Mapping[int, tuple[int, int]]
+
+
+@dataclass(frozen=True)
+class SourceTemplate:
+    """Cached source-level reporting model for one Jinja template."""
+
+    reportable_lines: frozenset[int]
+    arc_endpoint_lines: frozenset[int]
+    possible_arcs: frozenset[tuple[int, int]]
+    no_branch_lines: frozenset[int]
+    tag_ranges: Mapping[int, tuple[int, int]]
 
 
 class JinjaTemplateCoveragePlugin(CoveragePlugin):
@@ -121,7 +132,7 @@ class JinjaTemplateFileReporter(FileReporter):
 
     def lines(self) -> set[int]:
         """Return source template lines that should be treated as executable statements."""
-        return set(_find_reportable_jinja_lines(Path(self.filename)))
+        return set(_source_template(Path(self.filename)).reportable_lines)
 
     def translate_lines(self, lines: Iterable[int]) -> set[int]:
         """Drop recorded lines that are not reportable source template lines."""
@@ -130,27 +141,31 @@ class JinjaTemplateFileReporter(FileReporter):
 
     def arcs(self) -> set[tuple[int, int]]:
         """Return possible source-level branch arcs for supported Jinja control flow."""
-        return set(_find_possible_jinja_arcs(Path(self.filename).resolve()))
+        return set(_source_template(Path(self.filename)).possible_arcs)
 
     def no_branch_lines(self) -> set[int]:
         """Return lines that should not be treated as missing branch coverage."""
-        return set(_find_no_branch_jinja_lines(Path(self.filename)))
+        return set(_source_template(Path(self.filename)).no_branch_lines)
 
     def translate_arcs(self, arcs: Iterable[tuple[int, int]]) -> set[tuple[int, int]]:
         """Drop recorded arcs whose endpoints are not reportable source template lines."""
         recorded_arcs = tuple(arcs)
-        reportable_lines = self.lines()
+        source_template = _source_template(Path(self.filename))
         translated_arcs: set[tuple[int, int]] = set()
         for from_line, to_line in recorded_arcs:
-            translated_from_line = _translate_recorded_arc_endpoint(from_line, reportable_lines)
-            translated_to_line = _translate_recorded_arc_endpoint(to_line, reportable_lines)
+            translated_from_line = _translate_recorded_arc_endpoint(from_line, source_template.arc_endpoint_lines)
+            translated_to_line = _translate_recorded_arc_endpoint(to_line, source_template.arc_endpoint_lines)
             if translated_from_line is not None and translated_to_line is not None:
                 translated_arcs.add((translated_from_line, translated_to_line))
 
-        possible_arcs = self.arcs()
+        possible_arcs = source_template.possible_arcs
         source_filename = Path(self.filename)
-        translated_arcs.update(_covered_multiline_tag_branch_arcs(recorded_arcs, possible_arcs, _source_tag_ranges(source_filename), reportable_lines))
-        translated_arcs.update(_covered_else_branch_arcs(recorded_arcs, translated_arcs, possible_arcs, source_filename, reportable_lines))
+        translated_arcs.update(
+            _covered_multiline_tag_branch_arcs(recorded_arcs, possible_arcs, source_template.tag_ranges, source_template.arc_endpoint_lines),
+        )
+        translated_arcs.update(
+            _covered_else_branch_arcs(recorded_arcs, translated_arcs, possible_arcs, source_filename, source_template.arc_endpoint_lines),
+        )
         return translated_arcs
 
     def exit_counts(self) -> dict[int, int]:
@@ -278,12 +293,57 @@ def _resolve_compiled_template_source_filename(compiled_filename: Path, compiled
     return _resolve_template_source_filename(template_name, compiled_root)
 
 
-def _translate_recorded_arc_endpoint(line: int, reportable_lines: set[int]) -> int | None:
-    """Translate one recorded arc endpoint to a reportable template endpoint."""
+def _source_template(filename: Path) -> SourceTemplate:
+    """Return the cached source reporting model for one template."""
+    if (file_stamp := _file_stamp(filename)) is None:
+        return SourceTemplate(
+            reportable_lines=frozenset(),
+            arc_endpoint_lines=frozenset(),
+            possible_arcs=frozenset(),
+            no_branch_lines=frozenset(),
+            tag_ranges=MappingProxyType({}),
+        )
+
+    return _source_template_cached(filename.resolve(), file_stamp)
+
+
+@lru_cache(maxsize=4096)
+def _source_template_cached(filename: Path, file_stamp: FileStamp) -> SourceTemplate:
+    """
+    Build the source-level model used by all reporting methods.
+
+    The arc endpoint set is explicit so possible arc generation and recorded
+    arc translation agree on which source lines can be branch endpoints.
+    ``file_stamp`` participates only in cache invalidation.
+    """
+    reportable_lines = _find_reportable_jinja_lines_cached(filename, file_stamp)
+    arc_endpoint_lines = _arc_endpoint_lines(reportable_lines)
+    return SourceTemplate(
+        reportable_lines=reportable_lines,
+        arc_endpoint_lines=arc_endpoint_lines,
+        possible_arcs=_find_possible_jinja_arcs_cached(filename, file_stamp, reportable_lines, arc_endpoint_lines),
+        no_branch_lines=_find_no_branch_jinja_lines_cached(filename, file_stamp),
+        tag_ranges=MappingProxyType(_source_tag_ranges(filename)),
+    )
+
+
+def _arc_endpoint_lines(reportable_lines: Collection[int]) -> frozenset[int]:
+    """
+    Return source lines allowed as branch arc endpoints.
+
+    Today the plugin only reports arcs between executable source lines. Keeping
+    this as a named model boundary avoids generating structural arcs that are
+    silently discarded by recorded-arc translation.
+    """
+    return frozenset(reportable_lines)
+
+
+def _translate_recorded_arc_endpoint(line: int, arc_endpoint_lines: Collection[int]) -> int | None:
+    """Translate one recorded arc endpoint to a template branch endpoint."""
     if line < 0:
         return SOURCE_EXIT
 
-    if line in reportable_lines:
+    if line in arc_endpoint_lines:
         return line
 
     return None
@@ -293,7 +353,7 @@ def _covered_multiline_tag_branch_arcs(
     recorded_arcs: tuple[tuple[int, int], ...],
     possible_arcs: Collection[tuple[int, int]],
     tag_ranges: Mapping[int, tuple[int, int]],
-    reportable_lines: set[int],
+    reportable_lines: Collection[int],
 ) -> set[tuple[int, int]]:
     """Return source branch arcs covered by coverage.py's multiline range arcs."""
     recorded_arc_set = set(recorded_arcs)
@@ -321,7 +381,7 @@ def _covered_else_branch_arcs(
     translated_arcs: set[tuple[int, int]],
     possible_arcs: Collection[tuple[int, int]],
     source_filename: Path,
-    reportable_lines: set[int],
+    reportable_lines: Collection[int],
 ) -> set[tuple[int, int]]:
     """Return else branch arcs covered by generated arcs entering an else tag."""
     try:
@@ -692,11 +752,17 @@ def _find_possible_jinja_arcs(source_filename: Path) -> frozenset[tuple[int, int
     if (file_stamp := _file_stamp(source_filename)) is None:
         return frozenset()
 
-    return _find_possible_jinja_arcs_cached(source_filename.resolve(), file_stamp)
+    reportable_lines = _find_reportable_jinja_lines(source_filename)
+    return _find_possible_jinja_arcs_cached(source_filename.resolve(), file_stamp, reportable_lines, _arc_endpoint_lines(reportable_lines))
 
 
 @lru_cache(maxsize=4096)
-def _find_possible_jinja_arcs_cached(source_filename: Path, file_stamp: FileStamp) -> frozenset[tuple[int, int]]:  # noqa: ARG001
+def _find_possible_jinja_arcs_cached(
+    source_filename: Path,
+    file_stamp: FileStamp,  # noqa: ARG001
+    reportable_lines: frozenset[int],
+    arc_endpoint_lines: frozenset[int],
+) -> frozenset[tuple[int, int]]:
     """
     Parse supported Jinja control flow into possible source-level branch arcs.
 
@@ -720,19 +786,24 @@ def _find_possible_jinja_arcs_cached(source_filename: Path, file_stamp: FileStam
     except TemplateSyntaxError:
         return frozenset()
 
-    reportable_lines = _find_reportable_jinja_lines(source_filename)
     tag_ranges = _tag_ranges_by_line(source)
     arcs: set[tuple[int, int]] = set()
     for node in parsed_template.find_all((nodes.If, nodes.For)):
         if isinstance(node, nodes.If):
-            _add_if_arcs(node, reportable_lines, tag_ranges, arcs)
+            _add_if_arcs(node, reportable_lines, arc_endpoint_lines, tag_ranges, arcs)
         elif isinstance(node, nodes.For):
-            _add_for_arcs(node, reportable_lines, tag_ranges, arcs)
+            _add_for_arcs(node, reportable_lines, arc_endpoint_lines, tag_ranges, arcs)
 
     return frozenset(arcs)
 
 
-def _add_if_arcs(node, reportable_lines: Collection[int], tag_ranges: Mapping[int, tuple[int, int]], arcs: set[tuple[int, int]]) -> None:  # noqa: ANN001
+def _add_if_arcs(
+    node: Any,
+    reportable_lines: Collection[int],
+    arc_endpoint_lines: Collection[int],
+    tag_ranges: Mapping[int, tuple[int, int]],
+    arcs: set[tuple[int, int]],
+) -> None:
     """Add possible arcs from a Jinja ``if`` node and any ``elif`` nodes."""
     after_line = _next_reportable_line(reportable_lines, _node_end_lineno(node))
     conditional_nodes = [node, *node.elif_]
@@ -745,8 +816,8 @@ def _add_if_arcs(node, reportable_lines: Collection[int], tag_ranges: Mapping[in
         )
         false_line = _false_if_target(node, conditional_nodes, index, reportable_lines, after_line)
 
-        _add_arc(arcs, conditional_node.lineno, body_line)
-        _add_arc(arcs, conditional_node.lineno, false_line)
+        _add_arc(arcs, conditional_node.lineno, body_line, arc_endpoint_lines)
+        _add_arc(arcs, conditional_node.lineno, false_line, arc_endpoint_lines)
 
 
 def _false_if_target(node, conditional_nodes: list, index: int, reportable_lines: Collection[int], after_line: int) -> int | None:  # noqa: ANN001
@@ -759,13 +830,19 @@ def _false_if_target(node, conditional_nodes: list, index: int, reportable_lines
     return after_line
 
 
-def _add_for_arcs(node, reportable_lines: Collection[int], tag_ranges: Mapping[int, tuple[int, int]], arcs: set[tuple[int, int]]) -> None:  # noqa: ANN001
+def _add_for_arcs(
+    node: Any,
+    reportable_lines: Collection[int],
+    arc_endpoint_lines: Collection[int],
+    tag_ranges: Mapping[int, tuple[int, int]],
+    arcs: set[tuple[int, int]],
+) -> None:
     """Add possible arcs from a Jinja ``for`` node to its body and explicit ``else`` block."""
     body_line = _first_reportable_line_in_nodes(reportable_lines, node.body, after_line=_tag_end_line(node.lineno, tag_ranges))
 
-    _add_arc(arcs, node.lineno, body_line)
+    _add_arc(arcs, node.lineno, body_line, arc_endpoint_lines)
     if node.else_:
-        _add_arc(arcs, node.lineno, _first_reportable_line_in_nodes(reportable_lines, node.else_))
+        _add_arc(arcs, node.lineno, _first_reportable_line_in_nodes(reportable_lines, node.else_), arc_endpoint_lines)
 
 
 def _first_reportable_line_in_nodes(reportable_lines: Collection[int], nodes, after_line: int = 0) -> int | None:  # noqa: ANN001
@@ -804,9 +881,12 @@ def _node_end_lineno(node) -> int:  # noqa: ANN001
     return max(node_lines)
 
 
-def _add_arc(arcs: set[tuple[int, int]], from_line: int, to_line: int | None) -> None:
-    """Add a branch arc when both endpoints are meaningful and not identical."""
+def _add_arc(arcs: set[tuple[int, int]], from_line: int, to_line: int | None, arc_endpoint_lines: Collection[int]) -> None:
+    """Add a branch arc when both endpoints belong to the source endpoint model."""
     if to_line is None or from_line == to_line:
+        return
+
+    if from_line not in arc_endpoint_lines or (to_line > 0 and to_line not in arc_endpoint_lines):
         return
 
     arcs.add((from_line, to_line))
