@@ -2389,14 +2389,73 @@ keys:
             default: false
             description: Send RADIUS Service-Type attribute in Access-Request and
               Accounting messages.
-          dhcp:
-            type: dict
-            description: RADIUS AV pairs for DHCP options sent in Access-Request and
-              Accounting messages.
-            $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/dhcp
           framed_mtu:
             type: int
             $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/framed_mtu
+      device_profiling:
+        type: dict
+        description: 'Forward authenticated host attributes to a RADIUS server using
+          the Arista-Device-Profiling
+
+          vendor-specific attribute within accounting messages.
+
+          Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode:
+          start-stop`.'
+        keys:
+          enabled:
+            type: bool
+            default: false
+            description: Master toggle for the device profiling feature.
+          dhcp:
+            type: dict
+            description: "DHCP-based device profiling.\nNotes:\n  - IPv4 only. DHCPv6/SLAAC
+              assignments are not supported.\n  - MLAG support starts at EOS 4.34.3.\n
+              \ - Not supported on VTEPs (VXLAN-encapsulated DHCP packets cannot be
+              reliably parsed).\n  - Incompatible with IP Locking (`address_locking_settings`)."
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable DHCP-based device profiling.
+              hostname:
+                type: dict
+                description: Hostname (DHCP Option 12).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                    description: Send the hostname attribute.
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: When true, the attribute is sent only once upon first
+                      learning it.
+              parameter_request_list:
+                type: dict
+                description: Parameters requested by host (DHCP Option 55).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                    description: Send the parameter request list attribute.
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: When true, the attribute is sent only once upon first
+                      learning it.
+              vendor_class_id:
+                type: dict
+                description: Vendor class identifier (DHCP Option 60).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                    description: Send the vendor class identifier attribute.
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: When true, the attribute is sent only once upon first
+                      learning it.
       redistribute_in_evpn:
         type: bool
         default: true

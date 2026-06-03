@@ -27,14 +27,6 @@ dot1x_settings:
   radius_av_pairs:
     service_type: true
     framed_mtu: 1500
-    dhcp:
-      hostname:
-        enabled: true
-        auth_only: true
-      parameter_request_list:
-        enabled: true
-      vendor_class_id:
-        enabled: false
 
 aaa_settings:
   radius:

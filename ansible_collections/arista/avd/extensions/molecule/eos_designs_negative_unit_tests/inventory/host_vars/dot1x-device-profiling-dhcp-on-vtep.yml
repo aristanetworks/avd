@@ -1,0 +1,28 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.10
+  nodes:
+    - name: dot1x-device-profiling-dhcp-on-vtep
+      id: 101
+      bgp_as: 101
+
+dot1x_settings:
+  enabled: true
+  device_profiling:
+    enabled: true
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key
+
+expected_error_message: >-
+  'dot1x_settings.device_profiling.dhcp' is not supported on VTEPs since
+  VXLAN-encapsulated DHCP packets cannot be reliably parsed.

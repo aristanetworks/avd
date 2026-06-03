@@ -28,6 +28,9 @@ dot1x:
   dynamic_authorization: true
   radius_av_pair:
     dhcp:
+      hostname:
+        enabled: true
+        auth_only: false
       parameter_request_list:
         enabled: true
         auth_only: true

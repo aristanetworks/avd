@@ -13,7 +13,8 @@ dot1x_settings:
     radius_groups: [agni-server-group, radius]
   accounting:
     radius_groups: [agni-server-group, radius]
-  radius_av_pairs:
+  device_profiling:
+    enabled: true
     dhcp:
       parameter_request_list:
         enabled: true

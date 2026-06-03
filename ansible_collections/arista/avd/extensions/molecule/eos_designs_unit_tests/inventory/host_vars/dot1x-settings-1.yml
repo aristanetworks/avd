@@ -9,7 +9,8 @@ l2leaf:
 
 dot1x_settings:
   enabled: true
-  radius_av_pairs:
+  device_profiling:
+    enabled: true
     dhcp:
       hostname:
         enabled: true
