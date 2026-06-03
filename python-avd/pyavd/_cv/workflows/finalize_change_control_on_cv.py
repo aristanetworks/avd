@@ -101,7 +101,3 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
 
     change_control.state = "completed"
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
-
-    # If requested state is "completed" we are done.
-    if change_control.avd_change_control.requested_state == "completed":
-        return
