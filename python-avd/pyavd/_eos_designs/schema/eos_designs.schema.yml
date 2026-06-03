@@ -13227,7 +13227,9 @@ $defs:
             Redundant L2 ring VLAN propagation is only calculated for links towards
             `uplink_switches`.
 
-            For ring redundancy, define the ring links on both participating switches.'
+            To propagate VLANs across a non-hierarchical L2 topology, such as a ring
+            or lateral L2 link, configure the link as an uplink on both neighboring
+            switches.'
         vtep:
           type: bool
           default: false

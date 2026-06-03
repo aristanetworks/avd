@@ -36466,7 +36466,8 @@ class EosDesigns(EosDesignsRootModel):
         filtering.
         Redundant L2 ring VLAN propagation is only calculated for links towards
         `uplink_switches`.
-        For ring redundancy, define the ring links on both participating switches.
+        To propagate VLANs across a non-hierarchical L2 topology, such as a ring or
+        lateral L2 link, configure the link as an uplink on both neighboring switches.
 
         Default value: `"p2p"`
         """
@@ -36603,7 +36604,8 @@ class EosDesigns(EosDesignsRootModel):
                        filtering.
                        Redundant L2 ring VLAN propagation is only calculated for links towards
                        `uplink_switches`.
-                       For ring redundancy, define the ring links on both participating switches.
+                       To propagate VLANs across a non-hierarchical L2 topology, such as a ring or
+                       lateral L2 link, configure the link as an uplink on both neighboring switches.
                     vtep: Is this switch an EVPN VTEP.
                     mpls_lsr: Is this switch an MPLS LSR.
                     ip_addressing:
@@ -37007,7 +37009,8 @@ class EosDesigns(EosDesignsRootModel):
         filtering.
         Redundant L2 ring VLAN propagation is only calculated for links towards
         `uplink_switches`.
-        For ring redundancy, define the ring links on both participating switches.
+        To propagate VLANs across a non-hierarchical L2 topology, such as a ring or
+        lateral L2 link, configure the link as an uplink on both neighboring switches.
 
         Default value: `"p2p"`
         """
@@ -37144,7 +37147,8 @@ class EosDesigns(EosDesignsRootModel):
                        filtering.
                        Redundant L2 ring VLAN propagation is only calculated for links towards
                        `uplink_switches`.
-                       For ring redundancy, define the ring links on both participating switches.
+                       To propagate VLANs across a non-hierarchical L2 topology, such as a ring or
+                       lateral L2 link, configure the link as an uplink on both neighboring switches.
                     vtep: Is this switch an EVPN VTEP.
                     mpls_lsr: Is this switch an MPLS LSR.
                     ip_addressing:
