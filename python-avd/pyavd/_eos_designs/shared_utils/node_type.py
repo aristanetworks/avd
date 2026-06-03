@@ -5,12 +5,14 @@ from __future__ import annotations
 
 from functools import cached_property
 from re import search
-from typing import TYPE_CHECKING, Literal, Protocol
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import SharedUtilsProtocol
 
 
@@ -66,7 +68,7 @@ class NodeTypeMixin(Protocol):
         return self.node_type_key_data.underlay_router
 
     @cached_property
-    def uplink_type(self: SharedUtilsProtocol) -> Literal["p2p", "port-channel", "p2p-vrfs", "lan"]:
+    def uplink_type(self: SharedUtilsProtocol) -> EosDesigns.NodeTypeKeysItem.UplinkType:
         """
         Uplink type.
 
