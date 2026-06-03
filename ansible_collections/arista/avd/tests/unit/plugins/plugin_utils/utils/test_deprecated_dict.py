@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from unittest import mock
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.deprecated_dict import DeprecatedDict
+from pyavd._utils.deprecated_dict import DeprecatedDict
 
 
 def test_get_emits_deprecation_once_and_returns_value() -> None:
