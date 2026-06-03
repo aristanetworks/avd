@@ -356,7 +356,18 @@ def test_coverage_records_static_text_lines_from_compiled_template_execution(tmp
     template_root.mkdir()
     compiled_root.mkdir()
     source_file.write_text(
-        "{% if mode == 'a' %}\nalpha\n{% else %}\nbravo\n{% endif %}\n{% for item in items %}\nitem {{ item }}\n{% else %}\nempty\n{% endfor %}\n",
+        "{% if mode == 'a' %}\n"
+        "alpha\n"
+        "\n"
+        "alpha details\n"
+        "{% else %}\n"
+        "bravo\n"
+        "{% endif %}\n"
+        "{% for item in items %}\n"
+        "item {{ item }}\n"
+        "{% else %}\n"
+        "empty\n"
+        "{% endfor %}\n",
         encoding="utf-8",
     )
 
@@ -377,16 +388,16 @@ def test_coverage_records_static_text_lines_from_compiled_template_execution(tmp
     assert data.file_tracer(source_filename) == "None.JinjaTemplateCoveragePlugin"
     source_lines = data.lines(source_filename)
     assert source_lines is not None
-    assert set(source_lines) >= {1, 2, 6, 9}
-    assert 4 not in source_lines
-    assert 7 not in source_lines
+    assert set(source_lines) >= {1, 2, 4, 8, 11}
+    assert 6 not in source_lines
+    assert 9 not in source_lines
     assert data.arcs(source_filename)
 
     shutil.rmtree(compiled_root)
 
     analysis = coverage._analyze(source_filename)
     assert max(analysis.executed) <= len(source_file.read_text(encoding="utf-8").splitlines())
-    assert 7 not in analysis.executed
+    assert 9 not in analysis.executed
 
 
 def test_top_level_optional_guard_is_not_counted_as_missing_branch(tmp_path: Path) -> None:
