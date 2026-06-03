@@ -19954,6 +19954,12 @@ keys:
                   min: 1
                   max: 3600
                   description: Number of seconds.
+            no_graceful_restart:
+              type: bool
+              description: 'Disables graceful-restart for this VRF. Mutually exclusive
+                with `graceful_restart`. `graceful_restart` takes precedence.
+
+                '
             networks:
               type: list
               primary_key: prefix
