@@ -50,15 +50,14 @@ class CompiledTemplate:
     Parsed mapping metadata for one compiled Jinja Python module.
 
     ``debug_map`` comes from Jinja's generated ``debug_info`` constant and maps
-    generated Python lines to template lines. ``generated_line_ranges`` adds
-    explicit runtime evidence for static output yielded by the generated module.
-    Both mappings are immutable so cached tracer results cannot be mutated by
-    callers.
+    generated Python lines to template lines. ``generated_line_ranges`` maps
+    generated Python lines to source ranges for multiline Jinja tags and static
+    output yielded by the generated module. Both mappings are immutable so
+    cached tracer results cannot be mutated by callers.
     """
 
     source_filename: str
     debug_map: tuple[tuple[int, int], ...]
-    generated_line_map: Mapping[int, int]
     generated_line_ranges: Mapping[int, tuple[int, int]]
 
 
@@ -113,9 +112,6 @@ class JinjaTemplateFileTracer(FileTracer):
         generated_line = frame.f_lineno
         if line_range := self.compiled_template.generated_line_ranges.get(generated_line):
             return line_range
-
-        if template_line := self.compiled_template.generated_line_map.get(generated_line):
-            return template_line, template_line
 
         return -1, -1
 
@@ -233,13 +229,22 @@ def _parse_compiled_template_cached(
         return None
 
     debug_map = _parse_debug_info(debug_info)
-    generated_line_ranges = _generated_static_line_ranges(tree, source_filename)
+    generated_line_ranges = _generated_line_ranges(tree, source_filename, debug_map)
     return CompiledTemplate(
         source_filename=str(source_filename),
         debug_map=debug_map,
-        generated_line_map=MappingProxyType(dict(debug_map)),
         generated_line_ranges=MappingProxyType(generated_line_ranges),
     )
+
+
+def _generated_line_ranges(tree: ast.Module, source_filename: Path, debug_map: tuple[tuple[int, int], ...]) -> dict[int, tuple[int, int]]:
+    """Return generated-line mappings for Jinja tag ranges and static output ranges."""
+    source_tag_ranges = _source_tag_ranges(source_filename)
+    generated_line_ranges = {
+        generated_line: source_tag_ranges.get(template_line, (template_line, template_line)) for generated_line, template_line in debug_map
+    }
+    generated_line_ranges.update(_generated_static_line_ranges(tree, source_filename))
+    return generated_line_ranges
 
 
 @lru_cache(maxsize=4096)
@@ -355,12 +360,12 @@ def _find_reportable_jinja_lines_cached(filename: Path, file_stamp: FileStamp) -
     except TemplateSyntaxError:
         return frozenset()
 
-    ignored_nodes = (nodes.Output, nodes.Template, nodes.TemplateData)
+    ignored_nodes = (nodes.Output, nodes.Template)
     reportable_lines: set[int] = set()
     nodes_to_visit = list(parsed_template.iter_child_nodes())
     while nodes_to_visit:
         node = nodes_to_visit.pop()
-        if not isinstance(node, ignored_nodes):
+        if isinstance(node, nodes.Stmt) and not isinstance(node, ignored_nodes):
             lineno = getattr(node, "lineno", None)
             if isinstance(lineno, int) and lineno > 0:
                 reportable_lines.add(lineno)
@@ -368,7 +373,7 @@ def _find_reportable_jinja_lines_cached(filename: Path, file_stamp: FileStamp) -
         nodes_to_visit.extend(node.iter_child_nodes())
 
     reportable_lines.update(line_number for line_number, _line_text in _static_template_lines(source))
-    reportable_lines.update(_control_statement_lines(source))
+    reportable_lines = _expand_tag_ranges(source, reportable_lines | _variable_statement_lines(source) | _control_statement_lines(source))
     return frozenset(reportable_lines)
 
 
@@ -449,6 +454,76 @@ def _static_template_lines(source: str) -> tuple[tuple[int, str], ...]:
         return ()
 
     return tuple(static_lines)
+
+
+def _source_tag_ranges(source_filename: Path) -> dict[int, tuple[int, int]]:
+    """Return source line to full executable Jinja tag range mappings."""
+    try:
+        source = source_filename.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return {}
+
+    return _tag_ranges_by_line(source)
+
+
+def _expand_tag_ranges(source: str, line_numbers: set[int]) -> set[int]:
+    """Expand any line inside a Jinja tag to the full tag source range."""
+    tag_ranges = _tag_ranges_by_line(source)
+    expanded_lines: set[int] = set()
+    for line_number in line_numbers:
+        start_line, end_line = tag_ranges.get(line_number, (line_number, line_number))
+        expanded_lines.update(range(start_line, end_line + 1))
+
+    return expanded_lines
+
+
+def _tag_ranges_by_line(source: str) -> dict[int, tuple[int, int]]:
+    """Return line mappings for block and variable tags, including multiline tags."""
+    try:
+        from jinja2 import Environment  # noqa: PLC0415
+    except ImportError:
+        return {}
+
+    environment = Environment(extensions=JINJA2_EXTENSIONS)  # noqa: S701
+    tag_ranges: dict[int, tuple[int, int]] = {}
+    tag_start_line: int | None = None
+    end_kinds: set[str] = set()
+    try:
+        for lineno, kind, _value in environment.lex(source):
+            if kind == "block_begin":
+                tag_start_line = lineno
+                end_kinds = {"block_end"}
+                continue
+
+            if kind == "variable_begin":
+                tag_start_line = lineno
+                end_kinds = {"variable_end"}
+                continue
+
+            if tag_start_line is not None and kind in end_kinds:
+                tag_range = (tag_start_line, lineno)
+                for line_number in range(tag_start_line, lineno + 1):
+                    tag_ranges[line_number] = tag_range
+                tag_start_line = None
+                end_kinds = set()
+    except Exception:
+        return {}
+
+    return tag_ranges
+
+
+def _variable_statement_lines(source: str) -> set[int]:
+    """Return source lines for Jinja variable statements."""
+    try:
+        from jinja2 import Environment  # noqa: PLC0415
+    except ImportError:
+        return set()
+
+    environment = Environment(extensions=JINJA2_EXTENSIONS)  # noqa: S701
+    try:
+        return {lineno for lineno, kind, _value in environment.lex(source) if kind == "variable_begin"}
+    except Exception:
+        return set()
 
 
 def _control_statement_lines(source: str) -> set[int]:

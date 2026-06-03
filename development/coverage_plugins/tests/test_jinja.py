@@ -178,6 +178,50 @@ def test_file_reporter_lines_returns_reportable_jinja_lines(tmp_path: Path) -> N
     assert JinjaTemplateFileReporter(str(source_file)).lines() == {1, 2, 3, 4, 6}
 
 
+def test_file_reporter_lines_expands_multiline_jinja_tags(tmp_path: Path) -> None:
+    source_file = tmp_path / "template.j2"
+    source_file.write_text(
+        "{% if primary is defined\n      or secondary is defined\n      or fallback is defined %}\n{{ value |\n   default('fallback') }}\n{% endif %}\n",
+        encoding="utf-8",
+    )
+
+    assert JinjaTemplateFileReporter(str(source_file)).lines() == {1, 2, 3, 4, 5}
+
+
+def test_file_tracer_maps_multiline_jinja_tags_to_full_source_range(tmp_path: Path) -> None:
+    template_root = tmp_path / "j2templates"
+    compiled_root = template_root / "compiled_templates"
+    source_file = template_root / "template.j2"
+    compiled_file = compiled_root / "template.py"
+
+    template_root.mkdir()
+    compiled_root.mkdir()
+    source_file.write_text(
+        "{% if primary is defined\n      or secondary is defined\n      or fallback is defined %}\n{{ value |\n   default('fallback') }}\n{% endif %}\n",
+        encoding="utf-8",
+    )
+    compiled_file.write_text(
+        "name = 'template.j2'\ndef root():\n    pass\ndebug_info = '1=10&4=20'\n",
+        encoding="utf-8",
+    )
+
+    tracer = JinjaTemplateCoveragePlugin(compiled_template_roots=(compiled_root,)).file_tracer(str(compiled_file))
+
+    assert tracer is not None
+    assert tracer.line_number_range(_frame(10)) == (1, 3)
+    assert tracer.line_number_range(_frame(20)) == (4, 5)
+
+
+def test_coverage_marks_multiline_jinja_tags_as_executed_ranges(tmp_path: Path) -> None:
+    analysis = _analyze_rendered_template(
+        tmp_path,
+        "{% if primary is defined\n      or secondary is defined\n      or fallback is defined %}\n{{ value |\n   default('fallback') }}\n{% endif %}\n",
+        {"primary": True, "value": "covered"},
+    )
+
+    assert set(analysis.executed) >= {1, 2, 3, 4, 5}
+
+
 def test_file_reporter_does_not_expose_cached_mutable_sets(tmp_path: Path) -> None:
     source_file = tmp_path / "template.j2"
     source_file.write_text("{% if enabled %}\nhello\n{% endif %}\n", encoding="utf-8")
