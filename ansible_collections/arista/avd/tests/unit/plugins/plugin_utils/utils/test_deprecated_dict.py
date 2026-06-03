@@ -1,6 +1,8 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
+
 from unittest import mock
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.deprecated_dict import DeprecatedDict
@@ -8,10 +10,10 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.deprecated_dict i
 
 def test_get_emits_deprecation_once_and_returns_value() -> None:
     display = mock.MagicMock()
-    d = DeprecatedDict({"interface": "Ethernet1"}, _display=display, _message="deprecated")
+    deprecated_dict = DeprecatedDict({"interface": "Ethernet1"}, _display=display, _message="deprecated")
 
-    assert d.get("interface") == "Ethernet1"
-    assert d.get("missing", "fallback") == "fallback"
+    assert deprecated_dict.get("interface") == "Ethernet1"
+    assert deprecated_dict.get("missing", "fallback") == "fallback"
 
     display.deprecated.assert_called_once_with(
         msg="deprecated",
@@ -23,9 +25,9 @@ def test_get_emits_deprecation_once_and_returns_value() -> None:
 
 def test_getitem_emits_deprecation_once_and_returns_value() -> None:
     display = mock.MagicMock()
-    d = DeprecatedDict({"interface": "Ethernet1"}, _display=display, _message="deprecated")
+    deprecated_dict = DeprecatedDict({"interface": "Ethernet1"}, _display=display, _message="deprecated")
 
-    assert d["interface"] == "Ethernet1"
-    assert d["interface"] == "Ethernet1"
+    assert deprecated_dict["interface"] == "Ethernet1"
+    assert deprecated_dict["interface"] == "Ethernet1"
 
     display.deprecated.assert_called_once()
