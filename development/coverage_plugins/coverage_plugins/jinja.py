@@ -379,12 +379,12 @@ def _find_reportable_jinja_lines_cached(filename: Path, file_stamp: FileStamp) -
 
 def _generated_static_line_ranges(tree: ast.Module, source_filename: Path) -> dict[int, tuple[int, int]]:
     """
-    Map generated ``yield 'static text'`` lines back to contiguous source template ranges.
+    Map generated ``yield 'static text'`` lines back to source template ranges.
 
     Jinja ``debug_info`` does not reliably credit static output text to source
     lines. This function uses generated literal-yield nodes as runtime evidence
     and matches their non-empty rendered lines back to the static text tokens in
-    the source template. Ambiguous or non-contiguous matches are ignored.
+    the source template. Ambiguous matches are ignored.
     """
     try:
         source = source_filename.read_text(encoding="utf-8")
@@ -420,7 +420,7 @@ def _generated_static_line_ranges(tree: ast.Module, source_filename: Path) -> di
             matched_line_numbers.append(source_static_lines[matched_index][0])
             next_source_index = matched_index + 1
 
-        if matched_line_numbers and _is_contiguous_line_range(matched_line_numbers):
+        if matched_line_numbers:
             ranges[node.lineno] = (matched_line_numbers[0], matched_line_numbers[-1])
             source_index = next_source_index
 
@@ -583,11 +583,6 @@ def _numbered_non_whitespace_lines(start_lineno: int, value: str) -> list[tuple[
 def _non_whitespace_lines(value: str) -> list[str]:
     """Return stripped non-empty lines from rendered static output."""
     return [line.strip() for line in value.splitlines() if line.strip()]
-
-
-def _is_contiguous_line_range(line_numbers: list[int]) -> bool:
-    """Return whether ``line_numbers`` describes a continuous source range."""
-    return line_numbers == list(range(line_numbers[0], line_numbers[-1] + 1))
 
 
 def _find_possible_jinja_arcs(source_filename: Path) -> frozenset[tuple[int, int]]:
