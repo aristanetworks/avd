@@ -164,7 +164,7 @@ async def deploy_to_cv(
                 # Depending on skip_missing_devices we will raise or skip missing devices.
                 await verify_devices_on_cv(
                     devices=devices,
-                    workspace_id=result.workspace.id,
+                    workspace_id=result.workspace.avd_workspace.id,
                     skip_missing_devices=skip_missing_devices,
                     warnings=result.warnings,
                     cv_client=cv_client,
@@ -237,7 +237,7 @@ async def deploy_to_cv(
 
             # Build, submit or abandon Workspace. If failed, we always abandon.
             if result.failed:
-                await cv_client.abandon_workspace(workspace_id=result.workspace.id)
+                await cv_client.abandon_workspace(workspace_id=result.workspace.avd_workspace.id)
                 result.workspace.state = "abandoned"
                 return result
 

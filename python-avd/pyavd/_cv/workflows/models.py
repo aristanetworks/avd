@@ -99,8 +99,9 @@ class AvdChangeControl:
 class CVChangeControl:
     avd_change_control: AvdChangeControl
     id: str | None = None
-    """ Do not set this manually. """
     state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
+    name: str | None = None
+    description: str | None = None
 
 
 @dataclass(frozen=True)
@@ -252,13 +253,22 @@ class AvdWorkspace:
 class CVWorkspace:
     avd_workspace: AvdWorkspace
     state: Literal["pending", "built", "submitted", "build failed", "submit failed", "abandoned", "deleted"] | None = None
-    """The final state of the Workspace. Do not set this manually."""
+    """The final state of the Workspace."""
     change_control_id: str | None = None
-    """Do not set this manually."""
     build_id: str | None = None
-    """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt. Do not set this manually."""
+    """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt."""
     device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
-    """Details of per-device Workspace build results. Do not set this manually."""
+    """Details of per-device Workspace build results."""
+
+
+@dataclass
+class DeployChangeControlResult:
+    failed: bool = False
+    errors: list = field(default_factory=list)
+    warnings: list = field(default_factory=list)
+    change_control: CVChangeControl | None = None
+    deployed_devices: list[CVDevice] = field(default_factory=list)
+    skipped_devices: list[CVDevice] = field(default_factory=list)
 
 
 @dataclass
@@ -303,16 +313,20 @@ class AvdDevice:
 class CVDevice:
     avd_device: AvdDevice
     serial_number: str | None = None
-    """ Do not set this manually. """
     system_mac_address: str | None = None
-    """ Do not set this manually. """
     _exists_on_cv: bool | None = None
-    """ Do not set this manually. """
     _streaming: bool | None = None
-    """
-    Device's streaming status.
-    Do not set this manually.
-    """
+    """Device's streaming status."""
+
+    @property
+    def _intended_serial_number(self) -> str | None:
+        """avd_device.serial_number exposed for internal groupby_obj processing."""
+        return self.avd_device.serial_number
+
+    @property
+    def _intended_system_mac_address(self) -> str | None:
+        """avd_device.system_mac_address exposed for internal groupby_obj processing."""
+        return self.avd_device.system_mac_address
 
 
 @dataclass

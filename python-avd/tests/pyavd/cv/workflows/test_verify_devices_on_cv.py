@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from pyavd._cv.workflows.models import CVDevice
+from pyavd._cv.workflows.models import AvdDevice, CVDevice
 from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
 
 if TYPE_CHECKING:
@@ -19,8 +19,14 @@ if TYPE_CHECKING:
 @pytest.mark.parametrize(
     ("input_devices"),
     [
-        pytest.param([CVDevice(hostname="avd-ci-leaf2", serial_number="B51AA89B6E51E89E1422107EDE3A9438")], id="SINGLE_STREAMING_DEVICE_SET_HOSTNAME_SERIAL"),
-        pytest.param([CVDevice(hostname="avd-ci-leaf2", system_mac_address="50:00:00:d5:5d:c0")], id="SINGLE_STREAMING_DEVICE_SET_HOSTNAME_SYSTEM_MAC"),
+        pytest.param(
+            [CVDevice(avd_device=AvdDevice(hostname="avd-ci-leaf2"), serial_number="B51AA89B6E51E89E1422107EDE3A9438")],
+            id="SINGLE_STREAMING_DEVICE_SET_HOSTNAME_SERIAL",
+        ),
+        pytest.param(
+            [CVDevice(avd_device=AvdDevice(hostname="avd-ci-leaf2"), system_mac_address="50:00:00:d5:5d:c0")],
+            id="SINGLE_STREAMING_DEVICE_SET_HOSTNAME_SYSTEM_MAC",
+        ),
     ],
 )
 async def test_verify_devices_in_cloudvision_inventory(
@@ -53,7 +59,7 @@ async def test_verify_devices_in_cloudvision_inventory(
     )
     assert result == [
         CVDevice(
-            hostname="avd-ci-leaf2",
+            avd_device=AvdDevice(hostname="avd-ci-leaf2"),
             serial_number="B51AA89B6E51E89E1422107EDE3A9438",
             system_mac_address="50:00:00:d5:5d:c0",
             _exists_on_cv=True,

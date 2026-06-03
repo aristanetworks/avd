@@ -39,36 +39,39 @@ def verify_device_inputs(devices: list[CVDevice], warnings: list[Exception], *, 
 
 def identify_duplicated_devices(devices: list[CVDevice]) -> DuplicatedDevices:
     """
-    Process list of CVDevice instances to identify those with overlapping serial_number or system_mac_address.
+    Process list of CVDevice instances to identify those with overlapping avd_device.serial_number or avd_device.system_mac_address.
 
     Return DuplicatedDevices object containing:
-      - Information about CVDevices with overlapping serial_number.
-      - Information about CVDevices with overlapping system_mac_address where at least one of these devices has an unset `serial_number` value.
-      - Information about CVDevices with overlapping system_mac_address and set serial_number.
+      - Information about CVDevices with overlapping avd_device.serial_number.
+      - Information about CVDevices with overlapping avd_device.system_mac_address where at least one of these devices has an unset
+        `avd_device.serial_number` value.
+      - Information about CVDevices with overlapping avd_device.system_mac_address and set avd_device.serial_number.
     """
     duplicated_devices = DuplicatedDevices()
 
-    # Group devices based on <CVDevice>.intended_serial_number as long as it's not None
+    # Group devices based on <CVDevice>._intended_serial_number as long as it's not None
     devices_grouped_by_serial_number = groupby_obj(
-        list_of_objects=[device for device in devices if device.intended_serial_number is not None], attr="intended_serial_number", skip_singles=True
+        list_of_objects=[device for device in devices if device._intended_serial_number is not None], attr="_intended_serial_number", skip_singles=True
     )
 
-    # Group devices based on <CVDevice>.intended_system_mac_address as long as it's not None
+    # Group devices based on <CVDevice>._intended_system_mac_address as long as it's not None
     devices_grouped_by_system_mac_address = groupby_obj(
-        list_of_objects=[device for device in devices if device.intended_system_mac_address is not None], attr="intended_system_mac_address", skip_singles=True
+        list_of_objects=[device for device in devices if device._intended_system_mac_address is not None],
+        attr="_intended_system_mac_address",
+        skip_singles=True,
     )
 
-    # Populate list of CVDevice with duplicated serial_number values
+    # Populate list of CVDevice with duplicated avd_device.serial_number values
     for current_serial_number, device_iterator_object in devices_grouped_by_serial_number:
         duplicated_devices.serial_number[current_serial_number] = list(device_iterator_object)
 
-    # Populate list of CVDevice with duplicated system_mac_address values
+    # Populate list of CVDevice with duplicated avd_device.system_mac_address values
     for current_system_mac_address, device_iterator_object in devices_grouped_by_system_mac_address:
         devices_with_current_system_mac_address = list(device_iterator_object)
-        # Safe case where all devices with duplicated current_system_mac_address have a serial_number set
-        if all(device.intended_serial_number for device in devices_with_current_system_mac_address):
+        # Safe case where all devices with duplicated avd_device.current_system_mac_address have a avd_device.serial_number set
+        if all(device._intended_serial_number for device in devices_with_current_system_mac_address):
             duplicated_devices.system_mac_address.set_serial_number[current_system_mac_address] = devices_with_current_system_mac_address
-        # Unsafe case where at least one device among those with the same duplicated current_system_mac_address does not have a serial_number set
+        # Unsafe case where at least one device among those with the same duplicated current_system_mac_address does not have a avd_device.serial_number set
         else:
             duplicated_devices.system_mac_address.unset_or_mixed_serial_number[current_system_mac_address] = devices_with_current_system_mac_address
 
@@ -82,7 +85,7 @@ def duplicated_devices_handler(
     strict_system_mac_address: bool,
 ) -> None:
     """
-    Handle input devices with duplicated `serial_number`s or `system_mac_address`es.
+    Handle input devices with duplicated `avd_device.serial_number`s or `avd_device.system_mac_address`es.
 
     Raise an exception if (match-any):
         - duplicated_devices.serial_number is not empty
@@ -111,7 +114,7 @@ def duplicated_devices_handler(
         raise exception
 
     LOGGER.warning(
-        "verify_inputs: Devices with duplicated system_mac_address and unique serial_number discovered in inventory (structured config): %s",
+        "verify_inputs: Devices with duplicated system_mac_address and unique aserial_number discovered in inventory (structured config): %s",
         duplicated_devices.system_mac_address.set_serial_number,
     )
     warnings.append(CVDuplicatedDevices("Duplicated devices found in inventory", duplicated_devices.system_mac_address.set_serial_number))

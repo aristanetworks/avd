@@ -206,31 +206,31 @@
           ansible.builtin.assert:
             that:
               # workspace state
-              - cv_deploy_results.workspace.state != cv_deploy_results.workspace.requested_state
+              - cv_deploy_results.workspace.state != cv_deploy_results.workspace.avd_workspace.requested_state
               # confirm initial overlapping of system_mac_address on avd-ci-spine1 and avd-ci-spine2
               - >
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine1') |
-                map(attribute='device.system_mac_address') ==
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine2') |
-                map(attribute='device.system_mac_address')
+                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.avd_device.hostname', 'equalto', 'avd-ci-spine1') |
+                map(attribute='device.avd_device.system_mac_address') ==
+                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.avd_device.hostname', 'equalto', 'avd-ci-spine2') |
+                map(attribute='device.avd_device.system_mac_address')
               # confirm lack of initial overlapping of serial_number on avd-ci-spine1 and avd-ci-spine2
               - >
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine1') |
-                map(attribute='device.serial_number') !=
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine2') |
-                map(attribute='device.serial_number')
+                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.avd_device.hostname', 'equalto', 'avd-ci-spine1') |
+                map(attribute='device.avd_device.serial_number') !=
+                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.avd_device.hostname', 'equalto', 'avd-ci-spine2') |
+                map(attribute='device.avd_device.serial_number')
               # confirm initial overlapping of serial_number on avd-ci-leaf1 and avd-ci-leaf2
               - >
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf1') |
-                map(attribute='device.serial_number') ==
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf2') |
-                map(attribute='device.serial_number')
+                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.avd_device.hostname', 'equalto', 'avd-ci-leaf1') |
+                map(attribute='device.avd_device.serial_number') ==
+                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.avd_device.hostname', 'equalto', 'avd-ci-leaf2') |
+                map(attribute='device.avd_device.serial_number')
               # confirm lack of initial overlapping of system_mac_address on avd-ci-leaf1 and avd-ci-leaf2
               - >
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf1') |
-                map(attribute='device.system_mac_address') !=
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf2') |
-                map(attribute='device.system_mac_address')
+                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.avd_device.hostname', 'equalto', 'avd-ci-leaf1') |
+                map(attribute='device.avd_device.system_mac_address') !=
+                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.avd_device.hostname', 'equalto', 'avd-ci-leaf2') |
+                map(attribute='device.avd_device.system_mac_address')
               # confirm that cv_deploy has failed
               - cv_deploy_results.failed is defined and cv_deploy_results.failed
               # confirm there are no warnings returned
@@ -273,7 +273,7 @@
                 "values": [
                   {
                     "key": {
-                      "workspaceId": "{{ cv_deploy_results.workspace.id }}"
+                      "workspaceId": "{{ cv_deploy_results.workspace.avd_workspace.id }}"
                     },
                     "request": "REQUEST_ABANDON",
                     "requestParams": {
@@ -289,7 +289,7 @@
           retries: 3
           delay: 3
           ignore_errors: true
-          when: cv_deploy_results.workspace.id is not none and cv_deploy_results.workspace.id | length > 0
+          when: cv_deploy_results.workspace.avd_workspace.id is not none and cv_deploy_results.workspace.avd_workspace.id | length > 0
           # Set HTTPS_PROXY environment variable scoped for this task only
           environment:
             https_proxy: >-

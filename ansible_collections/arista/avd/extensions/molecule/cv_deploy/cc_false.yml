@@ -70,8 +70,8 @@
           ansible.builtin.assert:
             that:
               # Change control
-              - cv_deploy_results.change_control.requested_state == "pending approval"
-              - cv_deploy_results.change_control.requested_state == cv_deploy_results.change_control.state
+              - cv_deploy_results.change_control.avd_change_control.requested_state == "pending approval"
+              - cv_deploy_results.change_control.avd_change_control.requested_state == cv_deploy_results.change_control.state
 
       always:
 

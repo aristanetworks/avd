@@ -14,11 +14,13 @@ from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed
 from pyavd._cv.workflows.constants import EOS_CLI_WARNINGS
 from pyavd._cv.workflows.finalize_workspace_on_cv import _produce_cvworkspace_build_result, finalize_workspace_on_cv
 from pyavd._cv.workflows.models import (
+    AvdDevice,
+    AvdWorkspace,
+    AvdWorkspaceBuildWarningsConfig,
     CVDevice,
     CVWorkspace,
     CVWorkspaceBuildConfigValidationError,
     CVWorkspaceBuildConfigValidationWarning,
-    CVWorkspaceBuildWarningsConfig,
 )
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_ID,
@@ -90,21 +92,21 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
     CV_DEVICES: ClassVar[tuple[CVDevice, ...]] = (
         CVDevice(
-            hostname="avd-ci-leaf1",
+            avd_device=AvdDevice(hostname="avd-ci-leaf1"),
             serial_number="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
             system_mac_address="50:00:00:72:8b:31",
             _exists_on_cv=True,
             _streaming=True,
         ),
         CVDevice(
-            hostname="avd-ci-spine1",
+            avd_device=AvdDevice(hostname="avd-ci-spine1"),
             serial_number="DCC816CEAC4BBD6319385043AD318362",
             system_mac_address="50:00:00:d7:ee:0b",
             _exists_on_cv=True,
             _streaming=True,
         ),
         CVDevice(
-            hostname="avd-ci-spine2",
+            avd_device=AvdDevice(hostname="avd-ci-spine2"),
             serial_number="A7D46613D44DE45D68D5B5C5CBA06B0D",
             system_mac_address="50:00:00:cb:38:c2",
             _exists_on_cv=True,
@@ -142,16 +144,18 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=workspace_id,
-                requested_state=workspace_requested_state,
-                build_warnings=CVWorkspaceBuildWarningsConfig(enabled=build_warnings),
+                avd_workspace=AvdWorkspace(
+                    id=workspace_id,
+                    requested_state=workspace_requested_state,
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(enabled=build_warnings),
+                )
             )
             await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1", "avd-ci-spine1", "avd-ci-spine2"]), warnings)
 
         assert workspace.build_id == workspace_build_id
-        assert workspace.build_warnings.enabled == build_warnings
-        assert not workspace.build_warnings.suppress_patterns
-        assert not workspace.build_warnings.suppress_portfast
+        assert workspace.avd_workspace.build_warnings.enabled == build_warnings
+        assert not workspace.avd_workspace.build_warnings.suppress_patterns
+        assert not workspace.avd_workspace.build_warnings.suppress_portfast
         assert not workspace.device_build_results
         assert not warnings
 
@@ -160,18 +164,18 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         warnings = []
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
-            workspace = CVWorkspace(id=self.workspace_id, requested_state="built")
+            workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=self.workspace_id, requested_state="built"))
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings.enabled is True
-        assert not workspace.build_warnings.suppress_patterns
-        assert not workspace.build_warnings.suppress_portfast
+        assert workspace.avd_workspace.build_warnings.enabled is True
+        assert not workspace.avd_workspace.build_warnings.suppress_patterns
+        assert not workspace.avd_workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 3
         for build_result in workspace.device_build_results:
-            match build_result.device.hostname:
+            match build_result.device.avd_device.hostname:
                 case "avd-ci-leaf1":
                     assert not build_result.config_validation.errors
                     assert len(build_result.config_validation.warnings) == 1
@@ -239,21 +243,23 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(suppress_portfast=True),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(suppress_portfast=True),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings.enabled is True
-        assert not workspace.build_warnings.suppress_patterns
-        assert workspace.build_warnings.suppress_portfast
+        assert workspace.avd_workspace.build_warnings.enabled is True
+        assert not workspace.avd_workspace.build_warnings.suppress_patterns
+        assert workspace.avd_workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 2
         for build_result in workspace.device_build_results:
-            match build_result.device.hostname:
+            match build_result.device.avd_device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
                     assert (
@@ -299,21 +305,23 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"]),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"]),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings.enabled is True
-        assert len(workspace.build_warnings.suppress_patterns) == 1
-        assert not workspace.build_warnings.suppress_portfast
+        assert workspace.avd_workspace.build_warnings.enabled is True
+        assert len(workspace.avd_workspace.build_warnings.suppress_patterns) == 1
+        assert not workspace.avd_workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 3
         for build_result in workspace.device_build_results:
-            match build_result.device.hostname:
+            match build_result.device.avd_device.hostname:
                 case "avd-ci-leaf1":
                     assert not build_result.config_validation.errors
                     assert len(build_result.config_validation.warnings) == 1
@@ -370,23 +378,25 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(
-                    suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*", EOS_CLI_WARNINGS.get("portfast", "")]
-                ),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(
+                        suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*", EOS_CLI_WARNINGS.get("portfast", "")]
+                    ),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings.enabled is True
-        assert len(workspace.build_warnings.suppress_patterns) == 2
-        assert not workspace.build_warnings.suppress_portfast
+        assert workspace.avd_workspace.build_warnings.enabled is True
+        assert len(workspace.avd_workspace.build_warnings.suppress_patterns) == 2
+        assert not workspace.avd_workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 2
         for build_result in workspace.device_build_results:
-            match build_result.device.hostname:
+            match build_result.device.avd_device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
                     assert (
@@ -427,24 +437,26 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(
-                    suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"],
-                    suppress_portfast=True,
-                ),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(
+                        suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"],
+                        suppress_portfast=True,
+                    ),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings.enabled is True
-        assert len(workspace.build_warnings.suppress_patterns) == 1
-        assert workspace.build_warnings.suppress_portfast
+        assert workspace.avd_workspace.build_warnings.enabled is True
+        assert len(workspace.avd_workspace.build_warnings.suppress_patterns) == 1
+        assert workspace.avd_workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 2
         for build_result in workspace.device_build_results:
-            match build_result.device.hostname:
+            match build_result.device.avd_device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
                     assert (
@@ -485,19 +497,21 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(
-                    suppress_patterns=[r"(?P<invalid"],
-                ),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(
+                        suppress_patterns=[r"(?P<invalid"],
+                    ),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings.enabled is True
-        assert len(workspace.build_warnings.suppress_patterns) == 1
-        assert not workspace.build_warnings.suppress_portfast
+        assert workspace.avd_workspace.build_warnings.enabled is True
+        assert len(workspace.avd_workspace.build_warnings.suppress_patterns) == 1
+        assert not workspace.avd_workspace.build_warnings.suppress_portfast
         assert len(warnings) == 1
         assert warnings[0] == (
             r"_prepare_build_warnings_suppress_patterns: Failed to process proposed regex pattern '(?P<invalid'. "
@@ -505,7 +519,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         )
         assert len(workspace.device_build_results) == 3
         for build_result in workspace.device_build_results:
-            match build_result.device.hostname:
+            match build_result.device.avd_device.hostname:
                 case "avd-ci-leaf1":
                     assert not build_result.config_validation.errors
                     assert len(build_result.config_validation.warnings) == 1
@@ -573,24 +587,26 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(
-                    suppress_patterns=[".*portfast should only be enabled on ports connected to a single host.*"],
-                    suppress_portfast=True,
-                ),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(
+                        suppress_patterns=[".*portfast should only be enabled on ports connected to a single host.*"],
+                        suppress_portfast=True,
+                    ),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings.enabled is True
-        assert len(workspace.build_warnings.suppress_patterns) == 1
-        assert workspace.build_warnings.suppress_portfast
+        assert workspace.avd_workspace.build_warnings.enabled is True
+        assert len(workspace.avd_workspace.build_warnings.suppress_patterns) == 1
+        assert workspace.avd_workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 2
         for build_result in workspace.device_build_results:
-            match build_result.device.hostname:
+            match build_result.device.avd_device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
                     assert (
@@ -636,23 +652,25 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id,
-                requested_state="built",
-                build_warnings=CVWorkspaceBuildWarningsConfig(
-                    enabled=False,
-                ),
+                avd_workspace=AvdWorkspace(
+                    id=self.workspace_id,
+                    requested_state="built",
+                    build_warnings=AvdWorkspaceBuildWarningsConfig(
+                        enabled=False,
+                    ),
+                )
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert not workspace.build_warnings.enabled
-        assert not workspace.build_warnings.suppress_patterns
-        assert not workspace.build_warnings.suppress_portfast
+        assert not workspace.avd_workspace.build_warnings.enabled
+        assert not workspace.avd_workspace.build_warnings.suppress_patterns
+        assert not workspace.avd_workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 2
         for build_result in workspace.device_build_results:
-            match build_result.device.hostname:
+            match build_result.device.avd_device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
                     assert (
@@ -703,14 +721,14 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         # Redefine list of CVDevices making sure avd-ci-leaf1 (13C20F1EDCCED2D85F6DB2FB9E3AC5B6) is missing in it
         cv_devices_short: tuple[CVDevice, ...] = (
             CVDevice(
-                hostname="avd-ci-spine1",
+                avd_device=AvdDevice(hostname="avd-ci-spine1"),
                 serial_number="DCC816CEAC4BBD6319385043AD318362",
                 system_mac_address="50:00:00:d7:ee:0b",
                 _exists_on_cv=True,
                 _streaming=True,
             ),
             CVDevice(
-                hostname="avd-ci-spine2",
+                avd_device=AvdDevice(hostname="avd-ci-spine2"),
                 serial_number="A7D46613D44DE45D68D5B5C5CBA06B0D",
                 system_mac_address="50:00:00:cb:38:c2",
                 _exists_on_cv=True,
@@ -724,7 +742,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         # Attempt to process CloudVision build details
         with caplog.at_level(WARNING):
             response = _produce_cvworkspace_build_result(
-                workspace=CVWorkspace(id=self.workspace_id, requested_state="built"),
+                workspace=CVWorkspace(avd_workspace=AvdWorkspace(id=self.workspace_id, requested_state="built")),
                 workspace_build_details=workspace_build_details,
                 compiled_workspace_build_warnings_suppress_list=[],
                 devices=cv_devices_short,
@@ -732,10 +750,10 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         # Assert that CVWorkspaceDeviceBuildResult objects are generated for avd-ci-spine1 and avd-ci-spine2
         assert len(response) == 2
-        assert all((response_item.device.hostname in ["avd-ci-spine1", "avd-ci-spine2"]) for response_item in response)
+        assert all((response_item.device.avd_device.hostname in ["avd-ci-spine1", "avd-ci-spine2"]) for response_item in response)
 
         # Assert that CVWorkspaceDeviceBuildResult objects are not generated for avd-ci-leaf1
-        assert not any(response_item.device.hostname == "avd-ci-leaf1" for response_item in response)
+        assert not any(response_item.device.avd_device.hostname == "avd-ci-leaf1" for response_item in response)
 
         # Assert that log message is generated for avd-ci-leaf1 which is missing in the list of CVDevices
         assert any(

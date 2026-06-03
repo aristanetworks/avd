@@ -45,9 +45,9 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
         return
 
     # First create all configlets in parallel coroutines.
-    await deploy_configlets_to_cv(todo_configs, result.workspace.id, cv_client)
+    await deploy_configlets_to_cv(todo_configs, result.workspace.avd_workspace.id, cv_client)
     # Next create all containers in parallel coroutines.
-    await deploy_configlet_containers_to_cv(todo_configs, result.workspace.id, cv_client)
+    await deploy_configlet_containers_to_cv(todo_configs, result.workspace.avd_workspace.id, cv_client)
 
     result.deployed_configs.extend(todo_configs)
 
@@ -61,8 +61,8 @@ async def deploy_configlets_to_cv(configs: list[CVEosConfig], workspace_id: str,
     configlets = [
         (
             f"{CONFIGLET_ID_PREFIX}{config.device.serial_number}",
-            config.configlet_name or f"{CONFIGLET_NAME_PREFIX}{config.device.hostname}",
-            f"Configuration created and uploaded by AVD for {config.device.hostname}",
+            config.configlet_name or f"{CONFIGLET_NAME_PREFIX}{config.device.avd_device.hostname}",
+            f"Configuration created and uploaded by AVD for {config.device.avd_device.hostname}",
             config.file,
         )
         for config in configs
@@ -150,8 +150,8 @@ async def deploy_configlet_containers_to_cv(configs: list[CVEosConfig], workspac
     for config in configs:
         # For now we reuse configlet_id as container_id.
         container_id = configlet_id = f"{CONFIGLET_ID_PREFIX}{config.device.serial_number}"
-        display_name = f"{config.device.hostname}"
-        description = f"Configuration created and uploaded by AVD for {config.device.hostname}"
+        display_name = f"{config.device.avd_device.hostname}"
+        description = f"Configuration created and uploaded by AVD for {config.device.avd_device.hostname}"
         query = f"device:{config.device.serial_number}"
         configlet_ids = [configlet_id]
         if existing_device_containers_by_id.get(container_id) != (display_name, description, query, configlet_ids):
@@ -182,7 +182,7 @@ async def delete_configs_from_cv(device_deployments: list[CVDeviceDeployment], r
 
     If all children are removed, the root container itself is deleted and unregistered from the Studio
     """
-    workspace_id = result.workspace.id
+    workspace_id = result.workspace.avd_workspace.id
 
     # Build a stable list of target IDs from manifest-opted devices.
     target_ids = [

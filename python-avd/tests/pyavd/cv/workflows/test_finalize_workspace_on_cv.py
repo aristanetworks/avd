@@ -14,7 +14,7 @@ import pytest
 
 from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
 from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv
-from pyavd._cv.workflows.models import CVDevice, CVWorkspace, DeployToCvResult
+from pyavd._cv.workflows.models import AvdDevice, AvdWorkspace, CVDevice, CVWorkspace, DeployToCvResult
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
@@ -40,7 +40,7 @@ ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 @pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
 async def test_finalize_workspace_on_cv_pending_state(cv_client: CVClient) -> None:
     """Test use case where requested_state == state == 'pending'."""
-    workspace = CVWorkspace(requested_state="pending", state="pending")
+    workspace = CVWorkspace(avd_workspace=AvdWorkspace(requested_state="pending"), state="pending")
     result = await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1"]), [])
 
     assert result is None
@@ -68,7 +68,7 @@ async def test_finalize_workspace_on_cv_built_state(cv_client: CVClient) -> None
     workspace_expected_state: str = "built"
 
     with patch("pyavd._cv.client.workspace.uuid4", side_effect=[workspace_build_id.removeprefix("req-")]):
-        workspace = CVWorkspace(id=workspace_id, requested_state=workspace_requested_state)
+        workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id, requested_state=workspace_requested_state))
         await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1"]), [])
 
     assert workspace.state == workspace_expected_state
@@ -102,7 +102,7 @@ async def test_finalize_workspace_on_cv_abandoned_state(cv_client: CVClient) -> 
     workspace_expected_state: str = "abandoned"
 
     with patch("pyavd._cv.client.workspace.uuid4", side_effect=[workspace_build_id.removeprefix("req-"), workspace_abandon_id.removeprefix("req-")]):
-        workspace = CVWorkspace(id=workspace_id, requested_state=workspace_requested_state)
+        workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id, requested_state=workspace_requested_state))
         await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1"]), [])
 
     assert workspace.state == workspace_expected_state
@@ -134,7 +134,7 @@ async def test_finalize_workspace_on_cv_deleted_state(cv_client: CVClient) -> No
     workspace_expected_state: str = "deleted"
 
     with patch("pyavd._cv.client.workspace.uuid4", side_effect=[workspace_build_id.removeprefix("req-")]):
-        workspace = CVWorkspace(id=workspace_id, requested_state=workspace_requested_state)
+        workspace = CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id, requested_state=workspace_requested_state))
         await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1"]), [])
 
     assert workspace.state == workspace_expected_state
@@ -206,7 +206,7 @@ async def test_finalize_workspace_on_cv_build_failure(
         patch("pyavd._cv.client.workspace.uuid4", side_effect=[workspace_build_id.removeprefix("req-"), workspace_abandon_id.removeprefix("req-")]),
         expected_exception as exception_info,
     ):
-        workspace = CVWorkspace(name=workspace_name, id=workspace_id, requested_state=workspace_requested_state)
+        workspace = CVWorkspace(avd_workspace=AvdWorkspace(name=workspace_name, id=workspace_id, requested_state=workspace_requested_state))
         await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1"]), [])
 
     assert workspace.state == workspace_expected_state
@@ -263,11 +263,13 @@ async def test_finalize_workspace_on_cv_submit_failed_unspecified(
         "message='Unknown exception faced', code=ResponseCode.UNSPECIFIED\\)"
     ]
     cv_workspace = CVWorkspace(
-        name=MOCKED_WORKSPACE_NAME,
-        description=MOCKED_WORKSPACE_DESCRIPTION,
-        id=MOCKED_WORKSPACE_ID,
-        requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-        force=workspace_force_submission,
+        avd_workspace=AvdWorkspace(
+            name=MOCKED_WORKSPACE_NAME,
+            description=MOCKED_WORKSPACE_DESCRIPTION,
+            id=MOCKED_WORKSPACE_ID,
+            requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+            force=workspace_force_submission,
+        )
     )
 
     with (
@@ -286,7 +288,7 @@ async def test_finalize_workspace_on_cv_submit_failed_unspecified(
             cv_client=cv_client,
             devices=[
                 CVDevice(
-                    hostname="avd-ci-leaf2",
+                    avd_device=AvdDevice(hostname="avd-ci-leaf2"),
                     serial_number="50:00:00:d5:5d:c0",
                     system_mac_address="B51AA89B6E51E89E1422107EDE3A9438",
                     _exists_on_cv=True,
@@ -304,10 +306,10 @@ async def test_finalize_workspace_on_cv_submit_failed_unspecified(
     assert len(warnings) == 0
 
     # Assert returned workspace object
-    assert cv_workspace.name == MOCKED_WORKSPACE_NAME
-    assert cv_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
-    assert cv_workspace.id == MOCKED_WORKSPACE_ID
-    assert cv_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    assert cv_workspace.avd_workspace.name == MOCKED_WORKSPACE_NAME
+    assert cv_workspace.avd_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
+    assert cv_workspace.avd_workspace.id == MOCKED_WORKSPACE_ID
+    assert cv_workspace.avd_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
     assert cv_workspace.state == "submit failed"
 
 
@@ -350,11 +352,13 @@ async def test_finalize_workspace_on_cv_streaming_device_failure(
     """
     result = DeployToCvResult(
         workspace=CVWorkspace(
-            name=MOCKED_WORKSPACE_NAME,
-            description=MOCKED_WORKSPACE_DESCRIPTION,
-            id=MOCKED_WORKSPACE_ID,
-            requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-            force=workspace_force_submission,
+            avd_workspace=AvdWorkspace(
+                name=MOCKED_WORKSPACE_NAME,
+                description=MOCKED_WORKSPACE_DESCRIPTION,
+                id=MOCKED_WORKSPACE_ID,
+                requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+                force=workspace_force_submission,
+            )
         )
     )
 
@@ -374,7 +378,7 @@ async def test_finalize_workspace_on_cv_streaming_device_failure(
             cv_client=cv_client,
             devices=[
                 CVDevice(
-                    hostname="avd-ci-leaf2",
+                    avd_device=AvdDevice(hostname="avd-ci-leaf2"),
                     serial_number="50:00:00:d5:5d:c0",
                     system_mac_address="B51AA89B6E51E89E1422107EDE3A9438",
                     _exists_on_cv=True,
@@ -394,11 +398,12 @@ async def test_finalize_workspace_on_cv_streaming_device_failure(
     assert len(result.warnings) == 0
 
     # Assert returned workspace object
-    assert result.workspace.name == MOCKED_WORKSPACE_NAME
-    assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
-    assert result.workspace.id == MOCKED_WORKSPACE_ID
-    assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
-    assert result.workspace.force == workspace_force_submission
+    assert result.workspace is not None
+    assert result.workspace.avd_workspace.name == MOCKED_WORKSPACE_NAME
+    assert result.workspace.avd_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
+    assert result.workspace.avd_workspace.id == MOCKED_WORKSPACE_ID
+    assert result.workspace.avd_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    assert result.workspace.avd_workspace.force == workspace_force_submission
     assert result.workspace.state == "submit failed"
 
 
@@ -432,11 +437,13 @@ async def test_finalize_workspace_on_cv_non_streaming_device_unforced(
     """
     result = DeployToCvResult(
         workspace=CVWorkspace(
-            name=MOCKED_WORKSPACE_NAME,
-            description=MOCKED_WORKSPACE_DESCRIPTION,
-            id=MOCKED_WORKSPACE_ID,
-            requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-            force=False,
+            avd_workspace=AvdWorkspace(
+                name=MOCKED_WORKSPACE_NAME,
+                description=MOCKED_WORKSPACE_DESCRIPTION,
+                id=MOCKED_WORKSPACE_ID,
+                requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+                force=False,
+            )
         )
     )
 
@@ -456,7 +463,7 @@ async def test_finalize_workspace_on_cv_non_streaming_device_unforced(
             cv_client=cv_client,
             devices=[
                 CVDevice(
-                    hostname="avd-ci-leaf1",
+                    avd_device=AvdDevice(hostname="avd-ci-leaf1"),
                     serial_number="50:00:00:72:8b:31",
                     system_mac_address="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
                     _exists_on_cv=True,
@@ -480,11 +487,12 @@ async def test_finalize_workspace_on_cv_non_streaming_device_unforced(
         assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
 
     # Assert returned workspace object
-    assert result.workspace.name == MOCKED_WORKSPACE_NAME
-    assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
-    assert result.workspace.id == MOCKED_WORKSPACE_ID
-    assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
-    assert not result.workspace.force
+    assert result.workspace is not None
+    assert result.workspace.avd_workspace.name == MOCKED_WORKSPACE_NAME
+    assert result.workspace.avd_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
+    assert result.workspace.avd_workspace.id == MOCKED_WORKSPACE_ID
+    assert result.workspace.avd_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    assert not result.workspace.avd_workspace.force
     assert result.workspace.state == "submit failed"
 
 
@@ -530,11 +538,13 @@ async def test_finalize_workspace_on_cv_non_streaming_device_forced(
     ):
         result = DeployToCvResult(
             workspace=CVWorkspace(
-                name=MOCKED_WORKSPACE_NAME,
-                description=MOCKED_WORKSPACE_DESCRIPTION,
-                id=MOCKED_WORKSPACE_ID,
-                requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-                force=True,
+                avd_workspace=AvdWorkspace(
+                    name=MOCKED_WORKSPACE_NAME,
+                    description=MOCKED_WORKSPACE_DESCRIPTION,
+                    id=MOCKED_WORKSPACE_ID,
+                    requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+                    force=True,
+                )
             )
         )
 
@@ -543,7 +553,7 @@ async def test_finalize_workspace_on_cv_non_streaming_device_forced(
             cv_client=cv_client,
             devices=[
                 CVDevice(
-                    hostname="avd-ci-leaf1",
+                    avd_device=AvdDevice(hostname="avd-ci-leaf1"),
                     serial_number="50:00:00:72:8b:31",
                     system_mac_address="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
                     _exists_on_cv=True,
@@ -562,9 +572,10 @@ async def test_finalize_workspace_on_cv_non_streaming_device_forced(
         assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
 
     # Assert returned workspace object
-    assert result.workspace.name == MOCKED_WORKSPACE_NAME
-    assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
-    assert result.workspace.id == MOCKED_WORKSPACE_ID
-    assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
-    assert result.workspace.force
+    assert result.workspace is not None
+    assert result.workspace.avd_workspace.name == MOCKED_WORKSPACE_NAME
+    assert result.workspace.avd_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
+    assert result.workspace.avd_workspace.id == MOCKED_WORKSPACE_ID
+    assert result.workspace.avd_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    assert result.workspace.avd_workspace.force
     assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED

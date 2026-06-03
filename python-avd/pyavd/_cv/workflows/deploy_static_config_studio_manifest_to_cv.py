@@ -86,7 +86,7 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
     TODO: Implement strict mode to remove any containers/configlets not managed by the manifest from the Studio.
     TODO: Implement configlet body diff - digest/checksum.
     """
-    workspace_id = deployment_result.workspace.id
+    workspace_id = deployment_result.workspace.avd_workspace.id
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Starting manifest deployment for workspace '%s'.", workspace_id)
 
     # Build the desired CloudVision manifest from the AVD manifest.
@@ -121,7 +121,7 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
     The function builds one graph covering regular parent-child assignments and Studio root assignments,
     validates the existing graph, then applies the calculated container/root plan.
     """
-    workspace_id = deployment_result.workspace.id
+    workspace_id = deployment_result.workspace.avd_workspace.id
 
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Fetching existing Static Configuration Studio container state from CloudVision...")
     existing_containers, existing_root_ids = await gather(
@@ -285,7 +285,7 @@ def _validate_existing_container_state(existing_state: _ExistingContainerState, 
 
 async def _apply_container_plan(container_plan: _ContainerPlan, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
     """Apply an already validated container/root plan to CloudVision."""
-    workspace_id = deployment_result.workspace.id
+    workspace_id = deployment_result.workspace.avd_workspace.id
 
     deployment_result.skipped_static_config_containers.extend(container.avd_container for container in container_plan.containers_to_skip)
 
@@ -355,7 +355,7 @@ async def _sync_configlets(
     touched_container_ids comes from the container plan and identifies holders whose stale configlet
     assignments will disappear because the holder is being rewritten or deleted by this deploy.
     """
-    workspace_id = deployment_result.workspace.id
+    workspace_id = deployment_result.workspace.avd_workspace.id
 
     # Create or update configlets.
     if cv_manifest.configlets:

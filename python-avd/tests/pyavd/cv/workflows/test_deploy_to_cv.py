@@ -12,7 +12,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
-from pyavd._cv.workflows.models import CloudVision, CVDeviceDeployment, CVEosConfig, CVGRPCChannelConfiguration, CVGRPCKeepalives, CVWorkspace
+from pyavd._cv.workflows.models import AvdWorkspace, CloudVision, CVDeviceDeployment, CVEosConfig, CVGRPCChannelConfiguration, CVGRPCKeepalives, CVWorkspace
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
@@ -151,11 +151,13 @@ async def test_deploy_to_cv(
                 proxy_password=None,
             ),
             workspace=CVWorkspace(
-                name=MOCKED_WORKSPACE_NAME,
-                description=MOCKED_WORKSPACE_DESCRIPTION,
-                id=MOCKED_WORKSPACE_ID,
-                requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-                force=workspace_force_submission,
+                avd_workspace=AvdWorkspace(
+                    name=MOCKED_WORKSPACE_NAME,
+                    description=MOCKED_WORKSPACE_DESCRIPTION,
+                    id=MOCKED_WORKSPACE_ID,
+                    requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+                    force=workspace_force_submission,
+                )
             ),
             device_deployments=[
                 CVDeviceDeployment(
@@ -175,11 +177,11 @@ async def test_deploy_to_cv(
     assert len(result.errors) == 0
 
     # Assert returned workspace object
-    assert result.workspace.name == MOCKED_WORKSPACE_NAME
-    assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
-    assert result.workspace.id == MOCKED_WORKSPACE_ID
-    assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
-    assert result.workspace.force == workspace_force_submission
+    assert result.workspace.avd_workspace.name == MOCKED_WORKSPACE_NAME
+    assert result.workspace.avd_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
+    assert result.workspace.avd_workspace.id == MOCKED_WORKSPACE_ID
+    assert result.workspace.avd_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    assert result.workspace.avd_workspace.force == workspace_force_submission
     assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
 
 

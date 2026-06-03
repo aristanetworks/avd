@@ -89,9 +89,9 @@
           ansible.builtin.assert:
             that:
               # workspace
-              - cv_deploy_results.workspace.name == cv_workspace_name
+              - cv_deploy_results.workspace.avd_workspace.name == cv_workspace_name
               - cv_deploy_results.workspace.state == "submitted"
-              - cv_deploy_results.workspace.description == cv_workspace_description
+              - cv_deploy_results.workspace.avd_workspace.description == cv_workspace_description
               # errors and warnings
               - cv_deploy_results.errors == []
               - cv_deploy_results.warnings | default([]) | length == 0
@@ -101,7 +101,7 @@
               # Change control
               - cv_deploy_results.change_control.name == cv_change_control_name
               - cv_deploy_results.change_control.description == cv_change_control_description
-              - cv_deploy_results.change_control.requested_state == "completed"
+              - cv_deploy_results.change_control.avd_change_control.requested_state == "completed"
               - cv_deploy_results.change_control.state == "completed"
           vars:
             cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
@@ -169,7 +169,7 @@
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.legacy.uri:
-            url: https://{{ cv_server }}/api/resources/workspace/v1/Workspace?key.workspaceId={{ cv_deploy_results.workspace.id }}
+            url: https://{{ cv_server }}/api/resources/workspace/v1/Workspace?key.workspaceId={{ cv_deploy_results.workspace.avd_workspace.id }}
             use_proxy: "{{ true if proxy_host and proxy_port else false }}"
             validate_certs: "{{ cv_verify_certs }}"
             return_content: true
@@ -185,7 +185,7 @@
           retries: 3
           delay: 3
           ignore_errors: true
-          when: cv_deploy_results.workspace.id is not none and cv_deploy_results.workspace.id | length > 0
+          when: cv_deploy_results.workspace.avd_workspace.id is not none and cv_deploy_results.workspace.avd_workspace.id | length > 0
           environment:
             https_proxy: >-
               http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
@@ -209,7 +209,7 @@
                 "values": [
                   {
                     "key": {
-                      "workspaceId": "{{ cv_deploy_results.workspace.id }}"
+                      "workspaceId": "{{ cv_deploy_results.workspace.avd_workspace.id }}"
                     },
                     "request": "REQUEST_ABANDON",
                     "requestParams": {
@@ -226,7 +226,7 @@
           delay: 3
           ignore_errors: true
           when:
-            - cv_deploy_results.workspace.id is not none and cv_deploy_results.workspace.id | length > 0
+            - cv_deploy_results.workspace.avd_workspace.id is not none and cv_deploy_results.workspace.avd_workspace.id | length > 0
             - >
               cvp_workspace_status_result.json.value.state | default("WORKSPACE_STATE_UNSPECIFIED") not in
               ["WORKSPACE_STATE_SUBMITTED", "WORKSPACE_STATE_ABANDONED", "WORKSPACE_STATE_ROLLED_BACK"]

@@ -40,7 +40,7 @@ async def deploy_studio_inputs_to_cv(studio_inputs: list[CVStudioInputs], result
     studio_inputs_coroutines = [
         cv_client.set_studio_inputs(
             studio_id=studio_input.studio_id,
-            workspace_id=result.workspace.id,
+            workspace_id=result.workspace.avd_workspace.id,
             inputs=studio_input.inputs,
             input_path=studio_input.input_path,
         )

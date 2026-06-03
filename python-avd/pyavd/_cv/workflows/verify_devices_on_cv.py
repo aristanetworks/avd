@@ -9,10 +9,10 @@ from typing import TYPE_CHECKING
 from pyavd._cv.api.arista.inventory.v1 import StreamingStatus
 from pyavd._cv.client.exceptions import CVResourceNotFound
 
-from .models import AvdDevice, CVDevice
-
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
+
+    from .models import CVDevice
 
 LOGGER = getLogger(__name__)
 
@@ -58,9 +58,9 @@ async def verify_devices_in_cloudvision_inventory(
     # Using set to only include a device once.
     device_tuples = {
         (
-            device.intended_serial_number,
-            device.intended_system_mac_address,
-            device.hostname if not any([device.intended_serial_number, device.intended_system_mac_address]) else None,
+            device.avd_device.serial_number,
+            device.avd_device.system_mac_address,
+            device.avd_device.hostname if not any([device.avd_device.serial_number, device.avd_device.system_mac_address]) else None,
         )
         for device in devices
         if device._exists_on_cv is None
@@ -76,12 +76,12 @@ async def verify_devices_in_cloudvision_inventory(
     existing_devices: list[CVDevice] = []
     for device in devices:
         # Use serial_number as unique ID if set.
-        if device.intended_serial_number is not None:
-            if device.intended_serial_number not in found_device_dict_by_serial:
+        if device.avd_device.serial_number is not None:
+            if device.avd_device.serial_number not in found_device_dict_by_serial:
                 device._exists_on_cv = False
                 continue
             device._exists_on_cv = True
-            device.serial_number = device.intended_serial_number
+            device.serial_number = device.avd_device.serial_number
             device.system_mac_address = found_device_dict_by_serial[device.serial_number].system_mac_address
             # Update streaming status
             device._streaming = found_device_dict_by_serial[device.serial_number].streaming_status == StreamingStatus.ACTIVE
@@ -89,12 +89,12 @@ async def verify_devices_in_cloudvision_inventory(
             continue
 
         # Use system_mac_address as unique ID if set.
-        if device.intended_system_mac_address is not None:
-            if device.intended_system_mac_address not in found_device_dict_by_system_mac:
+        if device.avd_device.system_mac_address is not None:
+            if device.avd_device.system_mac_address not in found_device_dict_by_system_mac:
                 device._exists_on_cv = False
                 continue
             device._exists_on_cv = True
-            device.system_mac_address = device.intended_system_mac_address
+            device.system_mac_address = device.avd_device.system_mac_address
             device.serial_number = found_device_dict_by_system_mac[device.system_mac_address].key.device_id
             # Update streaming status
             device._streaming = found_device_dict_by_system_mac[device.system_mac_address].streaming_status == StreamingStatus.ACTIVE
@@ -102,19 +102,19 @@ async def verify_devices_in_cloudvision_inventory(
             continue
 
         # Finally use hostname as unique ID.
-        if device.hostname not in found_device_dict_by_hostname:
+        if device.avd_device.hostname not in found_device_dict_by_hostname:
             device._exists_on_cv = False
             continue
         device._exists_on_cv = True
-        device.serial_number = found_device_dict_by_hostname[device.hostname].key.device_id
-        device.system_mac_address = found_device_dict_by_hostname[device.hostname].system_mac_address
+        device.serial_number = found_device_dict_by_hostname[device.avd_device.hostname].key.device_id
+        device.system_mac_address = found_device_dict_by_hostname[device.avd_device.hostname].system_mac_address
         # Update streaming status
-        device._streaming = found_device_dict_by_hostname[device.hostname].streaming_status == StreamingStatus.ACTIVE
+        device._streaming = found_device_dict_by_hostname[device.avd_device.hostname].streaming_status == StreamingStatus.ACTIVE
         existing_devices.append(device)
 
     # Now we know which devices are on CV, so we can dig deeper and check for them in I&T Studio
     # If a device is found, we will ensure hostname is correct and if not, update the hostname.
-    existing_device_tuples = {(device.serial_number, device.system_mac_address, device.hostname) for device in existing_devices}
+    existing_device_tuples = {(device.serial_number, device.system_mac_address, device.avd_device.hostname) for device in existing_devices}
 
     LOGGER.info(
         "verify_devices_in_cloudvision_inventory: %s existing device objects for %s unique devices in inventory",
@@ -139,11 +139,11 @@ async def verify_devices_in_topology_studio(existing_devices: list[CVDevice], wo
     Existing devices are updated with hostname and system mac address.
     Missing devices are added with device id, hostname, system mac address.
     """
-    existing_device_tuples = {(device.serial_number, device.hostname, device.system_mac_address) for device in existing_devices}
+    existing_device_tuples = {(device.serial_number, device.avd_device.hostname, device.system_mac_address) for device in existing_devices}
 
     cv_topology_inputs = await cv_client.get_topology_studio_inputs(
         workspace_id=workspace_id,
-        device_ids=list({device.serial_number for device in existing_devices}),
+        device_ids=list({device.serial_number for device in existing_devices if device.serial_number is not None}),
     )
     LOGGER.info("verify_devices_in_topology_studio: %s unique devices for %s device objects.", len(existing_device_tuples), len(existing_devices))
     LOGGER.info("verify_devices_in_topology_studio: got %s devices from I&T Studio.", len(cv_topology_inputs))
@@ -172,15 +172,12 @@ def missing_devices_handler(*, missing_devices: list[CVDevice], skip_missing_dev
       - Raises if skip_missing_devices is False.
       - Return Exception if skip_missing_devices is True.
     """
-    # Using set to only include a device once.
-    missing_device_tuples = {(device.intended_serial_number, device.intended_system_mac_address, device.hostname) for device in missing_devices}
-    # Notice these are new objects only used for the exception.
-    unique_missing_devices = [AvdDevice(hostname, serial_number, system_mac_address) for serial_number, system_mac_address, hostname in missing_device_tuples]
+    unique_missing_devices = list({device.avd_device for device in missing_devices})
     LOGGER.warning(
         "verify_devices_on_cv: %s is missing %s device objects for %s unique missing devices: %s",
         context,
         len(missing_devices),
-        len(missing_device_tuples),
+        len(unique_missing_devices),
         unique_missing_devices,
     )
     exception = CVResourceNotFound("Missing devices on CloudVision", *unique_missing_devices)

@@ -51,7 +51,7 @@
               - "### ENGAGE CV_WORKFLOW MODULE TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
 
         # This task is expected to fail
-        - name: "(BLOCK) Engage arista.avd.cv_workflow module to test failing build when workspace.requested_state == abandoned - {{ test_id | upper }}"
+        - name: "(BLOCK) Engage arista.avd.cv_workflow module to test failing build when avd_workspace.requested_state == abandoned - {{ test_id | upper }}"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost
@@ -101,7 +101,7 @@
           run_once: true
           ansible.builtin.assert:
             that:
-              - cv_deploy_results.workspace.requested_state == "abandoned"
+              - cv_deploy_results.workspace.avd_workspace.requested_state == "abandoned"
               - cv_deploy_results.workspace.state == "abandoned"
               - cv_deploy_results.failed is true
               - cv_deploy_results.warnings | default([]) | length == 0
