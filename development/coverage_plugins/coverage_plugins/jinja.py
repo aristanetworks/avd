@@ -138,14 +138,16 @@ class JinjaTemplateFileReporter(FileReporter):
 
     def translate_arcs(self, arcs: Iterable[tuple[int, int]]) -> set[tuple[int, int]]:
         """Drop recorded arcs whose endpoints are not reportable source template lines."""
+        recorded_arcs = tuple(arcs)
         reportable_lines = self.lines()
         translated_arcs: set[tuple[int, int]] = set()
-        for from_line, to_line in arcs:
+        for from_line, to_line in recorded_arcs:
             translated_from_line = _translate_recorded_arc_endpoint(from_line, reportable_lines)
             translated_to_line = _translate_recorded_arc_endpoint(to_line, reportable_lines)
             if translated_from_line is not None and translated_to_line is not None:
                 translated_arcs.add((translated_from_line, translated_to_line))
 
+        translated_arcs.update(_covered_multiline_tag_branch_arcs(recorded_arcs, self.arcs(), _source_tag_ranges(Path(self.filename)), reportable_lines))
         return translated_arcs
 
     def exit_counts(self) -> dict[int, int]:
@@ -277,6 +279,33 @@ def _translate_recorded_arc_endpoint(line: int, reportable_lines: set[int]) -> i
         return line
 
     return None
+
+
+def _covered_multiline_tag_branch_arcs(
+    recorded_arcs: tuple[tuple[int, int], ...],
+    possible_arcs: Collection[tuple[int, int]],
+    tag_ranges: Mapping[int, tuple[int, int]],
+    reportable_lines: set[int],
+) -> set[tuple[int, int]]:
+    """Return source branch arcs covered by coverage.py's multiline range arcs."""
+    recorded_arc_set = set(recorded_arcs)
+    covered_branch_arcs: set[tuple[int, int]] = set()
+    for from_line, to_line in possible_arcs:
+        if from_line <= 0 or to_line <= 0:
+            continue
+
+        tag_range = tag_ranges.get(from_line)
+        if tag_range is None or tag_range[0] == tag_range[1]:
+            continue
+
+        start_line, end_line = tag_range
+        if not all((line_number, line_number + 1) in recorded_arc_set for line_number in range(start_line, end_line)):
+            continue
+
+        if any(raw_to_line == to_line and raw_from_line not in reportable_lines for raw_from_line, raw_to_line in recorded_arcs):
+            covered_branch_arcs.add((from_line, to_line))
+
+    return covered_branch_arcs
 
 
 def _module_string_constants(tree: ast.Module) -> dict[str, str]:
