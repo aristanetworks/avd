@@ -4,13 +4,17 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from unittest.mock import AsyncMock
 
 import pytest
 
+from pyavd._cv.client.exceptions import CVResourceNotFound
 from pyavd._cv.workflows.models import AvdDevice, CVDevice
-from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
+from pyavd._cv.workflows.verify_devices_on_cv import missing_devices_handler, verify_devices_in_cloudvision_inventory
 
 if TYPE_CHECKING:
+    from unittest.mock import MagicMock
+
     from pyavd._cv.client import CVClient
 
 
@@ -66,3 +70,39 @@ async def test_verify_devices_in_cloudvision_inventory(
             _streaming=True,
         )
     ]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "device",
+    [
+        pytest.param(CVDevice(avd_device=AvdDevice(hostname="mocked_eos_device", serial_number="MISSING_SERIAL")), id="MISSING_DEVICE_BY_SERIAL_NUMBER"),
+        pytest.param(CVDevice(avd_device=AvdDevice(hostname="mocked_eos_device", system_mac_address="00:11:22:33:44:55")), id="MISSING_DEVICE_BY_MAC_ADDR"),
+        pytest.param(CVDevice(avd_device=AvdDevice(hostname="mocked_eos_device")), id="MISSING_DEVICE_BY_HOSTNAME"),
+    ],
+)
+async def test_verify_device_not_found_on_cv(mock_cv_client: MagicMock, device: CVDevice) -> None:
+    """Test that device absent from CloudVision gets _exists_on_cv=False that CVResourceNotFound exception gets appended to warnings."""
+    mock_cv_client.get_inventory_devices = AsyncMock(return_value=[])
+    warnings: list[Exception] = []
+    result = await verify_devices_in_cloudvision_inventory(devices=[device], skip_missing_devices=True, warnings=warnings, cv_client=mock_cv_client)
+    assert result == []
+    assert device._exists_on_cv is False
+    assert len(warnings) == 1
+    assert isinstance(warnings[0], CVResourceNotFound)
+    assert warnings[0].args[0] == "Missing devices on CloudVision"
+
+
+def test_missing_devices_handler_skip_true() -> None:
+    """Test that missing_devices_handler returns exception when skip_missing_devices is True."""
+    device = CVDevice(avd_device=AvdDevice(hostname="mocked_eos_device"))
+    returned_exception = missing_devices_handler(missing_devices=[device], skip_missing_devices=True, context="test context")
+    assert isinstance(returned_exception, CVResourceNotFound)
+    assert returned_exception.args[0] == "Missing devices on CloudVision"
+
+
+def test_missing_devices_handler_skip_false() -> None:
+    """Test that missing_devices_handler raises exception when skip_missing_devices is False."""
+    device = CVDevice(avd_device=AvdDevice(hostname="mocked_eos_device"))
+    with pytest.raises(CVResourceNotFound, match="Missing devices on CloudVision"):
+        missing_devices_handler(missing_devices=[device], skip_missing_devices=False, context="test context")
