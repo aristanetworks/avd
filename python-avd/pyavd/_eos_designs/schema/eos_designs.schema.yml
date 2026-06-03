@@ -5569,9 +5569,9 @@ keys:
                       type: list
                       description: 'IPv6 addresses with prefix length, e.g., ''2001:db8::1/64''.
 
-                        Can be used instead of or together with `ip_address`.
+                        Can be used instead of or together with `ip_addresses`.
 
-                        For subinterfaces, at least one of `ip_address` or `ipv6_addresses`
+                        For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses`
                         must be set.'
                       items:
                         type: str

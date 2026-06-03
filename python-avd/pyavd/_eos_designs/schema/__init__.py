@@ -31649,8 +31649,8 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
                 Can be used instead of or together with
-                `ip_address`.
-                For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                `ip_addresses`.
+                For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses` must be set.
                 Subclass of AvdList with `str` items.
                 """
                 static_routes: StaticRoutes
@@ -31783,8 +31783,8 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_addresses:
                                IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
                                Can be used instead of or together with
-                               `ip_address`.
-                               For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                               `ip_addresses`.
+                               For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses` must be set.
                                Subclass of AvdList with `str` items.
                             static_routes:
                                Static routes to be configured on every device where this interface is configured.
@@ -77109,8 +77109,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
                         Can be used instead of or together with
-                        `ip_address`.
-                        For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                        `ip_addresses`.
+                        For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses` must be set.
                         Subclass of AvdList with `str` items.
                         """
                         static_routes: StaticRoutes
@@ -77243,8 +77243,8 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_addresses:
                                        IPv6 addresses with prefix length, e.g., '2001:db8::1/64'.
                                        Can be used instead of or together with
-                                       `ip_address`.
-                                       For subinterfaces, at least one of `ip_address` or `ipv6_addresses` must be set.
+                                       `ip_addresses`.
+                                       For subinterfaces, at least one of `ip_addresses` or `ipv6_addresses` must be set.
                                        Subclass of AvdList with `str` items.
                                     static_routes:
                                        Static routes to be configured on every device where this interface is configured.

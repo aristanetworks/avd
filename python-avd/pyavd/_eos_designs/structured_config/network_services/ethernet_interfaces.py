@@ -104,20 +104,7 @@ class EthernetInterfacesMixin(Protocol):
     ) -> None:
         """Set the structured_config for ethernet_interfaces with the l3interfaces."""
         for l3_interface in vrf.l3_interfaces:
-            nodes_length = len(l3_interface.nodes)
-            if (
-                len(l3_interface.interfaces) != nodes_length
-                or (not l3_interface.ip_addresses and not l3_interface.ipv6_addresses)
-                or (l3_interface.ip_addresses and len(l3_interface.ip_addresses) != nodes_length)
-                or (l3_interface.ipv6_addresses and len(l3_interface.ipv6_addresses) != nodes_length)
-                or (l3_interface.descriptions and len(l3_interface.descriptions) != nodes_length)
-            ):
-                msg = (
-                    "Length of lists 'interfaces', 'nodes', 'ip_addresses'/'ipv6_addresses' and 'descriptions' (if used) must match"
-                    f" for l3_interfaces for {vrf.name} in {tenant.name}."
-                    " At least one of 'ip_addresses' or 'ipv6_addresses' must be set."
-                )
-                raise AristaAvdError(msg)
+            self._validate_l3_interface_per_node_list_lengths(l3_interface, vrf, tenant)
 
             for node_index, node_name in enumerate(l3_interface.nodes):
                 if node_name != self.shared_utils.hostname:
@@ -230,6 +217,25 @@ class EthernetInterfacesMixin(Protocol):
                 if self.shared_utils.is_campus_device and l3_interface.campus_link_type:
                     interface._internal_data.campus_link_type = list(l3_interface.campus_link_type)
                 self.structured_config.ethernet_interfaces.append(interface)
+
+    def _validate_l3_interface_per_node_list_lengths(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        l3_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None:
+        nodes_length = len(l3_interface.nodes)
+        context = f"l3_interfaces under VRF '{vrf.name}' in tenant '{tenant.name}'"
+        per_node_lists = (
+            ("interfaces", l3_interface.interfaces),
+            ("ip_addresses", l3_interface.ip_addresses),
+            ("ipv6_addresses", l3_interface.ipv6_addresses),
+            ("descriptions", l3_interface.descriptions),
+        )
+        for field_name, field_value in per_node_lists:
+            if field_value and len(field_value) != nodes_length:
+                msg = f"Length of '{field_name}' ({len(field_value)}) must match length of 'nodes' ({nodes_length}) for {context}."
+                raise AristaAvdError(msg)
 
     def _set_point_to_point_interfaces(
         self: AvdStructuredConfigNetworkServicesProtocol,

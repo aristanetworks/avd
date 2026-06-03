@@ -32,5 +32,5 @@ tenants:
               - net-srv-l3-interfaces-ipv6-addresses-length-mismatch
 
 expected_error_message: >-
-  Length of lists 'interfaces', 'nodes', 'ip_addresses'/'ipv6_addresses' and 'descriptions' (if used) must match
-  for l3_interfaces for TENANT_B_WAN in TENANT_B. At least one of 'ip_addresses' or 'ipv6_addresses' must be set.
+  Length of 'ipv6_addresses' (2) must match length of 'nodes' (1)
+  for l3_interfaces under VRF 'TENANT_B_WAN' in tenant 'TENANT_B'.
