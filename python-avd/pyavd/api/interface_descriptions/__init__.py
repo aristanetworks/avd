@@ -9,10 +9,10 @@ from collections import ChainMap
 from typing import TYPE_CHECKING, Any
 
 from ansible.utils.display import Display
-from pyavd._utils.deprecated_dict import DeprecatedDict
 
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._utils import AvdStringFormatter, strip_null_from_data
+from pyavd._utils.deprecated_dict import DeprecatedDict
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
