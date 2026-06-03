@@ -187,8 +187,13 @@ keys:
                   - int
                 tls:
                   type: dict
-                  description: When TLS is configured, `key` and `cleartext_key` are
-                    ignored.
+                  description: 'When TLS is configured, `key` and `cleartext_key`
+                    are ignored.
+
+                    For proper functionality to render TLS settings on the
+
+                    server group member entry, set `avd_design_future.fix_radius_server_group_tls:
+                    true`.'
                   $ref: eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/tls
           vrfs:
             type: list
@@ -386,6 +391,11 @@ keys:
           and on all ''uplink_switches'' even when available VLANs differ between
           the ''uplink_switches''.'
         default: false
+      fix_radius_server_group_tls:
+        type: bool
+        default: false
+        description: Fix to configure TLS on RADIUS server group members to match
+          their global RADIUS server configurations.
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
