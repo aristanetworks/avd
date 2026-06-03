@@ -1759,3 +1759,116 @@ class TestDeployStaticConfigStudio:
         mock_cv_client.delete_configlets.assert_not_called()
         mock_cv_client.delete_configlet_container.assert_not_called()
         assert deployment_result.removed_static_config_configlets == []
+
+    async def test_preserve_existing_sub_containers_with_nested_preserved_subtree(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that nested descendants under a preserved sibling are all marked preserved and not deleted."""
+        sites_id = generate_id("SITES")
+        site1_id = generate_id("SITES/SITE1")
+        site2_region_id = generate_id("SITES/SITE2_REGION")
+        site2_leaf_a_id = generate_id("SITES/SITE2_REGION/LEAF_A")
+        site2_leaf_b_id = generate_id("SITES/SITE2_REGION/LEAF_B")
+
+        existing_containers = [
+            # SITE2_REGION is a managed mid-node owned by another manifest, with its own managed descendants.
+            create_grpc_container(container_id=sites_id, name="SITES", description="", query="device:*", child_ids=[site1_id, site2_region_id]),
+            create_grpc_container(container_id=site1_id, name="SITE1", description="", query="site:1"),
+            create_grpc_container(
+                container_id=site2_region_id, name="SITE2_REGION", description="", query="region:2", child_ids=[site2_leaf_a_id, site2_leaf_b_id]
+            ),
+            create_grpc_container(container_id=site2_leaf_a_id, name="LEAF_A", description="", query="leaf:a"),
+            create_grpc_container(container_id=site2_leaf_b_id, name="LEAF_B", description="", query="leaf:b"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [sites_id]
+
+        # Manifest declares only SITE1 under SITES, with preserve enabled. SITE2_REGION and its descendants belong to another manifest.
+        site1 = AvdContainer(name="SITE1", tag_query="site:1")
+        sites = AvdContainer(name="SITES", tag_query="device:*", sub_containers=(site1,), preserve_existing_sub_containers=True)
+        manifest = AvdManifest(containers=(sites,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Nothing must be pushed or deleted — the preserved subtree (SITE2_REGION + LEAF_A + LEAF_B) is fully protected.
+        mock_cv_client.set_configlet_containers.assert_not_called()
+        mock_cv_client.delete_configlet_container.assert_not_called()
+        assert not deployment_result.removed_static_config_containers
+
+    async def test_configlet_held_by_preserved_and_manual_container_is_preserved(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that a configlet held by both a preserved and a manual container is preserved, not raised on."""
+        sites_id = generate_id("SITES")
+        site1_id = generate_id("SITES/SITE1")
+        site2_id = generate_id("SITES/SITE2")
+        shared_cfg_id = generate_id("SHARED_CFG")
+        manual_holder_id = "manual-holder-001"
+
+        existing_containers = [
+            create_grpc_container(container_id=sites_id, name="SITES", description="", query="device:*", child_ids=[site1_id, site2_id]),
+            create_grpc_container(container_id=site1_id, name="SITE1", description="", query="site:1"),
+            # SITE2 is preserved (managed but not in this manifest) and holds SHARED_CFG.
+            create_grpc_container(container_id=site2_id, name="SITE2", description="", query="site:2", configlet_ids=[shared_cfg_id]),
+            # A manual root container ALSO holds SHARED_CFG. Without the preserve-holder exclusion, this would trigger the manual-holder violation.
+            create_grpc_container(container_id=manual_holder_id, name="MANUAL_HOLDER", description="", query="device:*", configlet_ids=[shared_cfg_id]),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=shared_cfg_id), display_name="SHARED_CFG"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [sites_id, manual_holder_id]
+
+        site1 = AvdContainer(name="SITE1", tag_query="site:1")
+        sites = AvdContainer(name="SITES", tag_query="device:*", sub_containers=(site1,), preserve_existing_sub_containers=True)
+        manifest = AvdManifest(containers=(sites,))
+
+        # Must not raise — the preserved holder protects SHARED_CFG from this deploy's deletion scope entirely,
+        # so the manual holder is never checked for a violation.
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # SHARED_CFG is preserved together with its preserved holder.
+        mock_cv_client.delete_configlets.assert_not_called()
+        mock_cv_client.delete_configlet_container.assert_not_called()
+        mock_cv_client.set_configlet_containers.assert_not_called()
+        assert deployment_result.removed_static_config_configlets == []
+
+    async def test_configlet_unassigned_from_managed_holder_remains_via_preserved_holder(
+        self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult
+    ) -> None:
+        """Test that dropping a configlet from a managed holder does not delete it when a preserved holder still references it."""
+        sites_id = generate_id("SITES")
+        site1_id = generate_id("SITES/SITE1")
+        site2_id = generate_id("SITES/SITE2")
+        shared_cfg_id = generate_id("SHARED_CFG")
+
+        existing_containers = [
+            create_grpc_container(container_id=sites_id, name="SITES", description="", query="device:*", child_ids=[site1_id, site2_id]),
+            # SITE1 is in this manifest and currently holds SHARED_CFG. This deploy drops it from SITE1.
+            create_grpc_container(container_id=site1_id, name="SITE1", description="", query="site:1", configlet_ids=[shared_cfg_id]),
+            # SITE2 is preserved (managed but not in this manifest) and also holds SHARED_CFG.
+            create_grpc_container(container_id=site2_id, name="SITE2", description="", query="site:2", configlet_ids=[shared_cfg_id]),
+        ]
+        existing_configlets = [
+            Configlet(key=ConfigletKey(configlet_id=shared_cfg_id), display_name="SHARED_CFG"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = existing_configlets
+        mock_cv_client.get_studio_inputs_with_path.return_value = [sites_id]
+
+        # Manifest declares SITE1 without configlets and no configlets at the top level — SHARED_CFG is not in desired.
+        site1 = AvdContainer(name="SITE1", tag_query="site:1")
+        sites = AvdContainer(name="SITES", tag_query="device:*", sub_containers=(site1,), preserve_existing_sub_containers=True)
+        manifest = AvdManifest(containers=(sites,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # SITE1 is re-pushed with no configlets attached.
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        pushed_by_name = {container[1]: container for container in pushed}
+        assert set(pushed_by_name) == {"SITE1"}
+        assert pushed_by_name["SITE1"][3] == []
+
+        # SHARED_CFG is NOT deleted — the preserved holder SITE2 keeps it alive for the owning manifest.
+        mock_cv_client.delete_configlets.assert_not_called()
+        mock_cv_client.delete_configlet_container.assert_not_called()
+        assert deployment_result.removed_static_config_configlets == []
