@@ -264,6 +264,17 @@ def test_coverage_marks_multiline_jinja_branch_body_arc_as_executed(tmp_path: Pa
     assert analysis.missing_branch_arcs() == {2: [-1]}
 
 
+def test_coverage_marks_jinja_else_tag_as_executed_with_else_body(tmp_path: Path) -> None:
+    analysis = _analyze_rendered_template(
+        tmp_path,
+        "{% if mode == 'a' %}\n{% set value = 'a' %}\n{% else %}\n{% set value = 'b' %}\n{% endif %}\n{{ value }}\n",
+        {"mode": "b"},
+    )
+
+    assert set(analysis.executed) >= {1, 3, 4, 6}
+    assert analysis.missing_branch_arcs() == {1: [2]}
+
+
 def test_file_reporter_does_not_expose_cached_mutable_sets(tmp_path: Path) -> None:
     source_file = tmp_path / "template.j2"
     source_file.write_text("{% if enabled %}\nhello\n{% endif %}\n", encoding="utf-8")
@@ -345,7 +356,7 @@ def test_reporter_uses_jinja_source_for_branch_arcs(tmp_path: Path) -> None:
 
     assert tracer is not None
     assert tracer.source_filename() == str(source_file.resolve())
-    assert reporter.lines() == {1, 2, 3, 4, 6, 8, 9, 11}
+    assert reporter.lines() == {1, 2, 3, 4, 5, 6, 8, 9, 10, 11}
     assert exit_counts[1] > 1
     assert exit_counts[3] > 1
     assert exit_counts[8] > 1
@@ -359,7 +370,7 @@ def test_for_loop_empty_branch_requires_template_else(tmp_path: Path) -> None:
     with_else.write_text("{% for item in items %}\nitem {{ item }}\n{% else %}\nempty\n{% endfor %}\nafter\n", encoding="utf-8")
 
     assert JinjaTemplateFileReporter(str(without_else)).arcs() == {(1, 2)}
-    assert JinjaTemplateFileReporter(str(with_else)).arcs() == {(1, 2), (1, 4)}
+    assert JinjaTemplateFileReporter(str(with_else)).arcs() == {(1, 2), (1, 3)}
 
 
 def test_nested_loop_cleanup_does_not_cover_loop_body_output(tmp_path: Path) -> None:
@@ -485,7 +496,7 @@ def test_long_elif_chain_reports_unvisited_alternatives(tmp_path: Path) -> None:
         {"mode": "a"},
     )
 
-    assert analysis.missing_branch_arcs() == {1: [3], 3: [4, 5], 5: [6, 8]}
+    assert analysis.missing_branch_arcs() == {1: [3], 3: [4, 5], 5: [6, 7]}
 
 
 def test_variable_building_condition_reports_unvisited_assignment_branch(tmp_path: Path) -> None:
@@ -495,7 +506,7 @@ def test_variable_building_condition_reports_unvisited_assignment_branch(tmp_pat
         {"dangerous": False},
     )
 
-    assert analysis.missing_branch_arcs() == {1: [2, 4]}
+    assert analysis.missing_branch_arcs() == {1: [2]}
 
 
 def test_nested_loop_with_conditional_output_reports_unvisited_inner_output(tmp_path: Path) -> None:

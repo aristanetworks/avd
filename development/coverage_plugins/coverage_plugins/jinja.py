@@ -147,7 +147,10 @@ class JinjaTemplateFileReporter(FileReporter):
             if translated_from_line is not None and translated_to_line is not None:
                 translated_arcs.add((translated_from_line, translated_to_line))
 
-        translated_arcs.update(_covered_multiline_tag_branch_arcs(recorded_arcs, self.arcs(), _source_tag_ranges(Path(self.filename)), reportable_lines))
+        possible_arcs = self.arcs()
+        source_filename = Path(self.filename)
+        translated_arcs.update(_covered_multiline_tag_branch_arcs(recorded_arcs, possible_arcs, _source_tag_ranges(source_filename), reportable_lines))
+        translated_arcs.update(_covered_else_branch_arcs(recorded_arcs, translated_arcs, possible_arcs, source_filename, reportable_lines))
         return translated_arcs
 
     def exit_counts(self) -> dict[int, int]:
@@ -242,10 +245,15 @@ def _parse_compiled_template_cached(
 def _generated_line_ranges(tree: ast.Module, source_filename: Path, debug_map: tuple[tuple[int, int], ...]) -> dict[int, tuple[int, int]]:
     """Return generated-line mappings for Jinja tag ranges and static output ranges."""
     source_tag_ranges = _source_tag_ranges(source_filename)
+    else_branch_line_ranges = _else_branch_line_ranges(source_filename)
     generated_line_ranges = {
         generated_line: source_tag_ranges.get(template_line, (template_line, template_line)) for generated_line, template_line in debug_map
     }
     generated_line_ranges.update(_generated_static_line_ranges(tree, source_filename))
+    for generated_line, (start_line, end_line) in generated_line_ranges.items():
+        if else_branch_range := else_branch_line_ranges.get(start_line):
+            generated_line_ranges[generated_line] = (else_branch_range[0], end_line)
+
     return generated_line_ranges
 
 
@@ -306,6 +314,32 @@ def _covered_multiline_tag_branch_arcs(
             covered_branch_arcs.add((from_line, to_line))
 
     return covered_branch_arcs
+
+
+def _covered_else_branch_arcs(
+    recorded_arcs: tuple[tuple[int, int], ...],
+    translated_arcs: set[tuple[int, int]],
+    possible_arcs: Collection[tuple[int, int]],
+    source_filename: Path,
+    reportable_lines: set[int],
+) -> set[tuple[int, int]]:
+    """Return else branch arcs covered by generated arcs entering an else tag."""
+    try:
+        source = source_filename.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return set()
+
+    else_lines = _control_statement_lines(source, names={"else"})
+    executed_lines = {line for arc in translated_arcs for line in arc if line > 0}
+    covered_else_arcs: set[tuple[int, int]] = set()
+    for from_line, to_line in possible_arcs:
+        if from_line not in executed_lines or to_line not in else_lines:
+            continue
+
+        if any(raw_to_line == to_line and raw_from_line not in reportable_lines for raw_from_line, raw_to_line in recorded_arcs):
+            covered_else_arcs.add((from_line, to_line))
+
+    return covered_else_arcs
 
 
 def _module_string_constants(tree: ast.Module) -> dict[str, str]:
@@ -541,6 +575,44 @@ def _tag_ranges_by_line(source: str) -> dict[int, tuple[int, int]]:
     return tag_ranges
 
 
+def _else_branch_line_ranges(source_filename: Path) -> dict[int, tuple[int, int]]:
+    """Return first else-body reportable line to else-tag range mappings."""
+    try:
+        source = source_filename.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return {}
+
+    try:
+        from jinja2 import Environment, TemplateSyntaxError, nodes  # noqa: PLC0415
+    except ImportError:
+        return {}
+
+    environment = Environment(extensions=JINJA2_EXTENSIONS)  # noqa: S701
+    try:
+        parsed_template = environment.parse(source)
+    except TemplateSyntaxError:
+        return {}
+
+    reportable_lines = _find_reportable_jinja_lines(source_filename)
+    tag_ranges = _tag_ranges_by_line(source)
+    else_lines = _control_statement_lines(source, names={"else"})
+    else_branch_line_ranges: dict[int, tuple[int, int]] = {}
+    for node in parsed_template.find_all((nodes.If, nodes.For)):
+        if not node.else_:
+            continue
+
+        first_else_node_line = min(getattr(child_node, "lineno", 0) for child_node in node.else_)
+        else_line = next((line for line in sorted(else_lines, reverse=True) if node.lineno < line <= first_else_node_line), None)
+        if else_line is None:
+            continue
+
+        body_line = _first_reportable_line_in_nodes(reportable_lines, node.else_, after_line=_tag_end_line(else_line, tag_ranges))
+        if body_line is not None:
+            else_branch_line_ranges[body_line] = (else_line, body_line)
+
+    return else_branch_line_ranges
+
+
 def _variable_statement_lines(source: str) -> set[int]:
     """Return source lines for Jinja variable statements."""
     try:
@@ -555,7 +627,7 @@ def _variable_statement_lines(source: str) -> set[int]:
         return set()
 
 
-def _control_statement_lines(source: str) -> set[int]:
+def _control_statement_lines(source: str, names: set[str] | None = None) -> set[int]:
     """
     Return block-start lines for control statements that should be reportable.
 
@@ -569,6 +641,7 @@ def _control_statement_lines(source: str) -> set[int]:
         return set()
 
     environment = Environment(extensions=JINJA2_EXTENSIONS)  # noqa: S701
+    names = names or {"if", "elif", "else", "for"}
     control_statement_lines: set[int] = set()
     in_block = False
     block_lineno = 0
@@ -584,7 +657,7 @@ def _control_statement_lines(source: str) -> set[int]:
                 block_lineno = 0
                 continue
 
-            if in_block and kind == "name" and value in {"if", "elif", "for"}:
+            if in_block and kind == "name" and value in names:
                 control_statement_lines.add(block_lineno)
                 in_block = False
     except Exception:
