@@ -48,7 +48,7 @@ try:
         CVWorkspace,
         DeployToCvResult,
     )
-    from pyavd._cv.workflows.utils import extract_from_device_deployments
+    from pyavd._cv.workflows.utils import extract_from_device_deployments, serialize
     from pyavd._utils import default, get, strip_empties_from_dict
 
     HAS_PYAVD = True
