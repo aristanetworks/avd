@@ -103,6 +103,12 @@ $defs:
           If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
         convert_types:
           - int
+      mac_acl_in:
+        type: str
+        description: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+      mac_acl_out:
+        type: str
+        description: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
       spanning_tree_portfast:
         type: str
         valid_values:
