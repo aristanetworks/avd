@@ -131,9 +131,7 @@ class Dot1xMixin(Protocol):
 
         address_locking_settings = self.inputs.address_locking_settings
         if address_locking_settings and not address_locking_settings.disabled:
-            msg = (
-                "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
-            )
+            msg = "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
             raise AristaAvdInvalidInputsError(msg)
 
         self.structured_config.dot1x.radius_av_pair.dhcp = EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp(
