@@ -12,7 +12,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
-from pyavd._cv.workflows.models import CloudVision, CVDeployFuture, CVDeviceDeployment, CVEosConfig, CVWorkspace
+from pyavd._cv.workflows.models import CloudVision, CVDeployFuture, CVDeviceDeployment, CVEosConfig, CVGRPCChannelConfiguration, CVGRPCKeepalives, CVWorkspace
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
@@ -181,6 +181,47 @@ async def test_deploy_to_cv(
     assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
     assert result.workspace.force == workspace_force_submission
     assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("grpc_channel_configuration"),
+    [
+        pytest.param(CVGRPCChannelConfiguration(), id="KEEPALIVES_DISABLED_DEFAULTS"),
+        pytest.param(CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(enabled=True)), id="KEEPALIVES_ENABLED_DEFAULTS"),
+        pytest.param(
+            CVGRPCChannelConfiguration(
+                grpc_keepalives=CVGRPCKeepalives(enabled=True, keepalive_time=45, keepalive_timeout=15, permit_without_calls=True),
+            ),
+            id="KEEPALIVES_ENABLED_CUSTOM",
+        ),
+    ],
+)
+async def test_deploy_to_cv_grpc_channel_configuration(
+    grpc_channel_configuration: CVGRPCChannelConfiguration,
+) -> None:
+    """Tests that deploy_to_cv passes cloudvision.grpc_channel_configuration to CVClient unchanged."""
+    mock_cv_client = AsyncMock()
+
+    with patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=mock_cv_client) as mocked_cv_client_cls:
+        await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="www.arista.io",
+                token="test-token",  # noqa: S106
+                username=None,
+                password=None,
+                verify_certs=True,
+                proxy_host=None,
+                proxy_port=None,
+                proxy_username=None,
+                proxy_password=None,
+                grpc_channel_configuration=grpc_channel_configuration,
+            ),
+        )
+
+    mocked_cv_client_cls.assert_called_once()
+    _, kwargs = mocked_cv_client_cls.call_args
+    assert kwargs.get("grpc_channel_configuration") is grpc_channel_configuration
 
 
 @pytest.mark.asyncio

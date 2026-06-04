@@ -33,6 +33,17 @@ cv_verify_certs: true
 #   # (certifi is only used as a fallback when the OS provides no usable trust store).
 #   use_system_certs: <bool, default=false>
 
+# Client-side gRPC keepalive settings for the CloudVision connection.
+cv_grpc_keepalives:
+  # Enable client-side gRPC keepalives. When false, the other settings have no effect.
+  enabled: false
+  # Interval in seconds between keepalive pings. Must be >= 30s.
+  keepalive_time: 60
+  # Time in seconds to wait for a keepalive ACK before considering the connection dead.
+  keepalive_timeout: 20
+  # If true, keepalive pings are sent even when there are no active gRPC calls.
+  permit_without_calls: false
+
 # # Set FQDN/IP of the HTTP CONNECT proxy server.
 # proxy_host: <str>
 # # Set target TCP port of the HTTP CONNECT proxy server.

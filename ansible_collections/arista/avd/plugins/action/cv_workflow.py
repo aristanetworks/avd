@@ -37,6 +37,8 @@ try:
         CVDeviceDeployment,
         CVDeviceTag,
         CVEosConfig,
+        CVGRPCChannelConfiguration,
+        CVGRPCKeepalives,
         CVInterfaceTag,
         CVPathfinderMetadata,
         CVTimeOuts,
@@ -61,6 +63,16 @@ ARGUMENT_SPEC = {
         "type": "dict",
         "options": {
             "read_from_validated_inputs": {"type": "bool", "default": False},
+        },
+    },
+    "grpc_keepalives": {
+        "type": "dict",
+        "required": False,
+        "options": {
+            "enabled": {"type": "bool", "required": False, "default": False},
+            "keepalive_time": {"type": "int", "required": False, "default": 60},
+            "keepalive_timeout": {"type": "int", "required": False, "default": 20},
+            "permit_without_calls": {"type": "bool", "required": False, "default": False},
         },
     },
     # TODO: Make configuration_dir optional for users using the manifest to push device configs.
@@ -191,6 +203,7 @@ class ActionModule(ActionBase):
                 proxy_port=validated_args.get("proxy_port"),
                 proxy_username=validated_args.get("proxy_username"),
                 proxy_password=validated_args.get("proxy_password"),
+                grpc_channel_configuration=CVGRPCChannelConfiguration(grpc_keepalives=CVGRPCKeepalives(**validated_args.get("grpc_keepalives", {}))),
             )
 
             # If read_from_validated_inputs is enabled, we use the tmp_dir which contains validated inputs as JSON for structured_config_dir.
