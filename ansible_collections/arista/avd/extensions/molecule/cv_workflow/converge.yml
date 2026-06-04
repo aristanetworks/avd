@@ -79,8 +79,8 @@
       ansible.builtin.assert:
         that:
           # workspace
-          - cvp_results.workspace.avd_workspace.name == ws_name
-          - cvp_results.workspace.state == cvp_results.workspace.avd_workspace.requested_state
+          - cvp_results.workspace.name == ws_name
+          - cvp_results.workspace.state == cvp_results.workspace.requested_state
           - cvp_results.workspace.state
           # errors and warnings
           - cvp_results.errors == []
@@ -90,7 +90,7 @@
           # Change control
           - cvp_results.change_control.id == cc_id
           - cvp_results.change_control.name == cc_name
-          - cvp_results.change_control.avd_change_control.requested_state == cc_requested_state
+          - cvp_results.change_control.requested_state == cc_requested_state
           - cvp_results.change_control.description == cc_desctiption
 
     - name: Check tags from output
