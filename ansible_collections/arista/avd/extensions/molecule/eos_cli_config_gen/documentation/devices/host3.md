@@ -481,6 +481,41 @@ ipv6 dhcp relay option remote-id format %m:%h:%p
 
 Errdisable recovery timer interval: 300 seconds
 
+| Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ----- | ----------------- | ---------------- | --------------------------- |
+| acl | - | False | - |
+| arp-inspection | - | False | - |
+| bpduguard | - | False | - |
+| dot1x | - | False | 500 |
+| dot1x-coa | - | False | - |
+| dot1x-phone-classification | - | False | - |
+| dot1x-session-replace | - | False | - |
+| error-correction-encoding | - | False | - |
+| fabric-capacity-low | - | False | - |
+| hardware-speed-group | - | False | - |
+| hitless-reload-down | - | False | - |
+| interface-speed | - | False | - |
+| internal-error | - | False | - |
+| lacp-rate-limit | - | False | - |
+| link-flap | - | False | - |
+| no-internal-vlan | - | False | - |
+| port-breakout | - | False | - |
+| portchannelguard | - | False | 600 |
+| portsec | - | False | - |
+| speed-misconfigured | - | False | - |
+| storm-control | - | False | - |
+| stuck-queue | - | False | - |
+| switchcard-unreachable | - | False | - |
+| tap-port-init | - | False | - |
+| tapagg | - | False | - |
+| tpid | - | False | - |
+| transceiver-adapter | - | False | - |
+| uplink-failure-detection | - | False | - |
+| xcvr-misconfigured | - | False | - |
+| xcvr-overheat | - | False | - |
+| xcvr-power-unsupported | - | False | - |
+| xcvr-unsupported | - | False | - |
+
 ```eos
 !
 errdisable recovery interval 300
