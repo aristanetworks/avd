@@ -1453,9 +1453,6 @@ keys:
               name_resolution:
                 type: dict
                 keys:
-                  force:
-                    type: bool
-                    description: Get the tenant and VM names from OpenStack immediately.
                   interval:
                     type: int
                     min: 0

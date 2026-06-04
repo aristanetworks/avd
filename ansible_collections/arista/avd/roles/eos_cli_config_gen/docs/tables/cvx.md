@@ -27,7 +27,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_access_group_name</samp>](## "cvx.services.openstack.ip_access_group_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_group_name</samp>](## "cvx.services.openstack.ipv6_access_group_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name_resolution</samp>](## "cvx.services.openstack.name_resolution") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;force</samp>](## "cvx.services.openstack.name_resolution.force") | Boolean |  |  |  | Get the tenant and VM names from OpenStack immediately. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "cvx.services.openstack.name_resolution.interval") | Integer |  |  | Min: 0<br>Max: 86400 | Set the time interval in seconds between name updates, 0 to disable. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_type_driver</samp>](## "cvx.services.openstack.network_type_driver") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "cvx.services.openstack.network_type_driver.vlan") | String |  |  | Valid Values:<br>- <code>arista</code><br>- <code>default</code> |  |
@@ -77,9 +76,6 @@
           ip_access_group_name: <str>
           ipv6_access_group_name: <str>
           name_resolution:
-
-            # Get the tenant and VM names from OpenStack immediately.
-            force: <bool>
 
             # Set the time interval in seconds between name updates, 0 to disable.
             interval: <int; 0-86400>
