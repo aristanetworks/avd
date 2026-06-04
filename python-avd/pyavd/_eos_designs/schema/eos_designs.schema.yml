@@ -187,8 +187,13 @@ keys:
                   - int
                 tls:
                   type: dict
-                  description: When TLS is configured, `key` and `cleartext_key` are
-                    ignored.
+                  description: 'When TLS is configured, `key` and `cleartext_key`
+                    are ignored.
+
+                    For proper functionality to render TLS settings on the
+
+                    server group member entry, set `avd_design_future.fix_radius_server_group_tls:
+                    true`.'
                   $ref: eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/tls
           vrfs:
             type: list
@@ -386,6 +391,11 @@ keys:
           and on all ''uplink_switches'' even when available VLANs differ between
           the ''uplink_switches''.'
         default: false
+      fix_radius_server_group_tls:
+        type: bool
+        default: false
+        description: Fix to configure TLS on RADIUS server group members to match
+          their global RADIUS server configurations.
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -3868,6 +3878,68 @@ keys:
       monitor_layer1:
         type: dict
         $ref: eos_cli_config_gen#/keys/monitor_layer1
+  mac_acls:
+    type: list
+    primary_key: name
+    description: 'MAC access-lists.
+
+      These can be referenced under `network_ports/connected_endpoints`.
+
+      A MAC ACL is only configured when it is referenced.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Access-list name.
+          convert_types:
+          - int
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          unique_keys:
+          - sequence
+          description: For each entry action or remark must be set.
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                - str
+              action:
+                type: str
+                valid_values:
+                - permit
+                - deny
+              remark:
+                type: str
+                description: 'Remark.
+
+                  Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+
+                  are ignored when `remark` is set.'
+              source:
+                type: str
+                description: 'Source mac-address.
+
+                  This can be `any` or a MAC address.'
+              source_wildcard:
+                type: str
+                description: 'Wildcard bits for source MAC address.
+
+                  Required when `source` is not `any`.'
+              destination:
+                type: str
+                description: 'Destination MAC address.
+
+                  This can be `any` or a MAC address.'
+              destination_wildcard:
+                type: str
+                description: 'Wildcard bits for destination MAC address.
+
+                  Required when `destination` is not `any`.'
   mac_address_table:
     documentation_options:
       table: system-settings
@@ -8778,13 +8850,16 @@ keys:
     documentation_options:
       table: fabric-settings
     description: "This feature allows pure IPv6 underlay routing protocol with numbered
-      addresses.\nCurrently sets both underlay and overlay, including MLAG, to use
-      IPv6 addresses.\nCurrently BGP peer-groups are named with IPv4 by default. This
-      can be modified under `bgp_peer_groups`.\nRequires:\n  - \"underlay_ipv6: true\"\n
-      \ - \"loopback_ipv6_pool\"\n  - \"underlay_routing_protocol: ebgp\"\nSome settings
-      are not yet supported with IPv6 underlay:\n  - underlay_multicast_pim_sm\n  -
-      underlay_multicast_rp_interfaces\n  - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n
-      \ - inband_ztp\n"
+      addresses.\nSets the underlay and overlay (EVPN) to use IPv6 addresses.\nCurrently
+      BGP peer-groups are named with IPv4 by default. This can be modified under `bgp_peer_groups`.\nRequires
+      (fabric-level):\n  - \"underlay_ipv6: true\"\n  - \"loopback_ipv6_pool\"\n  -
+      \"underlay_routing_protocol: ebgp\"\nRequires (node-level):\n  - \"uplink_ipv6_pool\"
+      (or `downlink_pools`)\n  - \"vtep_loopback_ipv6_pool\"\n  - \"router_id_pool\"\nFor
+      MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG
+      nodes:\n  - \"mlag_peer_address_family: ipv6\"\n  - \"mlag_peer_ipv6_pool\"\n
+      \ - \"mlag_peer_l3_ipv6_pool\"\nSome settings are not yet supported with IPv6
+      underlay:\n  - underlay_multicast_pim_sm\n  - underlay_multicast_rp_interfaces\n
+      \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
     type: bool
     default: false
   underlay_isis_authentication_cleartext_key:
@@ -9938,6 +10013,14 @@ $defs:
           '
         convert_types:
         - int
+      mac_acl_in:
+        type: str
+        description: MAC access-list to apply in the ingress direction. The ACL must
+          be defined in `mac_acls`.
+      mac_acl_out:
+        type: str
+        description: MAC access-list to apply in the egress direction. The ACL must
+          be defined in `mac_acls`.
       spanning_tree_portfast:
         type: str
         valid_values:
