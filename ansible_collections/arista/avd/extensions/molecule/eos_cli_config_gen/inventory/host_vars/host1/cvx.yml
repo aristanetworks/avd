@@ -24,7 +24,6 @@ cvx:
       network_type_driver:
         vlan: arista
       name_resolution:
-        force: true
         interval: 20
       regions:
         - name: REGION_2
