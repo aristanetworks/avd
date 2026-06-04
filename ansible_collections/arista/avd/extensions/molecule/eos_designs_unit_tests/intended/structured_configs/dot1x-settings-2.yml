@@ -1,7 +1,7 @@
 aaa_accounting:
   dot1x:
     default:
-      type: stop-only
+      type: start-stop
       methods:
       - multicast: true
         method: group
@@ -50,6 +50,16 @@ dot1x:
   radius_av_pair:
     service_type: true
     framed_mtu: 1500
+    dhcp:
+      hostname:
+        enabled: true
+        auth_only: false
+      parameter_request_list:
+        enabled: true
+        auth_only: false
+      vendor_class_id:
+        enabled: true
+        auth_only: false
 enable_password:
   disabled: true
 hostname: dot1x-settings-2

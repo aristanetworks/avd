@@ -12,7 +12,7 @@ dot1x_settings:
   authentication:
     radius_groups: [agni-server-group, backup-agni-server-group]
   accounting:
-    mode: stop-only
+    mode: start-stop
     radius_groups: [agni-server-group, backup-agni-server-group]
     multicast: true
     syslog: true
@@ -29,8 +29,6 @@ dot1x_settings:
     framed_mtu: 1500
   device_profiling:
     enabled: true
-    dhcp:
-      enabled: false
 
 aaa_settings:
   radius:
