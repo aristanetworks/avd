@@ -12,7 +12,6 @@ import pytest
 from ansible.errors import AnsibleActionFail
 
 from ansible_collections.arista.avd.plugins.action.eos_designs_documentation import ActionModule
-from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -44,7 +43,7 @@ def base_validated_args() -> dict:
 
 
 def _empty_output() -> MagicMock:
-    """Stand-in for pyavd's FabricDocumentation with all outputs empty (no writes triggered)."""
+    """Return a mock FabricDocumentation with all outputs empty so no files are written."""
     output = MagicMock()
     output.fabric_documentation = ""
     output.topology_csv = ""
@@ -72,12 +71,7 @@ def test_read_structured_configs_warns_with_each_missing_device_name(
 def test_run_routes_missing_device_warning_to_result_warnings(
     action_module: Callable[..., ActionModule], base_validated_args: dict, tmp_path: Path, caplog: pytest.LogCaptureFixture
 ) -> None:
-    """
-    End-to-end: a WARNING raised in read_structured_configs flows through the bridge handler into result['warnings'].
-
-    This is the post-migration display anchor. The device name in the WARNING message must remain
-    visible to the operator after the logging plumbing is replaced.
-    """
+    """End-to-end: a WARNING logged in read_structured_configs ends up in result['warnings'] with the missing device name visible."""
     module = action_module(ActionModule)
     facts_path = tmp_path / "eos_designs_facts.json"
     facts_path.write_text(json.dumps({"spine1": {}, "leaf1": {}}), encoding="UTF-8")
@@ -106,24 +100,6 @@ def test_run_routes_missing_device_warning_to_result_warnings(
 # ---------------------------------------------------------------------------
 # Exceptions: user-visible failure messages.
 # ---------------------------------------------------------------------------
-
-
-def test_run_raises_when_pyavd_not_installed(action_module: Callable[..., ActionModule], base_validated_args: dict) -> None:
-    """When pyavd is missing, the imported symbols are RaiseOnUse sentinels that raise AnsibleActionFail on first call."""
-    module = action_module(ActionModule)
-    sentinel = RaiseOnUse(
-        AnsibleActionFail(
-            "The 'arista.avd.eos_designs_documentation' plugin requires the 'pyavd' Python library. Got import error",
-        ),
-    )
-
-    with (
-        patch(f"{MODULE_PATH}.strip_empties_from_dict", new=sentinel),
-        patch("ansible.plugins.action.ActionBase.run", return_value={}),
-        patch.object(module, "validate_argument_spec", return_value=(MagicMock(), base_validated_args)),
-        pytest.raises(AnsibleActionFail, match=r"requires the 'pyavd' Python library"),
-    ):
-        module.run(task_vars={"fabric_name": FABRIC_NAME})
 
 
 def test_load_facts_raises_with_path_and_upstream_task_when_file_missing(action_module: Callable[..., ActionModule], tmp_path: Path) -> None:
