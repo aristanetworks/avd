@@ -3,5 +3,5 @@ custom_template_description_{{ wan_carrier }}
 {% elif main_interface_wan_carrier is arista.avd.defined %}
 custom_template_description_{{ main_interface_wan_carrier }}
 {% else %}
-{{ description_prefix }}_{{ interface }}_{{ peer | upper }}
+{{ description_prefix }}_{{ interface }}_{{ peer | upper }}_Po{{ channel_group_id }}_To_Po{{ peer_channel_group_id }}_{{ channel_description }}
 {% endif %}
