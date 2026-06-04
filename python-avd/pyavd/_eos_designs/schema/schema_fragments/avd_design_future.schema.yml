@@ -51,6 +51,11 @@ keys:
           Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
           and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
         default: false
+      fix_radius_server_group_tls:
+        type: bool
+        default: false
+        description: |-
+          Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations.
       only_configure_route_map_connected_to_bgp_vrfs_when_used:
         type: bool
         description: |-
