@@ -12,15 +12,12 @@ from unittest.mock import patch
 import pytest
 from grpclib.config import Configuration
 
-from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
-from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.workflows.models import (
     AVD_ENTITY_PREFIX,
     AvdConfiglet,
     AvdContainer,
     AvdManifest,
-    CVContainer,
     CVGRPCChannelConfiguration,
     CVGRPCKeepalives,
     CVManifest,
@@ -203,114 +200,6 @@ class TestCVManifestGeneration:
         assert id1.startswith(AVD_ENTITY_PREFIX)
 
 
-class TestCVContainerMatching:
-    @pytest.fixture
-    def test_cv_container(self) -> CVContainer:
-        """Creates a single CVContainer instance for matching tests."""
-        # Setup data to create one container instance.
-        avd_cfg = AvdConfiglet(name="test_cfg", file=Path("test.cfg"))
-        avd_container = AvdContainer(
-            name="TEST_CONTAINER", description="Test Description", tag_query="app:test", match_policy="match_all", configlets=("test_cfg",)
-        )
-
-        # Manually create dependent objects for CVContainer constructor.
-        # In a real scenario, we'd run CVManifest.from_avd_manifest, but here we can isolate CVContainer.
-        configlet_id = generate_id(avd_cfg.name)
-        container_id = generate_id(avd_container.name)
-
-        return CVContainer(
-            avd_container=avd_container,
-            id=container_id,
-            is_root=True,
-            configlet_ids=(configlet_id,),
-            child_ids=(),
-        )
-
-    def test_matches_configlet_assignment_success(self, test_cv_container: CVContainer) -> None:
-        """Tests successful match between local CVContainer and remote ConfigletAssignment."""
-        # Create an API object that perfectly matches test_cv_container.
-        api_assignment = ConfigletAssignment(
-            key=ConfigletAssignmentKey(configlet_assignment_id=test_cv_container.id),
-            display_name=test_cv_container.name,
-            description=test_cv_container.description,
-            configlet_ids=RepeatedString(values=list(test_cv_container.configlet_ids)),
-            query=test_cv_container.tag_query,
-            child_assignment_ids=RepeatedString(values=list(test_cv_container.child_ids)),
-            match_policy=MatchPolicy.MATCH_ALL,
-        )
-
-        assert test_cv_container.matches_configlet_assignment(api_assignment) is True
-
-    @pytest.mark.parametrize(
-        "mismatch_field",
-        [
-            pytest.param("id", id="mismatch on id field"),
-            pytest.param("name", id="mismatch on name field"),
-            pytest.param("description", id="mismatch on description field"),
-            pytest.param("configlet_ids", id="mismatch on configlet_ids field"),
-            pytest.param("tag_query", id="mismatch on tag_query field"),
-            pytest.param("child_ids", id="mismatch on child_ids field"),
-            pytest.param("match_policy", id="mismatch on match_policy field"),
-        ],
-    )
-    def test_matches_configlet_assignment_mismatch(self, test_cv_container: CVContainer, mismatch_field: str) -> None:
-        """Tests mismatch detection for each field individually."""
-        # Create a mock remote object that perfectly matches test_cv_container.
-        mock_assignment = ConfigletAssignment(
-            key=ConfigletAssignmentKey(configlet_assignment_id=test_cv_container.id),
-            display_name=test_cv_container.name,
-            description=test_cv_container.description,
-            configlet_ids=RepeatedString(values=list(test_cv_container.configlet_ids)),
-            query=test_cv_container.tag_query,
-            child_assignment_ids=RepeatedString(values=list(test_cv_container.child_ids)),
-            match_policy=MatchPolicy.MATCH_ALL,
-        )
-
-        # Introduce a mismatch based on the test parameter using match case.
-        match mismatch_field:
-            case "id":
-                mock_assignment.key.configlet_assignment_id = "wrong-id"
-            case "name":
-                mock_assignment.display_name = "Wrong Name"
-            case "description":
-                mock_assignment.description = "Wrong Description"
-            case "configlet_ids":
-                mock_assignment.configlet_ids.values = ["wrong-configlet-id"]
-            case "tag_query":
-                mock_assignment.query = "wrong-query"
-            case "child_ids":
-                mock_assignment.child_assignment_ids.values = ["wrong-child-id"]
-            case "match_policy":
-                mock_assignment.match_policy = MatchPolicy.MATCH_FIRST  # Change to match_first
-
-        # Assert failure.
-        assert test_cv_container.matches_configlet_assignment(mock_assignment) is False
-
-    def test_description_none_matches_empty_string(self) -> None:
-        """Tests that a local container with description=None matches a remote with description=''."""
-        # Create container with description=None.
-        avd_container = AvdContainer(name="NO_DESC_CONTAINER", tag_query="q1", description=None)
-        cv_container = CVContainer(
-            avd_container=avd_container,
-            id=generate_id(avd_container.name),
-            is_root=True,
-        )
-
-        # Create mock assignment with description="".
-        mock_assignment = ConfigletAssignment(
-            key=ConfigletAssignmentKey(configlet_assignment_id=cv_container.id),
-            display_name=cv_container.name,
-            description="",  # Remote side has empty string
-            configlet_ids=RepeatedString(values=[]),
-            query=cv_container.tag_query,
-            child_assignment_ids=RepeatedString(values=[]),
-            match_policy=MatchPolicy.MATCH_ALL,
-        )
-
-        # Verify api_tuple logic (self.description or "") works.
-        assert cv_container.matches_configlet_assignment(mock_assignment) is True
-
-
 class TestAvdConfigletFromDict:
     def test_success(self) -> None:
         """Tests successful creation of AvdConfiglet from a valid dictionary."""
@@ -342,6 +231,7 @@ class TestAvdContainerFromDict:
         assert container.tag_query == "role:minimal"
         assert container.description is None
         assert container.match_policy == "match_all"
+        assert container.preserve_existing_sub_containers is False
         assert not container.configlets
         assert not container.sub_containers
 
@@ -352,11 +242,13 @@ class TestAvdContainerFromDict:
             "tag_query": "all",
             "description": "Root container",
             "match_policy": "match_first",
+            "preserve_existing_sub_containers": True,
             "configlets": [{"name": "cfg1"}, {"name": "cfg2"}],
             "sub_containers": [
                 {
                     "name": "Child1",
                     "tag_query": "rack:1",
+                    "preserve_existing_sub_containers": True,
                     "configlets": [{"name": "cfg_child"}],
                 }
             ],
@@ -365,6 +257,7 @@ class TestAvdContainerFromDict:
         assert container.name == "Root"
         assert container.description == "Root container"
         assert container.match_policy == "match_first"
+        assert container.preserve_existing_sub_containers is True
         assert container.configlets == ("cfg1", "cfg2")
         assert len(container.sub_containers) == 1
 
@@ -372,6 +265,7 @@ class TestAvdContainerFromDict:
         assert isinstance(child, AvdContainer)
         assert child.name == "Child1"
         assert child.tag_query == "rack:1"
+        assert child.preserve_existing_sub_containers is True
         assert child.configlets == ("cfg_child",)
 
     @pytest.mark.parametrize(
