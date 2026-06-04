@@ -1474,6 +1474,7 @@ keys:
                     - default
               regions:
                 type: list
+                min_length: 1
                 primary_key: name
                 items:
                   type: dict
