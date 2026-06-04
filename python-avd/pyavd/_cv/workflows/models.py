@@ -3,7 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+import copy
+from dataclasses import dataclass, field, fields, is_dataclass
 from datetime import datetime
 from logging import getLogger
 from pathlib import Path
@@ -102,6 +103,16 @@ class CVChangeControl:
     state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
     name: str | None = None
     description: str | None = None
+
+    def get_result(self) -> dict:
+        return {
+            "name": self.name,
+            "description": self.description,
+            "id": self.id,
+            "change_control_template": serialize(self.avd_change_control.change_control_template),
+            "requested_state": self.avd_change_control.requested_state,
+            "state": self.state,
+        }
 
 
 @dataclass(frozen=True)
@@ -260,6 +271,35 @@ class CVWorkspace:
     device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
     """Details of per-device Workspace build results."""
 
+    def get_result(self) -> dict:
+        return {
+            "name": self.avd_workspace.name,
+            "description": self.avd_workspace.description,
+            "id": self.avd_workspace.id,
+            "requested_state": self.avd_workspace.requested_state,
+            "force": self.avd_workspace.force,
+            "state": self.state,
+            "change_control_id": self.change_control_id,
+            "build_id": self.build_id,
+            "build_warnings": serialize(self.avd_workspace.build_warnings),
+            "device_build_results": serialize(self.device_build_results),
+        }
+
+
+def serialize(obj: Any) -> Any:
+    """Recursively serialize an object to a JSON-compatible structure."""
+    if hasattr(obj, "get_result"):
+        return serialize(obj.get_result())
+    if is_dataclass(obj) and not isinstance(obj, type):
+        return {f.name: serialize(getattr(obj, f.name)) for f in fields(obj)}
+    if isinstance(obj, list):
+        return [serialize(item) for item in obj]
+    if isinstance(obj, tuple):
+        return tuple(serialize(item) for item in obj)
+    if isinstance(obj, dict):
+        return {k: serialize(v) for k, v in obj.items()}
+    return copy.deepcopy(obj)
+
 
 @dataclass
 class DeployChangeControlResult:
@@ -296,6 +336,9 @@ class DeployToCvResult:
     removed_device_tags: list[CVDeviceTag] = field(default_factory=list)
     removed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
 
+    def get_result(self) -> dict:
+        return {f.name: serialize(getattr(self, f.name)) for f in fields(self)}
+
 
 @dataclass(frozen=True)
 class AvdDevice:
@@ -317,6 +360,15 @@ class CVDevice:
     _exists_on_cv: bool | None = None
     _streaming: bool | None = None
     """Device's streaming status."""
+
+    def get_result(self) -> dict:
+        return {
+            "hostname": self.avd_device.hostname,
+            "serial_number": self.serial_number if self.serial_number is not None else self.avd_device.serial_number,
+            "system_mac_address": self.system_mac_address if self.system_mac_address is not None else self.avd_device.system_mac_address,
+            "_exists_on_cv": self._exists_on_cv,
+            "_streaming": self._streaming,
+        }
 
     @property
     def _intended_serial_number(self) -> str | None:

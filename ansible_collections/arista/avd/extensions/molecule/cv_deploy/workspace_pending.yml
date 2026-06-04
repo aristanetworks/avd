@@ -69,10 +69,10 @@
           ansible.builtin.assert:
             that:
               # workspace
-              - cv_deploy_results.workspace.avd_workspace.name == cv_workspace_name
-              - cv_deploy_results.workspace.avd_workspace.description == cv_workspace_description
+              - cv_deploy_results.workspace.name == cv_workspace_name
+              - cv_deploy_results.workspace.description == cv_workspace_description
               - cv_deploy_results.workspace.state == "built"
-              - cv_deploy_results.workspace.avd_workspace.requested_state == "built"
+              - cv_deploy_results.workspace.requested_state == "built"
           vars:
             cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
             cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
@@ -104,7 +104,7 @@
                 "values": [
                   {
                     "key": {
-                      "workspaceId": "{{ cv_deploy_results.workspace.avd_workspace.id }}"
+                      "workspaceId": "{{ cv_deploy_results.workspace.id }}"
                     },
                     "request": "REQUEST_ABANDON",
                     "requestParams": {
@@ -121,8 +121,8 @@
           delay: 3
           ignore_errors: true
           when: |
-            cv_deploy_results.workspace.avd_workspace.id is not none and
-            cv_deploy_results.workspace.avd_workspace.id | length > 0 and
+            cv_deploy_results.workspace.id is not none and
+            cv_deploy_results.workspace.id | length > 0 and
             cv_deploy_results.workspace.state | default('') != "abandoned"
           # Set HTTPS_PROXY environment variable scoped for this task only
           environment:

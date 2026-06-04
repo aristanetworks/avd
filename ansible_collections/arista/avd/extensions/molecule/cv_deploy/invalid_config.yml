@@ -101,7 +101,7 @@
           run_once: true
           ansible.builtin.assert:
             that:
-              - cv_deploy_results.workspace.avd_workspace.requested_state == "abandoned"
+              - cv_deploy_results.workspace.requested_state == "abandoned"
               - cv_deploy_results.workspace.state == "abandoned"
               - cv_deploy_results.failed is true
               - cv_deploy_results.warnings | default([]) | length == 0

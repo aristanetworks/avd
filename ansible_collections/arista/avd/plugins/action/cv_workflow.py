@@ -47,6 +47,7 @@ try:
         CVTimeOuts,
         CVWorkspace,
         DeployToCvResult,
+        serialize,
     )
     from pyavd._cv.workflows.utils import extract_from_device_deployments
     from pyavd._utils import default, get, strip_empties_from_dict
@@ -234,10 +235,10 @@ class ActionModule(ActionBase):
                         "token": "<removed>",
                         **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),  # NOSONAR
                     },
-                    configs=[asdict(config) for config in eos_config_objects],
-                    device_tags=[asdict(device_tag) for device_tag in device_tag_objects],
-                    interface_tags=[asdict(interface_tag) for interface_tag in interface_tag_objects],
-                    cv_pathfinder_metadata=[asdict(metadata) for metadata in cv_pathfinder_metadata_objects],
+                    configs=[serialize(config) for config in eos_config_objects],
+                    device_tags=[serialize(device_tag) for device_tag in device_tag_objects],
+                    interface_tags=[serialize(interface_tag) for interface_tag in interface_tag_objects],
+                    cv_pathfinder_metadata=[serialize(metadata) for metadata in cv_pathfinder_metadata_objects],
                     static_config_manifest=asdict(static_config_manifest) if static_config_manifest else None,
                 )
 
@@ -283,7 +284,7 @@ class ActionModule(ActionBase):
             # Add either all return data or only warnings, errors, failed.
             if validated_args["return_details"]:
                 # Result object is converted to JSON compatible dict.
-                result.update(asdict(result_object))
+                result.update(result_object.get_result())
             else:
                 result.update(
                     {

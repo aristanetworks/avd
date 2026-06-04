@@ -72,9 +72,9 @@
           ansible.builtin.assert:
             that:
               # workspace
-              - cv_deploy_results.workspace.avd_workspace.name == cv_workspace_name
+              - cv_deploy_results.workspace.name == cv_workspace_name
               - cv_deploy_results.workspace.state == "submitted"
-              - cv_deploy_results.workspace.avd_workspace.description == cv_workspace_description
+              - cv_deploy_results.workspace.description == cv_workspace_description
               # errors and warnings
               - cv_deploy_results.errors == []
               - cv_deploy_results.warnings | default([]) | length == 0
@@ -84,7 +84,7 @@
               # Change control
               - cv_deploy_results.change_control.name == cv_change_control_name
               - cv_deploy_results.change_control.description == cv_change_control_description
-              - cv_deploy_results.change_control.avd_change_control.requested_state == "completed"
+              - cv_deploy_results.change_control.requested_state == "completed"
               - cv_deploy_results.change_control.state == "completed"
           vars:
             cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
@@ -152,7 +152,7 @@
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
-            output_devices: "{{ output_devices + [item.device.avd_device.hostname] }}"
+            output_devices: "{{ output_devices + [item.device.hostname] }}"
           loop: "{{ devices_structure }}"
           loop_control:
             label: "{{ item.configlet_name }}"

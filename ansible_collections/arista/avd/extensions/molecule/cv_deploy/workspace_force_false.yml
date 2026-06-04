@@ -129,7 +129,7 @@
                 "values": [
                   {
                     "key": {
-                      "workspaceId": "{{ cv_deploy_results.workspace.avd_workspace.id }}"
+                      "workspaceId": "{{ cv_deploy_results.workspace.id }}"
                     },
                     "request": "REQUEST_ABANDON",
                     "requestParams": {
@@ -146,8 +146,8 @@
           delay: 3
           ignore_errors: true
           when: |
-            cv_deploy_results.workspace.avd_workspace.id is not none and
-            cv_deploy_results.workspace.avd_workspace.id | length > 0 and
+            cv_deploy_results.workspace.id is not none and
+            cv_deploy_results.workspace.id | length > 0 and
             cv_deploy_results.workspace.state | default('') != "abandoned"
           # Set HTTPS_PROXY environment variable scoped for this task only
           environment:
