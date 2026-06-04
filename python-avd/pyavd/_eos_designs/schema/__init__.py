@@ -367,7 +367,13 @@ class EosDesigns(EosDesignsRootModel):
                 recommended to make use of a vault or similar.
                 """
                 tls: EosCliConfigGen.RadiusServer.ServersItem.Tls
-                """When TLS is configured, `key` and `cleartext_key` are ignored."""
+                """
+                When TLS is configured, `key` and `cleartext_key` are ignored.
+                For proper functionality to render
+                TLS settings on the
+                server group member entry, set `avd_design_future.fix_radius_server_group_tls:
+                true`.
+                """
 
                 if TYPE_CHECKING:
 
@@ -425,7 +431,12 @@ class EosDesigns(EosDesignsRootModel):
                                Encrypted to Type 7 by AVD.
                                To protect the password at rest it is strongly
                                recommended to make use of a vault or similar.
-                            tls: When TLS is configured, `key` and `cleartext_key` are ignored.
+                            tls:
+                               When TLS is configured, `key` and `cleartext_key` are ignored.
+                               For proper functionality to render
+                               TLS settings on the
+                               server group member entry, set `avd_design_future.fix_radius_server_group_tls:
+                               true`.
 
                         """
 
@@ -977,6 +988,7 @@ class EosDesigns(EosDesignsRootModel):
             "configure_inband_mgmt_ipv6_vrf": {"type": bool, "default": False},
             "only_configure_ipv6_inband_mgmt_prefix_list_when_used": {"type": bool, "default": False},
             "consistent_uplink_vlans": {"type": bool, "default": False},
+            "fix_radius_server_group_tls": {"type": bool, "default": False},
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
@@ -1031,6 +1043,13 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        fix_radius_server_group_tls: bool
+        """
+        Fix to configure TLS on RADIUS server group members to match their global RADIUS server
+        configurations.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -1045,6 +1064,7 @@ class EosDesigns(EosDesignsRootModel):
                 configure_inband_mgmt_ipv6_vrf: bool | UndefinedType = Undefined,
                 only_configure_ipv6_inband_mgmt_prefix_list_when_used: bool | UndefinedType = Undefined,
                 consistent_uplink_vlans: bool | UndefinedType = Undefined,
+                fix_radius_server_group_tls: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -1069,6 +1089,9 @@ class EosDesigns(EosDesignsRootModel):
                        Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
                        and on
                        all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
+                    fix_radius_server_group_tls:
+                       Fix to configure TLS on RADIUS server group members to match their global RADIUS server
+                       configurations.
 
                 """
 
@@ -3558,6 +3581,8 @@ class EosDesigns(EosDesignsRootModel):
                 "phone_trunk_mode": {"type": str},
                 "trunk_groups": {"type": TrunkGroups},
                 "vlans": {"type": str},
+                "mac_acl_in": {"type": str},
+                "mac_acl_out": {"type": str},
                 "spanning_tree_portfast": {"type": str},
                 "spanning_tree_bpdufilter": {"type": str},
                 "spanning_tree_bpduguard": {"type": str},
@@ -3722,6 +3747,10 @@ class EosDesigns(EosDesignsRootModel):
             the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
             for access ports.
             """
+            mac_acl_in: str | None
+            """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
+            mac_acl_out: str | None
+            """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
             spanning_tree_portfast: SpanningTreePortfast | None
             spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
             spanning_tree_bpduguard: SpanningTreeBpduguard | None
@@ -3855,6 +3884,8 @@ class EosDesigns(EosDesignsRootModel):
                     phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                     vlans: str | None | UndefinedType = Undefined,
+                    mac_acl_in: str | None | UndefinedType = Undefined,
+                    mac_acl_out: str | None | UndefinedType = Undefined,
                     spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                     spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
@@ -3993,6 +4024,8 @@ class EosDesigns(EosDesignsRootModel):
                            If not set,
                            the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                            for access ports.
+                        mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+                        mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                         spanning_tree_portfast: spanning_tree_portfast
                         spanning_tree_bpdufilter: spanning_tree_bpdufilter
                         spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -7370,7 +7403,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
         class UplinkInterfaces(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -11221,20 +11254,20 @@ class EosDesigns(EosDesignsRootModel):
         """
         inband_mgmt_vlan: int
         """
-        VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-        uplinks).
-        When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-        switch as well as all 'uplink_switches'.
-        When using 'inband_mgmt_ip' the VLAN and SVI will only be
-        created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-        created using network services data models.
+        VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+        When
+        using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+        all 'uplink_switches'.
+        When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+        device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+        network services data models.
 
         Default value: `4092`
         """
         inband_mgmt_subnet: str | None
         """
-        Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-        as uplinks).
+        Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+        uplinks).
         Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
         ARP.
         This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -11252,7 +11285,7 @@ class EosDesigns(EosDesignsRootModel):
         Setting is ignored if 'inband_mgmt_ip' is set.
 
         This setting is
-        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        applicable to L2 switches (switches using L2 trunks as uplinks).
         """
         inband_mgmt_subnet_offset: int
         """
@@ -11274,7 +11307,7 @@ class EosDesigns(EosDesignsRootModel):
         the parent switches must be created using network services data models.
 
         This setting is applicable
-        to L2 switches (switches using port-channel trunks as uplinks).
+        to L2 switches (switches using L2 trunks as uplinks).
         """
         inband_mgmt_gateway: str | None
         """
@@ -11282,7 +11315,7 @@ class EosDesigns(EosDesignsRootModel):
         is derived from 'inband_mgmt_subnet' if set.
 
         This setting is applicable to L2 switches (switches
-        using port-channel trunks as uplinks).
+        using L2 trunks as uplinks).
         """
         inband_mgmt_ipv6_address: str | None
         """
@@ -11296,7 +11329,7 @@ class EosDesigns(EosDesignsRootModel):
         and SVI on the parent switches must be created using network services data models.
 
         This setting is
-        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        applicable to L2 switches (switches using L2 trunks as uplinks).
         """
         inband_mgmt_ipv6_subnet: str | None
         """
@@ -11319,7 +11352,7 @@ class EosDesigns(EosDesignsRootModel):
         Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
         This setting is
-        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        applicable to L2 switches (switches using L2 trunks as uplinks).
         """
         inband_mgmt_ipv6_gateway: str | None
         """
@@ -11328,7 +11361,7 @@ class EosDesigns(EosDesignsRootModel):
         Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
         This setting is
-        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        applicable to L2 switches (switches using L2 trunks as uplinks).
         """
         inband_mgmt_description: str
         """
@@ -12090,16 +12123,16 @@ class EosDesigns(EosDesignsRootModel):
                        On L2 switches,
                        this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                     inband_mgmt_vlan:
-                       VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                       uplinks).
-                       When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                       switch as well as all 'uplink_switches'.
-                       When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                       created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                       created using network services data models.
+                       VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                       When
+                       using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                       all 'uplink_switches'.
+                       When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                       device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                       network services data models.
                     inband_mgmt_subnet:
-                       Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                       as uplinks).
+                       Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                       uplinks).
                        Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                        ARP.
                        This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -12117,7 +12150,7 @@ class EosDesigns(EosDesignsRootModel):
                        Setting is ignored if 'inband_mgmt_ip' is set.
 
                        This setting is
-                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                       applicable to L2 switches (switches using L2 trunks as uplinks).
                     inband_mgmt_subnet_offset:
                        Offset value to adjust the calculated inband management IP address within the subnet.
                        The assigned
@@ -12133,13 +12166,13 @@ class EosDesigns(EosDesignsRootModel):
                        the parent switches must be created using network services data models.
 
                        This setting is applicable
-                       to L2 switches (switches using port-channel trunks as uplinks).
+                       to L2 switches (switches using L2 trunks as uplinks).
                     inband_mgmt_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                        is derived from 'inband_mgmt_subnet' if set.
 
                        This setting is applicable to L2 switches (switches
-                       using port-channel trunks as uplinks).
+                       using L2 trunks as uplinks).
                     inband_mgmt_ipv6_address:
                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                        This overrides
@@ -12151,7 +12184,7 @@ class EosDesigns(EosDesignsRootModel):
                        and SVI on the parent switches must be created using network services data models.
 
                        This setting is
-                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                       applicable to L2 switches (switches using L2 trunks as uplinks).
                     inband_mgmt_ipv6_subnet:
                        Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
                        as uplinks).
@@ -12172,14 +12205,14 @@ class EosDesigns(EosDesignsRootModel):
                        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                        This setting is
-                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                       applicable to L2 switches (switches using L2 trunks as uplinks).
                     inband_mgmt_ipv6_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf'.
                        Used when `inband_mgmt_ipv6_address` is set.
                        Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                        This setting is
-                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                       applicable to L2 switches (switches using L2 trunks as uplinks).
                     inband_mgmt_description:
                        Description configured on the Inband Management SVI.
 
@@ -12597,7 +12630,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
         class UplinkInterfaces(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -16459,20 +16492,20 @@ class EosDesigns(EosDesignsRootModel):
         """
         inband_mgmt_vlan: int
         """
-        VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-        uplinks).
-        When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-        switch as well as all 'uplink_switches'.
-        When using 'inband_mgmt_ip' the VLAN and SVI will only be
-        created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-        created using network services data models.
+        VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+        When
+        using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+        all 'uplink_switches'.
+        When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+        device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+        network services data models.
 
         Default value: `4092`
         """
         inband_mgmt_subnet: str | None
         """
-        Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-        as uplinks).
+        Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+        uplinks).
         Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
         ARP.
         This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -16490,7 +16523,7 @@ class EosDesigns(EosDesignsRootModel):
         Setting is ignored if 'inband_mgmt_ip' is set.
 
         This setting is
-        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        applicable to L2 switches (switches using L2 trunks as uplinks).
         """
         inband_mgmt_subnet_offset: int
         """
@@ -16512,7 +16545,7 @@ class EosDesigns(EosDesignsRootModel):
         the parent switches must be created using network services data models.
 
         This setting is applicable
-        to L2 switches (switches using port-channel trunks as uplinks).
+        to L2 switches (switches using L2 trunks as uplinks).
         """
         inband_mgmt_gateway: str | None
         """
@@ -16520,7 +16553,7 @@ class EosDesigns(EosDesignsRootModel):
         is derived from 'inband_mgmt_subnet' if set.
 
         This setting is applicable to L2 switches (switches
-        using port-channel trunks as uplinks).
+        using L2 trunks as uplinks).
         """
         inband_mgmt_ipv6_address: str | None
         """
@@ -16534,7 +16567,7 @@ class EosDesigns(EosDesignsRootModel):
         and SVI on the parent switches must be created using network services data models.
 
         This setting is
-        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        applicable to L2 switches (switches using L2 trunks as uplinks).
         """
         inband_mgmt_ipv6_subnet: str | None
         """
@@ -16557,7 +16590,7 @@ class EosDesigns(EosDesignsRootModel):
         Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
         This setting is
-        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        applicable to L2 switches (switches using L2 trunks as uplinks).
         """
         inband_mgmt_ipv6_gateway: str | None
         """
@@ -16566,7 +16599,7 @@ class EosDesigns(EosDesignsRootModel):
         Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
         This setting is
-        applicable to L2 switches (switches using port-channel trunks as uplinks).
+        applicable to L2 switches (switches using L2 trunks as uplinks).
         """
         inband_mgmt_description: str
         """
@@ -17337,16 +17370,16 @@ class EosDesigns(EosDesignsRootModel):
                        On L2 switches,
                        this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                     inband_mgmt_vlan:
-                       VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                       uplinks).
-                       When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                       switch as well as all 'uplink_switches'.
-                       When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                       created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                       created using network services data models.
+                       VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                       When
+                       using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                       all 'uplink_switches'.
+                       When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                       device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                       network services data models.
                     inband_mgmt_subnet:
-                       Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                       as uplinks).
+                       Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                       uplinks).
                        Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                        ARP.
                        This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -17364,7 +17397,7 @@ class EosDesigns(EosDesignsRootModel):
                        Setting is ignored if 'inband_mgmt_ip' is set.
 
                        This setting is
-                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                       applicable to L2 switches (switches using L2 trunks as uplinks).
                     inband_mgmt_subnet_offset:
                        Offset value to adjust the calculated inband management IP address within the subnet.
                        The assigned
@@ -17380,13 +17413,13 @@ class EosDesigns(EosDesignsRootModel):
                        the parent switches must be created using network services data models.
 
                        This setting is applicable
-                       to L2 switches (switches using port-channel trunks as uplinks).
+                       to L2 switches (switches using L2 trunks as uplinks).
                     inband_mgmt_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                        is derived from 'inband_mgmt_subnet' if set.
 
                        This setting is applicable to L2 switches (switches
-                       using port-channel trunks as uplinks).
+                       using L2 trunks as uplinks).
                     inband_mgmt_ipv6_address:
                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                        This overrides
@@ -17398,7 +17431,7 @@ class EosDesigns(EosDesignsRootModel):
                        and SVI on the parent switches must be created using network services data models.
 
                        This setting is
-                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                       applicable to L2 switches (switches using L2 trunks as uplinks).
                     inband_mgmt_ipv6_subnet:
                        Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
                        as uplinks).
@@ -17419,14 +17452,14 @@ class EosDesigns(EosDesignsRootModel):
                        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                        This setting is
-                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                       applicable to L2 switches (switches using L2 trunks as uplinks).
                     inband_mgmt_ipv6_gateway:
                        Default gateway configured in the 'inband_mgmt_vrf'.
                        Used when `inband_mgmt_ipv6_address` is set.
                        Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                        This setting is
-                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                       applicable to L2 switches (switches using L2 trunks as uplinks).
                     inband_mgmt_description:
                        Description configured on the Inband Management SVI.
 
@@ -18119,13 +18152,21 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"username_format": {"type": UsernameFormat}}
+            _fields: ClassVar[dict] = {"username_format": {"type": UsernameFormat}, "delay": {"type": int}, "hold_period": {"type": int}}
             username_format: UsernameFormat
             """Subclass of AvdModel."""
+            delay: int | None
+            hold_period: int | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, username_format: UsernameFormat | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    username_format: UsernameFormat | UndefinedType = Undefined,
+                    delay: int | None | UndefinedType = Undefined,
+                    hold_period: int | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     MacBasedAuthentication.
 
@@ -18134,6 +18175,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         username_format: Subclass of AvdModel.
+                        delay: delay
+                        hold_period: hold_period
 
                     """
 
@@ -24231,6 +24274,142 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class MacAclsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Action: TypeAlias = Literal["permit", "deny"]
+            _fields: ClassVar[dict] = {
+                "sequence": {"type": int},
+                "action": {"type": str},
+                "remark": {"type": str},
+                "source": {"type": str},
+                "source_wildcard": {"type": str},
+                "destination": {"type": str},
+                "destination_wildcard": {"type": str},
+            }
+            sequence: int | None
+            action: Action | None
+            remark: str | None
+            """
+            Remark.
+            Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+            are ignored
+            when `remark` is set.
+            """
+            source: str | None
+            """
+            Source mac-address.
+            This can be `any` or a MAC address.
+            """
+            source_wildcard: str | None
+            """
+            Wildcard bits for source MAC address.
+            Required when `source` is not `any`.
+            """
+            destination: str | None
+            """
+            Destination MAC address.
+            This can be `any` or a MAC address.
+            """
+            destination_wildcard: str | None
+            """
+            Wildcard bits for destination MAC address.
+            Required when `destination` is not `any`.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    sequence: int | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    source_wildcard: str | None | UndefinedType = Undefined,
+                    destination: str | None | UndefinedType = Undefined,
+                    destination_wildcard: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sequence: sequence
+                        action: action
+                        remark:
+                           Remark.
+                           Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+                           are ignored
+                           when `remark` is set.
+                        source:
+                           Source mac-address.
+                           This can be `any` or a MAC address.
+                        source_wildcard:
+                           Wildcard bits for source MAC address.
+                           Required when `source` is not `any`.
+                        destination:
+                           Destination MAC address.
+                           This can be `any` or a MAC address.
+                        destination_wildcard:
+                           Wildcard bits for destination MAC address.
+                           Required when `destination` is not `any`.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
+        _fields: ClassVar[dict] = {"name": {"type": str}, "counters_per_entry": {"type": bool}, "entries": {"type": Entries}}
+        name: str
+        """Access-list name."""
+        counters_per_entry: bool | None
+        entries: Entries
+        """
+        For each entry action or remark must be set.
+
+        Subclass of AvdList with `EntriesItem` items.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
+                entries: Entries | UndefinedType = Undefined,
+            ) -> None:
+                """
+                MacAclsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: Access-list name.
+                    counters_per_entry: counters_per_entry
+                    entries:
+                       For each entry action or remark must be set.
+
+                       Subclass of AvdList with `EntriesItem` items.
+
+                """
+
+    class MacAcls(AvdIndexedList[str, MacAclsItem]):
+        """Subclass of AvdIndexedList with `MacAclsItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    MacAcls._item_type = MacAclsItem
+
     class ManagementEapi(AvdModel):
         """Subclass of AvdModel."""
 
@@ -26208,6 +26387,8 @@ class EosDesigns(EosDesignsRootModel):
             "phone_trunk_mode": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
             "vlans": {"type": str},
+            "mac_acl_in": {"type": str},
+            "mac_acl_out": {"type": str},
             "spanning_tree_portfast": {"type": str},
             "spanning_tree_bpdufilter": {"type": str},
             "spanning_tree_bpduguard": {"type": str},
@@ -26362,6 +26543,10 @@ class EosDesigns(EosDesignsRootModel):
         the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
         for access ports.
         """
+        mac_acl_in: str | None
+        """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
+        mac_acl_out: str | None
+        """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
         spanning_tree_portfast: SpanningTreePortfast | None
         spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
         spanning_tree_bpduguard: SpanningTreeBpduguard | None
@@ -26494,6 +26679,8 @@ class EosDesigns(EosDesignsRootModel):
                 phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 vlans: str | None | UndefinedType = Undefined,
+                mac_acl_in: str | None | UndefinedType = Undefined,
+                mac_acl_out: str | None | UndefinedType = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                 spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                 spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
@@ -26625,6 +26812,8 @@ class EosDesigns(EosDesignsRootModel):
                        If not set,
                        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                        for access ports.
+                    mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+                    mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
                     spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -36138,7 +36327,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
         class IpAddressing(AvdModel):
             """Subclass of AvdModel."""
@@ -36450,6 +36639,16 @@ class EosDesigns(EosDesignsRootModel):
         subinterfaces for each SVI defined under the VRFs in `network_services` as long as
         the uplink switch also
         has the VLAN permitted by tag/tenant filtering.
+
+        `port-channel` and
+        `l2-ethernet` options configures L2 trunks carrying all active VLANs permitted by tag/tenant
+        filtering.
+        VLAN propagation across L2 fabric links is calculated from uplink definitions only.
+        For
+        ring topologies, define each ring link as an uplink in both directions; downstream links are not
+        considered.
+        To propagate VLANs across a non-hierarchical L2 topology, such as a ring or lateral L2
+        link, configure the link as an uplink on both neighboring switches.
 
         Default value: `"p2p"`
         """
@@ -36580,6 +36779,16 @@ class EosDesigns(EosDesignsRootModel):
                        subinterfaces for each SVI defined under the VRFs in `network_services` as long as
                        the uplink switch also
                        has the VLAN permitted by tag/tenant filtering.
+
+                       `port-channel` and
+                       `l2-ethernet` options configures L2 trunks carrying all active VLANs permitted by tag/tenant
+                       filtering.
+                       VLAN propagation across L2 fabric links is calculated from uplink definitions only.
+                       For
+                       ring topologies, define each ring link as an uplink in both directions; downstream links are not
+                       considered.
+                       To propagate VLANs across a non-hierarchical L2 topology, such as a ring or lateral L2
+                       link, configure the link as an uplink on both neighboring switches.
                     vtep: Is this switch an EVPN VTEP.
                     mpls_lsr: Is this switch an MPLS LSR.
                     ip_addressing:
@@ -36665,7 +36874,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
         class IpAddressing(AvdModel):
             """Subclass of AvdModel."""
@@ -36978,6 +37187,16 @@ class EosDesigns(EosDesignsRootModel):
         the uplink switch also
         has the VLAN permitted by tag/tenant filtering.
 
+        `port-channel` and
+        `l2-ethernet` options configures L2 trunks carrying all active VLANs permitted by tag/tenant
+        filtering.
+        VLAN propagation across L2 fabric links is calculated from uplink definitions only.
+        For
+        ring topologies, define each ring link as an uplink in both directions; downstream links are not
+        considered.
+        To propagate VLANs across a non-hierarchical L2 topology, such as a ring or lateral L2
+        link, configure the link as an uplink on both neighboring switches.
+
         Default value: `"p2p"`
         """
         vtep: bool
@@ -37107,6 +37326,16 @@ class EosDesigns(EosDesignsRootModel):
                        subinterfaces for each SVI defined under the VRFs in `network_services` as long as
                        the uplink switch also
                        has the VLAN permitted by tag/tenant filtering.
+
+                       `port-channel` and
+                       `l2-ethernet` options configures L2 trunks carrying all active VLANs permitted by tag/tenant
+                       filtering.
+                       VLAN propagation across L2 fabric links is calculated from uplink definitions only.
+                       For
+                       ring topologies, define each ring link as an uplink in both directions; downstream links are not
+                       considered.
+                       To propagate VLANs across a non-hierarchical L2 topology, such as a ring or lateral L2
+                       link, configure the link as an uplink on both neighboring switches.
                     vtep: Is this switch an EVPN VTEP.
                     mpls_lsr: Is this switch an MPLS LSR.
                     ip_addressing:
@@ -40524,6 +40753,8 @@ class EosDesigns(EosDesignsRootModel):
             "phone_trunk_mode": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
             "vlans": {"type": str},
+            "mac_acl_in": {"type": str},
+            "mac_acl_out": {"type": str},
             "spanning_tree_portfast": {"type": str},
             "spanning_tree_bpdufilter": {"type": str},
             "spanning_tree_bpduguard": {"type": str},
@@ -40635,6 +40866,10 @@ class EosDesigns(EosDesignsRootModel):
         the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
         for access ports.
         """
+        mac_acl_in: str | None
+        """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
+        mac_acl_out: str | None
+        """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
         spanning_tree_portfast: SpanningTreePortfast | None
         spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
         spanning_tree_bpduguard: SpanningTreeBpduguard | None
@@ -40764,6 +40999,8 @@ class EosDesigns(EosDesignsRootModel):
                 phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 vlans: str | None | UndefinedType = Undefined,
+                mac_acl_in: str | None | UndefinedType = Undefined,
+                mac_acl_out: str | None | UndefinedType = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                 spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                 spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
@@ -40857,6 +41094,8 @@ class EosDesigns(EosDesignsRootModel):
                        If not set,
                        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                        for access ports.
+                    mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+                    mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
                     spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -47374,7 +47613,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -51215,20 +51454,20 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     inband_mgmt_vlan: int
                     """
-                    VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                    uplinks).
-                    When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                    switch as well as all 'uplink_switches'.
-                    When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                    created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                    created using network services data models.
+                    VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                    When
+                    using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                    all 'uplink_switches'.
+                    When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                    device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                    network services data models.
 
                     Default value: `4092`
                     """
                     inband_mgmt_subnet: str | None
                     """
-                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                    as uplinks).
+                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                    uplinks).
                     Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                     ARP.
                     This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -51246,7 +51485,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -51268,7 +51507,7 @@ class EosDesigns(EosDesignsRootModel):
                     the parent switches must be created using network services data models.
 
                     This setting is applicable
-                    to L2 switches (switches using port-channel trunks as uplinks).
+                    to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -51276,7 +51515,7 @@ class EosDesigns(EosDesignsRootModel):
                     is derived from 'inband_mgmt_subnet' if set.
 
                     This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -51290,7 +51529,7 @@ class EosDesigns(EosDesignsRootModel):
                     and SVI on the parent switches must be created using network services data models.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_subnet: str | None
                     """
@@ -51313,7 +51552,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -51322,7 +51561,7 @@ class EosDesigns(EosDesignsRootModel):
                     Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_description: str
                     """
@@ -52067,16 +52306,16 @@ class EosDesigns(EosDesignsRootModel):
                                    On L2 switches,
                                    this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                                 inband_mgmt_vlan:
-                                   VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                                   uplinks).
-                                   When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                                   switch as well as all 'uplink_switches'.
-                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                                   created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                                   created using network services data models.
+                                   VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                                   When
+                                   using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                                   all 'uplink_switches'.
+                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                                   device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                                   network services data models.
                                 inband_mgmt_subnet:
-                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                                   as uplinks).
+                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                                   uplinks).
                                    Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                                    ARP.
                                    This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -52094,7 +52333,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
@@ -52110,13 +52349,13 @@ class EosDesigns(EosDesignsRootModel):
                                    the parent switches must be created using network services data models.
 
                                    This setting is applicable
-                                   to L2 switches (switches using port-channel trunks as uplinks).
+                                   to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -52128,7 +52367,7 @@ class EosDesigns(EosDesignsRootModel):
                                    and SVI on the parent switches must be created using network services data models.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_subnet:
                                    Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
                                    as uplinks).
@@ -52149,14 +52388,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
                                    Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_description:
                                    Description configured on the Inband Management SVI.
 
@@ -52578,7 +52817,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                         class UplinkInterfaces(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -56448,20 +56687,20 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         inband_mgmt_vlan: int
                         """
-                        VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                        uplinks).
-                        When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                        switch as well as all 'uplink_switches'.
-                        When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                        created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                        created using network services data models.
+                        VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                        When
+                        using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                        all 'uplink_switches'.
+                        When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                        device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                        network services data models.
 
                         Default value: `4092`
                         """
                         inband_mgmt_subnet: str | None
                         """
-                        Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                        as uplinks).
+                        Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                        uplinks).
                         Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                         ARP.
                         This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -56479,7 +56718,7 @@ class EosDesigns(EosDesignsRootModel):
                         Setting is ignored if 'inband_mgmt_ip' is set.
 
                         This setting is
-                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        applicable to L2 switches (switches using L2 trunks as uplinks).
                         """
                         inband_mgmt_subnet_offset: int
                         """
@@ -56501,7 +56740,7 @@ class EosDesigns(EosDesignsRootModel):
                         the parent switches must be created using network services data models.
 
                         This setting is applicable
-                        to L2 switches (switches using port-channel trunks as uplinks).
+                        to L2 switches (switches using L2 trunks as uplinks).
                         """
                         inband_mgmt_gateway: str | None
                         """
@@ -56509,7 +56748,7 @@ class EosDesigns(EosDesignsRootModel):
                         is derived from 'inband_mgmt_subnet' if set.
 
                         This setting is applicable to L2 switches (switches
-                        using port-channel trunks as uplinks).
+                        using L2 trunks as uplinks).
                         """
                         inband_mgmt_ipv6_address: str | None
                         """
@@ -56523,7 +56762,7 @@ class EosDesigns(EosDesignsRootModel):
                         and SVI on the parent switches must be created using network services data models.
 
                         This setting is
-                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        applicable to L2 switches (switches using L2 trunks as uplinks).
                         """
                         inband_mgmt_ipv6_subnet: str | None
                         """
@@ -56546,7 +56785,7 @@ class EosDesigns(EosDesignsRootModel):
                         Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                         This setting is
-                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        applicable to L2 switches (switches using L2 trunks as uplinks).
                         """
                         inband_mgmt_ipv6_gateway: str | None
                         """
@@ -56555,7 +56794,7 @@ class EosDesigns(EosDesignsRootModel):
                         Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                         This setting is
-                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        applicable to L2 switches (switches using L2 trunks as uplinks).
                         """
                         inband_mgmt_description: str
                         """
@@ -57309,16 +57548,16 @@ class EosDesigns(EosDesignsRootModel):
                                        On L2 switches,
                                        this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                                     inband_mgmt_vlan:
-                                       VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                                       uplinks).
-                                       When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                                       switch as well as all 'uplink_switches'.
-                                       When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                                       created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                                       created using network services data models.
+                                       VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                                       When
+                                       using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                                       all 'uplink_switches'.
+                                       When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                                       device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                                       network services data models.
                                     inband_mgmt_subnet:
-                                       Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                                       as uplinks).
+                                       Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                                       uplinks).
                                        Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                                        ARP.
                                        This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -57336,7 +57575,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Setting is ignored if 'inband_mgmt_ip' is set.
 
                                        This setting is
-                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                       applicable to L2 switches (switches using L2 trunks as uplinks).
                                     inband_mgmt_subnet_offset:
                                        Offset value to adjust the calculated inband management IP address within the subnet.
                                        The assigned
@@ -57352,13 +57591,13 @@ class EosDesigns(EosDesignsRootModel):
                                        the parent switches must be created using network services data models.
 
                                        This setting is applicable
-                                       to L2 switches (switches using port-channel trunks as uplinks).
+                                       to L2 switches (switches using L2 trunks as uplinks).
                                     inband_mgmt_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                        is derived from 'inband_mgmt_subnet' if set.
 
                                        This setting is applicable to L2 switches (switches
-                                       using port-channel trunks as uplinks).
+                                       using L2 trunks as uplinks).
                                     inband_mgmt_ipv6_address:
                                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -57370,7 +57609,7 @@ class EosDesigns(EosDesignsRootModel):
                                        and SVI on the parent switches must be created using network services data models.
 
                                        This setting is
-                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                       applicable to L2 switches (switches using L2 trunks as uplinks).
                                     inband_mgmt_ipv6_subnet:
                                        Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
                                        as uplinks).
@@ -57391,14 +57630,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                                        This setting is
-                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                       applicable to L2 switches (switches using L2 trunks as uplinks).
                                     inband_mgmt_ipv6_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf'.
                                        Used when `inband_mgmt_ipv6_address` is set.
                                        Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                                        This setting is
-                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                       applicable to L2 switches (switches using L2 trunks as uplinks).
                                     inband_mgmt_description:
                                        Description configured on the Inband Management SVI.
 
@@ -57745,7 +57984,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -61601,20 +61840,20 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     inband_mgmt_vlan: int
                     """
-                    VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                    uplinks).
-                    When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                    switch as well as all 'uplink_switches'.
-                    When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                    created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                    created using network services data models.
+                    VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                    When
+                    using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                    all 'uplink_switches'.
+                    When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                    device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                    network services data models.
 
                     Default value: `4092`
                     """
                     inband_mgmt_subnet: str | None
                     """
-                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                    as uplinks).
+                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                    uplinks).
                     Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                     ARP.
                     This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -61632,7 +61871,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -61654,7 +61893,7 @@ class EosDesigns(EosDesignsRootModel):
                     the parent switches must be created using network services data models.
 
                     This setting is applicable
-                    to L2 switches (switches using port-channel trunks as uplinks).
+                    to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -61662,7 +61901,7 @@ class EosDesigns(EosDesignsRootModel):
                     is derived from 'inband_mgmt_subnet' if set.
 
                     This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -61676,7 +61915,7 @@ class EosDesigns(EosDesignsRootModel):
                     and SVI on the parent switches must be created using network services data models.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_subnet: str | None
                     """
@@ -61699,7 +61938,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -61708,7 +61947,7 @@ class EosDesigns(EosDesignsRootModel):
                     Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_description: str
                     """
@@ -62464,16 +62703,16 @@ class EosDesigns(EosDesignsRootModel):
                                    On L2 switches,
                                    this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                                 inband_mgmt_vlan:
-                                   VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                                   uplinks).
-                                   When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                                   switch as well as all 'uplink_switches'.
-                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                                   created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                                   created using network services data models.
+                                   VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                                   When
+                                   using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                                   all 'uplink_switches'.
+                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                                   device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                                   network services data models.
                                 inband_mgmt_subnet:
-                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                                   as uplinks).
+                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                                   uplinks).
                                    Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                                    ARP.
                                    This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -62491,7 +62730,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
@@ -62507,13 +62746,13 @@ class EosDesigns(EosDesignsRootModel):
                                    the parent switches must be created using network services data models.
 
                                    This setting is applicable
-                                   to L2 switches (switches using port-channel trunks as uplinks).
+                                   to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -62525,7 +62764,7 @@ class EosDesigns(EosDesignsRootModel):
                                    and SVI on the parent switches must be created using network services data models.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_subnet:
                                    Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
                                    as uplinks).
@@ -62546,14 +62785,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
                                    Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_description:
                                    Description configured on the Inband Management SVI.
 
@@ -62975,7 +63214,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -66828,20 +67067,20 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     inband_mgmt_vlan: int
                     """
-                    VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                    uplinks).
-                    When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                    switch as well as all 'uplink_switches'.
-                    When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                    created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                    created using network services data models.
+                    VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                    When
+                    using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                    all 'uplink_switches'.
+                    When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                    device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                    network services data models.
 
                     Default value: `4092`
                     """
                     inband_mgmt_subnet: str | None
                     """
-                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                    as uplinks).
+                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                    uplinks).
                     Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                     ARP.
                     This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -66859,7 +67098,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -66881,7 +67120,7 @@ class EosDesigns(EosDesignsRootModel):
                     the parent switches must be created using network services data models.
 
                     This setting is applicable
-                    to L2 switches (switches using port-channel trunks as uplinks).
+                    to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -66889,7 +67128,7 @@ class EosDesigns(EosDesignsRootModel):
                     is derived from 'inband_mgmt_subnet' if set.
 
                     This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -66903,7 +67142,7 @@ class EosDesigns(EosDesignsRootModel):
                     and SVI on the parent switches must be created using network services data models.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_subnet: str | None
                     """
@@ -66926,7 +67165,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -66935,7 +67174,7 @@ class EosDesigns(EosDesignsRootModel):
                     Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_description: str
                     """
@@ -67689,16 +67928,16 @@ class EosDesigns(EosDesignsRootModel):
                                    On L2 switches,
                                    this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                                 inband_mgmt_vlan:
-                                   VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                                   uplinks).
-                                   When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                                   switch as well as all 'uplink_switches'.
-                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                                   created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                                   created using network services data models.
+                                   VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                                   When
+                                   using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                                   all 'uplink_switches'.
+                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                                   device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                                   network services data models.
                                 inband_mgmt_subnet:
-                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                                   as uplinks).
+                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                                   uplinks).
                                    Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                                    ARP.
                                    This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -67716,7 +67955,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
@@ -67732,13 +67971,13 @@ class EosDesigns(EosDesignsRootModel):
                                    the parent switches must be created using network services data models.
 
                                    This setting is applicable
-                                   to L2 switches (switches using port-channel trunks as uplinks).
+                                   to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -67750,7 +67989,7 @@ class EosDesigns(EosDesignsRootModel):
                                    and SVI on the parent switches must be created using network services data models.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_subnet:
                                    Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
                                    as uplinks).
@@ -67771,14 +68010,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
                                    Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_description:
                                    Description configured on the Inband Management SVI.
 
@@ -69448,6 +69687,8 @@ class EosDesigns(EosDesignsRootModel):
                         "phone_trunk_mode": {"type": str},
                         "trunk_groups": {"type": TrunkGroups},
                         "vlans": {"type": str},
+                        "mac_acl_in": {"type": str},
+                        "mac_acl_out": {"type": str},
                         "spanning_tree_portfast": {"type": str},
                         "spanning_tree_bpdufilter": {"type": str},
                         "spanning_tree_bpduguard": {"type": str},
@@ -69612,6 +69853,10 @@ class EosDesigns(EosDesignsRootModel):
                     the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                     for access ports.
                     """
+                    mac_acl_in: str | None
+                    """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
+                    mac_acl_out: str | None
+                    """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
                     spanning_tree_portfast: SpanningTreePortfast | None
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
                     spanning_tree_bpduguard: SpanningTreeBpduguard | None
@@ -69745,6 +69990,8 @@ class EosDesigns(EosDesignsRootModel):
                             phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                             trunk_groups: TrunkGroups | UndefinedType = Undefined,
                             vlans: str | None | UndefinedType = Undefined,
+                            mac_acl_in: str | None | UndefinedType = Undefined,
+                            mac_acl_out: str | None | UndefinedType = Undefined,
                             spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                             spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                             spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
@@ -69883,6 +70130,8 @@ class EosDesigns(EosDesignsRootModel):
                                    If not set,
                                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                                    for access ports.
+                                mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+                                mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
                                 spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -71490,6 +71739,8 @@ class EosDesigns(EosDesignsRootModel):
                         "phone_trunk_mode": {"type": str},
                         "trunk_groups": {"type": TrunkGroups},
                         "vlans": {"type": str},
+                        "mac_acl_in": {"type": str},
+                        "mac_acl_out": {"type": str},
                         "spanning_tree_portfast": {"type": str},
                         "spanning_tree_bpdufilter": {"type": str},
                         "spanning_tree_bpduguard": {"type": str},
@@ -71654,6 +71905,10 @@ class EosDesigns(EosDesignsRootModel):
                     the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                     for access ports.
                     """
+                    mac_acl_in: str | None
+                    """MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`."""
+                    mac_acl_out: str | None
+                    """MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`."""
                     spanning_tree_portfast: SpanningTreePortfast | None
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
                     spanning_tree_bpduguard: SpanningTreeBpduguard | None
@@ -71787,6 +72042,8 @@ class EosDesigns(EosDesignsRootModel):
                             phone_trunk_mode: PhoneTrunkMode | None | UndefinedType = Undefined,
                             trunk_groups: TrunkGroups | UndefinedType = Undefined,
                             vlans: str | None | UndefinedType = Undefined,
+                            mac_acl_in: str | None | UndefinedType = Undefined,
+                            mac_acl_out: str | None | UndefinedType = Undefined,
                             spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                             spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                             spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
@@ -71925,6 +72182,8 @@ class EosDesigns(EosDesignsRootModel):
                                    If not set,
                                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
                                    for access ports.
+                                mac_acl_in: MAC access-list to apply in the ingress direction. The ACL must be defined in `mac_acls`.
+                                mac_acl_out: MAC access-list to apply in the egress direction. The ACL must be defined in `mac_acls`.
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
                                 spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -81716,7 +81975,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -85557,20 +85816,20 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     inband_mgmt_vlan: int
                     """
-                    VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                    uplinks).
-                    When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                    switch as well as all 'uplink_switches'.
-                    When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                    created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                    created using network services data models.
+                    VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                    When
+                    using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                    all 'uplink_switches'.
+                    When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                    device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                    network services data models.
 
                     Default value: `4092`
                     """
                     inband_mgmt_subnet: str | None
                     """
-                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                    as uplinks).
+                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                    uplinks).
                     Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                     ARP.
                     This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -85588,7 +85847,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -85610,7 +85869,7 @@ class EosDesigns(EosDesignsRootModel):
                     the parent switches must be created using network services data models.
 
                     This setting is applicable
-                    to L2 switches (switches using port-channel trunks as uplinks).
+                    to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -85618,7 +85877,7 @@ class EosDesigns(EosDesignsRootModel):
                     is derived from 'inband_mgmt_subnet' if set.
 
                     This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -85632,7 +85891,7 @@ class EosDesigns(EosDesignsRootModel):
                     and SVI on the parent switches must be created using network services data models.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_subnet: str | None
                     """
@@ -85655,7 +85914,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -85664,7 +85923,7 @@ class EosDesigns(EosDesignsRootModel):
                     Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_description: str
                     """
@@ -86409,16 +86668,16 @@ class EosDesigns(EosDesignsRootModel):
                                    On L2 switches,
                                    this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                                 inband_mgmt_vlan:
-                                   VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                                   uplinks).
-                                   When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                                   switch as well as all 'uplink_switches'.
-                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                                   created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                                   created using network services data models.
+                                   VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                                   When
+                                   using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                                   all 'uplink_switches'.
+                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                                   device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                                   network services data models.
                                 inband_mgmt_subnet:
-                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                                   as uplinks).
+                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                                   uplinks).
                                    Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                                    ARP.
                                    This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -86436,7 +86695,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
@@ -86452,13 +86711,13 @@ class EosDesigns(EosDesignsRootModel):
                                    the parent switches must be created using network services data models.
 
                                    This setting is applicable
-                                   to L2 switches (switches using port-channel trunks as uplinks).
+                                   to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -86470,7 +86729,7 @@ class EosDesigns(EosDesignsRootModel):
                                    and SVI on the parent switches must be created using network services data models.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_subnet:
                                    Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
                                    as uplinks).
@@ -86491,14 +86750,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
                                    Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_description:
                                    Description configured on the Inband Management SVI.
 
@@ -86920,7 +87179,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                        UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                         class UplinkInterfaces(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -90790,20 +91049,20 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         inband_mgmt_vlan: int
                         """
-                        VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                        uplinks).
-                        When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                        switch as well as all 'uplink_switches'.
-                        When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                        created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                        created using network services data models.
+                        VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                        When
+                        using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                        all 'uplink_switches'.
+                        When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                        device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                        network services data models.
 
                         Default value: `4092`
                         """
                         inband_mgmt_subnet: str | None
                         """
-                        Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                        as uplinks).
+                        Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                        uplinks).
                         Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                         ARP.
                         This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -90821,7 +91080,7 @@ class EosDesigns(EosDesignsRootModel):
                         Setting is ignored if 'inband_mgmt_ip' is set.
 
                         This setting is
-                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        applicable to L2 switches (switches using L2 trunks as uplinks).
                         """
                         inband_mgmt_subnet_offset: int
                         """
@@ -90843,7 +91102,7 @@ class EosDesigns(EosDesignsRootModel):
                         the parent switches must be created using network services data models.
 
                         This setting is applicable
-                        to L2 switches (switches using port-channel trunks as uplinks).
+                        to L2 switches (switches using L2 trunks as uplinks).
                         """
                         inband_mgmt_gateway: str | None
                         """
@@ -90851,7 +91110,7 @@ class EosDesigns(EosDesignsRootModel):
                         is derived from 'inband_mgmt_subnet' if set.
 
                         This setting is applicable to L2 switches (switches
-                        using port-channel trunks as uplinks).
+                        using L2 trunks as uplinks).
                         """
                         inband_mgmt_ipv6_address: str | None
                         """
@@ -90865,7 +91124,7 @@ class EosDesigns(EosDesignsRootModel):
                         and SVI on the parent switches must be created using network services data models.
 
                         This setting is
-                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        applicable to L2 switches (switches using L2 trunks as uplinks).
                         """
                         inband_mgmt_ipv6_subnet: str | None
                         """
@@ -90888,7 +91147,7 @@ class EosDesigns(EosDesignsRootModel):
                         Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                         This setting is
-                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        applicable to L2 switches (switches using L2 trunks as uplinks).
                         """
                         inband_mgmt_ipv6_gateway: str | None
                         """
@@ -90897,7 +91156,7 @@ class EosDesigns(EosDesignsRootModel):
                         Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                         This setting is
-                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        applicable to L2 switches (switches using L2 trunks as uplinks).
                         """
                         inband_mgmt_description: str
                         """
@@ -91651,16 +91910,16 @@ class EosDesigns(EosDesignsRootModel):
                                        On L2 switches,
                                        this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                                     inband_mgmt_vlan:
-                                       VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                                       uplinks).
-                                       When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                                       switch as well as all 'uplink_switches'.
-                                       When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                                       created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                                       created using network services data models.
+                                       VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                                       When
+                                       using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                                       all 'uplink_switches'.
+                                       When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                                       device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                                       network services data models.
                                     inband_mgmt_subnet:
-                                       Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                                       as uplinks).
+                                       Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                                       uplinks).
                                        Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                                        ARP.
                                        This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -91678,7 +91937,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Setting is ignored if 'inband_mgmt_ip' is set.
 
                                        This setting is
-                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                       applicable to L2 switches (switches using L2 trunks as uplinks).
                                     inband_mgmt_subnet_offset:
                                        Offset value to adjust the calculated inband management IP address within the subnet.
                                        The assigned
@@ -91694,13 +91953,13 @@ class EosDesigns(EosDesignsRootModel):
                                        the parent switches must be created using network services data models.
 
                                        This setting is applicable
-                                       to L2 switches (switches using port-channel trunks as uplinks).
+                                       to L2 switches (switches using L2 trunks as uplinks).
                                     inband_mgmt_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                        is derived from 'inband_mgmt_subnet' if set.
 
                                        This setting is applicable to L2 switches (switches
-                                       using port-channel trunks as uplinks).
+                                       using L2 trunks as uplinks).
                                     inband_mgmt_ipv6_address:
                                        IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -91712,7 +91971,7 @@ class EosDesigns(EosDesignsRootModel):
                                        and SVI on the parent switches must be created using network services data models.
 
                                        This setting is
-                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                       applicable to L2 switches (switches using L2 trunks as uplinks).
                                     inband_mgmt_ipv6_subnet:
                                        Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
                                        as uplinks).
@@ -91733,14 +91992,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                                        This setting is
-                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                       applicable to L2 switches (switches using L2 trunks as uplinks).
                                     inband_mgmt_ipv6_gateway:
                                        Default gateway configured in the 'inband_mgmt_vrf'.
                                        Used when `inband_mgmt_ipv6_address` is set.
                                        Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                                        This setting is
-                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                       applicable to L2 switches (switches using L2 trunks as uplinks).
                                     inband_mgmt_description:
                                        Description configured on the Inband Management SVI.
 
@@ -92087,7 +92346,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -95943,20 +96202,20 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     inband_mgmt_vlan: int
                     """
-                    VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                    uplinks).
-                    When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                    switch as well as all 'uplink_switches'.
-                    When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                    created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                    created using network services data models.
+                    VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                    When
+                    using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                    all 'uplink_switches'.
+                    When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                    device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                    network services data models.
 
                     Default value: `4092`
                     """
                     inband_mgmt_subnet: str | None
                     """
-                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                    as uplinks).
+                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                    uplinks).
                     Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                     ARP.
                     This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -95974,7 +96233,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -95996,7 +96255,7 @@ class EosDesigns(EosDesignsRootModel):
                     the parent switches must be created using network services data models.
 
                     This setting is applicable
-                    to L2 switches (switches using port-channel trunks as uplinks).
+                    to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -96004,7 +96263,7 @@ class EosDesigns(EosDesignsRootModel):
                     is derived from 'inband_mgmt_subnet' if set.
 
                     This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -96018,7 +96277,7 @@ class EosDesigns(EosDesignsRootModel):
                     and SVI on the parent switches must be created using network services data models.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_subnet: str | None
                     """
@@ -96041,7 +96300,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -96050,7 +96309,7 @@ class EosDesigns(EosDesignsRootModel):
                     Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_description: str
                     """
@@ -96806,16 +97065,16 @@ class EosDesigns(EosDesignsRootModel):
                                    On L2 switches,
                                    this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                                 inband_mgmt_vlan:
-                                   VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                                   uplinks).
-                                   When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                                   switch as well as all 'uplink_switches'.
-                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                                   created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                                   created using network services data models.
+                                   VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                                   When
+                                   using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                                   all 'uplink_switches'.
+                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                                   device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                                   network services data models.
                                 inband_mgmt_subnet:
-                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                                   as uplinks).
+                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                                   uplinks).
                                    Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                                    ARP.
                                    This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -96833,7 +97092,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
@@ -96849,13 +97108,13 @@ class EosDesigns(EosDesignsRootModel):
                                    the parent switches must be created using network services data models.
 
                                    This setting is applicable
-                                   to L2 switches (switches using port-channel trunks as uplinks).
+                                   to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -96867,7 +97126,7 @@ class EosDesigns(EosDesignsRootModel):
                                    and SVI on the parent switches must be created using network services data models.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_subnet:
                                    Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
                                    as uplinks).
@@ -96888,14 +97147,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
                                    Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_description:
                                    Description configured on the Inband Management SVI.
 
@@ -97317,7 +97576,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan"]
+                    UplinkType: TypeAlias = Literal["p2p", "port-channel", "p2p-vrfs", "lan", "l2-ethernet"]
 
                     class UplinkInterfaces(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -101170,20 +101429,20 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     inband_mgmt_vlan: int
                     """
-                    VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                    uplinks).
-                    When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                    switch as well as all 'uplink_switches'.
-                    When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                    created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                    created using network services data models.
+                    VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                    When
+                    using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                    all 'uplink_switches'.
+                    When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                    device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                    network services data models.
 
                     Default value: `4092`
                     """
                     inband_mgmt_subnet: str | None
                     """
-                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                    as uplinks).
+                    Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                    uplinks).
                     Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                     ARP.
                     This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -101201,7 +101460,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -101223,7 +101482,7 @@ class EosDesigns(EosDesignsRootModel):
                     the parent switches must be created using network services data models.
 
                     This setting is applicable
-                    to L2 switches (switches using port-channel trunks as uplinks).
+                    to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_gateway: str | None
                     """
@@ -101231,7 +101490,7 @@ class EosDesigns(EosDesignsRootModel):
                     is derived from 'inband_mgmt_subnet' if set.
 
                     This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_address: str | None
                     """
@@ -101245,7 +101504,7 @@ class EosDesigns(EosDesignsRootModel):
                     and SVI on the parent switches must be created using network services data models.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_subnet: str | None
                     """
@@ -101268,7 +101527,7 @@ class EosDesigns(EosDesignsRootModel):
                     Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_ipv6_gateway: str | None
                     """
@@ -101277,7 +101536,7 @@ class EosDesigns(EosDesignsRootModel):
                     Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                     This setting is
-                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    applicable to L2 switches (switches using L2 trunks as uplinks).
                     """
                     inband_mgmt_description: str
                     """
@@ -102031,16 +102290,16 @@ class EosDesigns(EosDesignsRootModel):
                                    On L2 switches,
                                    this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                                 inband_mgmt_vlan:
-                                   VLAN number used for inband management on L2 switches (switches using port-channel trunks as
-                                   uplinks).
-                                   When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this
-                                   switch as well as all 'uplink_switches'.
-                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be
-                                   created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be
-                                   created using network services data models.
+                                   VLAN number used for inband management on L2 switches (switches using L2 trunks as uplinks).
+                                   When
+                                   using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as
+                                   all 'uplink_switches'.
+                                   When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this
+                                   device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using
+                                   network services data models.
                                 inband_mgmt_subnet:
-                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels
-                                   as uplinks).
+                                   Optional IP subnet assigned to inband management SVIs on L2 switches (switches using L2 trunks as
+                                   uplinks).
                                    Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on
                                    ARP.
                                    This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
@@ -102058,7 +102317,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
@@ -102074,13 +102333,13 @@ class EosDesigns(EosDesignsRootModel):
                                    the parent switches must be created using network services data models.
 
                                    This setting is applicable
-                                   to L2 switches (switches using port-channel trunks as uplinks).
+                                   to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway
                                    is derived from 'inband_mgmt_subnet' if set.
 
                                    This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_address:
                                    IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -102092,7 +102351,7 @@ class EosDesigns(EosDesignsRootModel):
                                    and SVI on the parent switches must be created using network services data models.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_subnet:
                                    Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels
                                    as uplinks).
@@ -102113,14 +102372,14 @@ class EosDesigns(EosDesignsRootModel):
                                    Setting is ignored if 'inband_mgmt_ipv6_address' is set.
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_ipv6_gateway:
                                    Default gateway configured in the 'inband_mgmt_vrf'.
                                    Used when `inband_mgmt_ipv6_address` is set.
                                    Ignored when 'inband_mgmt_ipv6_subnet' is set (first IP in subnet used as gateway).
 
                                    This setting is
-                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                   applicable to L2 switches (switches using L2 trunks as uplinks).
                                 inband_mgmt_description:
                                    Description configured on the Inband Management SVI.
 
@@ -102543,6 +102802,7 @@ class EosDesigns(EosDesignsRootModel):
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
         "logging_settings": {"type": LoggingSettings},
+        "mac_acls": {"type": MacAcls},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
         "management_settings": {"type": ManagementSettings},
@@ -104193,6 +104453,16 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    mac_acls: MacAcls
+    """
+    MAC access-lists.
+    These can be referenced under `network_ports/connected_endpoints`.
+    A MAC ACL is
+    only configured when it is referenced.
+
+    Subclass of AvdIndexedList with `MacAclsItem` items. Primary
+    key is `name` (`str`).
+    """
     mac_address_table: EosCliConfigGen.MacAddressTable
     management_eapi: ManagementEapi
     """
@@ -104878,21 +105148,32 @@ class EosDesigns(EosDesignsRootModel):
     underlay_ipv6_numbered: bool
     """
     This feature allows pure IPv6 underlay routing protocol with numbered addresses.
-    Currently sets both
-    underlay and overlay, including MLAG, to use IPv6 addresses.
-    Currently BGP peer-groups are named
-    with IPv4 by default. This can be modified under `bgp_peer_groups`.
-    Requires:
-      - "underlay_ipv6:
-    true"
-      - "loopback_ipv6_pool"
-      - "underlay_routing_protocol: ebgp"
-    Some settings are not yet
-    supported with IPv6 underlay:
-      - underlay_multicast_pim_sm
-      - underlay_multicast_rp_interfaces
+    Sets the underlay
+    and overlay (EVPN) to use IPv6 addresses.
+    Currently BGP peer-groups are named with IPv4 by default.
+    This can be modified under `bgp_peer_groups`.
+    Requires (fabric-level):
+      - "underlay_ipv6: true"
       -
-    underlay_rfc5549
+    "loopback_ipv6_pool"
+      - "underlay_routing_protocol: ebgp"
+    Requires (node-level):
+      -
+    "uplink_ipv6_pool" (or `downlink_pools`)
+      - "vtep_loopback_ipv6_pool"
+      - "router_id_pool"
+    For
+    MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
+      -
+    "mlag_peer_address_family: ipv6"
+      - "mlag_peer_ipv6_pool"
+      - "mlag_peer_l3_ipv6_pool"
+    Some
+    settings are not yet supported with IPv6 underlay:
+      - underlay_multicast_pim_sm
+      -
+    underlay_multicast_rp_interfaces
+      - underlay_rfc5549
       - wan_role
       - vtep_vvtep_ip
       - inband_ztp
@@ -105329,6 +105610,7 @@ class EosDesigns(EosDesignsRootModel):
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
             logging_settings: LoggingSettings | UndefinedType = Undefined,
+            mac_acls: MacAcls | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
             management_settings: ManagementSettings | UndefinedType = Undefined,
@@ -106208,6 +106490,14 @@ class EosDesigns(EosDesignsRootModel):
                    Logging settings
 
                    Subclass of AvdModel.
+                mac_acls:
+                   MAC access-lists.
+                   These can be referenced under `network_ports/connected_endpoints`.
+                   A MAC ACL is
+                   only configured when it is referenced.
+
+                   Subclass of AvdIndexedList with `MacAclsItem` items. Primary
+                   key is `name` (`str`).
                 mac_address_table: mac_address_table
                 management_eapi:
                    Default is HTTPS management eAPI enabled.
@@ -106700,21 +106990,32 @@ class EosDesigns(EosDesignsRootModel):
                    under the node type settings.
                 underlay_ipv6_numbered:
                    This feature allows pure IPv6 underlay routing protocol with numbered addresses.
-                   Currently sets both
-                   underlay and overlay, including MLAG, to use IPv6 addresses.
-                   Currently BGP peer-groups are named
-                   with IPv4 by default. This can be modified under `bgp_peer_groups`.
-                   Requires:
-                     - "underlay_ipv6:
-                   true"
-                     - "loopback_ipv6_pool"
-                     - "underlay_routing_protocol: ebgp"
-                   Some settings are not yet
-                   supported with IPv6 underlay:
-                     - underlay_multicast_pim_sm
-                     - underlay_multicast_rp_interfaces
+                   Sets the underlay
+                   and overlay (EVPN) to use IPv6 addresses.
+                   Currently BGP peer-groups are named with IPv4 by default.
+                   This can be modified under `bgp_peer_groups`.
+                   Requires (fabric-level):
+                     - "underlay_ipv6: true"
                      -
-                   underlay_rfc5549
+                   "loopback_ipv6_pool"
+                     - "underlay_routing_protocol: ebgp"
+                   Requires (node-level):
+                     -
+                   "uplink_ipv6_pool" (or `downlink_pools`)
+                     - "vtep_loopback_ipv6_pool"
+                     - "router_id_pool"
+                   For
+                   MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG nodes:
+                     -
+                   "mlag_peer_address_family: ipv6"
+                     - "mlag_peer_ipv6_pool"
+                     - "mlag_peer_l3_ipv6_pool"
+                   Some
+                   settings are not yet supported with IPv6 underlay:
+                     - underlay_multicast_pim_sm
+                     -
+                   underlay_multicast_rp_interfaces
+                     - underlay_rfc5549
                      - wan_role
                      - vtep_vvtep_ip
                      - inband_ztp
