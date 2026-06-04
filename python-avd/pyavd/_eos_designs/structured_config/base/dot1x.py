@@ -34,6 +34,7 @@ class Dot1xMixin(Protocol):
         self._configure_dot1x_dynamic_authorization(dot1x_settings.dynamic_authorization)
         self._configure_dot1x_aaa_accounting(dot1x_settings.accounting)
         self._configure_dot1x_global_settings(dot1x_settings)
+        self._configure_dot1x_device_profiling(dot1x_settings)
 
     def _configure_dot1x_aaa_authentication(self: AvdStructuredConfigBaseProtocol, authentication_settings: EosDesigns.Dot1xSettings.Authentication) -> None:
         """Configure 802.1X AAA authentication settings."""
@@ -93,8 +94,6 @@ class Dot1xMixin(Protocol):
         )
         if dot1x_settings.radius_av_pairs.service_type is True:
             self.structured_config.dot1x.radius_av_pair.service_type = True
-        if dot1x_settings.radius_av_pairs.lldp:
-            self.structured_config.dot1x.radius_av_pair.lldp = dot1x_settings.radius_av_pairs.lldp
         if dot1x_settings.radius_av_pairs.dhcp:
             self.structured_config.dot1x.radius_av_pair.dhcp = dot1x_settings.radius_av_pairs.dhcp
         if dot1x_settings.radius_av_pairs.framed_mtu:
@@ -104,6 +103,36 @@ class Dot1xMixin(Protocol):
                 delimiter=dot1x_settings.mac_based_authentication.username_format.delimiter,
                 mac_string_case=dot1x_settings.mac_based_authentication.username_format.letter_case,
             )
+
+    def _configure_dot1x_device_profiling(self: AvdStructuredConfigBaseProtocol, dot1x_settings: EosDesigns.Dot1xSettings) -> None:
+        """
+        Configure 802.1X device profiling settings.
+
+        Device profiling sends learned host attributes (LLDP TLVs) to the RADIUS server using the
+        Arista VSA "Arista-Device-Profiling" in accounting messages, which requires Accounting
+        Interim-Updates to be enabled.
+        """
+        device_profiling = dot1x_settings.device_profiling
+        if not device_profiling.enabled:
+            return
+
+        if not dot1x_settings.accounting.enabled or dot1x_settings.accounting.mode != "start-stop":
+            msg = (
+                "'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and "
+                "'dot1x_settings.accounting.mode: start-stop'. Device profiling depends on Accounting Interim-Updates."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        if not device_profiling.lldp.enabled:
+            return
+
+        for tlv_name in ("system_name", "system_description"):
+            tlv = getattr(device_profiling.lldp, tlv_name)
+            if not tlv.enabled:
+                continue
+            target = getattr(self.structured_config.dot1x.radius_av_pair.lldp, tlv_name)
+            target.enabled = True
+            target.auth_only = tlv.auth_only
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,

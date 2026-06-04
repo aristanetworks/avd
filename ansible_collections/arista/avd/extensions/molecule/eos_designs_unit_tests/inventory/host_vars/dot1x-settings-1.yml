@@ -17,6 +17,14 @@ dot1x_settings:
         enabled: true
       vendor_class_id:
         enabled: true
+  device_profiling:
+    enabled: true
+    lldp:
+      system_name:
+        auth_only: true
+      system_description:
+        enabled: true
+        auth_only: false
 
 aaa_settings:
   radius:

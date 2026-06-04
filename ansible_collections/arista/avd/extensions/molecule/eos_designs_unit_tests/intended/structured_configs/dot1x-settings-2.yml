@@ -47,13 +47,6 @@ dot1x:
   radius_av_pair:
     service_type: true
     framed_mtu: 1500
-    lldp:
-      system_name:
-        enabled: true
-        auth_only: true
-      system_description:
-        enabled: true
-        auth_only: false
     dhcp:
       hostname:
         enabled: true

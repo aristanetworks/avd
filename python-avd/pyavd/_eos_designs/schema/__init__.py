@@ -18128,7 +18128,6 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "service_type": {"type": bool, "default": False},
-                "lldp": {"type": EosCliConfigGen.Dot1x.RadiusAvPair.Lldp},
                 "dhcp": {"type": EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp},
                 "framed_mtu": {"type": int},
             }
@@ -18138,7 +18137,6 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
-            lldp: EosCliConfigGen.Dot1x.RadiusAvPair.Lldp
             dhcp: EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp
             """RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages."""
             framed_mtu: int | None
@@ -18149,7 +18147,6 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     service_type: bool | UndefinedType = Undefined,
-                    lldp: EosCliConfigGen.Dot1x.RadiusAvPair.Lldp | UndefinedType = Undefined,
                     dhcp: EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp | UndefinedType = Undefined,
                     framed_mtu: int | None | UndefinedType = Undefined,
                 ) -> None:
@@ -18161,9 +18158,159 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         service_type: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
-                        lldp: lldp
                         dhcp: RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages.
                         framed_mtu: framed_mtu
+
+                    """
+
+        class DeviceProfiling(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Lldp(AvdModel):
+                """Subclass of AvdModel."""
+
+                class SystemName(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Send the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            SystemName.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Send the attribute only once when first learned.
+
+                            """
+
+                class SystemDescription(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Send the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            SystemDescription.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Send the attribute only once when first learned.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": True},
+                    "system_name": {"type": SystemName},
+                    "system_description": {"type": SystemDescription},
+                }
+                enabled: bool
+                """
+                Enable all LLDP profiling options collectively.
+
+                Default value: `True`
+                """
+                system_name: SystemName
+                """
+                LLDP system name (LLDP TLV 5).
+
+                Subclass of AvdModel.
+                """
+                system_description: SystemDescription
+                """
+                LLDP system description (LLDP TLV 6).
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        system_name: SystemName | UndefinedType = Undefined,
+                        system_description: SystemDescription | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Lldp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable all LLDP profiling options collectively.
+                            system_name:
+                               LLDP system name (LLDP TLV 5).
+
+                               Subclass of AvdModel.
+                            system_description:
+                               LLDP system description (LLDP TLV 6).
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "lldp": {"type": Lldp}}
+            enabled: bool
+            """
+            Master toggle to enable device profiling. Must be `true` for any profiling option below to take
+            effect.
+
+            Default value: `False`
+            """
+            lldp: Lldp
+            """
+            LLDP TLVs profiling.
+            Enables profiling via LLDP packets.
+            Requires LLDP to be globally enabled.
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, lldp: Lldp | UndefinedType = Undefined) -> None:
+                    """
+                    DeviceProfiling.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Master toggle to enable device profiling. Must be `true` for any profiling option below to take
+                           effect.
+                        lldp:
+                           LLDP TLVs profiling.
+                           Enables profiling via LLDP packets.
+                           Requires LLDP to be globally enabled.
+                           Subclass of AvdModel.
 
                     """
 
@@ -18176,6 +18323,7 @@ class EosDesigns(EosDesignsRootModel):
             "dynamic_authorization": {"type": DynamicAuthorization},
             "mac_based_authentication": {"type": MacBasedAuthentication},
             "radius_av_pairs": {"type": RadiusAvPairs},
+            "device_profiling": {"type": DeviceProfiling},
             "redistribute_in_evpn": {"type": bool, "default": True},
         }
         enabled: bool
@@ -18208,6 +18356,16 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         radius_av_pairs: RadiusAvPairs
         """Subclass of AvdModel."""
+        device_profiling: DeviceProfiling
+        """
+        Device profiling feature.
+        Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+        to the RADIUS server
+        using the Arista VSA "Arista-Device-Profiling" in accounting messages.
+        Requires
+        `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
+        Subclass of AvdModel.
+        """
         redistribute_in_evpn: bool
         """
         Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
@@ -18229,6 +18387,7 @@ class EosDesigns(EosDesignsRootModel):
                 dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
                 mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
                 radius_av_pairs: RadiusAvPairs | UndefinedType = Undefined,
+                device_profiling: DeviceProfiling | UndefinedType = Undefined,
                 redistribute_in_evpn: bool | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -18249,6 +18408,14 @@ class EosDesigns(EosDesignsRootModel):
                     dynamic_authorization: Subclass of AvdModel.
                     mac_based_authentication: Subclass of AvdModel.
                     radius_av_pairs: Subclass of AvdModel.
+                    device_profiling:
+                       Device profiling feature.
+                       Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+                       to the RADIUS server
+                       using the Arista VSA "Arista-Device-Profiling" in accounting messages.
+                       Requires
+                       `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
+                       Subclass of AvdModel.
                     redistribute_in_evpn:
                        Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
                        configured MAC-VRFs.

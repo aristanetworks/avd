@@ -24,13 +24,6 @@ dot1x_settings:
       letter_case: uppercase
   radius_av_pairs:
     service_type: true
-    lldp:
-      system_name:
-        enabled: true
-        auth_only: true
-      system_description:
-        enabled: true
-        auth_only: false
     framed_mtu: 1500
     dhcp:
       hostname:
