@@ -120,7 +120,7 @@ class Dot1xMixin(Protocol):
 
         if not accounting_settings.enabled or accounting_settings.mode != "start-stop":
             msg = (
-                "'dot1x_settings.device_profiling.dhcp' requires 'dot1x_settings.accounting.enabled: true' and "
+                "'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and "
                 "'dot1x_settings.accounting.mode: start-stop' since the feature relies on Interim-Update accounting messages."
             )
             raise AristaAvdInvalidInputsError(msg)
