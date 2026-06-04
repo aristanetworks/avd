@@ -27,6 +27,10 @@ dot1x_settings:
   radius_av_pairs:
     service_type: true
     framed_mtu: 1500
+  device_profiling:
+    enabled: true
+    dhcp:
+      enabled: false
 
 aaa_settings:
   radius:

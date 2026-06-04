@@ -34,7 +34,7 @@
     | [<samp>&nbsp;&nbsp;radius_av_pairs</samp>](## "dot1x_settings.radius_av_pairs") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x_settings.radius_av_pairs.service_type") | Boolean |  | `False` |  | Send RADIUS Service-Type attribute in Access-Request and Accounting messages. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x_settings.radius_av_pairs.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
-    | [<samp>&nbsp;&nbsp;device_profiling</samp>](## "dot1x_settings.device_profiling") | Dictionary |  |  |  | Forward authenticated host attributes to a RADIUS server using the Arista-Device-Profiling<br>vendor-specific attribute within accounting messages.<br>Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`. |
+    | [<samp>&nbsp;&nbsp;device_profiling</samp>](## "dot1x_settings.device_profiling") | Dictionary |  |  |  | Device profiling feature.<br>Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)<br>to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.<br>Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.enabled") | Boolean |  | `False` |  | Master toggle for the device profiling feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp</samp>](## "dot1x_settings.device_profiling.dhcp") | Dictionary |  |  |  | DHCP-based device profiling.<br>Notes:<br>  - IPv4 only. DHCPv6/SLAAC assignments are not supported.<br>  - MLAG support starts at EOS 4.34.3.<br>  - Not supported on VTEPs (VXLAN-encapsulated DHCP packets cannot be reliably parsed).<br>  - Incompatible with IP Locking (`address_locking_settings`). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.enabled") | Boolean |  | `True` |  | Enable DHCP-based device profiling. |
@@ -123,8 +123,9 @@
         service_type: <bool; default=False>
         framed_mtu: <int; 68-9236>
 
-      # Forward authenticated host attributes to a RADIUS server using the Arista-Device-Profiling
-      # vendor-specific attribute within accounting messages.
+      # Device profiling feature.
+      # Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+      # to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.
       # Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
       device_profiling:
 

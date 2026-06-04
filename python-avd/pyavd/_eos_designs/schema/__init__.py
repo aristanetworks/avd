@@ -18432,12 +18432,11 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         device_profiling: DeviceProfiling
         """
-        Forward authenticated host attributes to a RADIUS server using the Arista-Device-Profiling
-        vendor-
-        specific attribute within accounting messages.
-        Requires `dot1x_settings.accounting.enabled: true`
-        and `dot1x_settings.accounting.mode: start-stop`.
-
+        Device profiling feature.
+        Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+        to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.
+        Requires
+        `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
         Subclass of AvdModel.
         """
         redistribute_in_evpn: bool
@@ -18483,12 +18482,11 @@ class EosDesigns(EosDesignsRootModel):
                     mac_based_authentication: Subclass of AvdModel.
                     radius_av_pairs: Subclass of AvdModel.
                     device_profiling:
-                       Forward authenticated host attributes to a RADIUS server using the Arista-Device-Profiling
-                       vendor-
-                       specific attribute within accounting messages.
-                       Requires `dot1x_settings.accounting.enabled: true`
-                       and `dot1x_settings.accounting.mode: start-stop`.
-
+                       Device profiling feature.
+                       Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+                       to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.
+                       Requires
+                       `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
                        Subclass of AvdModel.
                     redistribute_in_evpn:
                        Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all

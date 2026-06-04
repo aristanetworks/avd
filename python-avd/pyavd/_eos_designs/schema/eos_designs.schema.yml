@@ -2394,10 +2394,12 @@ keys:
             $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/framed_mtu
       device_profiling:
         type: dict
-        description: 'Forward authenticated host attributes to a RADIUS server using
-          the Arista-Device-Profiling
+        description: 'Device profiling feature.
 
-          vendor-specific attribute within accounting messages.
+          Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+
+          to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting
+          messages.
 
           Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode:
           start-stop`.'

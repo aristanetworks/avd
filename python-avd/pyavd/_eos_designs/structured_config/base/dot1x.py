@@ -110,7 +110,7 @@ class Dot1xMixin(Protocol):
         device_profiling_settings: EosDesigns.Dot1xSettings.DeviceProfiling,
         accounting_settings: EosDesigns.Dot1xSettings.Accounting,
     ) -> None:
-        """Configure 802.1X device profiling (DHCP-based) for the Arista-Device-Profiling RADIUS AV pair."""
+        """Configure 802.1X device profiling."""
         if not device_profiling_settings.enabled:
             return
 
@@ -126,14 +126,13 @@ class Dot1xMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         if self.shared_utils.vtep:
-            msg = "'dot1x_settings.device_profiling.dhcp' is not supported on VTEPs since VXLAN-encapsulated DHCP packets cannot be reliably parsed."
+            msg = "'dot1x_settings.device_profiling' is not supported on VTEP devices."
             raise AristaAvdInvalidInputsError(msg)
 
         address_locking_settings = self.inputs.address_locking_settings
         if address_locking_settings and not address_locking_settings.disabled:
             msg = (
-                "'dot1x_settings.device_profiling.dhcp' is incompatible with IP Locking. "
-                "Either remove 'address_locking_settings' or set 'address_locking_settings.disabled: true'."
+                "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
             )
             raise AristaAvdInvalidInputsError(msg)
 

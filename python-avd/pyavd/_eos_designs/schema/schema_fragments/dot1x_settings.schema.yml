@@ -129,8 +129,9 @@ keys:
       device_profiling:
         type: dict
         description: |-
-          Forward authenticated host attributes to a RADIUS server using the Arista-Device-Profiling
-          vendor-specific attribute within accounting messages.
+          Device profiling feature.
+          Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+          to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.
           Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
         keys:
           enabled:
