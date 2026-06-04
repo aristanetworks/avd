@@ -20,7 +20,7 @@ Default maintenance unit profile: **{{ maintenance.default_unit_profile | arista
 
 | BGP profile | Initiator route-map inout | Initiator route-map in | Initiator route-map out |
 | ----------- | ------------------------- | ---------------------- | ----------------------- |
-{%     for bgp_profile in maintenance.bgp_profiles | arista.avd.natural_sort('name') %}
+{%     for bgp_profile in maintenance.bgp_profiles | arista.avd.natural_sort('name', ignore_case=false) %}
 | {{ bgp_profile.name }} | {{ bgp_profile.initiator.route_map_inout | arista.avd.default('-') }} | {{ bgp_profile.initiator.route_map_in | arista.avd.default('-') }} | {{ bgp_profile.initiator.route_map_out | arista.avd.default('-') }} |
 {%     endfor %}
 

@@ -15083,7 +15083,6 @@ Default maintenance unit profile: **UP1**
 
 | BGP profile | Initiator route-map inout | Initiator route-map in | Initiator route-map out |
 | ----------- | ------------------------- | ---------------------- | ----------------------- |
-| bgp2 | - | - | - |
 | BP1 | RM-MAINTENANCE | - | - |
 | BP2 | RM-MAINTENANCE2 | - | - |
 | BP3 | RM-MAINTENANCE3 | - | - |
@@ -15091,6 +15090,7 @@ Default maintenance unit profile: **UP1**
 | BP5 | - | - | RM-MAINTENANCE-OUT |
 | BP6 | - | RM-MAINTENANCE-IN | RM-MAINTENANCE-OUT |
 | BP7 | RM-MAINTENANCE-INOUT | RM-MAINTENANCE-IN | RM-MAINTENANCE-OUT |
+| bgp2 | - | - | - |
 
 | Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) | Shutdown Max Delay |
 | ----------------- | --------------------------------- | --------------------------------------- | ------------------ |
