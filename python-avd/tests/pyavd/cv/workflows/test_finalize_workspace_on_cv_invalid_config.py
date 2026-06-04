@@ -153,9 +153,9 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1", "avd-ci-spine1", "avd-ci-spine2"]), warnings)
 
         assert workspace.build_id == workspace_build_id
-        assert workspace.avd_workspace.build_warnings.enabled == build_warnings
-        assert not workspace.avd_workspace.build_warnings.suppress_patterns
-        assert not workspace.avd_workspace.build_warnings.suppress_portfast
+        assert workspace.build_warnings.enabled == build_warnings
+        assert not workspace.build_warnings.suppress_patterns
+        assert not workspace.build_warnings.suppress_portfast
         assert not workspace.device_build_results
         assert not warnings
 
@@ -169,13 +169,13 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.avd_workspace.build_warnings.enabled is True
-        assert not workspace.avd_workspace.build_warnings.suppress_patterns
-        assert not workspace.avd_workspace.build_warnings.suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert not workspace.build_warnings.suppress_patterns
+        assert not workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 3
         for build_result in workspace.device_build_results:
-            match build_result.device.avd_device.hostname:
+            match build_result.device.hostname:
                 case "avd-ci-leaf1":
                     assert not build_result.config_validation.errors
                     assert len(build_result.config_validation.warnings) == 1
@@ -253,13 +253,13 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.avd_workspace.build_warnings.enabled is True
-        assert not workspace.avd_workspace.build_warnings.suppress_patterns
-        assert workspace.avd_workspace.build_warnings.suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert not workspace.build_warnings.suppress_patterns
+        assert workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 2
         for build_result in workspace.device_build_results:
-            match build_result.device.avd_device.hostname:
+            match build_result.device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
                     assert (
@@ -315,13 +315,13 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.avd_workspace.build_warnings.enabled is True
-        assert len(workspace.avd_workspace.build_warnings.suppress_patterns) == 1
-        assert not workspace.avd_workspace.build_warnings.suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert len(workspace.build_warnings.suppress_patterns) == 1
+        assert not workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 3
         for build_result in workspace.device_build_results:
-            match build_result.device.avd_device.hostname:
+            match build_result.device.hostname:
                 case "avd-ci-leaf1":
                     assert not build_result.config_validation.errors
                     assert len(build_result.config_validation.warnings) == 1
@@ -390,13 +390,13 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.avd_workspace.build_warnings.enabled is True
-        assert len(workspace.avd_workspace.build_warnings.suppress_patterns) == 2
-        assert not workspace.avd_workspace.build_warnings.suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert len(workspace.build_warnings.suppress_patterns) == 2
+        assert not workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 2
         for build_result in workspace.device_build_results:
-            match build_result.device.avd_device.hostname:
+            match build_result.device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
                     assert (
@@ -450,13 +450,13 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.avd_workspace.build_warnings.enabled is True
-        assert len(workspace.avd_workspace.build_warnings.suppress_patterns) == 1
-        assert workspace.avd_workspace.build_warnings.suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert len(workspace.build_warnings.suppress_patterns) == 1
+        assert workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 2
         for build_result in workspace.device_build_results:
-            match build_result.device.avd_device.hostname:
+            match build_result.device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
                     assert (
@@ -509,9 +509,9 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.avd_workspace.build_warnings.enabled is True
-        assert len(workspace.avd_workspace.build_warnings.suppress_patterns) == 1
-        assert not workspace.avd_workspace.build_warnings.suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert len(workspace.build_warnings.suppress_patterns) == 1
+        assert not workspace.build_warnings.suppress_portfast
         assert len(warnings) == 1
         assert warnings[0] == (
             r"_prepare_build_warnings_suppress_patterns: Failed to process proposed regex pattern '(?P<invalid'. "
@@ -519,7 +519,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         )
         assert len(workspace.device_build_results) == 3
         for build_result in workspace.device_build_results:
-            match build_result.device.avd_device.hostname:
+            match build_result.device.hostname:
                 case "avd-ci-leaf1":
                     assert not build_result.config_validation.errors
                     assert len(build_result.config_validation.warnings) == 1
@@ -600,13 +600,13 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.avd_workspace.build_warnings.enabled is True
-        assert len(workspace.avd_workspace.build_warnings.suppress_patterns) == 1
-        assert workspace.avd_workspace.build_warnings.suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert len(workspace.build_warnings.suppress_patterns) == 1
+        assert workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 2
         for build_result in workspace.device_build_results:
-            match build_result.device.avd_device.hostname:
+            match build_result.device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
                     assert (
@@ -664,13 +664,13 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert not workspace.avd_workspace.build_warnings.enabled
-        assert not workspace.avd_workspace.build_warnings.suppress_patterns
-        assert not workspace.avd_workspace.build_warnings.suppress_portfast
+        assert not workspace.build_warnings.enabled
+        assert not workspace.build_warnings.suppress_patterns
+        assert not workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.device_build_results) == 2
         for build_result in workspace.device_build_results:
-            match build_result.device.avd_device.hostname:
+            match build_result.device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
                     assert (
@@ -750,10 +750,10 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         # Assert that CVWorkspaceDeviceBuildResult objects are generated for avd-ci-spine1 and avd-ci-spine2
         assert len(response) == 2
-        assert all((response_item.device.avd_device.hostname in ["avd-ci-spine1", "avd-ci-spine2"]) for response_item in response)
+        assert all((response_item.device.hostname in ["avd-ci-spine1", "avd-ci-spine2"]) for response_item in response)
 
         # Assert that CVWorkspaceDeviceBuildResult objects are not generated for avd-ci-leaf1
-        assert not any(response_item.device.avd_device.hostname == "avd-ci-leaf1" for response_item in response)
+        assert not any(response_item.device.hostname == "avd-ci-leaf1" for response_item in response)
 
         # Assert that log message is generated for avd-ci-leaf1 which is missing in the list of CVDevices
         assert any(

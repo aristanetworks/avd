@@ -25,16 +25,14 @@ async def create_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) ->
     """
     LOGGER.info("create_workspace_on_cv: %s", workspace)
     try:
-        existing_workspace = await cv_client.get_workspace(workspace_id=workspace.avd_workspace.id)
+        existing_workspace = await cv_client.get_workspace(workspace_id=workspace.id)
         if existing_workspace.state == WorkspaceState.PENDING:
             workspace.state = "pending"
         else:
             msg = "The requested workspace is not in state 'pending'"
             raise CVResourceInvalidState(msg)
     except CVResourceNotFound:
-        await cv_client.create_workspace(
-            workspace_id=workspace.avd_workspace.id, display_name=workspace.avd_workspace.name, description=workspace.avd_workspace.description
-        )
+        await cv_client.create_workspace(workspace_id=workspace.id, display_name=workspace.name, description=workspace.description)
         # Wait for the Workspace to be ready before continuing with any subsequent operations that depend on it.
-        await cv_client.wait_for_workspace_state(workspace_id=workspace.avd_workspace.id, state="pending")
+        await cv_client.wait_for_workspace_state(workspace_id=workspace.id, state="pending")
         workspace.state = "pending"

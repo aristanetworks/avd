@@ -3,8 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import copy
-from dataclasses import dataclass, field, fields, is_dataclass
+from dataclasses import dataclass, field, fields
 from datetime import datetime
 from logging import getLogger
 from pathlib import Path
@@ -16,6 +15,8 @@ from grpclib.config import Configuration
 from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.client.models import CVTag, CVTagAssignment
+
+from .utils import serialize
 
 AVD_NAMESPACE = uuid5(NAMESPACE_DNS, "avd.arista.com")
 AVD_ENTITY_PREFIX = "avd_"
@@ -98,19 +99,38 @@ class AvdChangeControl:
 
 @dataclass
 class CVChangeControl:
-    avd_change_control: AvdChangeControl
+    avd_change_control: AvdChangeControl = field(default_factory=AvdChangeControl)
     id: str | None = None
     state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
     name: str | None = None
     description: str | None = None
+
+    def __post_init__(self) -> None:
+        """
+        Use intended name and/or description as initial state.
+
+        Replacing empty strings with None.
+        """
+        if not self.name:
+            self.name = self.avd_change_control.name or None
+        if not self.description:
+            self.description = self.avd_change_control.description or None
+
+    @property
+    def change_control_template(self) -> AvdChangeControlTemplate | None:
+        return self.avd_change_control.change_control_template
+
+    @property
+    def requested_state(self) -> Literal["pending approval", "approved", "running", "completed", "deleted"]:
+        return self.avd_change_control.requested_state
 
     def get_result(self) -> dict:
         return {
             "name": self.name,
             "description": self.description,
             "id": self.id,
-            "change_control_template": serialize(self.avd_change_control.change_control_template),
-            "requested_state": self.avd_change_control.requested_state,
+            "change_control_template": serialize(self.change_control_template),
+            "requested_state": self.requested_state,
             "state": self.state,
         }
 
@@ -262,7 +282,7 @@ class AvdWorkspace:
 
 @dataclass
 class CVWorkspace:
-    avd_workspace: AvdWorkspace
+    avd_workspace: AvdWorkspace = field(default_factory=AvdWorkspace)
     state: Literal["pending", "built", "submitted", "build failed", "submit failed", "abandoned", "deleted"] | None = None
     """The current state of the Workspace."""
     change_control_id: str | None = None
@@ -271,34 +291,43 @@ class CVWorkspace:
     device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
     """Details of per-device Workspace build results."""
 
+    @property
+    def name(self) -> str:
+        return self.avd_workspace.name
+
+    @property
+    def description(self) -> str | None:
+        return self.avd_workspace.description
+
+    @property
+    def id(self) -> str:
+        return self.avd_workspace.id
+
+    @property
+    def requested_state(self) -> Literal["pending", "built", "submitted", "abandoned", "deleted"]:
+        return self.avd_workspace.requested_state
+
+    @property
+    def force(self) -> bool:
+        return self.avd_workspace.force
+
+    @property
+    def build_warnings(self) -> AvdWorkspaceBuildWarningsConfig:
+        return self.avd_workspace.build_warnings
+
     def get_result(self) -> dict:
         return {
-            "name": self.avd_workspace.name,
-            "description": self.avd_workspace.description,
-            "id": self.avd_workspace.id,
-            "requested_state": self.avd_workspace.requested_state,
-            "force": self.avd_workspace.force,
+            "name": self.name,
+            "description": self.description,
+            "id": self.id,
+            "requested_state": self.requested_state,
+            "force": self.force,
             "state": self.state,
             "change_control_id": self.change_control_id,
             "build_id": self.build_id,
-            "build_warnings": serialize(self.avd_workspace.build_warnings),
+            "build_warnings": serialize(self.build_warnings),
             "device_build_results": serialize(self.device_build_results),
         }
-
-
-def serialize(obj: Any) -> Any:
-    """Recursively serialize an object to a JSON-compatible structure."""
-    if hasattr(obj, "get_result"):
-        return serialize(obj.get_result())
-    if is_dataclass(obj) and not isinstance(obj, type):
-        return {f.name: serialize(getattr(obj, f.name)) for f in fields(obj)}
-    if isinstance(obj, list):
-        return [serialize(item) for item in obj]
-    if isinstance(obj, tuple):
-        return tuple(serialize(item) for item in obj)
-    if isinstance(obj, dict):
-        return {k: serialize(v) for k, v in obj.items()}
-    return copy.deepcopy(obj)
 
 
 @dataclass
@@ -361,24 +390,29 @@ class CVDevice:
     _streaming: bool | None = None
     """Device's streaming status."""
 
+    def __post_init__(self) -> None:
+        """
+        Use intended serial_number and/or system_mac_address as initial state.
+
+        Replacing empty strings with None.
+        """
+        if not self.serial_number:
+            self.serial_number = self.avd_device.serial_number or None
+        if not self.system_mac_address:
+            self.system_mac_address = self.avd_device.system_mac_address or None
+
+    @property
+    def hostname(self) -> str:
+        return self.avd_device.hostname
+
     def get_result(self) -> dict:
         return {
-            "hostname": self.avd_device.hostname,
-            "serial_number": self.serial_number if self.serial_number is not None else self.avd_device.serial_number,
-            "system_mac_address": self.system_mac_address if self.system_mac_address is not None else self.avd_device.system_mac_address,
+            "hostname": self.hostname,
+            "serial_number": self.serial_number,
+            "system_mac_address": self.system_mac_address,
             "_exists_on_cv": self._exists_on_cv,
             "_streaming": self._streaming,
         }
-
-    @property
-    def _intended_serial_number(self) -> str | None:
-        """avd_device.serial_number exposed for internal groupby_obj processing."""
-        return self.avd_device.serial_number
-
-    @property
-    def _intended_system_mac_address(self) -> str | None:
-        """avd_device.system_mac_address exposed for internal groupby_obj processing."""
-        return self.avd_device.system_mac_address
 
 
 @dataclass

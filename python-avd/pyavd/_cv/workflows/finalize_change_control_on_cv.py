@@ -49,10 +49,10 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
 
     # Update missing fields on our local model with data from the CloudVision object.
     change_control.state = get_change_control_state(cv_change_control=cv_change_control)
-    change_control.name = change_control.avd_change_control.name if change_control.avd_change_control.name is not None else cv_change_control.change.name
-    change_control.description = (
-        change_control.avd_change_control.description if change_control.avd_change_control.description is not None else cv_change_control.change.notes
-    )
+    if change_control.name is None:
+        change_control.name = cv_change_control.change.name
+    if change_control.description is None:
+        change_control.description = cv_change_control.change.notes
 
     # TODO: Add CC template
 
@@ -65,7 +65,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
         LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     # If requested state is "pending approval" we are done
-    if change_control.avd_change_control.requested_state == "pending approval":
+    if change_control.requested_state == "pending approval":
         return
 
     # TODO: Add cancel/delete
@@ -81,7 +81,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
         LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     # If requested state is "approved" we are done.
-    if change_control.avd_change_control.requested_state == "approved":
+    if change_control.requested_state == "approved":
         return
 
     await cv_client.start_change_control(change_control_id=change_control.id, description="Automatically started by AVD")
@@ -89,7 +89,7 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     # If requested state is "running" we are done.
-    if change_control.avd_change_control.requested_state == "running":
+    if change_control.requested_state == "running":
         return
 
     cv_change_control = await cv_client.wait_for_change_control_state(cc_id=change_control.id, state="completed")

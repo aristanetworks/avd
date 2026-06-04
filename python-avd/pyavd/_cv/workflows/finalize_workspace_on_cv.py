@@ -47,42 +47,40 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
     """
     LOGGER.info("finalize_workspace_on_cv: %s", workspace)
 
-    if workspace.avd_workspace.requested_state in (workspace.state, "pending"):
+    if workspace.requested_state in (workspace.state, "pending"):
         return
 
-    workspace_config = await cv_client.build_workspace(workspace_id=workspace.avd_workspace.id)
-    build_result, cv_workspace = await cv_client.wait_for_workspace_response(
-        workspace_id=workspace.avd_workspace.id, request_id=workspace_config.request_params.request_id
-    )
+    workspace_config = await cv_client.build_workspace(workspace_id=workspace.id)
+    build_result, cv_workspace = await cv_client.wait_for_workspace_response(workspace_id=workspace.id, request_id=workspace_config.request_params.request_id)
     workspace.build_id = cv_workspace.last_build_id
     workspace.device_build_results = await _process_workspace_build_details(workspace=workspace, cv_client=cv_client, devices=devices, warnings=warnings)
     if build_result.status != ResponseStatus.SUCCESS:
         workspace.state = "build failed"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
-        if workspace.avd_workspace.requested_state == "abandoned":
-            await cv_client.abandon_workspace(workspace_id=workspace.avd_workspace.id)
+        if workspace.requested_state == "abandoned":
+            await cv_client.abandon_workspace(workspace_id=workspace.id)
             workspace.state = "abandoned"
-            LOGGER.info("finalize_workspace_on_cv: Workspace %s has been successfully abandoned.", workspace.avd_workspace.id)
+            LOGGER.info("finalize_workspace_on_cv: Workspace %s has been successfully abandoned.", workspace.id)
         msg = (
-            f"Failed to build workspace {workspace.avd_workspace.id}: {build_result}. "
-            f"See details: https://{cv_client._servers[0]}/cv/provisioning/workspaces?ws={workspace.avd_workspace.id}"
+            f"Failed to build workspace {workspace.id}: {build_result}. "
+            f"See details: https://{cv_client._servers[0]}/cv/provisioning/workspaces?ws={workspace.id}"
         )
         raise CVWorkspaceBuildFailed(msg)
 
     workspace.state = "built"
     LOGGER.info("finalize_workspace_on_cv: %s", workspace)
-    if workspace.avd_workspace.requested_state == "built":
+    if workspace.requested_state == "built":
         return
 
     # We can only submit if the build was successful
-    if workspace.avd_workspace.requested_state == "submitted" and workspace.state == "built":
-        workspace_config = await cv_client.submit_workspace(workspace_id=workspace.avd_workspace.id, force=workspace.avd_workspace.force)
+    if workspace.requested_state == "submitted" and workspace.state == "built":
+        workspace_config = await cv_client.submit_workspace(workspace_id=workspace.id, force=workspace.force)
         submit_result, cv_workspace = await cv_client.wait_for_workspace_response(
-            workspace_id=workspace.avd_workspace.id,
+            workspace_id=workspace.id,
             request_id=workspace_config.request_params.request_id,
         )
         # Form a list of known inactive existing devices
-        if inactive_devices := [f"{device.avd_device.hostname} ({device.serial_number})" for device in devices if device._streaming is False]:
+        if inactive_devices := [f"{device.hostname} ({device.serial_number})" for device in devices if device._streaming is False]:
             msg = f"Inactive devices present: {inactive_devices}"
             warnings.append(msg)
         if submit_result.status != ResponseStatus.SUCCESS:
@@ -107,7 +105,7 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
 
             # If Workspace submission failed for any other reason - raise general exception.
             LOGGER.info("finalize_workspace_on_cv: %s", workspace)
-            msg = f"Failed to submit workspace {workspace.avd_workspace.id}: {submit_result}"
+            msg = f"Failed to submit workspace {workspace.id}: {submit_result}"
             raise CVWorkspaceSubmitFailed(msg)
 
         workspace.state = "submitted"
@@ -117,14 +115,14 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
         return
 
     # We can abort or delete even if we got some unexpected build state.
-    if workspace.avd_workspace.requested_state == "abandoned":
-        await cv_client.abandon_workspace(workspace_id=workspace.avd_workspace.id)
+    if workspace.requested_state == "abandoned":
+        await cv_client.abandon_workspace(workspace_id=workspace.id)
         workspace.state = "abandoned"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         return
 
-    if workspace.avd_workspace.requested_state == "deleted":
-        await cv_client.delete_workspace(workspace_id=workspace.avd_workspace.id)
+    if workspace.requested_state == "deleted":
+        await cv_client.delete_workspace(workspace_id=workspace.id)
         workspace.state = "deleted"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         return
@@ -147,9 +145,9 @@ def _prepare_build_warnings_suppress_patterns(
         Unified list of compiled Regex patterns describing Workspace Build warnings that we would like to suppress.
     """
     # Deduplicate list of patterns from user
-    workspace_build_warnings_suppress_set = set(workspace.avd_workspace.build_warnings.suppress_patterns)
+    workspace_build_warnings_suppress_set = set(workspace.build_warnings.suppress_patterns)
     # Add predefined static patterns if requested
-    if workspace.avd_workspace.build_warnings.suppress_portfast:
+    if workspace.build_warnings.suppress_portfast:
         workspace_build_warnings_suppress_set.add(EOS_CLI_WARNINGS["portfast"])
 
     compiled_workspace_build_warnings_suppress_list: list[Pattern] = []
@@ -223,7 +221,7 @@ def _should_include_build_details(
 
     # Include if build warnings are present and they are not requested to be suppressed
     return (
-        workspace.avd_workspace.build_warnings.enabled
+        workspace.build_warnings.enabled
         and workspace_build_details_item.config_validation_result.warnings
         and _has_unsuppressed_warnings(workspace_build_details_item, compiled_workspace_build_warnings_suppress_list)
     )
@@ -267,7 +265,7 @@ def _build_warnings_list(
     Returns:
         List of CVWorkspaceBuildConfigValidationWarning objects for one device.
     """
-    if not workspace.avd_workspace.build_warnings.enabled:
+    if not workspace.build_warnings.enabled:
         return []
 
     return [
@@ -361,13 +359,13 @@ async def _process_workspace_build_details(
     """
     if not workspace.build_id:
         return []
-    workspace_build_details = await cv_client.get_workspace_build_details(workspace_id=workspace.avd_workspace.id, build_id=workspace.build_id)
+    workspace_build_details = await cv_client.get_workspace_build_details(workspace_id=workspace.id, build_id=workspace.build_id)
     if not workspace_build_details:
         return []
 
     # Process list of warning suppress patterns if build warnings were requested to be part of the build results.
     compiled_workspace_build_warnings_suppress_list = []
-    if workspace.avd_workspace.build_warnings.enabled:
+    if workspace.build_warnings.enabled:
         compiled_workspace_build_warnings_suppress_list = _prepare_build_warnings_suppress_patterns(workspace=workspace, warnings=warnings)
 
     return _produce_cvworkspace_build_result(

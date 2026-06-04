@@ -624,8 +624,8 @@ def test_identify_duplicated_devices(
     # Validate duplicated_devices.serial_number
     assert len(duplicated_devices.serial_number) == len(expected_return["duplicated_serial_number"])
     for serial_number, matching_cvdevices in duplicated_devices.serial_number.items():
-        assert {device.avd_device.hostname for device in matching_cvdevices} == {
-            device.avd_device.hostname for device in expected_return["duplicated_serial_number"][serial_number]
+        assert {device.hostname for device in matching_cvdevices} == {
+            device.hostname for device in expected_return["duplicated_serial_number"][serial_number]
         }
 
     # Validate duplicated_devices.system_mac_address.unset_or_mixed_serial_number
@@ -633,15 +633,15 @@ def test_identify_duplicated_devices(
         expected_return["duplicated_system_mac_address_unset_or_mixed_serial_number"]
     )
     for system_mac_address, matching_cvdevices in duplicated_devices.system_mac_address.unset_or_mixed_serial_number.items():
-        assert {device.avd_device.hostname for device in matching_cvdevices} == {
-            device.avd_device.hostname for device in expected_return["duplicated_system_mac_address_unset_or_mixed_serial_number"][system_mac_address]
+        assert {device.hostname for device in matching_cvdevices} == {
+            device.hostname for device in expected_return["duplicated_system_mac_address_unset_or_mixed_serial_number"][system_mac_address]
         }
 
     # Validate duplicated_devices.system_mac_address.set_serial_number
     assert len(duplicated_devices.system_mac_address.set_serial_number) == len(expected_return["duplicated_system_mac_address_set_serial_number"])
     for system_mac_address, matching_cvdevices in duplicated_devices.system_mac_address.set_serial_number.items():
-        assert {device.avd_device.hostname for device in matching_cvdevices} == {
-            device.avd_device.hostname for device in expected_return["duplicated_system_mac_address_set_serial_number"][system_mac_address]
+        assert {device.hostname for device in matching_cvdevices} == {
+            device.hostname for device in expected_return["duplicated_system_mac_address_set_serial_number"][system_mac_address]
         }
 
     # Measure performance of each tested function based on the inventory of 1M mock CVDevices

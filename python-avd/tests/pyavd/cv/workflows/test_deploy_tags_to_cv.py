@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 
 
 LOGGER = getLogger(__name__)
-WORKSPACE = CVWorkspace(avd_workspace=AvdWorkspace())
+WORKSPACE = CVWorkspace()
 
 
 @pytest.fixture
@@ -55,7 +55,7 @@ async def test_deploy_tags_to_cv_no_tags(
     strict: bool,
 ) -> None:
     """Test use case with empty TAGs list."""
-    assert await deploy_tags_to_cv([], CVWorkspace(avd_workspace=AvdWorkspace()), strict, [], [], [], mock_cv_client) is None
+    assert await deploy_tags_to_cv([], CVWorkspace(), strict, [], [], [], mock_cv_client) is None
 
 
 @pytest.mark.asyncio
@@ -104,7 +104,7 @@ async def test_deploy_tags_to_cv_no_tags(
 )
 async def test_deploy_tags_to_cv_no_existing_devices(mock_cv_client: MagicMock, strict: bool, tags: list[CVDeviceTag | CVInterfaceTag]) -> None:
     """Test use case with TAGs targeting non-existing devices."""
-    assert await deploy_tags_to_cv(tags, CVWorkspace(avd_workspace=AvdWorkspace()), strict, [], [], [], mock_cv_client) is None
+    assert await deploy_tags_to_cv(tags, CVWorkspace(), strict, [], [], [], mock_cv_client) is None
 
 
 ### device tags ###
@@ -152,7 +152,7 @@ async def test_deploy_tags_to_cv_new_device_tags(
     # Assert that we only called `get_tags` once
     assert mock_cv_client.get_tags.call_count == 1
     # Assert that we called 'get_tags' to fetch 'device' Tags of a type 'user'
-    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "device", "creator_type": "user"}
+    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "device", "creator_type": "user"}
     for arg_key, arg_value in get_tags_call_args.items():
         assert mock_cv_client.get_tags.call_args[1][arg_key] == arg_value
 
@@ -160,7 +160,7 @@ async def test_deploy_tags_to_cv_new_device_tags(
     assert mock_cv_client.set_tags.call_count == 1
     # Assert that we called 'set_tags' to only set Tags that we needed
     set_tags_call_args: dict[str, Any] = {
-        "workspace_id": WORKSPACE.avd_workspace.id,
+        "workspace_id": WORKSPACE.id,
         "tags": {
             CVTag(element_type="device", label="device_tag_1", value="device_tag_1_value_1"),
             CVTag(element_type="device", label="mixed_tag_1", value="mixed_tag_1_value_1"),
@@ -173,7 +173,7 @@ async def test_deploy_tags_to_cv_new_device_tags(
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
     # Assert that we called 'get_tag_assignments' to fetch assignments for 'device' Tags of a type 'user'
-    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "device", "creator_type": "user"}
+    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "device", "creator_type": "user"}
     for arg_key, arg_value in get_tag_assignments_call_args.items():
         assert mock_cv_client.get_tag_assignments.call_args[1][arg_key] == arg_value
 
@@ -181,7 +181,7 @@ async def test_deploy_tags_to_cv_new_device_tags(
     assert mock_cv_client.set_tag_assignments.call_count == 1
     # Assert that we called 'set_tag_assignments' to only set Tag assignments that we needed
     set_tag_assignments_call_args: dict[str, Any] = {
-        "workspace_id": WORKSPACE.avd_workspace.id,
+        "workspace_id": WORKSPACE.id,
         "tag_assignments": {
             CVTagAssignment(element_type="device", label="device_tag_1", value="device_tag_1_value_1", device_id="L1_serial", interface_id=None),
             CVTagAssignment(element_type="device", label="mixed_tag_1", value="mixed_tag_1_value_1", device_id="L1_serial", interface_id=None),
@@ -237,7 +237,7 @@ async def test_deploy_tags_to_cv_unassigned_device_tags(
     # Assert that we only called `get_tags` once
     assert mock_cv_client.get_tags.call_count == 1
     # Assert that we called 'get_tags' to fetch 'device' Tags of a type 'user'
-    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "device", "creator_type": "user"}
+    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "device", "creator_type": "user"}
     for arg_key, arg_value in get_tags_call_args.items():
         assert mock_cv_client.get_tags.call_args[1][arg_key] == arg_value
 
@@ -247,7 +247,7 @@ async def test_deploy_tags_to_cv_unassigned_device_tags(
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
     # Assert that we called 'get_tag_assignments' to fetch assignments for 'device' Tags of a type 'user'
-    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "device", "creator_type": "user"}
+    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "device", "creator_type": "user"}
     for arg_key, arg_value in get_tag_assignments_call_args.items():
         assert mock_cv_client.get_tag_assignments.call_args[1][arg_key] == arg_value
 
@@ -255,7 +255,7 @@ async def test_deploy_tags_to_cv_unassigned_device_tags(
     assert mock_cv_client.set_tag_assignments.call_count == 1
     # Assert that we called 'set_tag_assignments' to only set Tag assignments that we needed
     set_tag_assignments_call_args: dict[str, Any] = {
-        "workspace_id": WORKSPACE.avd_workspace.id,
+        "workspace_id": WORKSPACE.id,
         "tag_assignments": {
             CVTagAssignment(element_type="device", label="device_tag_1", value="device_tag_1_value_2", device_id="L1_serial", interface_id=None),
             CVTagAssignment(element_type="device", label="mixed_tag_1", value="mixed_tag_1_value_2", device_id="L1_serial", interface_id=None),
@@ -310,7 +310,7 @@ async def test_deploy_tags_to_cv_assigned_device_tags(
     # Assert that we only called `get_tags` once
     assert mock_cv_client.get_tags.call_count == 1
     # Assert that we called 'get_tags' to fetch 'device' Tags of a type 'user'
-    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "device", "creator_type": "user"}
+    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "device", "creator_type": "user"}
     for arg_key, arg_value in get_tags_call_args.items():
         assert mock_cv_client.get_tags.call_args[1][arg_key] == arg_value
 
@@ -320,7 +320,7 @@ async def test_deploy_tags_to_cv_assigned_device_tags(
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
     # Assert that we called 'get_tag_assignments' to fetch assignment of 'device' Tags of a type 'user'
-    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "device", "creator_type": "user"}
+    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "device", "creator_type": "user"}
     for arg_key, arg_value in get_tag_assignments_call_args.items():
         assert mock_cv_client.get_tag_assignments.call_args[1][arg_key] == arg_value
 
@@ -347,7 +347,7 @@ async def test_deploy_tags_to_cv_assigned_device_tags(
             ],
             1,
             {
-                "workspace_id": WORKSPACE.avd_workspace.id,
+                "workspace_id": WORKSPACE.id,
                 "tag_assignments": {
                     CVTagAssignment(element_type="device", label="device_tag_2", value="device_tag_2_value_1", device_id="L3_serial", interface_id=None),
                     CVTagAssignment(element_type="device", label="mixed_tag_1", value="mixed_tag_1_value_2", device_id="L3_serial", interface_id=None),
@@ -362,7 +362,7 @@ async def test_deploy_tags_to_cv_assigned_device_tags(
             [CVDeviceTag("mixed_tag_1", "mixed_tag_1_value_2", CVDevice(avd_device=AvdDevice(hostname="L3"), serial_number="L3_serial", _exists_on_cv=True))],
             1,
             {
-                "workspace_id": WORKSPACE.avd_workspace.id,
+                "workspace_id": WORKSPACE.id,
                 "tag_assignments": {
                     CVTagAssignment(element_type="device", label="mixed_tag_1", value="mixed_tag_1_value_2", device_id="L3_serial", interface_id=None),
                 },
@@ -411,7 +411,7 @@ async def test_deploy_tags_to_cv_all_device_tags(
     # Assert that we only called `get_tags` once
     assert mock_cv_client.get_tags.call_count == 1
     # Assert that we called 'get_tags' to fetch 'device' Tags of a type 'user'
-    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "device", "creator_type": "user"}
+    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "device", "creator_type": "user"}
     for arg_key, arg_value in get_tags_call_args.items():
         assert mock_cv_client.get_tags.call_args[1][arg_key] == arg_value
 
@@ -419,7 +419,7 @@ async def test_deploy_tags_to_cv_all_device_tags(
     assert mock_cv_client.set_tags.call_count == 1
     # Assert that we called 'set_tags' to only set Tags that were missing on the targeted device
     set_tags_call_args: dict[str, Any] = {
-        "workspace_id": WORKSPACE.avd_workspace.id,
+        "workspace_id": WORKSPACE.id,
         "tags": {
             CVTag(element_type="device", label="device_tag_1", value="device_tag_1_value_1"),
             CVTag(element_type="device", label="mixed_tag_1", value="mixed_tag_1_value_1"),
@@ -432,7 +432,7 @@ async def test_deploy_tags_to_cv_all_device_tags(
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
     # Assert that we called 'get_tag_assignments' to fetch assignments for 'device' Tags of a type 'user'
-    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "device", "creator_type": "user"}
+    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "device", "creator_type": "user"}
     for arg_key, arg_value in get_tag_assignments_call_args.items():
         assert mock_cv_client.get_tag_assignments.call_args[1][arg_key] == arg_value
 
@@ -440,7 +440,7 @@ async def test_deploy_tags_to_cv_all_device_tags(
     assert mock_cv_client.set_tag_assignments.call_count == 1
     # Assert that we called 'set_tag_assignments' to only set Tag assignments that we needed
     set_tag_assignments_call_args: dict[str, Any] = {
-        "workspace_id": WORKSPACE.avd_workspace.id,
+        "workspace_id": WORKSPACE.id,
         "tag_assignments": {
             CVTagAssignment(element_type="device", label="device_tag_1", value="device_tag_1_value_1", device_id="L3_serial", interface_id=None),
             CVTagAssignment(element_type="device", label="mixed_tag_1", value="mixed_tag_1_value_1", device_id="L3_serial", interface_id=None),
@@ -518,7 +518,7 @@ async def test_deploy_tags_to_cv_new_interface_tags(
     # Assert that we only called `get_tags` once
     assert mock_cv_client.get_tags.call_count == 1
     # Assert that we called 'get_tags' to fetch 'interface' Tags of a type 'user'
-    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "interface", "creator_type": "user"}
+    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "interface", "creator_type": "user"}
     for arg_key, arg_value in get_tags_call_args.items():
         assert mock_cv_client.get_tags.call_args[1][arg_key] == arg_value
 
@@ -526,7 +526,7 @@ async def test_deploy_tags_to_cv_new_interface_tags(
     assert mock_cv_client.set_tags.call_count == 1
     # Assert that we called 'set_tags' to only set Tags that we needed
     set_tags_call_args: dict[str, Any] = {
-        "workspace_id": WORKSPACE.avd_workspace.id,
+        "workspace_id": WORKSPACE.id,
         "tags": {
             CVTag(element_type="interface", label="interface_tag_1", value="interface_tag_1_value_1"),
             CVTag(element_type="interface", label="mixed_tag_1", value="mixed_tag_1_value_1"),
@@ -539,7 +539,7 @@ async def test_deploy_tags_to_cv_new_interface_tags(
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
     # Assert that we called 'get_tag_assignments' to fetch assignments for 'interface' Tags of a type 'user'
-    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "interface", "creator_type": "user"}
+    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "interface", "creator_type": "user"}
     for arg_key, arg_value in get_tag_assignments_call_args.items():
         assert mock_cv_client.get_tag_assignments.call_args[1][arg_key] == arg_value
 
@@ -547,7 +547,7 @@ async def test_deploy_tags_to_cv_new_interface_tags(
     assert mock_cv_client.set_tag_assignments.call_count == 1
     # Assert that we called 'set_tag_assignments' to only set Tag assignments that we needed
     set_tag_assignments_call_args: dict[str, Any] = {
-        "workspace_id": WORKSPACE.avd_workspace.id,
+        "workspace_id": WORKSPACE.id,
         "tag_assignments": {
             CVTagAssignment(
                 element_type="interface", label="interface_tag_1", value="interface_tag_1_value_1", device_id="L1_serial", interface_id="Ethernet1"
@@ -619,7 +619,7 @@ async def test_deploy_tags_to_cv_unassigned_interface_tags(
     # Assert that we only called `get_tags` once
     assert mock_cv_client.get_tags.call_count == 1
     # Assert that we called 'get_tags' to fetch 'interface' Tags of a type 'user'
-    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "interface", "creator_type": "user"}
+    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "interface", "creator_type": "user"}
     for arg_key, arg_value in get_tags_call_args.items():
         assert mock_cv_client.get_tags.call_args[1][arg_key] == arg_value
 
@@ -629,7 +629,7 @@ async def test_deploy_tags_to_cv_unassigned_interface_tags(
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
     # Assert that we called 'get_tag_assignments' to fetch assignments for 'interface' Tags of a type 'user'
-    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "interface", "creator_type": "user"}
+    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "interface", "creator_type": "user"}
     for arg_key, arg_value in get_tag_assignments_call_args.items():
         assert mock_cv_client.get_tag_assignments.call_args[1][arg_key] == arg_value
 
@@ -637,7 +637,7 @@ async def test_deploy_tags_to_cv_unassigned_interface_tags(
     assert mock_cv_client.set_tag_assignments.call_count == 1
     # Assert that we called 'set_tag_assignments' to only set Tag assignments that we needed
     set_tag_assignments_call_args: dict[str, Any] = {
-        "workspace_id": WORKSPACE.avd_workspace.id,
+        "workspace_id": WORKSPACE.id,
         "tag_assignments": {
             CVTagAssignment(
                 element_type="interface", label="interface_tag_1", value="interface_tag_1_value_2", device_id="L1_serial", interface_id="Ethernet1"
@@ -708,7 +708,7 @@ async def test_deploy_tags_to_cv_assigned_interface_tags(
     # Assert that we only called `get_tags` once
     assert mock_cv_client.get_tags.call_count == 1
     # Assert that we called 'get_tags' to fetch 'interface' Tags of a type 'user'
-    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "interface", "creator_type": "user"}
+    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "interface", "creator_type": "user"}
     for arg_key, arg_value in get_tags_call_args.items():
         assert mock_cv_client.get_tags.call_args[1][arg_key] == arg_value
 
@@ -718,7 +718,7 @@ async def test_deploy_tags_to_cv_assigned_interface_tags(
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
     # Assert that we called 'get_tag_assignments' to fetch assignment of 'interface' Tags of a type 'user'
-    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "interface", "creator_type": "user"}
+    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "interface", "creator_type": "user"}
     for arg_key, arg_value in get_tag_assignments_call_args.items():
         assert mock_cv_client.get_tag_assignments.call_args[1][arg_key] == arg_value
 
@@ -758,7 +758,7 @@ async def test_deploy_tags_to_cv_assigned_interface_tags(
             ],
             1,
             {
-                "workspace_id": WORKSPACE.avd_workspace.id,
+                "workspace_id": WORKSPACE.id,
                 "tag_assignments": {
                     CVTagAssignment(
                         element_type="interface", label="interface_tag_2", value="interface_tag_2_value_1", device_id="L3_serial", interface_id="Ethernet1"
@@ -786,7 +786,7 @@ async def test_deploy_tags_to_cv_assigned_interface_tags(
             ],
             1,
             {
-                "workspace_id": WORKSPACE.avd_workspace.id,
+                "workspace_id": WORKSPACE.id,
                 "tag_assignments": {
                     CVTagAssignment(
                         element_type="interface", label="mixed_tag_1", value="mixed_tag_1_value_2", device_id="L3_serial", interface_id="Ethernet1"
@@ -861,7 +861,7 @@ async def test_deploy_tags_to_cv_all_interface_tags(
     # Assert that we only called `get_tags` once
     assert mock_cv_client.get_tags.call_count == 1
     # Assert that we called 'get_tags' to fetch 'interface' Tags of a type 'user'
-    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "interface", "creator_type": "user"}
+    get_tags_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "interface", "creator_type": "user"}
     for arg_key, arg_value in get_tags_call_args.items():
         assert mock_cv_client.get_tags.call_args[1][arg_key] == arg_value
 
@@ -869,7 +869,7 @@ async def test_deploy_tags_to_cv_all_interface_tags(
     assert mock_cv_client.set_tags.call_count == 1
     # Assert that we called 'set_tags' to only set Tags that were missing on the targeted device
     set_tags_call_args: dict[str, Any] = {
-        "workspace_id": WORKSPACE.avd_workspace.id,
+        "workspace_id": WORKSPACE.id,
         "tags": {
             CVTag(element_type="interface", label="interface_tag_1", value="interface_tag_1_value_1"),
             CVTag(element_type="interface", label="mixed_tag_1", value="mixed_tag_1_value_1"),
@@ -882,7 +882,7 @@ async def test_deploy_tags_to_cv_all_interface_tags(
     # Assert that we only called `get_tag_assignments` once
     assert mock_cv_client.get_tag_assignments.call_count == 1
     # Assert that we called 'get_tag_assignments' to fetch assignments for 'interface' Tags of a type 'user'
-    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.avd_workspace.id, "element_type": "interface", "creator_type": "user"}
+    get_tag_assignments_call_args: dict[str, Any] = {"workspace_id": WORKSPACE.id, "element_type": "interface", "creator_type": "user"}
     for arg_key, arg_value in get_tag_assignments_call_args.items():
         assert mock_cv_client.get_tag_assignments.call_args[1][arg_key] == arg_value
 
@@ -890,7 +890,7 @@ async def test_deploy_tags_to_cv_all_interface_tags(
     assert mock_cv_client.set_tag_assignments.call_count == 1
     # Assert that we called 'set_tag_assignments' to only set Tag assignments that we needed
     set_tag_assignments_call_args: dict[str, Any] = {
-        "workspace_id": WORKSPACE.avd_workspace.id,
+        "workspace_id": WORKSPACE.id,
         "tag_assignments": {
             CVTagAssignment(
                 element_type="interface", label="interface_tag_1", value="interface_tag_1_value_1", device_id="L3_serial", interface_id="Ethernet1"
@@ -963,24 +963,24 @@ async def test_deploy_tags_to_cv_message_splitting(
                 # Create Workspace in pending state
                 await create_workspace_on_cv(workspace=workspace, cv_client=cv_client)
                 # Set tags
-                await cv_client.set_tags(workspace_id=workspace.avd_workspace.id, tags=cv_tags)
+                await cv_client.set_tags(workspace_id=workspace.id, tags=cv_tags)
                 # Confirm MAX message size
                 assert "exceeded the max of 1048576 for" in next(iter(msg.message for msg in caplog.records if "Message size" in msg.message))
                 # Clear logs before next async call
                 caplog.clear()
                 # Set tags assignments. Without building a Workspace it's OK that assignments reference non-existing device
-                await cv_client.set_tag_assignments(workspace_id=workspace.avd_workspace.id, tag_assignments=cv_tag_assignments)
+                await cv_client.set_tag_assignments(workspace_id=workspace.id, tag_assignments=cv_tag_assignments)
                 # Confirm MAX message size
                 assert "exceeded the max of 1048576 for" in next(iter(msg.message for msg in caplog.records if "Message size" in msg.message))
             finally:
                 try:
                     # Try to clean Workspace on all CVs to leave no traces
-                    await cv_client.abandon_workspace(workspace_id=workspace.avd_workspace.id)
-                    await cv_client.delete_workspace(workspace_id=workspace.avd_workspace.id)
+                    await cv_client.abandon_workspace(workspace_id=workspace.id)
+                    await cv_client.delete_workspace(workspace_id=workspace.id)
                 except Exception as e:
                     LOGGER.warning(
                         "The following exception faced while trying to abandon/clean Workspace %s on %s: %s",
-                        workspace.avd_workspace.id,
+                        workspace.id,
                         targeted_cv["cv_server"],
                         e,
                     )

@@ -18,8 +18,6 @@ from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
 from .finalize_workspace_on_cv import finalize_workspace_on_cv
 from .models import (
-    AvdChangeControl,
-    AvdWorkspace,
     CloudVision,
     CVChangeControl,
     CVDeviceDeployment,
@@ -121,7 +119,7 @@ async def deploy_to_cv(
         + Return result object.
     """
     LOGGER.info("deploy_to_cv:")
-    result = DeployToCvResult(workspace=workspace or CVWorkspace(avd_workspace=AvdWorkspace()), change_control=change_control)
+    result = DeployToCvResult(workspace=workspace or CVWorkspace(), change_control=change_control)
     if device_deployments is None:
         device_deployments = []
     if studio_inputs is None:
@@ -164,7 +162,7 @@ async def deploy_to_cv(
                 # Depending on skip_missing_devices we will raise or skip missing devices.
                 await verify_devices_on_cv(
                     devices=devices,
-                    workspace_id=result.workspace.avd_workspace.id,
+                    workspace_id=result.workspace.id,
                     skip_missing_devices=skip_missing_devices,
                     warnings=result.warnings,
                     cv_client=cv_client,
@@ -237,7 +235,7 @@ async def deploy_to_cv(
 
             # Build, submit or abandon Workspace. If failed, we always abandon.
             if result.failed:
-                await cv_client.abandon_workspace(workspace_id=result.workspace.avd_workspace.id)
+                await cv_client.abandon_workspace(workspace_id=result.workspace.id)
                 result.workspace.state = "abandoned"
                 return result
 
@@ -246,7 +244,7 @@ async def deploy_to_cv(
             # Create/update CVChangeControl object with ID created by workspace.
             if result.workspace.change_control_id is not None:
                 if result.change_control is None:
-                    result.change_control = CVChangeControl(avd_change_control=AvdChangeControl())
+                    result.change_control = CVChangeControl()
                 result.change_control.id = result.workspace.change_control_id
 
             # This is a separate "if" to allow to test stuff on a change control not created by the workspace.

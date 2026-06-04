@@ -86,7 +86,7 @@ class TestDeployStaticConfigStudio:
         global_container_id = generate_id("GLOBAL")
         mock_cv_client.set_studio_inputs.assert_called_once_with(
             studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.avd_workspace.id,
+            workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=[global_container_id],
         )
@@ -208,7 +208,7 @@ class TestDeployStaticConfigStudio:
         assert len(mock_cv_client.set_configlets_from_files.call_args[1]["configlets"]) == 3
 
         # Verify one unused AVD-managed configlet was deleted.
-        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.avd_workspace.id, configlet_ids=[cf_unused_id])
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[cf_unused_id])
 
         # Verify containers were created/updated (CNT_LEAF1 is updated, SPINE_ROOT is new).
         mock_cv_client.set_configlet_containers.assert_called_once()
@@ -223,9 +223,7 @@ class TestDeployStaticConfigStudio:
         assert mock_cv_client.set_studio_inputs.call_args[1]["inputs"] == new_root_ids
 
         # Verify one stale AVD-managed root container was deleted.
-        mock_cv_client.delete_configlet_container.assert_called_once_with(
-            workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=unused_root_id
-        )
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=unused_root_id)
 
         # Verify deployment result object.
         assert len(deployment_result.deployed_static_config_configlets) == 3
@@ -266,14 +264,14 @@ class TestDeployStaticConfigStudio:
         assert pushed_containers[0][1] == "AVD_ROOT3"
 
         # Verify the stale AVD root container was deleted.
-        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=avd_root1_id)
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=avd_root1_id)
 
         # Verify the studio root list was re-ordered correctly, preserving the manual entry at the end.
         avd_root3_id = generate_id("AVD_ROOT3")
         expected_ordered_ids = [avd_root3_id, avd_root2_id, manual_root_id]
         mock_cv_client.set_studio_inputs.assert_called_once_with(
             studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.avd_workspace.id,
+            workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=expected_ordered_ids,
         )
@@ -311,7 +309,7 @@ class TestDeployStaticConfigStudio:
         await deploy_static_config_studio_manifest_to_cv(updated_manifest, deployment_result, mock_cv_client)
 
         # Verify the non-root child container was deleted.
-        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=cnt_leaf2_id)
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=cnt_leaf2_id)
 
         # Verify ROOT container was updated because child_ids changed.
         mock_cv_client.set_configlet_containers.assert_called_once()
@@ -350,15 +348,13 @@ class TestDeployStaticConfigStudio:
         # Verify the Studio inputs were updated to remove the orphaned root.
         mock_cv_client.set_studio_inputs.assert_called_once_with(
             studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.avd_workspace.id,
+            workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=[avd_root_keep_id],
         )
 
         # Verify the container itself was deleted.
-        mock_cv_client.delete_configlet_container.assert_called_once_with(
-            workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=avd_root_remove_id
-        )
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=avd_root_remove_id)
 
         # Verify deployment result object.
         assert deployment_result.removed_static_config_containers == ["ROOT_REMOVE"]
@@ -388,12 +384,12 @@ class TestDeployStaticConfigStudio:
         await deploy_static_config_studio_manifest_to_cv(updated_manifest, deployment_result, mock_cv_client)
 
         # Verify AVD_ROOT2 was deleted.
-        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=avd_root2_id)
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=avd_root2_id)
 
         # Verify the studio root list preserves both manual roots in their original positions.
         mock_cv_client.set_studio_inputs.assert_called_once_with(
             studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.avd_workspace.id,
+            workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=[manual_root1_id, avd_root1_id, manual_root2_id],
         )
@@ -457,9 +453,7 @@ class TestDeployStaticConfigStudio:
         mock_cv_client.set_configlets_from_files.assert_not_called()
 
         # The stale AVD-managed configlet must be deleted.
-        mock_cv_client.delete_configlets.assert_called_once_with(
-            workspace_id=deployment_result.workspace.avd_workspace.id, configlet_ids=[stale_avd_configlet_id]
-        )
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[stale_avd_configlet_id])
 
         assert deployment_result.removed_static_config_configlets == ["STALE_CFG"]
         assert not deployment_result.deployed_static_config_configlets
@@ -683,7 +677,7 @@ class TestDeployStaticConfigStudio:
         # The studio root list is updated to include only the new root.
         mock_cv_client.set_studio_inputs.assert_called_once_with(
             studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.avd_workspace.id,
+            workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=[new_root_id],
         )
@@ -726,9 +720,7 @@ class TestDeployStaticConfigStudio:
         assert non_avd_child_id not in parent_push[5]
 
         # The non-AVD sub-container is removed as an orphan since it no longer has a parent in the tree.
-        mock_cv_client.delete_configlet_container.assert_called_once_with(
-            workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=non_avd_child_id
-        )
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=non_avd_child_id)
         assert deployment_result.removed_static_config_containers == ["MANUAL_CHILD"]
 
     async def test_sub_containers_excluded_from_studio_roots(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
@@ -811,13 +803,13 @@ class TestDeployStaticConfigStudio:
         # Studio root list must be updated to empty — not short-circuited.
         mock_cv_client.set_studio_inputs.assert_called_once_with(
             studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.avd_workspace.id,
+            workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=[],
         )
 
         # The AVD root container is also deleted.
-        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=avd_root_id)
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=avd_root_id)
 
     async def test_configlets_only_manifest_wipes_existing_avd_containers(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test that a configlets-only manifest deletes all existing AVD containers and clears them from the studio root list."""
@@ -853,7 +845,7 @@ class TestDeployStaticConfigStudio:
         # Studio root list is updated to remove the AVD root, keeping the manual root.
         mock_cv_client.set_studio_inputs.assert_called_once_with(
             studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.avd_workspace.id,
+            workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=[manual_root_id],
         )
@@ -887,7 +879,7 @@ class TestDeployStaticConfigStudio:
         await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
 
         # The old CHILD (under PARENT_A) is deleted because the new path produces a different ID.
-        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=old_child_id)
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=old_child_id)
 
         # PARENT_A is updated (lost its child), PARENT_B is new, CHILD is new at its new path.
         mock_cv_client.set_configlet_containers.assert_called_once()
@@ -904,7 +896,7 @@ class TestDeployStaticConfigStudio:
         # Studio root list is updated to include the new PARENT_B alongside PARENT_A.
         mock_cv_client.set_studio_inputs.assert_called_once_with(
             studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.avd_workspace.id,
+            workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=[parent_a_id, new_parent_b_id],
         )
@@ -1112,9 +1104,7 @@ class TestDeployStaticConfigStudio:
         assert pushed_by_name["GLOBAL"][5] == [leafs_id]
 
         # STALE_MANIFEST_PARENT is deleted.
-        mock_cv_client.delete_configlet_container.assert_called_once_with(
-            workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=stale_manifest_parent_id
-        )
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=stale_manifest_parent_id)
         assert deployment_result.removed_static_config_containers == ["STALE_MANIFEST_PARENT"]
 
     async def test_passes_when_managed_container_is_in_studio_root_list(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
@@ -1147,7 +1137,7 @@ class TestDeployStaticConfigStudio:
         # STRAY is removed from the Studio root list (it's a manifest-managed orphan root).
         mock_cv_client.set_studio_inputs.assert_called_once_with(
             studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.avd_workspace.id,
+            workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=[parent_id],
         )
@@ -1210,7 +1200,7 @@ class TestDeployStaticConfigStudio:
         await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
 
         # Old root SOLO is deleted (path change generated a different ID).
-        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=old_solo_id)
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=old_solo_id)
 
         # GROUP and the new nested SOLO are pushed.
         mock_cv_client.set_configlet_containers.assert_called_once()
@@ -1220,7 +1210,7 @@ class TestDeployStaticConfigStudio:
         # Studio root list is replaced: old SOLO removed, new GROUP added.
         mock_cv_client.set_studio_inputs.assert_called_once_with(
             studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.avd_workspace.id,
+            workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=[new_group_id],
         )
@@ -1292,7 +1282,7 @@ class TestDeployStaticConfigStudio:
         await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
 
         # Both the configlet and the holder are deleted in the same deploy.
-        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.avd_workspace.id, configlet_ids=[stale_cfg_id])
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[stale_cfg_id])
         deleted_container_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
         assert stale_holder_id in deleted_container_ids
 
@@ -1327,7 +1317,7 @@ class TestDeployStaticConfigStudio:
         assert pushed[0][3] == []
 
         # STALE_CFG is deleted.
-        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.avd_workspace.id, configlet_ids=[stale_cfg_id])
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[stale_cfg_id])
         assert deployment_result.removed_static_config_configlets == ["STALE_CFG"]
 
     async def test_passes_when_deleted_configlet_has_no_holders(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
@@ -1351,7 +1341,7 @@ class TestDeployStaticConfigStudio:
         await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
 
         # Orphan configlet is deleted, no violation.
-        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.avd_workspace.id, configlet_ids=[orphan_cfg_id])
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[orphan_cfg_id])
         assert deployment_result.removed_static_config_configlets == ["ORPHAN_CFG"]
 
     async def test_fails_lists_multiple_holders_for_single_configlet(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
@@ -1440,9 +1430,7 @@ class TestDeployStaticConfigStudio:
         await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
 
         # Only UNMANAGED_MID is deleted. MANAGED_GRAND is reparented by the manifest, not deleted.
-        mock_cv_client.delete_configlet_container.assert_called_once_with(
-            workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=unmanaged_mid_id
-        )
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=unmanaged_mid_id)
         assert deployment_result.removed_static_config_containers == ["UNMANAGED_MID"]
 
         # PARENT was updated to point directly at MANAGED_GRAND.
@@ -1611,10 +1599,8 @@ class TestDeployStaticConfigStudio:
         await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
 
         # The configlet and its orphan holder are both deleted.
-        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.avd_workspace.id, configlet_ids=[stale_cfg_id])
-        mock_cv_client.delete_configlet_container.assert_called_once_with(
-            workspace_id=deployment_result.workspace.avd_workspace.id, assignment_id=unmanaged_holder_id
-        )
+        mock_cv_client.delete_configlets.assert_called_once_with(workspace_id=deployment_result.workspace.id, configlet_ids=[stale_cfg_id])
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=unmanaged_holder_id)
         assert deployment_result.removed_static_config_configlets == ["STALE_CFG"]
         assert deployment_result.removed_static_config_containers == ["UNMANAGED_HOLDER"]
 
@@ -1656,7 +1642,7 @@ class TestDeployStaticConfigStudio:
         # Studio root list is updated to replace the stale root with the new root.
         mock_cv_client.set_studio_inputs.assert_called_once_with(
             studio_id="studio-static-configlet",
-            workspace_id=deployment_result.workspace.avd_workspace.id,
+            workspace_id=deployment_result.workspace.id,
             input_path=["configletAssignmentRoots"],
             inputs=[new_root_id],
         )

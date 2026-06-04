@@ -306,10 +306,10 @@ async def test_finalize_workspace_on_cv_submit_failed_unspecified(
     assert len(warnings) == 0
 
     # Assert returned workspace object
-    assert cv_workspace.avd_workspace.name == MOCKED_WORKSPACE_NAME
-    assert cv_workspace.avd_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
-    assert cv_workspace.avd_workspace.id == MOCKED_WORKSPACE_ID
-    assert cv_workspace.avd_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    assert cv_workspace.name == MOCKED_WORKSPACE_NAME
+    assert cv_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
+    assert cv_workspace.id == MOCKED_WORKSPACE_ID
+    assert cv_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
     assert cv_workspace.state == "submit failed"
 
 
@@ -399,11 +399,11 @@ async def test_finalize_workspace_on_cv_streaming_device_failure(
 
     # Assert returned workspace object
     assert result.workspace is not None
-    assert result.workspace.avd_workspace.name == MOCKED_WORKSPACE_NAME
-    assert result.workspace.avd_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
-    assert result.workspace.avd_workspace.id == MOCKED_WORKSPACE_ID
-    assert result.workspace.avd_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
-    assert result.workspace.avd_workspace.force == workspace_force_submission
+    assert result.workspace.name == MOCKED_WORKSPACE_NAME
+    assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
+    assert result.workspace.id == MOCKED_WORKSPACE_ID
+    assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    assert result.workspace.force == workspace_force_submission
     assert result.workspace.state == "submit failed"
 
 
@@ -488,11 +488,11 @@ async def test_finalize_workspace_on_cv_non_streaming_device_unforced(
 
     # Assert returned workspace object
     assert result.workspace is not None
-    assert result.workspace.avd_workspace.name == MOCKED_WORKSPACE_NAME
-    assert result.workspace.avd_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
-    assert result.workspace.avd_workspace.id == MOCKED_WORKSPACE_ID
-    assert result.workspace.avd_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
-    assert not result.workspace.avd_workspace.force
+    assert result.workspace.name == MOCKED_WORKSPACE_NAME
+    assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
+    assert result.workspace.id == MOCKED_WORKSPACE_ID
+    assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    assert not result.workspace.force
     assert result.workspace.state == "submit failed"
 
 
@@ -573,9 +573,9 @@ async def test_finalize_workspace_on_cv_non_streaming_device_forced(
 
     # Assert returned workspace object
     assert result.workspace is not None
-    assert result.workspace.avd_workspace.name == MOCKED_WORKSPACE_NAME
-    assert result.workspace.avd_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
-    assert result.workspace.avd_workspace.id == MOCKED_WORKSPACE_ID
-    assert result.workspace.avd_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
-    assert result.workspace.avd_workspace.force
+    assert result.workspace.name == MOCKED_WORKSPACE_NAME
+    assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
+    assert result.workspace.id == MOCKED_WORKSPACE_ID
+    assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    assert result.workspace.force
     assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED

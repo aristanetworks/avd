@@ -177,11 +177,11 @@ async def test_deploy_to_cv(
     assert len(result.errors) == 0
 
     # Assert returned workspace object
-    assert result.workspace.avd_workspace.name == MOCKED_WORKSPACE_NAME
-    assert result.workspace.avd_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
-    assert result.workspace.avd_workspace.id == MOCKED_WORKSPACE_ID
-    assert result.workspace.avd_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
-    assert result.workspace.avd_workspace.force == workspace_force_submission
+    assert result.workspace.name == MOCKED_WORKSPACE_NAME
+    assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
+    assert result.workspace.id == MOCKED_WORKSPACE_ID
+    assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    assert result.workspace.force == workspace_force_submission
     assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
 
 

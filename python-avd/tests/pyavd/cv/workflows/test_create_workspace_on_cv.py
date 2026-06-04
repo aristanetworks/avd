@@ -54,10 +54,10 @@ async def test_create_existing_workspace_on_cv(
             targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/e3c8d23b2dffba4c050956c45d0bda0124500f00.json'
     """
     with expected_exception:
-        result = DeployToCvResult(workspace=CVWorkspace(avd_workspace=AvdWorkspace(id=workspace_id)))
+        result = DeployToCvResult(workspace=CVWorkspace(AvdWorkspace(id=workspace_id)))
         await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
-    assert result.workspace.avd_workspace.id == workspace_id
+    assert result.workspace.id == workspace_id
     assert result.workspace.state == workspace_requested_state
 
 
