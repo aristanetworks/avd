@@ -22137,9 +22137,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 route_map_inout: str | None
                 """Route Map applied to both inbound and outbound directions."""
                 route_map_in: str | None
-                """Inbound Route Map. Can be set alongside `route_map_out` to use different route maps per direction."""
+                """Inbound Route Map."""
                 route_map_out: str | None
-                """Outbound Route Map. Can be set alongside `route_map_in` to use different route maps per direction."""
+                """Outbound Route Map."""
 
                 if TYPE_CHECKING:
 
@@ -22158,8 +22158,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             route_map_inout: Route Map applied to both inbound and outbound directions.
-                            route_map_in: Inbound Route Map. Can be set alongside `route_map_out` to use different route maps per direction.
-                            route_map_out: Outbound Route Map. Can be set alongside `route_map_in` to use different route maps per direction.
+                            route_map_in: Inbound Route Map.
+                            route_map_out: Outbound Route Map.
 
                         """
 
