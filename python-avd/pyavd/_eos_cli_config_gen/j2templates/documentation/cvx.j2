@@ -45,7 +45,7 @@ CVX is enabled
 {%                     set enabled = '-' %}
 {%                 endif %}
 {%                 set regions = [] %}
-{%                 for region in cvx.services.openstack.regions | arista.avd.natural_sort(sort_key='name') %}
+{%                 for region in cvx.services.openstack.regions | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%                     do regions.append(region.name) %}
 {%                 endfor %}
 {%                 set settings = [] %}
