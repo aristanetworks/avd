@@ -81,7 +81,8 @@ no ptp free-running
 | VRF | Enabled | IPv4 ACL | IPv6 ACL |
 | --- | ------- | -------- | -------- |
 | mgt | - | - | - |
-| default | True | - | - |
+| PROD | True | - | - |
+| default | False | - | - |
 
 #### Other SSH Settings
 
@@ -95,7 +96,23 @@ no ptp free-running
 !
 management ssh
    !
+   vrf PROD
+      no shutdown
+   !
    vrf mgt
+```
+
+### Management Accounts
+
+#### Password Policy
+
+No specific password policy is set for management accounts.
+
+#### Management Accounts Device Configuration
+
+```eos
+!
+management accounts
 ```
 
 ## CVX
@@ -224,6 +241,19 @@ mcs client
    shutdown
    !
    cvx secondary default
+```
+
+### SFlow
+
+#### SFlow Summary
+
+sFlow is disabled.
+
+#### SFlow Device Configuration
+
+```eos
+!
+sflow source 192.0.2.3
 ```
 
 ## Spanning Tree
@@ -460,6 +490,17 @@ router multicast
       multipath deterministic
 ```
 
+## Group-Based Multi-domain Segmentation Services (MSS-Group)
+
+MSS-G is disabled.
+
+### Router MSS-G Device Configuration
+
+```eos
+!
+router segment-security
+```
+
 ## IPv6 DHCP Relay
 
 ### IPv6 DHCP Relay Summary
@@ -569,4 +610,36 @@ errdisable recovery interval 300
 ```eos
 !
 traffic-policies
+```
+
+### Priority Flow Control
+
+#### Global Settings
+
+##### Priority Flow Control Watchdog Settings
+
+| Action | Timeout | Recovery | Polling | Override Action Drop |
+| ------ | ------- | -------- | ------- |
+| errdisable | - | - | - | True |
+
+```eos
+!
+priority-flow-control pause watchdog override action drop
+```
+
+## STUN
+
+### STUN Server
+
+| Server Local Interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
+| ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
+| Ethernet2 | - | - | - | 3478 |
+
+### STUN Device Configuration
+
+```eos
+!
+stun
+   server
+      local-interface Ethernet2
 ```

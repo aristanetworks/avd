@@ -2307,7 +2307,7 @@ dhcp relay
 | Subnet | Name | DNS Servers | Lease Time | Ranges | IPv6 TFTP Bootfile URL (Option 59) |
 | ------ | ---- | ----------- | ---------- | ------ | ---------------------------------- |
 | 2a00:2::/64 | - | - | - | - | - |
-| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | https://2001:0db8:fe/ztp/bootstrap |
+| 2001:db8:abcd:1234:c000::/66 | TEST-IPV6 | - | 1 days, 2 hours, 3 minutes | 2001:db8:abcd:1234:c000::10-2001:db8:abcd:1234:c000::20 | https://2001:0db8:fe/ztp/bootstrap |
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
@@ -2340,7 +2340,7 @@ dhcp relay
 
 | Subnet | Name | DNS Servers | Lease Time | Ranges | IPv6 TFTP Bootfile URL (Option 59) |
 | ------ | ---- | ----------- | ---------- | ------ | ---------------------------------- |
-| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
+| 2001:db8:abcd:1234:c000::/66 | TEST-IPV6 | - | 1 days, 2 hours, 3 minutes | 2001:db8:abcd:1234:c000::10-2001:db8:abcd:1234:c000::20 | - |
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
@@ -2404,6 +2404,10 @@ dhcp server vrf TEST
       reservations
          mac-address 0003.0003.003
             ipv6-address 2001:db8:abcd:1234:c000::1
+      !
+      range 2001:db8:abcd:1234:c000::10 2001:db8:abcd:1234:c000::20
+      name TEST-IPV6
+      lease time 1 days 2 hours 3 minutes
    !
    vendor-option ipv4 NTP
       sub-option 1 type string data "test"
@@ -2462,6 +2466,10 @@ dhcp server
       reservations
          mac-address 0003.0003.003
             ipv6-address 2001:db8:abcd:1234:c000::1
+      !
+      range 2001:db8:abcd:1234:c000::10 2001:db8:abcd:1234:c000::20
+      name TEST-IPV6
+      lease time 1 days 2 hours 3 minutes
       tftp server file https://2001:0db8:fe/ztp/bootstrap
    !
    vendor-option ipv4 NTP
@@ -2735,6 +2743,7 @@ mcs client
 
 | View | MIB Family Name | Status |
 | ---- | --------------- | ------ |
+| VW-EXCLUDED | iso | Excluded |
 | VW-WRITE | iso | Included |
 | VW-READ | iso | Included |
 
@@ -2766,7 +2775,7 @@ mcs client
 | USER-WRITE | GRP-READ-WRITE | v3 | sha | aes | - | - | - |
 | REMOTE-USER-IP-ONLY | GRP-REMOTE | v3 | - | - | 42.42.42.42 | - | - |
 | REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
-| REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | - | 42.42.42.42 | - | DEADBEEFCAFE123456 |
+| REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | aes | 42.42.42.42 | - | DEADBEEFCAFE123456 |
 
 #### SNMP Device Configuration
 
@@ -2784,6 +2793,7 @@ snmp-server vrf AAA local-interface Ethernet1
 snmp-server vrf MGMT local-interface Management1
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
 snmp-server vrf abc local-interface Ethernet2
+snmp-server view VW-EXCLUDED iso excluded
 snmp-server view VW-READ iso included
 snmp-server view VW-WRITE iso included
 snmp-server community <removed> ro onur
@@ -2802,7 +2812,7 @@ snmp-server engineID remote 1.1.1.1 6172697374615F6970
 snmp-server engineID remote 2.2.2.2 udp-port 1337 DEADBEEFCAFE123456
 snmp-server engineID remote 42.42.42.42 424242424242DEAD
 snmp-server engineID remote 42.42.42.42 udp-port 666 424242424242DEAD6666
-snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed>
+snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed> priv aes <removed>
 snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
 snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
 snmp-server host 10.6.75.100 vrf MGMT version 3 priv USER-READ-AUTH-PRIV
@@ -3689,7 +3699,7 @@ track MyTrackSetProperty interface Ethernet2/1 line-protocol
 
 | Rule Name | Rule Type | Source Prefix | Destination Prefix | Protocol | Source Ports | Destination Ports |
 | --------- | --------- | ------------- | ------------------ | -------- | ------------ | ----------------- |
-| rule1 | ipv4 | 3.4.5.0/24 | 10.3.3.0/24 | udp | bgp | https |
+| rule1 | ipv4 | 3.4.5.0/24 | 10.3.3.0/24 | tcp<br>udp | ssh<br>bgp | -<br>https |
 
 ##### samplepo4
 
@@ -3735,6 +3745,7 @@ monitor telemetry postcard policy
       match rule1 ipv4
          source prefix 3.4.5.0/24
          destination prefix 10.3.3.0/24
+         protocol tcp source port ssh
          protocol udp source port bgp destination port https
    !
    sample policy samplepo4
@@ -4178,6 +4189,7 @@ mlag configuration
    heartbeat-interval 5000
    local-interface Vlan4094
    peer-address 172.16.0.1
+   peer-address heartbeat 172.16.0.2
    peer-link Port-Channel12
    dual-primary detection delay 5 action errdisable all-interfaces
    dual-primary recovery delay mlag 90 non-mlag 30
@@ -4199,6 +4211,7 @@ mlag configuration
 
 | TLV | Transmit |
 | --- | -------- |
+| power-via-mdi | True |
 | system-capabilities | False |
 | system-description | True |
 
@@ -4222,6 +4235,7 @@ LLDP is **disabled** globally. Local interface configs will not apply.
 lldp timer 30
 lldp hold-time 90
 lldp timer reinitialization 10
+lldp tlv transmit power-via-mdi
 no lldp tlv transmit system-capabilities
 lldp tlv transmit system-description
 no lldp run
@@ -7271,6 +7285,7 @@ interface Loopback0
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    ip address 192.168.254.3/32
+   no mpls ldp interface
 !
 interface Loopback2
    ip ospf area 0.0.0.2
@@ -11206,6 +11221,7 @@ monitor loop-protection
 | Ethernet9 | True | True | - |
 | Ethernet10 | False | False | - |
 | Loopback0 | - | True | - |
+| Loopback1 | - | False | - |
 | Loopback99 | - | True | - |
 | Port-Channel113 | True | True | True |
 | Port-Channel114 | False | False | - |
@@ -11544,7 +11560,7 @@ Register Local Interface: Ethernet1
 
 | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
 | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
-| 10.238.1.161 | 239.12.12.12/32, 239.12.12.13/32, 239.12.12.14/32, 239.12.12.16/32, 239.12.12.20/32, 239.12.12.21/32 | RP_ACL, RP_ACL2 | 20 | - | - |
+| 10.238.1.161 | 239.12.12.12/32, 239.12.12.13/32, 239.12.12.14/32, 239.12.12.16/32, 239.12.12.20/32, 239.12.12.21/32 | RP_ACL, RP_ACL2 | 20 | 30 | - |
 | 10.238.1.161 | 239.12.12.17/32 | RP_ACL3 | - | - | - |
 
 ##### IP Anycast Information
@@ -11586,14 +11602,14 @@ router pim sparse-mode
       ssm range standard
       bfd
       make-before-break disabled
-      rp address 10.238.1.161 239.12.12.12/32 priority 20
-      rp address 10.238.1.161 239.12.12.13/32 priority 20
-      rp address 10.238.1.161 239.12.12.14/32 priority 20
-      rp address 10.238.1.161 239.12.12.16/32 priority 20
-      rp address 10.238.1.161 239.12.12.20/32 priority 20
-      rp address 10.238.1.161 239.12.12.21/32 priority 20
-      rp address 10.238.1.161 access-list RP_ACL priority 20
-      rp address 10.238.1.161 access-list RP_ACL2 priority 20
+      rp address 10.238.1.161 239.12.12.12/32 priority 20 hashmask 30
+      rp address 10.238.1.161 239.12.12.13/32 priority 20 hashmask 30
+      rp address 10.238.1.161 239.12.12.14/32 priority 20 hashmask 30
+      rp address 10.238.1.161 239.12.12.16/32 priority 20 hashmask 30
+      rp address 10.238.1.161 239.12.12.20/32 priority 20 hashmask 30
+      rp address 10.238.1.161 239.12.12.21/32 priority 20 hashmask 30
+      rp address 10.238.1.161 access-list RP_ACL priority 20 hashmask 30
+      rp address 10.238.1.161 access-list RP_ACL2 priority 20 hashmask 30
       rp address 10.238.1.161 239.12.12.17/32
       rp address 10.238.1.161 access-list RP_ACL3
       anycast-rp 10.38.1.161 10.50.64.16 register-count 15
@@ -12272,7 +12288,7 @@ dot1x dynamic-authorization
 
 | Reboot Action | Shutdown Action | LLDP Negotiation |
 | ------------- | --------------- | ---------------- |
-| maintain | power-off | - |
+| maintain | power-off | True |
 
 #### PoE Interfaces
 
@@ -12280,7 +12296,7 @@ dot1x dynamic-authorization
 | --------- | --------- | --------- | ----------- | ----------- | ----------- | ----------- | --------- | --------- |
 | Ethernet56 | True | low | 30.00 watts | power-off | power-off (delayed 10 seconds) | maintain | False | - |
 | Ethernet57 | True | critical | 45.00 watts (fixed) | maintain | maintain | power-off | True | True |
-| Ethernet58 | False | - | - | maintain | - | power-off | - | - |
+| Ethernet58 | False | - | - | maintain | - | power-off | True | - |
 
 ### PoE Device Configuration
 
@@ -13030,6 +13046,7 @@ MSS-G is enabled.
 | 10 | APP-TEST-1 | forward | - | - | False |
 | 20 | APP-TEST-2 | drop | - | True | - |
 | 25 | APP-TEST-3 | redirect | 198.51.100.1 | - | - |
+| 30 | APP-TEST-4 | redirect | - | - | - |
 
 ### Segment Definitions
 
@@ -14600,6 +14617,14 @@ Priority Flow Control is **enabled**.
 | ------- | ------ | ------- | -------- | ------- |
 | True | drop | 0.05 | 1.11 | auto |
 
+##### QOS Profile: **test_with_pfc_disabled**
+
+###### Settings
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | - | - | - | - |
+
 ##### QOS Profile: **uc_mc_queues_test**
 
 ###### Settings
@@ -14612,10 +14637,10 @@ Priority Flow Control is **enabled**.
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
 | -------- | ---- | --------- | -------- | ---------- | ------- |
-| 1 | Unicast | 50 | no priority | - | Test no priority |
+| 1 | Unicast | 50 | no priority | 100000 | Test no priority |
 | 2 | Unicast | 10 | priority strict | - | - |
 | 4 | Unicast | 10 | - | - | Test guaranteed percent |
-| 1 | Multicast | 50 | no priority | - | - |
+| 1 | Multicast | 50 | no priority | 100000 | - |
 | 2 | Multicast | 10 | priority strict | - | Test strict priority |
 | 4 | Multicast | 10 | - | - | Test guaranteed percent |
 
@@ -14778,11 +14803,15 @@ qos profile test_with_pfc
       no priority
       bandwidth percent 19
 !
+qos profile test_with_pfc_disabled
+   no priority-flow-control
+!
 qos profile uc_mc_queues_test
    !
    mc-tx-queue 1
       no priority
       bandwidth percent 50
+      shape rate 100000
    !
    mc-tx-queue 2
       !! Test strict priority
@@ -14797,6 +14826,7 @@ qos profile uc_mc_queues_test
       !! Test no priority
       no priority
       bandwidth percent 50
+      shape rate 100000
       random-detect ecn minimum-threshold 3 milliseconds maximum-threshold 9 milliseconds max-mark-probability 90
    !
    uc-tx-queue 2
@@ -15147,6 +15177,7 @@ Default maintenance unit profile: **UP1**
 | ---- | ---------------- | ---------- | ------------ | ------- |
 | System | - | - | UP1 | No |
 | UNIT1 | inrerface_group<br/>INTERFACE_GROUP_1 | bgp_group<br/>BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
+| UNIT2 | - | - | UP1 | Yes |
 
 #### Maintenance Device Configuration
 
@@ -15194,6 +15225,7 @@ maintenance
       on-boot duration 600
    !
    unit System
+      no quiesce
    !
    unit UNIT1
       group bgp BGP_GROUP_1
@@ -15202,6 +15234,9 @@ maintenance
       group interface INTERFACE_GROUP_1
       group interface inrerface_group
       profile unit UP1
+   !
+   unit UNIT2
+      quiesce
 ```
 
 ## EOS CLI Device Configuration

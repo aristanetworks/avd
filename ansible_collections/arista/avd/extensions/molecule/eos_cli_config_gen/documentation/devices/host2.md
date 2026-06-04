@@ -302,7 +302,7 @@ management cvx
 
 | HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
 | ---- | ----- | ----------- | ---------------- | --------------- |
-| True | False | - | False | 1440 minutes |
+| True | False | False | False | 1440 minutes |
 
 #### Management API HTTP Device Configuration
 
@@ -311,6 +311,7 @@ management cvx
 management api http-commands
    no protocol https
    protocol http
+   no protocol unix-socket
    no default-services
    no shutdown
 ```
@@ -879,13 +880,14 @@ no lldp run
 
 | Port-id range | Rate-limit default | System-priority |
 | ------------- | ------------------ | --------------- |
-| - | - | 0 |
+| - | True | 0 |
 
 ### LACP Device Configuration
 
 ```eos
 !
 lacp system-priority 0
+lacp rate-limit default
 ```
 
 ## Spanning Tree
@@ -1496,7 +1498,7 @@ mpls rsvp
 
 | Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destinations |
 | ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
-| True | - | 100 | - | disabled | disabled | - | - | - | Tunnel |
+| True | - | 100 | - | disabled | disabled | 200000 | - | - | Tunnel |
 
 ### Queue Monitor Streaming
 
@@ -1511,6 +1513,7 @@ mpls rsvp
 queue-monitor length
 no queue-monitor length notifying
 queue-monitor length default threshold 100
+queue-monitor length cpu threshold 200000
 !
 queue-monitor length mirror destination tunnel mode gre source 1.1.1.1 destination 3.3.3.3 ttl 200 dscp 45 protocol 0xFFFF vrf VRF10
 !

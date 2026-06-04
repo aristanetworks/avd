@@ -14,6 +14,9 @@ loopback_interfaces:
   - name: Loopback1
     description: VTEP_VXLAN_Tunnel_Source
     ip_address: 192.168.254.3/32
+    mpls:
+      ldp:
+        interface: false
 
   - name: Loopback2
     ospf_area: 0.0.0.2
