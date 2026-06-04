@@ -624,9 +624,7 @@ def test_identify_duplicated_devices(
     # Validate duplicated_devices.serial_number
     assert len(duplicated_devices.serial_number) == len(expected_return["duplicated_serial_number"])
     for serial_number, matching_cvdevices in duplicated_devices.serial_number.items():
-        assert {device.hostname for device in matching_cvdevices} == {
-            device.hostname for device in expected_return["duplicated_serial_number"][serial_number]
-        }
+        assert {device.hostname for device in matching_cvdevices} == {device.hostname for device in expected_return["duplicated_serial_number"][serial_number]}
 
     # Validate duplicated_devices.system_mac_address.unset_or_mixed_serial_number
     assert len(duplicated_devices.system_mac_address.unset_or_mixed_serial_number) == len(

@@ -61,9 +61,7 @@ async def deploy_tags_to_cv(
 
     # Get existing tags. Use this to only add the missing. We will *not* remove any tags. Assignments are removed later.
     LOGGER.info("deploy_tags_to_cv: Getting existing tags")
-    existing_tags = {
-        CVTag.from_api(tag) for tag in await cv_client.get_tags(workspace_id=workspace.id, element_type=tag_type, creator_type="user")
-    }
+    existing_tags = {CVTag.from_api(tag) for tag in await cv_client.get_tags(workspace_id=workspace.id, element_type=tag_type, creator_type="user")}
     LOGGER.info("deploy_tags_to_cv: Got %s tags", len(existing_tags))
     desired_tags = {tag.as_cv_tag() for tag in todo_tags}
     tags_to_add = desired_tags.difference(existing_tags)
