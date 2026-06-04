@@ -264,7 +264,7 @@ class AvdWorkspace:
 class CVWorkspace:
     avd_workspace: AvdWorkspace
     state: Literal["pending", "built", "submitted", "build failed", "submit failed", "abandoned", "deleted"] | None = None
-    """The final state of the Workspace."""
+    """The current state of the Workspace."""
     change_control_id: str | None = None
     build_id: str | None = None
     """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt."""
