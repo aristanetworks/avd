@@ -18,7 +18,17 @@ dot1x_settings:
   device_profiling:
     enabled: true
     dhcp:
-      enabled: false
+      hostname:
+        auth_only: true
+      parameter_request_list:
+        enabled: false
+      vendor_class_id:
+        auth_only: true
+    lldp:
+      system_name:
+        auth_only: true
+      system_description:
+        enabled: false
 
 aaa_settings:
   radius:

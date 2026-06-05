@@ -1,7 +1,7 @@
 aaa_accounting:
   dot1x:
     default:
-      type: start-stop
+      type: stop-only
       methods:
       - multicast: true
         method: group

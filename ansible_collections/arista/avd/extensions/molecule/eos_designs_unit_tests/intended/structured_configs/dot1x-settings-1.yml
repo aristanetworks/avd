@@ -17,21 +17,6 @@ dot1x:
   protocol_lldp_bypass: true
   protocol_bpdu_bypass: true
   dynamic_authorization: true
-  radius_av_pair:
-    lldp:
-      system_name:
-        enabled: true
-        auth_only: true
-    dhcp:
-      hostname:
-        enabled: true
-        auth_only: false
-      parameter_request_list:
-        enabled: true
-        auth_only: false
-      vendor_class_id:
-        enabled: true
-        auth_only: false
 enable_password:
   disabled: true
 hostname: dot1x-settings-1

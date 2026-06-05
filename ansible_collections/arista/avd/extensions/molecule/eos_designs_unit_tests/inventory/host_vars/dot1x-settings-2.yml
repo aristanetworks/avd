@@ -12,7 +12,7 @@ dot1x_settings:
   authentication:
     radius_groups: [agni-server-group, backup-agni-server-group]
   accounting:
-    mode: start-stop
+    mode: stop-only
     radius_groups: [agni-server-group, backup-agni-server-group]
     multicast: true
     syslog: true

@@ -1,10 +1,10 @@
 ---
-# Test for 802.1X device profiling with DHCP disabled and LLDP non-default options.
+# Test for 802.1X device profiling with LLDP disabled and DHCP non-default options.
 type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    - name: dot1x-settings-5
+    - name: dot1x-settings-6
       mgmt_ip: 192.168.0.2/24
 
 dot1x_settings:
@@ -12,13 +12,14 @@ dot1x_settings:
   device_profiling:
     enabled: true
     dhcp:
-      enabled: false
-    lldp:
-      system_name:
-        enabled: false
-      system_description:
-        enabled: true
+      hostname:
         auth_only: true
+      parameter_request_list:
+        enabled: true
+      vendor_class_id:
+        enabled: false
+    lldp:
+      enabled: false
 
 aaa_settings:
   radius:
