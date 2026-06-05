@@ -1,3 +1,5 @@
 ---
 sflow:
+  destinations:
+    - destination: 192.0.2.10
   source: 192.0.2.3

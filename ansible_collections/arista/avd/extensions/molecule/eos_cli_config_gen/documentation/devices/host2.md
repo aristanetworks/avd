@@ -123,6 +123,8 @@
 - [IP DHCP Snooping](#ip-dhcp-snooping)
   - [IP DHCP Snooping Device Configuration](#ip-dhcp-snooping-device-configuration)
 - [IP NAT](#ip-nat)
+  - [NAT Pools](#nat-pools)
+  - [NAT Synchronization](#nat-synchronization)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
 - [Errdisable](#errdisable)
   - [Errdisable Summary](#errdisable-summary)
@@ -990,9 +992,11 @@ interface Dps1
 | ------- | ----- |
 | Shutdown | True |
 | UDP port | 4789 |
+| VXLAN flood-lists learning from data-plane | Disabled |
 | Qos dscp propagation encapsulation | Disabled |
 | Qos ECN propagation | Disabled |
 | Qos map dscp to traffic-class decapsulation | Disabled |
+| Multicast headend-replication | Disabled |
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -1798,11 +1802,25 @@ ip dhcp snooping information option circuit-id type 10 format %h:%p
 
 ## IP NAT
 
+### NAT Pools
+
+| Pool Name | Pool Type | Prefix Length | Utilization Log Threshold | First-Last IP Addresses | First-Last Ports |
+| --------- | --------- | ------------- | ------------------------- | ----------------------- | ---------------- |
+| host2-pool | ip-port | 32 | - | - | - |
+
+### NAT Synchronization
+
+| Setting | Value |
+| -------- | ----- |
+| State | Enabled |
+| Port Range Split | Enabled |
+
 ### IP NAT Device Configuration
 
 ```eos
 !
 !
+ip nat pool host2-pool prefix-length 32
 ip nat synchronization
 ```
 

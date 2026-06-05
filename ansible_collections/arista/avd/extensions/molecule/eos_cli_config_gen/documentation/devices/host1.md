@@ -4812,6 +4812,8 @@ interface Dps1
 | Ethernet22 | 10% shape | - | - | - | - | - |
 | Ethernet23 | Error-correction encoding | - | - | - | - | - |
 | Ethernet24 | Disable error-correction encoding | - | - | - | - | - |
+| Ethernet24/1 | Explicit no error-correction encoding | - | - | - | - | - |
+| Ethernet24/2 | Trunk with no allowed VLANs | trunk | none | - | - | - |
 | Ethernet25 | Molecule MAC | - | - | - | - | - |
 | Ethernet27 | EVPN-Vxlan single-active redundancy | - | - | - | - | - |
 | Ethernet28 | EVPN-MPLS multihoming | - | - | - | - | - |
@@ -4848,10 +4850,10 @@ interface Dps1
 | Ethernet67 | Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet68 | Custom_Transceiver_Frequency | - | - | - | - | - |
 | Ethernet69 | IP NAT service-profile | - | - | - | - | - |
-| Ethernet73 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
+| Ethernet73 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *tag | *- | 5 |
 | Ethernet74 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *LEAF_PEER_L3, MLAG | 3 |
 | Ethernet75 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *LEAF_PEER_L3, MLAG | 3 |
-| Ethernet76 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
+| Ethernet76 | SRV-POD03_Eth1 | *trunk | *110,201 | *tag | *- | 5 |
 | Ethernet78 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 |
 | Ethernet79 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *10 | *- | 16 |
 | Ethernet80/1 | LAG Member | *access | *110 | *- | *- | 101 |
@@ -4972,6 +4974,7 @@ interface Dps1
 | Ethernet4 | IPv6 | - | ff00::/16, ff01::/16 |
 | Ethernet9 | IPv4 | - | ACL_MULTICAST |
 | Ethernet9 | IPv6 | True | - |
+| Ethernet26 | IPv4 | True | - |
 
 ##### IPv4
 
@@ -4993,6 +4996,8 @@ interface Dps1
 | Ethernet81/2 | LAG Member LACP fallback LLDP ZTP VLAN | 112 | *dhcp | *default | *- | *- | *- | *- |
 | Ethernet81/3 | Traffic Engineering Interface | - | 100.64.127.0/31 | default | - | False | - | - |
 | Ethernet81/4 | Traffic Engineering Interface | - | 100.64.127.0/31 | default | - | False | - | - |
+| Ethernet81/5 | Traffic Engineering Interface Defaults | - | 100.64.127.6/31 | default | - | False | - | - |
+| Ethernet81/138 | LAG Member IPv6 enable only coverage | 138 | *100.64.127.8/31 | *default | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -5064,6 +5069,10 @@ interface Dps1
 | Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - | - | - | - |
 | Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - | - | - | - |
 | Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *auto-config | *default | *- | *- | *- | *- | *- | *- | *- | *- | *- | *- |
+| Ethernet81/6 | IPv6 enable only coverage | - | - | default | - | False | - | - | - | - | - | - | - | - |
+| Ethernet81/138 | LAG Member IPv6 enable only coverage | 138 | *- | *default | *- | *- | *- | *- | *- | *- | *- | *- | *- | *- |
+| Ethernet81/301 | LAG Member IPv6 ND coverage | 301 | *2001:db8:300::1/64 | *default | *- | *False | *- | *default-route, route-preference | *True | *True | *capacity: 2500, expire: 450, refresh-always | *- | *- | *- |
+| Ethernet81/302 | LAG Member legacy IPv6 coverage | 302 | *2001:db8:302::1/64 | *default | *- | *False | *- | *- | *True | *- | *- | *- | *- | *- |
 | Ethernet90 | IPv6 ND new structure test | - | 2001:db8:90::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2000, expire: 400, refresh-always | - | - | - |
 
 *Inherited from Port-Channel Interface
@@ -5083,10 +5092,10 @@ interface Dps1
 | Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
 | --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
 | Ethernet5 | - | ISIS_TEST | True | 99 | point-to-point | level-2 | False | - |
-| Ethernet8 | - | - | - | - | - | - | - | md5 |
+| Ethernet8 | - | ISIS_PASSIVE_TEST | - | - | passive | - | - | md5 |
 | Ethernet8.101 | - | - | - | - | - | - | - | md5 |
 | Ethernet9 | - | - | - | - | - | - | - | sha |
-| Ethernet10 | - | - | - | - | - | - | - | sha |
+| Ethernet10 | - | ISIS_DEFAULT_MODE_TEST | - | - | - | - | - | sha |
 | Ethernet11 | - | - | - | - | - | - | - | shared-secret |
 | Ethernet12 | - | - | - | - | - | - | - | shared-secret |
 | Ethernet13 | - | - | - | - | - | - | - | Level-1: md5<br>Level-2: text |
@@ -5106,6 +5115,7 @@ interface Dps1
 | Ethernet79 | 16 | *EVPN_UNDERLAY | - | *- | *- | *- | *- | *md5 |
 | Ethernet81/1 | 111 | *- | - | *- | *passive | *- | *- | *- |
 | Ethernet81/10 | 110 | *ISIS_TEST | True | *99 | *point-to-point | *level-2 | *True | *- |
+| Ethernet81/301 | 301 | *ISIS_TEST | - | *- | *- | *- | *- | *Level-1: md5 |
 
 *Inherited from Port-Channel Interface
 
@@ -5122,7 +5132,8 @@ interface Dps1
 
 | Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
 | --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
-| Ethernet27 | preference | 100 | True | 10 | - | True |
+| Ethernet27 | preference | 100 | True | 10 | 20 | True |
+| Ethernet28 | modulus | - | False | - | - | False |
 
 ####### EVPN-MPLS summary
 
@@ -5136,6 +5147,7 @@ interface Dps1
 | --------- | ------- |
 | Ethernet23 | fire-code<br>reed-solomon |
 | Ethernet24 | Disabled |
+| Ethernet24/1 |  |
 | Ethernet81/1 | fire-code<br>reed-solomon |
 
 #### Priority Flow Control
@@ -5160,6 +5172,7 @@ interface Dps1
 | --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ----- |
 | Ethernet81/3 | True | 3,15-29,testgrp | 4 | 10 percent | 5 microseconds | 2,TEST-SRLG,ARISTA |
 | Ethernet81/4 | True | 4,7-100,testgrp | 2 | 100 mbps | twamp-light, fallback 2 milliseconds | - |
+| Ethernet81/5 | True | - | - | - | - | - |
 
 #### Monitor - Link Flap Profiles
 
@@ -5174,12 +5187,14 @@ interface Dps1
 interface Ethernet1
    !! testing multi line comment with |-
    !! connection to dc1-spine1
+   profile test-interface-profile
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
    traffic-policy input BLUE-C1-POLICY
    traffic-policy output BLUE-C2-POLICY
    bgp session tracker ST1
    l2-protocol forwarding profile TEST1
+   flowcontrol receive on
    l2 mtu 8000
    l2 mru 8000
    speed forced 100gfull
@@ -5339,6 +5354,7 @@ interface Ethernet4
       address-family ipv4
       address-family ipv6
    snmp trap link-change
+   ipv6 dhcp relay destination cafe::101 source-address cafe::1
    ipv6 enable
    ipv6 address auto-config
    ipv6 address FE80:FEA::AB65/64 link-local
@@ -5372,6 +5388,7 @@ interface Ethernet5
    address locking
       address-family ipv4 disabled
       address-family ipv6 disabled
+   no bfd echo
    ip ospf cost 99
    ip ospf network point-to-point
    ip ospf authentication message-digest
@@ -5476,6 +5493,8 @@ interface Ethernet8
    !
    uc-tx-queue 4
       random-detect ecn count
+   isis enable ISIS_PASSIVE_TEST
+   isis passive
    isis authentication mode md5 rx-disabled
    isis authentication key 0 <removed>
 !
@@ -5508,6 +5527,7 @@ interface Ethernet10
    no mpls ldp interface
    no mpls ip
    no ntp serve
+   isis enable ISIS_DEFAULT_MODE_TEST
    isis authentication mode sha key-id 2
    isis authentication key 0 <removed>
 !
@@ -5641,6 +5661,18 @@ interface Ethernet24
    no error-correction encoding
    switchport
 !
+interface Ethernet24/1
+   description Explicit no error-correction encoding
+   no error-correction encoding fire-code
+   no error-correction encoding reed-solomon
+   switchport
+!
+interface Ethernet24/2
+   description Trunk with no allowed VLANs
+   switchport trunk allowed vlan none
+   switchport mode trunk
+   switchport
+!
 interface Ethernet25
    description Molecule MAC
    switchport
@@ -5649,6 +5681,7 @@ interface Ethernet25
 !
 interface Ethernet26
    no switchport
+   multicast ipv4 static
 !
 interface Ethernet26.1
    description TENANT_A pseudowire 1 interface
@@ -5689,7 +5722,7 @@ interface Ethernet27
       identifier 0000:0000:0000:0102:0304
       redundancy single-active
       designated-forwarder election algorithm preference 100 dont-preempt
-      designated-forwarder election hold-time 10
+      designated-forwarder election hold-time 10 subsequent-hold-time 20
       designated-forwarder election candidate reachability required
       route-target import 00:00:01:02:03:04
 !
@@ -5699,6 +5732,7 @@ interface Ethernet28
    !
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0305
+      no designated-forwarder election candidate reachability required
       mpls tunnel flood filter time 100
       mpls shared index 100
       route-target import 00:00:01:02:03:05
@@ -6099,14 +6133,14 @@ interface Ethernet70
    description dot1x_aaa_unresponsive
    no shutdown
    dot1x aaa unresponsive phone action apply cached-results timeout 10 hours else traffic allow
-   dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
+   dot1x aaa unresponsive action else traffic allow vlan 10 access-list acl1
    dot1x aaa unresponsive eap response success
    dot1x mac based access-list
 !
 interface Ethernet71
    description dot1x_aaa_unresponsive1
    no shutdown
-   dot1x aaa unresponsive phone action apply cached-results timeout 10 hours
+   dot1x aaa unresponsive phone action apply cached-results timeout 10 hours traffic allow
    dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
    dot1x aaa unresponsive eap response success
    dot1x mac based access-list
@@ -6117,6 +6151,26 @@ interface Ethernet72
    dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
    dot1x aaa unresponsive eap response success
    dot1x mac based access-list
+!
+interface Ethernet72/1
+   description dot1x_aaa_unresponsive_vlan_alternate
+   no shutdown
+   dot1x aaa unresponsive action else traffic allow vlan 20
+!
+interface Ethernet72/2
+   description dot1x_aaa_unresponsive_vlan
+   no shutdown
+   dot1x aaa unresponsive action traffic allow vlan 30
+!
+interface Ethernet72/3
+   description dot1x_aaa_unresponsive_acl_alternate
+   no shutdown
+   dot1x aaa unresponsive action else traffic allow access list acl2
+!
+interface Ethernet72/4
+   description dot1x_aaa_unresponsive_acl
+   no shutdown
+   dot1x aaa unresponsive action traffic allow access list acl3
 !
 interface Ethernet73
    description DC1-AGG01_Ethernet1
@@ -6222,9 +6276,34 @@ interface Ethernet81/4
    traffic-engineering min-delay dynamic twamp-light fallback 2 milliseconds
    monitor link-flap profiles LFP1 lfp2
 !
+interface Ethernet81/5
+   description Traffic Engineering Interface Defaults
+   no shutdown
+   no switchport
+   ip address 100.64.127.6/31
+   traffic-engineering
+!
+interface Ethernet81/6
+   description IPv6 enable only coverage
+   no shutdown
+   no switchport
+   ipv6 enable
+!
 interface Ethernet81/10
    description isis_port_channel_member
    channel-group 110 mode active
+!
+interface Ethernet81/138
+   description LAG Member IPv6 enable only coverage
+   channel-group 138 mode active
+!
+interface Ethernet81/301
+   description LAG Member IPv6 ND coverage
+   channel-group 301 mode active
+!
+interface Ethernet81/302
+   description LAG Member legacy IPv6 coverage
+   channel-group 302 mode active
 !
 interface Ethernet82
    description Switchport_tap_tool
@@ -6328,7 +6407,7 @@ interface Ethernet90
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | trunk | 2-4094 | - | LEAF_PEER_L3, MLAG | - | - | - | - |
-| Port-Channel5 | DC1_L2LEAF1_Po1 | trunk | 110,201 | - | - | - | - | 5 | - |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | trunk | 110,201 | tag | - | - | - | 5 | - |
 | Port-Channel10 | SRV01_bond0 | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
 | Port-Channel12 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - | - | - | - |
 | Port-Channel13 | EVPN-Vxlan single-active redundancy | - | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
@@ -6427,7 +6506,7 @@ interface Ethernet90
 
 | Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
 | --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
-| Port-Channel13 | preference | 100 | True | 10 | - | True |
+| Port-Channel13 | preference | 100 | True | 10 | 20 | True |
 
 ####### EVPN-MPLS summary
 
@@ -6457,6 +6536,8 @@ interface Ethernet90
 | Port-Channel114 | interface_with_mpls_disabled | - | 172.31.128.10/31 | default | - | - | - | - |
 | Port-Channel136 | Test_te_admin_groups | - | 100.64.127.2/31 | default | - | - | - | - |
 | Port-Channel137 | Traffic Engineering Interface | - | 100.64.127.4/31 | default | - | - | - | - |
+| Port-Channel138 | Traffic Engineering Interface Defaults | - | 100.64.127.8/31 | default | - | - | - | - |
+| Port-Channel303 | Traffic Engineering Static Delay Coverage | - | 100.64.127.10/31 | default | - | - | - | - |
 
 ##### IP NAT: Source Static
 
@@ -6496,6 +6577,7 @@ interface Ethernet90
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | default-route, route-preference | True | - | - | ca::ca:64, cafe::cafe:64 | - | - |
 | Port-Channel301 | IPv6 ND new structure test | - | 2001:db8:300::1/64 | default | - | False | True | default-route, route-preference | True | True | capacity: 2500, expire: 450, refresh-always | - | - | - |
+| Port-Channel302 | Legacy IPv6 address and managed config flag | - | 2001:db8:302::1/64 | default | - | False | - | - | True | - | - | - | - | - |
 
 ##### VRRP Details
 
@@ -6515,7 +6597,7 @@ interface Ethernet90
 | Port-Channel8 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: md5<br>Level-2: md5 |
 | Port-Channel9 | - | - | - | - | - | - | Level-2: text |
 | Port-Channel10 | EVPN_UNDERLAY | - | - | - | - | - | sha |
-| Port-Channel12 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: sha |
+| Port-Channel12 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: sha<br>Level-2: sha |
 | Port-Channel13 | - | - | - | - | - | - | - |
 | Port-Channel15 | - | - | - | - | - | - | md5 |
 | Port-Channel16 | EVPN_UNDERLAY | - | - | - | - | - | md5 |
@@ -6525,12 +6607,15 @@ interface Ethernet90
 | Port-Channel100 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: md5<br>Level-2: text |
 | Port-Channel110 | ISIS_TEST | True | 99 | point-to-point | level-2 | True | - |
 | Port-Channel111 | - | - | - | passive | - | - | - |
+| Port-Channel301 | ISIS_TEST | - | - | - | - | - | Level-1: md5 |
 
 #### Traffic Engineering
 
 | Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
 | --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
 | Port-Channel136 | True | 7 | - | - | twamp-light, fallback 123 microseconds | 666 |
+| Port-Channel138 | True | - | - | - | - | - |
+| Port-Channel303 | True | - | - | 42 percent | 7 microseconds | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -6554,6 +6639,7 @@ interface Port-Channel5
    !! applied to port-channel 5
    description DC1_L2LEAF1_Po1
    bgp session tracker ST2
+   switchport trunk native vlan tag
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    switchport
@@ -6648,6 +6734,7 @@ interface Port-Channel12
    switchport
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 5 level-1
+   isis authentication mode sha key-id 6 level-2
 !
 interface Port-Channel13
    description EVPN-Vxlan single-active redundancy
@@ -6657,7 +6744,7 @@ interface Port-Channel13
       identifier 0000:0000:0000:0102:0304
       redundancy single-active
       designated-forwarder election algorithm preference 100 dont-preempt
-      designated-forwarder election hold-time 10
+      designated-forwarder election hold-time 10 subsequent-hold-time 20
       designated-forwarder election candidate reachability required
       route-target import 00:00:01:02:03:04
    isis authentication key-id 2 algorithm sha-512 key 0 <removed>
@@ -6728,6 +6815,8 @@ interface Port-Channel17
 !
 interface Port-Channel18
    no switchport
+   no bfd echo
+   bfd per-link
    ip ospf cost 99
    ip ospf network point-to-point
    ip ospf authentication message-digest
@@ -6779,13 +6868,17 @@ interface Port-Channel99
    description MCAST
    no switchport
    ip address 192.0.2.10/31
+   ip proxy-arp
    pim ipv4 sparse-mode
    pim ipv4 bidirectional
+   pim ipv4 border-router
    pim ipv4 hello interval 15
    pim ipv4 hello count 4.5
    pim ipv4 dr-priority 200
    pim ipv4 neighbor filter Test_Filter_PortChannel
    pim ipv4 bfd
+   no logging event storm-control discards
+   vmtracer vmware-esx
 !
 interface Port-Channel100
    logging event link-status
@@ -7187,6 +7280,13 @@ interface Port-Channel137
    traffic-engineering metric 2
    traffic-engineering min-delay static 2 milliseconds
 !
+interface Port-Channel138
+   description Traffic Engineering Interface Defaults
+   no switchport
+   ip address 100.64.127.8/31
+   ipv6 enable
+   traffic-engineering
+!
 interface Port-Channel301
    description IPv6 ND new structure test
    no shutdown
@@ -7195,12 +7295,30 @@ interface Port-Channel301
    ipv6 nd cache refresh always
    ipv6 enable
    ipv6 address 2001:db8:300::1/64
+   ipv6 address fe80::301/64 link-local
    ipv6 nd ra rx accept default-route
    ipv6 nd ra rx accept route-preference
    ipv6 nd ra disabled
    ipv6 nd managed-config-flag
    ipv6 nd other-config-flag
    ipv6 nd prefix 2001:db8:300::/64 400 200 no-autoconfig
+   isis enable ISIS_TEST
+   isis authentication mode md5 level-1
+   isis authentication key 0 <removed> level-1
+!
+interface Port-Channel302
+   description Legacy IPv6 address and managed config flag
+   no shutdown
+   ipv6 address 2001:db8:302::1/64
+   ipv6 nd managed-config-flag
+!
+interface Port-Channel303
+   description Traffic Engineering Static Delay Coverage
+   no switchport
+   ip address 100.64.127.10/31
+   traffic-engineering
+   traffic-engineering bandwidth 42 percent
+   traffic-engineering min-delay static 7 microseconds
 !
 interface Port-Channel333
    description Multiple VRIDs and tracking
@@ -7267,7 +7385,9 @@ interface Port-Channel667
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | --------- | ------------- | ----------- | -------------- |
+| Loopback2 | ISIS_PASSIVE_TEST | - | passive |
 | Loopback99 | ISIS_TEST | 100 | point-to-point |
+| Loopback100 | ISIS_MODE_FALLBACK | - | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -7288,7 +7408,10 @@ interface Loopback1
    no mpls ldp interface
 !
 interface Loopback2
+   shutdown
    ip ospf area 0.0.0.2
+   isis enable ISIS_PASSIVE_TEST
+   isis passive
 !
 interface Loopback10
    description Test_Node_Segment
@@ -7320,6 +7443,7 @@ interface Loopback100
    ip address 10.1.255.3/32
    ipv6 address auto-config
    hardware forwarding id
+   isis enable ISIS_MODE_FALLBACK
 ```
 
 ### Tunnel Interfaces
@@ -7469,6 +7593,8 @@ interface Tunnel5
 | Vlan92 | SVI Description | default | - | - |
 | Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | False |
 | Vlan111 | PR01-DEMO | TENANT_A_PROJECT01 | - | False |
+| Vlan112 | Multicast IPv4 static without boundaries | default | - | - |
+| Vlan332 | IPv6 auto-config only | default | - | False |
 | Vlan333 | Multiple VRIDs and tracking | default | - | False |
 | Vlan334 | v6 attached host exports | default | - | - |
 | Vlan335 | v6 attached host exports | default | - | - |
@@ -7519,6 +7645,8 @@ interface Tunnel5
 | Vlan92 | default | 10.10.92.1/24 | - | - | - | - |
 | Vlan110 | Tenant_A | 10.0.101.1/24 | - | - | - | - |
 | Vlan111 | TENANT_A_PROJECT01 | - | 10.1.10.254/24 | - | - | - |
+| Vlan112 | default | - | - | - | - | - |
+| Vlan332 | default | - | - | - | - | - |
 | Vlan333 | default | 192.0.2.2/25 | - | - | - | - |
 | Vlan334 | default | - | - | - | - | - |
 | Vlan335 | default | - | - | - | - | - |
@@ -7572,6 +7700,7 @@ interface Tunnel5
 | Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - | - | - | - |
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - | - | - | - |
+| Vlan332 | default | auto-config | - | - | - | - | - | - | - | - | - | - |
 | Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - | - | - | - |
 | Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - | - | - | - |
 | Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - | - | - | - |
@@ -7614,7 +7743,7 @@ interface Tunnel5
 | Vlan90 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
 | Vlan91 | EVPN_UNDERLAY | - | - | - | Level-1: md5<br>Level-2: text |
 | Vlan92 | EVPN_UNDERLAY | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
-| Vlan2002 | EVPN_UNDERLAY | True | - | - | md5 |
+| Vlan2002 | EVPN_UNDERLAY | True | - | passive | md5 |
 | Vlan4093 | EVPN_UNDERLAY | - | 50 | point-to-point | - |
 | Vlan4094 | EVPN_UNDERLAY | - | - | - | Level-1: sha<br>Level-2: sha |
 
@@ -7625,9 +7754,10 @@ interface Tunnel5
 | Vlan75 | IPv4 | True | 224.0.1.0/24, 224.0.2.0/24 | - |
 | Vlan75 | IPv6 | - | ff00::/16, ff01::/16 | - |
 | Vlan89 | IPv4 | - | ACL_MULTICAST | True |
-| Vlan89 | IPv6 | True | ACL_V6_MULTICAST_WITH_OUT | - |
-| Vlan110 | IPv4 | True | ACL_MULTICAST | - |
+| Vlan89 | IPv6 | True | ACL_V6_MULTICAST_WITH_OUT | True |
+| Vlan110 | IPv4 | True | ACL_MULTICAST | True |
 | Vlan110 | IPv6 | - | - | True |
+| Vlan112 | IPv4 | True | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -7759,6 +7889,7 @@ interface Vlan84
    ip address 10.10.84.1/24
    arp gratuitous accept
    arp monitor mac-address
+   no bfd echo
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 2 rx-disabled
    isis authentication key 0 password
@@ -7817,6 +7948,7 @@ interface Vlan89
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST_WITH_OUT out
    multicast ipv4 source route export
+   multicast ipv6 source route export
    multicast ipv6 static
    pim ipv4 sparse-mode
    pim ipv4 local-interface Loopback0
@@ -7857,6 +7989,7 @@ interface Vlan110
    vrf Tenant_A
    ip address 10.0.101.1/24
    multicast ipv4 boundary ACL_MULTICAST out
+   multicast ipv4 source route export 42
    multicast ipv6 source route export 20
    multicast ipv4 static
 !
@@ -7865,6 +7998,15 @@ interface Vlan111
    no shutdown
    vrf TENANT_A_PROJECT01
    ip address virtual 10.1.10.254/24
+!
+interface Vlan112
+   description Multicast IPv4 static without boundaries
+   multicast ipv4 static
+!
+interface Vlan332
+   description IPv6 auto-config only
+   no shutdown
+   ipv6 address auto-config
 !
 interface Vlan333
    description Multiple VRIDs and tracking
@@ -8005,6 +8147,7 @@ interface Vlan2001
 !
 interface Vlan2002
    description SVI Description
+   no logging event link-status
    no autostate
    vrf Tenant_B
    ip verify unicast source reachable-via rx
@@ -8012,6 +8155,7 @@ interface Vlan2002
    dhcp server ipv6
    isis enable EVPN_UNDERLAY
    isis bfd
+   isis passive
    isis authentication mode md5 rx-disabled
    isis authentication key 0 password
    ip address virtual 10.2.2.1/24
@@ -8036,6 +8180,7 @@ interface Vlan4094
    ipv6 address fe80::a/64 link-local
    pim ipv4 sparse-mode
    pim ipv4 bidirectional
+   pim ipv4 border-router
    pim ipv4 hello interval 10
    pim ipv4 hello count 3.5
    pim ipv4 dr-priority 200
@@ -8737,7 +8882,7 @@ router traffic-engineering
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.168.255.3 | enabled | Ethernet1<br>Ethernet2<br>Vlan4093 | enabled<br>(any state) | 12000 | disabled | disabled | 100 | 10 | True | route-map RM-OSPF-DIST-IN |
+| 100 | 192.168.255.3 | enabled | Ethernet1<br>Ethernet2<br>Vlan4093 | enabled<br>(any state) | 12000 | enabled | disabled | 100 | 10 | True | route-map RM-OSPF-DIST-IN |
 | 101 | 1.0.1.1 | enabled | Ethernet2.101 | disabled | default | disabled | enabled | - | - | - | - |
 | 200 | 192.168.254.1 | disabled | - | disabled | 5 | Always | enabled | - | - | - | - |
 | 300 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
@@ -9052,6 +9197,8 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
 | Ethernet5 | ISIS_TEST | 99 | point-to-point |
+| Ethernet8 | ISIS_PASSIVE_TEST | - | passive |
+| Ethernet10 | ISIS_DEFAULT_MODE_TEST | - | - |
 | Vlan42 | EVPN_UNDERLAY | - | - |
 | Vlan83 | EVPN_UNDERLAY | - | - |
 | Vlan84 | EVPN_UNDERLAY | - | - |
@@ -9062,10 +9209,12 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | Vlan90 | EVPN_UNDERLAY | - | - |
 | Vlan91 | EVPN_UNDERLAY | - | - |
 | Vlan92 | EVPN_UNDERLAY | - | - |
-| Vlan2002 | EVPN_UNDERLAY | - | - |
+| Vlan2002 | EVPN_UNDERLAY | - | passive |
 | Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 | Vlan4094 | EVPN_UNDERLAY | - | - |
+| Loopback2 | ISIS_PASSIVE_TEST | - | passive |
 | Loopback99 | ISIS_TEST | 100 | point-to-point |
+| Loopback100 | ISIS_MODE_FALLBACK | - | - |
 
 #### ISIS Segment-routing Node-SID
 
@@ -11645,9 +11794,9 @@ router pim sparse-mode
 | Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface | Neighbor Filter |
 | -------------- | -------- | ---------- | ------------- | ----------- | --------------- | --------------- |
 | Ethernet5 | - | IPv4 | True | 200 | - | Test_Filter_Ethernet |
-| Port-Channel99 | - | IPv4 | - | 200 | - | Test_Filter_PortChannel |
+| Port-Channel99 | - | IPv4 | True | 200 | - | Test_Filter_PortChannel |
 | Vlan89 | - | IPv4 | - | - | Loopback0 | - |
-| Vlan4094 | - | IPv4 | - | 200 | - | Test_Filter_Vlan |
+| Vlan4094 | - | IPv4 | True | 200 | - | Test_Filter_Vlan |
 
 ### Router MSDP
 
@@ -12220,6 +12369,10 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Ethernet70 | - | - | - | - | - | - | - | - | - |
 | Ethernet71 | - | - | - | - | - | - | - | - | - |
 | Ethernet72 | - | - | - | - | - | - | - | - | - |
+| Ethernet72/1 | - | - | - | - | - | - | - | - | - |
+| Ethernet72/2 | - | - | - | - | - | - | - | - | - |
+| Ethernet72/3 | - | - | - | - | - | - | - | - | - |
+| Ethernet72/4 | - | - | - | - | - | - | - | - | - |
 | Ethernet85 | supplicant | test_profile | - | - | - | - | - | - | - |
 
 #### Dot1x Configuration

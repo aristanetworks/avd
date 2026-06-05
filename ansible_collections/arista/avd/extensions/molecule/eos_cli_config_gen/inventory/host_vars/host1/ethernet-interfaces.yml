@@ -2,6 +2,7 @@
 ### Ethernet Interfaces ###
 ethernet_interfaces:
   - name: Ethernet1
+    profile: test-interface-profile
     metadata:
       peer: DC1-SPINE1
       peer_interface: Ethernet1
@@ -138,6 +139,8 @@ ethernet_interfaces:
       ipv4: true
     l2_protocol:
       forwarding_profile: TEST1
+    flowcontrol:
+      received: "on"
     service_profile: test
     service_policy:
       qos:
@@ -326,6 +329,9 @@ ethernet_interfaces:
           - address: ca::ca:64
         dns_servers_lifetime: 200
       managed_config_flag: true
+    ipv6_dhcp_relay_destinations:
+      - address: cafe::101
+        source_address: cafe::1
     ipv6_access_group_in: IPv6_ACL_IN
     ipv6_access_group_out: IPv6_ACL_OUT
     snmp_trap_link_change: true
@@ -395,6 +401,8 @@ ethernet_interfaces:
     isis_circuit_type: level-2
     isis_hello_padding: false
     spanning_tree_guard: loop
+    bfd:
+      echo: false
     # test for switchport access vlan
     switchport:
       enabled: false
@@ -522,6 +530,8 @@ ethernet_interfaces:
     description: to WAN-ISP1-01 Ethernet2
     switchport:
       enabled: false
+    isis_enable: ISIS_PASSIVE_TEST
+    isis_passive: true
     lldp:
       transmit: false
       receive: false
@@ -599,6 +609,7 @@ ethernet_interfaces:
     switchport:
       enabled: false
     ip_address: 172.31.128.10/31
+    isis_enable: ISIS_DEFAULT_MODE_TEST
     mpls:
       ip: false
       ldp:
@@ -922,6 +933,22 @@ ethernet_interfaces:
     error_correction_encoding:
       enabled: false
 
+  - name: Ethernet24/1
+    switchport:
+      enabled: true
+    description: Explicit no error-correction encoding
+    error_correction_encoding:
+      fire_code: false
+      reed_solomon: false
+
+  - name: Ethernet24/2
+    switchport:
+      enabled: true
+      mode: trunk
+      trunk:
+        allowed_vlan: none
+    description: Trunk with no allowed VLANs
+
   - name: Ethernet25
     switchport:
       enabled: true
@@ -932,6 +959,9 @@ ethernet_interfaces:
   - name: Ethernet26
     switchport:
       enabled: false
+    multicast:
+      ipv4:
+        static: true
 
   - name: Ethernet26.1
     description: TENANT_A pseudowire 1 interface
@@ -1001,6 +1031,7 @@ ethernet_interfaces:
         preference_value: 100
         dont_preempt: true
         hold_time: 10
+        subsequent_hold_time: 20
         candidate_reachability_required: true
 
   - name: Ethernet28
@@ -1013,6 +1044,8 @@ ethernet_interfaces:
       mpls:
         shared_index: 100
         tunnel_flood_filter_time: 100
+      designated_forwarder_election:
+        candidate_reachability_required: false
 
   - name: Ethernet29
     switchport:
@@ -1788,6 +1821,7 @@ ethernet_interfaces:
           action:
             traffic_allow_vlan: 10
             traffic_allow_access_list: acl1
+            apply_alternate: true
           phone_action:
             apply_cached_results: true
             cached_results_timeout:
@@ -1812,6 +1846,7 @@ ethernet_interfaces:
             cached_results_timeout:
               time_duration: 10
               time_duration_unit: hours
+            traffic_allow: true
       mac_based_access_list: true
 
   - name: Ethernet72
@@ -1825,6 +1860,44 @@ ethernet_interfaces:
             traffic_allow_vlan: 10
             traffic_allow_access_list: acl1
       mac_based_access_list: true
+
+  - name: Ethernet72/1
+    description: dot1x_aaa_unresponsive_vlan_alternate
+    shutdown: false
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_vlan: 20
+            apply_alternate: true
+
+  - name: Ethernet72/2
+    description: dot1x_aaa_unresponsive_vlan
+    shutdown: false
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_vlan: 30
+
+  - name: Ethernet72/3
+    description: dot1x_aaa_unresponsive_acl_alternate
+    shutdown: false
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_access_list: acl2
+            apply_alternate: true
+
+  - name: Ethernet72/4
+    description: dot1x_aaa_unresponsive_acl
+    shutdown: false
+    dot1x:
+      aaa:
+        unresponsive:
+          action:
+            traffic_allow_access_list: acl3
 
   - name: Ethernet73
     metadata:
@@ -1978,6 +2051,24 @@ ethernet_interfaces:
     lldp:
       ztp_vlan: 112
 
+  - name: Ethernet81/301
+    description: LAG Member IPv6 ND coverage
+    channel_group:
+      id: 301
+      mode: active
+
+  - name: Ethernet81/302
+    description: LAG Member legacy IPv6 coverage
+    channel_group:
+      id: 302
+      mode: active
+
+  - name: Ethernet81/138
+    description: LAG Member IPv6 enable only coverage
+    channel_group:
+      id: 138
+      mode: active
+
   - name: Ethernet81/3
     description: Traffic Engineering Interface
     shutdown: false
@@ -2025,6 +2116,22 @@ ethernet_interfaces:
     monitor_link_flap_profiles:
       - lfp2
       - LFP1
+
+  - name: Ethernet81/5
+    description: Traffic Engineering Interface Defaults
+    shutdown: false
+    switchport:
+      enabled: false
+    ip_address: 100.64.127.6/31
+    traffic_engineering:
+      enabled: true
+
+  - name: Ethernet81/6
+    description: IPv6 enable only coverage
+    shutdown: false
+    switchport:
+      enabled: false
+    ipv6_enable: true
 
   - name: Ethernet82
     description: Switchport_tap_tool

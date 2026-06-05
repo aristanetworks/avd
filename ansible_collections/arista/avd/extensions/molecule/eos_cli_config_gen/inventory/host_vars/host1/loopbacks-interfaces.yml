@@ -20,6 +20,9 @@ loopback_interfaces:
 
   - name: Loopback2
     ospf_area: 0.0.0.2
+    shutdown: true
+    isis_enable: ISIS_PASSIVE_TEST
+    isis_passive: true
 
   - name: Loopback100
     description: TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
@@ -27,6 +30,7 @@ loopback_interfaces:
     ip_address: 10.1.255.3/32
     ipv6_address_auto_config: true
     hardware_forwarding_id: true
+    isis_enable: ISIS_MODE_FALLBACK
 
   - name: Loopback99
     description: TENANT_A_PROJECT02_VTEP_DIAGNOSTICS

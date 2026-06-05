@@ -9,6 +9,7 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
+  - [Router BGP](#router-bgp)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
 - [VRF Instances](#vrf-instances)
@@ -100,6 +101,62 @@ ip routing ipv6 interfaces vrf TENANT_B
 | MGMT | false |
 | TENANT_A | false |
 | TENANT_B | false |
+
+### Router BGP
+
+ASN Notation: asplain
+
+#### Router BGP Summary
+
+| BGP AS | Router ID |
+| ------ | --------- |
+| 65006 | - |
+
+| BGP Tuning |
+| ---------- |
+| bgp additional-paths send limit 6 |
+
+#### Router BGP IPv4 Labeled Unicast
+
+##### General Settings
+
+| Settings | Value |
+| -------- | ----- |
+
+#### Router BGP Path-Selection Address Family
+
+#### Router BGP VRFs
+
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| TENANT_B | - | - | - |
+
+#### Router BGP Device Configuration
+
+```eos
+!
+router bgp 65006
+   bgp additional-paths send limit 6
+   redistribute ospf include leaked route-map RM-BGP-OSPF
+   !
+   address-family ipv4
+      bgp additional-paths send limit 4
+   !
+   address-family ipv4 labeled-unicast
+      no bgp additional-paths send
+   !
+   address-family ipv6
+      no bgp additional-paths send
+      redistribute ospfv3 match external route-map RM-BGP-OSPFV3-EXTERNAL
+   !
+   address-family path-selection
+      bgp additional-paths send limit 5
+   !
+   vrf TENANT_B
+      !
+      address-family ipv6
+         bgp additional-paths install ecmp-primary
+```
 
 ## MPLS
 

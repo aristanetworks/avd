@@ -1,0 +1,7 @@
+---
+router_bgp:
+  as: 65005
+  router_id: 192.0.2.5
+  bgp:
+    additional_paths:
+      send: backup
