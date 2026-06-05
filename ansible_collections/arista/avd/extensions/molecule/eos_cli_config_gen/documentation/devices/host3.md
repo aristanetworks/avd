@@ -107,6 +107,7 @@ CVX is enabled
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | - | Redis Password Set |
+| OpenStack | True | - |
 | VXLAN | - | VTEP MAC learning: control-plane |
 
 ### CVX Device Configuration
@@ -118,6 +119,12 @@ cvx
    !
    service mcs
       redis password 7 <removed>
+   !
+   service openstack
+      ip access-group ACL-OS
+      ipv6 access-group ACL-V6-IN
+      no shutdown
+      network type-driver vlan default
    !
    service vxlan
       vtep mac-learning control-plane
