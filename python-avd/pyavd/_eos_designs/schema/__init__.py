@@ -18218,11 +18218,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
                     enabled: bool
-                    """
-                    Send the hostname attribute.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     auth_only: bool
                     """
                     Sends the attribute only once when first learned.
@@ -18240,7 +18236,7 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled: Send the hostname attribute.
+                                enabled: enabled
                                 auth_only: Sends the attribute only once when first learned.
 
                             """

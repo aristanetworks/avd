@@ -39,7 +39,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp</samp>](## "dot1x_settings.device_profiling.dhcp") | Dictionary |  |  |  | DHCP options profiling.<br>Enables profiling via DHCP Discover/Request packets.<br>Limitations:<br>  - IPv4 only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.<br>  - Not supported on VTEP devices.<br>  - Not supported with IP Locking features.<br>  - MLAG support requires EOS 4.34.3+. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.enabled") | Boolean |  | `True` |  | Enable all DHCP profiling options collectively. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dot1x_settings.device_profiling.dhcp.hostname") | Dictionary |  |  |  | DHCP Option 12 (Hostname). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.hostname.enabled") | Boolean |  | `True` |  | Send the hostname attribute. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.hostname.enabled") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.dhcp.hostname.auth_only") | Boolean |  | `False` |  | Sends the attribute only once when first learned. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameter_request_list</samp>](## "dot1x_settings.device_profiling.dhcp.parameter_request_list") | Dictionary |  |  |  | DHCP Option 55 (Parameter Request List). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.parameter_request_list.enabled") | Boolean |  | `True` |  |  |
@@ -144,8 +144,6 @@
 
           # DHCP Option 12 (Hostname).
           hostname:
-
-            # Send the hostname attribute.
             enabled: <bool; default=True>
 
             # Sends the attribute only once when first learned.
