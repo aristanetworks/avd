@@ -111,6 +111,8 @@ keys:
                       description: "'admin' or valid keystone user."
                     password:
                       type: str
+                      convert_types:
+                        - int
                     password_type:
                       type: str
                       default: "7"
