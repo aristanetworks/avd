@@ -3616,7 +3616,212 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"mcs": {"type": Mcs}, "vxlan": {"type": Vxlan}}
+            class Openstack(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Authentication(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"role": {"type": str}}
+                    role: str | None
+                    """API authentication user role."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, role: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            Authentication.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                role: API authentication user role.
+
+                            """
+
+                class NameResolution(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"force": {"type": bool}, "interval": {"type": int}}
+                    force: bool | None
+                    """Get the tenant and VM names from OpenStack immediately."""
+                    interval: int | None
+                    """Set the time interval in seconds between name updates, 0 to disable."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, force: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            NameResolution.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                force: Get the tenant and VM names from OpenStack immediately.
+                                interval: Set the time interval in seconds between name updates, 0 to disable.
+
+                            """
+
+                class NetworkTypeDriver(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Vlan: TypeAlias = Literal["arista", "default"]
+                    _fields: ClassVar[dict] = {"vlan": {"type": str}}
+                    vlan: Vlan | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, vlan: Vlan | None | UndefinedType = Undefined) -> None:
+                            """
+                            NetworkTypeDriver.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                vlan: vlan
+
+                            """
+
+                class RegionsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    PasswordType: TypeAlias = Literal["0", "7", "8a"]
+
+                    class Keystone(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"auth_url": {"type": str}}
+                        auth_url: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, auth_url: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Keystone.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    auth_url: auth_url
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "username": {"type": str},
+                        "password": {"type": str},
+                        "password_type": {"type": str, "default": "7"},
+                        "tenant": {"type": str},
+                        "keystone": {"type": Keystone},
+                    }
+                    name: str
+                    """The name of the region. This must match what is in use in the ML2 driver configuration."""
+                    username: str | None
+                    """'admin' or valid keystone user."""
+                    password: str | None
+                    password_type: PasswordType
+                    """Default value: `"7"`"""
+                    tenant: str | None
+                    """Tenant name."""
+                    keystone: Keystone
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            name: str | UndefinedType = Undefined,
+                            username: str | None | UndefinedType = Undefined,
+                            password: str | None | UndefinedType = Undefined,
+                            password_type: PasswordType | UndefinedType = Undefined,
+                            tenant: str | None | UndefinedType = Undefined,
+                            keystone: Keystone | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            RegionsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                name: The name of the region. This must match what is in use in the ML2 driver configuration.
+                                username: 'admin' or valid keystone user.
+                                password: password
+                                password_type: password_type
+                                tenant: Tenant name.
+                                keystone: Subclass of AvdModel.
+
+                            """
+
+                class Regions(AvdIndexedList[str, RegionsItem]):
+                    """Subclass of AvdIndexedList with `RegionsItem` items. Primary key is `name` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "name"
+
+                Regions._item_type = RegionsItem
+
+                _fields: ClassVar[dict] = {
+                    "authentication": {"type": Authentication},
+                    "grace_period": {"type": int},
+                    "ip_access_group_name": {"type": str},
+                    "ipv6_access_group_name": {"type": str},
+                    "name_resolution": {"type": NameResolution},
+                    "network_type_driver": {"type": NetworkTypeDriver},
+                    "regions": {"type": Regions},
+                    "shutdown": {"type": bool},
+                }
+                authentication: Authentication
+                """Subclass of AvdModel."""
+                grace_period: int | None
+                """Set the grace period in seconds for which the OpenStack agent waits for OpenStack region data."""
+                ip_access_group_name: str | None
+                ipv6_access_group_name: str | None
+                name_resolution: NameResolution
+                """Subclass of AvdModel."""
+                network_type_driver: NetworkTypeDriver
+                """Subclass of AvdModel."""
+                regions: Regions
+                """Subclass of AvdIndexedList with `RegionsItem` items. Primary key is `name` (`str`)."""
+                shutdown: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        authentication: Authentication | UndefinedType = Undefined,
+                        grace_period: int | None | UndefinedType = Undefined,
+                        ip_access_group_name: str | None | UndefinedType = Undefined,
+                        ipv6_access_group_name: str | None | UndefinedType = Undefined,
+                        name_resolution: NameResolution | UndefinedType = Undefined,
+                        network_type_driver: NetworkTypeDriver | UndefinedType = Undefined,
+                        regions: Regions | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Openstack.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            authentication: Subclass of AvdModel.
+                            grace_period: Set the grace period in seconds for which the OpenStack agent waits for OpenStack region data.
+                            ip_access_group_name: ip_access_group_name
+                            ipv6_access_group_name: ipv6_access_group_name
+                            name_resolution: Subclass of AvdModel.
+                            network_type_driver: Subclass of AvdModel.
+                            regions: Subclass of AvdIndexedList with `RegionsItem` items. Primary key is `name` (`str`).
+                            shutdown: shutdown
+
+                        """
+
+            _fields: ClassVar[dict] = {"mcs": {"type": Mcs}, "vxlan": {"type": Vxlan}, "openstack": {"type": Openstack}}
             mcs: Mcs
             """Subclass of AvdModel."""
             vxlan: Vxlan
@@ -3625,10 +3830,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
+            openstack: Openstack
+            """
+            OpenStack services.
+
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, mcs: Mcs | UndefinedType = Undefined, vxlan: Vxlan | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, mcs: Mcs | UndefinedType = Undefined, vxlan: Vxlan | UndefinedType = Undefined, openstack: Openstack | UndefinedType = Undefined
+                ) -> None:
                     """
                     Services.
 
@@ -3639,6 +3852,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         mcs: Subclass of AvdModel.
                         vxlan:
                            VXLAN Controller service.
+
+                           Subclass of AvdModel.
+                        openstack:
+                           OpenStack services.
 
                            Subclass of AvdModel.
 
@@ -6443,6 +6660,133 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class DetectCause(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "acl": {"type": bool},
+                "arp_inspection": {"type": bool},
+                "dot1x": {"type": bool},
+                "dot1x_coa": {"type": bool},
+                "dot1x_phone_classification": {"type": bool},
+                "dot1x_session_replace": {"type": bool},
+                "error_correction_encoding": {"type": bool},
+                "fabric_capacity_low": {"type": bool},
+                "hardware_speed_group": {"type": bool},
+                "interface_speed": {"type": bool},
+                "internal_error": {"type": bool},
+                "link_change": {"type": bool},
+                "port_breakout": {"type": bool},
+                "storm_control": {"type": bool},
+                "switchcard_unreachable": {"type": bool},
+                "tapagg": {"type": bool},
+                "tpid": {"type": bool},
+                "transceiver_adapter": {"type": bool},
+                "xcvr_misconfigured": {"type": bool},
+                "xcvr_overheat": {"type": bool},
+                "xcvr_power_unsupported": {"type": bool},
+            }
+            acl: bool | None
+            """Enable/Disable detection for ACL errors."""
+            arp_inspection: bool | None
+            """Enable/Disable detection for ARP inspection errors."""
+            dot1x: bool | None
+            """Enable/Disable detection for 802.1X errors."""
+            dot1x_coa: bool | None
+            """Enable/Disable detection for 802.1X Change of Authorization errors."""
+            dot1x_phone_classification: bool | None
+            """Enable/Disable detection for 802.1X phone classification errors."""
+            dot1x_session_replace: bool | None
+            """Enable/Disable detection for 802.1X session replace errors."""
+            error_correction_encoding: bool | None
+            """Enable/Disable detection for error correction encoding errors."""
+            fabric_capacity_low: bool | None
+            """Enable/Disable detection for fabric capacity low errors."""
+            hardware_speed_group: bool | None
+            """Enable/Disable detection for hardware speed group errors."""
+            interface_speed: bool | None
+            """Enable/Disable detection for interface speed errors."""
+            internal_error: bool | None
+            """Enable/Disable detection for internal errors."""
+            link_change: bool | None
+            """Enable/Disable detection for link change errors."""
+            port_breakout: bool | None
+            """Enable/Disable detection for port breakout errors."""
+            storm_control: bool | None
+            """Enable/Disable detection for storm control errors."""
+            switchcard_unreachable: bool | None
+            """Enable/Disable detection for switchcard unreachable errors."""
+            tapagg: bool | None
+            """Enable/Disable detection for tap aggregation errors."""
+            tpid: bool | None
+            """Enable/Disable detection for TPID errors."""
+            transceiver_adapter: bool | None
+            """Enable/Disable detection for transceiver adapter errors."""
+            xcvr_misconfigured: bool | None
+            """Enable/Disable detection for transceiver misconfiguration errors."""
+            xcvr_overheat: bool | None
+            """Enable/Disable detection for transceiver overheat errors."""
+            xcvr_power_unsupported: bool | None
+            """Enable/Disable detection for unsupported transceiver power errors."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    acl: bool | None | UndefinedType = Undefined,
+                    arp_inspection: bool | None | UndefinedType = Undefined,
+                    dot1x: bool | None | UndefinedType = Undefined,
+                    dot1x_coa: bool | None | UndefinedType = Undefined,
+                    dot1x_phone_classification: bool | None | UndefinedType = Undefined,
+                    dot1x_session_replace: bool | None | UndefinedType = Undefined,
+                    error_correction_encoding: bool | None | UndefinedType = Undefined,
+                    fabric_capacity_low: bool | None | UndefinedType = Undefined,
+                    hardware_speed_group: bool | None | UndefinedType = Undefined,
+                    interface_speed: bool | None | UndefinedType = Undefined,
+                    internal_error: bool | None | UndefinedType = Undefined,
+                    link_change: bool | None | UndefinedType = Undefined,
+                    port_breakout: bool | None | UndefinedType = Undefined,
+                    storm_control: bool | None | UndefinedType = Undefined,
+                    switchcard_unreachable: bool | None | UndefinedType = Undefined,
+                    tapagg: bool | None | UndefinedType = Undefined,
+                    tpid: bool | None | UndefinedType = Undefined,
+                    transceiver_adapter: bool | None | UndefinedType = Undefined,
+                    xcvr_misconfigured: bool | None | UndefinedType = Undefined,
+                    xcvr_overheat: bool | None | UndefinedType = Undefined,
+                    xcvr_power_unsupported: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DetectCause.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        acl: Enable/Disable detection for ACL errors.
+                        arp_inspection: Enable/Disable detection for ARP inspection errors.
+                        dot1x: Enable/Disable detection for 802.1X errors.
+                        dot1x_coa: Enable/Disable detection for 802.1X Change of Authorization errors.
+                        dot1x_phone_classification: Enable/Disable detection for 802.1X phone classification errors.
+                        dot1x_session_replace: Enable/Disable detection for 802.1X session replace errors.
+                        error_correction_encoding: Enable/Disable detection for error correction encoding errors.
+                        fabric_capacity_low: Enable/Disable detection for fabric capacity low errors.
+                        hardware_speed_group: Enable/Disable detection for hardware speed group errors.
+                        interface_speed: Enable/Disable detection for interface speed errors.
+                        internal_error: Enable/Disable detection for internal errors.
+                        link_change: Enable/Disable detection for link change errors.
+                        port_breakout: Enable/Disable detection for port breakout errors.
+                        storm_control: Enable/Disable detection for storm control errors.
+                        switchcard_unreachable: Enable/Disable detection for switchcard unreachable errors.
+                        tapagg: Enable/Disable detection for tap aggregation errors.
+                        tpid: Enable/Disable detection for TPID errors.
+                        transceiver_adapter: Enable/Disable detection for transceiver adapter errors.
+                        xcvr_misconfigured: Enable/Disable detection for transceiver misconfiguration errors.
+                        xcvr_overheat: Enable/Disable detection for transceiver overheat errors.
+                        xcvr_power_unsupported: Enable/Disable detection for unsupported transceiver power errors.
+
+                    """
+
         class Recovery(AvdModel):
             """Subclass of AvdModel."""
 
@@ -6537,15 +6881,1221 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"detect": {"type": Detect}, "recovery": {"type": Recovery}}
+        class RecoveryCause(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Acl(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for ACL errors."""
+                interval: int | None
+                """Interval for ACL recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Acl.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for ACL errors.
+                            interval: Interval for ACL recovery in seconds.
+
+                        """
+
+            class ArpInspection(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for ARP inspection errors."""
+                interval: int | None
+                """Interval for ARP inspection recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        ArpInspection.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for ARP inspection errors.
+                            interval: Interval for ARP inspection recovery in seconds.
+
+                        """
+
+            class Bpduguard(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for BPDU guard errors."""
+                interval: int | None
+                """Interval for BPDU guard recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Bpduguard.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for BPDU guard errors.
+                            interval: Interval for BPDU guard recovery in seconds.
+
+                        """
+
+            class Dot1x(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for 802.1X errors."""
+                interval: int | None
+                """Interval for 802.1X recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Dot1x.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for 802.1X errors.
+                            interval: Interval for 802.1X recovery in seconds.
+
+                        """
+
+            class Dot1xCoa(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for 802.1X Change of Authorization errors."""
+                interval: int | None
+                """Interval for 802.1X Change of Authorization recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Dot1xCoa.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for 802.1X Change of Authorization errors.
+                            interval: Interval for 802.1X Change of Authorization recovery in seconds.
+
+                        """
+
+            class Dot1xPhoneClassification(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for 802.1X phone classification errors."""
+                interval: int | None
+                """Interval for 802.1X phone classification recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Dot1xPhoneClassification.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for 802.1X phone classification errors.
+                            interval: Interval for 802.1X phone classification recovery in seconds.
+
+                        """
+
+            class Dot1xSessionReplace(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for 802.1X session replace errors."""
+                interval: int | None
+                """Interval for 802.1X session replace recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Dot1xSessionReplace.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for 802.1X session replace errors.
+                            interval: Interval for 802.1X session replace recovery in seconds.
+
+                        """
+
+            class ErrorCorrectionEncoding(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for error correction encoding errors."""
+                interval: int | None
+                """Interval for error correction encoding recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        ErrorCorrectionEncoding.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for error correction encoding errors.
+                            interval: Interval for error correction encoding recovery in seconds.
+
+                        """
+
+            class FabricCapacityLow(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for fabric capacity low errors."""
+                interval: int | None
+                """Interval for fabric capacity low recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        FabricCapacityLow.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for fabric capacity low errors.
+                            interval: Interval for fabric capacity low recovery in seconds.
+
+                        """
+
+            class HardwareSpeedGroup(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for hardware speed group errors."""
+                interval: int | None
+                """Interval for hardware speed group recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        HardwareSpeedGroup.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for hardware speed group errors.
+                            interval: Interval for hardware speed group recovery in seconds.
+
+                        """
+
+            class HitlessReloadDown(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for hitless reload down errors."""
+                interval: int | None
+                """Interval for hitless reload down recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        HitlessReloadDown.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for hitless reload down errors.
+                            interval: Interval for hitless reload down recovery in seconds.
+
+                        """
+
+            class InterfaceSpeed(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for interface speed errors."""
+                interval: int | None
+                """Interval for interface speed recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        InterfaceSpeed.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for interface speed errors.
+                            interval: Interval for interface speed recovery in seconds.
+
+                        """
+
+            class InternalError(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for internal errors."""
+                interval: int | None
+                """Interval for internal error recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        InternalError.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for internal errors.
+                            interval: Interval for internal error recovery in seconds.
+
+                        """
+
+            class LacpRateLimit(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for LACP rate limit errors."""
+                interval: int | None
+                """Interval for LACP rate limit recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        LacpRateLimit.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for LACP rate limit errors.
+                            interval: Interval for LACP rate limit recovery in seconds.
+
+                        """
+
+            class LinkFlap(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for link flap errors."""
+                interval: int | None
+                """Interval for link flap recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        LinkFlap.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for link flap errors.
+                            interval: Interval for link flap recovery in seconds.
+
+                        """
+
+            class NoInternalVlan(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for no internal VLAN errors."""
+                interval: int | None
+                """Interval for no internal VLAN recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        NoInternalVlan.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for no internal VLAN errors.
+                            interval: Interval for no internal VLAN recovery in seconds.
+
+                        """
+
+            class PortBreakout(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for port breakout errors."""
+                interval: int | None
+                """Interval for port breakout recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        PortBreakout.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for port breakout errors.
+                            interval: Interval for port breakout recovery in seconds.
+
+                        """
+
+            class Portchannelguard(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for port-channel guard errors."""
+                interval: int | None
+                """Interval for port-channel guard recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Portchannelguard.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for port-channel guard errors.
+                            interval: Interval for port-channel guard recovery in seconds.
+
+                        """
+
+            class Portsec(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for port security errors."""
+                interval: int | None
+                """Interval for port security recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Portsec.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for port security errors.
+                            interval: Interval for port security recovery in seconds.
+
+                        """
+
+            class SpeedMisconfigured(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for speed misconfigured errors."""
+                interval: int | None
+                """Interval for speed misconfigured recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        SpeedMisconfigured.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for speed misconfigured errors.
+                            interval: Interval for speed misconfigured recovery in seconds.
+
+                        """
+
+            class StormControl(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for storm control errors."""
+                interval: int | None
+                """Interval for storm control recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        StormControl.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for storm control errors.
+                            interval: Interval for storm control recovery in seconds.
+
+                        """
+
+            class StuckQueue(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for stuck queue errors."""
+                interval: int | None
+                """Interval for stuck queue recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        StuckQueue.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for stuck queue errors.
+                            interval: Interval for stuck queue recovery in seconds.
+
+                        """
+
+            class SwitchcardUnreachable(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for switchcard unreachable errors."""
+                interval: int | None
+                """Interval for switchcard unreachable recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        SwitchcardUnreachable.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for switchcard unreachable errors.
+                            interval: Interval for switchcard unreachable recovery in seconds.
+
+                        """
+
+            class TapPortInit(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for tap port init errors."""
+                interval: int | None
+                """Interval for tap port init recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        TapPortInit.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for tap port init errors.
+                            interval: Interval for tap port init recovery in seconds.
+
+                        """
+
+            class Tapagg(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for tap aggregation errors."""
+                interval: int | None
+                """Interval for tap aggregation recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Tapagg.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for tap aggregation errors.
+                            interval: Interval for tap aggregation recovery in seconds.
+
+                        """
+
+            class Tpid(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for TPID errors."""
+                interval: int | None
+                """Interval for TPID recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Tpid.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for TPID errors.
+                            interval: Interval for TPID recovery in seconds.
+
+                        """
+
+            class TransceiverAdapter(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for transceiver adapter errors."""
+                interval: int | None
+                """Interval for transceiver adapter recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        TransceiverAdapter.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for transceiver adapter errors.
+                            interval: Interval for transceiver adapter recovery in seconds.
+
+                        """
+
+            class UplinkFailureDetection(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for uplink failure detection errors."""
+                interval: int | None
+                """Interval for uplink failure detection recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        UplinkFailureDetection.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for uplink failure detection errors.
+                            interval: Interval for uplink failure detection recovery in seconds.
+
+                        """
+
+            class XcvrMisconfigured(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for transceiver misconfiguration errors."""
+                interval: int | None
+                """Interval for transceiver misconfiguration recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        XcvrMisconfigured.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for transceiver misconfiguration errors.
+                            interval: Interval for transceiver misconfiguration recovery in seconds.
+
+                        """
+
+            class XcvrOverheat(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for transceiver overheat errors."""
+                interval: int | None
+                """Interval for transceiver overheat recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        XcvrOverheat.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for transceiver overheat errors.
+                            interval: Interval for transceiver overheat recovery in seconds.
+
+                        """
+
+            class XcvrPowerUnsupported(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for unsupported transceiver power errors."""
+                interval: int | None
+                """Interval for unsupported transceiver power recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        XcvrPowerUnsupported.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for unsupported transceiver power errors.
+                            interval: Interval for unsupported transceiver power recovery in seconds.
+
+                        """
+
+            class XcvrUnsupported(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+                enabled: bool | None
+                """Enable recovery for unsupported transceiver errors."""
+                interval: int | None
+                """Interval for unsupported transceiver recovery in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        XcvrUnsupported.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable recovery for unsupported transceiver errors.
+                            interval: Interval for unsupported transceiver recovery in seconds.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "acl": {"type": Acl},
+                "arp_inspection": {"type": ArpInspection},
+                "bpduguard": {"type": Bpduguard},
+                "dot1x": {"type": Dot1x},
+                "dot1x_coa": {"type": Dot1xCoa},
+                "dot1x_phone_classification": {"type": Dot1xPhoneClassification},
+                "dot1x_session_replace": {"type": Dot1xSessionReplace},
+                "error_correction_encoding": {"type": ErrorCorrectionEncoding},
+                "fabric_capacity_low": {"type": FabricCapacityLow},
+                "hardware_speed_group": {"type": HardwareSpeedGroup},
+                "hitless_reload_down": {"type": HitlessReloadDown},
+                "interface_speed": {"type": InterfaceSpeed},
+                "internal_error": {"type": InternalError},
+                "lacp_rate_limit": {"type": LacpRateLimit},
+                "link_flap": {"type": LinkFlap},
+                "no_internal_vlan": {"type": NoInternalVlan},
+                "port_breakout": {"type": PortBreakout},
+                "portchannelguard": {"type": Portchannelguard},
+                "portsec": {"type": Portsec},
+                "speed_misconfigured": {"type": SpeedMisconfigured},
+                "storm_control": {"type": StormControl},
+                "stuck_queue": {"type": StuckQueue},
+                "switchcard_unreachable": {"type": SwitchcardUnreachable},
+                "tap_port_init": {"type": TapPortInit},
+                "tapagg": {"type": Tapagg},
+                "tpid": {"type": Tpid},
+                "transceiver_adapter": {"type": TransceiverAdapter},
+                "uplink_failure_detection": {"type": UplinkFailureDetection},
+                "xcvr_misconfigured": {"type": XcvrMisconfigured},
+                "xcvr_overheat": {"type": XcvrOverheat},
+                "xcvr_power_unsupported": {"type": XcvrPowerUnsupported},
+                "xcvr_unsupported": {"type": XcvrUnsupported},
+            }
+            acl: Acl
+            """
+            Recovery settings for ACL errors.
+
+            Subclass of AvdModel.
+            """
+            arp_inspection: ArpInspection
+            """
+            Recovery settings for ARP inspection errors.
+
+            Subclass of AvdModel.
+            """
+            bpduguard: Bpduguard
+            """
+            Recovery settings for BPDU guard errors.
+
+            Subclass of AvdModel.
+            """
+            dot1x: Dot1x
+            """
+            Recovery settings for 802.1X errors.
+
+            Subclass of AvdModel.
+            """
+            dot1x_coa: Dot1xCoa
+            """
+            Recovery settings for 802.1X Change of Authorization errors.
+
+            Subclass of AvdModel.
+            """
+            dot1x_phone_classification: Dot1xPhoneClassification
+            """
+            Recovery settings for 802.1X phone classification errors.
+
+            Subclass of AvdModel.
+            """
+            dot1x_session_replace: Dot1xSessionReplace
+            """
+            Recovery settings for 802.1X session replace errors.
+
+            Subclass of AvdModel.
+            """
+            error_correction_encoding: ErrorCorrectionEncoding
+            """
+            Recovery settings for error correction encoding errors.
+
+            Subclass of AvdModel.
+            """
+            fabric_capacity_low: FabricCapacityLow
+            """
+            Recovery settings for fabric capacity low errors.
+
+            Subclass of AvdModel.
+            """
+            hardware_speed_group: HardwareSpeedGroup
+            """
+            Recovery settings for hardware speed group errors.
+
+            Subclass of AvdModel.
+            """
+            hitless_reload_down: HitlessReloadDown
+            """
+            Recovery settings for hitless reload down errors.
+
+            Subclass of AvdModel.
+            """
+            interface_speed: InterfaceSpeed
+            """
+            Recovery settings for interface speed errors.
+
+            Subclass of AvdModel.
+            """
+            internal_error: InternalError
+            """
+            Recovery settings for internal errors.
+
+            Subclass of AvdModel.
+            """
+            lacp_rate_limit: LacpRateLimit
+            """
+            Recovery settings for LACP rate limit errors.
+
+            Subclass of AvdModel.
+            """
+            link_flap: LinkFlap
+            """
+            Recovery settings for link flap errors.
+
+            Subclass of AvdModel.
+            """
+            no_internal_vlan: NoInternalVlan
+            """
+            Recovery settings for no internal VLAN errors.
+
+            Subclass of AvdModel.
+            """
+            port_breakout: PortBreakout
+            """
+            Recovery settings for port breakout errors.
+
+            Subclass of AvdModel.
+            """
+            portchannelguard: Portchannelguard
+            """
+            Recovery settings for port-channel guard errors.
+
+            Subclass of AvdModel.
+            """
+            portsec: Portsec
+            """
+            Recovery settings for port security errors.
+
+            Subclass of AvdModel.
+            """
+            speed_misconfigured: SpeedMisconfigured
+            """
+            Recovery settings for speed misconfigured errors.
+
+            Subclass of AvdModel.
+            """
+            storm_control: StormControl
+            """
+            Recovery settings for storm control errors.
+
+            Subclass of AvdModel.
+            """
+            stuck_queue: StuckQueue
+            """
+            Recovery settings for stuck queue errors.
+
+            Subclass of AvdModel.
+            """
+            switchcard_unreachable: SwitchcardUnreachable
+            """
+            Recovery settings for switchcard unreachable errors.
+
+            Subclass of AvdModel.
+            """
+            tap_port_init: TapPortInit
+            """
+            Recovery settings for tap port init errors.
+
+            Subclass of AvdModel.
+            """
+            tapagg: Tapagg
+            """
+            Recovery settings for tap aggregation errors.
+
+            Subclass of AvdModel.
+            """
+            tpid: Tpid
+            """
+            Recovery settings for TPID errors.
+
+            Subclass of AvdModel.
+            """
+            transceiver_adapter: TransceiverAdapter
+            """
+            Recovery settings for transceiver adapter errors.
+
+            Subclass of AvdModel.
+            """
+            uplink_failure_detection: UplinkFailureDetection
+            """
+            Recovery settings for uplink failure detection errors.
+
+            Subclass of AvdModel.
+            """
+            xcvr_misconfigured: XcvrMisconfigured
+            """
+            Recovery settings for transceiver misconfiguration errors.
+
+            Subclass of AvdModel.
+            """
+            xcvr_overheat: XcvrOverheat
+            """
+            Recovery settings for transceiver overheat errors.
+
+            Subclass of AvdModel.
+            """
+            xcvr_power_unsupported: XcvrPowerUnsupported
+            """
+            Recovery settings for unsupported transceiver power errors.
+
+            Subclass of AvdModel.
+            """
+            xcvr_unsupported: XcvrUnsupported
+            """
+            Recovery settings for unsupported transceiver errors.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    acl: Acl | UndefinedType = Undefined,
+                    arp_inspection: ArpInspection | UndefinedType = Undefined,
+                    bpduguard: Bpduguard | UndefinedType = Undefined,
+                    dot1x: Dot1x | UndefinedType = Undefined,
+                    dot1x_coa: Dot1xCoa | UndefinedType = Undefined,
+                    dot1x_phone_classification: Dot1xPhoneClassification | UndefinedType = Undefined,
+                    dot1x_session_replace: Dot1xSessionReplace | UndefinedType = Undefined,
+                    error_correction_encoding: ErrorCorrectionEncoding | UndefinedType = Undefined,
+                    fabric_capacity_low: FabricCapacityLow | UndefinedType = Undefined,
+                    hardware_speed_group: HardwareSpeedGroup | UndefinedType = Undefined,
+                    hitless_reload_down: HitlessReloadDown | UndefinedType = Undefined,
+                    interface_speed: InterfaceSpeed | UndefinedType = Undefined,
+                    internal_error: InternalError | UndefinedType = Undefined,
+                    lacp_rate_limit: LacpRateLimit | UndefinedType = Undefined,
+                    link_flap: LinkFlap | UndefinedType = Undefined,
+                    no_internal_vlan: NoInternalVlan | UndefinedType = Undefined,
+                    port_breakout: PortBreakout | UndefinedType = Undefined,
+                    portchannelguard: Portchannelguard | UndefinedType = Undefined,
+                    portsec: Portsec | UndefinedType = Undefined,
+                    speed_misconfigured: SpeedMisconfigured | UndefinedType = Undefined,
+                    storm_control: StormControl | UndefinedType = Undefined,
+                    stuck_queue: StuckQueue | UndefinedType = Undefined,
+                    switchcard_unreachable: SwitchcardUnreachable | UndefinedType = Undefined,
+                    tap_port_init: TapPortInit | UndefinedType = Undefined,
+                    tapagg: Tapagg | UndefinedType = Undefined,
+                    tpid: Tpid | UndefinedType = Undefined,
+                    transceiver_adapter: TransceiverAdapter | UndefinedType = Undefined,
+                    uplink_failure_detection: UplinkFailureDetection | UndefinedType = Undefined,
+                    xcvr_misconfigured: XcvrMisconfigured | UndefinedType = Undefined,
+                    xcvr_overheat: XcvrOverheat | UndefinedType = Undefined,
+                    xcvr_power_unsupported: XcvrPowerUnsupported | UndefinedType = Undefined,
+                    xcvr_unsupported: XcvrUnsupported | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    RecoveryCause.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        acl:
+                           Recovery settings for ACL errors.
+
+                           Subclass of AvdModel.
+                        arp_inspection:
+                           Recovery settings for ARP inspection errors.
+
+                           Subclass of AvdModel.
+                        bpduguard:
+                           Recovery settings for BPDU guard errors.
+
+                           Subclass of AvdModel.
+                        dot1x:
+                           Recovery settings for 802.1X errors.
+
+                           Subclass of AvdModel.
+                        dot1x_coa:
+                           Recovery settings for 802.1X Change of Authorization errors.
+
+                           Subclass of AvdModel.
+                        dot1x_phone_classification:
+                           Recovery settings for 802.1X phone classification errors.
+
+                           Subclass of AvdModel.
+                        dot1x_session_replace:
+                           Recovery settings for 802.1X session replace errors.
+
+                           Subclass of AvdModel.
+                        error_correction_encoding:
+                           Recovery settings for error correction encoding errors.
+
+                           Subclass of AvdModel.
+                        fabric_capacity_low:
+                           Recovery settings for fabric capacity low errors.
+
+                           Subclass of AvdModel.
+                        hardware_speed_group:
+                           Recovery settings for hardware speed group errors.
+
+                           Subclass of AvdModel.
+                        hitless_reload_down:
+                           Recovery settings for hitless reload down errors.
+
+                           Subclass of AvdModel.
+                        interface_speed:
+                           Recovery settings for interface speed errors.
+
+                           Subclass of AvdModel.
+                        internal_error:
+                           Recovery settings for internal errors.
+
+                           Subclass of AvdModel.
+                        lacp_rate_limit:
+                           Recovery settings for LACP rate limit errors.
+
+                           Subclass of AvdModel.
+                        link_flap:
+                           Recovery settings for link flap errors.
+
+                           Subclass of AvdModel.
+                        no_internal_vlan:
+                           Recovery settings for no internal VLAN errors.
+
+                           Subclass of AvdModel.
+                        port_breakout:
+                           Recovery settings for port breakout errors.
+
+                           Subclass of AvdModel.
+                        portchannelguard:
+                           Recovery settings for port-channel guard errors.
+
+                           Subclass of AvdModel.
+                        portsec:
+                           Recovery settings for port security errors.
+
+                           Subclass of AvdModel.
+                        speed_misconfigured:
+                           Recovery settings for speed misconfigured errors.
+
+                           Subclass of AvdModel.
+                        storm_control:
+                           Recovery settings for storm control errors.
+
+                           Subclass of AvdModel.
+                        stuck_queue:
+                           Recovery settings for stuck queue errors.
+
+                           Subclass of AvdModel.
+                        switchcard_unreachable:
+                           Recovery settings for switchcard unreachable errors.
+
+                           Subclass of AvdModel.
+                        tap_port_init:
+                           Recovery settings for tap port init errors.
+
+                           Subclass of AvdModel.
+                        tapagg:
+                           Recovery settings for tap aggregation errors.
+
+                           Subclass of AvdModel.
+                        tpid:
+                           Recovery settings for TPID errors.
+
+                           Subclass of AvdModel.
+                        transceiver_adapter:
+                           Recovery settings for transceiver adapter errors.
+
+                           Subclass of AvdModel.
+                        uplink_failure_detection:
+                           Recovery settings for uplink failure detection errors.
+
+                           Subclass of AvdModel.
+                        xcvr_misconfigured:
+                           Recovery settings for transceiver misconfiguration errors.
+
+                           Subclass of AvdModel.
+                        xcvr_overheat:
+                           Recovery settings for transceiver overheat errors.
+
+                           Subclass of AvdModel.
+                        xcvr_power_unsupported:
+                           Recovery settings for unsupported transceiver power errors.
+
+                           Subclass of AvdModel.
+                        xcvr_unsupported:
+                           Recovery settings for unsupported transceiver errors.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "detect": {"type": Detect},
+            "detect_cause": {"type": DetectCause},
+            "recovery": {"type": Recovery},
+            "recovery_cause": {"type": RecoveryCause},
+            "recovery_interval": {"type": int},
+        }
         detect: Detect
         """Subclass of AvdModel."""
+        detect_cause: DetectCause
+        """
+        Specifies the events that should trigger this action.
+        The list of supported causes depends on both
+        the EOS version and the hardware platform.
+
+        Subclass of AvdModel.
+        """
         recovery: Recovery
         """Subclass of AvdModel."""
+        recovery_cause: RecoveryCause
+        """
+        Specifies the type of event that can trigger recovery actions.
+        The list of supported causes depends
+        on both the EOS version and the hardware platform.
+
+        Subclass of AvdModel.
+        """
+        recovery_interval: int | None
+        """Default recovery interval in seconds applied to all recovery causes. EOS default is 300 seconds."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, detect: Detect | UndefinedType = Undefined, recovery: Recovery | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                detect: Detect | UndefinedType = Undefined,
+                detect_cause: DetectCause | UndefinedType = Undefined,
+                recovery: Recovery | UndefinedType = Undefined,
+                recovery_cause: RecoveryCause | UndefinedType = Undefined,
+                recovery_interval: int | None | UndefinedType = Undefined,
+            ) -> None:
                 """
                 Errdisable.
 
@@ -6554,7 +8104,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     detect: Subclass of AvdModel.
+                    detect_cause:
+                       Specifies the events that should trigger this action.
+                       The list of supported causes depends on both
+                       the EOS version and the hardware platform.
+
+                       Subclass of AvdModel.
                     recovery: Subclass of AvdModel.
+                    recovery_cause:
+                       Specifies the type of event that can trigger recovery actions.
+                       The list of supported causes depends
+                       on both the EOS version and the hardware platform.
+
+                       Subclass of AvdModel.
+                    recovery_interval: Default recovery interval in seconds applied to all recovery causes. EOS default is 300 seconds.
 
                 """
 
@@ -58978,6 +60541,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "router_id": {"type": str},
                 "timers": {"type": str},
                 "graceful_restart": {"type": GracefulRestart},
+                "no_graceful_restart": {"type": bool},
                 "networks": {"type": Networks},
                 "maximum_paths": {"type": MaximumPaths},
                 "updates": {"type": Updates},
@@ -59026,6 +60590,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"."""
             graceful_restart: GracefulRestart
             """Subclass of AvdModel."""
+            no_graceful_restart: bool | None
+            """
+            Disables graceful-restart for this VRF. Mutually exclusive with `graceful_restart`.
+            `graceful_restart` takes precedence.
+            """
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
             maximum_paths: MaximumPaths
@@ -59087,6 +60656,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     router_id: str | None | UndefinedType = Undefined,
                     timers: str | None | UndefinedType = Undefined,
                     graceful_restart: GracefulRestart | UndefinedType = Undefined,
+                    no_graceful_restart: bool | None | UndefinedType = Undefined,
                     networks: Networks | UndefinedType = Undefined,
                     maximum_paths: MaximumPaths | UndefinedType = Undefined,
                     updates: Updates | UndefinedType = Undefined,
@@ -59129,6 +60699,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         router_id: in IP address format A.B.C.D.
                         timers: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>".
                         graceful_restart: Subclass of AvdModel.
+                        no_graceful_restart:
+                           Disables graceful-restart for this VRF. Mutually exclusive with `graceful_restart`.
+                           `graceful_restart` takes precedence.
                         networks: Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`).
                         maximum_paths: Subclass of AvdModel.
                         updates: Subclass of AvdModel.

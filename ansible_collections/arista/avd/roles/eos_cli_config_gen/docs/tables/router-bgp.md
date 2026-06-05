@@ -1144,6 +1144,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].graceful_restart.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;restart_time</samp>](## "router_bgp.vrfs.[].graceful_restart.restart_time") | Integer |  |  | Min: 1<br>Max: 3600 | Number of seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stalepath_time</samp>](## "router_bgp.vrfs.[].graceful_restart.stalepath_time") | Integer |  |  | Min: 1<br>Max: 3600 | Number of seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_graceful_restart</samp>](## "router_bgp.vrfs.[].no_graceful_restart") | Boolean |  |  |  | Disables graceful-restart for this VRF. Mutually exclusive with `graceful_restart`. `graceful_restart` takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.vrfs.[].networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.vrfs.[].networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].networks.[].route_map") | String |  |  |  |  |
@@ -4025,6 +4026,9 @@
 
             # Number of seconds.
             stalepath_time: <int; 1-3600>
+
+          # Disables graceful-restart for this VRF. Mutually exclusive with `graceful_restart`. `graceful_restart` takes precedence.
+          no_graceful_restart: <bool>
           networks:
 
               # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
