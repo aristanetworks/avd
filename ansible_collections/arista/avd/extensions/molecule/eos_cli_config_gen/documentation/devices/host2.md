@@ -329,6 +329,9 @@ cvx
    service mcs
       shutdown
    !
+   service openstack
+      shutdown
+   !
    service vxlan
       shutdown
 ```

@@ -3616,7 +3616,212 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"mcs": {"type": Mcs}, "vxlan": {"type": Vxlan}}
+            class Openstack(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Authentication(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"role": {"type": str}}
+                    role: str | None
+                    """API authentication user role."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, role: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            Authentication.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                role: API authentication user role.
+
+                            """
+
+                class NameResolution(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"force": {"type": bool}, "interval": {"type": int}}
+                    force: bool | None
+                    """Get the tenant and VM names from OpenStack immediately."""
+                    interval: int | None
+                    """Set the time interval in seconds between name updates, 0 to disable."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, force: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            NameResolution.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                force: Get the tenant and VM names from OpenStack immediately.
+                                interval: Set the time interval in seconds between name updates, 0 to disable.
+
+                            """
+
+                class NetworkTypeDriver(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Vlan: TypeAlias = Literal["arista", "default"]
+                    _fields: ClassVar[dict] = {"vlan": {"type": str}}
+                    vlan: Vlan | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, vlan: Vlan | None | UndefinedType = Undefined) -> None:
+                            """
+                            NetworkTypeDriver.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                vlan: vlan
+
+                            """
+
+                class RegionsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    PasswordType: TypeAlias = Literal["0", "7", "8a"]
+
+                    class Keystone(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"auth_url": {"type": str}}
+                        auth_url: str | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, auth_url: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Keystone.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    auth_url: auth_url
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "username": {"type": str},
+                        "password": {"type": str},
+                        "password_type": {"type": str, "default": "7"},
+                        "tenant": {"type": str},
+                        "keystone": {"type": Keystone},
+                    }
+                    name: str
+                    """The name of the region. This must match what is in use in the ML2 driver configuration."""
+                    username: str | None
+                    """'admin' or valid keystone user."""
+                    password: str | None
+                    password_type: PasswordType
+                    """Default value: `"7"`"""
+                    tenant: str | None
+                    """Tenant name."""
+                    keystone: Keystone
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            name: str | UndefinedType = Undefined,
+                            username: str | None | UndefinedType = Undefined,
+                            password: str | None | UndefinedType = Undefined,
+                            password_type: PasswordType | UndefinedType = Undefined,
+                            tenant: str | None | UndefinedType = Undefined,
+                            keystone: Keystone | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            RegionsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                name: The name of the region. This must match what is in use in the ML2 driver configuration.
+                                username: 'admin' or valid keystone user.
+                                password: password
+                                password_type: password_type
+                                tenant: Tenant name.
+                                keystone: Subclass of AvdModel.
+
+                            """
+
+                class Regions(AvdIndexedList[str, RegionsItem]):
+                    """Subclass of AvdIndexedList with `RegionsItem` items. Primary key is `name` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "name"
+
+                Regions._item_type = RegionsItem
+
+                _fields: ClassVar[dict] = {
+                    "authentication": {"type": Authentication},
+                    "grace_period": {"type": int},
+                    "ip_access_group_name": {"type": str},
+                    "ipv6_access_group_name": {"type": str},
+                    "name_resolution": {"type": NameResolution},
+                    "network_type_driver": {"type": NetworkTypeDriver},
+                    "regions": {"type": Regions},
+                    "shutdown": {"type": bool},
+                }
+                authentication: Authentication
+                """Subclass of AvdModel."""
+                grace_period: int | None
+                """Set the grace period in seconds for which the OpenStack agent waits for OpenStack region data."""
+                ip_access_group_name: str | None
+                ipv6_access_group_name: str | None
+                name_resolution: NameResolution
+                """Subclass of AvdModel."""
+                network_type_driver: NetworkTypeDriver
+                """Subclass of AvdModel."""
+                regions: Regions
+                """Subclass of AvdIndexedList with `RegionsItem` items. Primary key is `name` (`str`)."""
+                shutdown: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        authentication: Authentication | UndefinedType = Undefined,
+                        grace_period: int | None | UndefinedType = Undefined,
+                        ip_access_group_name: str | None | UndefinedType = Undefined,
+                        ipv6_access_group_name: str | None | UndefinedType = Undefined,
+                        name_resolution: NameResolution | UndefinedType = Undefined,
+                        network_type_driver: NetworkTypeDriver | UndefinedType = Undefined,
+                        regions: Regions | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Openstack.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            authentication: Subclass of AvdModel.
+                            grace_period: Set the grace period in seconds for which the OpenStack agent waits for OpenStack region data.
+                            ip_access_group_name: ip_access_group_name
+                            ipv6_access_group_name: ipv6_access_group_name
+                            name_resolution: Subclass of AvdModel.
+                            network_type_driver: Subclass of AvdModel.
+                            regions: Subclass of AvdIndexedList with `RegionsItem` items. Primary key is `name` (`str`).
+                            shutdown: shutdown
+
+                        """
+
+            _fields: ClassVar[dict] = {"mcs": {"type": Mcs}, "vxlan": {"type": Vxlan}, "openstack": {"type": Openstack}}
             mcs: Mcs
             """Subclass of AvdModel."""
             vxlan: Vxlan
@@ -3625,10 +3830,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
+            openstack: Openstack
+            """
+            OpenStack services.
+
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, mcs: Mcs | UndefinedType = Undefined, vxlan: Vxlan | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, mcs: Mcs | UndefinedType = Undefined, vxlan: Vxlan | UndefinedType = Undefined, openstack: Openstack | UndefinedType = Undefined
+                ) -> None:
                     """
                     Services.
 
@@ -3639,6 +3852,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         mcs: Subclass of AvdModel.
                         vxlan:
                            VXLAN Controller service.
+
+                           Subclass of AvdModel.
+                        openstack:
+                           OpenStack services.
 
                            Subclass of AvdModel.
 
