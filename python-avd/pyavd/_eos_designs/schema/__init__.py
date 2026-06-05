@@ -45660,6 +45660,7 @@ class EosDesigns(EosDesignsRootModel):
                     "type": TransceiverManufacturers,
                     "default": lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls),
                 },
+                "ignore_no_transceivers": {"type": bool, "default": True},
             }
             min_power_supplies: int | None
             """Minimum number of power supplies required for the device. Set to 0 to skip validation."""
@@ -45674,12 +45675,16 @@ class EosDesigns(EosDesignsRootModel):
             transceiver_manufacturers: TransceiverManufacturers
             """
             List of approved transceiver manufacturers for the device.
-            Include "Not Present" to allow ports with
-            no transceiver to successfully pass validation.
 
             Subclass of AvdList with `str` items.
 
             Default value: `lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls)`
+            """
+            ignore_no_transceivers: bool
+            """
+            Accept ports with no transceiver as valid when checking the approved manufacturers.
+
+            Default value: `True`
             """
 
             if TYPE_CHECKING:
@@ -45693,6 +45698,7 @@ class EosDesigns(EosDesignsRootModel):
                     min_line_cards: int | None | UndefinedType = Undefined,
                     min_fabric_cards: int | None | UndefinedType = Undefined,
                     transceiver_manufacturers: TransceiverManufacturers | UndefinedType = Undefined,
+                    ignore_no_transceivers: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Hardware.
@@ -45708,10 +45714,9 @@ class EosDesigns(EosDesignsRootModel):
                         min_fabric_cards: Minimum number of fabric cards required for the device. Set to 0 to skip validation.
                         transceiver_manufacturers:
                            List of approved transceiver manufacturers for the device.
-                           Include "Not Present" to allow ports with
-                           no transceiver to successfully pass validation.
 
                            Subclass of AvdList with `str` items.
+                        ignore_no_transceivers: Accept ports with no transceiver as valid when checking the approved manufacturers.
 
                     """
 

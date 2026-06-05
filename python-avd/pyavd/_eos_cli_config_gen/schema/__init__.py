@@ -27563,6 +27563,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "type": TransceiverManufacturers,
                     "default": lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls),
                 },
+                "ignore_no_transceivers": {"type": bool, "default": True},
             }
             enabled: bool
             """
@@ -27590,6 +27591,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Default value: `lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls)`
             """
+            ignore_no_transceivers: bool
+            """
+            Accept ports with no transceiver as valid when checking the approved manufacturers.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -27603,6 +27610,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     min_line_cards: int | None | UndefinedType = Undefined,
                     min_fabric_cards: int | None | UndefinedType = Undefined,
                     transceiver_manufacturers: TransceiverManufacturers | UndefinedType = Undefined,
+                    ignore_no_transceivers: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ValidateHardware.
@@ -27624,6 +27632,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            List of approved transceiver manufacturers for the device.
 
                            Subclass of AvdList with `str` items.
+                        ignore_no_transceivers: Accept ports with no transceiver as valid when checking the approved manufacturers.
 
                     """
 
