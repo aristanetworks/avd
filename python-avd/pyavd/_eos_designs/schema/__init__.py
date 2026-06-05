@@ -45448,8 +45448,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             ignore_no_transceivers: bool
             """
-            Accept ports with no transceiver as valid when checking the approved manufacturers. This is used by
-            `anta_runner`.
+            Accept ports with no transceiver as valid when checking the approved manufacturers.
 
             Default value: `True`
             """
@@ -45483,9 +45482,7 @@ class EosDesigns(EosDesignsRootModel):
                            List of approved transceiver manufacturers for the device.
 
                            Subclass of AvdList with `str` items.
-                        ignore_no_transceivers:
-                           Accept ports with no transceiver as valid when checking the approved manufacturers. This is used by
-                           `anta_runner`.
+                        ignore_no_transceivers: Accept ports with no transceiver as valid when checking the approved manufacturers.
 
                     """
 

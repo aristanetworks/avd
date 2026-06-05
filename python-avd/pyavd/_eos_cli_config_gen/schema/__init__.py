@@ -27585,8 +27585,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             ignore_no_transceivers: bool
             """
-            Accept ports with no transceiver as valid when checking the approved manufacturers. This is used by
-            `anta_runner`.
+            Accept ports with no transceiver as valid when checking the approved manufacturers.
 
             Default value: `True`
             """
@@ -27625,9 +27624,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            List of approved transceiver manufacturers for the device.
 
                            Subclass of AvdList with `str` items.
-                        ignore_no_transceivers:
-                           Accept ports with no transceiver as valid when checking the approved manufacturers. This is used by
-                           `anta_runner`.
+                        ignore_no_transceivers: Accept ports with no transceiver as valid when checking the approved manufacturers.
 
                     """
 
