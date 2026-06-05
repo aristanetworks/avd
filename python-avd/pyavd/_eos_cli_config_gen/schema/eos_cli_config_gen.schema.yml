@@ -1453,6 +1453,9 @@ keys:
               name_resolution:
                 type: dict
                 keys:
+                  force:
+                    type: bool
+                    description: Get the tenant and VM names from OpenStack immediately.
                   interval:
                     type: int
                     min: 0
@@ -1504,7 +1507,7 @@ keys:
                       keys:
                         auth_url:
                           type: str
-                          pattern: http(s?)://[a-zA-Z0-9.]+(:?\d+)?/v(2\.0|3)/
+                          pattern: ^https?://(?:(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,6}\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?/v(2\.0|3)/$
               shutdown:
                 type: bool
   daemon_terminattr:

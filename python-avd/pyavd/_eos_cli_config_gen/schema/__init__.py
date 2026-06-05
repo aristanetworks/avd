@@ -3643,13 +3643,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class NameResolution(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"interval": {"type": int}}
+                    _fields: ClassVar[dict] = {"force": {"type": bool}, "interval": {"type": int}}
+                    force: bool | None
+                    """Get the tenant and VM names from OpenStack immediately."""
                     interval: int | None
                     """Set the time interval in seconds between name updates, 0 to disable."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, interval: int | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, force: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                             """
                             NameResolution.
 
@@ -3657,6 +3659,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
+                                force: Get the tenant and VM names from OpenStack immediately.
                                 interval: Set the time interval in seconds between name updates, 0 to disable.
 
                             """

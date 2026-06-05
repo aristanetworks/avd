@@ -27,6 +27,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_access_group_name</samp>](## "cvx.services.openstack.ip_access_group_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_group_name</samp>](## "cvx.services.openstack.ipv6_access_group_name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name_resolution</samp>](## "cvx.services.openstack.name_resolution") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;force</samp>](## "cvx.services.openstack.name_resolution.force") | Boolean |  |  |  | Get the tenant and VM names from OpenStack immediately. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "cvx.services.openstack.name_resolution.interval") | Integer |  |  | Min: 0<br>Max: 86400 | Set the time interval in seconds between name updates, 0 to disable. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_type_driver</samp>](## "cvx.services.openstack.network_type_driver") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "cvx.services.openstack.network_type_driver.vlan") | String |  |  | Valid Values:<br>- <code>arista</code><br>- <code>default</code> |  |
@@ -37,7 +38,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "cvx.services.openstack.regions.[].password_type") | String |  | `7` | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "cvx.services.openstack.regions.[].tenant") | String |  |  |  | Tenant name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keystone</samp>](## "cvx.services.openstack.regions.[].keystone") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_url</samp>](## "cvx.services.openstack.regions.[].keystone.auth_url") | String |  |  | Pattern: `http(s?)://[a-zA-Z0-9.]+(:?\d+)?/v(2\.0|3)/` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_url</samp>](## "cvx.services.openstack.regions.[].keystone.auth_url") | String |  |  | Pattern: `^https?://(?:(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,6}\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?/v(2\.0|3)/$` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "cvx.services.openstack.shutdown") | Boolean |  |  |  |  |
 
 === "YAML"
@@ -76,6 +77,9 @@
           ip_access_group_name: <str>
           ipv6_access_group_name: <str>
           name_resolution:
+
+            # Get the tenant and VM names from OpenStack immediately.
+            force: <bool>
 
             # Set the time interval in seconds between name updates, 0 to disable.
             interval: <int; 0-86400>
