@@ -20,5 +20,5 @@ aaa_settings:
         cleartext_key: super-secret-key
 
 expected_error_message: >-
-  'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and
-  'dot1x_settings.accounting.mode: start-stop'. Device profiling depends on Accounting Interim-Updates.
+  'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and 'dot1x_settings.accounting.mode: start-stop'
+  since the feature relies on Interim-Update accounting messages.
