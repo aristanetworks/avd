@@ -29,21 +29,24 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;username_format</samp>](## "dot1x_settings.mac_based_authentication.username_format") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delimiter</samp>](## "dot1x_settings.mac_based_authentication.username_format.delimiter") | String | Required |  | Valid Values:<br>- <code>colon</code><br>- <code>hyphen</code><br>- <code>none</code><br>- <code>period</code> | RADIUS User-Name attribute delimiter to use on the MAC address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;letter_case</samp>](## "dot1x_settings.mac_based_authentication.username_format.letter_case") | String | Required |  | Valid Values:<br>- <code>lowercase</code><br>- <code>uppercase</code> | RADIUS User-Name attribute letter case to use on the MAC address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "dot1x_settings.mac_based_authentication.delay") | Integer |  |  | Min: 0<br>Max: 300 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hold_period</samp>](## "dot1x_settings.mac_based_authentication.hold_period") | Integer |  |  | Min: 1<br>Max: 300 |  |
     | [<samp>&nbsp;&nbsp;radius_av_pairs</samp>](## "dot1x_settings.radius_av_pairs") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x_settings.radius_av_pairs.service_type") | Boolean |  | `False` |  | Send RADIUS Service-Type attribute in Access-Request and Accounting messages. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp</samp>](## "dot1x_settings.radius_av_pairs.dhcp") | Dictionary |  |  |  | RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dot1x_settings.radius_av_pairs.dhcp.hostname") | Dictionary |  |  |  | Hostname (DHCP Option 12). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.radius_av_pairs.dhcp.hostname.enabled") | Boolean | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.radius_av_pairs.dhcp.hostname.auth_only") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameter_request_list</samp>](## "dot1x_settings.radius_av_pairs.dhcp.parameter_request_list") | Dictionary |  |  |  | Parameters requested by host (DHCP Option 55). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.radius_av_pairs.dhcp.parameter_request_list.enabled") | Boolean | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.radius_av_pairs.dhcp.parameter_request_list.auth_only") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vendor_class_id</samp>](## "dot1x_settings.radius_av_pairs.dhcp.vendor_class_id") | Dictionary |  |  |  | Vendor class identifier (DHCP Option 60). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.radius_av_pairs.dhcp.vendor_class_id.enabled") | Boolean | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.radius_av_pairs.dhcp.vendor_class_id.auth_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x_settings.radius_av_pairs.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
-    | [<samp>&nbsp;&nbsp;device_profiling</samp>](## "dot1x_settings.device_profiling") | Dictionary |  |  |  | Device profiling feature.<br>Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs) to the RADIUS server<br>using the Arista VSA "Arista-Device-Profiling" in accounting messages.<br>Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.enabled") | Boolean |  | `False` |  | Master toggle to enable device profiling. Must be `true` for any profiling option below to take effect. |
+    | [<samp>&nbsp;&nbsp;device_profiling</samp>](## "dot1x_settings.device_profiling") | Dictionary |  |  |  | Device profiling feature.<br>Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)<br>to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.<br>Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.enabled") | Boolean |  | `False` |  | Enable all DHCP and LLDP TLV profiling options. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp</samp>](## "dot1x_settings.device_profiling.dhcp") | Dictionary |  |  |  | DHCP options profiling.<br>Enables profiling via DHCP Discover/Request packets.<br>Limitations:<br>  - IPv4 only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.<br>  - Not supported on VTEP devices.<br>  - Not supported with IP Locking features.<br>  - MLAG support requires EOS 4.34.3+. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.enabled") | Boolean |  | `True` |  | Enable all DHCP profiling options collectively. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dot1x_settings.device_profiling.dhcp.hostname") | Dictionary |  |  |  | DHCP Option 12 (Hostname). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.hostname.enabled") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.dhcp.hostname.auth_only") | Boolean |  | `False` |  | Sends the attribute only once when first learned. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameter_request_list</samp>](## "dot1x_settings.device_profiling.dhcp.parameter_request_list") | Dictionary |  |  |  | DHCP Option 55 (Parameter Request List). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.parameter_request_list.enabled") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.dhcp.parameter_request_list.auth_only") | Boolean |  | `False` |  | Sends the attribute only once when first learned. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vendor_class_id</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id") | Dictionary |  |  |  | DHCP Option 60 (Vendor Class ID). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id.enabled") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id.auth_only") | Boolean |  | `False` |  | Sends the attribute only once when first learned. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lldp</samp>](## "dot1x_settings.device_profiling.lldp") | Dictionary |  |  |  | LLDP TLVs profiling.<br>Enables profiling via LLDP packets.<br>Requires LLDP to be globally enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.lldp.enabled") | Boolean |  | `True` |  | Enable all LLDP profiling options collectively. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_name</samp>](## "dot1x_settings.device_profiling.lldp.system_name") | Dictionary |  |  |  | LLDP system name (LLDP TLV 5). |
@@ -120,38 +123,55 @@
 
           # RADIUS User-Name attribute letter case to use on the MAC address.
           letter_case: <str; "lowercase" | "uppercase"; required>
+        delay: <int; 0-300>
+        hold_period: <int; 1-300>
       radius_av_pairs:
 
         # Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
         service_type: <bool; default=False>
-
-        # RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages.
-        dhcp:
-
-          # Hostname (DHCP Option 12).
-          hostname:
-            enabled: <bool; required>
-            auth_only: <bool>
-
-          # Parameters requested by host (DHCP Option 55).
-          parameter_request_list:
-            enabled: <bool; required>
-            auth_only: <bool>
-
-          # Vendor class identifier (DHCP Option 60).
-          vendor_class_id:
-            enabled: <bool; required>
-            auth_only: <bool>
         framed_mtu: <int; 68-9236>
 
       # Device profiling feature.
-      # Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs) to the RADIUS server
-      # using the Arista VSA "Arista-Device-Profiling" in accounting messages.
+      # Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+      # to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.
       # Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
       device_profiling:
 
-        # Master toggle to enable device profiling. Must be `true` for any profiling option below to take effect.
+        # Enable all DHCP and LLDP TLV profiling options.
         enabled: <bool; default=False>
+
+        # DHCP options profiling.
+        # Enables profiling via DHCP Discover/Request packets.
+        # Limitations:
+        #   - IPv4 only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.
+        #   - Not supported on VTEP devices.
+        #   - Not supported with IP Locking features.
+        #   - MLAG support requires EOS 4.34.3+.
+        dhcp:
+
+          # Enable all DHCP profiling options collectively.
+          enabled: <bool; default=True>
+
+          # DHCP Option 12 (Hostname).
+          hostname:
+            enabled: <bool; default=True>
+
+            # Sends the attribute only once when first learned.
+            auth_only: <bool; default=False>
+
+          # DHCP Option 55 (Parameter Request List).
+          parameter_request_list:
+            enabled: <bool; default=True>
+
+            # Sends the attribute only once when first learned.
+            auth_only: <bool; default=False>
+
+          # DHCP Option 60 (Vendor Class ID).
+          vendor_class_id:
+            enabled: <bool; default=True>
+
+            # Sends the attribute only once when first learned.
+            auth_only: <bool; default=False>
 
         # LLDP TLVs profiling.
         # Enables profiling via LLDP packets.

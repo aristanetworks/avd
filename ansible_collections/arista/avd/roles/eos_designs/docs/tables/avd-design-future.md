@@ -15,6 +15,8 @@
     | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Configure `inband_mgmt_vrf` for IPv6 inband management. |
     | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
+    | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
+    | [<samp>&nbsp;&nbsp;fix_radius_server_group_tls</samp>](## "avd_design_future.fix_radius_server_group_tls") | Boolean |  | `False` |  | Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations. |
 
 === "YAML"
 
@@ -43,4 +45,11 @@
 
       # Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
       only_configure_ipv6_inband_mgmt_prefix_list_when_used: <bool; default=False>
+
+      # Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
+      # and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
+      consistent_uplink_vlans: <bool; default=False>
+
+      # Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations.
+      fix_radius_server_group_tls: <bool; default=False>
     ```

@@ -35,8 +35,11 @@ dot1x:
         enabled: true
         auth_only: false
     dhcp:
-      parameter_request_list:
+      hostname:
         enabled: true
+        auth_only: false
+      parameter_request_list:
+        enabled: false
         auth_only: true
       vendor_class_id:
         enabled: true

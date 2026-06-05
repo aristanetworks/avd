@@ -187,8 +187,13 @@ keys:
                   - int
                 tls:
                   type: dict
-                  description: When TLS is configured, `key` and `cleartext_key` are
-                    ignored.
+                  description: 'When TLS is configured, `key` and `cleartext_key`
+                    are ignored.
+
+                    For proper functionality to render TLS settings on the
+
+                    server group member entry, set `avd_design_future.fix_radius_server_group_tls:
+                    true`.'
                   $ref: eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/tls
           vrfs:
             type: list
@@ -378,6 +383,19 @@ keys:
         description: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when
           it is needed.
         default: false
+      consistent_uplink_vlans:
+        type: bool
+        description: 'Always configure Port-Channel uplinks with consistent ''switchport
+          trunk allowed'' on both ends
+
+          and on all ''uplink_switches'' even when available VLANs differ between
+          the ''uplink_switches''.'
+        default: false
+      fix_radius_server_group_tls:
+        type: bool
+        default: false
+        description: Fix to configure TLS on RADIUS server group members to match
+          their global RADIUS server configurations.
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -2367,6 +2385,12 @@ keys:
                 valid_values:
                 - lowercase
                 - uppercase
+          delay:
+            type: int
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/mac_based_authentication/keys/delay
+          hold_period:
+            type: int
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/mac_based_authentication/keys/hold_period
       radius_av_pairs:
         type: dict
         keys:
@@ -2375,11 +2399,6 @@ keys:
             default: false
             description: Send RADIUS Service-Type attribute in Access-Request and
               Accounting messages.
-          dhcp:
-            type: dict
-            description: RADIUS AV pairs for DHCP options sent in Access-Request and
-              Accounting messages.
-            $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/dhcp
           framed_mtu:
             type: int
             $ref: eos_cli_config_gen#/keys/dot1x/keys/radius_av_pair/keys/framed_mtu
@@ -2388,9 +2407,9 @@ keys:
         description: 'Device profiling feature.
 
           Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
-          to the RADIUS server
 
-          using the Arista VSA "Arista-Device-Profiling" in accounting messages.
+          to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting
+          messages.
 
           Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode:
           start-stop`.'
@@ -2398,8 +2417,52 @@ keys:
           enabled:
             type: bool
             default: false
-            description: Master toggle to enable device profiling. Must be `true`
-              for any profiling option below to take effect.
+            description: Enable all DHCP and LLDP TLV profiling options.
+          dhcp:
+            type: dict
+            description: "DHCP options profiling.\nEnables profiling via DHCP Discover/Request
+              packets.\nLimitations:\n  - IPv4 only. IPv6 address assignments via
+              DHCPv6 or SLAAC are not supported.\n  - Not supported on VTEP devices.\n
+              \ - Not supported with IP Locking features.\n  - MLAG support requires
+              EOS 4.34.3+."
+            keys:
+              enabled:
+                type: bool
+                default: true
+                description: Enable all DHCP profiling options collectively.
+              hostname:
+                type: dict
+                description: DHCP Option 12 (Hostname).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Sends the attribute only once when first learned.
+              parameter_request_list:
+                type: dict
+                description: DHCP Option 55 (Parameter Request List).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Sends the attribute only once when first learned.
+              vendor_class_id:
+                type: dict
+                description: DHCP Option 60 (Vendor Class ID).
+                keys:
+                  enabled:
+                    type: bool
+                    default: true
+                  auth_only:
+                    type: bool
+                    default: false
+                    description: Sends the attribute only once when first learned.
           lldp:
             type: dict
             description: 'LLDP TLVs profiling.
@@ -3844,6 +3907,68 @@ keys:
       monitor_layer1:
         type: dict
         $ref: eos_cli_config_gen#/keys/monitor_layer1
+  mac_acls:
+    type: list
+    primary_key: name
+    description: 'MAC access-lists.
+
+      These can be referenced under `network_ports/connected_endpoints`.
+
+      A MAC ACL is only configured when it is referenced.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Access-list name.
+          convert_types:
+          - int
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          unique_keys:
+          - sequence
+          description: For each entry action or remark must be set.
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                - str
+              action:
+                type: str
+                valid_values:
+                - permit
+                - deny
+              remark:
+                type: str
+                description: 'Remark.
+
+                  Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+
+                  are ignored when `remark` is set.'
+              source:
+                type: str
+                description: 'Source mac-address.
+
+                  This can be `any` or a MAC address.'
+              source_wildcard:
+                type: str
+                description: 'Wildcard bits for source MAC address.
+
+                  Required when `source` is not `any`.'
+              destination:
+                type: str
+                description: 'Destination MAC address.
+
+                  This can be `any` or a MAC address.'
+              destination_wildcard:
+                type: str
+                description: 'Wildcard bits for destination MAC address.
+
+                  Required when `destination` is not `any`.'
   mac_address_table:
     documentation_options:
       table: system-settings
@@ -8754,13 +8879,16 @@ keys:
     documentation_options:
       table: fabric-settings
     description: "This feature allows pure IPv6 underlay routing protocol with numbered
-      addresses.\nCurrently sets both underlay and overlay, including MLAG, to use
-      IPv6 addresses.\nCurrently BGP peer-groups are named with IPv4 by default. This
-      can be modified under `bgp_peer_groups`.\nRequires:\n  - \"underlay_ipv6: true\"\n
-      \ - \"loopback_ipv6_pool\"\n  - \"underlay_routing_protocol: ebgp\"\nSome settings
-      are not yet supported with IPv6 underlay:\n  - underlay_multicast_pim_sm\n  -
-      underlay_multicast_rp_interfaces\n  - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n
-      \ - inband_ztp\n"
+      addresses.\nSets the underlay and overlay (EVPN) to use IPv6 addresses.\nCurrently
+      BGP peer-groups are named with IPv4 by default. This can be modified under `bgp_peer_groups`.\nRequires
+      (fabric-level):\n  - \"underlay_ipv6: true\"\n  - \"loopback_ipv6_pool\"\n  -
+      \"underlay_routing_protocol: ebgp\"\nRequires (node-level):\n  - \"uplink_ipv6_pool\"
+      (or `downlink_pools`)\n  - \"vtep_loopback_ipv6_pool\"\n  - \"router_id_pool\"\nFor
+      MLAG, the peer-link SVI uses IPv4 by default. To use IPv6, also set on the MLAG
+      nodes:\n  - \"mlag_peer_address_family: ipv6\"\n  - \"mlag_peer_ipv6_pool\"\n
+      \ - \"mlag_peer_l3_ipv6_pool\"\nSome settings are not yet supported with IPv6
+      underlay:\n  - underlay_multicast_pim_sm\n  - underlay_multicast_rp_interfaces\n
+      \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
     type: bool
     default: false
   underlay_isis_authentication_cleartext_key:
@@ -9105,12 +9233,13 @@ keys:
   validation_profiles:
     type: list
     primary_key: name
-    description: 'List of validation profiles defining hardware, logging, and fabric-related
-      validation rules.
+    description: 'List of validation profiles used to customize the default test catalog
+      generated by the `anta_runner` role for a device.
 
-      Validation profiles can be referenced from node definitions (for example under
-      `l3leaf.nodes[].validation_profile`) and support single-level inheritance using
-      `parent_profile`.'
+      These profiles modify test behavior and do not affect device configuration.
+
+      Validation profiles can be referenced from node definitions (e.g., `l3leaf.nodes[].validation_profile`)
+      and support single-level inheritance using `parent_profile`.'
     items:
       type: dict
       keys:
@@ -9163,7 +9292,10 @@ keys:
                 Set to 0 to skip validation.
             transceiver_manufacturers:
               type: list
-              description: List of approved transceiver manufacturers for the device.
+              description: 'List of approved transceiver manufacturers for the device.
+
+                Include "Not Present" to allow ports with no transceiver to successfully
+                pass validation.'
               items:
                 type: str
               default:
@@ -9910,6 +10042,14 @@ $defs:
           '
         convert_types:
         - int
+      mac_acl_in:
+        type: str
+        description: MAC access-list to apply in the ingress direction. The ACL must
+          be defined in `mac_acls`.
+      mac_acl_out:
+        type: str
+        description: MAC access-list to apply in the egress direction. The ACL must
+          be defined in `mac_acls`.
       spanning_tree_portfast:
         type: str
         valid_values:
@@ -11070,6 +11210,7 @@ $defs:
             - port-channel
             - p2p-vrfs
             - lan
+            - l2-ethernet
             description: 'Override the default `uplink_type` set at the `node_type_key`
               level.
 
@@ -12170,7 +12311,7 @@ $defs:
             documentation_options:
               table: node-type-inband-management-configuration
             description: 'VLAN number used for inband management on L2 switches (switches
-              using port-channel trunks as uplinks).
+              using L2 trunks as uplinks).
 
               When using ''inband_mgmt_subnet'' the VLAN and SVIs will be created
               automatically on this switch as well as all ''uplink_switches''.
@@ -12186,7 +12327,7 @@ $defs:
             documentation_options:
               table: node-type-inband-management-configuration
             description: 'Optional IP subnet assigned to inband management SVIs on
-              L2 switches (switches using port-channels as uplinks).
+              L2 switches (switches using L2 trunks as uplinks).
 
               Parent l3leafs will have SVI with "ip virtual-router" and host-route
               injection based on ARP.
@@ -12212,8 +12353,8 @@ $defs:
               Setting is ignored if ''inband_mgmt_ip'' is set.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12247,8 +12388,8 @@ $defs:
               services data models.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12261,8 +12402,8 @@ $defs:
               if set.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12284,8 +12425,8 @@ $defs:
               services data models.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12320,8 +12461,8 @@ $defs:
               Setting is ignored if ''inband_mgmt_ipv6_address'' is set.
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -12337,8 +12478,8 @@ $defs:
               used as gateway).
 
 
-              This setting is applicable to L2 switches (switches using port-channel
-              trunks as uplinks).
+              This setting is applicable to L2 switches (switches using L2 trunks
+              as uplinks).
 
               '
             type: str
@@ -13219,6 +13360,7 @@ $defs:
           - port-channel
           - p2p-vrfs
           - lan
+          - l2-ethernet
           default: p2p
           description: '`uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep`
             or `underlay_router` is true.
@@ -13249,7 +13391,21 @@ $defs:
             subinterfaces for each SVI defined under the VRFs in `network_services`
             as long as the uplink switch also
 
-            has the VLAN permitted by tag/tenant filtering.'
+            has the VLAN permitted by tag/tenant filtering.
+
+
+            `port-channel` and `l2-ethernet` options configures L2 trunks carrying
+            all active VLANs permitted by tag/tenant filtering.
+
+            VLAN propagation across L2 fabric links is calculated from uplink definitions
+            only.
+
+            For ring topologies, define each ring link as an uplink in both directions;
+            downstream links are not considered.
+
+            To propagate VLANs across a non-hierarchical L2 topology, such as a ring
+            or lateral L2 link, configure the link as an uplink on both neighboring
+            switches.'
         vtep:
           type: bool
           default: false

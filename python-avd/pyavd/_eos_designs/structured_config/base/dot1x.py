@@ -94,8 +94,6 @@ class Dot1xMixin(Protocol):
         )
         if dot1x_settings.radius_av_pairs.service_type is True:
             self.structured_config.dot1x.radius_av_pair.service_type = True
-        if dot1x_settings.radius_av_pairs.dhcp:
-            self.structured_config.dot1x.radius_av_pair.dhcp = dot1x_settings.radius_av_pairs.dhcp
         if dot1x_settings.radius_av_pairs.framed_mtu:
             self.structured_config.dot1x.radius_av_pair.framed_mtu = dot1x_settings.radius_av_pairs.framed_mtu
         if dot1x_settings.mac_based_authentication.username_format:
@@ -103,15 +101,15 @@ class Dot1xMixin(Protocol):
                 delimiter=dot1x_settings.mac_based_authentication.username_format.delimiter,
                 mac_string_case=dot1x_settings.mac_based_authentication.username_format.letter_case,
             )
+        self.structured_config.dot1x.mac_based_authentication._update(
+            delay=dot1x_settings.mac_based_authentication.delay, hold_period=dot1x_settings.mac_based_authentication.hold_period
+        )
 
-    def _configure_dot1x_device_profiling(self: AvdStructuredConfigBaseProtocol, dot1x_settings: EosDesigns.Dot1xSettings) -> None:
-        """
-        Configure 802.1X device profiling settings.
-
-        Device profiling sends learned host attributes (LLDP TLVs) to the RADIUS server using the
-        Arista VSA "Arista-Device-Profiling" in accounting messages, which requires Accounting
-        Interim-Updates to be enabled.
-        """
+    def _configure_dot1x_device_profiling(
+        self: AvdStructuredConfigBaseProtocol,
+        dot1x_settings: EosDesigns.Dot1xSettings,
+    ) -> None:
+        """Configure 802.1X device profiling."""
         device_profiling = dot1x_settings.device_profiling
         if not device_profiling.enabled:
             return
@@ -119,20 +117,43 @@ class Dot1xMixin(Protocol):
         if not dot1x_settings.accounting.enabled or dot1x_settings.accounting.mode != "start-stop":
             msg = (
                 "'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and "
-                "'dot1x_settings.accounting.mode: start-stop'. Device profiling depends on Accounting Interim-Updates."
+                "'dot1x_settings.accounting.mode: start-stop' since the feature relies on Interim-Update accounting messages."
             )
             raise AristaAvdInvalidInputsError(msg)
 
-        if not device_profiling.lldp.enabled:
-            return
+        dhcp_settings = device_profiling.dhcp
+        if dhcp_settings.enabled:
+            if self.shared_utils.vtep:
+                msg = "'dot1x_settings.device_profiling.dhcp' is not supported on VTEP devices."
+                raise AristaAvdInvalidInputsError(msg)
 
-        if device_profiling.lldp.system_name.enabled:
-            self.structured_config.dot1x.radius_av_pair.lldp.system_name.enabled = True
-            self.structured_config.dot1x.radius_av_pair.lldp.system_name.auth_only = device_profiling.lldp.system_name.auth_only
+            address_locking_settings = self.inputs.address_locking_settings
+            if address_locking_settings and not address_locking_settings.disabled:
+                msg = "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
+                raise AristaAvdInvalidInputsError(msg)
 
-        if device_profiling.lldp.system_description.enabled:
-            self.structured_config.dot1x.radius_av_pair.lldp.system_description.enabled = True
-            self.structured_config.dot1x.radius_av_pair.lldp.system_description.auth_only = device_profiling.lldp.system_description.auth_only
+            self.structured_config.dot1x.radius_av_pair.dhcp = EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp(
+                hostname=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.Hostname(
+                    enabled=dhcp_settings.hostname.enabled,
+                    auth_only=dhcp_settings.hostname.auth_only,
+                ),
+                parameter_request_list=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.ParameterRequestList(
+                    enabled=dhcp_settings.parameter_request_list.enabled,
+                    auth_only=dhcp_settings.parameter_request_list.auth_only,
+                ),
+                vendor_class_id=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.VendorClassId(
+                    enabled=dhcp_settings.vendor_class_id.enabled,
+                    auth_only=dhcp_settings.vendor_class_id.auth_only,
+                ),
+            )
+        if device_profiling.lldp.enabled:
+            if device_profiling.lldp.system_name.enabled:
+                self.structured_config.dot1x.radius_av_pair.lldp.system_name.enabled = True
+                self.structured_config.dot1x.radius_av_pair.lldp.system_name.auth_only = device_profiling.lldp.system_name.auth_only
+
+            if device_profiling.lldp.system_description.enabled:
+                self.structured_config.dot1x.radius_av_pair.lldp.system_description.enabled = True
+                self.structured_config.dot1x.radius_av_pair.lldp.system_description.auth_only = device_profiling.lldp.system_description.auth_only
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,
