@@ -1807,7 +1807,7 @@ ip nat synchronization
 | Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
 | ----- | ----------------- | ---------------- | --------------------------- |
 | acl | False | - | - |
-| arp-inspection | False | True | - |
+| arp-inspection | False | False | - |
 | bpduguard | - | True | - |
 | dot1x | False | - | - |
 | dot1x-coa | False | - | - |
@@ -1815,19 +1815,19 @@ ip nat synchronization
 | dot1x-session-replace | False | - | - |
 | error-correction-encoding | False | - | - |
 | hardware-speed-group | False | - | - |
-| hitless-reload-down | - | True | - |
+| hitless-reload-down | - | False | - |
 | interface-speed | False | - | - |
 | internal-error | False | - | - |
 | lacp-rate-limit | - | True | - |
 | link-change | False | - | - |
 | link-flap | - | True | - |
-| no-internal-vlan | - | True | - |
+| no-internal-vlan | - | False | - |
 | port-breakout | False | - | - |
 | portchannelguard | - | True | - |
 | portsec | - | True | - |
 | storm-control | False | - | - |
 | switchcard-unreachable | False | - | - |
-| tapagg | False | True | - |
+| tapagg | False | False | - |
 | transceiver-adapter | False | - | - |
 | uplink-failure-detection | - | True | - |
 | xcvr-misconfigured | False | - | - |
@@ -1855,15 +1855,15 @@ no errdisable detect cause transceiver-adapter
 no errdisable detect cause xcvr-misconfigured
 no errdisable detect cause xcvr-overheat
 no errdisable detect cause xcvr-power-unsupported
-errdisable recovery cause arp-inspection
+no errdisable recovery cause arp-inspection
 errdisable recovery cause bpduguard
-errdisable recovery cause hitless-reload-down
+no errdisable recovery cause hitless-reload-down
 errdisable recovery cause lacp-rate-limit
 errdisable recovery cause link-flap
-errdisable recovery cause no-internal-vlan
+no errdisable recovery cause no-internal-vlan
 errdisable recovery cause portchannelguard
 errdisable recovery cause portsec
-errdisable recovery cause tapagg
+no errdisable recovery cause tapagg
 errdisable recovery cause uplink-failure-detection
 ```
 

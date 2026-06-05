@@ -24,20 +24,20 @@ errdisable:
     bpduguard:
       enabled: true
     arp_inspection:
-      enabled: true
+      enabled: false
     portsec:
       enabled: true
     hitless_reload_down:
-      enabled: true
+      enabled: false
     lacp_rate_limit:
       enabled: true
     link_flap:
       enabled: true
     no_internal_vlan:
-      enabled: true
+      enabled: false
     portchannelguard:
       enabled: true
     tapagg:
-      enabled: true
+      enabled: false
     uplink_failure_detection:
       enabled: true

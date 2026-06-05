@@ -484,7 +484,7 @@ Errdisable recovery timer interval: 300 seconds
 | Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
 | ----- | ----------------- | ---------------- | --------------------------- |
 | acl | - | False | - |
-| arp-inspection | - | False | - |
+| arp-inspection | - | True | - |
 | bpduguard | - | False | - |
 | dot1x | - | False | 500 |
 | dot1x-coa | - | False | - |
@@ -493,12 +493,12 @@ Errdisable recovery timer interval: 300 seconds
 | error-correction-encoding | - | False | - |
 | fabric-capacity-low | - | False | - |
 | hardware-speed-group | - | False | - |
-| hitless-reload-down | - | False | - |
+| hitless-reload-down | - | True | - |
 | interface-speed | - | False | - |
 | internal-error | - | False | - |
 | lacp-rate-limit | - | False | - |
 | link-flap | - | False | - |
-| no-internal-vlan | - | False | - |
+| no-internal-vlan | - | True | - |
 | port-breakout | - | False | - |
 | portchannelguard | - | False | 600 |
 | portsec | - | False | - |
@@ -507,7 +507,7 @@ Errdisable recovery timer interval: 300 seconds
 | stuck-queue | - | False | - |
 | switchcard-unreachable | - | False | - |
 | tap-port-init | - | False | - |
-| tapagg | - | False | - |
+| tapagg | - | True | - |
 | tpid | - | False | - |
 | transceiver-adapter | - | False | - |
 | uplink-failure-detection | - | False | - |
@@ -519,28 +519,30 @@ Errdisable recovery timer interval: 300 seconds
 ```eos
 !
 no errdisable recovery cause acl
-no errdisable recovery cause arp-inspection
+errdisable recovery cause arp-inspection
 no errdisable recovery cause bpduguard
+no errdisable recovery cause dot1x
 no errdisable recovery cause dot1x-coa
 no errdisable recovery cause dot1x-phone-classification
 no errdisable recovery cause dot1x-session-replace
 no errdisable recovery cause error-correction-encoding
 no errdisable recovery cause fabric-capacity-low
 no errdisable recovery cause hardware-speed-group
-no errdisable recovery cause hitless-reload-down
+errdisable recovery cause hitless-reload-down
 no errdisable recovery cause interface-speed
 no errdisable recovery cause internal-error
 no errdisable recovery cause lacp-rate-limit
 no errdisable recovery cause link-flap
-no errdisable recovery cause no-internal-vlan
+errdisable recovery cause no-internal-vlan
 no errdisable recovery cause port-breakout
+no errdisable recovery cause portchannelguard
 no errdisable recovery cause portsec
 no errdisable recovery cause speed-misconfigured
 no errdisable recovery cause storm-control
 no errdisable recovery cause stuck-queue
 no errdisable recovery cause switchcard-unreachable
 no errdisable recovery cause tap-port-init
-no errdisable recovery cause tapagg
+errdisable recovery cause tapagg
 no errdisable recovery cause tpid
 no errdisable recovery cause transceiver-adapter
 no errdisable recovery cause uplink-failure-detection

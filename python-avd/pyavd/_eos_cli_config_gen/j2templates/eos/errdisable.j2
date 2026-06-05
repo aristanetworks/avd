@@ -21,13 +21,9 @@ errdisable detect cause {{ cause }}
 {%     endfor %}
 {%     for cause_key in errdisable.recovery_cause | arista.avd.natural_sort %}
 {%         set cause_value = errdisable.recovery_cause[cause_key] %}
-{%         if cause_value.interval is not arista.avd.defined and cause_value.enabled is arista.avd.defined(false) %}
+{%         if cause_value.enabled is arista.avd.defined(false) %}
 no errdisable recovery cause {{ cause_key | replace('_', '-') }}
-{%         endif %}
-{%     endfor %}
-{%     for cause_key in errdisable.recovery_cause | arista.avd.natural_sort %}
-{%         set cause_value = errdisable.recovery_cause[cause_key] %}
-{%         if cause_value.interval is not arista.avd.defined and cause_value.enabled is arista.avd.defined(true) %}
+{%         elif cause_value.enabled is arista.avd.defined(true) %}
 errdisable recovery cause {{ cause_key | replace('_', '-') }}
 {%         endif %}
 {%     endfor %}

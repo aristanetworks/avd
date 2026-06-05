@@ -13772,6 +13772,8 @@ errdisable detect cause xcvr-overheat
 errdisable detect cause xcvr-power-unsupported
 errdisable recovery cause acl
 errdisable recovery cause arp-inspection
+errdisable recovery cause bpduguard
+errdisable recovery cause dot1x
 errdisable recovery cause dot1x-coa
 errdisable recovery cause dot1x-phone-classification
 errdisable recovery cause dot1x-session-replace

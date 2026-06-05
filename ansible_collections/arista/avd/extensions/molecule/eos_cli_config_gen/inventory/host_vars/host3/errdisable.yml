@@ -4,7 +4,7 @@ errdisable:
     acl:
       enabled: false
     arp_inspection:
-      enabled: false
+      enabled: true
     bpduguard:
       enabled: false
     dot1x:
@@ -23,7 +23,7 @@ errdisable:
     hardware_speed_group:
       enabled: false
     hitless_reload_down:
-      enabled: false
+      enabled: true
     interface_speed:
       enabled: false
     internal_error:
@@ -33,7 +33,7 @@ errdisable:
     link_flap:
       enabled: false
     no_internal_vlan:
-      enabled: false
+      enabled: true
     port_breakout:
       enabled: false
     portchannelguard:
@@ -52,7 +52,7 @@ errdisable:
     tap_port_init:
       enabled: false
     tapagg:
-      enabled: false
+      enabled: true
     tpid:
       enabled: false
     transceiver_adapter:
