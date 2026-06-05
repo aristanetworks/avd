@@ -54,13 +54,18 @@ cvx
       name-resolution interval {{ cvx.services.openstack.name_resolution.interval }}
 {%         endif %}
 {%         for region in cvx.services.openstack.regions | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%             set region_has_settings = (
+                  region.username is arista.avd.defined and region.password is arista.avd.defined and region.tenant is arista.avd.defined
+              ) or region.keystone.auth_url is arista.avd.defined %}
+{%             if region_has_settings %}
       !
       region {{ region.name }}
-{%             if region.username is arista.avd.defined and region.password is arista.avd.defined and region.password_type is arista.avd.defined and region.tenant is arista.avd.defined %}
+{%                 if region.username is arista.avd.defined and region.password is arista.avd.defined and region.tenant is arista.avd.defined %}
          username {{ region.username }} tenant {{ region.tenant }} password {{ region.password_type | arista.avd.default("7") }} {{ region.password }}
-{%             endif %}
-{%             if region.keystone.auth_url is arista.avd.defined %}
+{%                 endif %}
+{%                 if region.keystone.auth_url is arista.avd.defined %}
          keystone auth-url {{ region.keystone.auth_url }}
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}

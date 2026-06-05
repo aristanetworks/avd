@@ -42,3 +42,5 @@ cvx:
         - name: REGION_5
           keystone:
             auth_url: http://keystone.legacy.net:8123/v2.0/
+        # empty region, not rendered
+        - name: REGION_4
