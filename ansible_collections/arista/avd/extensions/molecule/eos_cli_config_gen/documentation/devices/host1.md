@@ -1313,7 +1313,7 @@ CVX is enabled
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | True | Redis Password Set |
-| OpenStack | True | Regions: REGION_1, REGION_2, REGION_5 |
+| OpenStack | True | Regions: REGION_1, REGION_2, REGION_3, REGION_5 |
 | VXLAN | True | VTEP MAC learning: control-plane |
 
 ### CVX Device Configuration
@@ -1344,6 +1344,9 @@ cvx
       region REGION_2
          username BOB tenant TEST_2 password 7 11243C44
          keystone auth-url https://10.10.10.2/v3/
+      !
+      region REGION_3
+         keystone auth-url https://10.10.10.3:5000/v3/
       !
       region REGION_5
          keystone auth-url http://keystone.legacy.net:8123/v2.0/
