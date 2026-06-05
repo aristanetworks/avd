@@ -1625,6 +1625,11 @@ router pim sparse-mode
 | ---- | ----- | --------- |
 | Service Type | - | - |
 | Framed MTU | 1500 | - |
+| LLDP System-name | - | No |
+| LLDP System-description | - | No |
+| DHCP Hostname | - | No |
+| DHCP Parameter Request List | - | No |
+| DHCP Vendor Class ID | - | No |
 
 #### Dot1x Configuration
 
@@ -1634,6 +1639,11 @@ dot1x
    aaa unresponsive action traffic allow
    radius av-pair service-type
    radius av-pair framed-mtu 1500
+   radius av-pair lldp system-name
+   radius av-pair lldp system-description
+   radius av-pair dhcp hostname
+   radius av-pair dhcp parameter-request-list
+   radius av-pair dhcp vendor-class-id
 !
 dot1x system-auth-control
 dot1x protocol lldp bypass
