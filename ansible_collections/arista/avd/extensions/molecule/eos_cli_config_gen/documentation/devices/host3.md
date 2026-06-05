@@ -518,6 +518,38 @@ Errdisable recovery timer interval: 300 seconds
 
 ```eos
 !
+no errdisable recovery cause acl
+no errdisable recovery cause arp-inspection
+no errdisable recovery cause bpduguard
+no errdisable recovery cause dot1x-coa
+no errdisable recovery cause dot1x-phone-classification
+no errdisable recovery cause dot1x-session-replace
+no errdisable recovery cause error-correction-encoding
+no errdisable recovery cause fabric-capacity-low
+no errdisable recovery cause hardware-speed-group
+no errdisable recovery cause hitless-reload-down
+no errdisable recovery cause interface-speed
+no errdisable recovery cause internal-error
+no errdisable recovery cause lacp-rate-limit
+no errdisable recovery cause link-flap
+no errdisable recovery cause no-internal-vlan
+no errdisable recovery cause port-breakout
+no errdisable recovery cause portsec
+no errdisable recovery cause speed-misconfigured
+no errdisable recovery cause storm-control
+no errdisable recovery cause stuck-queue
+no errdisable recovery cause switchcard-unreachable
+no errdisable recovery cause tap-port-init
+no errdisable recovery cause tapagg
+no errdisable recovery cause tpid
+no errdisable recovery cause transceiver-adapter
+no errdisable recovery cause uplink-failure-detection
+no errdisable recovery cause xcvr-misconfigured
+no errdisable recovery cause xcvr-overheat
+no errdisable recovery cause xcvr-power-unsupported
+no errdisable recovery cause xcvr-unsupported
+errdisable recovery cause dot1x interval 500
+errdisable recovery cause portchannelguard interval 600
 errdisable recovery interval 300
 ```
 

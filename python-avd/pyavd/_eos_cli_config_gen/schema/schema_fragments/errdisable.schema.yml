@@ -190,7 +190,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for ACL errors.
               interval:
                 type: int
@@ -205,7 +204,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for ARP inspection errors.
               interval:
                 type: int
@@ -220,7 +218,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for BPDU guard errors.
               interval:
                 type: int
@@ -235,7 +232,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for 802.1X errors.
               interval:
                 type: int
@@ -250,7 +246,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for 802.1X Change of Authorization errors.
               interval:
                 type: int
@@ -265,7 +260,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for 802.1X phone classification errors.
               interval:
                 type: int
@@ -280,7 +274,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for 802.1X session replace errors.
               interval:
                 type: int
@@ -295,7 +288,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for error correction encoding errors.
               interval:
                 type: int
@@ -310,7 +302,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for fabric capacity low errors.
               interval:
                 type: int
@@ -325,7 +316,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for hardware speed group errors.
               interval:
                 type: int
@@ -340,7 +330,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for hitless reload down errors.
               interval:
                 type: int
@@ -355,7 +344,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for interface speed errors.
               interval:
                 type: int
@@ -370,7 +358,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for internal errors.
               interval:
                 type: int
@@ -385,7 +372,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for LACP rate limit errors.
               interval:
                 type: int
@@ -400,7 +386,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for link flap errors.
               interval:
                 type: int
@@ -415,7 +400,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for no internal VLAN errors.
               interval:
                 type: int
@@ -430,7 +414,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for port breakout errors.
               interval:
                 type: int
@@ -445,7 +428,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for port-channel guard errors.
               interval:
                 type: int
@@ -460,7 +442,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for port security errors.
               interval:
                 type: int
@@ -475,7 +456,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for speed misconfigured errors.
               interval:
                 type: int
@@ -490,7 +470,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for storm control errors.
               interval:
                 type: int
@@ -505,7 +484,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for stuck queue errors.
               interval:
                 type: int
@@ -520,7 +498,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for switchcard unreachable errors.
               interval:
                 type: int
@@ -535,7 +512,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for tap port init errors.
               interval:
                 type: int
@@ -550,7 +526,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for tap aggregation errors.
               interval:
                 type: int
@@ -565,7 +540,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for TPID errors.
               interval:
                 type: int
@@ -580,7 +554,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for transceiver adapter errors.
               interval:
                 type: int
@@ -595,7 +568,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for uplink failure detection errors.
               interval:
                 type: int
@@ -610,7 +582,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for transceiver misconfiguration errors.
               interval:
                 type: int
@@ -625,7 +596,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for transceiver overheat errors.
               interval:
                 type: int
@@ -640,7 +610,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for unsupported transceiver power errors.
               interval:
                 type: int
@@ -655,7 +624,6 @@ keys:
             keys:
               enabled:
                 type: bool
-                required: true
                 description: Enable recovery for unsupported transceiver errors.
               interval:
                 type: int

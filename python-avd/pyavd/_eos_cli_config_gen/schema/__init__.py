@@ -6671,14 +6671,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for ACL errors."""
                 interval: int | None
                 """Interval for ACL recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Acl.
 
@@ -6695,14 +6695,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for ARP inspection errors."""
                 interval: int | None
                 """Interval for ARP inspection recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         ArpInspection.
 
@@ -6719,14 +6719,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for BPDU guard errors."""
                 interval: int | None
                 """Interval for BPDU guard recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Bpduguard.
 
@@ -6743,14 +6743,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for 802.1X errors."""
                 interval: int | None
                 """Interval for 802.1X recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1x.
 
@@ -6767,14 +6767,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for 802.1X Change of Authorization errors."""
                 interval: int | None
                 """Interval for 802.1X Change of Authorization recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1xCoa.
 
@@ -6791,14 +6791,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for 802.1X phone classification errors."""
                 interval: int | None
                 """Interval for 802.1X phone classification recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1xPhoneClassification.
 
@@ -6815,14 +6815,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for 802.1X session replace errors."""
                 interval: int | None
                 """Interval for 802.1X session replace recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Dot1xSessionReplace.
 
@@ -6839,14 +6839,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for error correction encoding errors."""
                 interval: int | None
                 """Interval for error correction encoding recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         ErrorCorrectionEncoding.
 
@@ -6863,14 +6863,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for fabric capacity low errors."""
                 interval: int | None
                 """Interval for fabric capacity low recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         FabricCapacityLow.
 
@@ -6887,14 +6887,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for hardware speed group errors."""
                 interval: int | None
                 """Interval for hardware speed group recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         HardwareSpeedGroup.
 
@@ -6911,14 +6911,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for hitless reload down errors."""
                 interval: int | None
                 """Interval for hitless reload down recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         HitlessReloadDown.
 
@@ -6935,14 +6935,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for interface speed errors."""
                 interval: int | None
                 """Interval for interface speed recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         InterfaceSpeed.
 
@@ -6959,14 +6959,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for internal errors."""
                 interval: int | None
                 """Interval for internal error recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         InternalError.
 
@@ -6983,14 +6983,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for LACP rate limit errors."""
                 interval: int | None
                 """Interval for LACP rate limit recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         LacpRateLimit.
 
@@ -7007,14 +7007,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for link flap errors."""
                 interval: int | None
                 """Interval for link flap recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         LinkFlap.
 
@@ -7031,14 +7031,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for no internal VLAN errors."""
                 interval: int | None
                 """Interval for no internal VLAN recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         NoInternalVlan.
 
@@ -7055,14 +7055,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for port breakout errors."""
                 interval: int | None
                 """Interval for port breakout recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         PortBreakout.
 
@@ -7079,14 +7079,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for port-channel guard errors."""
                 interval: int | None
                 """Interval for port-channel guard recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Portchannelguard.
 
@@ -7103,14 +7103,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for port security errors."""
                 interval: int | None
                 """Interval for port security recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Portsec.
 
@@ -7127,14 +7127,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for speed misconfigured errors."""
                 interval: int | None
                 """Interval for speed misconfigured recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         SpeedMisconfigured.
 
@@ -7151,14 +7151,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for storm control errors."""
                 interval: int | None
                 """Interval for storm control recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         StormControl.
 
@@ -7175,14 +7175,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for stuck queue errors."""
                 interval: int | None
                 """Interval for stuck queue recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         StuckQueue.
 
@@ -7199,14 +7199,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for switchcard unreachable errors."""
                 interval: int | None
                 """Interval for switchcard unreachable recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         SwitchcardUnreachable.
 
@@ -7223,14 +7223,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for tap port init errors."""
                 interval: int | None
                 """Interval for tap port init recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         TapPortInit.
 
@@ -7247,14 +7247,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for tap aggregation errors."""
                 interval: int | None
                 """Interval for tap aggregation recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Tapagg.
 
@@ -7271,14 +7271,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for TPID errors."""
                 interval: int | None
                 """Interval for TPID recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         Tpid.
 
@@ -7295,14 +7295,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for transceiver adapter errors."""
                 interval: int | None
                 """Interval for transceiver adapter recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         TransceiverAdapter.
 
@@ -7319,14 +7319,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for uplink failure detection errors."""
                 interval: int | None
                 """Interval for uplink failure detection recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         UplinkFailureDetection.
 
@@ -7343,14 +7343,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for transceiver misconfiguration errors."""
                 interval: int | None
                 """Interval for transceiver misconfiguration recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         XcvrMisconfigured.
 
@@ -7367,14 +7367,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for transceiver overheat errors."""
                 interval: int | None
                 """Interval for transceiver overheat recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         XcvrOverheat.
 
@@ -7391,14 +7391,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for unsupported transceiver power errors."""
                 interval: int | None
                 """Interval for unsupported transceiver power recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         XcvrPowerUnsupported.
 
@@ -7415,14 +7415,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
-                enabled: bool
+                enabled: bool | None
                 """Enable recovery for unsupported transceiver errors."""
                 interval: int | None
                 """Interval for unsupported transceiver recovery in seconds."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                         """
                         XcvrUnsupported.
 
