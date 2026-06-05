@@ -2417,6 +2417,7 @@ keys:
           enabled:
             type: bool
             default: false
+            description: Enable all profiling (DHCP/LLDP TLVs) options.
           dhcp:
             type: dict
             description: "DHCP options profiling.\nEnables profiling via DHCP Discover/Request
