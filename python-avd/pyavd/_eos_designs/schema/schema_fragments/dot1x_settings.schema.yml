@@ -159,7 +159,6 @@ keys:
                   enabled:
                     type: bool
                     default: true
-                    description: Send the hostname attribute.
                   auth_only:
                     type: bool
                     default: false
