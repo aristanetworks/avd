@@ -1,0 +1,24 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: dot1x-device-profiling-dhcp-accounting-disabled
+      mgmt_ip: 192.168.0.2/24
+
+dot1x_settings:
+  enabled: true
+  accounting:
+    enabled: false
+  device_profiling:
+    enabled: true
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key
+
+expected_error_message: >-
+  'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and
+  'dot1x_settings.accounting.mode: start-stop' since the feature relies on Interim-Update accounting messages.
