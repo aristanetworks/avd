@@ -124,7 +124,7 @@ class Dot1xMixin(Protocol):
         dhcp_settings = device_profiling.dhcp
         if dhcp_settings.enabled:
             if self.shared_utils.vtep:
-                msg = "'dot1x_settings.device_profiling' is not supported on VTEP devices."
+                msg = "'dot1x_settings.device_profiling.dhcp' is not supported on VTEP devices."
                 raise AristaAvdInvalidInputsError(msg)
 
             address_locking_settings = self.inputs.address_locking_settings
