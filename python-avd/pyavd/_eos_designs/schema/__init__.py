@@ -18364,7 +18364,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "dhcp": {"type": Dhcp}}
             enabled: bool
             """
-            Enable all profiling (DHCP/LLDP TLVs) options.
+            Enable all DHCP and LLDP TLV profiling options.
 
             Default value: `False`
             """
@@ -18392,7 +18392,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        enabled: Enable all profiling (DHCP/LLDP TLVs) options.
+                        enabled: Enable all DHCP and LLDP TLV profiling options.
                         dhcp:
                            DHCP options profiling.
                            Enables profiling via DHCP Discover/Request packets.

@@ -35,7 +35,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x_settings.radius_av_pairs.service_type") | Boolean |  | `False` |  | Send RADIUS Service-Type attribute in Access-Request and Accounting messages. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x_settings.radius_av_pairs.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
     | [<samp>&nbsp;&nbsp;device_profiling</samp>](## "dot1x_settings.device_profiling") | Dictionary |  |  |  | Device profiling feature.<br>Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)<br>to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.<br>Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.enabled") | Boolean |  | `False` |  | Enable all profiling (DHCP/LLDP TLVs) options. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.enabled") | Boolean |  | `False` |  | Enable all DHCP and LLDP TLV profiling options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp</samp>](## "dot1x_settings.device_profiling.dhcp") | Dictionary |  |  |  | DHCP options profiling.<br>Enables profiling via DHCP Discover/Request packets.<br>Limitations:<br>  - IPv4 only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.<br>  - Not supported on VTEP devices.<br>  - Not supported with IP Locking features.<br>  - MLAG support requires EOS 4.34.3+. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.enabled") | Boolean |  | `True` |  | Enable all DHCP profiling options collectively. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dot1x_settings.device_profiling.dhcp.hostname") | Dictionary |  |  |  | DHCP Option 12 (Hostname). |
@@ -129,7 +129,7 @@
       # Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
       device_profiling:
 
-        # Enable all profiling (DHCP/LLDP TLVs) options.
+        # Enable all DHCP and LLDP TLV profiling options.
         enabled: <bool; default=False>
 
         # DHCP options profiling.
