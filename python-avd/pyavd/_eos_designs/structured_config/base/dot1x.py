@@ -121,8 +121,7 @@ class Dot1xMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg)
 
-        dhcp_settings = device_profiling.dhcp
-        if dhcp_settings.enabled:
+        if device_profiling.dhcp.enabled:
             if self.shared_utils.vtep:
                 msg = "'dot1x_settings.device_profiling.dhcp' is not supported on VTEP devices."
                 raise AristaAvdInvalidInputsError(msg)
@@ -132,20 +131,18 @@ class Dot1xMixin(Protocol):
                 msg = "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
                 raise AristaAvdInvalidInputsError(msg)
 
-            self.structured_config.dot1x.radius_av_pair.dhcp = EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp(
-                hostname=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.Hostname(
-                    enabled=dhcp_settings.hostname.enabled,
-                    auth_only=dhcp_settings.hostname.auth_only,
-                ),
-                parameter_request_list=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.ParameterRequestList(
-                    enabled=dhcp_settings.parameter_request_list.enabled,
-                    auth_only=dhcp_settings.parameter_request_list.auth_only,
-                ),
-                vendor_class_id=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.VendorClassId(
-                    enabled=dhcp_settings.vendor_class_id.enabled,
-                    auth_only=dhcp_settings.vendor_class_id.auth_only,
-                ),
-            )
+            if device_profiling.dhcp.hostname.enabled:
+                self.structured_config.dot1x.radius_av_pair.dhcp.hostname.enabled = True
+                self.structured_config.dot1x.radius_av_pair.dhcp.hostname.auth_only = device_profiling.dhcp.hostname.auth_only
+
+            if device_profiling.dhcp.parameter_request_list.enabled:
+                self.structured_config.dot1x.radius_av_pair.dhcp.parameter_request_list.enabled = True
+                self.structured_config.dot1x.radius_av_pair.dhcp.parameter_request_list.auth_only = device_profiling.dhcp.parameter_request_list.auth_only
+
+            if device_profiling.dhcp.vendor_class_id.enabled:
+                self.structured_config.dot1x.radius_av_pair.dhcp.vendor_class_id.enabled = True
+                self.structured_config.dot1x.radius_av_pair.dhcp.vendor_class_id.auth_only = device_profiling.dhcp.vendor_class_id.auth_only
+
         if device_profiling.lldp.enabled:
             if device_profiling.lldp.system_name.enabled:
                 self.structured_config.dot1x.radius_av_pair.lldp.system_name.enabled = True

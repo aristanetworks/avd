@@ -26,9 +26,6 @@ dot1x:
       hostname:
         enabled: true
         auth_only: true
-      parameter_request_list:
-        enabled: false
-        auth_only: false
       vendor_class_id:
         enabled: true
         auth_only: true
