@@ -49,34 +49,19 @@
 | Framed MTU | {{ dot1x.radius_av_pair.framed_mtu }} | - |
 {%             endif %}
 {%             if dot1x.radius_av_pair.lldp.system_name.enabled is arista.avd.defined(true) %}
-{%                 if dot1x.radius_av_pair.lldp.system_name.auth_only is arista.avd.defined(true) %}
-{%                     set auth_only = "Yes" %}
-{%                 endif %}
-| LLDP System-name | - | {{ auth_only | arista.avd.default('No') }} |
+| LLDP System-name | - | {{ "Yes" if dot1x.radius_av_pair.lldp.system_name.auth_only is arista.avd.defined(true) else "No" }} |
 {%             endif %}
 {%             if dot1x.radius_av_pair.lldp.system_description.enabled is arista.avd.defined(true) %}
-{%                 if dot1x.radius_av_pair.lldp.system_description.auth_only is arista.avd.defined(true) %}
-{%                     set auth_only = "Yes" %}
-{%                 endif %}
-| LLDP System-description | - | {{ auth_only | arista.avd.default('No') }} |
+| LLDP System-description | - | {{ "Yes" if dot1x.radius_av_pair.lldp.system_description.auth_only is arista.avd.defined(true) else "No" }} |
 {%             endif %}
 {%             if dot1x.radius_av_pair.dhcp.hostname.enabled is arista.avd.defined(true) %}
-{%                 if dot1x.radius_av_pair.lldp.hostname.auth_only is arista.avd.defined(true) %}
-{%                     set auth_only = "Yes" %}
-{%                 endif %}
-| DHCP Hostname | - | {{ auth_only | arista.avd.default('No') }} |
+| DHCP Hostname | - | {{ "Yes" if dot1x.radius_av_pair.dhcp.hostname.auth_only is arista.avd.defined(true) else "No" }} |
 {%             endif %}
 {%             if dot1x.radius_av_pair.dhcp.parameter_request_list.enabled is arista.avd.defined(true) %}
-{%                 if dot1x.radius_av_pair.dhcp.parameter_request_list.auth_only is arista.avd.defined(true) %}
-{%                     set auth_only = "Yes" %}
-{%                 endif %}
-| DHCP Parameter Request List | - | {{ auth_only | arista.avd.default('No') }} |
+| DHCP Parameter Request List | - | {{ "Yes" if dot1x.radius_av_pair.dhcp.parameter_request_list.auth_only is arista.avd.defined(true) else "No" }} |
 {%             endif %}
 {%             if dot1x.radius_av_pair.dhcp.vendor_class_id.enabled is arista.avd.defined(true) %}
-{%                 if dot1x.radius_av_pair.dhcp.vendor_class_id.auth_only is arista.avd.defined(true) %}
-{%                     set auth_only = "Yes" %}
-{%                 endif %}
-| DHCP Vendor Class ID | - | {{ auth_only | arista.avd.default('No') }} |
+| DHCP Vendor Class ID | - | {{ "Yes" if dot1x.radius_av_pair.dhcp.vendor_class_id.auth_only is arista.avd.defined(true) else "No" }} |
 {%             endif %}
 {%             if dot1x.radius_av_pair.filter_id.delimiter_period is arista.avd.defined(true) %}
 | Filter ID Delimiter Period | - | - |
