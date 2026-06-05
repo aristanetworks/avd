@@ -1424,6 +1424,94 @@ keys:
                 valid_values:
                 - control-plane
                 - data-plane
+          openstack:
+            type: dict
+            description: OpenStack services.
+            keys:
+              authentication:
+                type: dict
+                keys:
+                  role:
+                    type: str
+                    description: API authentication user role.
+              grace_period:
+                type: int
+                description: Set the grace period in seconds for which the OpenStack
+                  agent waits for OpenStack region data.
+                min: 0
+                max: 14400
+                convert_types:
+                - str
+              ip_access_group_name:
+                type: str
+                convert_types:
+                - int
+              ipv6_access_group_name:
+                type: str
+                convert_types:
+                - int
+              name_resolution:
+                type: dict
+                keys:
+                  force:
+                    type: bool
+                    description: Get the tenant and VM names from OpenStack immediately.
+                  interval:
+                    type: int
+                    min: 0
+                    max: 86400
+                    convert_types:
+                    - str
+                    description: Set the time interval in seconds between name updates,
+                      0 to disable.
+              network_type_driver:
+                type: dict
+                keys:
+                  vlan:
+                    type: str
+                    valid_values:
+                    - arista
+                    - default
+              regions:
+                type: list
+                min_length: 1
+                primary_key: name
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      description: The name of the region. This must match what is
+                        in use in the ML2 driver configuration.
+                      type: str
+                      convert_types:
+                      - int
+                    username:
+                      type: str
+                      description: '''admin'' or valid keystone user.'
+                    password:
+                      type: str
+                      convert_types:
+                      - int
+                    password_type:
+                      type: str
+                      default: '7'
+                      valid_values:
+                      - '0'
+                      - '7'
+                      - 8a
+                      convert_types:
+                      - int
+                    tenant:
+                      type: str
+                      description: Tenant name.
+                    keystone:
+                      type: dict
+                      keys:
+                        auth_url:
+                          type: str
+                          pattern: ^https?://(?:(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,6}\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?/v(2\.0|3)/$
+              shutdown:
+                type: bool
   daemon_terminattr:
     type: dict
     description: "You can either provide a list of IPs/FQDNs to target on-premise
