@@ -126,13 +126,13 @@ class Dot1xMixin(Protocol):
         if not device_profiling.lldp.enabled:
             return
 
-        for tlv_name in ("system_name", "system_description"):
-            tlv = getattr(device_profiling.lldp, tlv_name)
-            if not tlv.enabled:
-                continue
-            target = getattr(self.structured_config.dot1x.radius_av_pair.lldp, tlv_name)
-            target.enabled = True
-            target.auth_only = tlv.auth_only
+        if device_profiling.lldp.system_name.enabled:
+            self.structured_config.dot1x.radius_av_pair.lldp.system_name.enabled = True
+            self.structured_config.dot1x.radius_av_pair.lldp.system_name.auth_only = device_profiling.lldp.system_name.auth_only
+
+        if device_profiling.lldp.system_description.enabled:
+            self.structured_config.dot1x.radius_av_pair.lldp.system_description.enabled = True
+            self.structured_config.dot1x.radius_av_pair.lldp.system_description.auth_only = device_profiling.lldp.system_description.auth_only
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,
