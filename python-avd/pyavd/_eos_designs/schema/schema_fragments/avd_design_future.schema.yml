@@ -15,31 +15,38 @@ keys:
         type: bool
         default: false
         description: |-
+          Available from AVD 6.2.0.
           Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
       remove_redundant_ipv4_unicast_for_peer_groups:
         type: bool
         description: |-
+          Available from AVD 6.1.0.
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
         default: false
       raise_for_port_channels_without_members:
         type: bool
         description: |-
+          Available from AVD 6.2.0.
           Raise an error if an L3 Port-Channel is configured without any member interfaces.
         default: false
       only_configure_mlag_vrfs_peer_group_when_used:
         type: bool
         description: |-
+          Available from AVD 6.2.0.
           Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
         default: false
       raise_for_underlay_router_with_uplink_type_port_channel:
         type: bool
         description: |-
+          Available from AVD 6.2.0.
           Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
           since this combination is not supported.
         default: false
       configure_inband_mgmt_ipv6_vrf:
         type: bool
-        description: Configure `inband_mgmt_vrf` for IPv6 inband management.
+        description: |-
+          Available from AVD 6.2.0.
+          Configure `inband_mgmt_vrf` for IPv6 inband management.
         default: false
       only_configure_ipv6_inband_mgmt_prefix_list_when_used:
         type: bool
@@ -48,6 +55,7 @@ keys:
       consistent_uplink_vlans:
         type: bool
         description: |-
+          Available from AVD 6.2.0.
           Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
           and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
         default: false
@@ -55,4 +63,5 @@ keys:
         type: bool
         default: false
         description: |-
+          Available from AVD 6.2.0.
           Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations.

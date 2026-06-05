@@ -992,39 +992,47 @@ class EosDesigns(EosDesignsRootModel):
         }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
-        Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
+        Available from AVD 6.2.0.
+        Configure management interface to accept DHCP default route when the
+        management IP is set to 'dhcp'.
 
         Default value: `False`
         """
         remove_redundant_ipv4_unicast_for_peer_groups: bool
         """
-        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
-        default instead of always deactivating it.
+        Available from AVD 6.1.0.
+        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
+        IPv4 is activated by default instead of always deactivating it.
 
         Default value: `False`
         """
         raise_for_port_channels_without_members: bool
         """
-        Raise an error if an L3 Port-Channel is configured without any member interfaces.
+        Available from AVD 6.2.0.
+        Raise an error if an L3 Port-Channel is configured without any member
+        interfaces.
 
         Default value: `False`
         """
         only_configure_mlag_vrfs_peer_group_when_used: bool
         """
+        Available from AVD 6.2.0.
         Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
 
         Default value: `False`
         """
         raise_for_underlay_router_with_uplink_type_port_channel: bool
         """
-        Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
-        since
-        this combination is not supported.
+        Available from AVD 6.2.0.
+        Raise an error if a node has both 'underlay_router: true' and
+        'uplink_type: port-channel' set,
+        since this combination is not supported.
 
         Default value: `False`
         """
         configure_inband_mgmt_ipv6_vrf: bool
         """
+        Available from AVD 6.2.0.
         Configure `inband_mgmt_vrf` for IPv6 inband management.
 
         Default value: `False`
@@ -1037,16 +1045,19 @@ class EosDesigns(EosDesignsRootModel):
         """
         consistent_uplink_vlans: bool
         """
-        Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
-        and on
-        all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
+        Available from AVD 6.2.0.
+        Always configure Port-Channel uplinks with consistent 'switchport trunk
+        allowed' on both ends
+        and on all 'uplink_switches' even when available VLANs differ between the
+        'uplink_switches'.
 
         Default value: `False`
         """
         fix_radius_server_group_tls: bool
         """
-        Fix to configure TLS on RADIUS server group members to match their global RADIUS server
-        configurations.
+        Available from AVD 6.2.0.
+        Fix to configure TLS on RADIUS server group members to match their global
+        RADIUS server configurations.
 
         Default value: `False`
         """
@@ -1073,25 +1084,40 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    accept_dhcp_default_route_for_mgmt_ip_dhcp: Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
+                    accept_dhcp_default_route_for_mgmt_ip_dhcp:
+                       Available from AVD 6.2.0.
+                       Configure management interface to accept DHCP default route when the
+                       management IP is set to 'dhcp'.
                     remove_redundant_ipv4_unicast_for_peer_groups:
-                       Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
-                       default instead of always deactivating it.
-                    raise_for_port_channels_without_members: Raise an error if an L3 Port-Channel is configured without any member interfaces.
-                    only_configure_mlag_vrfs_peer_group_when_used: Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+                       Available from AVD 6.1.0.
+                       Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
+                       IPv4 is activated by default instead of always deactivating it.
+                    raise_for_port_channels_without_members:
+                       Available from AVD 6.2.0.
+                       Raise an error if an L3 Port-Channel is configured without any member
+                       interfaces.
+                    only_configure_mlag_vrfs_peer_group_when_used:
+                       Available from AVD 6.2.0.
+                       Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
                     raise_for_underlay_router_with_uplink_type_port_channel:
-                       Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
-                       since
-                       this combination is not supported.
-                    configure_inband_mgmt_ipv6_vrf: Configure `inband_mgmt_vrf` for IPv6 inband management.
+                       Available from AVD 6.2.0.
+                       Raise an error if a node has both 'underlay_router: true' and
+                       'uplink_type: port-channel' set,
+                       since this combination is not supported.
+                    configure_inband_mgmt_ipv6_vrf:
+                       Available from AVD 6.2.0.
+                       Configure `inband_mgmt_vrf` for IPv6 inband management.
                     only_configure_ipv6_inband_mgmt_prefix_list_when_used: Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
                     consistent_uplink_vlans:
-                       Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
-                       and on
-                       all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'.
+                       Available from AVD 6.2.0.
+                       Always configure Port-Channel uplinks with consistent 'switchport trunk
+                       allowed' on both ends
+                       and on all 'uplink_switches' even when available VLANs differ between the
+                       'uplink_switches'.
                     fix_radius_server_group_tls:
-                       Fix to configure TLS on RADIUS server group members to match their global RADIUS server
-                       configurations.
+                       Available from AVD 6.2.0.
+                       Fix to configure TLS on RADIUS server group members to match their global
+                       RADIUS server configurations.
 
                 """
 
