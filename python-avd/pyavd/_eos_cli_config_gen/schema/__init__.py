@@ -6334,11 +6334,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {
+            "always_render_ip_routing_separator": {"type": bool, "default": False},
             "new_ip_radius_cli_order": {"type": bool, "default": False},
             "new_ip_tacacs_cli_order": {"type": bool, "default": False},
-            "always_render_ip_routing_separator": {"type": bool, "default": False},
             "only_render_mpls_rsvp_with_settings": {"type": bool, "default": False},
         }
+        always_render_ip_routing_separator: bool
+        """
+        Available from AVD 6.2.0.
+        Always render a '!' before the '(no) ip routing' command section.
+        Without
+        this the '!' is missing when only configuring routing for VRFs.
+
+        Default value: `False`
+        """
         new_ip_radius_cli_order: bool
         """
         Available from AVD 6.1.0.
@@ -6359,15 +6368,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Default value: `False`
         """
-        always_render_ip_routing_separator: bool
-        """
-        Available from AVD 6.2.0.
-        Always render a '!' before the '(no) ip routing' command section.
-        Without
-        this the '!' is missing when only configuring routing for VRFs.
-
-        Default value: `False`
-        """
         only_render_mpls_rsvp_with_settings: bool
         """
         Available from AVD 6.2.0.
@@ -6384,9 +6384,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
+                always_render_ip_routing_separator: bool | UndefinedType = Undefined,
                 new_ip_radius_cli_order: bool | UndefinedType = Undefined,
                 new_ip_tacacs_cli_order: bool | UndefinedType = Undefined,
-                always_render_ip_routing_separator: bool | UndefinedType = Undefined,
                 only_render_mpls_rsvp_with_settings: bool | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -6396,6 +6396,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    always_render_ip_routing_separator:
+                       Available from AVD 6.2.0.
+                       Always render a '!' before the '(no) ip routing' command section.
+                       Without
+                       this the '!' is missing when only configuring routing for VRFs.
                     new_ip_radius_cli_order:
                        Available from AVD 6.1.0.
                        When `true`, renders the new EOS CLI order using `ip_radius`, sorted by
@@ -6408,11 +6413,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        VRF name.
                        When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`,
                        sorted by source interface name.
-                    always_render_ip_routing_separator:
-                       Available from AVD 6.2.0.
-                       Always render a '!' before the '(no) ip routing' command section.
-                       Without
-                       this the '!' is missing when only configuring routing for VRFs.
                     only_render_mpls_rsvp_with_settings:
                        Available from AVD 6.2.0.
                        When `true`, only renders the `mpls rsvp` CLI block when at least one

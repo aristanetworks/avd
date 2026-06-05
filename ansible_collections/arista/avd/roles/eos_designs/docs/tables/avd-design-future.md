@@ -9,14 +9,14 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>avd_design_future</samp>](## "avd_design_future") | Dictionary |  |  |  | Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version. |
     | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
-    | [<samp>&nbsp;&nbsp;raise_for_port_channels_without_members</samp>](## "avd_design_future.raise_for_port_channels_without_members") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if an L3 Port-Channel is configured without any member interfaces. |
-    | [<samp>&nbsp;&nbsp;only_configure_mlag_vrfs_peer_group_when_used</samp>](## "avd_design_future.only_configure_mlag_vrfs_peer_group_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed. |
-    | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
     | [<samp>&nbsp;&nbsp;configure_inband_mgmt_ipv6_vrf</samp>](## "avd_design_future.configure_inband_mgmt_ipv6_vrf") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `inband_mgmt_vrf` for IPv6 inband management. |
-    | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
     | [<samp>&nbsp;&nbsp;consistent_uplink_vlans</samp>](## "avd_design_future.consistent_uplink_vlans") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends<br>and on all 'uplink_switches' even when available VLANs differ between the 'uplink_switches'. |
     | [<samp>&nbsp;&nbsp;fix_radius_server_group_tls</samp>](## "avd_design_future.fix_radius_server_group_tls") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations. |
+    | [<samp>&nbsp;&nbsp;only_configure_ipv6_inband_mgmt_prefix_list_when_used</samp>](## "avd_design_future.only_configure_ipv6_inband_mgmt_prefix_list_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed. |
+    | [<samp>&nbsp;&nbsp;only_configure_mlag_vrfs_peer_group_when_used</samp>](## "avd_design_future.only_configure_mlag_vrfs_peer_group_when_used") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed. |
+    | [<samp>&nbsp;&nbsp;raise_for_port_channels_without_members</samp>](## "avd_design_future.raise_for_port_channels_without_members") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if an L3 Port-Channel is configured without any member interfaces. |
+    | [<samp>&nbsp;&nbsp;raise_for_underlay_router_with_uplink_type_port_channel</samp>](## "avd_design_future.raise_for_underlay_router_with_uplink_type_port_channel") | Boolean |  | `False` |  | Available from AVD 6.2.0.<br>Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,<br>since this combination is not supported. |
+    | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Available from AVD 6.1.0.<br>Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
 
 === "YAML"
 
@@ -28,29 +28,9 @@
       # Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
       accept_dhcp_default_route_for_mgmt_ip_dhcp: <bool; default=False>
 
-      # Available from AVD 6.1.0.
-      # Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
-      remove_redundant_ipv4_unicast_for_peer_groups: <bool; default=False>
-
-      # Available from AVD 6.2.0.
-      # Raise an error if an L3 Port-Channel is configured without any member interfaces.
-      raise_for_port_channels_without_members: <bool; default=False>
-
-      # Available from AVD 6.2.0.
-      # Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
-      only_configure_mlag_vrfs_peer_group_when_used: <bool; default=False>
-
-      # Available from AVD 6.2.0.
-      # Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
-      # since this combination is not supported.
-      raise_for_underlay_router_with_uplink_type_port_channel: <bool; default=False>
-
       # Available from AVD 6.2.0.
       # Configure `inband_mgmt_vrf` for IPv6 inband management.
       configure_inband_mgmt_ipv6_vrf: <bool; default=False>
-
-      # Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
-      only_configure_ipv6_inband_mgmt_prefix_list_when_used: <bool; default=False>
 
       # Available from AVD 6.2.0.
       # Always configure Port-Channel uplinks with consistent 'switchport trunk allowed' on both ends
@@ -60,4 +40,25 @@
       # Available from AVD 6.2.0.
       # Fix to configure TLS on RADIUS server group members to match their global RADIUS server configurations.
       fix_radius_server_group_tls: <bool; default=False>
+
+      # Available from AVD 6.2.0.
+      # Configure `IPv6-PL-L2LEAF-INBAND-MGMT` prefix list only when it is needed.
+      only_configure_ipv6_inband_mgmt_prefix_list_when_used: <bool; default=False>
+
+      # Available from AVD 6.2.0.
+      # Configure the `mlag_ipv4_vrfs_peer` BGP peer group only when needed.
+      only_configure_mlag_vrfs_peer_group_when_used: <bool; default=False>
+
+      # Available from AVD 6.2.0.
+      # Raise an error if an L3 Port-Channel is configured without any member interfaces.
+      raise_for_port_channels_without_members: <bool; default=False>
+
+      # Available from AVD 6.2.0.
+      # Raise an error if a node has both 'underlay_router: true' and 'uplink_type: port-channel' set,
+      # since this combination is not supported.
+      raise_for_underlay_router_with_uplink_type_port_channel: <bool; default=False>
+
+      # Available from AVD 6.1.0.
+      # Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
+      remove_redundant_ipv4_unicast_for_peer_groups: <bool; default=False>
     ```
