@@ -18183,30 +18183,18 @@ class EosDesigns(EosDesignsRootModel):
         class RadiusAvPairs(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "service_type": {"type": bool, "default": False},
-                "dhcp": {"type": EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp},
-                "framed_mtu": {"type": int},
-            }
+            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}, "framed_mtu": {"type": int}}
             service_type: bool
             """
             Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
 
             Default value: `False`
             """
-            dhcp: EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp
-            """RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages."""
             framed_mtu: int | None
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    service_type: bool | UndefinedType = Undefined,
-                    dhcp: EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp | UndefinedType = Undefined,
-                    framed_mtu: int | None | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, service_type: bool | UndefinedType = Undefined, framed_mtu: int | None | UndefinedType = Undefined) -> None:
                     """
                     RadiusAvPairs.
 
@@ -18215,8 +18203,207 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         service_type: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
-                        dhcp: RADIUS AV pairs for DHCP options sent in Access-Request and Accounting messages.
                         framed_mtu: framed_mtu
+
+                    """
+
+        class DeviceProfiling(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Dhcp(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Hostname(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Sends the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            Hostname.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Sends the attribute only once when first learned.
+
+                            """
+
+                class ParameterRequestList(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Sends the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            ParameterRequestList.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Sends the attribute only once when first learned.
+
+                            """
+
+                class VendorClassId(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
+                    enabled: bool
+                    """Default value: `True`"""
+                    auth_only: bool
+                    """
+                    Sends the attribute only once when first learned.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, auth_only: bool | UndefinedType = Undefined) -> None:
+                            """
+                            VendorClassId.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                auth_only: Sends the attribute only once when first learned.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": True},
+                    "hostname": {"type": Hostname},
+                    "parameter_request_list": {"type": ParameterRequestList},
+                    "vendor_class_id": {"type": VendorClassId},
+                }
+                enabled: bool
+                """
+                Enable all DHCP profiling options collectively.
+
+                Default value: `True`
+                """
+                hostname: Hostname
+                """
+                DHCP Option 12 (Hostname).
+
+                Subclass of AvdModel.
+                """
+                parameter_request_list: ParameterRequestList
+                """
+                DHCP Option 55 (Parameter Request List).
+
+                Subclass of AvdModel.
+                """
+                vendor_class_id: VendorClassId
+                """
+                DHCP Option 60 (Vendor Class ID).
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        hostname: Hostname | UndefinedType = Undefined,
+                        parameter_request_list: ParameterRequestList | UndefinedType = Undefined,
+                        vendor_class_id: VendorClassId | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Dhcp.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable all DHCP profiling options collectively.
+                            hostname:
+                               DHCP Option 12 (Hostname).
+
+                               Subclass of AvdModel.
+                            parameter_request_list:
+                               DHCP Option 55 (Parameter Request List).
+
+                               Subclass of AvdModel.
+                            vendor_class_id:
+                               DHCP Option 60 (Vendor Class ID).
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "dhcp": {"type": Dhcp}}
+            enabled: bool
+            """
+            Enable all DHCP and LLDP TLV profiling options.
+
+            Default value: `False`
+            """
+            dhcp: Dhcp
+            """
+            DHCP options profiling.
+            Enables profiling via DHCP Discover/Request packets.
+            Limitations:
+              - IPv4
+            only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.
+              - Not supported on VTEP
+            devices.
+              - Not supported with IP Locking features.
+              - MLAG support requires EOS 4.34.3+.
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, dhcp: Dhcp | UndefinedType = Undefined) -> None:
+                    """
+                    DeviceProfiling.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable all DHCP and LLDP TLV profiling options.
+                        dhcp:
+                           DHCP options profiling.
+                           Enables profiling via DHCP Discover/Request packets.
+                           Limitations:
+                             - IPv4
+                           only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.
+                             - Not supported on VTEP
+                           devices.
+                             - Not supported with IP Locking features.
+                             - MLAG support requires EOS 4.34.3+.
+                           Subclass of AvdModel.
 
                     """
 
@@ -18229,6 +18416,7 @@ class EosDesigns(EosDesignsRootModel):
             "dynamic_authorization": {"type": DynamicAuthorization},
             "mac_based_authentication": {"type": MacBasedAuthentication},
             "radius_av_pairs": {"type": RadiusAvPairs},
+            "device_profiling": {"type": DeviceProfiling},
             "redistribute_in_evpn": {"type": bool, "default": True},
         }
         enabled: bool
@@ -18261,6 +18449,15 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         radius_av_pairs: RadiusAvPairs
         """Subclass of AvdModel."""
+        device_profiling: DeviceProfiling
+        """
+        Device profiling feature.
+        Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+        to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.
+        Requires
+        `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
+        Subclass of AvdModel.
+        """
         redistribute_in_evpn: bool
         """
         Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
@@ -18282,6 +18479,7 @@ class EosDesigns(EosDesignsRootModel):
                 dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
                 mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
                 radius_av_pairs: RadiusAvPairs | UndefinedType = Undefined,
+                device_profiling: DeviceProfiling | UndefinedType = Undefined,
                 redistribute_in_evpn: bool | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -18302,6 +18500,13 @@ class EosDesigns(EosDesignsRootModel):
                     dynamic_authorization: Subclass of AvdModel.
                     mac_based_authentication: Subclass of AvdModel.
                     radius_av_pairs: Subclass of AvdModel.
+                    device_profiling:
+                       Device profiling feature.
+                       Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)
+                       to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.
+                       Requires
+                       `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
+                       Subclass of AvdModel.
                     redistribute_in_evpn:
                        Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
                        configured MAC-VRFs.

@@ -34,6 +34,7 @@ class Dot1xMixin(Protocol):
         self._configure_dot1x_dynamic_authorization(dot1x_settings.dynamic_authorization)
         self._configure_dot1x_aaa_accounting(dot1x_settings.accounting)
         self._configure_dot1x_global_settings(dot1x_settings)
+        self._configure_dot1x_device_profiling(dot1x_settings)
 
     def _configure_dot1x_aaa_authentication(self: AvdStructuredConfigBaseProtocol, authentication_settings: EosDesigns.Dot1xSettings.Authentication) -> None:
         """Configure 802.1X AAA authentication settings."""
@@ -93,8 +94,6 @@ class Dot1xMixin(Protocol):
         )
         if dot1x_settings.radius_av_pairs.service_type is True:
             self.structured_config.dot1x.radius_av_pair.service_type = True
-        if dot1x_settings.radius_av_pairs.dhcp:
-            self.structured_config.dot1x.radius_av_pair.dhcp = dot1x_settings.radius_av_pairs.dhcp
         if dot1x_settings.radius_av_pairs.framed_mtu:
             self.structured_config.dot1x.radius_av_pair.framed_mtu = dot1x_settings.radius_av_pairs.framed_mtu
         if dot1x_settings.mac_based_authentication.username_format:
@@ -105,6 +104,48 @@ class Dot1xMixin(Protocol):
         self.structured_config.dot1x.mac_based_authentication._update(
             delay=dot1x_settings.mac_based_authentication.delay, hold_period=dot1x_settings.mac_based_authentication.hold_period
         )
+
+    def _configure_dot1x_device_profiling(
+        self: AvdStructuredConfigBaseProtocol,
+        dot1x_settings: EosDesigns.Dot1xSettings,
+    ) -> None:
+        """Configure 802.1X device profiling."""
+        device_profiling = dot1x_settings.device_profiling
+        if not device_profiling.enabled:
+            return
+
+        if not dot1x_settings.accounting.enabled or dot1x_settings.accounting.mode != "start-stop":
+            msg = (
+                "'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and "
+                "'dot1x_settings.accounting.mode: start-stop' since the feature relies on Interim-Update accounting messages."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        dhcp_settings = device_profiling.dhcp
+        if dhcp_settings.enabled:
+            if self.shared_utils.vtep:
+                msg = "'dot1x_settings.device_profiling.dhcp' is not supported on VTEP devices."
+                raise AristaAvdInvalidInputsError(msg)
+
+            address_locking_settings = self.inputs.address_locking_settings
+            if address_locking_settings and not address_locking_settings.disabled:
+                msg = "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
+                raise AristaAvdInvalidInputsError(msg)
+
+            self.structured_config.dot1x.radius_av_pair.dhcp = EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp(
+                hostname=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.Hostname(
+                    enabled=dhcp_settings.hostname.enabled,
+                    auth_only=dhcp_settings.hostname.auth_only,
+                ),
+                parameter_request_list=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.ParameterRequestList(
+                    enabled=dhcp_settings.parameter_request_list.enabled,
+                    auth_only=dhcp_settings.parameter_request_list.auth_only,
+                ),
+                vendor_class_id=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.VendorClassId(
+                    enabled=dhcp_settings.vendor_class_id.enabled,
+                    auth_only=dhcp_settings.vendor_class_id.auth_only,
+                ),
+            )
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,
