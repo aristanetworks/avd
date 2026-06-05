@@ -18225,7 +18225,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     auth_only: bool
                     """
-                    When true, the attribute is sent only once upon first learning it.
+                    Sends the attribute only once when first learned.
 
                     Default value: `False`
                     """
@@ -18241,7 +18241,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 enabled: Send the hostname attribute.
-                                auth_only: When true, the attribute is sent only once upon first learning it.
+                                auth_only: Sends the attribute only once when first learned.
 
                             """
 
@@ -18250,14 +18250,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
                     enabled: bool
-                    """
-                    Send the parameter request list attribute.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     auth_only: bool
                     """
-                    When true, the attribute is sent only once upon first learning it.
+                    Sends the attribute only once when first learned.
 
                     Default value: `False`
                     """
@@ -18272,8 +18268,8 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled: Send the parameter request list attribute.
-                                auth_only: When true, the attribute is sent only once upon first learning it.
+                                enabled: enabled
+                                auth_only: Sends the attribute only once when first learned.
 
                             """
 
@@ -18282,14 +18278,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "auth_only": {"type": bool, "default": False}}
                     enabled: bool
-                    """
-                    Send the vendor class identifier attribute.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     auth_only: bool
                     """
-                    When true, the attribute is sent only once upon first learning it.
+                    Sends the attribute only once when first learned.
 
                     Default value: `False`
                     """
@@ -18304,8 +18296,8 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled: Send the vendor class identifier attribute.
-                                auth_only: When true, the attribute is sent only once upon first learning it.
+                                enabled: enabled
+                                auth_only: Sends the attribute only once when first learned.
 
                             """
 
@@ -18317,25 +18309,25 @@ class EosDesigns(EosDesignsRootModel):
                 }
                 enabled: bool
                 """
-                Enable DHCP-based device profiling.
+                Enable all DHCP profiling options collectively.
 
                 Default value: `True`
                 """
                 hostname: Hostname
                 """
-                Hostname (DHCP Option 12).
+                DHCP Option 12 (Hostname).
 
                 Subclass of AvdModel.
                 """
                 parameter_request_list: ParameterRequestList
                 """
-                Parameters requested by host (DHCP Option 55).
+                DHCP Option 55 (Parameter Request List).
 
                 Subclass of AvdModel.
                 """
                 vendor_class_id: VendorClassId
                 """
-                Vendor class identifier (DHCP Option 60).
+                DHCP Option 60 (Vendor Class ID).
 
                 Subclass of AvdModel.
                 """
@@ -18357,17 +18349,17 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            enabled: Enable DHCP-based device profiling.
+                            enabled: Enable all DHCP profiling options collectively.
                             hostname:
-                               Hostname (DHCP Option 12).
+                               DHCP Option 12 (Hostname).
 
                                Subclass of AvdModel.
                             parameter_request_list:
-                               Parameters requested by host (DHCP Option 55).
+                               DHCP Option 55 (Parameter Request List).
 
                                Subclass of AvdModel.
                             vendor_class_id:
-                               Vendor class identifier (DHCP Option 60).
+                               DHCP Option 60 (Vendor Class ID).
 
                                Subclass of AvdModel.
 
@@ -18375,24 +18367,19 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "dhcp": {"type": Dhcp}}
             enabled: bool
-            """
-            Master toggle for the device profiling feature.
-
-            Default value: `False`
-            """
+            """Default value: `False`"""
             dhcp: Dhcp
             """
-            DHCP-based device profiling.
-            Notes:
-              - IPv4 only. DHCPv6/SLAAC assignments are not supported.
-              -
-            MLAG support starts at EOS 4.34.3.
-              - Not supported on VTEPs (VXLAN-encapsulated DHCP packets
-            cannot be reliably parsed).
-              - Incompatible with IP Locking (`address_locking_settings`).
-
-            Subclass
-            of AvdModel.
+            DHCP options profiling.
+            Enables profiling via DHCP Discover/Request packets.
+            Limitations:
+              - IPv4
+            only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.
+              - Not supported on VTEP
+            devices.
+              - Not supported with IP Locking features.
+              - MLAG support requires EOS 4.34.3+.
+            Subclass of AvdModel.
             """
 
             if TYPE_CHECKING:
@@ -18405,19 +18392,18 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        enabled: Master toggle for the device profiling feature.
+                        enabled: enabled
                         dhcp:
-                           DHCP-based device profiling.
-                           Notes:  # fmt: skip
-                             - IPv4 only. DHCPv6/SLAAC assignments are not supported.
-                             -
-                           MLAG support starts at EOS 4.34.3.
-                             - Not supported on VTEPs (VXLAN-encapsulated DHCP packets
-                           cannot be reliably parsed).
-                             - Incompatible with IP Locking (`address_locking_settings`).
-
-                           Subclass
-                           of AvdModel.
+                           DHCP options profiling.
+                           Enables profiling via DHCP Discover/Request packets.
+                           Limitations:
+                             - IPv4
+                           only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.
+                             - Not supported on VTEP
+                           devices.
+                             - Not supported with IP Locking features.
+                             - MLAG support requires EOS 4.34.3+.
+                           Subclass of AvdModel.
 
                     """
 

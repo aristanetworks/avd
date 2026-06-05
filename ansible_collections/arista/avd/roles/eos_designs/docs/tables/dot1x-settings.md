@@ -35,18 +35,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x_settings.radius_av_pairs.service_type") | Boolean |  | `False` |  | Send RADIUS Service-Type attribute in Access-Request and Accounting messages. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x_settings.radius_av_pairs.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
     | [<samp>&nbsp;&nbsp;device_profiling</samp>](## "dot1x_settings.device_profiling") | Dictionary |  |  |  | Device profiling feature.<br>Allows EOS to send authenticated host attributes (DHCP options/LLDP TLVs)<br>to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.<br>Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.enabled") | Boolean |  | `False` |  | Master toggle for the device profiling feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp</samp>](## "dot1x_settings.device_profiling.dhcp") | Dictionary |  |  |  | DHCP-based device profiling.<br>Notes:<br>  - IPv4 only. DHCPv6/SLAAC assignments are not supported.<br>  - MLAG support starts at EOS 4.34.3.<br>  - Not supported on VTEPs (VXLAN-encapsulated DHCP packets cannot be reliably parsed).<br>  - Incompatible with IP Locking (`address_locking_settings`). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.enabled") | Boolean |  | `True` |  | Enable DHCP-based device profiling. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dot1x_settings.device_profiling.dhcp.hostname") | Dictionary |  |  |  | Hostname (DHCP Option 12). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp</samp>](## "dot1x_settings.device_profiling.dhcp") | Dictionary |  |  |  | DHCP options profiling.<br>Enables profiling via DHCP Discover/Request packets.<br>Limitations:<br>  - IPv4 only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.<br>  - Not supported on VTEP devices.<br>  - Not supported with IP Locking features.<br>  - MLAG support requires EOS 4.34.3+. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.enabled") | Boolean |  | `True` |  | Enable all DHCP profiling options collectively. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hostname</samp>](## "dot1x_settings.device_profiling.dhcp.hostname") | Dictionary |  |  |  | DHCP Option 12 (Hostname). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.hostname.enabled") | Boolean |  | `True` |  | Send the hostname attribute. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.dhcp.hostname.auth_only") | Boolean |  | `False` |  | When true, the attribute is sent only once upon first learning it. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameter_request_list</samp>](## "dot1x_settings.device_profiling.dhcp.parameter_request_list") | Dictionary |  |  |  | Parameters requested by host (DHCP Option 55). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.parameter_request_list.enabled") | Boolean |  | `True` |  | Send the parameter request list attribute. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.dhcp.parameter_request_list.auth_only") | Boolean |  | `False` |  | When true, the attribute is sent only once upon first learning it. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vendor_class_id</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id") | Dictionary |  |  |  | Vendor class identifier (DHCP Option 60). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id.enabled") | Boolean |  | `True` |  | Send the vendor class identifier attribute. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id.auth_only") | Boolean |  | `False` |  | When true, the attribute is sent only once upon first learning it. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.dhcp.hostname.auth_only") | Boolean |  | `False` |  | Sends the attribute only once when first learned. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameter_request_list</samp>](## "dot1x_settings.device_profiling.dhcp.parameter_request_list") | Dictionary |  |  |  | DHCP Option 55 (Parameter Request List). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.parameter_request_list.enabled") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.dhcp.parameter_request_list.auth_only") | Boolean |  | `False` |  | Sends the attribute only once when first learned. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vendor_class_id</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id") | Dictionary |  |  |  | DHCP Option 60 (Vendor Class ID). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id.enabled") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id.auth_only") | Boolean |  | `False` |  | Sends the attribute only once when first learned. |
     | [<samp>&nbsp;&nbsp;redistribute_in_evpn</samp>](## "dot1x_settings.redistribute_in_evpn") | Boolean |  | `True` |  | Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs. |
 
 === "YAML"
@@ -128,46 +128,41 @@
       # to the RADIUS server via Arista VSA "Arista-Device-Profiling" accounting messages.
       # Requires `dot1x_settings.accounting.enabled: true` and `dot1x_settings.accounting.mode: start-stop`.
       device_profiling:
-
-        # Master toggle for the device profiling feature.
         enabled: <bool; default=False>
 
-        # DHCP-based device profiling.
-        # Notes:
-        #   - IPv4 only. DHCPv6/SLAAC assignments are not supported.
-        #   - MLAG support starts at EOS 4.34.3.
-        #   - Not supported on VTEPs (VXLAN-encapsulated DHCP packets cannot be reliably parsed).
-        #   - Incompatible with IP Locking (`address_locking_settings`).
+        # DHCP options profiling.
+        # Enables profiling via DHCP Discover/Request packets.
+        # Limitations:
+        #   - IPv4 only. IPv6 address assignments via DHCPv6 or SLAAC are not supported.
+        #   - Not supported on VTEP devices.
+        #   - Not supported with IP Locking features.
+        #   - MLAG support requires EOS 4.34.3+.
         dhcp:
 
-          # Enable DHCP-based device profiling.
+          # Enable all DHCP profiling options collectively.
           enabled: <bool; default=True>
 
-          # Hostname (DHCP Option 12).
+          # DHCP Option 12 (Hostname).
           hostname:
 
             # Send the hostname attribute.
             enabled: <bool; default=True>
 
-            # When true, the attribute is sent only once upon first learning it.
+            # Sends the attribute only once when first learned.
             auth_only: <bool; default=False>
 
-          # Parameters requested by host (DHCP Option 55).
+          # DHCP Option 55 (Parameter Request List).
           parameter_request_list:
-
-            # Send the parameter request list attribute.
             enabled: <bool; default=True>
 
-            # When true, the attribute is sent only once upon first learning it.
+            # Sends the attribute only once when first learned.
             auth_only: <bool; default=False>
 
-          # Vendor class identifier (DHCP Option 60).
+          # DHCP Option 60 (Vendor Class ID).
           vendor_class_id:
-
-            # Send the vendor class identifier attribute.
             enabled: <bool; default=True>
 
-            # When true, the attribute is sent only once upon first learning it.
+            # Sends the attribute only once when first learned.
             auth_only: <bool; default=False>
 
       # Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.

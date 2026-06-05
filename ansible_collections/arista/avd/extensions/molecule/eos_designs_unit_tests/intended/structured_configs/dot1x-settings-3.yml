@@ -1,3 +1,11 @@
+aaa_accounting:
+  dot1x:
+    default:
+      type: start-stop
+      methods:
+      - multicast: false
+        method: group
+        group: radius
 aaa_authentication:
   dot1x:
     default: group radius

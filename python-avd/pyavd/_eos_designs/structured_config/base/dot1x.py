@@ -114,10 +114,6 @@ class Dot1xMixin(Protocol):
         if not device_profiling_settings.enabled:
             return
 
-        dhcp_settings = device_profiling_settings.dhcp
-        if not dhcp_settings.enabled:
-            return
-
         if not accounting_settings.enabled or accounting_settings.mode != "start-stop":
             msg = (
                 "'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and "
@@ -125,29 +121,31 @@ class Dot1xMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg)
 
-        if self.shared_utils.vtep:
-            msg = "'dot1x_settings.device_profiling' is not supported on VTEP devices."
-            raise AristaAvdInvalidInputsError(msg)
+        dhcp_settings = device_profiling_settings.dhcp
+        if dhcp_settings.enabled:
+            if self.shared_utils.vtep:
+                msg = "'dot1x_settings.device_profiling' is not supported on VTEP devices."
+                raise AristaAvdInvalidInputsError(msg)
 
-        address_locking_settings = self.inputs.address_locking_settings
-        if address_locking_settings and not address_locking_settings.disabled:
-            msg = "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
-            raise AristaAvdInvalidInputsError(msg)
+            address_locking_settings = self.inputs.address_locking_settings
+            if address_locking_settings and not address_locking_settings.disabled:
+                msg = "'dot1x_settings.device_profiling.dhcp' is not supported with IP Locking features."
+                raise AristaAvdInvalidInputsError(msg)
 
-        self.structured_config.dot1x.radius_av_pair.dhcp = EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp(
-            hostname=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.Hostname(
-                enabled=dhcp_settings.hostname.enabled,
-                auth_only=dhcp_settings.hostname.auth_only,
-            ),
-            parameter_request_list=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.ParameterRequestList(
-                enabled=dhcp_settings.parameter_request_list.enabled,
-                auth_only=dhcp_settings.parameter_request_list.auth_only,
-            ),
-            vendor_class_id=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.VendorClassId(
-                enabled=dhcp_settings.vendor_class_id.enabled,
-                auth_only=dhcp_settings.vendor_class_id.auth_only,
-            ),
-        )
+            self.structured_config.dot1x.radius_av_pair.dhcp = EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp(
+                hostname=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.Hostname(
+                    enabled=dhcp_settings.hostname.enabled,
+                    auth_only=dhcp_settings.hostname.auth_only,
+                ),
+                parameter_request_list=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.ParameterRequestList(
+                    enabled=dhcp_settings.parameter_request_list.enabled,
+                    auth_only=dhcp_settings.parameter_request_list.auth_only,
+                ),
+                vendor_class_id=EosCliConfigGen.Dot1x.RadiusAvPair.Dhcp.VendorClassId(
+                    enabled=dhcp_settings.vendor_class_id.enabled,
+                    auth_only=dhcp_settings.vendor_class_id.auth_only,
+                ),
+            )
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,

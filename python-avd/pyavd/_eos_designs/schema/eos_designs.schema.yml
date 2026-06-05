@@ -2417,21 +2417,21 @@ keys:
           enabled:
             type: bool
             default: false
-            description: Master toggle for the device profiling feature.
           dhcp:
             type: dict
-            description: "DHCP-based device profiling.\nNotes:\n  - IPv4 only. DHCPv6/SLAAC
-              assignments are not supported.\n  - MLAG support starts at EOS 4.34.3.\n
-              \ - Not supported on VTEPs (VXLAN-encapsulated DHCP packets cannot be
-              reliably parsed).\n  - Incompatible with IP Locking (`address_locking_settings`)."
+            description: "DHCP options profiling.\nEnables profiling via DHCP Discover/Request
+              packets.\nLimitations:\n  - IPv4 only. IPv6 address assignments via
+              DHCPv6 or SLAAC are not supported.\n  - Not supported on VTEP devices.\n
+              \ - Not supported with IP Locking features.\n  - MLAG support requires
+              EOS 4.34.3+."
             keys:
               enabled:
                 type: bool
                 default: true
-                description: Enable DHCP-based device profiling.
+                description: Enable all DHCP profiling options collectively.
               hostname:
                 type: dict
-                description: Hostname (DHCP Option 12).
+                description: DHCP Option 12 (Hostname).
                 keys:
                   enabled:
                     type: bool
@@ -2440,34 +2440,29 @@ keys:
                   auth_only:
                     type: bool
                     default: false
-                    description: When true, the attribute is sent only once upon first
-                      learning it.
+                    description: Sends the attribute only once when first learned.
               parameter_request_list:
                 type: dict
-                description: Parameters requested by host (DHCP Option 55).
+                description: DHCP Option 55 (Parameter Request List).
                 keys:
                   enabled:
                     type: bool
                     default: true
-                    description: Send the parameter request list attribute.
                   auth_only:
                     type: bool
                     default: false
-                    description: When true, the attribute is sent only once upon first
-                      learning it.
+                    description: Sends the attribute only once when first learned.
               vendor_class_id:
                 type: dict
-                description: Vendor class identifier (DHCP Option 60).
+                description: DHCP Option 60 (Vendor Class ID).
                 keys:
                   enabled:
                     type: bool
                     default: true
-                    description: Send the vendor class identifier attribute.
                   auth_only:
                     type: bool
                     default: false
-                    description: When true, the attribute is sent only once upon first
-                      learning it.
+                    description: Sends the attribute only once when first learned.
       redistribute_in_evpn:
         type: bool
         default: true

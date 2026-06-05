@@ -10,7 +10,7 @@ l2leaf:
 dot1x_settings:
   enabled: true
   accounting:
-    enabled: false
+    enabled: true
   bypass_bpdu: false
   bypass_lldp: false
   dynamic_authorization:
