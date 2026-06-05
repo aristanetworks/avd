@@ -34,7 +34,7 @@ class Dot1xMixin(Protocol):
         self._configure_dot1x_dynamic_authorization(dot1x_settings.dynamic_authorization)
         self._configure_dot1x_aaa_accounting(dot1x_settings.accounting)
         self._configure_dot1x_global_settings(dot1x_settings)
-        self._configure_dot1x_device_profiling(dot1x_settings.device_profiling, dot1x_settings.accounting)
+        self._configure_dot1x_device_profiling(dot1x_settings)
 
     def _configure_dot1x_aaa_authentication(self: AvdStructuredConfigBaseProtocol, authentication_settings: EosDesigns.Dot1xSettings.Authentication) -> None:
         """Configure 802.1X AAA authentication settings."""
@@ -107,21 +107,21 @@ class Dot1xMixin(Protocol):
 
     def _configure_dot1x_device_profiling(
         self: AvdStructuredConfigBaseProtocol,
-        device_profiling_settings: EosDesigns.Dot1xSettings.DeviceProfiling,
-        accounting_settings: EosDesigns.Dot1xSettings.Accounting,
+        dot1x_settings: EosDesigns.Dot1xSettings,
     ) -> None:
         """Configure 802.1X device profiling."""
-        if not device_profiling_settings.enabled:
+        device_profiling = dot1x_settings.device_profiling
+        if not device_profiling.enabled:
             return
 
-        if not accounting_settings.enabled or accounting_settings.mode != "start-stop":
+        if not dot1x_settings.accounting.enabled or dot1x_settings.accounting.mode != "start-stop":
             msg = (
                 "'dot1x_settings.device_profiling' requires 'dot1x_settings.accounting.enabled: true' and "
                 "'dot1x_settings.accounting.mode: start-stop' since the feature relies on Interim-Update accounting messages."
             )
             raise AristaAvdInvalidInputsError(msg)
 
-        dhcp_settings = device_profiling_settings.dhcp
+        dhcp_settings = device_profiling.dhcp
         if dhcp_settings.enabled:
             if self.shared_utils.vtep:
                 msg = "'dot1x_settings.device_profiling' is not supported on VTEP devices."
