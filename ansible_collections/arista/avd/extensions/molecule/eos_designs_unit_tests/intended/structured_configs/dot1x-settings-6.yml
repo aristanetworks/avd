@@ -19,12 +19,9 @@ dot1x:
   dynamic_authorization: true
   radius_av_pair:
     dhcp:
-      hostname:
-        enabled: true
-        auth_only: true
       parameter_request_list:
         enabled: true
-        auth_only: false
+        auth_only: true
 enable_password:
   disabled: true
 hostname: dot1x-settings-6

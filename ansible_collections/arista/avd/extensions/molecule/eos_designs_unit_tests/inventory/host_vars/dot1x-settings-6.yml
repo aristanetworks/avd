@@ -13,9 +13,9 @@ dot1x_settings:
     enabled: true
     dhcp:
       hostname:
-        auth_only: true
+        enabled: false
       parameter_request_list:
-        enabled: true
+        auth_only: true
       vendor_class_id:
         enabled: false
     lldp:
