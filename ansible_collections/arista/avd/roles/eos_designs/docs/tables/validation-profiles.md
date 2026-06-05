@@ -16,8 +16,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "validation_profiles.[].hardware.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_line_cards</samp>](## "validation_profiles.[].hardware.min_line_cards") | Integer |  |  |  | Minimum number of line cards required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "validation_profiles.[].hardware.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. Set to 0 to skip validation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "validation_profiles.[].hardware.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device.<br>Include "Not Present" to allow ports with no transceiver to successfully pass validation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "validation_profiles.[].hardware.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "validation_profiles.[].hardware.transceiver_manufacturers.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore_no_transceivers</samp>](## "validation_profiles.[].hardware.ignore_no_transceivers") | Boolean |  | `True` |  | Accept ports with no transceiver as valid when checking the approved manufacturers. This is used by `anta_runner`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "validation_profiles.[].logging") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_no_errors_period</samp>](## "validation_profiles.[].logging.validate_no_errors_period") | Integer |  |  |  | Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "validation_profiles.[].exclude_as_extra_fabric_validation_target") | Boolean |  | `False` |  | Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role. |
@@ -59,9 +60,11 @@
           min_fabric_cards: <int>
 
           # List of approved transceiver manufacturers for the device.
-          # Include "Not Present" to allow ports with no transceiver to successfully pass validation.
           transceiver_manufacturers: # (1)!
             - <str>
+
+          # Accept ports with no transceiver as valid when checking the approved manufacturers. This is used by `anta_runner`.
+          ignore_no_transceivers: <bool; default=True>
         logging:
 
           # Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role.

@@ -25,6 +25,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;min_fabric_cards</samp>](## "metadata.validate_hardware.min_fabric_cards") | Integer |  |  |  | Minimum number of fabric cards required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transceiver_manufacturers</samp>](## "metadata.validate_hardware.transceiver_manufacturers") | List, items: String |  | See (+) on YAML tab |  | List of approved transceiver manufacturers for the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "metadata.validate_hardware.transceiver_manufacturers.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ignore_no_transceivers</samp>](## "metadata.validate_hardware.ignore_no_transceivers") | Boolean |  | `True` |  | Accept ports with no transceiver as valid when checking the approved manufacturers. This is used by `anta_runner`. |
     | [<samp>&nbsp;&nbsp;cv_tags</samp>](## "metadata.cv_tags") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;device_tags</samp>](## "metadata.cv_tags.device_tags") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_tags.device_tags.[].name") | String | Required |  |  |  |
@@ -199,6 +200,9 @@
         # List of approved transceiver manufacturers for the device.
         transceiver_manufacturers: # (1)!
           - <str>
+
+        # Accept ports with no transceiver as valid when checking the approved manufacturers. This is used by `anta_runner`.
+        ignore_no_transceivers: <bool; default=True>
       cv_tags:
         device_tags:
           - name: <str; required>
