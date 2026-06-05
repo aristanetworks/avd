@@ -14,24 +14,17 @@ aaa_root:
 config_end: true
 dot1x:
   system_auth_control: true
-  protocol_lldp_bypass: false
-  protocol_bpdu_bypass: false
-  dynamic_authorization: false
+  protocol_lldp_bypass: true
+  protocol_bpdu_bypass: true
+  dynamic_authorization: true
   radius_av_pair:
-    lldp:
-      system_name:
-        enabled: true
-        auth_only: true
     dhcp:
-      hostname:
-        enabled: true
-        auth_only: true
-      vendor_class_id:
+      parameter_request_list:
         enabled: true
         auth_only: true
 enable_password:
   disabled: true
-hostname: dot1x-settings-3
+hostname: dot1x-settings-6
 ip_igmp_snooping:
   globally_enabled: true
 ip_radius:

@@ -47,6 +47,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vendor_class_id</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id") | Dictionary |  |  |  | DHCP Option 60 (Vendor Class ID). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id.enabled") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.dhcp.vendor_class_id.auth_only") | Boolean |  | `False` |  | Sends the attribute only once when first learned. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lldp</samp>](## "dot1x_settings.device_profiling.lldp") | Dictionary |  |  |  | LLDP TLVs profiling.<br>Enables profiling via LLDP packets.<br>Requires LLDP to be globally enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.lldp.enabled") | Boolean |  | `True` |  | Enable all LLDP profiling options collectively. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_name</samp>](## "dot1x_settings.device_profiling.lldp.system_name") | Dictionary |  |  |  | LLDP system name (LLDP TLV 5). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.lldp.system_name.enabled") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.lldp.system_name.auth_only") | Boolean |  | `False` |  | Send the attribute only once when first learned. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_description</samp>](## "dot1x_settings.device_profiling.lldp.system_description") | Dictionary |  |  |  | LLDP system description (LLDP TLV 6). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.device_profiling.lldp.system_description.enabled") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x_settings.device_profiling.lldp.system_description.auth_only") | Boolean |  | `False` |  | Send the attribute only once when first learned. |
     | [<samp>&nbsp;&nbsp;redistribute_in_evpn</samp>](## "dot1x_settings.redistribute_in_evpn") | Boolean |  | `True` |  | Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs. |
 
 === "YAML"
@@ -163,6 +171,28 @@
             enabled: <bool; default=True>
 
             # Sends the attribute only once when first learned.
+            auth_only: <bool; default=False>
+
+        # LLDP TLVs profiling.
+        # Enables profiling via LLDP packets.
+        # Requires LLDP to be globally enabled.
+        lldp:
+
+          # Enable all LLDP profiling options collectively.
+          enabled: <bool; default=True>
+
+          # LLDP system name (LLDP TLV 5).
+          system_name:
+            enabled: <bool; default=True>
+
+            # Send the attribute only once when first learned.
+            auth_only: <bool; default=False>
+
+          # LLDP system description (LLDP TLV 6).
+          system_description:
+            enabled: <bool; default=True>
+
+            # Send the attribute only once when first learned.
             auth_only: <bool; default=False>
 
       # Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.
