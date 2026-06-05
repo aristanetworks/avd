@@ -1809,28 +1809,64 @@ ip nat synchronization
 
 | Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
 | ----- | ----------------- | ---------------- | --------------------------- |
-| arp-inspection | - | True | - |
+| acl | False | - | - |
+| arp-inspection | False | False | - |
 | bpduguard | - | True | - |
-| hitless-reload-down | - | True | - |
+| dot1x | False | - | - |
+| dot1x-coa | False | - | - |
+| dot1x-phone-classification | False | - | - |
+| dot1x-session-replace | False | - | - |
+| error-correction-encoding | False | - | - |
+| hardware-speed-group | False | - | - |
+| hitless-reload-down | - | False | - |
+| interface-speed | False | - | - |
+| internal-error | False | - | - |
 | lacp-rate-limit | - | True | - |
+| link-change | False | - | - |
 | link-flap | - | True | - |
-| no-internal-vlan | - | True | - |
+| no-internal-vlan | - | False | - |
+| port-breakout | False | - | - |
 | portchannelguard | - | True | - |
 | portsec | - | True | - |
-| tapagg | - | True | - |
+| storm-control | False | - | - |
+| switchcard-unreachable | False | - | - |
+| tapagg | False | False | - |
+| transceiver-adapter | False | - | - |
 | uplink-failure-detection | - | True | - |
+| xcvr-misconfigured | False | - | - |
+| xcvr-overheat | False | - | - |
+| xcvr-power-unsupported | False | - | - |
 
 ```eos
 !
-errdisable recovery cause arp-inspection
+no errdisable detect cause acl
+no errdisable detect cause arp-inspection
+no errdisable detect cause dot1x
+no errdisable detect cause dot1x-coa
+no errdisable detect cause dot1x-phone-classification
+no errdisable detect cause dot1x-session-replace
+no errdisable detect cause error-correction-encoding
+no errdisable detect cause hardware-speed-group
+no errdisable detect cause interface-speed
+no errdisable detect cause internal-error
+no errdisable detect cause link-change
+no errdisable detect cause port-breakout
+no errdisable detect cause storm-control
+no errdisable detect cause switchcard-unreachable
+no errdisable detect cause tapagg
+no errdisable detect cause transceiver-adapter
+no errdisable detect cause xcvr-misconfigured
+no errdisable detect cause xcvr-overheat
+no errdisable detect cause xcvr-power-unsupported
+no errdisable recovery cause arp-inspection
 errdisable recovery cause bpduguard
-errdisable recovery cause hitless-reload-down
+no errdisable recovery cause hitless-reload-down
 errdisable recovery cause lacp-rate-limit
 errdisable recovery cause link-flap
-errdisable recovery cause no-internal-vlan
+no errdisable recovery cause no-internal-vlan
 errdisable recovery cause portchannelguard
 errdisable recovery cause portsec
-errdisable recovery cause tapagg
+no errdisable recovery cause tapagg
 errdisable recovery cause uplink-failure-detection
 ```
 
