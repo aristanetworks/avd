@@ -6,7 +6,7 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  standard_acls:
+  ipv4_standard_acls:
     type: list
     primary_key: name
     description: |-
