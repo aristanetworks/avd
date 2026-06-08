@@ -1057,8 +1057,9 @@ class EosDesigns(EosDesignsRootModel):
         """
         remove_redundant_ipv4_unicast_for_peer_groups: bool
         """
-        Fix to configure TLS on RADIUS server group members to match their global RADIUS server
-        configurations.
+        Available from AVD 6.1.0.
+        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
+        IPv4 is activated by default instead of always deactivating it.
 
         Default value: `False`
         """
@@ -1129,8 +1130,9 @@ class EosDesigns(EosDesignsRootModel):
                        'uplink_type: port-channel' set,
                        since this combination is not supported.
                     remove_redundant_ipv4_unicast_for_peer_groups:
-                       Fix to configure TLS on RADIUS server group members to match their global RADIUS server
-                       configurations.
+                       Available from AVD 6.1.0.
+                       Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when
+                       IPv4 is activated by default instead of always deactivating it.
                     only_configure_route_map_connected_to_bgp_vrfs_when_used:
                        Configure the 'RM-CONN-2-BGP-VRFS' route map only when it is needed.
                        The route map is skipped when
